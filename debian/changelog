@@ -1,3 +1,19 @@
+gst-plugins-base0.11 (0.11.1-1~ppa1) oneiric; urgency=low
+
+  * New upstream release, 0.11.1
+    + debian/libgstreamer-plugins-base.symbols
+    + debian/build-deps.in
+      - remove gstreamer-tools
+      - replaced 0.10 with 0.11
+    + debian/control.in
+      - removed old Replaces/Conflicts which no longer make sense on 0.11
+      - removed -gnomevfs packages
+    + debian/*.install files
+      - removed libgstdecodebin, libgstffmpegcolorspace, gstplaybin
+      - added libgstvideoconvert, libgstplayback
+
+ -- Nicolas Dechesne <ndec@massalia>  Fri, 30 Sep 2011 23:04:33 +0200
+
 gst-plugins-base0.10 (0.10.35-1) unstable; urgency=low
 
   * New upstream bugfix release, "Short Notice".

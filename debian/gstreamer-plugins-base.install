@@ -5,15 +5,13 @@ debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstaudiorate.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstaudioresample.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstaudiotestsrc.so
 @cdparanoia@
-debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstdecodebin.so
-debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstdecodebin2.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstencodebin.so
-debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstffmpegcolorspace.so
+debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstvideoconvert.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstgdp.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstgio.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstlibvisual.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstogg.so
-debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstplaybin.so
+debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstplayback.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgstsubparse.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgsttcp.so
 debian/tmp/usr/lib/gstreamer-@GST_ABI@/libgsttheora.so

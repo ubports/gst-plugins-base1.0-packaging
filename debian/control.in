@@ -34,7 +34,7 @@ Architecture: all
 Section: doc
 Depends: ${misc:Depends},
          libglib2.0-doc,
-         gstreamer0.10-doc
+         gstreamer0.11-doc
 Description: GStreamer documentation for plugins from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -53,7 +53,6 @@ Depends: ${misc:Depends},
          ${shlibs:Depends},
          iso-codes
 Conflicts: totem-gstreamer (<= 2.17.92-0ubuntu1),
-           gstreamer0.10-pulseaudio (<< 0.10.16-4)
 Suggests: libvisual-0.4-plugins,
           gstreamer-codec-install | gnome-codec-install
 Replaces: gobject-introspection-repository (<< 0.6.5-2)
@@ -118,30 +117,6 @@ Description: GStreamer plugin for ALSA
  This package contains the GStreamer plugin for the ALSA library.  ALSA
  is the Advanced Linux Sound Architecture.
 
-Package: @GST_PKGNAME@-gnomevfs
-Architecture: any
-Section: libs
-Depends: ${misc:Depends},
-         ${shlibs:Depends}
-Recommends: libgnomevfs2-extra
-XB-GStreamer-Version: ${gstreamer:Version}
-XB-GStreamer-Elements: ${gstreamer:Elements}
-XB-GStreamer-URI-Sources: ${gstreamer:URISources}
-XB-GStreamer-URI-Sinks: ${gstreamer:URISinks}
-XB-GStreamer-Encoders: ${gstreamer:Encoders}
-XB-GStreamer-Decoders: ${gstreamer:Decoders}
-Provides: ${gstreamer:Provides}
-Description: GStreamer plugin for GnomeVFS
- GStreamer is a streaming media framework, based on graphs of filters
- which operate on media data.  Applications using this library can do
- anything from real-time sound processing to playing videos, and just
- about anything else media-related.  Its plugin-based architecture means
- that new data types or processing capabilities can be added simply by
- installing new plug-ins.
- .
- This package contains the GStreamer plugin to read from and write to
- GnomeVFS URIs.  GnomeVFS is the GNOME virtual file-system.
-
 Package: @GST_PKGNAME@-plugins-base
 Architecture: any
 Section: libs
@@ -149,7 +124,6 @@ Depends: ${misc:Depends},
          ${shlibs:Depends},
          @GST_PLUGINS_BASE_LIB@ (>= @GST_VERSION@)
 Suggests: gvfs
-Replaces: gstreamer0.10-plugins-bad (<< 0.10.3+cvs20060814-0ubuntu4)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
 XB-GStreamer-URI-Sources: ${gstreamer:URISources}
@@ -178,7 +152,6 @@ Depends: @GST_PKGNAME@-alsa (= ${binary:Version}) [linux-any],
          @GST_PLUGINS_BASE_LIB@ (= ${binary:Version}),
          ${misc:Depends}
 Suggests: @GST_PKGNAME@-gnomevfs (= ${binary:Version})
-Replaces: gstreamer0.10-plugins-bad-dbg (<< 0.10.3+cvs20060814-0ubuntu4)
 Description: GStreamer plugins from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -223,8 +196,7 @@ Architecture: any
 Depends: ${gir:Depends},
          ${shlibs:Depends},
          ${misc:Depends}
-Replaces: @GST_PLUGINS_BASE_LIB@ (<< 0.10.25-3),
-          gobject-introspection-repository (<< 0.6.5-2),
+Replaces: gobject-introspection-repository (<< 0.6.5-2),
           gir1.0-gst-plugins-base-@GST_ABI@
 Conflicts: gir1.0-gst-plugins-base-@GST_ABI@
 Description: Description: GObject introspection data for the GStreamer Plugins Base library
