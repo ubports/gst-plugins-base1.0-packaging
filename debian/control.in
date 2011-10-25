@@ -55,7 +55,6 @@ Depends: ${misc:Depends},
 Conflicts: totem-gstreamer (<= 2.17.92-0ubuntu1),
 Suggests: libvisual-0.4-plugins,
           gstreamer-codec-install | gnome-codec-install
-Replaces: gobject-introspection-repository (<< 0.6.5-2)
 Description: GStreamer libraries from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -79,7 +78,6 @@ Depends: ${misc:Depends},
          libglib2.0-dev,
          libxml2-dev,
          gir1.2-gst-plugins-base-@GST_ABI@ (= ${binary:Version})
-Replaces: gobject-introspection-repository (<< 0.6.5-2)
 Description: GStreamer development files for libraries from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -196,9 +194,6 @@ Architecture: any
 Depends: ${gir:Depends},
          ${shlibs:Depends},
          ${misc:Depends}
-Replaces: gobject-introspection-repository (<< 0.6.5-2),
-          gir1.0-gst-plugins-base-@GST_ABI@
-Conflicts: gir1.0-gst-plugins-base-@GST_ABI@
 Description: Description: GObject introspection data for the GStreamer Plugins Base library
  This package contains introspection data for the GStreamer Plugins Base library.
  .
