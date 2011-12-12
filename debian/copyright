@@ -9,64 +9,6 @@ Format: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?rev=17
 Upstream-Name: Gstreamer Base Plugins 0.11
 Upstream-Contact: gstreamer-devel@lists.freedesktop.org
 
-Files: ./autogen.sh
- ./common/c-to-xml.py
- ./common/gst-autogen.sh
- ./common/mangle-tmpl.py
- ./common/plugins.xsl
- ./common/scangobj-merge.py
- ./ext/ogg/dirac_parse.c
- ./ext/ogg/dirac_parse.h
- ./ext/pango/gstbasetextoverlay.h
- ./ext/pango/gsttextrender.h
- ./gst-libs/gst/fft/kiss_fft_f32.h
- ./gst-libs/gst/fft/kiss_fft_f64.h
- ./gst-libs/gst/fft/kiss_fft_s16.h
- ./gst-libs/gst/fft/kiss_fft_s32.h
- ./gst-libs/gst/fft/kiss_fftr_f32.h
- ./gst-libs/gst/fft/kiss_fftr_f64.h
- ./gst-libs/gst/fft/kiss_fftr_s16.h
- ./gst-libs/gst/fft/kiss_fftr_s32.h
- ./gst/adder/gstadderorc-dist.c
- ./gst/adder/gstadderorc-dist.h
- ./gst/audioconvert/gstaudioconvertorc-dist.c
- ./gst/audioconvert/gstaudioconvertorc-dist.h
- ./gst/videoconvert/gstvideoconvertorc-dist.c
- ./gst/videoconvert/gstvideoconvertorc-dist.h
- ./gst/videoscale/gstvideoscaleorc-dist.c
- ./gst/videoscale/gstvideoscaleorc-dist.h
- ./gst/videotestsrc/generate_sine_table.c
- ./gst/videotestsrc/gstvideotestsrcorc-dist.c
- ./gst/videotestsrc/gstvideotestsrcorc-dist.h
- ./gst/volume/gstvolumeorc-dist.c
- ./gst/volume/gstvolumeorc-dist.h
- ./tests/check/libs/struct_arm.h
- ./tests/check/libs/struct_i386.h
- ./tests/check/libs/struct_i386_osx.h
- ./tests/check/libs/struct_x86_64.h
- ./tests/examples/app/appsink-src.c
- ./tests/examples/app/appsrc_ex.c
- ./tests/examples/seek/scrubby.c
- ./tests/icles/audio-trickplay.c
- ./tests/icles/output-selector-test.c
- ./tests/icles/position-formats.c
- ./tests/icles/stress-playbin.c
- ./win32/common/_stdint.h
- ./win32/common/audio-enumtypes.c
- ./win32/common/audio-enumtypes.h
- ./win32/common/config.h
- ./win32/common/gstrtsp-enumtypes.c
- ./win32/common/gstrtsp-enumtypes.h
- ./win32/common/interfaces-enumtypes.c
- ./win32/common/interfaces-enumtypes.h
- ./win32/common/pbutils-enumtypes.c
- ./win32/common/pbutils-enumtypes.h
- ./win32/common/video-enumtypes.c
- ./win32/common/video-enumtypes.h
-Copyright: *No copyright*
-License: UNKNOWN
- 
-
 Files: ./gst-libs/gst/audio/multichannel.c
  ./gst-libs/gst/audio/multichannel.h
  ./gst-libs/gst/interfaces/colorbalance.c
@@ -243,7 +185,6 @@ Files: ./gst-libs/gst/fft/_kiss_fft_guts_f32.h
  ./gst-libs/gst/fft/kiss_fftr_s16.c
  ./gst-libs/gst/fft/kiss_fftr_s32.c
 Copyright: 2003-2004, Mark Borgerding
- HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 License: BSD (2 clause)
  
 
@@ -260,7 +201,6 @@ Files: ./gst-libs/gst/rtsp/gstrtspdefs.c
  ./gst-libs/gst/sdp/gstsdpmessage.c
  ./gst-libs/gst/sdp/gstsdpmessage.h
 Copyright: <2005-2006> Wim Taymans <wim@fluendo.com>
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 License: MIT/X11 (BSD like) LGPL-2+
  
 
@@ -446,9 +386,8 @@ Files: ./gst/audioresample/arch.h
  ./gst/audioresample/fixed_arm5e.h
  ./gst/audioresample/fixed_debug.h
  ./gst/audioresample/fixed_generic.h
-Copyright: 2003, Jean-Marc Valin */
- 2004, Jean-Marc Valin */
- HOLDERS AND CONTRIBUTORS
+Copyright: 2003, Jean-Marc Valin
+ 2004, Jean-Marc Valin
 License: BSD (3 clause)
  
 
@@ -762,20 +701,17 @@ License: BSD (2 clause)
 
 Files: ./gst/audioresample/fixed_bfin.h
 Copyright: 2005, Analog Devices
- HOLDERS AND CONTRIBUTORS
 License: BSD (3 clause)
  
 
 Files: ./ext/ogg/vorbis_parse.c
 Copyright: 2003, Commonwealth Scientific and Industrial Research
- HOLDERS AND CONTRIBUTORS
 License: BSD (3 clause)
  
 
 Files: ./gst/audioresample/resample_sse.h
 Copyright: 2007-2008, Jean-Marc Valin
  2008, Thorvald Natvig
- HOLDERS AND CONTRIBUTORS
 License: BSD (3 clause)
  
 
@@ -801,8 +737,7 @@ License: LGPL
  
 
 Files: ./gst/playback/gstplaysink.c
-Copyright: ((GstPlayChain *))
- <2007> Wim Taymans <wim.taymans@gmail.com>
+Copyright: <2007> Wim Taymans <wim.taymans@gmail.com>
  <2011> Sebastian Dröge <sebastian.droege@collabora.co.uk>
 License: LGPL-2+
  
@@ -1244,19 +1179,16 @@ License: LGPL-2+
 
 Files: ./gst-libs/gst/rtsp/gstrtspconnection.h
 Copyright: <2005,2009> Wim Taymans <wim.taymans@gmail.com>
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 License: MIT/X11 (BSD like) LGPL-2+
  
 
 Files: ./gst-libs/gst/rtsp/gstrtsptransport.c
 Copyright: <2005-2007> Wim Taymans <wim@fluendo.com>
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 License: MIT/X11 (BSD like) LGPL-2+
  
 
 Files: ./gst-libs/gst/rtsp/gstrtspconnection.c
 Copyright: <2005-2009> Wim Taymans <wim.taymans@gmail.com>
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 License: MIT/X11 (BSD like) LGPL-2+
 
 

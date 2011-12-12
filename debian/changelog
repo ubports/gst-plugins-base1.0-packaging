@@ -1,5 +1,6 @@
-gst-plugins-base0.11 (0.11.1-1) unstable; urgency=low
+gst-plugins-base0.11 (0.11.1-1) experimental; urgency=low
 
+  [ Nicolas Dechesne ]
   * New upstream release, 0.11.1
     + debian/libgstreamer-plugins-base.symbols
     + debian/build-deps.in
@@ -12,7 +13,46 @@ gst-plugins-base0.11 (0.11.1-1) unstable; urgency=low
       - removed libgstdecodebin, libgstffmpegcolorspace, gstplaybin
       - added libgstvideoconvert, libgstplayback
 
- -- Nicolas Dechesne <ndec@massalia>  Fri, 30 Sep 2011 23:04:33 +0200
+  [ Sebastian Dröge ]
+  * Upload to experimental.
+  * debian/copyright:
+    + Clean up, fix and complete copyright.
+  * Merge 0.10.35.2-1.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 12 Dec 2011 12:21:36 +0100
+
+gst-plugins-base0.10 (0.10.35.2-1) experimental; urgency=low
+
+  * New upstream pre-release:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer core >= 0.10.35.2.
+      - Build-depend on GLib >= 2.24.
+      - Build-depend on GTK+ 3.0.
+      - Build-depend on zlib.
+    + debian/patches/99_ltmain_as-needed.patch:
+      - Refresh to apply cleanly again.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update symbols file with new API.
+  * debian/rules:
+    + Remove all dependency_libs from the .la files.
+  * debian/control.in:
+    + Put GI package into section introspection.
+  * debian/build-deps.in,
+    debian/compat,
+    debian/control.in,
+    debian/gir1.2-gst-plugins-base.install,
+    debian/gstreamer-alsa.install,
+    debian/gstreamer-gnomevfs.install,
+    debian/gstreamer-plugins-base.install,
+    debian/gstreamer-x.install,
+    debian/libgstreamer-plugins-base-dev.install,
+    debian/libgstreamer-plugins-base.install,
+    debian/rules:
+    + Transition package to multi-arch (Closes: #647485).
+      Patch taken from the Ubuntu package.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sun, 11 Dec 2011 19:27:10 +0100
 
 gst-plugins-base0.10 (0.10.35-1) unstable; urgency=low
 

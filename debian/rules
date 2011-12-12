@@ -67,7 +67,7 @@ VERSIONIZE += \
 	plugins-base-doc.install \
 
 ifneq ($(DEB_HOST_ARCH_OS),hurd)
-cdparanoia := debian/tmp/usr/lib/gstreamer-$(gst_abi)/libgstcdparanoia.so
+cdparanoia := debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstcdparanoia.so
 endif
 
 # Let's decide the package name and url depending on the distribution
@@ -140,6 +140,7 @@ DEB_CONFIGURE_EXTRA_FLAGS += \
 	--enable-DEBUG \
 	--enable-debug \
 	--enable-experimental \
+	--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
 	--with-package-name=$(GST_PACKAGE_NAME) \
 	--with-package-origin=$(GST_PACKAGE_ORIGIN) \
 	--with-install-plugins-helper="/usr/bin/gstreamer-codec-install"
@@ -167,9 +168,9 @@ clean::
 binary-post-install/$(gst_pkgname)-plugins-base-apps::
 	dh_perl -d
 
-DEB_DH_MAKESHLIBS_ARGS_$(gst_plugins_base_lib) += -X "/usr/lib/gstreamer-$(gst_abi)" -V $(gst_plugins_base_lib_dep) -- -c4
+DEB_DH_MAKESHLIBS_ARGS_$(gst_plugins_base_lib) += -X "/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)" -V $(gst_plugins_base_lib_dep) -- -c4
 DEB_INSTALL_DOCS_ALL += debian/README.Debian NEWS
-DEB_SHLIBDEPS_INCLUDE += debian/libgstreamer-plugins-base$(gst_deb_abi)/usr/lib
+DEB_SHLIBDEPS_INCLUDE += debian/libgstreamer-plugins-base$(gst_deb_abi)/usr/lib/$(DEB_HOST_MULTIARCH)
 # Disable inclusion of large upstream ChangeLog
 DEB_INSTALL_CHANGELOGS_ALL :=
 
@@ -181,7 +182,7 @@ DEB_INSTALL_CHANGELOGS_ALL :=
 common-binary-fixup-arch::
 	mkdir -p $(CURDIR)/fake-home
 	HOME=$(CURDIR)/fake-home \
-	LD_LIBRARY_PATH=debian/libgstreamer-plugins-base0.11-0/usr/lib:$(LD_LIBRARY_PATH) \
+	LD_LIBRARY_PATH=debian/libgstreamer-plugins-base0.11-0/usr/lib/$(DEB_HOST_MULTIARCH):$(LD_LIBRARY_PATH) \
 	    dh_gstscancodecs
 	HOME=$(CURDIR)/fake-home \
 	dh_girepository -pgir1.2-gst-plugins-base-$(gst_abi)
