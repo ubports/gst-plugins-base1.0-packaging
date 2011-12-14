@@ -2,8 +2,10 @@ gst-plugins-base0.11 (0.11.1-3) UNRELEASED; urgency=low
 
   * debian/build-deps.in:
     + Don't build-depend on GnomeVFS anymore.
+    + Build-depend on automake (>= 1.10), autoconf (>= 2.60) and
+      libtool (>= 2.0) to make dh-autoreconf actually work.
 
- -- Sebastian Dröge <slomo@debian.org>  Wed, 14 Dec 2011 12:22:13 +0100
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 14 Dec 2011 12:23:16 +0100
 
 gst-plugins-base0.11 (0.11.1-2) experimental; urgency=low
 

@@ -1,8 +1,11 @@
 @GST_LIB_DEV_DEP@
 @GST_EXTRA_BUILD_DEPENDS@
 autotools-dev
+automake (>= 1.10)
+autoconf (>= 2.60)
+libtool (>= 2.0)
 dh-autoreconf
-autopoint
+autopoint (>= 0.17)
 cdbs (>= 0.4.93~)
 debhelper (>= 8.1.3~)
 gnome-pkg-tools (>= 0.7)
