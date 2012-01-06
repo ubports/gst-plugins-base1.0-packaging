@@ -1,2 +1,2 @@
 version=2
-http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-(0\.10\..*)\.tar\.gz
+http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-(0\.11\.[\d\.]+)\.tar\.gz
