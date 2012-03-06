@@ -1,10 +1,8 @@
 debian/tmp/usr/lib/*/libgstaudio-0.11.so.*
 debian/tmp/usr/lib/*/libgstapp-0.11.so.*
 debian/tmp/usr/lib/*/libgstpbutils-0.11.so.*
-debian/tmp/usr/lib/*/libgstcdda-0.11.so.*
 debian/tmp/usr/lib/*/libgstfft-0.11.so.*
 debian/tmp/usr/lib/*/libgstinterfaces-0.11.so.*
-debian/tmp/usr/lib/*/libgstnetbuffer-0.11.so.*
 debian/tmp/usr/lib/*/libgstriff-0.11.so.*
 debian/tmp/usr/lib/*/libgstrtp-0.11.so.*
 debian/tmp/usr/lib/*/libgstrtsp-0.11.so.*
