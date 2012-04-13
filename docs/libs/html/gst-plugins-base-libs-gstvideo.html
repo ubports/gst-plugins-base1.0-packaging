@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideo</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gstreamer-video.html" title="Video Library">
-<link rel="next" href="gst-plugins-base-libs-gstvideofilter.html" title="gstvideofilter">
+<link rel="next" href="gst-plugins-base-libs-gstvideooverlaycomposition.html" title="gstvideooverlaycomposition">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -17,8 +17,8 @@
 <td><a accesskey="p" href="gstreamer-video.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstvideofilter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
+<td><a accesskey="n" href="gst-plugins-base-libs-gstvideooverlaycomposition.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstvideo.synopsis" class="shortcut">Top</a>
@@ -51,27 +51,48 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> video_par_d</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> display_par_n</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> display_par_d</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-fourcc" title="gst_video_format_to_fourcc ()">gst_video_format_to_fourcc</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);
-<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-fourcc" title="gst_video_format_from_fourcc ()">gst_video_format_from_fourcc</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> fourcc</code></em>);
+<span class="returnvalue">guint32</span>             <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-fourcc" title="gst_video_format_to_fourcc ()">gst_video_format_to_fourcc</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-fourcc" title="gst_video_format_from_fourcc ()">gst_video_format_from_fourcc</a>        (<em class="parameter"><code><span class="type">guint32</span> fourcc</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-parse-caps-palette" title="gst_video_parse_caps_palette ()">gst_video_parse_caps_palette</a>        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertFrameCallback" title="GstVideoConvertFrameCallback ()">*GstVideoConvertFrameCallback</a>)     (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
+<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()">*GstVideoConvertSampleCallback</a>)    (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-frame" title="gst_video_convert_frame ()">gst_video_convert_frame</a>             (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *from_caps</code></em>,
+<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample" title="gst_video_convert_sample ()">gst_video_convert_sample</a>            (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-frame-async" title="gst_video_convert_frame_async ()">gst_video_convert_frame_async</a>       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *from_caps</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample-async" title="gst_video_convert_sample_async ()">gst_video_convert_sample_async</a>      (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertFrameCallback" title="GstVideoConvertFrameCallback ()"><span class="type">GstVideoConvertFrameCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><span class="type">GstVideoConvertSampleCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy_notify</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-still-frame" title="gst_video_event_new_still_frame ()">gst_video_event_new_still_frame</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> in_still</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-still-frame" title="gst_video_event_parse_still_frame ()">gst_video_event_parse_still_frame</a>   (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *in_still</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-upstream-force-key-unit" title="gst_video_event_new_upstream_force_key_unit ()">gst_video_event_new_upstream_force_key_unit</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()">gst_video_event_new_downstream_force_key_unit</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timestamp</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> stream_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-is-force-key-unit" title="gst_video_event_is_force_key_unit ()">gst_video_event_is_force_key_unit</a>   (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-upstream-force-key-unit" title="gst_video_event_parse_upstream_force_key_unit ()">gst_video_event_parse_upstream_force_key_unit</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *count</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-downstream-force-key-unit" title="gst_video_event_parse_downstream_force_key_unit ()">gst_video_event_parse_downstream_force_key_unit</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *stream_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *count</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -79,7 +100,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="id625709"></a><p>
+<a name="idp28434336"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -437,7 +458,7 @@ The return value is FALSE in the case of integer overflow or other error.</td>
 <hr>
 <div class="refsect2">
 <a name="gst-video-format-to-fourcc"></a><h3>gst_video_format_to_fourcc ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             gst_video_format_to_fourcc          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guint32</span>             gst_video_format_to_fourcc          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);</pre>
 <p>
 Converts a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> value into the corresponding FOURCC.  Only
 a few YUV formats have corresponding FOURCC values.  If <em class="parameter"><code>format</code></em> has
@@ -462,7 +483,7 @@ no corresponding FOURCC value, 0 is returned.
 <hr>
 <div class="refsect2">
 <a name="gst-video-format-from-fourcc"></a><h3>gst_video_format_from_fourcc ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      gst_video_format_from_fourcc        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> fourcc</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      gst_video_format_from_fourcc        (<em class="parameter"><code><span class="type">guint32</span> fourcc</code></em>);</pre>
 <p>
 Converts a FOURCC value into the corresponding <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>.
 If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>,
@@ -489,7 +510,7 @@ If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-li
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_parse_caps_palette        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
 <p>
 Returns the palette data from the caps as a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>. For
-<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-RGB8-PALETTED:CAPS"><span class="type">GST_VIDEO_FORMAT_RGB8_PALETTED</span></a> this is containing 256 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a>
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-RGB8-PALETTED:CAPS"><span class="type">GST_VIDEO_FORMAT_RGB8_PALETTED</span></a> this is containing 256 <span class="type">guint32</span>
 values, each containing ARGB colors in native endianness.
 </p>
 <div class="variablelist"><table border="0">
@@ -510,16 +531,15 @@ values, each containing ARGB colors in native endianness.
 </div>
 <hr>
 <div class="refsect2">
-<a name="GstVideoConvertFrameCallback"></a><h3>GstVideoConvertFrameCallback ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoConvertFrameCallback)     (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
+<a name="GstVideoConvertSampleCallback"></a><h3>GstVideoConvertSampleCallback ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoConvertSampleCallback)    (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-video-convert-frame"></a><h3>gst_video_convert_frame ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_convert_frame             (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *from_caps</code></em>,
+<a name="gst-video-convert-sample"></a><h3>gst_video_convert_sample ()</h3>
+<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_video_convert_sample            (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
@@ -536,13 +556,9 @@ The width, height and pixel-aspect-ratio can also be specified in the output cap
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+<td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
+<td>a <span class="type">GstSample</span>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>from_caps</code></em> :</span></p></td>
-<td>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> to convert from</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>to_caps</code></em> :</span></p></td>
@@ -558,7 +574,7 @@ The width, height and pixel-aspect-ratio can also be specified in the output cap
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The converted <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if an error happened (in which case <em class="parameter"><code>err</code></em>
+<td>The converted <span class="type">GstSample</span>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if an error happened (in which case <em class="parameter"><code>err</code></em>
 will point to the <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>).</td>
 </tr>
 </tbody>
@@ -567,12 +583,11 @@ will point to the <a href="http://library.gnome.org/devel/glib/unstable/glib-Err
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-video-convert-frame-async"></a><h3>gst_video_convert_frame_async ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_convert_frame_async       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *from_caps</code></em>,
+<a name="gst-video-convert-sample-async"></a><h3>gst_video_convert_sample_async ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_convert_sample_async      (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertFrameCallback" title="GstVideoConvertFrameCallback ()"><span class="type">GstVideoConvertFrameCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><span class="type">GstVideoConvertSampleCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy_notify</code></em>);</pre>
 <p>
@@ -598,13 +613,9 @@ anymore.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+<td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
+<td>a <span class="type">GstSample</span>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>from_caps</code></em> :</span></p></td>
-<td>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> to convert from</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>to_caps</code></em> :</span></p></td>
@@ -617,7 +628,7 @@ anymore.
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
 <td>
-<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertFrameCallback" title="GstVideoConvertFrameCallback ()"><code class="literal">GstVideoConvertFrameCallback</code></a> that will be called after conversion.</td>
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><code class="literal">GstVideoConvertSampleCallback</code></a> that will be called after conversion.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -696,6 +707,229 @@ Create a still frame event using <a class="link" href="gst-plugins-base-libs-gst
 </tbody>
 </table></div>
 <p class="since">Since 0.10.26</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-event-new-upstream-force-key-unit"></a><h3>gst_video_event_new_upstream_force_key_unit ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          gst_video_event_new_upstream_force_key_unit
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>);</pre>
+<p>
+Creates a new upstream force key unit event. An upstream force key unit event
+can be sent to request upstream elements to produce a key unit. 
+</p>
+<p>
+<em class="parameter"><code>running_time</code></em> can be set to request a new key unit at a specific
+running_time. If set to GST_CLOCK_TIME_NONE, upstream elements will produce a
+new key unit as soon as possible.
+</p>
+<p>
+To parse an event created by <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> use
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-downstream-force-key-unit" title="gst_video_event_parse_downstream_force_key_unit ()"><code class="function">gst_video_event_parse_downstream_force_key_unit()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>running_time</code></em> :</span></p></td>
+<td>the running_time at which a new key unit should be produced</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>all_headers</code></em> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to produce headers when starting a new key unit</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>integer that can be used to number key units</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The new GstEvent</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-event-new-downstream-force-key-unit"></a><h3>gst_video_event_new_downstream_force_key_unit ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          gst_video_event_new_downstream_force_key_unit
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timestamp</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> stream_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>);</pre>
+<p>
+Creates a new downstream force key unit event. A downstream force key unit
+event can be sent down the pipeline to request downstream elements to produce
+a key unit. A downstream force key unit event must also be sent when handling
+an upstream force key unit event to notify downstream that the latter has been
+handled.
+</p>
+<p>
+To parse an event created by <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> use
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-downstream-force-key-unit" title="gst_video_event_parse_downstream_force_key_unit ()"><code class="function">gst_video_event_parse_downstream_force_key_unit()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
+<td>the timestamp of the buffer that starts a new key unit</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stream_time</code></em> :</span></p></td>
+<td>the stream_time of the buffer that starts a new key unit</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>running_time</code></em> :</span></p></td>
+<td>the running_time of the buffer that starts a new key unit</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>all_headers</code></em> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to produce headers when starting a new key unit</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>integer that can be used to number key units</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The new GstEvent</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-event-is-force-key-unit"></a><h3>gst_video_event_is_force_key_unit ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_event_is_force_key_unit   (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>);</pre>
+<p>
+Checks if an event is a force key unit event. Returns true for both upstream
+and downstream force key unit events.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
+<td>A <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> to check</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid force key unit event</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-event-parse-upstream-force-key-unit"></a><h3>gst_video_event_parse_upstream_force_key_unit ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_event_parse_upstream_force_key_unit
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *count</code></em>);</pre>
+<p>
+Get running-time, all-headers and count in the force key unit event. See
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-upstream-force-key-unit" title="gst_video_event_new_upstream_force_key_unit ()"><code class="function">gst_video_event_new_upstream_force_key_unit()</code></a> for a full description of the
+upstream force key unit event.
+</p>
+<p>
+Create an upstream force key unit event using  <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-upstream-force-key-unit" title="gst_video_event_new_upstream_force_key_unit ()"><code class="function">gst_video_event_new_upstream_force_key_unit()</code></a>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
+<td>A <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> to parse</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>running_time</code></em> :</span></p></td>
+<td>A pointer to the running_time in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>all_headers</code></em> :</span></p></td>
+<td>A pointer to the all_headers flag in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>A pointer to the count field in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid upstream force-key-unit event. <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-event-parse-downstream-force-key-unit"></a><h3>gst_video_event_parse_downstream_force_key_unit ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_event_parse_downstream_force_key_unit
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *stream_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *running_time</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *all_headers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *count</code></em>);</pre>
+<p>
+Get timestamp, stream-time, running-time, all-headers and count in the force
+key unit event. See <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> for a
+full description of the downstream force key unit event.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
+<td>A <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> to parse</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
+<td>A pointer to the timestamp in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stream_time</code></em> :</span></p></td>
+<td>A pointer to the stream-time in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>running_time</code></em> :</span></p></td>
+<td>A pointer to the running-time in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>all_headers</code></em> :</span></p></td>
+<td>A pointer to the all_headers flag in the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>A pointer to the count field of the event. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid downstream force key unit event.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.36</p>
 </div>
 </div>
 </div>

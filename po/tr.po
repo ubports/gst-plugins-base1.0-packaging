@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-26 19:22+0200\n"
 "Last-Translator: Server Acim <serveracim@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -183,9 +183,8 @@ msgstr "Kaynak öğesi geçersiz."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Dosyayı şuraya gönderirken hata \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Şuraya bağlantı %s:%d reddedildi."
+msgid "This CD has no audio tracks"
+msgstr "Bu CD hiç ses izi içermiyor"
 
 msgid "Can't record audio fast enough"
 msgstr "Sesi yeterince hızlı kaydedemiyor"
@@ -350,9 +349,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Bu CD hiç ses izi içermiyor"
-
 msgid "ID3 tag"
 msgstr "ID3 etiketi"
 
@@ -385,6 +381,21 @@ msgstr "Kayıpsız MSZH"
 
 msgid "Run-length encoding"
 msgstr "Çalıştırma-uzunluğu kodlaması"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer altyazı kipi"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami altyazı kipi"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate altyazı kipi"
 
 msgid "Sami subtitle format"
 msgstr "Sami altyazı kipi"
@@ -554,6 +565,9 @@ msgstr "Bilinmeyen türde eklenti veya öğe"
 
 #~ msgid "Error while sending gdp payload data to \"%s:%d\"."
 #~ msgstr "Bir gdp verisini şuraya gönderirken hata \"%s:%d\"."
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Şuraya bağlantı %s:%d reddedildi."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Sıkıştırılmamış planar YUV 4:2:0"

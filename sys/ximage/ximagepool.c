@@ -29,7 +29,7 @@
 
 /* Helper functions */
 #include <gst/video/video.h>
-#include <gst/video/gstmetavideo.h>
+#include <gst/video/gstvideometa.h>
 #include <gst/video/gstvideopool.h>
 
 GST_DEBUG_CATEGORY_EXTERN (gst_debug_ximagepool);
@@ -46,22 +46,36 @@ struct _GstXImageBufferPoolPrivate
   gboolean need_alignment;
 };
 
-static void gst_meta_ximage_free (GstMetaXImage * meta, GstBuffer * buffer);
+static void gst_ximage_meta_free (GstXImageMeta * meta, GstBuffer * buffer);
 
 /* ximage metadata */
-const GstMetaInfo *
-gst_meta_ximage_get_info (void)
+GType
+gst_ximage_meta_api_get_type (void)
 {
-  static const GstMetaInfo *meta_ximage_info = NULL;
+  static volatile GType type;
+  static const gchar *tags[] =
+      { "memory", "size", "colorspace", "orientation", NULL };
 
-  if (meta_ximage_info == NULL) {
-    meta_ximage_info = gst_meta_register ("GstMetaXImage", "GstMetaXImage",
-        sizeof (GstMetaXImage),
-        (GstMetaInitFunction) NULL,
-        (GstMetaFreeFunction) gst_meta_ximage_free,
-        (GstMetaCopyFunction) NULL, (GstMetaTransformFunction) NULL);
+  if (g_once_init_enter (&type)) {
+    GType _type = gst_meta_api_type_register ("GstXImageMetaAPI", tags);
+    g_once_init_leave (&type, _type);
   }
-  return meta_ximage_info;
+  return type;
+}
+
+const GstMetaInfo *
+gst_ximage_meta_get_info (void)
+{
+  static const GstMetaInfo *ximage_meta_info = NULL;
+
+  if (ximage_meta_info == NULL) {
+    ximage_meta_info =
+        gst_meta_register (GST_XIMAGE_META_API_TYPE, "GstXImageMeta",
+        sizeof (GstXImageMeta), (GstMetaInitFunction) NULL,
+        (GstMetaFreeFunction) gst_ximage_meta_free,
+        (GstMetaTransformFunction) NULL);
+  }
+  return ximage_meta_info;
 }
 
 /* X11 stuff */
@@ -78,14 +92,14 @@ gst_ximagesink_handle_xerror (Display * display, XErrorEvent * xevent)
   return 0;
 }
 
-static GstMetaXImage *
-gst_buffer_add_meta_ximage (GstBuffer * buffer, GstXImageBufferPool * xpool)
+static GstXImageMeta *
+gst_buffer_add_ximage_meta (GstBuffer * buffer, GstXImageBufferPool * xpool)
 {
   GstXImageSink *ximagesink;
   int (*handler) (Display *, XErrorEvent *);
   gboolean success = FALSE;
   GstXContext *xcontext;
-  GstMetaXImage *meta;
+  GstXImageMeta *meta;
   gint width, height;
   GstXImageBufferPoolPrivate *priv;
 
@@ -97,7 +111,7 @@ gst_buffer_add_meta_ximage (GstBuffer * buffer, GstXImageBufferPool * xpool)
   height = priv->padded_height;
 
   meta =
-      (GstMetaXImage *) gst_buffer_add_meta (buffer, GST_META_INFO_XIMAGE,
+      (GstXImageMeta *) gst_buffer_add_meta (buffer, GST_XIMAGE_META_INFO,
       NULL);
 #ifdef HAVE_XSHM
   meta->SHMInfo.shmaddr = ((void *) -1);
@@ -217,9 +231,9 @@ gst_buffer_add_meta_ximage (GstBuffer * buffer, GstXImageBufferPool * xpool)
   error_caught = FALSE;
   XSetErrorHandler (handler);
 
-  gst_buffer_take_memory (buffer, -1,
+  gst_buffer_append_memory (buffer,
       gst_memory_new_wrapped (GST_MEMORY_FLAG_NO_SHARE, meta->ximage->data,
-          NULL, meta->size, 0, meta->size));
+          meta->size, 0, meta->size, NULL, NULL));
 
   g_mutex_unlock (ximagesink->x_lock);
 
@@ -245,6 +259,7 @@ create_failed:
         ("could not XShmCreateImage a %dx%d image", width, height));
     goto beach;
   }
+#ifdef HAVE_XSHM
 shmget_failed:
   {
     g_mutex_unlock (ximagesink->x_lock);
@@ -276,10 +291,11 @@ xattach_failed:
             width, height), ("Failed to XShmAttach"));
     goto beach;
   }
+#endif
 }
 
 static void
-gst_meta_ximage_free (GstMetaXImage * meta, GstBuffer * buffer)
+gst_ximage_meta_free (GstXImageMeta * meta, GstBuffer * buffer)
 {
   GstXImageSink *ximagesink;
 
@@ -454,7 +470,7 @@ G_DEFINE_TYPE (GstXImageBufferPool, gst_ximage_buffer_pool,
 static const gchar **
 ximage_buffer_pool_get_options (GstBufferPool * pool)
 {
-  static const gchar *options[] = { GST_BUFFER_POOL_OPTION_META_VIDEO,
+  static const gchar *options[] = { GST_BUFFER_POOL_OPTION_VIDEO_META,
     GST_BUFFER_POOL_OPTION_VIDEO_ALIGNMENT, NULL
   };
 
@@ -467,9 +483,9 @@ ximage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
   GstXImageBufferPool *xpool = GST_XIMAGE_BUFFER_POOL_CAST (pool);
   GstXImageBufferPoolPrivate *priv = xpool->priv;
   GstVideoInfo info;
-  const GstCaps *caps;
+  GstCaps *caps;
 
-  if (!gst_buffer_pool_config_get (config, &caps, NULL, NULL, NULL, NULL, NULL))
+  if (!gst_buffer_pool_config_get_params (config, &caps, NULL, NULL, NULL))
     goto wrong_config;
 
   if (caps == NULL)
@@ -487,12 +503,12 @@ ximage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
   /* keep track of the width and height and caps */
   if (priv->caps)
     gst_caps_unref (priv->caps);
-  priv->caps = gst_caps_copy (caps);
+  priv->caps = gst_caps_ref (caps);
 
   /* check for the configured metadata */
   priv->add_metavideo =
       gst_buffer_pool_config_has_option (config,
-      GST_BUFFER_POOL_OPTION_META_VIDEO);
+      GST_BUFFER_POOL_OPTION_VIDEO_META);
 
   /* parse extra alignment info */
   priv->need_alignment = gst_buffer_pool_config_has_option (config,
@@ -507,6 +523,8 @@ ximage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
 
     /* we need the video metadata too now */
     priv->add_metavideo = TRUE;
+  } else {
+    gst_video_alignment_reset (&priv->align);
   }
 
   /* add the padding */
@@ -541,28 +559,28 @@ wrong_caps:
 /* This function handles GstXImageBuffer creation depending on XShm availability */
 static GstFlowReturn
 ximage_buffer_pool_alloc (GstBufferPool * pool, GstBuffer ** buffer,
-    GstBufferPoolParams * params)
+    GstBufferPoolAcquireParams * params)
 {
   GstXImageBufferPool *xpool = GST_XIMAGE_BUFFER_POOL_CAST (pool);
   GstXImageBufferPoolPrivate *priv = xpool->priv;
   GstVideoInfo *info;
   GstBuffer *ximage;
-  GstMetaXImage *meta;
+  GstXImageMeta *meta;
 
   info = &priv->info;
 
   ximage = gst_buffer_new ();
-  meta = gst_buffer_add_meta_ximage (ximage, xpool);
+  meta = gst_buffer_add_ximage_meta (ximage, xpool);
   if (meta == NULL) {
     gst_buffer_unref (ximage);
     goto no_buffer;
   }
   if (priv->add_metavideo) {
-    GstMetaVideo *meta;
+    GstVideoMeta *meta;
 
-    GST_DEBUG_OBJECT (pool, "adding GstMetaVideo");
+    GST_DEBUG_OBJECT (pool, "adding GstVideoMeta");
     /* these are just the defaults for now */
-    meta = gst_buffer_add_meta_video (ximage, 0, GST_VIDEO_INFO_FORMAT (info),
+    meta = gst_buffer_add_video_meta (ximage, 0, GST_VIDEO_INFO_FORMAT (info),
         priv->padded_width, priv->padded_height);
 
     if (priv->need_alignment) {
@@ -588,12 +606,6 @@ no_buffer:
     GST_WARNING_OBJECT (pool, "can't create image");
     return GST_FLOW_ERROR;
   }
-}
-
-static void
-ximage_buffer_pool_free (GstBufferPool * pool, GstBuffer * buffer)
-{
-  gst_buffer_unref (buffer);
 }
 
 GstBufferPool *
@@ -624,7 +636,6 @@ gst_ximage_buffer_pool_class_init (GstXImageBufferPoolClass * klass)
   gstbufferpool_class->get_options = ximage_buffer_pool_get_options;
   gstbufferpool_class->set_config = ximage_buffer_pool_set_config;
   gstbufferpool_class->alloc_buffer = ximage_buffer_pool_alloc;
-  gstbufferpool_class->free_buffer = ximage_buffer_pool_free;
 }
 
 static void

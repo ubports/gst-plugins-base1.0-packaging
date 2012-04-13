@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-27 00:12+0200\n"
 "Last-Translator: Freek de Kruijf <f.de.kruijf@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -188,9 +188,8 @@ msgstr "Bronelement is ongeldig."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Fout bij het zenden van gegevens naar \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Verbinding naar %s:%d is geweigerd."
+msgid "This CD has no audio tracks"
+msgstr "Deze CD heeft geen audiotracks"
 
 msgid "Can't record audio fast enough"
 msgstr "Kan geluid niet snel genoeg opslaan"
@@ -364,9 +363,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Deze CD heeft geen audiotracks"
-
 msgid "ID3 tag"
 msgstr "ID3-tag"
 
@@ -399,6 +395,21 @@ msgstr "Lossless MSZH"
 
 msgid "Run-length encoding"
 msgstr "Run-length encoding (RLE)"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer ondertitelformaat"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami ondertitelformaat"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate ondertitelformaat"
 
 msgid "Sami subtitle format"
 msgstr "Sami ondertitelformaat"
@@ -514,6 +525,9 @@ msgstr "Onbekend encoder-element"
 
 msgid "Plugin or element of unknown type"
 msgstr "Plugin of element van onbekend type"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Verbinding naar %s:%d is geweigerd."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Niet-gecomprimeerde planar YUV 4:2:0"

@@ -42,18 +42,18 @@
 
 #define SILENT_0         { 0, 0, 0, 0, 0, 0, 0, 0 }
 #define SILENT_U8        { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 }
-#define SILENT_U16LE     { 0x00, 0x80,  0x00, 0x80,  0x00, 0x80,  0x00, 0x80 }
-#define SILENT_U16BE     { 0x80, 0x00,  0x80, 0x00,  0x80, 0x00,  0x80, 0x00 }
-#define SILENT_U24_32LE  { 0x00, 0x00, 0x80, 0x00,  0x00, 0x00, 0x80, 0x00 }
-#define SILENT_U24_32BE  { 0x00, 0x80, 0x00, 0x00,  0x00, 0x80, 0x00, 0x00 }
-#define SILENT_U32LE     { 0x00, 0x00, 0x00, 0x80,  0x00, 0x00, 0x00, 0x80 }
-#define SILENT_U32BE     { 0x80, 0x00, 0x00, 0x00,  0x80, 0x00, 0x00, 0x00 }
-#define SILENT_U24LE     { 0x00, 0x00, 0x80,  0x00, 0x00, 0x80 }
-#define SILENT_U24BE     { 0x80, 0x00, 0x00,  0x80, 0x00, 0x00 }
-#define SILENT_U20LE     { 0x00, 0x00, 0x08,  0x00, 0x00, 0x08 }
-#define SILENT_U20BE     { 0x08, 0x00, 0x00,  0x08, 0x00, 0x00 }
-#define SILENT_U18LE     { 0x00, 0x00, 0x02,  0x00, 0x00, 0x02 }
-#define SILENT_U18BE     { 0x02, 0x00, 0x00,  0x02, 0x00, 0x00 }
+#define SILENT_U16LE     { 0x00, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00, 0x80 }
+#define SILENT_U16BE     { 0x80, 0x00, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00 }
+#define SILENT_U24_32LE  { 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x80, 0x00 }
+#define SILENT_U24_32BE  { 0x00, 0x80, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00 }
+#define SILENT_U32LE     { 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x80 }
+#define SILENT_U32BE     { 0x80, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00 }
+#define SILENT_U24LE     { 0x00, 0x00, 0x80, 0x00, 0x00, 0x80 }
+#define SILENT_U24BE     { 0x80, 0x00, 0x00, 0x80, 0x00, 0x00 }
+#define SILENT_U20LE     { 0x00, 0x00, 0x08, 0x00, 0x00, 0x08 }
+#define SILENT_U20BE     { 0x08, 0x00, 0x00, 0x08, 0x00, 0x00 }
+#define SILENT_U18LE     { 0x00, 0x00, 0x02, 0x00, 0x00, 0x02 }
+#define SILENT_U18BE     { 0x02, 0x00, 0x00, 0x02, 0x00, 0x00 }
 
 static GstAudioFormatInfo formats[] = {
   {GST_AUDIO_FORMAT_UNKNOWN, "UNKNOWN", 0, 0, 0, 0},
@@ -129,8 +129,10 @@ static GstAudioFormatInfo formats[] = {
       SILENT_0)
 };
 
+G_DEFINE_POINTER_TYPE (GstAudioFormatInfo, gst_audio_format_info);
+
 /**
- * gst_audio_format_build_int:
+ * gst_audio_format_build_integer:
  * @sign: signed or unsigned format
  * @endianness: G_LITTLE_ENDIAN or G_BIG_ENDIAN
  * @width: amount of bits used per sample
@@ -153,17 +155,21 @@ gst_audio_format_build_integer (gboolean sign, gint endianness,
     /* must be int */
     if (!GST_AUDIO_FORMAT_INFO_IS_INTEGER (finfo))
       continue;
+
     /* width and depth must match */
     if (width != GST_AUDIO_FORMAT_INFO_WIDTH (finfo))
       continue;
     if (depth != GST_AUDIO_FORMAT_INFO_DEPTH (finfo))
       continue;
+
     /* if there is endianness, it must match */
     e = GST_AUDIO_FORMAT_INFO_ENDIANNESS (finfo);
     if (e && e != endianness)
       continue;
+
     /* check sign */
-    if (sign && !GST_AUDIO_FORMAT_INFO_IS_SIGNED (finfo))
+    if ((sign && !GST_AUDIO_FORMAT_INFO_IS_SIGNED (finfo)) ||
+        (!sign && GST_AUDIO_FORMAT_INFO_IS_SIGNED (finfo)))
       continue;
 
     return GST_AUDIO_FORMAT_INFO_FORMAT (finfo);
@@ -258,6 +264,54 @@ gst_audio_format_fill_silence (const GstAudioFormatInfo * info,
   }
 }
 
+/**
+ * gst_audio_info_copy:
+ * @info: a #GstAudioInfo
+ *
+ * Copy a GstAudioInfo structure.
+ *
+ * Returns: a new #GstAudioInfo. free with gst_audio_info_free.
+ */
+GstAudioInfo *
+gst_audio_info_copy (const GstAudioInfo * info)
+{
+  return g_slice_dup (GstAudioInfo, info);
+}
+
+/**
+ * gst_audio_info_free:
+ * @info: a #GstAudioInfo
+ *
+ * Free a GstAudioInfo structure previously allocated with gst_audio_info_new()
+ * or gst_audio_info_copy().
+ */
+void
+gst_audio_info_free (GstAudioInfo * info)
+{
+  g_slice_free (GstAudioInfo, info);
+}
+
+G_DEFINE_BOXED_TYPE (GstAudioInfo, gst_audio_info,
+    (GBoxedCopyFunc) gst_audio_info_copy, (GBoxedFreeFunc) gst_audio_info_free);
+
+/**
+ * gst_audio_info_new:
+ *
+ * Allocate a new #GstAudioInfo that is also initialized with
+ * gst_audio_info_init().
+ *
+ * Returns: a new #GstAudioInfo. free with gst_audio_info_free().
+ */
+GstAudioInfo *
+gst_audio_info_new (void)
+{
+  GstAudioInfo *info;
+
+  info = g_slice_new (GstAudioInfo);
+  gst_audio_info_init (info);
+
+  return info;
+}
 
 /**
  * gst_audio_info_init:
@@ -271,6 +325,124 @@ gst_audio_info_init (GstAudioInfo * info)
   g_return_if_fail (info != NULL);
 
   memset (info, 0, sizeof (GstAudioInfo));
+
+  info->finfo = &formats[GST_AUDIO_FORMAT_UNKNOWN];
+
+  memset (&info->position, 0xff, sizeof (info->position));
+}
+
+static const GstAudioChannelPosition default_channel_order[64] = {
+  GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_LFE1,
+  GST_AUDIO_CHANNEL_POSITION_REAR_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT_OF_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT_OF_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_REAR_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_LFE2,
+  GST_AUDIO_CHANNEL_POSITION_SIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_SIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_TOP_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_WIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_WIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_SURROUND_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_SURROUND_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID,
+  GST_AUDIO_CHANNEL_POSITION_INVALID
+};
+
+static gboolean
+check_valid_channel_positions (const GstAudioChannelPosition * position,
+    gint channels, gboolean enforce_order, guint64 * channel_mask_out)
+{
+  gint i, j;
+  guint64 channel_mask = 0;
+
+  if (channels == 1 && position[0] == GST_AUDIO_CHANNEL_POSITION_MONO) {
+    if (channel_mask_out)
+      *channel_mask_out = 0;
+    return TRUE;
+  }
+
+  if (channels > 0 && position[0] == GST_AUDIO_CHANNEL_POSITION_NONE) {
+    if (channel_mask_out)
+      *channel_mask_out = 0;
+    return TRUE;
+  }
+
+  j = 0;
+  for (i = 0; i < channels; i++) {
+    while (j < G_N_ELEMENTS (default_channel_order)
+        && default_channel_order[j] != position[i])
+      j++;
+
+    if (position[i] == GST_AUDIO_CHANNEL_POSITION_INVALID ||
+        position[i] == GST_AUDIO_CHANNEL_POSITION_MONO ||
+        position[i] == GST_AUDIO_CHANNEL_POSITION_NONE)
+      return FALSE;
+
+    /* Is this in valid channel order? */
+    if (enforce_order && j == G_N_ELEMENTS (default_channel_order))
+      return FALSE;
+    j++;
+
+    if ((channel_mask & (G_GUINT64_CONSTANT (1) << position[i])))
+      return FALSE;
+
+    channel_mask |= (G_GUINT64_CONSTANT (1) << position[i]);
+  }
+
+  if (channel_mask_out)
+    *channel_mask_out = channel_mask;
+
+  return TRUE;
 }
 
 /**
@@ -279,14 +451,16 @@ gst_audio_info_init (GstAudioInfo * info)
  * @format: the format
  * @rate: the samplerate
  * @channels: the number of channels
+ * @position: the channel positions
  *
  * Set the default info for the audio info of @format and @rate and @channels.
  */
 void
 gst_audio_info_set_format (GstAudioInfo * info, GstAudioFormat format,
-    gint rate, gint channels)
+    gint rate, gint channels, const GstAudioChannelPosition * position)
 {
   const GstAudioFormatInfo *finfo;
+  gint i;
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (format != GST_AUDIO_FORMAT_UNKNOWN);
@@ -294,10 +468,39 @@ gst_audio_info_set_format (GstAudioInfo * info, GstAudioFormat format,
   finfo = &formats[format];
 
   info->flags = 0;
+  info->layout = GST_AUDIO_LAYOUT_INTERLEAVED;
   info->finfo = finfo;
   info->rate = rate;
   info->channels = channels;
   info->bpf = (finfo->width * channels) / 8;
+
+  memset (&info->position, 0xff, sizeof (info->position));
+
+  if (!position && channels == 1) {
+    info->position[0] = GST_AUDIO_CHANNEL_POSITION_MONO;
+    return;
+  } else if (!position && channels == 2) {
+    info->position[0] = GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT;
+    info->position[1] = GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT;
+    return;
+  } else {
+    if (!position
+        || !check_valid_channel_positions (position, channels, TRUE, NULL)) {
+      if (position)
+        g_warning ("Invalid channel positions");
+    } else {
+      memcpy (&info->position, position,
+          info->channels * sizeof (info->position[0]));
+      if (info->position[0] == GST_AUDIO_CHANNEL_POSITION_NONE)
+        info->flags |= GST_AUDIO_FLAG_UNPOSITIONED;
+      return;
+    }
+  }
+
+  /* Otherwise a NONE layout */
+  info->flags |= GST_AUDIO_FLAG_UNPOSITIONED;
+  for (i = 0; i < MIN (64, channels); i++)
+    info->position[i] = GST_AUDIO_CHANNEL_POSITION_NONE;
 }
 
 /**
@@ -316,14 +519,17 @@ gst_audio_info_from_caps (GstAudioInfo * info, const GstCaps * caps)
   const gchar *s;
   GstAudioFormat format;
   gint rate, channels;
-  const GValue *pos_val_arr, *pos_val_entry;
+  guint64 channel_mask;
   gint i;
+  GstAudioChannelPosition position[64];
 
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (caps != NULL, FALSE);
   g_return_val_if_fail (gst_caps_is_fixed (caps), FALSE);
 
   GST_DEBUG ("parsing caps %" GST_PTR_FORMAT, caps);
+
+  info->flags = 0;
 
   str = gst_caps_get_structure (caps, 0);
 
@@ -337,24 +543,41 @@ gst_audio_info_from_caps (GstAudioInfo * info, const GstCaps * caps)
   if (format == GST_AUDIO_FORMAT_UNKNOWN)
     goto unknown_format;
 
+  if (!(s = gst_structure_get_string (str, "layout")))
+    goto no_layout;
+  if (g_str_equal (s, "interleaved"))
+    info->layout = GST_AUDIO_LAYOUT_INTERLEAVED;
+  else if (g_str_equal (s, "non-interleaved"))
+    info->layout = GST_AUDIO_LAYOUT_NON_INTERLEAVED;
+  else
+    goto unknown_layout;
+
   if (!gst_structure_get_int (str, "rate", &rate))
     goto no_rate;
   if (!gst_structure_get_int (str, "channels", &channels))
     goto no_channels;
 
-  gst_audio_info_set_format (info, format, rate, channels);
-
-  pos_val_arr = gst_structure_get_value (str, "channel-positions");
-  if (pos_val_arr) {
-    guint max_pos = MAX (channels, 64);
-    for (i = 0; i < max_pos; i++) {
-      pos_val_entry = gst_value_array_get_value (pos_val_arr, i);
-      info->position[i] = g_value_get_enum (pos_val_entry);
+  if (!gst_structure_get (str, "channel-mask", GST_TYPE_BITMASK, &channel_mask,
+          NULL)) {
+    if (channels == 1) {
+      position[0] = GST_AUDIO_CHANNEL_POSITION_MONO;
+    } else if (channels == 2) {
+      position[0] = GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT;
+      position[1] = GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT;
+    } else {
+      goto no_channel_mask;
     }
+  } else if (channel_mask == 0) {
+    info->flags |= GST_AUDIO_FLAG_UNPOSITIONED;
+    for (i = 0; i < MIN (64, channels); i++)
+      position[i] = GST_AUDIO_CHANNEL_POSITION_NONE;
   } else {
-    info->flags |= GST_AUDIO_FLAG_DEFAULT_POSITIONS;
-    /* FIXME, set default positions */
+    if (!gst_audio_channel_positions_from_mask (channels, channel_mask,
+            position))
+      goto invalid_channel_mask;
   }
+
+  gst_audio_info_set_format (info, format, rate, channels, position);
 
   return TRUE;
 
@@ -374,6 +597,16 @@ unknown_format:
     GST_ERROR ("unknown format given");
     return FALSE;
   }
+no_layout:
+  {
+    GST_ERROR ("no layout given");
+    return FALSE;
+  }
+unknown_layout:
+  {
+    GST_ERROR ("unknown layout given");
+    return FALSE;
+  }
 no_rate:
   {
     GST_ERROR ("no rate property given");
@@ -382,6 +615,17 @@ no_rate:
 no_channels:
   {
     GST_ERROR ("no channels property given");
+    return FALSE;
+  }
+no_channel_mask:
+  {
+    GST_ERROR ("no channel-mask property given");
+    return FALSE;
+  }
+invalid_channel_mask:
+  {
+    GST_ERROR ("Invalid channel mask 0x%016" G_GINT64_MODIFIER
+        "x for %d channels", channel_mask, channels);
     return FALSE;
   }
 }
@@ -396,10 +640,12 @@ no_channels:
  *          info of @info.
  */
 GstCaps *
-gst_audio_info_to_caps (GstAudioInfo * info)
+gst_audio_info_to_caps (const GstAudioInfo * info)
 {
   GstCaps *caps;
   const gchar *format;
+  const gchar *layout;
+  GstAudioFlags flags;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (info->finfo != NULL, NULL);
@@ -408,35 +654,61 @@ gst_audio_info_to_caps (GstAudioInfo * info)
   format = gst_audio_format_to_string (info->finfo->format);
   g_return_val_if_fail (format != NULL, NULL);
 
+  if (info->layout == GST_AUDIO_LAYOUT_INTERLEAVED)
+    layout = "interleaved";
+  else if (info->layout == GST_AUDIO_LAYOUT_NON_INTERLEAVED)
+    layout = "non-interleaved";
+  else
+    g_return_val_if_reached (NULL);
+
+  flags = info->flags;
+  if ((flags & GST_AUDIO_FLAG_UNPOSITIONED) && info->channels > 1
+      && info->position[0] != GST_AUDIO_CHANNEL_POSITION_NONE) {
+    flags &= ~GST_AUDIO_FLAG_UNPOSITIONED;
+    g_warning ("Unpositioned audio channel position flag set but "
+        "channel positions present");
+  } else if (!(flags & GST_AUDIO_FLAG_UNPOSITIONED) && info->channels > 1
+      && info->position[0] == GST_AUDIO_CHANNEL_POSITION_NONE) {
+    flags |= GST_AUDIO_FLAG_UNPOSITIONED;
+    g_warning ("Unpositioned audio channel position flag not set "
+        "but no channel positions present");
+  }
+
   caps = gst_caps_new_simple ("audio/x-raw",
       "format", G_TYPE_STRING, format,
+      "layout", G_TYPE_STRING, layout,
       "rate", G_TYPE_INT, info->rate,
       "channels", G_TYPE_INT, info->channels, NULL);
 
-  if (info->channels > 2) {
-    GValue pos_val_arr = { 0 }
-    , pos_val_entry = {
-    0};
-    gint i, max_pos;
-    GstStructure *str;
+  if (info->channels > 1
+      || info->position[0] != GST_AUDIO_CHANNEL_POSITION_MONO) {
+    guint64 channel_mask = 0;
 
-    /* build gvaluearray from positions */
-    g_value_init (&pos_val_arr, GST_TYPE_ARRAY);
-    g_value_init (&pos_val_entry, GST_TYPE_AUDIO_CHANNEL_POSITION);
-    max_pos = MAX (info->channels, 64);
-    for (i = 0; i < max_pos; i++) {
-      g_value_set_enum (&pos_val_entry, info->position[i]);
-      gst_value_array_append_value (&pos_val_arr, &pos_val_entry);
+    if ((flags & GST_AUDIO_FLAG_UNPOSITIONED)) {
+      channel_mask = 0;
+    } else {
+      if (!check_valid_channel_positions (info->position, info->channels,
+              TRUE, &channel_mask))
+        goto invalid_channel_positions;
     }
-    g_value_unset (&pos_val_entry);
 
-    /* add to structure */
-    str = gst_caps_get_structure (caps, 0);
-    gst_structure_set_value (str, "channel-positions", &pos_val_arr);
-    g_value_unset (&pos_val_arr);
+    if (info->channels == 1
+        && info->position[0] == GST_AUDIO_CHANNEL_POSITION_MONO) {
+      /* Default mono special case */
+    } else {
+      gst_caps_set_simple (caps, "channel-mask", GST_TYPE_BITMASK, channel_mask,
+          NULL);
+    }
   }
 
   return caps;
+
+invalid_channel_positions:
+  {
+    GST_ERROR ("Invalid channel positions");
+    gst_caps_unref (caps);
+    return NULL;
+  }
 }
 
 /**
@@ -455,7 +727,7 @@ gst_audio_info_to_caps (GstAudioInfo * info)
  * Returns: TRUE if the conversion was successful.
  */
 gboolean
-gst_audio_info_convert (GstAudioInfo * info,
+gst_audio_info_convert (const GstAudioInfo * info,
     GstFormat src_fmt, gint64 src_val, GstFormat dest_fmt, gint64 * dest_val)
 {
   gboolean res = TRUE;
@@ -540,7 +812,7 @@ done:
  * @bpf: size of one audio frame in bytes. This is the size of one sample
  * * channels.
  *
- * Clip the the buffer to the given %GstSegment.
+ * Clip the buffer to the given %GstSegment.
  *
  * After calling this function the caller does not own a reference to
  * @buffer anymore.
@@ -560,7 +832,7 @@ gst_audio_buffer_clip (GstBuffer * buffer, GstSegment * segment, gint rate,
   GstBuffer *ret;
   GstClockTime timestamp = GST_CLOCK_TIME_NONE, duration = GST_CLOCK_TIME_NONE;
   guint64 offset = GST_BUFFER_OFFSET_NONE, offset_end = GST_BUFFER_OFFSET_NONE;
-  gsize trim, size;
+  gsize trim, size, osize;
   gboolean change_duration = TRUE, change_offset = TRUE, change_offset_end =
       TRUE;
 
@@ -577,7 +849,7 @@ gst_audio_buffer_clip (GstBuffer * buffer, GstSegment * segment, gint rate,
    * they won't be changed later though. */
 
   trim = 0;
-  size = gst_buffer_get_size (buffer);
+  osize = size = gst_buffer_get_size (buffer);
 
   timestamp = GST_BUFFER_TIMESTAMP (buffer);
   GST_DEBUG ("timestamp %" GST_TIME_FORMAT, GST_TIME_ARGS (timestamp));
@@ -681,20 +953,338 @@ gst_audio_buffer_clip (GstBuffer * buffer, GstSegment * segment, gint rate,
     }
   }
 
-  /* Get a writable buffer and apply all changes */
-  GST_DEBUG ("trim %" G_GSIZE_FORMAT " size %" G_GSIZE_FORMAT, trim, size);
-  ret = gst_buffer_copy_region (buffer, GST_BUFFER_COPY_ALL, trim, size);
-  gst_buffer_unref (buffer);
+  if (trim == 0 && size == osize) {
+    /* nothing changed */
+    ret = buffer;
+  } else {
+    /* Get a writable buffer and apply all changes */
+    GST_DEBUG ("trim %" G_GSIZE_FORMAT " size %" G_GSIZE_FORMAT, trim, size);
+    ret = gst_buffer_copy_region (buffer, GST_BUFFER_COPY_ALL, trim, size);
+    gst_buffer_unref (buffer);
 
-  GST_DEBUG ("timestamp %" GST_TIME_FORMAT, GST_TIME_ARGS (timestamp));
-  GST_BUFFER_TIMESTAMP (ret) = timestamp;
+    GST_DEBUG ("timestamp %" GST_TIME_FORMAT, GST_TIME_ARGS (timestamp));
+    GST_BUFFER_TIMESTAMP (ret) = timestamp;
 
-  if (change_duration)
-    GST_BUFFER_DURATION (ret) = duration;
-  if (change_offset)
-    GST_BUFFER_OFFSET (ret) = offset;
-  if (change_offset_end)
-    GST_BUFFER_OFFSET_END (ret) = offset_end;
+    if (change_duration)
+      GST_BUFFER_DURATION (ret) = duration;
+    if (change_offset)
+      GST_BUFFER_OFFSET (ret) = offset;
+    if (change_offset_end)
+      GST_BUFFER_OFFSET_END (ret) = offset_end;
+  }
+  return ret;
+}
+
+/**
+ * gst_audio_reorder_channels:
+ * @data: The pointer to the memory.
+ * @size: The size of the memory.
+ * @format: The %GstAudioFormat of the buffer.
+ * @channels: The number of channels.
+ * @from: The channel positions in the buffer.
+ * @to: The channel positions to convert to.
+ *
+ * Reorders @data from the channel positions @from to the channel
+ * positions @to. @from and @to must contain the same number of
+ * positions and the same positions, only in a different order.
+ *
+ * Returns: %TRUE if the reordering was possible.
+ */
+gboolean
+gst_audio_reorder_channels (gpointer data, gsize size, GstAudioFormat format,
+    gint channels, const GstAudioChannelPosition * from,
+    const GstAudioChannelPosition * to)
+{
+  const GstAudioFormatInfo *info;
+  gint i, j, n;
+  gint reorder_map[64] = { 0, };
+  guint8 *ptr;
+  gint bpf, bps;
+  guint8 tmp[64 * 8];
+
+  info = gst_audio_format_get_info (format);
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (from != NULL, FALSE);
+  g_return_val_if_fail (to != NULL, FALSE);
+  g_return_val_if_fail (info != NULL && info->width > 0, FALSE);
+  g_return_val_if_fail (info->width > 0, FALSE);
+  g_return_val_if_fail (info->width <= 8 * 64, FALSE);
+  g_return_val_if_fail (size % ((info->width * channels) / 8) == 0, FALSE);
+  g_return_val_if_fail (channels > 0, FALSE);
+  g_return_val_if_fail (channels <= 64, FALSE);
+
+  if (size == 0)
+    return TRUE;
+
+  if (memcmp (from, to, channels * sizeof (from[0])) == 0)
+    return TRUE;
+
+  if (!gst_audio_get_channel_reorder_map (channels, from, to, reorder_map))
+    return FALSE;
+
+  bps = info->width / 8;
+  bpf = bps * channels;
+  ptr = data;
+
+  n = size / bpf;
+  for (i = 0; i < n; i++) {
+
+    memcpy (tmp, ptr, bpf);
+    for (j = 0; j < channels; j++)
+      memcpy (ptr + reorder_map[j] * bps, tmp + j * bps, bps);
+
+    ptr += bpf;
+  }
+
+  return TRUE;
+}
+
+/**
+ * gst_audio_buffer_reorder_channels:
+ * @buffer: The buffer to reorder.
+ * @format: The %GstAudioFormat of the buffer.
+ * @channels: The number of channels.
+ * @from: The channel positions in the buffer.
+ * @to: The channel positions to convert to.
+ *
+ * Reorders @buffer from the channel positions @from to the channel
+ * positions @to. @from and @to must contain the same number of
+ * positions and the same positions, only in a different order.
+ * @buffer must be writable.
+ *
+ * Returns: %TRUE if the reordering was possible.
+ */
+gboolean
+gst_audio_buffer_reorder_channels (GstBuffer * buffer,
+    GstAudioFormat format, gint channels,
+    const GstAudioChannelPosition * from, const GstAudioChannelPosition * to)
+{
+  GstMapInfo info;
+  gboolean ret;
+
+  g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
+  g_return_val_if_fail (gst_buffer_is_writable (buffer), FALSE);
+
+  gst_buffer_map (buffer, &info, GST_MAP_READWRITE);
+
+  ret =
+      gst_audio_reorder_channels (info.data, info.size, format, channels, from,
+      to);
+
+  gst_buffer_unmap (buffer, &info);
 
   return ret;
+}
+
+/**
+ * gst_audio_check_valid_channel_positions:
+ * @position: The %GstAudioChannelPositions to check.
+ * @channels: The number of channels.
+ * @force_order: Only consider the GStreamer channel order.
+ *
+ * Checks if @position contains valid channel positions for
+ * @channels channels. If @force_order is %TRUE it additionally
+ * checks if the channels are in the order required by GStreamer.
+ *
+ * Returns: %TRUE if the channel positions are valid.
+ */
+gboolean
+gst_audio_check_valid_channel_positions (const GstAudioChannelPosition *
+    position, gint channels, gboolean force_order)
+{
+  return check_valid_channel_positions (position, channels, force_order, NULL);
+}
+
+/**
+ * gst_audio_channel_positions_to_mask:
+ * @position: The %GstAudioChannelPositions
+ * @channels: The number of channels.
+ * @channel_mask: the output channel mask
+ *
+ * Convert the @position array of @channels channels to a bitmask.
+ *
+ * Returns: %TRUE if the channel positions are valid and could be converted.
+ */
+gboolean
+gst_audio_channel_positions_to_mask (const GstAudioChannelPosition * position,
+    gint channels, guint64 * channel_mask)
+{
+  return check_valid_channel_positions (position, channels, FALSE,
+      channel_mask);
+}
+
+/**
+ * gst_audio_channel_positions_from_mask:
+ * @channels: The number of channels
+ * @channel_mask: The input channel_mask
+ * @position: The %GstAudioChannelPositions
+ * @caps: a #GstCaps
+ *
+ * Convert the @channels present in @channel_mask to a @position array
+ * (which should have at least @channels entries ensured by caller).
+ * If @channel_mask is set to 0, it is considered as 'not present' for purpose
+ * of conversion.
+ *
+ * Returns: %TRUE if channel and channel mask are valid and could be converted
+ */
+gboolean
+gst_audio_channel_positions_from_mask (gint channels, guint64 channel_mask,
+    GstAudioChannelPosition * position)
+{
+  g_return_val_if_fail (position != NULL, FALSE);
+  g_return_val_if_fail (channels != 0, FALSE);
+
+  GST_DEBUG ("converting %d channels for "
+      " channel mask 0x%016" G_GINT64_MODIFIER "x", channels, channel_mask);
+
+  if (!channel_mask) {
+    if (channels == 1) {
+      position[0] = GST_AUDIO_CHANNEL_POSITION_MONO;
+    } else if (channels == 2) {
+      position[0] = GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT;
+      position[1] = GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT;
+    } else {
+      goto no_channel_mask;
+    }
+  } else {
+    gint i, j;
+
+    j = 0;
+    for (i = 0; i < 64; i++) {
+      if ((channel_mask & (G_GUINT64_CONSTANT (1) << i))) {
+        if (j < channels)
+          position[j] = default_channel_order[i];
+        if (default_channel_order[i] == GST_AUDIO_CHANNEL_POSITION_INVALID)
+          goto invalid_channel_mask;
+        j++;
+      }
+    }
+
+    if (j != channels)
+      goto invalid_channel_mask;
+  }
+
+  return TRUE;
+
+  /* ERROR */
+no_channel_mask:
+  {
+    GST_ERROR ("no channel-mask property given");
+    return FALSE;
+  }
+invalid_channel_mask:
+  {
+    GST_ERROR ("Invalid channel mask 0x%016" G_GINT64_MODIFIER
+        "x for %d channels", channel_mask, channels);
+    return FALSE;
+  }
+}
+
+
+/**
+ * gst_audio_get_channel_reorder_map:
+ * @channels: The number of channels.
+ * @from: The channel positions to reorder from.
+ * @to: The channel positions to reorder to.
+ * @reorder_map: Pointer to the reorder map.
+ *
+ * Returns a reorder map for @from to @to that can be used in
+ * custom channel reordering code, e.g. to convert from or to the
+ * GStreamer channel order. @from and @to must contain the same
+ * number of positions and the same positions, only in a
+ * different order.
+ *
+ * The resulting @reorder_map can be used for reordering by assigning
+ * channel i of the input to channel reorder_map[i] of the output.
+ *
+ * Returns: %TRUE if the channel positions are valid and reordering
+ * is possible.
+ */
+gboolean
+gst_audio_get_channel_reorder_map (gint channels,
+    const GstAudioChannelPosition * from, const GstAudioChannelPosition * to,
+    gint * reorder_map)
+{
+  gint i, j;
+
+  g_return_val_if_fail (reorder_map != NULL, FALSE);
+  g_return_val_if_fail (channels > 0, FALSE);
+  g_return_val_if_fail (from != NULL, FALSE);
+  g_return_val_if_fail (to != NULL, FALSE);
+  g_return_val_if_fail (check_valid_channel_positions (from, channels, FALSE,
+          NULL), FALSE);
+  g_return_val_if_fail (check_valid_channel_positions (to, channels, FALSE,
+          NULL), FALSE);
+
+  /* Build reorder map and check compatibility */
+  for (i = 0; i < channels; i++) {
+    if (from[i] == GST_AUDIO_CHANNEL_POSITION_NONE
+        || to[i] == GST_AUDIO_CHANNEL_POSITION_NONE)
+      return FALSE;
+    if (from[i] == GST_AUDIO_CHANNEL_POSITION_INVALID
+        || to[i] == GST_AUDIO_CHANNEL_POSITION_INVALID)
+      return FALSE;
+    if (from[i] == GST_AUDIO_CHANNEL_POSITION_MONO
+        || to[i] == GST_AUDIO_CHANNEL_POSITION_MONO)
+      return FALSE;
+
+    for (j = 0; j < channels; j++) {
+      if (from[i] == to[j]) {
+        reorder_map[i] = j;
+        break;
+      }
+    }
+
+    /* Not all channels present in both */
+    if (j == channels)
+      return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * gst_audio_channel_positions_to_valid_order:
+ * @position: The channel positions to reorder to.
+ * @channels: The number of channels.
+ *
+ * Reorders the channel positions in @position from any order to
+ * the GStreamer channel order.
+ *
+ * Returns: %TRUE if the channel positions are valid and reordering
+ * was successful.
+ */
+gboolean
+gst_audio_channel_positions_to_valid_order (GstAudioChannelPosition * position,
+    gint channels)
+{
+  GstAudioChannelPosition tmp[64];
+  guint64 channel_mask = 0;
+  gint i, j;
+
+  g_return_val_if_fail (channels > 0, FALSE);
+  g_return_val_if_fail (position != NULL, FALSE);
+  g_return_val_if_fail (check_valid_channel_positions (position, channels,
+          FALSE, NULL), FALSE);
+
+  if (channels == 1 && position[0] == GST_AUDIO_CHANNEL_POSITION_MONO)
+    return TRUE;
+  if (position[0] == GST_AUDIO_CHANNEL_POSITION_NONE)
+    return TRUE;
+
+  check_valid_channel_positions (position, channels, FALSE, &channel_mask);
+
+  memset (tmp, 0xff, sizeof (tmp));
+  j = 0;
+  for (i = 0; i < 64; i++) {
+    if ((channel_mask & (G_GUINT64_CONSTANT (1) << i))) {
+      tmp[j] = i;
+      j++;
+    }
+  }
+
+  memcpy (position, tmp, sizeof (tmp[0]) * channels);
+
+  return TRUE;
 }

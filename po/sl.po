@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-26 15:56+0100\n"
 "Last-Translator: Klemen Košir <klemen.kosir@gmx.com>\n"
 "Language-Team: Slovenian <translation-team-sl@lists.sourceforge.net>\n"
@@ -190,9 +190,8 @@ msgstr "Izvorni predmet je neveljaven."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Napaka med pošiljanjem podatkov na \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Povezava s %s:%d zavrnjena."
+msgid "This CD has no audio tracks"
+msgstr "Ta CD nima zvočnih sledi"
 
 msgid "Can't record audio fast enough"
 msgstr "Ni mogoče dovolj hitro snemati zvoka"
@@ -358,9 +357,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Ta CD nima zvočnih sledi"
-
 msgid "ID3 tag"
 msgstr "Oznaka ID3"
 
@@ -393,6 +389,21 @@ msgstr "Brezizgubni MSZH"
 
 msgid "Run-length encoding"
 msgstr "Kodiranje trajanja izvajanja"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Oblika podnapisov TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Oblika podnapisov Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Oblika podnapisov Kate"
 
 msgid "Sami subtitle format"
 msgstr "Oblika podnapisov Sami"
@@ -508,6 +519,9 @@ msgstr "Neznan predmet kodirnika"
 
 msgid "Plugin or element of unknown type"
 msgstr "Vstavek ali predmet neznane vrste"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Povezava s %s:%d zavrnjena."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Nestisnjen ploskovni YUV 4:2:0"

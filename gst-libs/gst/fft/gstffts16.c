@@ -31,7 +31,7 @@
  *
  * #GstFFTS16 provides a FFT implementation and related functions for
  * signed 16 bit integer samples. To use this call gst_fft_s16_new() for
- * allocating a #GstFFTS16 instance with the appropiate parameters and
+ * allocating a #GstFFTS16 instance with the appropriate parameters and
  * then call gst_fft_s16_fft() or gst_fft_s16_inverse_fft() to perform the
  * FFT or inverse FFT on a buffer of samples.
  *
@@ -54,8 +54,15 @@
  * The relation between them is iFFT (FFT (x)) = x / nfft where nfft is the
  * length of the FFT. This also has to be taken into account when calculation
  * the magnitude of the frequency data.
- * 
+ *
  */
+
+struct _GstFFTS16
+{
+  void *cfg;
+  gboolean inverse;
+  gint len;
+};
 
 /**
  * gst_fft_s16_new:

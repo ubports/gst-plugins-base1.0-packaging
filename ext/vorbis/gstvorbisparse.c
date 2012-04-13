@@ -75,14 +75,16 @@ GST_STATIC_PAD_TEMPLATE ("src",
 #define gst_vorbis_parse_parent_class parent_class
 G_DEFINE_TYPE (GstVorbisParse, gst_vorbis_parse, GST_TYPE_ELEMENT);
 
-static GstFlowReturn vorbis_parse_chain (GstPad * pad, GstBuffer * buffer);
+static GstFlowReturn vorbis_parse_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
 static GstStateChangeReturn vorbis_parse_change_state (GstElement * element,
     GstStateChange transition);
-static gboolean vorbis_parse_sink_event (GstPad * pad, GstEvent * event);
-static gboolean vorbis_parse_src_query (GstPad * pad, GstQuery * query);
-static gboolean vorbis_parse_convert (GstPad * pad,
-    GstFormat src_format, gint64 src_value,
-    GstFormat * dest_format, gint64 * dest_value);
+static gboolean vorbis_parse_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean vorbis_parse_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
+static gboolean vorbis_parse_convert (GstPad * pad, GstFormat src_format,
+    gint64 src_value, GstFormat * dest_format, gint64 * dest_value);
 static GstFlowReturn vorbis_parse_parse_packet (GstVorbisParse * parse,
     GstBuffer * buf);
 
@@ -97,7 +99,7 @@ gst_vorbis_parse_class_init (GstVorbisParseClass * klass)
       gst_static_pad_template_get (&vorbis_parse_src_factory));
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&vorbis_parse_sink_factory));
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "VorbisParse", "Codec/Parser/Audio",
       "parse raw vorbis streams",
       "Thomas Vander Stichele <thomas at apestaart dot org>");
@@ -145,9 +147,9 @@ vorbis_parse_set_header_on_caps (GstVorbisParse * parse, GstCaps * caps)
   structure = gst_caps_get_structure (caps, 0);
 
   /* mark buffers */
-  GST_BUFFER_FLAG_SET (buf1, GST_BUFFER_FLAG_IN_CAPS);
-  GST_BUFFER_FLAG_SET (buf2, GST_BUFFER_FLAG_IN_CAPS);
-  GST_BUFFER_FLAG_SET (buf3, GST_BUFFER_FLAG_IN_CAPS);
+  GST_BUFFER_FLAG_SET (buf1, GST_BUFFER_FLAG_HEADER);
+  GST_BUFFER_FLAG_SET (buf2, GST_BUFFER_FLAG_HEADER);
+  GST_BUFFER_FLAG_SET (buf3, GST_BUFFER_FLAG_HEADER);
 
   /* put buffers in a fixed list */
   g_value_init (&array, GST_TYPE_ARRAY);
@@ -174,7 +176,7 @@ vorbis_parse_drain_event_queue (GstVorbisParse * parse)
     GstEvent *event;
 
     event = GST_EVENT_CAST (g_queue_pop_head (parse->event_queue));
-    gst_pad_event_default (parse->sinkpad, event);
+    gst_pad_event_default (parse->sinkpad, GST_OBJECT_CAST (parse), event);
   }
 }
 
@@ -185,48 +187,54 @@ vorbis_parse_push_headers (GstVorbisParse * parse)
   GstCaps *caps;
   GstBuffer *outbuf, *outbuf1, *outbuf2, *outbuf3;
   ogg_packet packet;
-  gsize size;
-
-  /* get the headers into the caps, passing them to vorbis as we go */
-  caps = gst_caps_make_writable (gst_pad_get_caps (parse->srcpad, NULL));
-  vorbis_parse_set_header_on_caps (parse, caps);
-  GST_DEBUG_OBJECT (parse, "here are the caps: %" GST_PTR_FORMAT, caps);
-  gst_pad_set_caps (parse->srcpad, caps);
-  gst_caps_unref (caps);
+  GstMapInfo map;
 
   outbuf = GST_BUFFER_CAST (parse->streamheader->data);
-  packet.packet = gst_buffer_map (outbuf, &size, NULL, GST_MAP_READ);
-  packet.bytes = size;
+  gst_buffer_map (outbuf, &map, GST_MAP_READ);
+  packet.packet = map.data;
+  packet.bytes = map.size;
   packet.granulepos = GST_BUFFER_OFFSET_END (outbuf);
   packet.packetno = 1;
   packet.e_o_s = 0;
   packet.b_o_s = 1;
   vorbis_synthesis_headerin (&parse->vi, &parse->vc, &packet);
-  gst_buffer_unmap (outbuf, packet.packet, size);
+  gst_buffer_unmap (outbuf, &map);
   parse->sample_rate = parse->vi.rate;
+  parse->channels = parse->vi.channels;
   outbuf1 = outbuf;
 
   outbuf = GST_BUFFER_CAST (parse->streamheader->next->data);
-  packet.packet = gst_buffer_map (outbuf, &size, NULL, GST_MAP_READ);
-  packet.bytes = size;
+  gst_buffer_map (outbuf, &map, GST_MAP_READ);
+  packet.packet = map.data;
+  packet.bytes = map.size;
   packet.granulepos = GST_BUFFER_OFFSET_END (outbuf);
   packet.packetno = 2;
   packet.e_o_s = 0;
   packet.b_o_s = 0;
   vorbis_synthesis_headerin (&parse->vi, &parse->vc, &packet);
-  gst_buffer_unmap (outbuf, packet.packet, size);
+  gst_buffer_unmap (outbuf, &map);
   outbuf2 = outbuf;
 
   outbuf = GST_BUFFER_CAST (parse->streamheader->next->next->data);
-  packet.packet = gst_buffer_map (outbuf, &size, NULL, GST_MAP_READ);
-  packet.bytes = size;
+  gst_buffer_map (outbuf, &map, GST_MAP_READ);
+  packet.packet = map.data;
+  packet.bytes = map.size;
   packet.granulepos = GST_BUFFER_OFFSET_END (outbuf);
   packet.packetno = 3;
   packet.e_o_s = 0;
   packet.b_o_s = 0;
   vorbis_synthesis_headerin (&parse->vi, &parse->vc, &packet);
-  gst_buffer_unmap (outbuf, packet.packet, size);
+  gst_buffer_unmap (outbuf, &map);
   outbuf3 = outbuf;
+
+  /* get the headers into the caps, passing them to vorbis as we go */
+  caps = gst_caps_new_simple ("audio/x-vorbis",
+      "rate", G_TYPE_INT, parse->sample_rate,
+      "channels", G_TYPE_INT, parse->channels, NULL);;
+  vorbis_parse_set_header_on_caps (parse, caps);
+  GST_DEBUG_OBJECT (parse, "here are the caps: %" GST_PTR_FORMAT, caps);
+  gst_pad_set_caps (parse->srcpad, caps);
+  gst_caps_unref (caps);
 
   /* first process queued events */
   vorbis_parse_drain_event_queue (parse);
@@ -348,18 +356,20 @@ vorbis_parse_queue_buffer (GstVorbisParse * parse, GstBuffer * buf)
   GstFlowReturn ret = GST_FLOW_OK;
   long blocksize;
   ogg_packet packet;
-  gsize size;
+  GstMapInfo map;
 
   buf = gst_buffer_make_writable (buf);
 
-  packet.packet = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
-  packet.bytes = size;
+  gst_buffer_map (buf, &map, GST_MAP_READ);
+  packet.packet = map.data;
+  packet.bytes = map.size;
+  GST_DEBUG ("%p, %" G_GSIZE_FORMAT, map.data, map.size);
   packet.granulepos = GST_BUFFER_OFFSET_END (buf);
   packet.packetno = parse->packetno + parse->buffer_queue->length;
   packet.e_o_s = 0;
 
   blocksize = vorbis_packet_blocksize (&parse->vi, &packet);
-  gst_buffer_unmap (buf, packet.packet, size);
+  gst_buffer_unmap (buf, &map);
 
   /* temporarily store the sample count in OFFSET -- we overwrite this later */
 
@@ -382,19 +392,18 @@ static GstFlowReturn
 vorbis_parse_parse_packet (GstVorbisParse * parse, GstBuffer * buf)
 {
   GstFlowReturn ret;
-  guint8 *data;
-  gsize size;
+  GstMapInfo map;
   gboolean have_header;
 
   parse->packetno++;
 
   have_header = FALSE;
-  data = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
-  if (size >= 1) {
-    if (data[0] >= 0x01 && data[0] <= 0x05)
+  gst_buffer_map (buf, &map, GST_MAP_READ);
+  if (map.size >= 1) {
+    if (map.data[0] & 1)
       have_header = TRUE;
   }
-  gst_buffer_unmap (buf, data, size);
+  gst_buffer_unmap (buf, &map);
 
   if (have_header) {
     if (!parse->streamheader_sent) {
@@ -416,12 +425,12 @@ vorbis_parse_parse_packet (GstVorbisParse * parse, GstBuffer * buf)
 }
 
 static GstFlowReturn
-vorbis_parse_chain (GstPad * pad, GstBuffer * buffer)
+vorbis_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstVorbisParseClass *klass;
   GstVorbisParse *parse;
 
-  parse = GST_VORBIS_PARSE (GST_PAD_PARENT (pad));
+  parse = GST_VORBIS_PARSE (parent);
   klass = GST_VORBIS_PARSE_CLASS (G_OBJECT_GET_CLASS (parse));
 
   g_assert (klass->parse_packet != NULL);
@@ -440,33 +449,31 @@ vorbis_parse_queue_event (GstVorbisParse * parse, GstEvent * event)
 }
 
 static gboolean
-vorbis_parse_sink_event (GstPad * pad, GstEvent * event)
+vorbis_parse_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean ret;
   GstVorbisParse *parse;
 
-  parse = GST_VORBIS_PARSE (gst_pad_get_parent (pad));
+  parse = GST_VORBIS_PARSE (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_START:
       vorbis_parse_clear_queue (parse);
       parse->prev_granulepos = -1;
       parse->prev_blocksize = -1;
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     case GST_EVENT_EOS:
       vorbis_parse_drain_queue_prematurely (parse);
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     default:
       if (!parse->streamheader_sent && GST_EVENT_IS_SERIALIZED (event))
         ret = vorbis_parse_queue_event (parse, event);
       else
-        ret = gst_pad_event_default (pad, event);
+        ret = gst_pad_event_default (pad, parent, event);
       break;
   }
-
-  gst_object_unref (parse);
 
   return ret;
 }
@@ -545,13 +552,13 @@ vorbis_parse_convert (GstPad * pad,
 }
 
 static gboolean
-vorbis_parse_src_query (GstPad * pad, GstQuery * query)
+vorbis_parse_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   gint64 granulepos;
   GstVorbisParse *parse;
   gboolean res = FALSE;
 
-  parse = GST_VORBIS_PARSE (GST_PAD_PARENT (pad));
+  parse = GST_VORBIS_PARSE (parent);
 
   switch (GST_QUERY_TYPE (query)) {
     case GST_QUERY_POSITION:
@@ -590,7 +597,7 @@ vorbis_parse_src_query (GstPad * pad, GstQuery * query)
             parse->sinkpad);
         goto error;
       }
-      if (!(res = gst_pad_query (GST_PAD_PEER (parse->sinkpad), query)))
+      if (!(res = gst_pad_peer_query (parse->sinkpad, query)))
         goto error;
       break;
     }
@@ -608,7 +615,7 @@ vorbis_parse_src_query (GstPad * pad, GstQuery * query)
       break;
     }
     default:
-      res = gst_pad_query_default (pad, query);
+      res = gst_pad_query_default (pad, parent, query);
       break;
   }
   return res;

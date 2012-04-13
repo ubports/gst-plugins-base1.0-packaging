@@ -38,7 +38,7 @@
 
 #include <string.h>
 
-#include <gst/dataprotocol/dataprotocol.h>
+#include "dataprotocol.h"
 
 #include "gstgdpdepay.h"
 
@@ -69,10 +69,13 @@ GST_DEBUG_CATEGORY_STATIC (gst_gdp_depay_debug);
 G_DEFINE_TYPE_WITH_CODE (GstGDPDepay, gst_gdp_depay,
     GST_TYPE_ELEMENT, _do_init);
 
-static gboolean gst_gdp_depay_sink_event (GstPad * pad, GstEvent * event);
-static gboolean gst_gdp_depay_src_event (GstPad * pad, GstEvent * event);
+static gboolean gst_gdp_depay_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_gdp_depay_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
 
-static GstFlowReturn gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer);
+static GstFlowReturn gst_gdp_depay_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
 
 static GstStateChangeReturn gst_gdp_depay_change_state (GstElement *
     element, GstStateChange transition);
@@ -88,7 +91,7 @@ gst_gdp_depay_class_init (GstGDPDepayClass * klass)
   gobject_class = (GObjectClass *) klass;
   gstelement_class = (GstElementClass *) klass;
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "GDP Depayloader", "GDP/Depayloader",
       "Depayloads GStreamer Data Protocol buffers",
       "Thomas Vander Stichele <thomas at apestaart dot org>");
@@ -141,12 +144,12 @@ gst_gdp_depay_finalize (GObject * gobject)
 }
 
 static gboolean
-gst_gdp_depay_sink_event (GstPad * pad, GstEvent * event)
+gst_gdp_depay_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   GstGDPDepay *this;
   gboolean res = TRUE;
 
-  this = GST_GDP_DEPAY (gst_pad_get_parent (pad));
+  this = GST_GDP_DEPAY (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_START:
@@ -171,18 +174,17 @@ gst_gdp_depay_sink_event (GstPad * pad, GstEvent * event)
       gst_event_unref (event);
       break;
   }
-  gst_object_unref (this);
 
   return res;
 }
 
 static gboolean
-gst_gdp_depay_src_event (GstPad * pad, GstEvent * event)
+gst_gdp_depay_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   GstGDPDepay *this;
   gboolean res = TRUE;
 
-  this = GST_GDP_DEPAY (gst_pad_get_parent (pad));
+  this = GST_GDP_DEPAY (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_SEEK:
@@ -197,13 +199,12 @@ gst_gdp_depay_src_event (GstPad * pad, GstEvent * event)
       res = gst_pad_push_event (this->sinkpad, event);
       break;
   }
-  gst_object_unref (this);
 
   return res;
 }
 
 static GstFlowReturn
-gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer)
+gst_gdp_depay_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstGDPDepay *this;
   GstFlowReturn ret = GST_FLOW_OK;
@@ -212,7 +213,7 @@ gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer)
   GstEvent *event;
   guint available;
 
-  this = GST_GDP_DEPAY (gst_pad_get_parent (pad));
+  this = GST_GDP_DEPAY (parent);
 
   /* On DISCONT, get rid of accumulated data. We assume a buffer after the
    * DISCONT contains (part of) a new valid header, if not we error because we
@@ -286,7 +287,7 @@ gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer)
           data = gst_adapter_map (this->adapter, this->payload_length);
           res = gst_dp_validate_payload (GST_DP_HEADER_LENGTH, this->header,
               data);
-          gst_adapter_unmap (this->adapter, 0);
+          gst_adapter_unmap (this->adapter);
 
           if (!res)
             goto payload_validate_error;
@@ -307,11 +308,11 @@ gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer)
 
         /* now take the payload if there is any */
         if (this->payload_length > 0) {
-          guint8 *payload;
+          GstMapInfo map;
 
-          payload = gst_buffer_map (buf, NULL, NULL, GST_MAP_WRITE);
-          gst_adapter_copy (this->adapter, payload, 0, this->payload_length);
-          gst_buffer_unmap (buf, payload, this->payload_length);
+          gst_buffer_map (buf, &map, GST_MAP_WRITE);
+          gst_adapter_copy (this->adapter, map.data, 0, this->payload_length);
+          gst_buffer_unmap (buf, &map);
 
           gst_adapter_flush (this->adapter, this->payload_length);
         }
@@ -386,7 +387,6 @@ gst_gdp_depay_chain (GstPad * pad, GstBuffer * buffer)
   }
 
 done:
-  gst_object_unref (this);
   return ret;
 
   /* ERRORS */

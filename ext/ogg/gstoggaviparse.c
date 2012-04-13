@@ -124,8 +124,10 @@ GST_STATIC_PAD_TEMPLATE ("sink",
 static void gst_ogg_avi_parse_finalize (GObject * object);
 static GstStateChangeReturn gst_ogg_avi_parse_change_state (GstElement *
     element, GstStateChange transition);
-static gboolean gst_ogg_avi_parse_event (GstPad * pad, GstEvent * event);
-static GstFlowReturn gst_ogg_avi_parse_chain (GstPad * pad, GstBuffer * buffer);
+static gboolean gst_ogg_avi_parse_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static GstFlowReturn gst_ogg_avi_parse_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
 static gboolean gst_ogg_avi_parse_setcaps (GstPad * pad, GstCaps * caps);
 
 static void
@@ -133,7 +135,7 @@ gst_ogg_avi_parse_base_init (gpointer g_class)
 {
   GstElementClass *element_class = GST_ELEMENT_CLASS (g_class);
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Ogg AVI parser", "Codec/Parser",
       "parse an ogg avi stream into pages (info about ogg: http://xiph.org)",
       "Wim Taymans <wim@fluendo.com>");
@@ -195,8 +197,9 @@ gst_ogg_avi_parse_setcaps (GstPad * pad, GstCaps * caps)
   GstStructure *structure;
   const GValue *codec_data;
   GstBuffer *buffer;
-  guint8 *data, *ptr;
-  gsize size, left;
+  GstMapInfo map;
+  guint8 *ptr;
+  gsize left;
   guint32 sizes[3];
   GstCaps *outcaps;
   gint i, offs;
@@ -220,10 +223,10 @@ gst_ogg_avi_parse_setcaps (GstPad * pad, GstCaps * caps)
   /* first 22 bytes are bits_per_sample, channel_mask, GUID
    * Then we get 3 LE guint32 with the 3 header sizes
    * then we get the bytes of the 3 headers. */
-  data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (buffer, &map, GST_MAP_READ);
 
-  ptr = data;
-  left = size;
+  ptr = map.data;
+  left = map.size;
 
   GST_LOG_OBJECT (ogg, "configuring codec_data of size %" G_GSIZE_FORMAT, left);
 
@@ -250,7 +253,7 @@ gst_ogg_avi_parse_setcaps (GstPad * pad, GstCaps * caps)
     goto buffer_too_small;
 
   /* set caps */
-  outcaps = gst_caps_new_simple ("audio/x-vorbis", NULL);
+  outcaps = gst_caps_new_empty_simple ("audio/x-vorbis");
   gst_pad_push_event (ogg->srcpad, gst_event_new_caps (outcaps));
   gst_caps_unref (outcaps);
 
@@ -265,7 +268,7 @@ gst_ogg_avi_parse_setcaps (GstPad * pad, GstCaps * caps)
 
     offs += sizes[i];
   }
-  gst_buffer_unmap (buffer, data, size);
+  gst_buffer_unmap (buffer, &map);
 
   return TRUE;
 
@@ -283,18 +286,18 @@ wrong_format:
 buffer_too_small:
   {
     GST_DEBUG_OBJECT (ogg, "codec_data is too small");
-    gst_buffer_unmap (buffer, data, size);
+    gst_buffer_unmap (buffer, &map);
     return FALSE;
   }
 }
 
 static gboolean
-gst_ogg_avi_parse_event (GstPad * pad, GstEvent * event)
+gst_ogg_avi_parse_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   GstOggAviParse *ogg;
   gboolean ret;
 
-  ogg = GST_OGG_AVI_PARSE (GST_OBJECT_PARENT (pad));
+  ogg = GST_OGG_AVI_PARSE (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_CAPS:
@@ -347,7 +350,7 @@ gst_ogg_avi_parse_push_packet (GstOggAviParse * ogg, ogg_packet * packet)
 }
 
 static GstFlowReturn
-gst_ogg_avi_parse_chain (GstPad * pad, GstBuffer * buffer)
+gst_ogg_avi_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstFlowReturn result = GST_FLOW_OK;
   GstOggAviParse *ogg;
@@ -355,7 +358,7 @@ gst_ogg_avi_parse_chain (GstPad * pad, GstBuffer * buffer)
   gchar *oggbuf;
   gint ret = -1;
 
-  ogg = GST_OGG_AVI_PARSE (GST_OBJECT_PARENT (pad));
+  ogg = GST_OGG_AVI_PARSE (parent);
 
   size = gst_buffer_get_size (buffer);
 

@@ -92,18 +92,17 @@ enum
 
 enum
 {
-  ARG_0,
-  ARG_IN,
-  ARG_OUT,
-  ARG_DUP,
-  ARG_DROP,
-  ARG_SILENT,
-  ARG_NEW_PREF,
-  ARG_SKIP_TO_FIRST,
-  ARG_DROP_ONLY,
-  ARG_AVERAGE_PERIOD,
-  ARG_MAX_RATE
-      /* FILL ME */
+  PROP_0,
+  PROP_IN,
+  PROP_OUT,
+  PROP_DUP,
+  PROP_DROP,
+  PROP_SILENT,
+  PROP_NEW_PREF,
+  PROP_SKIP_TO_FIRST,
+  PROP_DROP_ONLY,
+  PROP_AVERAGE_PERIOD,
+  PROP_MAX_RATE
 };
 
 static GstStaticPadTemplate gst_video_rate_src_template =
@@ -133,13 +132,14 @@ static gboolean gst_video_rate_setcaps (GstBaseTransform * trans,
 static GstCaps *gst_video_rate_transform_caps (GstBaseTransform * trans,
     GstPadDirection direction, GstCaps * caps, GstCaps * filter);
 
-static void gst_video_rate_fixate_caps (GstBaseTransform * trans,
+static GstCaps *gst_video_rate_fixate_caps (GstBaseTransform * trans,
     GstPadDirection direction, GstCaps * caps, GstCaps * othercaps);
 
 static GstFlowReturn gst_video_rate_transform_ip (GstBaseTransform * trans,
     GstBuffer * buf);
 
 static gboolean gst_video_rate_start (GstBaseTransform * trans);
+static gboolean gst_video_rate_stop (GstBaseTransform * trans);
 
 
 static void gst_video_rate_set_property (GObject * object,
@@ -169,28 +169,29 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
   base_class->transform_ip = GST_DEBUG_FUNCPTR (gst_video_rate_transform_ip);
   base_class->sink_event = GST_DEBUG_FUNCPTR (gst_video_rate_sink_event);
   base_class->start = GST_DEBUG_FUNCPTR (gst_video_rate_start);
+  base_class->stop = GST_DEBUG_FUNCPTR (gst_video_rate_stop);
   base_class->fixate_caps = GST_DEBUG_FUNCPTR (gst_video_rate_fixate_caps);
   base_class->query = GST_DEBUG_FUNCPTR (gst_video_rate_query);
 
-  g_object_class_install_property (object_class, ARG_IN,
+  g_object_class_install_property (object_class, PROP_IN,
       g_param_spec_uint64 ("in", "In",
           "Number of input frames", 0, G_MAXUINT64, 0,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
-  g_object_class_install_property (object_class, ARG_OUT,
+  g_object_class_install_property (object_class, PROP_OUT,
       g_param_spec_uint64 ("out", "Out", "Number of output frames", 0,
           G_MAXUINT64, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   pspec_duplicate = g_param_spec_uint64 ("duplicate", "Duplicate",
       "Number of duplicated frames", 0, G_MAXUINT64, 0,
       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, ARG_DUP, pspec_duplicate);
+  g_object_class_install_property (object_class, PROP_DUP, pspec_duplicate);
   pspec_drop = g_param_spec_uint64 ("drop", "Drop", "Number of dropped frames",
       0, G_MAXUINT64, 0, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, ARG_DROP, pspec_drop);
-  g_object_class_install_property (object_class, ARG_SILENT,
+  g_object_class_install_property (object_class, PROP_DROP, pspec_drop);
+  g_object_class_install_property (object_class, PROP_SILENT,
       g_param_spec_boolean ("silent", "silent",
           "Don't emit notify for dropped and duplicated frames", DEFAULT_SILENT,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-  g_object_class_install_property (object_class, ARG_NEW_PREF,
+  g_object_class_install_property (object_class, PROP_NEW_PREF,
       g_param_spec_double ("new-pref", "New Pref",
           "Value indicating how much to prefer new frames (unused)", 0.0, 1.0,
           DEFAULT_NEW_PREF, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -202,7 +203,7 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
    *
    * Since: 0.10.25
    */
-  g_object_class_install_property (object_class, ARG_SKIP_TO_FIRST,
+  g_object_class_install_property (object_class, PROP_SKIP_TO_FIRST,
       g_param_spec_boolean ("skip-to-first", "Skip to first buffer",
           "Don't produce buffers before the first one we receive",
           DEFAULT_SKIP_TO_FIRST, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -214,7 +215,7 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
    *
    * Since: 0.10.36
    */
-  g_object_class_install_property (object_class, ARG_DROP_ONLY,
+  g_object_class_install_property (object_class, PROP_DROP_ONLY,
       g_param_spec_boolean ("drop-only", "Only Drop",
           "Only drop frames, no duplicates are produced",
           DEFAULT_DROP_ONLY, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -228,7 +229,7 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
    *
    * Since: 0.10.36
    */
-  g_object_class_install_property (object_class, ARG_AVERAGE_PERIOD,
+  g_object_class_install_property (object_class, PROP_AVERAGE_PERIOD,
       g_param_spec_uint64 ("average-period", "Period over which to average",
           "Period over which to average the framerate (in ns) (0 = disabled)",
           0, G_MAXINT64, DEFAULT_AVERAGE_PERIOD,
@@ -241,14 +242,14 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
    *
    * Since: 0.10.36
    */
-  g_object_class_install_property (object_class, ARG_MAX_RATE,
+  g_object_class_install_property (object_class, PROP_MAX_RATE,
       g_param_spec_int ("max-rate", "maximum framerate",
           "Maximum framerate allowed to pass through "
           "(in frames per second, implies drop-only)",
           1, G_MAXINT, DEFAULT_MAX_RATE,
           G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS));
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Video rate adjuster", "Filter/Effect/Video",
       "Drops/duplicates/adjusts timestamps on video frames to make a perfect stream",
       "Wim Taymans <wim@fluendo.com>");
@@ -364,84 +365,96 @@ gst_video_rate_transform_caps (GstBaseTransform * trans,
 {
   GstVideoRate *videorate = GST_VIDEO_RATE (trans);
   GstCaps *ret;
-  GstStructure *s, *s2;
-  GstStructure *s3 = NULL;
+  GstStructure *s, *s1, *s2, *s3 = NULL;
   int maxrate = g_atomic_int_get (&videorate->max_rate);
+  gint i;
 
-  /* Should always be called with simple caps */
-  g_return_val_if_fail (GST_CAPS_IS_SIMPLE (caps), NULL);
+  ret = gst_caps_new_empty ();
 
-  ret = gst_caps_copy (caps);
+  for (i = 0; i < gst_caps_get_size (caps); i++) {
+    s = gst_caps_get_structure (caps, i);
 
-  s = gst_caps_get_structure (ret, 0);
-  s2 = gst_structure_copy (s);
+    s1 = gst_structure_copy (s);
+    s2 = gst_structure_copy (s);
 
-  if (videorate->drop_only) {
-    gint min_num = 0, min_denom = 1;
-    gint max_num = G_MAXINT, max_denom = 1;
+    if (videorate->drop_only) {
+      gint min_num = 0, min_denom = 1;
+      gint max_num = G_MAXINT, max_denom = 1;
 
-    /* Clamp the caps to our maximum rate as the first caps if possible */
-    if (!gst_video_max_rate_clamp_structure (s, maxrate,
-            &min_num, &min_denom, &max_num, &max_denom)) {
-      min_num = 0;
-      min_denom = 1;
-      max_num = maxrate;
-      max_denom = 1;
+      /* Clamp the caps to our maximum rate as the first caps if possible */
+      if (!gst_video_max_rate_clamp_structure (s1, maxrate,
+              &min_num, &min_denom, &max_num, &max_denom)) {
+        min_num = 0;
+        min_denom = 1;
+        max_num = maxrate;
+        max_denom = 1;
 
-      /* clamp wouldn't be a real subset of 1..maxrate, in this case the sink
-       * caps should become [1..maxrate], [1..maxint] and the src caps just
-       * [1..maxrate].  In case there was a caps incompatibility things will
-       * explode later as appropriate :)
-       *
-       * In case [X..maxrate] == [X..maxint], skip as we'll set it later
-       */
-      if (direction == GST_PAD_SRC && maxrate != G_MAXINT)
-        gst_structure_set (s, "framerate", GST_TYPE_FRACTION_RANGE,
-            min_num, min_denom, maxrate, 1, NULL);
-      else
-        gst_caps_remove_structure (ret, 0);
-    }
-
-    if (direction == GST_PAD_SRC) {
-      /* We can accept anything as long as it's at least the minimal framerate
-       * the the sink needs */
-      gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE,
-          min_num, min_denom, G_MAXINT, 1, NULL);
-
-      /* Also allow unknown framerate, if it isn't already */
-      if (min_num != 0 || min_denom != 1) {
-        s3 = gst_structure_copy (s);
-        gst_structure_set (s3, "framerate", GST_TYPE_FRACTION, 0, 1, NULL);
+        /* clamp wouldn't be a real subset of 1..maxrate, in this case the sink
+         * caps should become [1..maxrate], [1..maxint] and the src caps just
+         * [1..maxrate].  In case there was a caps incompatibility things will
+         * explode later as appropriate :)
+         *
+         * In case [X..maxrate] == [X..maxint], skip as we'll set it later
+         */
+        if (direction == GST_PAD_SRC && maxrate != G_MAXINT)
+          gst_structure_set (s1, "framerate", GST_TYPE_FRACTION_RANGE,
+              min_num, min_denom, maxrate, 1, NULL);
+        else {
+          gst_structure_free (s1);
+          s1 = NULL;
+        }
       }
-    } else if (max_num != 0 || max_denom != 1) {
-      /* We can provide everything upto the maximum framerate at the src */
-      gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE,
-          0, 1, max_num, max_denom, NULL);
+
+      if (direction == GST_PAD_SRC) {
+        /* We can accept anything as long as it's at least the minimal framerate
+         * the the sink needs */
+        gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE,
+            min_num, min_denom, G_MAXINT, 1, NULL);
+
+        /* Also allow unknown framerate, if it isn't already */
+        if (min_num != 0 || min_denom != 1) {
+          s3 = gst_structure_copy (s);
+          gst_structure_set (s3, "framerate", GST_TYPE_FRACTION, 0, 1, NULL);
+        }
+      } else if (max_num != 0 || max_denom != 1) {
+        /* We can provide everything upto the maximum framerate at the src */
+        gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE,
+            0, 1, max_num, max_denom, NULL);
+      }
+    } else if (direction == GST_PAD_SINK) {
+      gint min_num = 0, min_denom = 1;
+      gint max_num = G_MAXINT, max_denom = 1;
+
+      if (!gst_video_max_rate_clamp_structure (s1, maxrate,
+              &min_num, &min_denom, &max_num, &max_denom)) {
+        gst_structure_free (s1);
+        s1 = NULL;
+      }
+      gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE, 0, 1,
+          maxrate, 1, NULL);
+    } else {
+      /* set the framerate as a range */
+      gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE, 0, 1,
+          G_MAXINT, 1, NULL);
     }
-  } else if (direction == GST_PAD_SINK) {
-    gint min_num = 0, min_denom = 1;
-    gint max_num = G_MAXINT, max_denom = 1;
-
-    if (!gst_video_max_rate_clamp_structure (s, maxrate,
-            &min_num, &min_denom, &max_num, &max_denom))
-      gst_caps_remove_structure (ret, 0);
-
-    gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE, 0, 1,
-        maxrate, 1, NULL);
-  } else {
-    /* set the framerate as a range */
-    gst_structure_set (s2, "framerate", GST_TYPE_FRACTION_RANGE, 0, 1,
-        G_MAXINT, 1, NULL);
+    if (s1 != NULL)
+      ret = gst_caps_merge_structure (ret, s1);
+    ret = gst_caps_merge_structure (ret, s2);
+    if (s3 != NULL)
+      ret = gst_caps_merge_structure (ret, s3);
   }
+  if (filter) {
+    GstCaps *intersection;
 
-  gst_caps_merge_structure (ret, s2);
-  if (s3 != NULL)
-    gst_caps_merge_structure (ret, s3);
-
+    intersection =
+        gst_caps_intersect_full (filter, ret, GST_CAPS_INTERSECT_FIRST);
+    gst_caps_unref (ret);
+    ret = intersection;
+  }
   return ret;
 }
 
-static void
+static GstCaps *
 gst_video_rate_fixate_caps (GstBaseTransform * trans,
     GstPadDirection direction, GstCaps * caps, GstCaps * othercaps)
 {
@@ -450,10 +463,14 @@ gst_video_rate_fixate_caps (GstBaseTransform * trans,
 
   s = gst_caps_get_structure (caps, 0);
   if (G_UNLIKELY (!gst_structure_get_fraction (s, "framerate", &num, &denom)))
-    return;
+    return othercaps;
 
+  othercaps = gst_caps_truncate (othercaps);
+  othercaps = gst_caps_make_writable (othercaps);
   s = gst_caps_get_structure (othercaps, 0);
   gst_structure_fixate_field_nearest_fraction (s, "framerate", num, denom);
+
+  return othercaps;
 }
 
 static gboolean
@@ -638,21 +655,13 @@ gst_video_rate_swap_prev (GstVideoRate * videorate, GstBuffer * buffer,
 static void
 gst_video_rate_notify_drop (GstVideoRate * videorate)
 {
-#if !GLIB_CHECK_VERSION(2,26,0)
-  g_object_notify ((GObject *) videorate, "drop");
-#else
   g_object_notify_by_pspec ((GObject *) videorate, pspec_drop);
-#endif
 }
 
 static void
 gst_video_rate_notify_duplicate (GstVideoRate * videorate)
 {
-#if !GLIB_CHECK_VERSION(2,26,0)
-  g_object_notify ((GObject *) videorate, "duplicate");
-#else
   g_object_notify_by_pspec ((GObject *) videorate, pspec_duplicate);
-#endif
 }
 
 #define MAGIC_LIMIT  25
@@ -773,7 +782,7 @@ gst_video_rate_sink_event (GstBaseTransform * trans, GstEvent * event)
       break;
   }
 
-  return TRUE;
+  return GST_BASE_TRANSFORM_CLASS (parent_class)->sink_event (trans, event);
 
   /* ERRORS */
 format_error:
@@ -1115,6 +1124,13 @@ gst_video_rate_start (GstBaseTransform * trans)
   return TRUE;
 }
 
+static gboolean
+gst_video_rate_stop (GstBaseTransform * trans)
+{
+  gst_video_rate_reset (GST_VIDEO_RATE (trans));
+  return TRUE;
+}
+
 static void
 gst_video_rate_set_property (GObject * object,
     guint prop_id, const GValue * value, GParamSpec * pspec)
@@ -1123,23 +1139,23 @@ gst_video_rate_set_property (GObject * object,
 
   GST_OBJECT_LOCK (videorate);
   switch (prop_id) {
-    case ARG_SILENT:
+    case PROP_SILENT:
       videorate->silent = g_value_get_boolean (value);
       break;
-    case ARG_NEW_PREF:
+    case PROP_NEW_PREF:
       videorate->new_pref = g_value_get_double (value);
       break;
-    case ARG_SKIP_TO_FIRST:
+    case PROP_SKIP_TO_FIRST:
       videorate->skip_to_first = g_value_get_boolean (value);
       break;
-    case ARG_DROP_ONLY:
+    case PROP_DROP_ONLY:
       videorate->drop_only = g_value_get_boolean (value);
       goto reconfigure;
       break;
-    case ARG_AVERAGE_PERIOD:
+    case PROP_AVERAGE_PERIOD:
       videorate->average_period_set = g_value_get_uint64 (value);
       break;
-    case ARG_MAX_RATE:
+    case PROP_MAX_RATE:
       g_atomic_int_set (&videorate->max_rate, g_value_get_int (value));
       goto reconfigure;
       break;
@@ -1152,7 +1168,7 @@ gst_video_rate_set_property (GObject * object,
 
 reconfigure:
   GST_OBJECT_UNLOCK (videorate);
-  gst_base_transform_reconfigure (GST_BASE_TRANSFORM (videorate));
+  gst_base_transform_reconfigure_src (GST_BASE_TRANSFORM (videorate));
 }
 
 static void
@@ -1163,34 +1179,34 @@ gst_video_rate_get_property (GObject * object,
 
   GST_OBJECT_LOCK (videorate);
   switch (prop_id) {
-    case ARG_IN:
+    case PROP_IN:
       g_value_set_uint64 (value, videorate->in);
       break;
-    case ARG_OUT:
+    case PROP_OUT:
       g_value_set_uint64 (value, videorate->out);
       break;
-    case ARG_DUP:
+    case PROP_DUP:
       g_value_set_uint64 (value, videorate->dup);
       break;
-    case ARG_DROP:
+    case PROP_DROP:
       g_value_set_uint64 (value, videorate->drop);
       break;
-    case ARG_SILENT:
+    case PROP_SILENT:
       g_value_set_boolean (value, videorate->silent);
       break;
-    case ARG_NEW_PREF:
+    case PROP_NEW_PREF:
       g_value_set_double (value, videorate->new_pref);
       break;
-    case ARG_SKIP_TO_FIRST:
+    case PROP_SKIP_TO_FIRST:
       g_value_set_boolean (value, videorate->skip_to_first);
       break;
-    case ARG_DROP_ONLY:
+    case PROP_DROP_ONLY:
       g_value_set_boolean (value, videorate->drop_only);
       break;
-    case ARG_AVERAGE_PERIOD:
+    case PROP_AVERAGE_PERIOD:
       g_value_set_uint64 (value, videorate->average_period_set);
       break;
-    case ARG_MAX_RATE:
+    case PROP_MAX_RATE:
       g_value_set_int (value, g_atomic_int_get (&videorate->max_rate));
       break;
     default:
@@ -1212,6 +1228,6 @@ plugin_init (GstPlugin * plugin)
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
     GST_VERSION_MINOR,
-    "videorate",
+    videorate,
     "Adjusts video frames",
     plugin_init, VERSION, GST_LICENSE, GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)

@@ -52,6 +52,7 @@
 #include "gstalsadeviceprobe.h"
 
 #include <gst/gst-i18n-plugin.h>
+#include "gst/glib-compat-private.h"
 
 #define DEFAULT_DEVICE		"default"
 #define DEFAULT_DEVICE_NAME	""
@@ -83,7 +84,7 @@ static GstCaps *gst_alsasink_getcaps (GstBaseSink * bsink, GstCaps * filter);
 
 static gboolean gst_alsasink_open (GstAudioSink * asink);
 static gboolean gst_alsasink_prepare (GstAudioSink * asink,
-    GstRingBufferSpec * spec);
+    GstAudioRingBufferSpec * spec);
 static gboolean gst_alsasink_unprepare (GstAudioSink * asink);
 static gboolean gst_alsasink_close (GstAudioSink * asink);
 static gint gst_alsasink_write (GstAudioSink * asink, gpointer data,
@@ -93,14 +94,15 @@ static void gst_alsasink_reset (GstAudioSink * asink);
 
 static gint output_ref;         /* 0    */
 static snd_output_t *output;    /* NULL */
-static GStaticMutex output_mutex = G_STATIC_MUTEX_INIT;
+static GMutex output_mutex;
 
 static GstStaticPadTemplate alsasink_sink_factory =
     GST_STATIC_PAD_TEMPLATE ("sink",
     GST_PAD_SINK,
     GST_PAD_ALWAYS,
     GST_STATIC_CAPS ("audio/x-raw, "
-        "formats = (string) " GST_AUDIO_FORMATS_ALL ", "
+        "format = (string) " GST_AUDIO_FORMATS_ALL ", "
+        "layout = (string) interleaved, "
         "rate = (int) [ 1, MAX ], " "channels = (int) [ 1, MAX ]; "
         "audio/x-iec958")
     );
@@ -113,13 +115,13 @@ gst_alsasink_finalise (GObject * object)
   g_free (sink->device);
   g_mutex_free (sink->alsa_lock);
 
-  g_static_mutex_lock (&output_mutex);
+  g_mutex_lock (&output_mutex);
   --output_ref;
   if (output_ref == 0) {
     snd_output_close (output);
     output = NULL;
   }
-  g_static_mutex_unlock (&output_mutex);
+  g_mutex_unlock (&output_mutex);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -127,7 +129,9 @@ gst_alsasink_finalise (GObject * object)
 static void
 gst_alsasink_init_interfaces (GType type)
 {
+#if 0
   gst_alsa_type_add_device_property_probe_interface (type);
+#endif
 }
 
 static void
@@ -149,7 +153,7 @@ gst_alsasink_class_init (GstAlsaSinkClass * klass)
   gobject_class->get_property = gst_alsasink_get_property;
   gobject_class->set_property = gst_alsasink_set_property;
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Audio sink (ALSA)", "Sink/Audio",
       "Output to a sound card via ALSA", "Wim Taymans <wim@fluendo.com>");
 
@@ -243,18 +247,20 @@ gst_alsasink_init (GstAlsaSink * alsasink)
   alsasink->cached_caps = NULL;
   alsasink->alsa_lock = g_mutex_new ();
 
-  g_static_mutex_lock (&output_mutex);
+  g_mutex_lock (&output_mutex);
   if (output_ref == 0) {
     snd_output_stdio_attach (&output, stdout, 0);
     ++output_ref;
   }
-  g_static_mutex_unlock (&output_mutex);
+  g_mutex_unlock (&output_mutex);
 }
 
 #define CHECK(call, error) \
-G_STMT_START {                  \
-if ((err = call) < 0)           \
-  goto error;                   \
+G_STMT_START {             \
+  if ((err = call) < 0) {  \
+    GST_WARNING_OBJECT (alsa, "Error %d (%s) calling " #call, err, snd_strerror (err)); \
+    goto error;            \
+  }                        \
 } G_STMT_END;
 
 static GstCaps *
@@ -351,8 +357,6 @@ retry:
   rrate = alsa->rate;
   CHECK (snd_pcm_hw_params_set_rate_near (alsa->handle, params, &rrate, NULL),
       no_rate);
-  if (rrate != alsa->rate)
-    goto rate_match;
 
 #ifndef GST_DISABLE_GST_DEBUG
   /* get and dump some limits */
@@ -482,13 +486,6 @@ no_rate:
             alsa->rate, snd_strerror (err)));
     return err;
   }
-rate_match:
-  {
-    GST_ELEMENT_ERROR (alsa, RESOURCE, SETTINGS, (NULL),
-        ("Rate doesn't match (requested %iHz, get %iHz)", alsa->rate, err));
-    snd_pcm_hw_params_free (params);
-    return -EINVAL;
-  }
 buffer_size:
   {
     GST_ELEMENT_ERROR (alsa, RESOURCE, SETTINGS, (NULL),
@@ -588,13 +585,13 @@ set_sw_params:
 }
 
 static gboolean
-alsasink_parse_spec (GstAlsaSink * alsa, GstRingBufferSpec * spec)
+alsasink_parse_spec (GstAlsaSink * alsa, GstAudioRingBufferSpec * spec)
 {
   /* Initialize our boolean */
   alsa->iec958 = FALSE;
 
   switch (spec->type) {
-    case GST_BUFTYPE_RAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_RAW:
       switch (GST_AUDIO_INFO_FORMAT (&spec->info)) {
         case GST_AUDIO_FORMAT_U8:
           alsa->format = SND_PCM_FORMAT_U8;
@@ -690,13 +687,13 @@ alsasink_parse_spec (GstAlsaSink * alsa, GstRingBufferSpec * spec)
           goto error;
       }
       break;
-    case GST_BUFTYPE_A_LAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_A_LAW:
       alsa->format = SND_PCM_FORMAT_A_LAW;
       break;
-    case GST_BUFTYPE_MU_LAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MU_LAW:
       alsa->format = SND_PCM_FORMAT_MU_LAW;
       break;
-    case GST_BUFTYPE_IEC958:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_IEC958:
       alsa->format = SND_PCM_FORMAT_S16_BE;
       alsa->iec958 = TRUE;
       break;
@@ -709,6 +706,10 @@ alsasink_parse_spec (GstAlsaSink * alsa, GstRingBufferSpec * spec)
   alsa->buffer_time = spec->buffer_time;
   alsa->period_time = spec->latency_time;
   alsa->access = SND_PCM_ACCESS_RW_INTERLEAVED;
+
+  if (spec->type == GST_AUDIO_RING_BUFFER_FORMAT_TYPE_RAW && alsa->channels < 9)
+    gst_audio_ring_buffer_set_channel_positions (GST_AUDIO_BASE_SINK
+        (alsa)->ringbuffer, alsa_position[alsa->channels - 1]);
 
   return TRUE;
 
@@ -754,14 +755,14 @@ open_error:
 }
 
 static gboolean
-gst_alsasink_prepare (GstAudioSink * asink, GstRingBufferSpec * spec)
+gst_alsasink_prepare (GstAudioSink * asink, GstAudioRingBufferSpec * spec)
 {
   GstAlsaSink *alsa;
   gint err;
 
   alsa = GST_ALSA_SINK (asink);
 
-  if (spec->type == GST_BUFTYPE_IEC958) {
+  if (spec->type == GST_AUDIO_RING_BUFFER_FORMAT_TYPE_IEC958) {
     snd_pcm_close (alsa->handle);
     alsa->handle = gst_alsa_open_iec958_pcm (GST_OBJECT (alsa));
     if (G_UNLIKELY (!alsa->handle)) {

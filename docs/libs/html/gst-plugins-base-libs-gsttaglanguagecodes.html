@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gsttaglanguagecodes</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="prev" href="gst-plugins-base-libs-gsttagmux.html" title="gsttagmux">
 <link rel="next" href="gst-plugins-base-libs-gsttaglicenses.html" title="gsttaglicenses">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-gsttagmux.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-tag.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gsttaglicenses.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -48,6 +48,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *lang_code</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="gst-plugins-base-libs-gsttaglanguagecodes.html#gst-tag-get-language-code-iso-639-2T" title="gst_tag_get_language_code_iso_639_2T ()">gst_tag_get_language_code_iso_639_2T</a>
                                                         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *lang_code</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gsttaglanguagecodes.html#gst-tag-check-language-code" title="gst_tag_check_language_code ()">gst_tag_check_language_code</a>         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *lang_code</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -55,7 +56,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="id577297"></a><p>
+<a name="idp22817376"></a><p>
 Provides helper functions to convert between the various ISO-639 language
 codes, and to map language codes to language names.
 </p>
@@ -89,8 +90,8 @@ with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-F
 <a name="gst-tag-get-language-name"></a><h3>gst_tag_get_language_name ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_tag_get_language_name           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);</pre>
 <p>
-Returns the name of the language given an ISO-639 language code, such
-as often found in a GST_TAG_LANGUAGE tag. The name will be translated
+Returns the name of the language given an ISO-639 language code as
+found in a GST_TAG_LANGUAGE_CODE tag. The name will be translated
 according to the current locale (if the library was built against the
 iso-codes package, otherwise the English name will be returned).
 </p>
@@ -229,6 +230,35 @@ modified or freed.</td>
 </tbody>
 </table></div>
 <p class="since">Since 0.10.26</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-tag-check-language-code"></a><h3>gst_tag_check_language_code ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_tag_check_language_code         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *lang_code</code></em>);</pre>
+<p>
+Check if a given string contains a known ISO 639 language code.
+</p>
+<p>
+This is useful in situations where it's not clear whether a given
+string is a language code (which should be put into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GST-TAG-LANGUAGE-CODE:CAPS"><span class="type">GST_TAG_LANGUAGE_CODE</span></a>
+tag) or a free-form language name descriptor (which should be put into a
+<span class="type">GST_TAG_LANGUAGE_NAME</span> tag instead).
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>lang_code</code></em> :</span></p></td>
+<td>ISO-639 language code (e.g. "deu" or "ger" or "de")</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the two- or three-letter language code in <em class="parameter"><code>lang_code</code></em>
+is a valid ISO-639 language code.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.37</p>
 </div>
 </div>
 <div class="refsect1">

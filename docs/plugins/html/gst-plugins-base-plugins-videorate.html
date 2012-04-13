@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>videorate</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-uridecodebin.html" title="uridecodebin">
 <link rel="next" href="gst-plugins-base-plugins-videoscale.html" title="videoscale">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-uridecodebin.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-videoscale.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -51,21 +51,23 @@
    +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
          +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
-                     +----GstVideoRate
+                     +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html">GstBaseTransform</a>
+                           +----GstVideoRate
 </pre>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videorate.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop" title='The "drop" property'>drop</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read
-  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--duplicate" title='The "duplicate" property'>duplicate</a>"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read
-  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--in" title='The "in" property'>in</a>"                       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop" title='The "drop" property'>drop</a>"                     <span class="type">guint64</span>               : Read
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--duplicate" title='The "duplicate" property'>duplicate</a>"                <span class="type">guint64</span>               : Read
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--in" title='The "in" property'>in</a>"                       <span class="type">guint64</span>               : Read
   "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--new-pref" title='The "new-pref" property'>new-pref</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--out" title='The "out" property'>out</a>"                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--out" title='The "out" property'>out</a>"                      <span class="type">guint64</span>               : Read
   "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--silent" title='The "silent" property'>silent</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--skip-to-first" title='The "skip-to-first" property'>skip-to-first</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--average-period" title='The "average-period" property'>average-period</a>"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--average-period" title='The "average-period" property'>average-period</a>"           <span class="type">guint64</span>               : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop-only" title='The "drop-only" property'>drop-only</a>"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-videorate.html#GstVideoRate--max-rate" title='The "max-rate" property'>max-rate</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1">
@@ -113,14 +115,30 @@ applications should be prepared for this.
 <p>
 </p>
 <div class="refsect2">
-<a name="id512718"></a><h3>Example pipelines</h3>
-<div class="informalexample"><pre class="programlisting">
-gst-launch -v filesrc location=videotestsrc.ogg ! oggdemux ! theoradec ! videorate ! video/x-raw,framerate=15/1 ! xvimagesink
-</pre></div> Decode an Ogg/Theora file and adjust the framerate to 15 fps before playing.
+<a name="idp14232544"></a><h3>Example pipelines</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>videotestsrc<span class="gtkdoc opt">.</span>ogg <span class="gtkdoc opt">!</span> oggdemux <span class="gtkdoc opt">!</span> theoradec <span class="gtkdoc opt">!</span> videorate <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>framerate<span class="gtkdoc opt">=</span><span class="number">15</span><span class="gtkdoc opt">/</span><span class="number">1</span> <span class="gtkdoc opt">!</span> xvimagesink</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ Decode an Ogg/Theora file and adjust the framerate to 15 fps before playing.
 To create the test Ogg/Theora file refer to the documentation of theoraenc.
-<div class="informalexample"><pre class="programlisting">
-gst-launch -v v4l2src ! videorate ! video/x-raw,framerate=25/2 ! theoraenc ! oggmux ! filesink location=recording.ogg
-</pre></div> Capture video from a V4L device, and adjust the stream to 12.5 fps before
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v v4l2src <span class="gtkdoc opt">!</span> videorate <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>framerate<span class="gtkdoc opt">=</span><span class="number">25</span><span class="gtkdoc opt">/</span><span class="number">2</span> <span class="gtkdoc opt">!</span> theoraenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> filesink location<span class="gtkdoc opt">=</span>recording<span class="gtkdoc opt">.</span>ogg</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ Capture video from a V4L device, and adjust the stream to 12.5 fps before
 encoding to Ogg/Theora.
 </div>
 <p>
@@ -131,7 +149,7 @@ Last reviewed on 2006-09-02 (0.10.11)
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id547163"></a><h3>Element Information</h3>
+<a name="idp14693712"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -154,7 +172,7 @@ Last reviewed on 2006-09-02 (0.10.11)
 </div>
 <hr>
 <div class="refsect2">
-<a name="id547225"></a><h3>Element Pads</h3>
+<a name="idp14701168"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -172,15 +190,7 @@ Last reviewed on 2006-09-02 (0.10.11)
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw-yuv</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> video/x-raw-rgb</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> video/x-raw-gray</td>
+<td>video/x-raw</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
@@ -209,15 +219,7 @@ Last reviewed on 2006-09-02 (0.10.11)
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw-yuv</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> video/x-raw-rgb</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> video/x-raw-gray</td>
+<td>video/x-raw</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
@@ -248,21 +250,21 @@ Opaque data structure.
 <a name="gst-plugins-base-plugins-videorate.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstVideoRate--drop"></a><h3>The <code class="literal">"drop"</code> property</h3>
-<pre class="programlisting">  "drop"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read</pre>
+<pre class="programlisting">  "drop"                     <span class="type">guint64</span>               : Read</pre>
 <p>Number of dropped frames.</p>
 <p>Default value: 0</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstVideoRate--duplicate"></a><h3>The <code class="literal">"duplicate"</code> property</h3>
-<pre class="programlisting">  "duplicate"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read</pre>
+<pre class="programlisting">  "duplicate"                <span class="type">guint64</span>               : Read</pre>
 <p>Number of duplicated frames.</p>
 <p>Default value: 0</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstVideoRate--in"></a><h3>The <code class="literal">"in"</code> property</h3>
-<pre class="programlisting">  "in"                       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read</pre>
+<pre class="programlisting">  "in"                       <span class="type">guint64</span>               : Read</pre>
 <p>Number of input frames.</p>
 <p>Default value: 0</p>
 </div>
@@ -277,7 +279,7 @@ Opaque data structure.
 <hr>
 <div class="refsect2">
 <a name="GstVideoRate--out"></a><h3>The <code class="literal">"out"</code> property</h3>
-<pre class="programlisting">  "out"                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read</pre>
+<pre class="programlisting">  "out"                      <span class="type">guint64</span>               : Read</pre>
 <p>Number of output frames.</p>
 <p>Default value: 0</p>
 </div>
@@ -301,13 +303,13 @@ Don't produce buffers before the first one we receive.
 <hr>
 <div class="refsect2">
 <a name="GstVideoRate--average-period"></a><h3>The <code class="literal">"average-period"</code> property</h3>
-<pre class="programlisting">  "average-period"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read / Write</pre>
+<pre class="programlisting">  "average-period"           <span class="type">guint64</span>               : Read / Write</pre>
 <p>
 Arrange for maximum framerate by dropping frames beyond a certain framerate,
 where the framerate is calculated using a moving average over the
 configured.
 </p>
-<p>Allowed values: &lt;= G_MAXINT64</p>
+<p>Allowed values: &lt;= G_MAXLONG</p>
 <p>Default value: 0</p>
 <p class="since">Since 0.10.36</p>
 </div>
@@ -319,6 +321,17 @@ configured.
 Only drop frames, no duplicates are produced.
 </p>
 <p>Default value: FALSE</p>
+<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoRate--max-rate"></a><h3>The <code class="literal">"max-rate"</code> property</h3>
+<pre class="programlisting">  "max-rate"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct</pre>
+<p>
+maximum framerate to pass through
+</p>
+<p>Allowed values: &gt;= 1</p>
+<p>Default value: 2147483647</p>
 <p class="since">Since 0.10.36</p>
 </div>
 </div>

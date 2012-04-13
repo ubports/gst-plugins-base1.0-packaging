@@ -71,18 +71,16 @@ struct _GstTheoraDec
   gboolean need_keyframe;
   GstVideoInfo vinfo;
 
-  gint offset_x, offset_y;
   gint output_bpp;
   GstBufferPool *pool;
-  gboolean use_cropping;
+  gboolean has_cropping;
+  gboolean need_cropping;
 
-  /* telemetry debuging options */
+  /* telemetry debugging options */
   gint telemetry_mv;
   gint telemetry_mbmode;
   gint telemetry_qi;
   gint telemetry_bits;
-
-  gboolean crop;
 
   /* list of buffers that need timestamps */
   GList *queued;

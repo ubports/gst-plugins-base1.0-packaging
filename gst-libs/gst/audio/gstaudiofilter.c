@@ -83,7 +83,7 @@ gst_audio_filter_class_init (GstAudioFilterClass * klass)
 static void
 gst_audio_filter_init (GstAudioFilter * self)
 {
-  /* nothing to do here */
+  gst_audio_info_init (&self->info);
 }
 
 /* we override the state change vfunc here instead of GstBaseTransform's stop
@@ -94,14 +94,6 @@ gst_audio_filter_change_state (GstElement * element, GstStateChange transition)
 {
   GstStateChangeReturn ret;
   GstAudioFilter *filter = GST_AUDIO_FILTER (element);
-
-  switch (transition) {
-    case GST_STATE_CHANGE_NULL_TO_READY:
-      gst_audio_info_init (&filter->info);
-      break;
-    default:
-      break;
-  }
 
   ret =
       GST_ELEMENT_CLASS (gst_audio_filter_parent_class)->change_state (element,
@@ -127,17 +119,24 @@ gst_audio_filter_set_caps (GstBaseTransform * btrans, GstCaps * incaps,
 {
   GstAudioFilterClass *klass;
   GstAudioFilter *filter = GST_AUDIO_FILTER (btrans);
+  GstAudioInfo info;
   gboolean ret = TRUE;
 
   GST_LOG_OBJECT (filter, "caps: %" GST_PTR_FORMAT, incaps);
+  GST_LOG_OBJECT (filter, "info: %d", GST_AUDIO_FILTER_RATE (filter));
 
-  if (!gst_audio_info_from_caps (&filter->info, incaps))
+  if (!gst_audio_info_from_caps (&info, incaps))
     goto invalid_format;
 
-  klass = GST_AUDIO_FILTER_CLASS_CAST (G_OBJECT_GET_CLASS (filter));
+  klass = GST_AUDIO_FILTER_GET_CLASS (filter);
 
   if (klass->setup)
-    ret = klass->setup (filter, &filter->info);
+    ret = klass->setup (filter, &info);
+
+  if (ret) {
+    filter->info = info;
+    GST_LOG_OBJECT (filter, "configured caps: %" GST_PTR_FORMAT, incaps);
+  }
 
   return ret;
 
@@ -153,19 +152,14 @@ static gboolean
 gst_audio_filter_get_unit_size (GstBaseTransform * btrans, GstCaps * caps,
     gsize * size)
 {
-  GstStructure *structure;
-  gboolean ret = TRUE;
-  gint width, channels;
+  GstAudioInfo info;
 
-  structure = gst_caps_get_structure (caps, 0);
+  if (!gst_audio_info_from_caps (&info, caps))
+    return FALSE;
 
-  ret &= gst_structure_get_int (structure, "width", &width);
-  ret &= gst_structure_get_int (structure, "channels", &channels);
+  *size = GST_AUDIO_INFO_BPF (&info);
 
-  if (ret)
-    *size = (width / 8) * channels;
-
-  return ret;
+  return TRUE;
 }
 
 /**

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.28.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-04-27 22:51+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -185,9 +185,8 @@ msgstr "Phần tử nguồn không phải hợp lệ."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Lỗi khi gởi dữ liệu cho « %s:%d »."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Kết nối tới « %s:%d » bị từ chối."
+msgid "This CD has no audio tracks"
+msgstr "Đĩa CD này không có rãnh âm thanh nào"
 
 msgid "Can't record audio fast enough"
 msgstr "Không thể thu âm thanh một cách đủ nhanh"
@@ -352,9 +351,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Đĩa CD này không có rãnh âm thanh nào"
-
 msgid "ID3 tag"
 msgstr "Thẻ ID3"
 
@@ -389,6 +385,21 @@ msgstr "MSZH không mất gì (Lossless MSZH)"
 
 msgid "Run-length encoding"
 msgstr "Mã hoá độ dài chạy (Run-Length Encoding: RLE)"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Định dạng phụ đề TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Định dạng phụ đề Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Định dạng phụ đề Kate"
 
 msgid "Sami subtitle format"
 msgstr "Định dạng phụ đề Sami"
@@ -507,6 +518,9 @@ msgstr "Không rõ phần tử mã hoá"
 
 msgid "Plugin or element of unknown type"
 msgstr "Không rõ kiểu phần bổ sung hay phần tử"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Kết nối tới « %s:%d » bị từ chối."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "YUV 4:2:0 phẳng không nén"

@@ -1,97 +1,111 @@
 # variables used for enum/marshal generation
 glib_enum_headers= 		\
-	multichannel.h		\
-	gstringbuffer.h
+	audio.h			\
+	gstaudioringbuffer.h
 
 glib_enum_define = GST_AUDIO
 glib_gen_prefix = gst_audio
 glib_gen_basename = audio
 
-built_sources = audio-enumtypes.c
-built_headers = audio-enumtypes.h
+built_sources = audio-enumtypes.c audio-marshal.c
+built_headers = audio-enumtypes.h audio-marshal.h
 BUILT_SOURCES = $(built_sources) $(built_headers)
 
 lib_LTLIBRARIES = \
-	libgstaudio-@GST_MAJORMINOR@.la
+	libgstaudio-@GST_API_VERSION@.la
+
+EXTRA_DIST = audio-marshal.list
 
 CLEANFILES = $(BUILT_SOURCES)
 
-# FIXME 0.11: rename GstBaseAudioSink to GstAudioBaseSink or merge with GstAudioSink
-libgstaudio_@GST_MAJORMINOR@_la_SOURCES = \
+libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	audio.c \
-	gstringbuffer.c \
+	gstaudioringbuffer.c \
 	gstaudioclock.c \
+	mixer.c \
+	mixeroptions.c \
+	mixertrack.c \
 	mixerutils.c \
-	multichannel.c \
+	gstaudiocdsrc.c \
 	gstaudiodecoder.c \
 	gstaudioencoder.c \
-	gstbaseaudiosink.c \
-	gstbaseaudiosrc.c \
+	gstaudiobasesink.c \
+	gstaudiobasesrc.c \
 	gstaudiofilter.c \
+	gstaudiometa.c \
 	gstaudiosink.c \
 	gstaudiosrc.c \
+	streamvolume.c \
 	gstaudioiec61937.c
-nodist_libgstaudio_@GST_MAJORMINOR@_la_SOURCES = $(built_sources) $(built_headers)
 
-libgstaudio_@GST_MAJORMINOR@includedir = $(includedir)/gstreamer-@GST_MAJORMINOR@/gst/audio
-libgstaudio_@GST_MAJORMINOR@include_HEADERS = \
+nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES = $(built_sources) $(built_headers)
+
+libgstaudio_@GST_API_VERSION@includedir = $(includedir)/gstreamer-@GST_API_VERSION@/gst/audio
+libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio.h \
-	gstringbuffer.h \
+	gstaudioringbuffer.h \
 	gstaudioclock.h \
 	gstaudiofilter.h \
+	gstaudiocdsrc.h \
 	gstaudiodecoder.h \
 	gstaudioencoder.h \
-	gstbaseaudiosink.h \
-	gstbaseaudiosrc.h \
+	gstaudiobasesink.h \
+	gstaudiobasesrc.h \
+	gstaudiometa.h \
 	gstaudiosink.h \
 	gstaudiosrc.h \
+	mixer.h \
+	mixeroptions.h \
+	mixertrack.h \
 	mixerutils.h \
-	multichannel.h \
+	streamvolume.h \
 	gstaudioiec61937.h
 
-nodist_libgstaudio_@GST_MAJORMINOR@include_HEADERS = \
+nodist_libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio-enumtypes.h
 
-libgstaudio_@GST_MAJORMINOR@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
-libgstaudio_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) $(GST_LIBS) \
-  $(top_builddir)/gst-libs/gst/interfaces/libgstinterfaces-@GST_MAJORMINOR@.la
-libgstaudio_@GST_MAJORMINOR@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
+libgstaudio_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
+libgstaudio_@GST_API_VERSION@_la_LIBADD = \
+  $(top_builddir)/gst-libs/gst/interfaces/libgstinterfaces-@GST_API_VERSION@.la \
+  $(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+  $(GST_BASE_LIBS) $(GST_LIBS) $(LIBM)
+libgstaudio_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 include $(top_srcdir)/common/gst-glib-gen.mak
 
 if HAVE_INTROSPECTION
-BUILT_GIRSOURCES = GstAudio-@GST_MAJORMINOR@.gir
+BUILT_GIRSOURCES = GstAudio-@GST_API_VERSION@.gir
 
-gir_headers=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_MAJORMINOR@include_HEADERS))
-gir_headers+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_MAJORMINOR@include_HEADERS))
-gir_sources=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_MAJORMINOR@_la_SOURCES))
-gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_MAJORMINOR@_la_SOURCES))
-gir_cincludes=$(patsubst %,--c-include='gst/audio/%',$(libgstaudio_@GST_MAJORMINOR@include_HEADERS))
-gir_cincludes+=$(patsubst %,--c-include='gst/audio/%',$(nodist_libgstaudio_@GST_MAJORMINOR@include_HEADERS))
+gir_headers=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@include_HEADERS))
+gir_headers+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS))
+gir_sources=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@_la_SOURCES))
+gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES))
+gir_cincludes=$(patsubst %,--c-include='gst/audio/%',$(libgstaudio_@GST_API_VERSION@include_HEADERS))
+gir_cincludes+=$(patsubst %,--c-include='gst/audio/%',$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS))
 
-GstAudio-@GST_MAJORMINOR@.gir: $(INTROSPECTION_SCANNER) libgstaudio-@GST_MAJORMINOR@.la
+GstAudio-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstaudio-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
 		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstAudio \
-		--nsversion=@GST_MAJORMINOR@ \
+		--nsversion=@GST_API_VERSION@ \
 		--warn-all \
 		--strip-prefix=Gst \
-		-DGST_USE_UNSTABLE_API \
 		-I$(top_srcdir)/gst-libs \
 		-I$(top_builddir)/gst-libs \
 		$(gir_cincludes) \
 		--add-include-path=$(builddir)/../interfaces \
-		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_MAJORMINOR@` \
-		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_MAJORMINOR@` \
-		--library=libgstaudio-@GST_MAJORMINOR@.la \
-		--include=Gst-@GST_MAJORMINOR@ \
-		--include=GstBase-@GST_MAJORMINOR@ \
-		--include=GstInterfaces-@GST_MAJORMINOR@ \
+		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
+		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
+		--library=$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+		--library=libgstaudio-@GST_API_VERSION@.la \
+		--include=Gst-@GST_API_VERSION@ \
+		--include=GstBase-@GST_API_VERSION@ \
+		--include=GstInterfaces-@GST_API_VERSION@ \
 		--libtool="$(top_builddir)/libtool" \
-		--pkg gstreamer-@GST_MAJORMINOR@ \
-		--pkg gstreamer-base-@GST_MAJORMINOR@ \
-		--pkg gstreamer-interfaces-@GST_MAJORMINOR@ \
-		--pkg-export gstreamer-audio-@GST_MAJORMINOR@ \
+		--pkg gstreamer-@GST_API_VERSION@ \
+		--pkg gstreamer-base-@GST_API_VERSION@ \
+		--pkg gstreamer-interfaces-@GST_API_VERSION@ \
+		--pkg-export gstreamer-audio-@GST_API_VERSION@ \
 		--add-init-section="gst_init(NULL,NULL);" \
 		--output $@ \
 		$(gir_headers) \
@@ -112,25 +126,25 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 		--includedir=$(srcdir) \
 		--includedir=$(builddir) \
 		--includedir=$(builddir)/../interfaces \
-		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_MAJORMINOR@` \
-		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_MAJORMINOR@` \
+		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
+		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
 
 Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer -:PROJECT libgstaudio -:SHARED libgstaudio-@GST_MAJORMINOR@ \
+	androgenizer -:PROJECT libgstaudio -:SHARED libgstaudio-@GST_API_VERSION@ \
 	 -:TAGS eng debug \
          -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstaudio_@GST_MAJORMINOR@_la_SOURCES) \
-	           $(nodist_libgstaudio_@GST_MAJORMINOR@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstaudio_@GST_MAJORMINOR@_la_CFLAGS) \
-	 -:LDFLAGS $(libgstaudio_@GST_MAJORMINOR@_la_LDFLAGS) \
-	           $(libgstaudio_@GST_MAJORMINOR@_la_LIBADD) \
+	 -:SOURCES $(libgstaudio_@GST_API_VERSION@_la_SOURCES) \
+	           $(nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES) \
+	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) \
+	 -:LDFLAGS $(libgstaudio_@GST_API_VERSION@_la_LDFLAGS) \
+	           $(libgstaudio_@GST_API_VERSION@_la_LIBADD) \
 	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_MAJORMINOR@/gst/tag \
-	 -:HEADERS $(libgstaudio_@GST_MAJORMINOR@include_HEADERS) \
-	           $(nodist_libgstaudio_@GST_MAJORMINOR@include_HEADERS) \
+	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/tag \
+	 -:HEADERS $(libgstaudio_@GST_API_VERSION@include_HEADERS) \
+	           $(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS) \
 	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
 	> $@

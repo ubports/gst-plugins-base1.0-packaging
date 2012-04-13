@@ -105,15 +105,20 @@
 
 /* Our interfaces */
 #include <gst/interfaces/navigation.h>
-#include <gst/interfaces/videooverlay.h>
+#include <gst/video/videooverlay.h>
 
-#include <gst/video/gstmetavideo.h>
+#include <gst/video/gstvideometa.h>
 
 /* Object header */
 #include "ximagesink.h"
 
 /* Debugging category */
 #include <gst/gstinfo.h>
+
+#include "gst/glib-compat-private.h"
+
+/* for XkbKeycodeToKeysym */
+#include <X11/XKBlib.h>
 
 GST_DEBUG_CATEGORY_EXTERN (gst_debug_ximagesink);
 GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
@@ -168,8 +173,9 @@ enum
 /*          Object typing & Creation           */
 /*                                             */
 /* =========================================== */
-static void gst_ximagesink_navigation_init (GstNavigationInterface * klass);
-static void gst_ximagesink_video_overlay_init (GstVideoOverlayIface * iface);
+static void gst_ximagesink_navigation_init (GstNavigationInterface * iface);
+static void gst_ximagesink_video_overlay_init (GstVideoOverlayInterface *
+    iface);
 #define gst_ximagesink_parent_class parent_class
 G_DEFINE_TYPE_WITH_CODE (GstXImageSink, gst_ximagesink, GST_TYPE_VIDEO_SINK,
     G_IMPLEMENT_INTERFACE (GST_TYPE_NAVIGATION, gst_ximagesink_navigation_init);
@@ -224,8 +230,8 @@ gst_ximagesink_xwindow_draw_borders (GstXImageSink * ximagesink,
 static gboolean
 gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
 {
-  GstMetaXImage *meta;
-  GstMetaVideoCrop *crop;
+  GstXImageMeta *meta;
+  GstVideoCropMeta *crop;
   GstVideoRectangle src, dst, result;
   gboolean draw_border = FALSE;
 
@@ -265,14 +271,16 @@ gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
     }
   }
 
-  meta = gst_buffer_get_meta_ximage (ximage);
-  crop = gst_buffer_get_meta_video_crop (ximage);
+  meta = gst_buffer_get_ximage_meta (ximage);
+  crop = gst_buffer_get_video_crop_meta (ximage);
 
   if (crop) {
     src.x = crop->x + meta->x;
     src.y = crop->y + meta->y;
     src.w = crop->width;
     src.h = crop->height;
+    GST_LOG_OBJECT (ximagesink,
+        "crop %dx%d-%dx%d", crop->x, crop->y, crop->width, crop->height);
   } else {
     src.x = meta->x;
     src.y = meta->y;
@@ -588,6 +596,7 @@ gst_ximagesink_handle_xevents (GstXImageSink * ximagesink)
           KeyPressMask | KeyReleaseMask |
           ButtonPressMask | ButtonReleaseMask, &e)) {
     KeySym keysym;
+    const char *key_str = NULL;
 
     /* We lock only for the X function call */
     g_mutex_unlock (ximagesink->x_lock);
@@ -612,24 +621,20 @@ gst_ximagesink_handle_xevents (GstXImageSink * ximagesink)
       case KeyRelease:
         /* Key pressed/released over our window. We send upstream
            events for interactivity/navigation */
-        GST_DEBUG ("ximagesink key %d pressed over window at %d,%d",
-            e.xkey.keycode, e.xkey.x, e.xkey.x);
         g_mutex_lock (ximagesink->x_lock);
-        keysym = XKeycodeToKeysym (ximagesink->xcontext->disp,
-            e.xkey.keycode, 0);
-        g_mutex_unlock (ximagesink->x_lock);
+        keysym = XkbKeycodeToKeysym (ximagesink->xcontext->disp,
+            e.xkey.keycode, 0, 0);
         if (keysym != NoSymbol) {
-          char *key_str = NULL;
-
-          g_mutex_lock (ximagesink->x_lock);
           key_str = XKeysymToString (keysym);
-          g_mutex_unlock (ximagesink->x_lock);
-          gst_navigation_send_key_event (GST_NAVIGATION (ximagesink),
-              e.type == KeyPress ? "key-press" : "key-release", key_str);
         } else {
-          gst_navigation_send_key_event (GST_NAVIGATION (ximagesink),
-              e.type == KeyPress ? "key-press" : "key-release", "unknown");
+          key_str = "unknown";
         }
+        g_mutex_unlock (ximagesink->x_lock);
+        GST_DEBUG_OBJECT (ximagesink,
+            "key %d pressed over window at %d,%d (%s)",
+            e.xkey.keycode, e.xkey.x, e.xkey.y, key_str);
+        gst_navigation_send_key_event (GST_NAVIGATION (ximagesink),
+            e.type == KeyPress ? "key-press" : "key-release", key_str);
         break;
       default:
         GST_DEBUG_OBJECT (ximagesink, "ximagesink unhandled X event (%d)",
@@ -737,8 +742,8 @@ gst_ximagesink_manage_event_thread (GstXImageSink * ximagesink)
       GST_DEBUG_OBJECT (ximagesink, "run xevent thread, expose %d, events %d",
           ximagesink->handle_expose, ximagesink->handle_events);
       ximagesink->running = TRUE;
-      ximagesink->event_thread = g_thread_create (
-          (GThreadFunc) gst_ximagesink_event_thread, ximagesink, TRUE, NULL);
+      ximagesink->event_thread = g_thread_try_new ("ximagesink-events",
+          (GThreadFunc) gst_ximagesink_event_thread, ximagesink, NULL);
     }
   } else {
     if (ximagesink->event_thread) {
@@ -1074,6 +1079,7 @@ gst_ximagesink_setcaps (GstBaseSink * bsink, GstCaps * caps)
   GstBufferPool *newpool, *oldpool;
   const GValue *par;
   gint size;
+  static GstAllocationParams params = { 0, 0, 0, 15, };
 
   ximagesink = GST_XIMAGESINK (bsink);
 
@@ -1143,12 +1149,17 @@ gst_ximagesink_setcaps (GstBaseSink * bsink, GstCaps * caps)
   newpool = gst_ximage_buffer_pool_new (ximagesink);
 
   structure = gst_buffer_pool_get_config (newpool);
-  gst_buffer_pool_config_set (structure, caps, size, 2, 0, 0, 15);
+  gst_buffer_pool_config_set_params (structure, caps, size, 2, 0);
+  gst_buffer_pool_config_set_allocator (structure, NULL, &params);
   if (!gst_buffer_pool_set_config (newpool, structure))
     goto config_failed;
 
   oldpool = ximagesink->pool;
+  /* we don't activate the pool yet, this will be done by downstream after it
+   * has configured the pool. If downstream does not want our pool we will
+   * activate it when we render into it */
   ximagesink->pool = newpool;
+  g_mutex_unlock (ximagesink->flow_lock);
 
   /* unref the old sink */
   if (oldpool) {
@@ -1156,7 +1167,6 @@ gst_ximagesink_setcaps (GstBaseSink * bsink, GstCaps * caps)
      * deactivated when the last ref is gone */
     gst_object_unref (oldpool);
   }
-  g_mutex_unlock (ximagesink->flow_lock);
 
   return TRUE;
 
@@ -1287,12 +1297,12 @@ gst_ximagesink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
 {
   GstFlowReturn res;
   GstXImageSink *ximagesink;
-  GstMetaXImage *meta;
+  GstXImageMeta *meta;
   GstBuffer *to_put = NULL;
 
   ximagesink = GST_XIMAGESINK (vsink);
 
-  meta = gst_buffer_get_meta_ximage (buf);
+  meta = gst_buffer_get_ximage_meta (buf);
 
   if (meta && meta->sink == ximagesink) {
     /* If this buffer has been allocated using our buffer management we simply
@@ -1314,13 +1324,10 @@ gst_ximagesink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
     if (!gst_buffer_pool_set_active (ximagesink->pool, TRUE))
       goto activate_failed;
 
-    /* take a buffer form our pool */
+    /* take a buffer from our pool */
     res = gst_buffer_pool_acquire_buffer (ximagesink->pool, &to_put, NULL);
     if (res != GST_FLOW_OK)
       goto no_buffer;
-
-    if (gst_buffer_get_size (to_put) < gst_buffer_get_size (buf))
-      goto wrong_size;
 
     GST_CAT_LOG_OBJECT (GST_CAT_PERFORMANCE, ximagesink,
         "slow copy into bufferpool buffer %p", to_put);
@@ -1361,16 +1368,6 @@ no_buffer:
     /* No image available. That's very bad ! */
     GST_WARNING_OBJECT (ximagesink, "could not create image");
     return res;
-  }
-wrong_size:
-  {
-    GST_ELEMENT_ERROR (ximagesink, RESOURCE, WRITE,
-        ("Failed to create output image buffer"),
-        ("XServer allocated buffer size did not match input buffer %"
-            G_GSIZE_FORMAT " - %" G_GSIZE_FORMAT, gst_buffer_get_size (to_put),
-            gst_buffer_get_size (buf)));
-    res = GST_FLOW_ERROR;
-    goto done;
   }
 invalid_buffer:
   {
@@ -1419,10 +1416,7 @@ gst_ximagesink_event (GstBaseSink * sink, GstEvent * event)
     default:
       break;
   }
-  if (GST_BASE_SINK_CLASS (parent_class)->event)
-    return GST_BASE_SINK_CLASS (parent_class)->event (sink, event);
-  else
-    return TRUE;
+  return GST_BASE_SINK_CLASS (parent_class)->event (sink, event);
 }
 
 static gboolean
@@ -1446,11 +1440,11 @@ gst_ximagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
   g_mutex_unlock (ximagesink->flow_lock);
 
   if (pool != NULL) {
-    const GstCaps *pcaps;
+    GstCaps *pcaps;
 
     /* we had a pool, check caps */
     config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_get (config, &pcaps, &size, NULL, NULL, NULL, NULL);
+    gst_buffer_pool_config_get_params (config, &pcaps, &size, NULL, NULL);
 
     GST_DEBUG_OBJECT (ximagesink,
         "we had a pool with caps %" GST_PTR_FORMAT, pcaps);
@@ -1460,6 +1454,7 @@ gst_ximagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
       gst_object_unref (pool);
       pool = NULL;
     }
+    gst_structure_free (config);
   }
   if (pool == NULL && need_pool) {
     GstVideoInfo info;
@@ -1474,16 +1469,16 @@ gst_ximagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
     size = info.size;
 
     config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_set (config, caps, size, 0, 0, 0, 0);
+    gst_buffer_pool_config_set_params (config, caps, size, 0, 0);
     if (!gst_buffer_pool_set_config (pool, config))
       goto config_failed;
   }
   /* we need at least 2 buffer because we hold on to the last one */
-  gst_query_set_allocation_params (query, size, 2, 0, 0, 0, pool);
+  gst_query_add_allocation_pool (query, pool, size, 2, 0);
 
   /* we also support various metadata */
-  gst_query_add_allocation_meta (query, GST_META_API_VIDEO);
-  gst_query_add_allocation_meta (query, GST_META_API_VIDEO_CROP);
+  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE);
+  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE);
 
   gst_object_unref (pool);
 
@@ -1679,7 +1674,7 @@ gst_ximagesink_set_event_handling (GstVideoOverlay * overlay,
 }
 
 static void
-gst_ximagesink_video_overlay_init (GstVideoOverlayIface * iface)
+gst_ximagesink_video_overlay_init (GstVideoOverlayInterface * iface)
 {
   iface->set_window_handle = gst_ximagesink_set_window_handle;
   iface->expose = gst_ximagesink_expose;
@@ -1919,8 +1914,9 @@ gst_ximagesink_class_init (GstXImageSinkClass * klass)
       g_param_spec_string ("display", "Display", "X Display name",
           NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_SYNCHRONOUS,
-      g_param_spec_boolean ("synchronous", "Synchronous", "When enabled, runs "
-          "the X display in synchronous mode. (used only for debugging)", FALSE,
+      g_param_spec_boolean ("synchronous", "Synchronous",
+          "When enabled, runs the X display in synchronous mode. "
+          "(unrelated to A/V sync, used only for debugging)", FALSE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_FORCE_ASPECT_RATIO,
       g_param_spec_boolean ("force-aspect-ratio", "Force aspect ratio",
@@ -1965,7 +1961,7 @@ gst_ximagesink_class_init (GstXImageSinkClass * klass)
           "Height of the window", 0, G_MAXUINT64, 0,
           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Video sink", "Sink/Video",
       "A standard X based videosink", "Julien Moutte <julien@moutte.net>");
 

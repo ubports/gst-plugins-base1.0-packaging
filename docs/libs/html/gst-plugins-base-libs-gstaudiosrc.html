@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudiosrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiosink.html" title="gstaudiosink">
-<link rel="next" href="gst-plugins-base-libs-gstbaseaudiosink.html" title="gstbaseaudiosink">
+<link rel="next" href="gst-plugins-base-libs-gstaudiobasesink.html" title="gstaudiobasesink">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -17,8 +17,8 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-gstaudiosink.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstbaseaudiosink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
+<td><a accesskey="n" href="gst-plugins-base-libs-gstaudiobasesink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstaudiosrc.synopsis" class="shortcut">Top</a>
@@ -55,7 +55,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstaudiosrc.html
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
                      +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSrc.html">GstBaseSrc</a>
                            +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstPushSrc.html">GstPushSrc</a>
-                                 +----<a class="link" href="gst-plugins-base-libs-gstbaseaudiosrc.html#GstBaseAudioSrc">GstBaseAudioSrc</a>
+                                 +----<a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc">GstAudioBaseSrc</a>
                                        +----GstAudioSrc
 </pre>
 </div>
@@ -105,8 +105,8 @@ subclasses to implement a set of simple functions:
 </p>
 <p>
 All scheduling of samples and timestamps is done in this base class
-together with <a class="link" href="gst-plugins-base-libs-gstbaseaudiosrc.html#GstBaseAudioSrc"><span class="type">GstBaseAudioSrc</span></a> using a default implementation of a
-<a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBuffer"><span class="type">GstRingBuffer</span></a> that uses threads.
+together with <a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc"><span class="type">GstAudioBaseSrc</span></a> using a default implementation of a
+<a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> that uses threads.
 </p>
 <p>
 Last reviewed on 2006-09-27 (0.10.12)
@@ -125,14 +125,14 @@ Base class for simple audio sources.
 <div class="refsect2">
 <a name="GstAudioSrcClass"></a><h3>struct GstAudioSrcClass</h3>
 <pre class="programlisting">struct GstAudioSrcClass {
-  GstBaseAudioSrcClass parent_class;
+  GstAudioBaseSrcClass parent_class;
 
   /* vtable */
 
   /* open the device with given specs */
   gboolean (*open)      (GstAudioSrc *src);
   /* prepare resources and state to operate with the given specs */
-  gboolean (*prepare)   (GstAudioSrc *src, GstRingBufferSpec *spec);
+  gboolean (*prepare)   (GstAudioSrc *src, GstAudioRingBufferSpec *spec);
   /* undo anything that was done in prepare() */
   gboolean (*unprepare) (GstAudioSrc *src);
   /* close the device */
@@ -153,7 +153,7 @@ functionality.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstbaseaudiosrc.html#GstBaseAudioSrcClass" title="struct GstBaseAudioSrcClass"><span class="type">GstBaseAudioSrcClass</span></a> <em class="structfield"><code><a name="GstAudioSrcClass.parent-class"></a>parent_class</code></em>;</span></p></td>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrcClass" title="struct GstAudioBaseSrcClass"><span class="type">GstAudioBaseSrcClass</span></a> <em class="structfield"><code><a name="GstAudioSrcClass.parent-class"></a>parent_class</code></em>;</span></p></td>
 <td>the parent class.</td>
 </tr>
 <tr>
@@ -190,7 +190,7 @@ functionality.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudiosrc.see-also"></a><h2>See Also</h2>
-<a class="link" href="gst-plugins-base-libs-gstbaseaudiosrc.html#GstBaseAudioSrc"><span class="type">GstBaseAudioSrc</span></a>, <a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBuffer"><span class="type">GstRingBuffer</span></a>, <a class="link" href="gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrc"><span class="type">GstAudioSrc</span></a>.
+<a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc"><span class="type">GstAudioBaseSrc</span></a>, <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a>, <a class="link" href="gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrc"><span class="type">GstAudioSrc</span></a>.
 </div>
 </div>
 <div class="footer">

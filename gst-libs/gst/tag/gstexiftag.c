@@ -458,7 +458,7 @@ gst_exif_reader_init (GstExifReader * reader, gint byte_order,
 {
   ensure_exif_tags ();
 
-  reader->taglist = gst_tag_list_new ();
+  reader->taglist = gst_tag_list_new_empty ();
   reader->buffer = buf;
   reader->base_offset = base_offset;
   reader->byte_order = byte_order;
@@ -550,7 +550,7 @@ gst_exif_writer_reset_and_get_buffer (GstExifWriter * writer)
   header = gst_byte_writer_reset_and_get_buffer (&writer->tagwriter);
   data = gst_byte_writer_reset_and_get_buffer (&writer->datawriter);
 
-  return gst_buffer_join (header, data);
+  return gst_buffer_append (header, data);
 }
 
 /*
@@ -612,28 +612,41 @@ gst_tag_list_has_ifd_tags (const GstTagList * taglist,
 static void
 gst_exif_writer_write_tag_header (GstExifWriter * writer,
     guint16 exif_tag, guint16 exif_type, guint32 count, guint32 offset,
-    gboolean is_data)
+    const guint32 * offset_data)
 {
+  gboolean handled = TRUE;
+
   GST_DEBUG ("Writing tag entry: id %x, type %u, count %u, offset %u",
       exif_tag, exif_type, count, offset);
 
   if (writer->byte_order == G_LITTLE_ENDIAN) {
-    gst_byte_writer_put_uint16_le (&writer->tagwriter, exif_tag);
-    gst_byte_writer_put_uint16_le (&writer->tagwriter, exif_type);
-    gst_byte_writer_put_uint32_le (&writer->tagwriter, count);
-    gst_byte_writer_put_uint32_le (&writer->tagwriter, offset);
-  } else if (writer->byte_order == G_BIG_ENDIAN) {
-    gst_byte_writer_put_uint16_be (&writer->tagwriter, exif_tag);
-    gst_byte_writer_put_uint16_be (&writer->tagwriter, exif_type);
-    gst_byte_writer_put_uint32_be (&writer->tagwriter, count);
-    if (is_data) {
-      gst_byte_writer_put_uint32_le (&writer->tagwriter, offset);
+    handled &= gst_byte_writer_put_uint16_le (&writer->tagwriter, exif_tag);
+    handled &= gst_byte_writer_put_uint16_le (&writer->tagwriter, exif_type);
+    handled &= gst_byte_writer_put_uint32_le (&writer->tagwriter, count);
+    if (offset_data != NULL) {
+      handled &=
+          gst_byte_writer_put_data (&writer->tagwriter, (guint8 *) offset_data,
+          4);
     } else {
-      gst_byte_writer_put_uint32_be (&writer->tagwriter, offset);
+      handled &= gst_byte_writer_put_uint32_le (&writer->tagwriter, offset);
+    }
+  } else if (writer->byte_order == G_BIG_ENDIAN) {
+    handled &= gst_byte_writer_put_uint16_be (&writer->tagwriter, exif_tag);
+    handled &= gst_byte_writer_put_uint16_be (&writer->tagwriter, exif_type);
+    handled &= gst_byte_writer_put_uint32_be (&writer->tagwriter, count);
+    if (offset_data != NULL) {
+      handled &=
+          gst_byte_writer_put_data (&writer->tagwriter, (guint8 *) offset_data,
+          4);
+    } else {
+      handled &= gst_byte_writer_put_uint32_be (&writer->tagwriter, offset);
     }
   } else {
     g_assert_not_reached ();
   }
+
+  if (G_UNLIKELY (!handled))
+    GST_WARNING ("Error writing tag header");
 
   writer->tags_total++;
 }
@@ -642,26 +655,36 @@ static void
 gst_exif_writer_write_rational_data (GstExifWriter * writer, guint32 frac_n,
     guint32 frac_d)
 {
+  gboolean handled = TRUE;
+
   if (writer->byte_order == G_LITTLE_ENDIAN) {
-    gst_byte_writer_put_uint32_le (&writer->datawriter, frac_n);
-    gst_byte_writer_put_uint32_le (&writer->datawriter, frac_d);
+    handled &= gst_byte_writer_put_uint32_le (&writer->datawriter, frac_n);
+    handled &= gst_byte_writer_put_uint32_le (&writer->datawriter, frac_d);
   } else {
-    gst_byte_writer_put_uint32_be (&writer->datawriter, frac_n);
-    gst_byte_writer_put_uint32_be (&writer->datawriter, frac_d);
+    handled &= gst_byte_writer_put_uint32_be (&writer->datawriter, frac_n);
+    handled &= gst_byte_writer_put_uint32_be (&writer->datawriter, frac_d);
   }
+
+  if (G_UNLIKELY (!handled))
+    GST_WARNING ("Error writing rational data");
 }
 
 static void
 gst_exif_writer_write_signed_rational_data (GstExifWriter * writer,
     gint32 frac_n, gint32 frac_d)
 {
+  gboolean handled = TRUE;
+
   if (writer->byte_order == G_LITTLE_ENDIAN) {
-    gst_byte_writer_put_int32_le (&writer->datawriter, frac_n);
-    gst_byte_writer_put_int32_le (&writer->datawriter, frac_d);
+    handled &= gst_byte_writer_put_int32_le (&writer->datawriter, frac_n);
+    handled &= gst_byte_writer_put_int32_le (&writer->datawriter, frac_d);
   } else {
-    gst_byte_writer_put_int32_be (&writer->datawriter, frac_n);
-    gst_byte_writer_put_int32_be (&writer->datawriter, frac_d);
+    handled &= gst_byte_writer_put_int32_be (&writer->datawriter, frac_n);
+    handled &= gst_byte_writer_put_int32_be (&writer->datawriter, frac_d);
   }
+
+  if (G_UNLIKELY (!handled))
+    GST_WARNING ("Error writing signed rational data");
 }
 
 static void
@@ -671,7 +694,7 @@ gst_exif_writer_write_rational_tag (GstExifWriter * writer,
   guint32 offset = gst_byte_writer_get_size (&writer->datawriter);
 
   gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_RATIONAL,
-      1, offset, FALSE);
+      1, offset, NULL);
 
   gst_exif_writer_write_rational_data (writer, frac_n, frac_d);
 }
@@ -683,7 +706,7 @@ gst_exif_writer_write_signed_rational_tag (GstExifWriter * writer,
   guint32 offset = gst_byte_writer_get_size (&writer->datawriter);
 
   gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_SRATIONAL,
-      1, offset, FALSE);
+      1, offset, NULL);
 
   gst_exif_writer_write_signed_rational_data (writer, frac_n, frac_d);
 }
@@ -720,7 +743,7 @@ gst_exif_writer_write_byte_tag (GstExifWriter * writer, guint16 tag,
 
   GST_WRITE_UINT8 ((guint8 *) & offset, value);
   gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_BYTE,
-      1, offset, TRUE);
+      1, offset, &offset);
 }
 
 static void
@@ -736,7 +759,7 @@ gst_exif_writer_write_short_tag (GstExifWriter * writer, guint16 tag,
   }
 
   gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_SHORT,
-      1, offset, TRUE);
+      1, offset, &offset);
 }
 
 static void
@@ -751,7 +774,7 @@ gst_exif_writer_write_long_tag (GstExifWriter * writer, guint16 tag,
   }
 
   gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_LONG,
-      1, offset, TRUE);
+      1, offset, &offset);
 }
 
 
@@ -766,29 +789,27 @@ write_exif_undefined_tag (GstExifWriter * writer, guint16 tag,
      * resulting tag headers offset and the base offset */
     offset = gst_byte_writer_get_size (&writer->datawriter);
     gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_UNDEFINED,
-        size, offset, FALSE);
-    gst_byte_writer_put_data (&writer->datawriter, data, size);
+        size, offset, NULL);
+    if (!gst_byte_writer_put_data (&writer->datawriter, data, size)) {
+      GST_WARNING ("Error writing undefined tag");
+    }
   } else {
     /* small enough to go in the offset */
     memcpy ((guint8 *) & offset, data, size);
     gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_UNDEFINED,
-        size, offset, TRUE);
+        size, offset, &offset);
   }
 }
 
 static void
 write_exif_ascii_tag (GstExifWriter * writer, guint16 tag, const gchar * str)
 {
-  gint size;
   guint32 offset = 0;
   gchar *ascii_str;
   gsize ascii_size;
   GError *error = NULL;
 
-  size = strlen (str) + 1;
-
-  ascii_str =
-      g_convert (str, size, "latin1", "utf8", NULL, &ascii_size, &error);
+  ascii_str = g_convert (str, -1, "latin1", "utf8", NULL, &ascii_size, &error);
 
   if (error) {
     GST_WARNING ("Failed to convert exif tag to ascii: 0x%x - %s. Error: %s",
@@ -806,13 +827,13 @@ write_exif_ascii_tag (GstExifWriter * writer, guint16 tag, const gchar * str)
      * resulting tag headers offset and the base offset */
     offset = gst_byte_writer_get_size (&writer->datawriter);
     gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_ASCII,
-        ascii_size, offset, FALSE);
+        ascii_size, offset, NULL);
     gst_byte_writer_put_string (&writer->datawriter, ascii_str);
   } else {
     /* small enough to go in the offset */
     memcpy ((guint8 *) & offset, ascii_str, ascii_size);
     gst_exif_writer_write_tag_header (writer, tag, EXIF_TYPE_ASCII,
-        ascii_size, offset, TRUE);
+        ascii_size, offset, &offset);
   }
 
   g_free (ascii_str);
@@ -875,6 +896,7 @@ write_exif_undefined_tag_from_taglist (GstExifWriter * writer,
     const GstTagList * taglist, const GstExifTagMatch * exiftag)
 {
   const GValue *value;
+  GstMapInfo info;
   guint8 *data = NULL;
   gsize size = 0;
   gint tag_size = gst_tag_list_get_tag_size (taglist, exiftag->gst_tag);
@@ -896,7 +918,9 @@ write_exif_undefined_tag_from_taglist (GstExifWriter * writer,
     default:
       if (G_VALUE_TYPE (value) == GST_TYPE_BUFFER) {
         buf = gst_value_get_buffer (value);
-        data = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
+        gst_buffer_map (buf, &info, GST_MAP_READ);
+        data = info.data;
+        size = info.size;
       } else {
         GST_WARNING ("Conversion from %s to raw data not supported",
             G_VALUE_TYPE_NAME (value));
@@ -908,7 +932,7 @@ write_exif_undefined_tag_from_taglist (GstExifWriter * writer,
     write_exif_undefined_tag (writer, exiftag->exif_tag, data, size);
 
   if (buf)
-    gst_buffer_unmap (buf, data, size);
+    gst_buffer_unmap (buf, &info);
 }
 
 static void
@@ -1070,6 +1094,7 @@ gst_exif_tag_rewrite_offsets (GstByteWriter * writer, gint byte_order,
   GstByteReader *reader;
   gint i;
   guint16 aux = G_MAXUINT16;
+  gboolean handled = TRUE;
 
   GST_LOG ("Rewriting tag entries offsets");
 
@@ -1077,9 +1102,9 @@ gst_exif_tag_rewrite_offsets (GstByteWriter * writer, gint byte_order,
 
   if (num_tags == -1) {
     if (byte_order == G_LITTLE_ENDIAN) {
-      gst_byte_reader_get_uint16_le (reader, &aux);
+      handled &= gst_byte_reader_get_uint16_le (reader, &aux);
     } else {
-      gst_byte_reader_get_uint16_be (reader, &aux);
+      handled &= gst_byte_reader_get_uint16_be (reader, &aux);
     }
     if (aux == G_MAXUINT16) {
       GST_WARNING ("Failed to read number of tags, won't rewrite offsets");
@@ -1147,11 +1172,13 @@ gst_exif_tag_rewrite_offsets (GstByteWriter * writer, gint byte_order,
     if (byte_size > 4 || tag_id == EXIF_GPS_IFD_TAG || tag_id == EXIF_IFD_TAG) {
       if (byte_order == G_LITTLE_ENDIAN) {
         if (gst_byte_reader_peek_uint32_le (reader, &cur_offset)) {
-          gst_byte_writer_put_uint32_le (writer, cur_offset + offset);
+          handled &=
+              gst_byte_writer_put_uint32_le (writer, cur_offset + offset);
         }
       } else {
         if (gst_byte_reader_peek_uint32_be (reader, &cur_offset)) {
-          gst_byte_writer_put_uint32_be (writer, cur_offset + offset);
+          handled &=
+              gst_byte_writer_put_uint32_be (writer, cur_offset + offset);
         }
       }
       GST_DEBUG ("Rewriting tag offset from %u to (%u + %u) %u",
@@ -1170,10 +1197,13 @@ gst_exif_tag_rewrite_offsets (GstByteWriter * writer, gint byte_order,
             NULL);
       }
     } else {
-      gst_byte_reader_skip (reader, 4);
+      handled &= gst_byte_reader_skip (reader, 4);
       GST_DEBUG ("No need to rewrite tag offset");
     }
   }
+  if (G_UNLIKELY (!handled))
+    GST_WARNING ("Error rewriting offsets");
+
   GST_LOG ("Done rewriting offsets");
 }
 
@@ -1188,8 +1218,7 @@ parse_exif_ascii_tag (GstExifReader * reader, const GstExifTagMatch * tag,
   GError *error = NULL;
 
   if (count > 4) {
-    guint8 *data;
-    gsize size;
+    GstMapInfo info;
 
     if (offset < reader->base_offset) {
       GST_WARNING ("Offset is smaller (%u) than base offset (%u)", offset,
@@ -1199,16 +1228,16 @@ parse_exif_ascii_tag (GstExifReader * reader, const GstExifTagMatch * tag,
 
     real_offset = offset - reader->base_offset;
 
-    data = gst_buffer_map (reader->buffer, &size, NULL, GST_MAP_READ);
-    if (real_offset >= size) {
+    gst_buffer_map (reader->buffer, &info, GST_MAP_READ);
+    if (real_offset >= info.size) {
       GST_WARNING ("Invalid offset %u for buffer of size %" G_GSIZE_FORMAT
-          ", not adding tag %s", real_offset, size, tag->gst_tag);
-      gst_buffer_unmap (reader->buffer, data, size);
+          ", not adding tag %s", real_offset, info.size, tag->gst_tag);
+      gst_buffer_unmap (reader->buffer, &info);
       return;
     }
 
-    str = g_strndup ((gchar *) (data + real_offset), count);
-    gst_buffer_unmap (reader->buffer, data, size);
+    str = g_strndup ((gchar *) (info.data + real_offset), count);
+    gst_buffer_unmap (reader->buffer, &info);
   } else {
     str = g_strndup ((gchar *) offset_as_data, count);
   }
@@ -1288,8 +1317,7 @@ parse_exif_undefined_tag (GstExifReader * reader, const GstExifTagMatch * tag,
   guint32 real_offset;
 
   if (count > 4) {
-    guint8 *bdata;
-    gsize bsize;
+    GstMapInfo info;
 
     if (offset < reader->base_offset) {
       GST_WARNING ("Offset is smaller (%u) than base offset (%u)", offset,
@@ -1299,21 +1327,21 @@ parse_exif_undefined_tag (GstExifReader * reader, const GstExifTagMatch * tag,
 
     real_offset = offset - reader->base_offset;
 
-    bdata = gst_buffer_map (reader->buffer, &bsize, NULL, GST_MAP_READ);
+    gst_buffer_map (reader->buffer, &info, GST_MAP_READ);
 
-    if (real_offset >= bsize) {
+    if (real_offset >= info.size) {
       GST_WARNING ("Invalid offset %u for buffer of size %" G_GSIZE_FORMAT
-          ", not adding tag %s", real_offset, bsize, tag->gst_tag);
-      gst_buffer_unmap (reader->buffer, bdata, bsize);
+          ", not adding tag %s", real_offset, info.size, tag->gst_tag);
+      gst_buffer_unmap (reader->buffer, &info);
       return;
     }
 
     /* +1 because it could be a string without the \0 */
     data = malloc (sizeof (guint8) * count + 1);
-    memcpy (data, bdata + real_offset, count);
+    memcpy (data, info.data + real_offset, count);
     data[count] = 0;
 
-    gst_buffer_unmap (reader->buffer, bdata, bsize);
+    gst_buffer_unmap (reader->buffer, &info);
   } else {
     data = malloc (sizeof (guint8) * count + 1);
     memcpy (data, (guint8 *) offset_as_data, count);
@@ -1324,9 +1352,7 @@ parse_exif_undefined_tag (GstExifReader * reader, const GstExifTagMatch * tag,
   if (tagtype == GST_TYPE_BUFFER) {
     GstBuffer *buf;
 
-    buf = gst_buffer_new ();
-    gst_buffer_take_memory (buf, -1,
-        gst_memory_new_wrapped (0, data, g_free, count, 0, count));
+    buf = gst_buffer_new_wrapped (data, count);
     data = NULL;
 
     gst_tag_list_add (reader->taglist, GST_TAG_MERGE_APPEND, tag->gst_tag,
@@ -1352,8 +1378,7 @@ exif_reader_read_rational_tag (GstExifReader * exif_reader,
   guint32 real_offset;
   gint32 frac_n = 0;
   gint32 frac_d = 0;
-  guint8 *data;
-  gsize size;
+  GstMapInfo info;
 
   if (count > 1) {
     GST_WARNING ("Rationals with multiple entries are not supported");
@@ -1366,15 +1391,15 @@ exif_reader_read_rational_tag (GstExifReader * exif_reader,
 
   real_offset = offset - exif_reader->base_offset;
 
-  data = gst_buffer_map (exif_reader->buffer, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (exif_reader->buffer, &info, GST_MAP_READ);
 
-  if (real_offset >= size) {
+  if (real_offset >= info.size) {
     GST_WARNING ("Invalid offset %u for buffer of size %" G_GSIZE_FORMAT,
-        real_offset, size);
+        real_offset, info.size);
     goto reader_fail;
   }
 
-  gst_byte_reader_init (&data_reader, data, size);
+  gst_byte_reader_init (&data_reader, info.data, info.size);
   if (!gst_byte_reader_set_pos (&data_reader, real_offset))
     goto reader_fail;
 
@@ -1408,13 +1433,13 @@ exif_reader_read_rational_tag (GstExifReader * exif_reader,
   if (_frac_d)
     *_frac_d = frac_d;
 
-  gst_buffer_unmap (exif_reader->buffer, data, size);
+  gst_buffer_unmap (exif_reader->buffer, &info);
 
   return TRUE;
 
 reader_fail:
   GST_WARNING ("Failed to read from byte reader. (Buffer too short?)");
-  gst_buffer_unmap (exif_reader->buffer, data, size);
+  gst_buffer_unmap (exif_reader->buffer, &info);
   return FALSE;
 }
 
@@ -1460,11 +1485,12 @@ parse_exif_rational_tag (GstExifReader * exif_reader,
 }
 
 static GstBuffer *
-write_exif_ifd (const GstTagList * taglist, gboolean byte_order,
+write_exif_ifd (const GstTagList * taglist, guint byte_order,
     guint32 base_offset, const GstExifTagMatch * tag_map)
 {
   GstExifWriter writer;
   gint i;
+  gboolean handled = TRUE;
 
   GST_DEBUG ("Formatting taglist %p as exif buffer. Byte order: %d, "
       "base_offset: %u", taglist, byte_order, base_offset);
@@ -1479,7 +1505,7 @@ write_exif_ifd (const GstTagList * taglist, gboolean byte_order,
   gst_exif_writer_init (&writer, byte_order);
 
   /* write tag number as 0 */
-  gst_byte_writer_put_uint16_le (&writer.tagwriter, 0);
+  handled &= gst_byte_writer_put_uint16_le (&writer.tagwriter, 0);
 
   /* write both tag headers and data
    * in ascending id order */
@@ -1514,17 +1540,17 @@ write_exif_ifd (const GstTagList * taglist, gboolean byte_order,
       }
 
       if (inner_ifd) {
-        guint8 *data;
-        gsize size;
+        GstMapInfo info;
 
         GST_DEBUG ("Adding inner ifd: %x", tag_map[i].exif_tag);
         gst_exif_writer_write_tag_header (&writer, tag_map[i].exif_tag,
             EXIF_TYPE_LONG, 1,
-            gst_byte_writer_get_size (&writer.datawriter), FALSE);
+            gst_byte_writer_get_size (&writer.datawriter), NULL);
 
-        data = gst_buffer_map (inner_ifd, &size, NULL, GST_MAP_READ);
-        gst_byte_writer_put_data (&writer.datawriter, data, size);
-        gst_buffer_unmap (inner_ifd, data, size);
+        gst_buffer_map (inner_ifd, &info, GST_MAP_READ);
+        handled &=
+            gst_byte_writer_put_data (&writer.datawriter, info.data, info.size);
+        gst_buffer_unmap (inner_ifd, &info);
         gst_buffer_unref (inner_ifd);
       }
       continue;
@@ -1540,21 +1566,29 @@ write_exif_ifd (const GstTagList * taglist, gboolean byte_order,
   /* Add the next IFD offset, we just set it to 0 because
    * there is no easy way to predict what it is going to be.
    * The user might rewrite the value if needed */
-  gst_byte_writer_put_uint32_le (&writer.tagwriter, 0);
+  handled &= gst_byte_writer_put_uint32_le (&writer.tagwriter, 0);
 
   /* write the number of tags */
   gst_byte_writer_set_pos (&writer.tagwriter, 0);
   if (writer.byte_order == G_LITTLE_ENDIAN)
-    gst_byte_writer_put_uint16_le (&writer.tagwriter, writer.tags_total);
+    handled &=
+        gst_byte_writer_put_uint16_le (&writer.tagwriter, writer.tags_total);
   else
-    gst_byte_writer_put_uint16_be (&writer.tagwriter, writer.tags_total);
+    handled &=
+        gst_byte_writer_put_uint16_be (&writer.tagwriter, writer.tags_total);
 
-  GST_DEBUG ("Number of tags rewriten to %d", writer.tags_total);
+  GST_DEBUG ("Number of tags rewritten to %d", writer.tags_total);
 
   /* now that we know the tag headers size, we can add the offsets */
   gst_exif_tag_rewrite_offsets (&writer.tagwriter, writer.byte_order,
       base_offset + gst_byte_writer_get_size (&writer.tagwriter),
       writer.tags_total, &writer.datawriter);
+
+  if (G_UNLIKELY (!handled)) {
+    GST_WARNING ("Error rewriting tags");
+    gst_buffer_unref (gst_exif_writer_reset_and_get_buffer (&writer));
+    return NULL;
+  }
 
   return gst_exif_writer_reset_and_get_buffer (&writer);
 }
@@ -1594,15 +1628,14 @@ parse_exif_ifd (GstExifReader * exif_reader, gint buf_offset,
   GstByteReader reader;
   guint16 entries = 0;
   guint16 i;
-  guint8 *data;
-  gsize size;
+  GstMapInfo info;
 
   g_return_val_if_fail (exif_reader->byte_order == G_LITTLE_ENDIAN
       || exif_reader->byte_order == G_BIG_ENDIAN, FALSE);
 
-  data = gst_buffer_map (exif_reader->buffer, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (exif_reader->buffer, &info, GST_MAP_READ);
 
-  gst_byte_reader_init (&reader, data, size);
+  gst_byte_reader_init (&reader, info.data, info.size);
   if (!gst_byte_reader_set_pos (&reader, buf_offset))
     goto invalid_offset;
 
@@ -1681,6 +1714,7 @@ parse_exif_ifd (GstExifReader * exif_reader, gint buf_offset,
       case EXIF_TYPE_UNDEFINED:
         parse_exif_undefined_tag (exif_reader, &tag_map[map_index],
             tagdata.count, tagdata.offset, tagdata.offset_as_data);
+        break;
       case EXIF_TYPE_LONG:
         parse_exif_long_tag (exif_reader, &tag_map[map_index],
             tagdata.count, tagdata.offset, tagdata.offset_as_data);
@@ -1714,20 +1748,20 @@ parse_exif_ifd (GstExifReader * exif_reader, gint buf_offset,
       }
     }
   }
-  gst_buffer_unmap (exif_reader->buffer, data, size);
+  gst_buffer_unmap (exif_reader->buffer, &info);
 
   return TRUE;
 
 invalid_offset:
   {
     GST_WARNING ("Buffer offset invalid when parsing exif ifd");
-    gst_buffer_unmap (exif_reader->buffer, data, size);
+    gst_buffer_unmap (exif_reader->buffer, &info);
     return FALSE;
   }
 read_error:
   {
     GST_WARNING ("Failed to parse the exif ifd");
-    gst_buffer_unmap (exif_reader->buffer, data, size);
+    gst_buffer_unmap (exif_reader->buffer, &info);
     return FALSE;
   }
 }
@@ -1766,10 +1800,10 @@ gst_tag_list_to_exif_buffer (const GstTagList * taglist, gint byte_order,
 GstBuffer *
 gst_tag_list_to_exif_buffer_with_tiff_header (const GstTagList * taglist)
 {
-  GstBuffer *ifd;
+  GstBuffer *ifd, *res;
   GstByteWriter writer;
-  gsize size;
-  guint8 *data;
+  GstMapInfo info;
+  gboolean handled = TRUE;
 
   ifd = gst_tag_list_to_exif_buffer (taglist, G_BYTE_ORDER, 8);
   if (ifd == NULL) {
@@ -1777,36 +1811,42 @@ gst_tag_list_to_exif_buffer_with_tiff_header (const GstTagList * taglist)
     return NULL;
   }
 
-  data = gst_buffer_map (ifd, &size, NULL, GST_MAP_READ);
-
-  size += TIFF_HEADER_SIZE;
+  gst_buffer_map (ifd, &info, GST_MAP_READ);
 
   /* TODO what is the correct endianness here? */
-  gst_byte_writer_init_with_size (&writer, size, FALSE);
+  gst_byte_writer_init_with_size (&writer, info.size + TIFF_HEADER_SIZE, FALSE);
   /* TIFF header */
   if (G_BYTE_ORDER == G_LITTLE_ENDIAN) {
-    gst_byte_writer_put_uint16_le (&writer, TIFF_LITTLE_ENDIAN);
-    gst_byte_writer_put_uint16_le (&writer, 42);
-    gst_byte_writer_put_uint32_le (&writer, 8);
+    handled &= gst_byte_writer_put_uint16_le (&writer, TIFF_LITTLE_ENDIAN);
+    handled &= gst_byte_writer_put_uint16_le (&writer, 42);
+    handled &= gst_byte_writer_put_uint32_le (&writer, 8);
   } else {
-    gst_byte_writer_put_uint16_be (&writer, TIFF_BIG_ENDIAN);
-    gst_byte_writer_put_uint16_be (&writer, 42);
-    gst_byte_writer_put_uint32_be (&writer, 8);
+    handled &= gst_byte_writer_put_uint16_be (&writer, TIFF_BIG_ENDIAN);
+    handled &= gst_byte_writer_put_uint16_be (&writer, 42);
+    handled &= gst_byte_writer_put_uint32_be (&writer, 8);
   }
-  if (!gst_byte_writer_put_data (&writer, data, size)) {
+  if (!gst_byte_writer_put_data (&writer, info.data, info.size)) {
     GST_WARNING ("Byte writer size mismatch");
     /* reaching here is a programming error because we should have a buffer
      * large enough */
     g_assert_not_reached ();
-    gst_buffer_unmap (ifd, data, size);
+    gst_buffer_unmap (ifd, &info);
     gst_buffer_unref (ifd);
     gst_byte_writer_reset (&writer);
     return NULL;
   }
-  gst_buffer_unmap (ifd, data, size);
+  gst_buffer_unmap (ifd, &info);
   gst_buffer_unref (ifd);
 
-  return gst_byte_writer_reset_and_get_buffer (&writer);
+  res = gst_byte_writer_reset_and_get_buffer (&writer);
+
+  if (G_UNLIKELY (!handled)) {
+    GST_WARNING ("Error creating buffer");
+    gst_buffer_unref (res);
+    res = NULL;
+  }
+
+  return res;
 }
 
 /**
@@ -1866,14 +1906,14 @@ gst_tag_list_from_exif_buffer_with_tiff_header (GstBuffer * buffer)
   guint32 offset;
   GstTagList *taglist = NULL;
   GstBuffer *subbuffer;
-  guint8 *data, *sdata;
-  gsize size, ssize;
+  GstMapInfo info, sinfo;
 
-  data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (buffer, &info, GST_MAP_READ);
 
-  GST_LOG ("Parsing exif tags with tiff header of size %" G_GSIZE_FORMAT, size);
+  GST_LOG ("Parsing exif tags with tiff header of size %" G_GSIZE_FORMAT,
+      info.size);
 
-  gst_byte_reader_init (&reader, data, size);
+  gst_byte_reader_init (&reader, info.data, info.size);
 
   GST_LOG ("Parsing the tiff header");
   if (!gst_byte_reader_get_uint16_be (&reader, &endianness)) {
@@ -1894,11 +1934,12 @@ gst_tag_list_from_exif_buffer_with_tiff_header (GstBuffer * buffer)
   if (fortytwo != 42)
     goto invalid_magic;
 
-  subbuffer = gst_buffer_new_and_alloc (size - (TIFF_HEADER_SIZE - 2));
+  subbuffer = gst_buffer_new_and_alloc (info.size - (TIFF_HEADER_SIZE - 2));
 
-  sdata = gst_buffer_map (subbuffer, &ssize, NULL, GST_MAP_WRITE);
-  memcpy (sdata, data + TIFF_HEADER_SIZE, size - TIFF_HEADER_SIZE);
-  gst_buffer_unmap (subbuffer, sdata, ssize);
+  gst_buffer_map (subbuffer, &sinfo, GST_MAP_WRITE);
+  memcpy (sinfo.data, info.data + TIFF_HEADER_SIZE,
+      info.size - TIFF_HEADER_SIZE);
+  gst_buffer_unmap (subbuffer, &sinfo);
 
   taglist = gst_tag_list_from_exif_buffer (subbuffer,
       endianness == TIFF_LITTLE_ENDIAN ? G_LITTLE_ENDIAN : G_BIG_ENDIAN, 8);
@@ -1906,7 +1947,7 @@ gst_tag_list_from_exif_buffer_with_tiff_header (GstBuffer * buffer)
   gst_buffer_unref (subbuffer);
 
 done:
-  gst_buffer_unmap (buffer, data, size);
+  gst_buffer_unmap (buffer, &info);
 
   return taglist;
 
@@ -1998,7 +2039,7 @@ serialize_geo_coordinate (GstExifWriter * writer, const GstTagList * taglist,
 
   offset = gst_byte_writer_get_size (&writer->datawriter);
   gst_exif_writer_write_tag_header (writer, exiftag->exif_tag,
-      EXIF_TYPE_RATIONAL, 3, offset, FALSE);
+      EXIF_TYPE_RATIONAL, 3, offset, NULL);
   gst_exif_writer_write_rational_data (writer, degrees, 1);
   gst_exif_writer_write_rational_data (writer, minutes, 1);
   gst_exif_writer_write_rational_data (writer, seconds, 1);
@@ -2023,8 +2064,7 @@ deserialize_geo_coordinate (GstExifReader * exif_reader,
   gdouble degrees;
   gdouble minutes;
   gdouble seconds;
-  guint8 *data = NULL;
-  gsize size = 0;
+  GstMapInfo info = { NULL };
 
   GST_LOG ("Starting to parse %s tag in exif 0x%x", exiftag->gst_tag,
       exiftag->exif_tag);
@@ -2057,7 +2097,7 @@ deserialize_geo_coordinate (GstExifReader * exif_reader,
   }
 
   if (exiftag->exif_tag != next_tagdata.tag) {
-    GST_WARNING ("This is not a geo cordinate tag");
+    GST_WARNING ("This is not a geo coordinate tag");
     return ret;
   }
 
@@ -2081,10 +2121,10 @@ deserialize_geo_coordinate (GstExifReader * exif_reader,
     return ret;
   }
 
-  data = gst_buffer_map (exif_reader->buffer, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (exif_reader->buffer, &info, GST_MAP_READ);
 
   /* now parse the fractions */
-  gst_byte_reader_init (&fractions_reader, data, size);
+  gst_byte_reader_init (&fractions_reader, info.data, info.size);
 
   if (!gst_byte_reader_set_pos (&fractions_reader,
           next_tagdata.offset - exif_reader->base_offset))
@@ -2107,7 +2147,7 @@ deserialize_geo_coordinate (GstExifReader * exif_reader,
         !gst_byte_reader_get_uint32_be (&fractions_reader, &seconds_d))
       goto reader_fail;
   }
-  gst_buffer_unmap (exif_reader->buffer, data, size);
+  gst_buffer_unmap (exif_reader->buffer, &info);
 
   GST_DEBUG ("Read degrees fraction for tag %s: %u/%u %u/%u %u/%u",
       exiftag->gst_tag, degrees_n, degrees_d, minutes_n, minutes_d,
@@ -2129,8 +2169,8 @@ deserialize_geo_coordinate (GstExifReader * exif_reader,
 
 reader_fail:
   GST_WARNING ("Failed to read fields from buffer (too short?)");
-  if (data)
-    gst_buffer_unmap (exif_reader->buffer, data, size);
+  if (info.data)
+    gst_buffer_unmap (exif_reader->buffer, &info);
   return ret;
 }
 

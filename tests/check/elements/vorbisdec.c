@@ -73,8 +73,8 @@ setup_vorbisdec (void)
 
   GST_DEBUG ("setup_vorbisdec");
   vorbisdec = gst_check_setup_element ("vorbisdec");
-  mysrcpad = gst_check_setup_src_pad (vorbisdec, &srctemplate, NULL);
-  mysinkpad = gst_check_setup_sink_pad (vorbisdec, &sinktemplate, NULL);
+  mysrcpad = gst_check_setup_src_pad (vorbisdec, &srctemplate);
+  mysinkpad = gst_check_setup_sink_pad (vorbisdec, &sinktemplate);
   gst_pad_set_active (mysrcpad, TRUE);
   gst_pad_set_active (mysinkpad, TRUE);
 
@@ -93,42 +93,6 @@ cleanup_vorbisdec (GstElement * vorbisdec)
   gst_check_teardown_sink_pad (vorbisdec);
   gst_check_teardown_element (vorbisdec);
 }
-
-GST_START_TEST (test_empty_identification_header)
-{
-  GstElement *vorbisdec;
-  GstBuffer *inbuffer;
-  GstBus *bus;
-  GstMessage *message;
-
-  vorbisdec = setup_vorbisdec ();
-  bus = gst_bus_new ();
-
-  fail_unless (gst_element_set_state (vorbisdec,
-          GST_STATE_PLAYING) == GST_STATE_CHANGE_SUCCESS,
-      "could not set to playing");
-
-  inbuffer = gst_buffer_new_and_alloc (0);
-  ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
-
-  /* set a bus here so we avoid getting state change messages */
-  gst_element_set_bus (vorbisdec, bus);
-
-  fail_unless_equals_int (gst_pad_push (mysrcpad, inbuffer), GST_FLOW_ERROR);
-  /* ... but it ends up being collected on the global buffer list */
-  fail_unless_equals_int (g_list_length (buffers), 0);
-
-  fail_if ((message = gst_bus_pop (bus)) == NULL);
-  fail_unless_message_error (message, STREAM, DECODE);
-  gst_message_unref (message);
-  gst_element_set_bus (vorbisdec, NULL);
-
-  /* cleanup */
-  gst_object_unref (GST_OBJECT (bus));
-  cleanup_vorbisdec (vorbisdec);
-}
-
-GST_END_TEST;
 
 /* FIXME: also tests comment header */
 GST_START_TEST (test_identification_header)
@@ -329,7 +293,6 @@ vorbisdec_suite (void)
   TCase *tc_chain = tcase_create ("general");
 
   suite_add_tcase (s, tc_chain);
-  tcase_add_test (tc_chain, test_empty_identification_header);
   tcase_add_test (tc_chain, test_identification_header);
   tcase_add_test (tc_chain, test_empty_vorbis_packet);
 

@@ -11,17 +11,17 @@ nodist_libgstvideotestsrc_la_SOURCES = $(ORC_NODIST_SOURCES)
 libgstvideotestsrc_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) $(ORC_CFLAGS)
 libgstvideotestsrc_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstvideotestsrc_la_LIBADD = 	\
-	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_MAJORMINOR).la \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
 	$(GST_BASE_LIBS) $(GST_LIBS) $(ORC_LIBS) $(LIBM)
 libgstvideotestsrc_la_LIBTOOLFLAGS = --tag=disable-static
 
 noinst_HEADERS = gstvideotestsrc.h videotestsrc.h
 
-noinst_PROGRAMS = generate_sine_table
+EXTRA_PROGRAMS = generate_sine_table
 
 generate_sine_table_SOURCES = generate_sine_table.c
 generate_sine_table_CFLAGS = $(GST_CFLAGS)
-generate_sine_table_LDADD = $(LIBM)
+generate_sine_table_LDADD = $(LIBM) $(GLIB_LIBS)
 
 Android.mk: Makefile.am $(BUILT_SOURCES)
 	androgenizer \

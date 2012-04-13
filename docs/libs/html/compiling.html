@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Compiling</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-plugins-base.html" title="Part I. GStreamer Base Plugins Libraries">
 <link rel="prev" href="gstreamer-plugins-base.html" title="Part I. GStreamer Base Plugins Libraries">
 <link rel="next" href="gstreamer-app.html" title="App Library">
@@ -16,7 +16,7 @@
 <td><a accesskey="p" href="gstreamer-plugins-base.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-plugins-base.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gstreamer-app.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -31,7 +31,7 @@ How to compile against the base plugins libraries
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsect1">
-<a name="id444048"></a><h2>Compiling against the base plugins libraries</h2>
+<a name="idp6507152"></a><h2>Compiling against the base plugins libraries</h2>
 <p>
 To compile against these libraries, you need to tell the compiler where to 
 find the header files and libraries. This is done with the
@@ -42,10 +42,10 @@ The following interactive shell session demonstrates how
 <span class="application">pkg-config</span> is used:
 </p>
 <pre class="programlisting">
-$ pkg-config --cflags gstreamer-plugins-base-0.11
--D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -pthread -I/usr/include/gstreamer-0.11 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2
-$ pkg-config --libs gstreamer-plugins-base-0.11
--Wl,--export-dynamic -pthread -lgstreamer-0.11 -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lxml2 -lpthread -lz -lm -lglib-2.0
+$ pkg-config --cflags gstreamer-plugins-base-1.0
+-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -pthread -I/usr/include/gstreamer-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2
+$ pkg-config --libs gstreamer-plugins-base-1.0
+-Wl,--export-dynamic -pthread -lgstreamer-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lxml2 -lpthread -lz -lm -lglib-2.0
 </pre>
 <p>
 </p>

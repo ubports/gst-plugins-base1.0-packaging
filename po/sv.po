@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.28.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-06-07 18:17+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -188,9 +188,8 @@ msgstr "Källelementet är ogiltigt."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Fel vid sändning av data till \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Anslutningen till %s:%d nekades."
+msgid "This CD has no audio tracks"
+msgstr "Den här cd-skivan saknar ljudspår"
 
 msgid "Can't record audio fast enough"
 msgstr "Kan inte spela in ljud tillräckligt snabbt"
@@ -355,9 +354,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Den här cd-skivan saknar ljudspår"
-
 msgid "ID3 tag"
 msgstr "ID3-tagg"
 
@@ -390,6 +386,22 @@ msgstr "Förlustfri MSZH"
 
 msgid "Run-length encoding"
 msgstr "Körlängdskodning"
+
+#, fuzzy
+msgid "Subtitle"
+msgstr "Titel"
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Undertextformatet TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Undertextformatet Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Undertextformatet Kate"
 
 msgid "Sami subtitle format"
 msgstr "Undertextformatet Sami"
@@ -505,6 +517,9 @@ msgstr "Okänt kodarelement"
 
 msgid "Plugin or element of unknown type"
 msgstr "Insticksmodul eller element av okänd typ"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Anslutningen till %s:%d nekades."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Okomprimerad plan YUV 4:2:0"
@@ -1361,9 +1376,6 @@ msgstr "Insticksmodul eller element av okänd typ"
 
 #~ msgid "_Year:"
 #~ msgstr "_År:"
-
-#~ msgid "Title"
-#~ msgstr "Titel"
 
 #~ msgid "Length"
 #~ msgstr "Speltid"

@@ -29,7 +29,7 @@
 
 /* Helper functions */
 #include <gst/video/video.h>
-#include <gst/video/gstmetavideo.h>
+#include <gst/video/gstvideometa.h>
 #include <gst/video/gstvideopool.h>
 
 
@@ -49,22 +49,36 @@ struct _GstXvImageBufferPoolPrivate
   gboolean need_alignment;
 };
 
-static void gst_meta_xvimage_free (GstMetaXvImage * meta, GstBuffer * buffer);
+static void gst_xvimage_meta_free (GstXvImageMeta * meta, GstBuffer * buffer);
 
 /* xvimage metadata */
-const GstMetaInfo *
-gst_meta_xvimage_get_info (void)
+GType
+gst_xvimage_meta_api_get_type (void)
 {
-  static const GstMetaInfo *meta_xvimage_info = NULL;
+  static volatile GType type;
+  static const gchar *tags[] =
+      { "memory", "size", "colorspace", "orientation", NULL };
 
-  if (meta_xvimage_info == NULL) {
-    meta_xvimage_info = gst_meta_register ("GstMetaXvImage", "GstMetaXvImage",
-        sizeof (GstMetaXvImage),
-        (GstMetaInitFunction) NULL,
-        (GstMetaFreeFunction) gst_meta_xvimage_free,
-        (GstMetaCopyFunction) NULL, (GstMetaTransformFunction) NULL);
+  if (g_once_init_enter (&type)) {
+    GType _type = gst_meta_api_type_register ("GstXvImageMetaAPI", tags);
+    g_once_init_leave (&type, _type);
   }
-  return meta_xvimage_info;
+  return type;
+}
+
+const GstMetaInfo *
+gst_xvimage_meta_get_info (void)
+{
+  static const GstMetaInfo *xvimage_meta_info = NULL;
+
+  if (xvimage_meta_info == NULL) {
+    xvimage_meta_info =
+        gst_meta_register (GST_XVIMAGE_META_API_TYPE, "GstXvImageMeta",
+        sizeof (GstXvImageMeta), (GstMetaInitFunction) NULL,
+        (GstMetaFreeFunction) gst_xvimage_meta_free,
+        (GstMetaTransformFunction) NULL);
+  }
+  return xvimage_meta_info;
 }
 
 /* X11 stuff */
@@ -81,14 +95,14 @@ gst_xvimagesink_handle_xerror (Display * display, XErrorEvent * xevent)
   return 0;
 }
 
-static GstMetaXvImage *
-gst_buffer_add_meta_xvimage (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
+static GstXvImageMeta *
+gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
 {
   GstXvImageSink *xvimagesink;
   int (*handler) (Display *, XErrorEvent *);
   gboolean success = FALSE;
   GstXContext *xcontext;
-  GstMetaXvImage *meta;
+  GstXvImageMeta *meta;
   gint width, height, im_format;
   GstXvImageBufferPoolPrivate *priv;
 
@@ -101,7 +115,7 @@ gst_buffer_add_meta_xvimage (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
   im_format = priv->im_format;
 
   meta =
-      (GstMetaXvImage *) gst_buffer_add_meta (buffer, GST_META_INFO_XVIMAGE,
+      (GstXvImageMeta *) gst_buffer_add_meta (buffer, GST_XVIMAGE_META_INFO,
       NULL);
 #ifdef HAVE_XSHM
   meta->SHMInfo.shmaddr = ((void *) -1);
@@ -251,9 +265,9 @@ gst_buffer_add_meta_xvimage (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
   error_caught = FALSE;
   XSetErrorHandler (handler);
 
-  gst_buffer_take_memory (buffer, -1,
+  gst_buffer_append_memory (buffer,
       gst_memory_new_wrapped (GST_MEMORY_FLAG_NO_SHARE, meta->xvimage->data,
-          NULL, meta->size, 0, meta->size));
+          meta->size, 0, meta->size, NULL, NULL));
 
   g_mutex_unlock (xvimagesink->x_lock);
 
@@ -279,6 +293,7 @@ create_failed:
         ("could not XvShmCreateImage a %dx%d image", width, height));
     goto beach;
   }
+#ifdef HAVE_XSHM
 shmget_failed:
   {
     g_mutex_unlock (xvimagesink->x_lock);
@@ -310,10 +325,11 @@ xattach_failed:
             width, height), ("Failed to XShmAttach"));
     goto beach;
   }
+#endif
 }
 
 static void
-gst_meta_xvimage_free (GstMetaXvImage * meta, GstBuffer * buffer)
+gst_xvimage_meta_free (GstXvImageMeta * meta, GstBuffer * buffer)
 {
   GstXvImageSink *xvimagesink;
 
@@ -333,6 +349,8 @@ gst_meta_xvimage_free (GstMetaXvImage * meta, GstBuffer * buffer)
       shmdt (meta->SHMInfo.shmaddr);
     }
 #endif
+    if (meta->xvimage)
+      XFree (meta->xvimage);
     goto beach;
   }
 
@@ -488,7 +506,7 @@ G_DEFINE_TYPE (GstXvImageBufferPool, gst_xvimage_buffer_pool,
 static const gchar **
 xvimage_buffer_pool_get_options (GstBufferPool * pool)
 {
-  static const gchar *options[] = { GST_BUFFER_POOL_OPTION_META_VIDEO,
+  static const gchar *options[] = { GST_BUFFER_POOL_OPTION_VIDEO_META,
     GST_BUFFER_POOL_OPTION_VIDEO_ALIGNMENT, NULL
   };
 
@@ -501,9 +519,9 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
   GstXvImageBufferPool *xvpool = GST_XVIMAGE_BUFFER_POOL_CAST (pool);
   GstXvImageBufferPoolPrivate *priv = xvpool->priv;
   GstVideoInfo info;
-  const GstCaps *caps;
+  GstCaps *caps;
 
-  if (!gst_buffer_pool_config_get (config, &caps, NULL, NULL, NULL, NULL, NULL))
+  if (!gst_buffer_pool_config_get_params (config, &caps, NULL, NULL, NULL))
     goto wrong_config;
 
   if (caps == NULL)
@@ -522,13 +540,13 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
 
   if (priv->caps)
     gst_caps_unref (priv->caps);
-  priv->caps = gst_caps_copy (caps);
+  priv->caps = gst_caps_ref (caps);
   priv->info = info;
 
   /* enable metadata based on config of the pool */
   priv->add_metavideo =
       gst_buffer_pool_config_has_option (config,
-      GST_BUFFER_POOL_OPTION_META_VIDEO);
+      GST_BUFFER_POOL_OPTION_VIDEO_META);
 
   /* parse extra alignment info */
   priv->need_alignment = gst_buffer_pool_config_has_option (config,
@@ -543,6 +561,8 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
 
     /* we need the video metadata too now */
     priv->add_metavideo = TRUE;
+  } else {
+    gst_video_alignment_reset (&priv->align);
   }
 
   /* add the padding */
@@ -578,7 +598,8 @@ unknown_format:
         GST_PTR_FORMAT, caps);
     GST_ELEMENT_ERROR (xvpool->sink, RESOURCE, WRITE,
         ("Failed to create output image buffer of %dx%d pixels",
-            priv->info.width, priv->info.height), ("Invalid input caps"));
+            priv->info.width, priv->info.height),
+        ("Invalid input caps %" GST_PTR_FORMAT, caps));
     return FALSE;;
   }
 }
@@ -586,31 +607,31 @@ unknown_format:
 /* This function handles GstXImageBuffer creation depending on XShm availability */
 static GstFlowReturn
 xvimage_buffer_pool_alloc (GstBufferPool * pool, GstBuffer ** buffer,
-    GstBufferPoolParams * params)
+    GstBufferPoolAcquireParams * params)
 {
   GstXvImageBufferPool *xvpool = GST_XVIMAGE_BUFFER_POOL_CAST (pool);
   GstXvImageBufferPoolPrivate *priv = xvpool->priv;
   GstVideoInfo *info;
   GstBuffer *xvimage;
-  GstMetaXvImage *meta;
+  GstXvImageMeta *meta;
 
   info = &priv->info;
 
   xvimage = gst_buffer_new ();
-  meta = gst_buffer_add_meta_xvimage (xvimage, xvpool);
+  meta = gst_buffer_add_xvimage_meta (xvimage, xvpool);
   if (meta == NULL) {
     gst_buffer_unref (xvimage);
     goto no_buffer;
   }
 
   if (priv->add_metavideo) {
-    GstMetaVideo *meta;
+    GstVideoMeta *meta;
     const GstVideoFormatInfo *vinfo = info->finfo;
     gint i;
 
-    GST_DEBUG_OBJECT (pool, "adding GstMetaVideo");
+    GST_DEBUG_OBJECT (pool, "adding GstVideoMeta");
     /* these are just the defaults for now */
-    meta = gst_buffer_add_meta_video (xvimage, 0, GST_VIDEO_INFO_FORMAT (info),
+    meta = gst_buffer_add_video_meta (xvimage, 0, GST_VIDEO_INFO_FORMAT (info),
         priv->padded_width, priv->padded_height);
 
     if (priv->need_alignment) {
@@ -650,12 +671,6 @@ no_buffer:
   }
 }
 
-static void
-xvimage_buffer_pool_free (GstBufferPool * pool, GstBuffer * buffer)
-{
-  gst_buffer_unref (buffer);
-}
-
 GstBufferPool *
 gst_xvimage_buffer_pool_new (GstXvImageSink * xvimagesink)
 {
@@ -684,7 +699,6 @@ gst_xvimage_buffer_pool_class_init (GstXvImageBufferPoolClass * klass)
   gstbufferpool_class->get_options = xvimage_buffer_pool_get_options;
   gstbufferpool_class->set_config = xvimage_buffer_pool_set_config;
   gstbufferpool_class->alloc_buffer = xvimage_buffer_pool_alloc;
-  gstbufferpool_class->free_buffer = xvimage_buffer_pool_free;
 }
 
 static void

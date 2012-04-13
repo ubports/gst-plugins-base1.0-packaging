@@ -3,4 +3,6 @@ EXTRA_DIST = \
 	hls.m3u8 \
 	license-uris \
 	partialframe.mjpeg \
-	test.mp3
+	test.mkv \
+	test.mp3 \
+	theora-vorbis.ogg

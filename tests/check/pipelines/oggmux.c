@@ -157,10 +157,10 @@ check_chain_final_state (gpointer key, ChainState * state, gpointer data)
   return TRUE;
 }
 
-static GstProbeReturn
-eos_buffer_probe (GstPad * pad, GstProbeType type, GstBuffer * buffer,
-    gpointer unused)
+static GstPadProbeReturn
+eos_buffer_probe (GstPad * pad, GstPadProbeInfo * info, gpointer unused)
 {
+  GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER (info);
   gint ret;
   gint size;
   gchar *oggbuffer;
@@ -185,18 +185,18 @@ eos_buffer_probe (GstPad * pad, GstProbeType type, GstBuffer * buffer,
   if (state) {
     /* Now, we can do buffer-level checks...
      * If we have video somewhere, then we should have DELTA_UNIT set on all
-     * non-header (not IN_CAPS), non-video buffers
+     * non-header (not HEADER), non-video buffers
      */
     g_hash_table_foreach (eos_chain_states, (GHFunc) is_video, &has_video);
     if (has_video && state->codec != CODEC_THEORA) {
-      if (!GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_IN_CAPS))
+      if (!GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_HEADER))
         fail_unless (GST_BUFFER_FLAG_IS_SET (buffer,
                 GST_BUFFER_FLAG_DELTA_UNIT),
             "Non-video buffer doesn't have DELTA_UNIT in stream with video");
     }
   }
 
-  return GST_PROBE_OK;
+  return GST_PAD_PROBE_OK;
 }
 
 static void
@@ -209,7 +209,7 @@ start_pipeline (GstElement * bin, GstPad * pad)
   eos_chain_states =
       g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
   probe_id =
-      gst_pad_add_probe (pad, GST_PROBE_TYPE_BUFFER,
+      gst_pad_add_probe (pad, GST_PAD_PROBE_TYPE_BUFFER,
       (GstPadProbeCallback) eos_buffer_probe, NULL, NULL);
 
   ret = gst_element_set_state (bin, GST_STATE_PLAYING);
@@ -316,7 +316,7 @@ test_pipeline (const char *pipeline)
 GST_START_TEST (test_vorbis)
 {
   test_pipeline
-      ("audiotestsrc num-buffers=5 ! audioconvert ! vorbisenc ! oggmux");
+      ("audiotestsrc num-buffers=5 ! audioconvert ! vorbisenc ! .audio_%u oggmux");
 }
 
 GST_END_TEST;
@@ -326,7 +326,7 @@ GST_START_TEST (test_vorbis_oggmux_unlinked)
   GstElement *pipe;
   GstMessage *msg;
 
-  pipe = gst_parse_launch ("audiotestsrc ! vorbisenc ! oggmux", NULL);
+  pipe = gst_parse_launch ("audiotestsrc ! vorbisenc ! .audio_%u oggmux", NULL);
   if (pipe == NULL) {
     g_printerr ("Skipping test 'test_vorbis_oggmux_unlinked'");
     return;
@@ -350,7 +350,7 @@ GST_END_TEST;
 GST_START_TEST (test_theora)
 {
   test_pipeline
-      ("videotestsrc num-buffers=5 ! videoconvert ! theoraenc ! oggmux");
+      ("videotestsrc num-buffers=5 ! videoconvert ! theoraenc ! .video_%u oggmux");
 }
 
 GST_END_TEST;
@@ -360,8 +360,8 @@ GST_END_TEST;
 GST_START_TEST (test_theora_vorbis)
 {
   test_pipeline
-      ("videotestsrc num-buffers=10 ! videoconvert ! theoraenc ! queue ! oggmux name=mux "
-      "audiotestsrc num-buffers=2 ! audioconvert ! vorbisenc ! queue ! mux.");
+      ("videotestsrc num-buffers=10 ! videoconvert ! theoraenc ! queue ! .video_%u oggmux name=mux "
+      "audiotestsrc num-buffers=2 ! audioconvert ! vorbisenc ! queue ! mux.audio_%u");
 }
 
 GST_END_TEST;
@@ -369,8 +369,8 @@ GST_END_TEST;
 GST_START_TEST (test_vorbis_theora)
 {
   test_pipeline
-      ("videotestsrc num-buffers=2 ! videoconvert ! theoraenc ! queue ! oggmux name=mux "
-      "audiotestsrc num-buffers=10 ! audioconvert ! vorbisenc ! queue ! mux.");
+      ("videotestsrc num-buffers=2 ! videoconvert ! theoraenc ! queue ! .video_%u oggmux name=mux "
+      "audiotestsrc num-buffers=10 ! audioconvert ! vorbisenc ! queue ! mux.audio_%u");
 }
 
 GST_END_TEST;
@@ -392,10 +392,10 @@ GST_START_TEST (test_request_pad_cleanup)
   GstPad *pad;
 
   oggmux = gst_element_factory_make ("oggmux", NULL);
-  pad = gst_element_get_request_pad (oggmux, "sink_%d");
+  pad = gst_element_get_request_pad (oggmux, "video_%u");
   fail_unless (pad != NULL);
   gst_object_unref (pad);
-  pad = gst_element_get_request_pad (oggmux, "sink_%d");
+  pad = gst_element_get_request_pad (oggmux, "audio_%u");
   fail_unless (pad != NULL);
   gst_object_unref (pad);
   gst_object_unref (oggmux);

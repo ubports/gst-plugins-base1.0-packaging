@@ -43,22 +43,6 @@ typedef struct _GstTheoraEnc GstTheoraEnc;
 typedef struct _GstTheoraEncClass GstTheoraEncClass;
 
 /**
- * GstTheoraEncBorderMode:
- * @BORDER_NONE: no border
- * @BORDER_BLACK: black border
- * @BORDER_MIRROR: Mirror image in border
- *
- * Border color to add when sizes not multiple of 16. 
- */ 
-typedef enum
-{
-  BORDER_NONE,
-  BORDER_BLACK,
-  BORDER_MIRROR
-}
-GstTheoraEncBorderMode;
-
-/**
  * GstTheoraEncMultipassMode:
  * @MULTIPASS_MODE_SINGLE_PASS: Single pass encoding
  * @MULTIPASS_MODE_FIRST_PASS: First pass of two pass encoding
@@ -121,6 +105,13 @@ struct _GstTheoraEnc
   gboolean cap_overflow;
   gboolean cap_underflow;
   int rate_buffer;
+
+  /* variables for dup-on-gap */
+  gboolean dup_on_gap;
+  gboolean current_discont;
+  GstBuffer *prevbuf;
+  GQueue *t_queue;
+  /* end dup-on-gap */
 
   GstTheoraEncMultipassMode multipass_mode;
   GIOChannel *multipass_cache_fd;

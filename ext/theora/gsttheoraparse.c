@@ -56,6 +56,10 @@
  * Last reviewed on 2008-05-28 (0.10.20)
  */
 
+/* FIXME 0.11: suppress warnings for deprecated API such as GValueArray
+ * with newer GLib versions (>= 2.31.0) */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -89,16 +93,22 @@ enum
 G_DEFINE_TYPE (GstTheoraParse, gst_theora_parse, GST_TYPE_ELEMENT);
 
 static void theora_parse_dispose (GObject * object);
+
+#if 0
 static void theora_parse_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
 static void theora_parse_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
+#endif
 
-static GstFlowReturn theora_parse_chain (GstPad * pad, GstBuffer * buffer);
+static GstFlowReturn theora_parse_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
 static GstStateChangeReturn theora_parse_change_state (GstElement * element,
     GstStateChange transition);
-static gboolean theora_parse_sink_event (GstPad * pad, GstEvent * event);
-static gboolean theora_parse_src_query (GstPad * pad, GstQuery * query);
+static gboolean theora_parse_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean theora_parse_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
 
 static void
 gst_theora_parse_class_init (GstTheoraParseClass * klass)
@@ -107,6 +117,8 @@ gst_theora_parse_class_init (GstTheoraParseClass * klass)
   GstElementClass *gstelement_class = GST_ELEMENT_CLASS (klass);
 
   gobject_class->dispose = theora_parse_dispose;
+
+#if 0
   gobject_class->get_property = theora_parse_get_property;
   gobject_class->set_property = theora_parse_set_property;
 
@@ -125,13 +137,13 @@ gst_theora_parse_class_init (GstTheoraParseClass * klass)
               "Time (either granuletime or buffertime)", 0, G_MAXUINT64, 0,
               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS),
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-
+#endif
 
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&theora_parse_src_factory));
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&theora_parse_sink_factory));
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Theora video parser", "Codec/Parser/Video",
       "parse raw theora streams", "Andy Wingo <wingo@pobox.com>");
 
@@ -167,6 +179,7 @@ theora_parse_dispose (GObject * object)
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
+#if 0
 static void
 theora_parse_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec)
@@ -236,7 +249,7 @@ theora_parse_get_property (GObject * object, guint prop_id,
         g_value_unset (&v);
       }
 
-      g_value_set_boxed (value, array);
+      g_value_take_boxed (value, array);
     }
       break;
     default:
@@ -244,6 +257,7 @@ theora_parse_get_property (GObject * object, guint prop_id,
       break;
   }
 }
+#endif
 
 static void
 theora_parse_set_header_on_caps (GstTheoraParse * parse, GstCaps * caps)
@@ -263,7 +277,7 @@ theora_parse_set_header_on_caps (GstTheoraParse * parse, GstCaps * caps)
       continue;
 
     bufs[i] = gst_buffer_make_writable (bufs[i]);
-    GST_BUFFER_FLAG_SET (bufs[i], GST_BUFFER_FLAG_IN_CAPS);
+    GST_BUFFER_FLAG_SET (bufs[i], GST_BUFFER_FLAG_HEADER);
 
     g_value_init (&value, GST_TYPE_BUFFER);
     gst_value_set_buffer (&value, bufs[i]);
@@ -287,7 +301,7 @@ theora_parse_set_streamheader (GstTheoraParse * parse)
 
   g_assert (!parse->streamheader_received);
 
-  caps = gst_caps_make_writable (gst_pad_get_caps (parse->srcpad, NULL));
+  caps = gst_caps_make_writable (gst_pad_query_caps (parse->srcpad, NULL));
   theora_parse_set_header_on_caps (parse, caps);
   GST_DEBUG_OBJECT (parse, "here are the caps: %" GST_PTR_FORMAT, caps);
   gst_pad_set_caps (parse->srcpad, caps);
@@ -297,20 +311,21 @@ theora_parse_set_streamheader (GstTheoraParse * parse)
     ogg_packet packet;
     GstBuffer *buf;
     int ret;
-    gsize size;
+    GstMapInfo map;
 
     buf = parse->streamheader[i];
     if (buf == NULL)
       continue;
 
-    packet.packet = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
-    packet.bytes = size;
+    gst_buffer_map (buf, &map, GST_MAP_READ);
+    packet.packet = map.data;
+    packet.bytes = map.size;
     packet.granulepos = GST_BUFFER_OFFSET_END (buf);
     packet.packetno = i + 1;
     packet.e_o_s = 0;
     packet.b_o_s = (i == 0);
     ret = th_decode_headerin (&parse->info, &parse->comment, &setup, &packet);
-    gst_buffer_unmap (buf, packet.packet, size);
+    gst_buffer_unmap (buf, &map);
     if (ret < 0) {
       GST_WARNING_OBJECT (parse, "Failed to decode Theora header %d: %d\n",
           i + 1, ret);
@@ -325,7 +340,7 @@ theora_parse_set_streamheader (GstTheoraParse * parse)
   parse->shift = parse->info.keyframe_granule_shift;
 
   /* With libtheora-1.0beta1 the granulepos scheme was changed:
-   * where earlier the granulepos refered to the index/beginning
+   * where earlier the granulepos referred to the index/beginning
    * of a frame, it now refers to the end, which matches the use
    * in vorbis/speex. We check the bitstream version from the header so
    * we know which way to interpret the incoming granuepos
@@ -344,7 +359,7 @@ theora_parse_drain_event_queue (GstTheoraParse * parse)
     GstEvent *event;
 
     event = GST_EVENT_CAST (g_queue_pop_head (parse->event_queue));
-    gst_pad_event_default (parse->sinkpad, event);
+    gst_pad_event_default (parse->sinkpad, GST_OBJECT_CAST (parse), event);
   }
 }
 
@@ -638,23 +653,23 @@ theora_parse_queue_buffer (GstTheoraParse * parse, GstBuffer * buf)
 }
 
 static GstFlowReturn
-theora_parse_chain (GstPad * pad, GstBuffer * buffer)
+theora_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstFlowReturn ret;
   GstTheoraParse *parse;
-  guint8 *data, header;
-  gsize size;
+  GstMapInfo map;
+  guint8 header;
   gboolean have_header;
 
-  parse = GST_THEORA_PARSE (gst_pad_get_parent (pad));
+  parse = GST_THEORA_PARSE (parent);
 
   have_header = FALSE;
 
-  data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
-  header = data[0];
-  gst_buffer_unmap (buffer, data, size);
+  gst_buffer_map (buffer, &map, GST_MAP_READ);
+  header = map.data[0];
+  gst_buffer_unmap (buffer, &map);
 
-  if (size >= 1) {
+  if (map.size >= 1) {
     if (header & 0x80)
       have_header = TRUE;
   }
@@ -677,8 +692,6 @@ theora_parse_chain (GstPad * pad, GstBuffer * buffer)
     ret = theora_parse_queue_buffer (parse, buffer);
   }
 
-  gst_object_unref (parse);
-
   return ret;
 }
 
@@ -690,33 +703,31 @@ theora_parse_queue_event (GstTheoraParse * parse, GstEvent * event)
 }
 
 static gboolean
-theora_parse_sink_event (GstPad * pad, GstEvent * event)
+theora_parse_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean ret;
   GstTheoraParse *parse;
 
-  parse = GST_THEORA_PARSE (gst_pad_get_parent (pad));
+  parse = GST_THEORA_PARSE (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_STOP:
       theora_parse_clear_queue (parse);
       parse->prev_keyframe = -1;
       parse->prev_frame = -1;
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     case GST_EVENT_EOS:
       theora_parse_drain_queue_prematurely (parse);
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     default:
       if (parse->send_streamheader && GST_EVENT_IS_SERIALIZED (event))
         ret = theora_parse_queue_event (parse, event);
       else
-        ret = gst_pad_event_default (pad, event);
+        ret = gst_pad_event_default (pad, parent, event);
       break;
   }
-
-  gst_object_unref (parse);
 
   return ret;
 }
@@ -801,13 +812,12 @@ no_header:
 }
 
 static gboolean
-theora_parse_src_query (GstPad * pad, GstQuery * query)
+theora_parse_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   GstTheoraParse *parse;
-
   gboolean res = FALSE;
 
-  parse = GST_THEORA_PARSE (gst_pad_get_parent (pad));
+  parse = GST_THEORA_PARSE (parent);
 
   switch (GST_QUERY_TYPE (query)) {
     case GST_QUERY_POSITION:
@@ -872,11 +882,10 @@ theora_parse_src_query (GstPad * pad, GstQuery * query)
       break;
     }
     default:
-      res = gst_pad_query_default (pad, query);
+      res = gst_pad_query_default (pad, parent, query);
       break;
   }
 done:
-  gst_object_unref (parse);
 
   return res;
 

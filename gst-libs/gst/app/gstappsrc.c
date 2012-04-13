@@ -37,7 +37,7 @@
  * byte buffers.
  *
  * The main way of handing data to the appsrc element is by calling the
- * gst_app_src_push_buffer() method or by emiting the push-buffer action signal.
+ * gst_app_src_push_buffer() method or by emitting the push-buffer action signal.
  * This will put the buffer onto a queue from which appsrc will read from in its
  * streaming thread. It is important to note that data transport will not happen
  * from the thread that performed the push-buffer call.
@@ -49,7 +49,7 @@
  * block the push-buffer method until free data becomes available again.
  *
  * When the internal queue is running out of data, the "need-data" signal is
- * emited, which signals the application that it should start pushing more data
+ * emitted, which signals the application that it should start pushing more data
  * into appsrc.
  *
  * In addition to the "need-data" and "enough-data" signals, appsrc can emit the
@@ -62,7 +62,7 @@
  * These signals allow the application to operate the appsrc in two different
  * ways:
  *
- * The push model, in which the application repeadedly calls the push-buffer method
+ * The push model, in which the application repeatedly calls the push-buffer method
  * with a new buffer. Optionally, the queue size in the appsrc can be controlled
  * with the enough-data and need-data signals by respectively stopping/starting
  * the push-buffer calls. This is a typical mode of operation for the
@@ -101,6 +101,8 @@
 
 #include "gstapp-marshal.h"
 #include "gstappsrc.h"
+
+#include "gst/glib-compat-private.h"
 
 struct _GstAppSrcPrivate
 {
@@ -217,8 +219,11 @@ static void gst_app_src_get_property (GObject * object, guint prop_id,
 static void gst_app_src_set_latencies (GstAppSrc * appsrc,
     gboolean do_min, guint64 min, gboolean do_max, guint64 max);
 
-static GstFlowReturn gst_app_src_create (GstBaseSrc * bsrc,
-    guint64 offset, guint size, GstBuffer ** buf);
+static gboolean gst_app_src_negotiate (GstBaseSrc * basesrc);
+static GstCaps *gst_app_src_internal_get_caps (GstBaseSrc * bsrc,
+    GstCaps * filter);
+static GstFlowReturn gst_app_src_create (GstBaseSrc * bsrc, guint64 offset,
+    guint size, GstBuffer ** buf);
 static gboolean gst_app_src_start (GstBaseSrc * bsrc);
 static gboolean gst_app_src_stop (GstBaseSrc * bsrc);
 static gboolean gst_app_src_unlock (GstBaseSrc * bsrc);
@@ -309,7 +314,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
   /**
    * GstAppSrc::block
    *
-   * When max-bytes are queued and after the enough-data signal has been emited,
+   * When max-bytes are queued and after the enough-data signal has been emitted,
    * block any further push-buffer calls until the amount of queued bytes drops
    * below the max-bytes limit.
    */
@@ -382,7 +387,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
 
   /**
    * GstAppSrc::need-data:
-   * @appsrc: the appsrc element that emited the signal
+   * @appsrc: the appsrc element that emitted the signal
    * @length: the amount of bytes needed.
    *
    * Signal that the source needs more data. In the callback or from another
@@ -401,11 +406,11 @@ gst_app_src_class_init (GstAppSrcClass * klass)
 
   /**
    * GstAppSrc::enough-data:
-   * @appsrc: the appsrc element that emited the signal
+   * @appsrc: the appsrc element that emitted the signal
    *
    * Signal that the source has enough data. It is recommended that the
    * application stops calling push-buffer until the need-data signal is
-   * emited again to avoid excessive buffer queueing.
+   * emitted again to avoid excessive buffer queueing.
    */
   gst_app_src_signals[SIGNAL_ENOUGH_DATA] =
       g_signal_new ("enough-data", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
@@ -414,7 +419,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
 
   /**
    * GstAppSrc::seek-data:
-   * @appsrc: the appsrc element that emited the signal
+   * @appsrc: the appsrc element that emitted the signal
    * @offset: the offset to seek to
    *
    * Seek to the given offset. The next push-buffer should produce buffers from
@@ -444,7 +449,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
   gst_app_src_signals[SIGNAL_PUSH_BUFFER] =
       g_signal_new ("push-buffer", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, G_STRUCT_OFFSET (GstAppSrcClass,
-          push_buffer), NULL, NULL, __gst_app_marshal_ENUM__OBJECT,
+          push_buffer), NULL, NULL, __gst_app_marshal_ENUM__BOXED,
       GST_TYPE_FLOW_RETURN, 1, GST_TYPE_BUFFER);
 
    /**
@@ -466,6 +471,8 @@ gst_app_src_class_init (GstAppSrcClass * klass)
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&gst_app_src_template));
 
+  basesrc_class->negotiate = gst_app_src_negotiate;
+  basesrc_class->get_caps = gst_app_src_internal_get_caps;
   basesrc_class->create = gst_app_src_create;
   basesrc_class->start = gst_app_src_start;
   basesrc_class->stop = gst_app_src_stop;
@@ -547,6 +554,12 @@ gst_app_src_finalize (GObject * obj)
   G_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
+static GstCaps *
+gst_app_src_internal_get_caps (GstBaseSrc * bsrc, GstCaps * filter)
+{
+  return gst_app_src_get_caps (GST_APP_SRC_CAST (bsrc), filter);
+}
+
 static void
 gst_app_src_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec)
@@ -610,7 +623,7 @@ gst_app_src_get_property (GObject * object, guint prop_id, GValue * value,
       GstCaps *caps;
 
       /* we're missing a _take_caps() function to transfer ownership */
-      caps = gst_app_src_get_caps (appsrc);
+      caps = gst_app_src_get_caps (appsrc, NULL);
       gst_value_set_caps (value, caps);
       if (caps)
         gst_caps_unref (caps);
@@ -786,17 +799,17 @@ gst_app_src_query (GstBaseSrc * src, GstQuery * query)
     }
     case GST_QUERY_SCHEDULING:
     {
-      gboolean pull_mode = FALSE;
+      gst_query_set_scheduling (query, GST_SCHEDULING_FLAG_SEEKABLE, 1, -1, 0);
+      gst_query_add_scheduling_mode (query, GST_PAD_MODE_PUSH);
 
       switch (priv->stream_type) {
         case GST_APP_STREAM_TYPE_STREAM:
         case GST_APP_STREAM_TYPE_SEEKABLE:
           break;
         case GST_APP_STREAM_TYPE_RANDOM_ACCESS:
-          pull_mode = TRUE;
+          gst_query_add_scheduling_mode (query, GST_PAD_MODE_PULL);
           break;
       }
-      gst_query_set_scheduling (query, pull_mode, TRUE, FALSE, 1, -1, 1);
       res = TRUE;
       break;
     }
@@ -899,6 +912,28 @@ gst_app_src_emit_need_data (GstAppSrc * appsrc, guint size)
   /* we can be flushing now because we released the lock */
 }
 
+static gboolean
+gst_app_src_negotiate (GstBaseSrc * basesrc)
+{
+  GstAppSrc *appsrc = GST_APP_SRC_CAST (basesrc);
+  GstAppSrcPrivate *priv = appsrc->priv;
+  GstCaps *caps;
+  gboolean result;
+
+  GST_OBJECT_LOCK (appsrc);
+  if ((caps = priv->caps))
+    gst_caps_ref (caps);
+  GST_OBJECT_UNLOCK (appsrc);
+
+  if (caps) {
+    result = gst_base_src_set_caps (basesrc, caps);
+    gst_caps_unref (caps);
+  } else {
+    result = GST_BASE_SRC_CLASS (parent_class)->negotiate (basesrc);
+  }
+  return result;
+}
+
 static GstFlowReturn
 gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
     GstBuffer ** buf)
@@ -906,10 +941,8 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
   GstAppSrc *appsrc = GST_APP_SRC_CAST (bsrc);
   GstAppSrcPrivate *priv = appsrc->priv;
   GstFlowReturn ret;
-  GstCaps *caps;
 
   GST_OBJECT_LOCK (appsrc);
-  caps = priv->caps ? gst_caps_ref (priv->caps) : NULL;
   if (G_UNLIKELY (priv->size != bsrc->segment.duration &&
           bsrc->segment.format == GST_FORMAT_BYTES)) {
     GST_DEBUG_OBJECT (appsrc,
@@ -986,7 +1019,7 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
        * random-access mode (where a buffer is normally pushed in the above
        * signal) we can still be empty because the pushed buffer got flushed or
        * when the application pushes the requested buffer later, we support both
-       * possiblities. */
+       * possibilities. */
       if (!g_queue_is_empty (priv->queue))
         continue;
 
@@ -1001,8 +1034,6 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
     g_cond_wait (priv->cond, priv->mutex);
   }
   g_mutex_unlock (priv->mutex);
-  if (caps)
-    gst_caps_unref (caps);
   return ret;
 
   /* ERRORS */
@@ -1010,23 +1041,17 @@ flushing:
   {
     GST_DEBUG_OBJECT (appsrc, "we are flushing");
     g_mutex_unlock (priv->mutex);
-    if (caps)
-      gst_caps_unref (caps);
-    return GST_FLOW_WRONG_STATE;
+    return GST_FLOW_FLUSHING;
   }
 eos:
   {
     GST_DEBUG_OBJECT (appsrc, "we are EOS");
     g_mutex_unlock (priv->mutex);
-    if (caps)
-      gst_caps_unref (caps);
-    return GST_FLOW_UNEXPECTED;
+    return GST_FLOW_EOS;
   }
 seek_error:
   {
     g_mutex_unlock (priv->mutex);
-    if (caps)
-      gst_caps_unref (caps);
     GST_ELEMENT_ERROR (appsrc, RESOURCE, READ, ("failed to seek"),
         GST_ERROR_SYSTEM);
     return GST_FLOW_ERROR;
@@ -1081,7 +1106,7 @@ gst_app_src_set_caps (GstAppSrc * appsrc, const GstCaps * caps)
  * Since: 0.10.22
  */
 GstCaps *
-gst_app_src_get_caps (GstAppSrc * appsrc)
+gst_app_src_get_caps (GstAppSrc * appsrc, GstCaps * filter)
 {
   GstCaps *caps;
   GstAppSrcPrivate *priv;
@@ -1093,6 +1118,17 @@ gst_app_src_get_caps (GstAppSrc * appsrc)
   GST_OBJECT_LOCK (appsrc);
   if ((caps = priv->caps))
     gst_caps_ref (caps);
+
+  if (filter) {
+    if (caps) {
+      GstCaps *intersection =
+          gst_caps_intersect_full (filter, caps, GST_CAPS_INTERSECT_FIRST);
+      gst_caps_unref (caps);
+      caps = intersection;
+    } else {
+      caps = gst_caps_ref (filter);
+    }
+  }
   GST_DEBUG_OBJECT (appsrc, "getting caps of %" GST_PTR_FORMAT, caps);
   GST_OBJECT_UNLOCK (appsrc);
 
@@ -1367,7 +1403,7 @@ gst_app_src_set_emit_signals (GstAppSrc * appsrc, gboolean emit)
  *
  * Check if appsrc will emit the "new-preroll" and "new-buffer" signals.
  *
- * Returns: %TRUE if @appsrc is emiting the "new-preroll" and "new-buffer"
+ * Returns: %TRUE if @appsrc is emitting the "new-preroll" and "new-buffer"
  * signals.
  *
  * Since: 0.10.23
@@ -1466,7 +1502,7 @@ flushing:
     if (steal_ref)
       gst_buffer_unref (buffer);
     g_mutex_unlock (priv->mutex);
-    return GST_FLOW_WRONG_STATE;
+    return GST_FLOW_FLUSHING;
   }
 eos:
   {
@@ -1474,7 +1510,7 @@ eos:
     if (steal_ref)
       gst_buffer_unref (buffer);
     g_mutex_unlock (priv->mutex);
-    return GST_FLOW_UNEXPECTED;
+    return GST_FLOW_EOS;
   }
 }
 
@@ -1490,8 +1526,8 @@ eos:
  * space becomes available in the queue.
  *
  * Returns: #GST_FLOW_OK when the buffer was successfuly queued.
- * #GST_FLOW_WRONG_STATE when @appsrc is not PAUSED or PLAYING.
- * #GST_FLOW_UNEXPECTED when EOS occured.
+ * #GST_FLOW_FLUSHING when @appsrc is not PAUSED or PLAYING.
+ * #GST_FLOW_EOS when EOS occured.
  *
  * Since: 0.10.22
  */
@@ -1517,7 +1553,7 @@ gst_app_src_push_buffer_action (GstAppSrc * appsrc, GstBuffer * buffer)
  * element is the last buffer of the stream.
  *
  * Returns: #GST_FLOW_OK when the EOS was successfuly queued.
- * #GST_FLOW_WRONG_STATE when @appsrc is not PAUSED or PLAYING.
+ * #GST_FLOW_FLUSHING when @appsrc is not PAUSED or PLAYING.
  *
  * Since: 0.10.22
  */
@@ -1548,7 +1584,7 @@ flushing:
   {
     g_mutex_unlock (priv->mutex);
     GST_DEBUG_OBJECT (appsrc, "refuse EOS, we are flushing");
-    return GST_FLOW_WRONG_STATE;
+    return GST_FLOW_FLUSHING;
   }
 }
 
@@ -1564,7 +1600,7 @@ flushing:
  * This is an alternative to using the signals, it has lower overhead and is thus
  * less expensive, but also less flexible.
  *
- * If callbacks are installed, no signals will be emited for performance
+ * If callbacks are installed, no signals will be emitted for performance
  * reasons.
  *
  * Since: 0.10.23
@@ -1611,31 +1647,26 @@ gst_app_src_uri_get_type (GType type)
   return GST_URI_SRC;
 }
 
-static gchar **
+static const gchar *const *
 gst_app_src_uri_get_protocols (GType type)
 {
-  static gchar *protocols[] = { (char *) "appsrc", NULL };
+  static const gchar *protocols[] = { "appsrc", NULL };
 
   return protocols;
 }
 
-static const gchar *
+static gchar *
 gst_app_src_uri_get_uri (GstURIHandler * handler)
 {
-  return "appsrc";
+  return g_strdup ("appsrc");
 }
 
 static gboolean
-gst_app_src_uri_set_uri (GstURIHandler * handler, const gchar * uri)
+gst_app_src_uri_set_uri (GstURIHandler * handler, const gchar * uri,
+    GError ** error)
 {
-  gchar *protocol;
-  gboolean ret;
-
-  protocol = gst_uri_get_protocol (uri);
-  ret = !strcmp (protocol, "appsrc");
-  g_free (protocol);
-
-  return ret;
+  /* GstURIHandler checks the protocol for us */
+  return TRUE;
 }
 
 static void

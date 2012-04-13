@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-28 09:19+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -194,9 +194,8 @@ msgstr "Élément source non valide."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Erreur lors de l'envoi de données vers « %s:%d »."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Connexion refusée vers %s:%d."
+msgid "This CD has no audio tracks"
+msgstr "Ce CD ne contient aucune piste audio"
 
 msgid "Can't record audio fast enough"
 msgstr "Impossible d'enregistrer assez rapidement les données audio"
@@ -375,9 +374,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Ce CD ne contient aucune piste audio"
-
 msgid "ID3 tag"
 msgstr "Étiquette ID3"
 
@@ -411,6 +407,21 @@ msgstr "MSZH sans perte"
 # http://fr.wikipedia.org/wiki/Run-length_encoding
 msgid "Run-length encoding"
 msgstr "Codage par plages"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Format de sous-titres TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Format de sous-titres Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Format de sous-titres Kate"
 
 msgid "Sami subtitle format"
 msgstr "Format de sous-titres Sami"
@@ -526,6 +537,9 @@ msgstr "Élément codeur inconnu"
 
 msgid "Plugin or element of unknown type"
 msgstr "Greffon ou élément de type inconnu"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Connexion refusée vers %s:%d."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "YUV planaire 4:2:0 non compressé"

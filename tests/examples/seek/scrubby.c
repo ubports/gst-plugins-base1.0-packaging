@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+/* FIXME 0.11: suppress warnings for deprecated API such as GStaticRecMutex
+ * with newer GTK versions (>= 3.3.0) */
+#define GDK_DISABLE_DEPRECATION_WARNINGS
 #include <stdlib.h>
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -457,9 +463,6 @@ main (int argc, char **argv)
   gint type;
   GOptionContext *ctx;
   GError *err = NULL;
-
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
 
   ctx = g_option_context_new ("seek");
   g_option_context_add_main_entries (ctx, options, NULL);

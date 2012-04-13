@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideoorientation</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
-<link rel="up" href="gstreamer-interfaces.html" title="Interfaces Library">
-<link rel="prev" href="gst-plugins-base-libs-gsttunernorm.html" title="gsttunernorm">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
+<link rel="up" href="gstreamer-video.html" title="Video Library">
+<link rel="prev" href="gst-plugins-base-libs-gstcolorbalancechannel.html" title="gstcolorbalancechannel">
 <link rel="next" href="gst-plugins-base-libs-gstvideooverlay.html" title="gstvideooverlay">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gsttunernorm.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gstreamer-interfaces.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstcolorbalancechannel.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstvideooverlay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -41,7 +41,7 @@ controls</p>
 <div class="refsynopsisdiv">
 <a name="gst-plugins-base-libs-gstvideoorientation.synopsis"></a><h2>Synopsis</h2>
 <a name="GstVideoOrientation"></a><pre class="synopsis">
-#include &lt;gst/interfaces/videoorientation.h&gt;
+#include &lt;gst/video/videoorientation.h&gt;
 
                     <a class="link" href="gst-plugins-base-libs-gstvideoorientation.html#GstVideoOrientation-struct" title="GstVideoOrientation">GstVideoOrientation</a>;
 struct              <a class="link" href="gst-plugins-base-libs-gstvideoorientation.html#GstVideoOrientationInterface" title="struct GstVideoOrientationInterface">GstVideoOrientationInterface</a>;
@@ -90,7 +90,7 @@ Opaque <a class="link" href="gst-plugins-base-libs-gstvideoorientation.html#GstV
 <div class="refsect2">
 <a name="GstVideoOrientationInterface"></a><h3>struct GstVideoOrientationInterface</h3>
 <pre class="programlisting">struct GstVideoOrientationInterface {
-  GTypeInterface parent;
+  GTypeInterface iface;
 
   /* FIXME 0.11: fix awkward API? add some kind of get_supported flags thing
    * and then just return booleans/int from all vfuncs requiring the caller
@@ -115,7 +115,7 @@ Opaque <a class="link" href="gst-plugins-base-libs-gstvideoorientation.html#GstV
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstVideoOrientationInterface.parent"></a>parent</code></em>;</span></p></td>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstVideoOrientationInterface.iface"></a>iface</code></em>;</span></p></td>
 <td>parent interface type.</td>
 </tr>
 <tr>

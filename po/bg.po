@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-26 22:31+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -189,9 +189,8 @@ msgstr "Елементът-източник е грешен."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Грешка при запис във файла „%s:%d“."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Връзката към %s:%d е отказана."
+msgid "This CD has no audio tracks"
+msgstr "В това CD липсва аудио"
 
 msgid "Can't record audio fast enough"
 msgstr "Звукът не може да бъде записан достатъчно бързо"
@@ -356,9 +355,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "В това CD липсва аудио"
-
 msgid "ID3 tag"
 msgstr "Етикет ID3"
 
@@ -391,6 +387,21 @@ msgstr "MSZH без загуба на качество"
 
 msgid "Run-length encoding"
 msgstr "Последователно кодиране RLE"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Субтитри, формат TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Субтитри, формат Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Субтитри, формат Kate"
 
 msgid "Sami subtitle format"
 msgstr "Субтитри, формат Sami"
@@ -506,6 +517,9 @@ msgstr "Непознат елемент-кодер"
 
 msgid "Plugin or element of unknown type"
 msgstr "Приставка или елемент от непознат вид"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Връзката към %s:%d е отказана."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Некомпресирано видео по равнини YUV 4:2:0"

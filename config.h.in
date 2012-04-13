@@ -47,17 +47,26 @@
 /* The GIO modules directory. */
 #undef GIO_MODULE_DIR
 
+/* major/minor version */
+#undef GST_API_VERSION
+
 /* system wide data directory */
 #undef GST_DATADIR
 
 /* set to disable libxml2-dependent code in subparse */
 #undef GST_DISABLE_XML
 
+/* Extra platform specific plugin suffix */
+#undef GST_EXTRA_MODULE_SUFFIX
+
 /* macro to use to show function name */
 #undef GST_FUNCTION
 
 /* Defined if gcov is enabled to force a rebuild due to config.h changing */
 #undef GST_GCOV_ENABLED
+
+/* Defined when registry scanning through fork is unsafe */
+#undef GST_HAVE_UNSAFE_FORK
 
 /* plugin install helper script */
 #undef GST_INSTALL_PLUGINS_HELPER
@@ -67,9 +76,6 @@
 
 /* GStreamer license */
 #undef GST_LICENSE
-
-/* major/minor version */
-#undef GST_MAJORMINOR
 
 /* package name in plugins */
 #undef GST_PACKAGE_NAME
@@ -149,12 +155,6 @@
 /* Define to enable building of plug-ins with external deps. */
 #undef HAVE_EXTERNAL
 
-/* FIONREAD ioctl found in sys/filio.h */
-#undef HAVE_FIONREAD_IN_SYS_FILIO
-
-/* FIONREAD ioctl found in sys/ioclt.h */
-#undef HAVE_FIONREAD_IN_SYS_IOCTL
-
 /* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
 #undef HAVE_FSEEKO
 
@@ -166,9 +166,6 @@
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
-
-/* Define to enable GIO library (used by gio). */
-#undef HAVE_GIO
 
 /* Define to 1 if you have the `gmtime_r' function. */
 #undef HAVE_GMTIME_R
@@ -187,15 +184,6 @@
 
 /* Define to 1 if you have the `asound' library (-lasound). */
 #undef HAVE_LIBASOUND
-
-/* Define to 1 if you have the `nsl' library (-lnsl). */
-#undef HAVE_LIBNSL
-
-/* Define to 1 if you have the `resolv' library (-lresolv). */
-#undef HAVE_LIBRESOLV
-
-/* Define to 1 if you have the `socket' library (-lsocket). */
-#undef HAVE_LIBSOCKET
 
 /* Define to enable libvisual visualization library (used by libvisual). */
 #undef HAVE_LIBVISUAL
@@ -220,6 +208,9 @@
 
 /* Use Orc */
 #undef HAVE_ORC
+
+/* Defined if compiling for OSX */
+#undef HAVE_OSX
 
 /* Define to enable Pango font rendering (used by pango). */
 #undef HAVE_PANGO
@@ -272,8 +263,8 @@
 /* defined if vorbis_synthesis_restart is present */
 #undef HAVE_VORBIS_SYNTHESIS_RESTART
 
-/* Define to 1 if you have the <winsock2.h> header file. */
-#undef HAVE_WINSOCK2_H
+/* Defined if compiling for Windows */
+#undef HAVE_WIN32
 
 /* Define to enable X libraries and plugins (used by ximagesink). */
 #undef HAVE_X
@@ -305,9 +296,6 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
-
-/* Define if you have no native hstrerror() function. */
-#undef NO_HSTRERROR
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
 #undef NO_MINUS_C_MINUS_O
@@ -383,3 +371,6 @@
 
 /* Define for large files, on AIX-style hosts. */
 #undef _LARGE_FILES
+
+/* We need at least WinXP SP2 for __stat64 */
+#undef __MSVCRT_VERSION__

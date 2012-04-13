@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtspconnection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
-<link rel="prev" href="gst-plugins-base-libs-gstrtspbase64.html" title="gstrtspbase64">
+<link rel="prev" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="next" href="gst-plugins-base-libs-gstrtspdefs.html" title="gstrtspdefs">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstrtspbase64.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gstreamer-rtsp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-rtsp.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstrtspdefs.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -43,23 +43,19 @@
                     <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection">GstRTSPConnection</a>;
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-create" title="gst_rtsp_connection_create ()">gst_rtsp_connection_create</a>          (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> *url</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>);
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-create-from-fd" title="gst_rtsp_connection_create_from_fd ()">gst_rtsp_connection_create_from_fd</a>  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> fd</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *ip</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> port</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial_buffer</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>);
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-accept" title="gst_rtsp_connection_accept ()">gst_rtsp_connection_accept</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> sock</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>);
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-accept" title="gst_rtsp_connection_accept ()">gst_rtsp_connection_accept</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *socket</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-connect" title="gst_rtsp_connection_connect ()">gst_rtsp_connection_connect</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-close" title="gst_rtsp_connection_close ()">gst_rtsp_connection_close</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-free" title="gst_rtsp_connection_free ()">gst_rtsp_connection_free</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-read" title="gst_rtsp_connection_read ()">gst_rtsp_connection_read</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-write" title="gst_rtsp_connection_write ()">gst_rtsp_connection_write</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-poll" title="gst_rtsp_connection_poll ()">gst_rtsp_connection_poll</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
@@ -98,8 +94,6 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tunnelid" title="gst_rtsp_connection_get_tunnelid ()">gst_rtsp_connection_get_tunnelid</a>    (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-do-tunnel" title="gst_rtsp_connection_do_tunnel ()">gst_rtsp_connection_do_tunnel</a>       (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn2</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-readfd" title="gst_rtsp_connection_get_readfd ()">gst_rtsp_connection_get_readfd</a>      (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-writefd" title="gst_rtsp_connection_get_writefd ()">gst_rtsp_connection_get_writefd</a>     (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-http-mode" title="gst_rtsp_connection_set_http_mode ()">gst_rtsp_connection_set_http_mode</a>   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-proxy" title="gst_rtsp_connection_set_proxy ()">gst_rtsp_connection_set_proxy</a>       (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
@@ -115,16 +109,11 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-attach" title="gst_rtsp_watch_attach ()">gst_rtsp_watch_attach</a>               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GMainContext"><span class="type">GMainContext</span></a> *context</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-reset" title="gst_rtsp_watch_reset ()">gst_rtsp_watch_reset</a>                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-queue-message" title="gst_rtsp_watch_queue_message ()">gst_rtsp_watch_queue_message</a>        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *message</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-queue-data" title="gst_rtsp_watch_queue_data ()">gst_rtsp_watch_queue_data</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-send-message" title="gst_rtsp_watch_send_message ()">gst_rtsp_watch_send_message</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *message</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *id</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-write-data" title="gst_rtsp_watch_write_data ()">gst_rtsp_watch_write_data</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *id</code></em>);
 </pre>
@@ -183,71 +172,29 @@ A copy of <em class="parameter"><code>url</code></em> will be made.
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtsp-connection-create-from-fd"></a><h3>gst_rtsp_connection_create_from_fd ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_connection_create_from_fd  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> fd</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *ip</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> port</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial_buffer</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>);</pre>
-<p>
-Create a new <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> for handling communication on the existing
-file descriptor <em class="parameter"><code>fd</code></em>. The <em class="parameter"><code>initial_buffer</code></em> contains any data already read from
-<em class="parameter"><code>fd</code></em> which should be used before starting to read new data.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
-<td>a file descriptor</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ip</code></em> :</span></p></td>
-<td>the IP address of the other end</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>port</code></em> :</span></p></td>
-<td>the port used by the other end</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>initial_buffer</code></em> :</span></p></td>
-<td>data already read from <em class="parameter"><code>fd</code></em>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
-<td>storage for a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when <em class="parameter"><code>conn</code></em> contains a valid connection.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.25</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="gst-rtsp-connection-accept"></a><h3>gst_rtsp_connection_accept ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_connection_accept          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> sock</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_connection_accept          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *socket</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> **conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>);</pre>
 <p>
-Accept a new connection on <em class="parameter"><code>sock</code></em> and create a new <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> for
+Accept a new connection on <em class="parameter"><code>socket</code></em> and create a new <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> for
 handling communication on new socket.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sock</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>socket</code></em> :</span></p></td>
 <td>a socket</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
 <td>storage for a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
 </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -343,7 +290,7 @@ Close and free <em class="parameter"><code>conn</code></em>.
 <div class="refsect2">
 <a name="gst-rtsp-connection-read"></a><h3>gst_rtsp_connection_read ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_connection_read            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);</pre>
 <p>
@@ -388,7 +335,7 @@ This function can be cancelled with <a class="link" href="gst-plugins-base-libs-
 <div class="refsect2">
 <a name="gst-rtsp-connection-write"></a><h3>gst_rtsp_connection_write ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_connection_write           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);</pre>
 <p>
@@ -939,54 +886,6 @@ If <em class="parameter"><code>conn2</code></em> is <a href="http://library.gnom
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtsp-connection-get-readfd"></a><h3>gst_rtsp_connection_get_readfd ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_rtsp_connection_get_readfd      (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
-<p>
-Get the file descriptor for reading.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the file descriptor used for reading or -1 on error. The file
-descriptor remains valid until the connection is closed.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.23</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtsp-connection-get-writefd"></a><h3>gst_rtsp_connection_get_writefd ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_rtsp_connection_get_writefd     (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
-<p>
-Get the file descriptor for writing.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the file descriptor used for writing or -1 on error. The file
-descriptor remains valid until the connection is closed.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.23</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="gst-rtsp-connection-set-http-mode"></a><h3>gst_rtsp_connection_set_http_mode ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_rtsp_connection_set_http_mode   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);</pre>
@@ -1235,91 +1134,6 @@ when the file descriptors of the connection might have changed.
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtsp-watch-queue-message"></a><h3>gst_rtsp_watch_queue_message ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_rtsp_watch_queue_message        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *message</code></em>);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">gst_rtsp_watch_queue_message</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-send-message" title="gst_rtsp_watch_send_message ()"><code class="function">gst_rtsp_watch_send_message()</code></a></p>
-</div>
-<p>
-Queue a <em class="parameter"><code>message</code></em> for transmission in <em class="parameter"><code>watch</code></em>. The contents of this
-message will be serialized and transmitted when the connection of the
-<em class="parameter"><code>watch</code></em> becomes writable.
-</p>
-<p>
-The return value of this function will be used as the id argument in the
-message_sent callback.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>an id.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.23</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtsp-watch-queue-data"></a><h3>gst_rtsp_watch_queue_data ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_rtsp_watch_queue_data           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">gst_rtsp_watch_queue_data</code> is deprecated and should not be used in newly-written code. Use <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-write-data" title="gst_rtsp_watch_write_data ()"><code class="function">gst_rtsp_watch_write_data()</code></a></p>
-</div>
-<p>
-Queue <em class="parameter"><code>data</code></em> for transmission in <em class="parameter"><code>watch</code></em>. It will be transmitted when the
-connection of the <em class="parameter"><code>watch</code></em> becomes writable.
-</p>
-<p>
-This function will take ownership of <em class="parameter"><code>data</code></em> and <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> it after use.
-</p>
-<p>
-The return value of this function will be used as the id argument in the
-message_sent callback.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>the data to queue</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
-<td>the size of <em class="parameter"><code>data</code></em>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>an id.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.24</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="gst-rtsp-watch-send-message"></a><h3>gst_rtsp_watch_send_message ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_watch_send_message         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *message</code></em>,
@@ -1363,7 +1177,7 @@ callback.
 <div class="refsect2">
 <a name="gst-rtsp-watch-write-data"></a><h3>gst_rtsp_watch_write_data ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>       gst_rtsp_watch_write_data           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *id</code></em>);</pre>
 <p>

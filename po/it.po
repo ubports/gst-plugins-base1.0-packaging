@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.28.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-04-28 14:27+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -192,9 +192,8 @@ msgstr "L'elemento sorgente non è valido."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Errore durante l'invio dei dati a \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Connessione a %s:%d rifiutata."
+msgid "This CD has no audio tracks"
+msgstr "Questo CD non presenta alcuna traccia audio"
 
 # una parafrasi, ma mi pare non perda...  -Luca
 msgid "Can't record audio fast enough"
@@ -361,9 +360,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Questo CD non presenta alcuna traccia audio"
-
 msgid "ID3 tag"
 msgstr "Tag ID3"
 
@@ -397,6 +393,22 @@ msgstr "MSZH senza perdita"
 # cfr http://en.wikipedia.org/wiki/Run_length_encoding
 msgid "Run-length encoding"
 msgstr "RLE (Run-Length Encoding)"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Sottotitoli formato TMPlayer"
+
+# grazie San Google
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sottotitoli formato SAMI"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Sottotitoli formato Kate"
 
 # grazie San Google
 msgid "Sami subtitle format"
@@ -520,6 +532,9 @@ msgstr "Elemento di codifica sconosciuto"
 
 msgid "Plugin or element of unknown type"
 msgstr "Plugin o elemento di tipo sconosciuto"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Connessione a %s:%d rifiutata."
 
 # cfr http://en.wikipedia.org/wiki/YUV
 #     http://support.microsoft.com/kb/281188/it

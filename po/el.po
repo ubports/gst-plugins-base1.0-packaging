@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-10-27 12:05+0200\n"
 "Last-Translator: Michael Kotsarinis <mk73628@gmail.com>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
@@ -191,9 +191,8 @@ msgstr "Το στοιχείο προέλευσης δεν είναι έγκυρ�
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Σφάλμα κατά την αποστολή δεδομένων σε «%s:%d»."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Άρνηση σύνδεσης σε %s:%d."
+msgid "This CD has no audio tracks"
+msgstr "Αυτό το CD δεν έχει ηχητικά κομμάτια"
 
 msgid "Can't record audio fast enough"
 msgstr "Αδυναμία εγγραφής ήχου αρκετά γρήγορα"
@@ -375,9 +374,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Αυτό το CD δεν έχει ηχητικά κομμάτια"
-
 msgid "ID3 tag"
 msgstr "Ετικέτα ID3"
 
@@ -410,6 +406,21 @@ msgstr "Μη απωλεστικός MSZH"
 
 msgid "Run-length encoding"
 msgstr "Κωδικοποίηση Run-length"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Μορφή υποτίτλων TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Μορφή υποτίτλων Sami "
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Μορφή υποτίτλων Kate"
 
 msgid "Sami subtitle format"
 msgstr "Μορφή υποτίτλων Sami "
@@ -525,6 +536,9 @@ msgstr "Άγνωστο στοιχείο κωδικοποιητή"
 
 msgid "Plugin or element of unknown type"
 msgstr "Πρόσθετη λειτουργία ή στοιχείο άγνωστου τύπου"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Άρνηση σύνδεσης σε %s:%d."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Ασυμπίεστο planar YUV 4:2:0"

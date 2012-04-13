@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtspdefs</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtspconnection.html" title="gstrtspconnection">
 <link rel="next" href="gst-plugins-base-libs-gstrtspextension.html" title="gstrtspextension">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-gstrtspconnection.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-rtsp.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstrtspextension.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -508,20 +508,170 @@ Authentication methods, ordered by strength
 <div class="refsect2">
 <a name="GstRTSPHeaderField"></a><h3>enum GstRTSPHeaderField</h3>
 <pre class="programlisting">typedef enum {
+  GST_RTSP_HDR_INVALID,
+
+  /*
+   * R = Request
+   * r = response
+   * g = general
+   * e = entity
+   */
+  GST_RTSP_HDR_ACCEPT,              /* Accept               R      opt.      entity */
+  GST_RTSP_HDR_ACCEPT_ENCODING,     /* Accept-Encoding      R      opt.      entity */
+  GST_RTSP_HDR_ACCEPT_LANGUAGE,     /* Accept-Language      R      opt.      all */
+  GST_RTSP_HDR_ALLOW,               /* Allow                r      opt.      all */
+  GST_RTSP_HDR_AUTHORIZATION,       /* Authorization        R      opt.      all */
+  GST_RTSP_HDR_BANDWIDTH,           /* Bandwidth            R      opt.      all */
+  GST_RTSP_HDR_BLOCKSIZE,           /* Blocksize            R      opt.      all but OPTIONS, TEARDOWN */
+  GST_RTSP_HDR_CACHE_CONTROL,       /* Cache-Control        g      opt.      SETUP */
+  GST_RTSP_HDR_CONFERENCE,          /* Conference           R      opt.      SETUP */
+  GST_RTSP_HDR_CONNECTION,          /* Connection           g      req.      all */
+  GST_RTSP_HDR_CONTENT_BASE,        /* Content-Base         e      opt.      entity */
+  GST_RTSP_HDR_CONTENT_ENCODING,    /* Content-Encoding     e      req.      SET_PARAMETER, DESCRIBE, ANNOUNCE */
+  GST_RTSP_HDR_CONTENT_LANGUAGE,    /* Content-Language     e      req.      DESCRIBE, ANNOUNCE */
+  GST_RTSP_HDR_CONTENT_LENGTH,      /* Content-Length       e      req.      SET_PARAMETER, ANNOUNCE, entity */
+  GST_RTSP_HDR_CONTENT_LOCATION,    /* Content-Location     e      opt.      entity */
+  GST_RTSP_HDR_CONTENT_TYPE,        /* Content-Type         e      req.      SET_PARAMETER, ANNOUNCE, entity */
+  GST_RTSP_HDR_CSEQ,                /* CSeq                 g      req.      all */
+  GST_RTSP_HDR_DATE,                /* Date                 g      opt.      all */
+  GST_RTSP_HDR_EXPIRES,             /* Expires              e      opt.      DESCRIBE, ANNOUNCE */
+  GST_RTSP_HDR_FROM,                /* From                 R      opt.      all */
+  GST_RTSP_HDR_IF_MODIFIED_SINCE,   /* If-Modified-Since    R      opt.      DESCRIBE, SETUP */
+  GST_RTSP_HDR_LAST_MODIFIED,       /* Last-Modified        e      opt.      entity */
+  GST_RTSP_HDR_PROXY_AUTHENTICATE,  /* Proxy-Authenticate */
+  GST_RTSP_HDR_PROXY_REQUIRE,       /* Proxy-Require        R      req.      all */
+  GST_RTSP_HDR_PUBLIC,              /* Public               r      opt.      all */
+  GST_RTSP_HDR_RANGE,               /* Range                Rr     opt.      PLAY, PAUSE, RECORD */
+  GST_RTSP_HDR_REFERER,             /* Referer              R      opt.      all */
+  GST_RTSP_HDR_REQUIRE,             /* Require              R      req.      all */
+  GST_RTSP_HDR_RETRY_AFTER,         /* Retry-After          r      opt.      all */
+  GST_RTSP_HDR_RTP_INFO,            /* RTP-Info             r      req.      PLAY */
+  GST_RTSP_HDR_SCALE,               /* Scale                Rr     opt.      PLAY, RECORD */
+  GST_RTSP_HDR_SESSION,             /* Session              Rr     req.      all but SETUP, OPTIONS */
+  GST_RTSP_HDR_SERVER,              /* Server               r      opt.      all */
+  GST_RTSP_HDR_SPEED,               /* Speed                Rr     opt.      PLAY */
+  GST_RTSP_HDR_TRANSPORT,           /* Transport            Rr     req.      SETUP */
+  GST_RTSP_HDR_UNSUPPORTED,         /* Unsupported          r      req.      all */
+  GST_RTSP_HDR_USER_AGENT,          /* User-Agent           R      opt.      all */
+  GST_RTSP_HDR_VIA,                 /* Via                  g      opt.      all */
+  GST_RTSP_HDR_WWW_AUTHENTICATE,    /* WWW-Authenticate     r      opt.      all */
+
+  /* Real extensions */
+  GST_RTSP_HDR_CLIENT_CHALLENGE,    /* ClientChallenge */
+  GST_RTSP_HDR_REAL_CHALLENGE1,     /* RealChallenge1 */
+  GST_RTSP_HDR_REAL_CHALLENGE2,     /* RealChallenge2 */
+  GST_RTSP_HDR_REAL_CHALLENGE3,     /* RealChallenge3 */
+  GST_RTSP_HDR_SUBSCRIBE,           /* Subscribe */
+  GST_RTSP_HDR_ALERT,               /* Alert */
+  GST_RTSP_HDR_CLIENT_ID,           /* ClientID */
+  GST_RTSP_HDR_COMPANY_ID,          /* CompanyID */
+  GST_RTSP_HDR_GUID,                /* GUID */
+  GST_RTSP_HDR_REGION_DATA,         /* RegionData */
+  GST_RTSP_HDR_MAX_ASM_WIDTH,       /* SupportsMaximumASMBandwidth */
+  GST_RTSP_HDR_LANGUAGE,            /* Language */
+  GST_RTSP_HDR_PLAYER_START_TIME,   /* PlayerStarttime */
+
+  /* Since 0.10.16 */
+  GST_RTSP_HDR_LOCATION,            /* Location */
+
+  /* Since 0.10.23 */
+  GST_RTSP_HDR_ETAG,                /* ETag */
+  GST_RTSP_HDR_IF_MATCH,            /* If-Match */
+
+  /* WM extensions [MS-RTSP] Since 0.10.23 */
+  GST_RTSP_HDR_ACCEPT_CHARSET,      /* Accept-Charset */
+  GST_RTSP_HDR_SUPPORTED,           /* Supported */
+  GST_RTSP_HDR_VARY,                /* Vary */
+  GST_RTSP_HDR_X_ACCELERATE_STREAMING,    /* X-Accelerate-Streaming */
+  GST_RTSP_HDR_X_ACCEPT_AUTHENT,    /* X-Accept-Authentication */
+  GST_RTSP_HDR_X_ACCEPT_PROXY_AUTHENT,    /* X-Accept-Proxy-Authentication */
+  GST_RTSP_HDR_X_BROADCAST_ID,      /* X-Broadcast-Id */
+  GST_RTSP_HDR_X_BURST_STREAMING,   /* X-Burst-Streaming */
+  GST_RTSP_HDR_X_NOTICE,            /* X-Notice */
+  GST_RTSP_HDR_X_PLAYER_LAG_TIME,   /* X-Player-Lag-Time */
+  GST_RTSP_HDR_X_PLAYLIST,          /* X-Playlist */
+  GST_RTSP_HDR_X_PLAYLIST_CHANGE_NOTICE,  /* X-Playlist-Change-Notice */
+  GST_RTSP_HDR_X_PLAYLIST_GEN_ID,   /* X-Playlist-Gen-Id */
+  GST_RTSP_HDR_X_PLAYLIST_SEEK_ID,  /* X-Playlist-Seek-Id */
+  GST_RTSP_HDR_X_PROXY_CLIENT_AGENT,      /* X-Proxy-Client-Agent */
+  GST_RTSP_HDR_X_PROXY_CLIENT_VERB, /* X-Proxy-Client-Verb */
+  GST_RTSP_HDR_X_RECEDING_PLAYLISTCHANGE, /* X-Receding-PlaylistChange */
+  GST_RTSP_HDR_X_RTP_INFO,          /* X-RTP-Info */
+  GST_RTSP_HDR_X_STARTUPPROFILE,    /* X-StartupProfile */
+
+  /* Since 0.10.24 */
+  GST_RTSP_HDR_TIMESTAMP,           /* Timestamp */
+
+  /* Since 0.10.25 */
+  GST_RTSP_HDR_AUTHENTICATION_INFO, /* Authentication-Info */
+  GST_RTSP_HDR_HOST,                /* Host */
+  GST_RTSP_HDR_PRAGMA,              /* Pragma */
+  GST_RTSP_HDR_X_SERVER_IP_ADDRESS, /* X-Server-IP-Address */
+  GST_RTSP_HDR_X_SESSIONCOOKIE,     /* X-Sessioncookie */
+
+  /* Since 0.10.36 */
+  GST_RTSP_HDR_RTCP_INTERVAL,       /* RTCP-Interval */
+
+  GST_RTSP_HDR_LAST
 } GstRTSPHeaderField;
 </pre>
 <p>
-Enumeration of rtsp header fields.
+Enumeration of rtsp header fields
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstRTSPStatusCode"></a><h3>enum GstRTSPStatusCode</h3>
 <pre class="programlisting">typedef enum {
+  GST_RTSP_STS_INVALID                              = 0,
+  GST_RTSP_STS_CONTINUE                             = 100,
+  GST_RTSP_STS_OK                                   = 200,
+  GST_RTSP_STS_CREATED                              = 201,
+  GST_RTSP_STS_LOW_ON_STORAGE                       = 250,
+  GST_RTSP_STS_MULTIPLE_CHOICES                     = 300,
+  GST_RTSP_STS_MOVED_PERMANENTLY                    = 301,
+  GST_RTSP_STS_MOVE_TEMPORARILY                     = 302,
+  GST_RTSP_STS_SEE_OTHER                            = 303,
+  GST_RTSP_STS_NOT_MODIFIED                         = 304,
+  GST_RTSP_STS_USE_PROXY                            = 305,
+  GST_RTSP_STS_BAD_REQUEST                          = 400,
+  GST_RTSP_STS_UNAUTHORIZED                         = 401,
+  GST_RTSP_STS_PAYMENT_REQUIRED                     = 402,
+  GST_RTSP_STS_FORBIDDEN                            = 403,
+  GST_RTSP_STS_NOT_FOUND                            = 404,
+  GST_RTSP_STS_METHOD_NOT_ALLOWED                   = 405,
+  GST_RTSP_STS_NOT_ACCEPTABLE                       = 406,
+  GST_RTSP_STS_PROXY_AUTH_REQUIRED                  = 407,
+  GST_RTSP_STS_REQUEST_TIMEOUT                      = 408,
+  GST_RTSP_STS_GONE                                 = 410,
+  GST_RTSP_STS_LENGTH_REQUIRED                      = 411,
+  GST_RTSP_STS_PRECONDITION_FAILED                  = 412,
+  GST_RTSP_STS_REQUEST_ENTITY_TOO_LARGE             = 413,
+  GST_RTSP_STS_REQUEST_URI_TOO_LARGE                = 414,
+  GST_RTSP_STS_UNSUPPORTED_MEDIA_TYPE               = 415,
+  GST_RTSP_STS_PARAMETER_NOT_UNDERSTOOD             = 451,
+  GST_RTSP_STS_CONFERENCE_NOT_FOUND                 = 452,
+  GST_RTSP_STS_NOT_ENOUGH_BANDWIDTH                 = 453,
+  GST_RTSP_STS_SESSION_NOT_FOUND                    = 454,
+  GST_RTSP_STS_METHOD_NOT_VALID_IN_THIS_STATE       = 455,
+  GST_RTSP_STS_HEADER_FIELD_NOT_VALID_FOR_RESOURCE  = 456,
+  GST_RTSP_STS_INVALID_RANGE                        = 457,
+  GST_RTSP_STS_PARAMETER_IS_READONLY                = 458,
+  GST_RTSP_STS_AGGREGATE_OPERATION_NOT_ALLOWED      = 459,
+  GST_RTSP_STS_ONLY_AGGREGATE_OPERATION_ALLOWED     = 460,
+  GST_RTSP_STS_UNSUPPORTED_TRANSPORT                = 461,
+  GST_RTSP_STS_DESTINATION_UNREACHABLE              = 462,
+  GST_RTSP_STS_INTERNAL_SERVER_ERROR                = 500,
+  GST_RTSP_STS_NOT_IMPLEMENTED                      = 501,
+  GST_RTSP_STS_BAD_GATEWAY                          = 502,
+  GST_RTSP_STS_SERVICE_UNAVAILABLE                  = 503,
+  GST_RTSP_STS_GATEWAY_TIMEOUT                      = 504,
+  GST_RTSP_STS_RTSP_VERSION_NOT_SUPPORTED           = 505,
+  GST_RTSP_STS_OPTION_NOT_SUPPORTED                 = 551
 } GstRTSPStatusCode;
 </pre>
 <p>
-Enumeration of rtsp status codes.
+Enumeration of rtsp status codes
 </p>
 </div>
 <hr>

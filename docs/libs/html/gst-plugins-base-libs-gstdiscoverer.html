@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstdiscoverer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html" title="gstpbutilsinstallplugins">
 <link rel="next" href="gst-plugins-base-libs-encoding-profile.html" title="encoding-profile">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-base-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-encoding-profile.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -150,7 +150,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstdiscoverer.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer--timeout" title='The "timeout" property'>timeout</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read / Write / Construct
+  "<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer--timeout" title='The "timeout" property'>timeout</a>"                  <span class="type">guint64</span>               : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1">
@@ -333,7 +333,7 @@ afterwards.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>uri</code></em> was succesfully appended to the list of pending
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>uri</code></em> was successfully appended to the list of pending
 uris, else <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
 </td>
 </tr>
@@ -506,7 +506,7 @@ This structure can be traversed to see the original hierarchy. Unref with
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the list of
 all streams contained in the <span class="type">info</span>. Free after usage
-with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -571,7 +571,7 @@ Copy it if you wish to use it after the life-time of <em class="parameter"><code
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the wheter the URI is seekable.</td>
+<td>the whether the URI is seekable.</td>
 </tr>
 </tbody>
 </table></div>
@@ -852,7 +852,7 @@ and fress the <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>infos</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr></tbody>
 </table></div>
@@ -899,7 +899,7 @@ Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#Gst
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of
 matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. The caller should free it with
-<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -926,7 +926,7 @@ Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#Gst
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of
 matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. The caller should free it with
-<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -959,7 +959,7 @@ given <em class="parameter"><code>streamtype</code></em>.
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of
 matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. The caller should free it with
-<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -986,7 +986,7 @@ Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#Gst
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of
 matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. The caller should free it with
-<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -1013,7 +1013,7 @@ Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#Gst
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of
 matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. The caller should free it with
-<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -1162,7 +1162,7 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the list of
 <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> this container stream offers.
-Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a> after usage. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.DiscovererStreamInfo]</span>
+Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()"><code class="function">gst_discoverer_stream_info_list_free()</code></a> after usage. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
 </td>
 </tr>
 </tbody>
@@ -1426,7 +1426,7 @@ one frame).</td>
 <a name="gst-plugins-base-libs-gstdiscoverer.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstDiscoverer--timeout"></a><h3>The <code class="literal">"timeout"</code> property</h3>
-<pre class="programlisting">  "timeout"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>               : Read / Write / Construct</pre>
+<pre class="programlisting">  "timeout"                  <span class="type">guint64</span>               : Read / Write / Construct</pre>
 <p>
 The duration (in nanoseconds) after which the discovery of an individual
 URI will timeout.

@@ -101,8 +101,8 @@ GST_START_TEST (test_event)
   GstBus *bus;
   GstEvent *seek_event;
   gboolean res;
-  GstPad *srcpad;
-  GstStreamConsistency *consist;
+  GstPad *srcpad, *sinkpad;
+  GstStreamConsistency *chk_1, *chk_2, *chk_3;
 
   GST_INFO ("preparing test");
 
@@ -111,9 +111,6 @@ GST_START_TEST (test_event)
   bus = gst_element_get_bus (bin);
   gst_bus_add_signal_watch_full (bus, G_PRIORITY_HIGH);
 
-  /* FIXME, fakesrc with default setting will produce 0 sized
-   * buffers and incompatible caps for adder that will make
-   * adder EOS and error out */
   src1 = gst_element_factory_make ("audiotestsrc", "src1");
   g_object_set (src1, "wave", 4, NULL); /* silence */
   src2 = gst_element_factory_make ("audiotestsrc", "src2");
@@ -130,7 +127,22 @@ GST_START_TEST (test_event)
   fail_unless (res == TRUE, NULL);
 
   srcpad = gst_element_get_static_pad (adder, "src");
-  consist = gst_consistency_checker_new (srcpad);
+  chk_3 = gst_consistency_checker_new (srcpad);
+  gst_object_unref (srcpad);
+
+  /* create consistency checkers for the pads */
+  srcpad = gst_element_get_static_pad (src1, "src");
+  chk_1 = gst_consistency_checker_new (srcpad);
+  sinkpad = gst_pad_get_peer (srcpad);
+  gst_consistency_checker_add_pad (chk_3, sinkpad);
+  gst_object_unref (sinkpad);
+  gst_object_unref (srcpad);
+
+  srcpad = gst_element_get_static_pad (src2, "src");
+  chk_2 = gst_consistency_checker_new (srcpad);
+  sinkpad = gst_pad_get_peer (srcpad);
+  gst_consistency_checker_add_pad (chk_3, sinkpad);
+  gst_object_unref (sinkpad);
   gst_object_unref (srcpad);
 
   seek_event = gst_event_new_seek (1.0, GST_FORMAT_TIME,
@@ -174,7 +186,9 @@ GST_START_TEST (test_event)
 
   /* cleanup */
   g_main_loop_unref (main_loop);
-  gst_consistency_checker_free (consist);
+  gst_consistency_checker_free (chk_1);
+  gst_consistency_checker_free (chk_2);
+  gst_consistency_checker_free (chk_3);
   gst_object_unref (G_OBJECT (bus));
   gst_object_unref (G_OBJECT (bin));
 }
@@ -534,7 +548,7 @@ GST_START_TEST (test_live_seeking)
 #if 1
     fail_unless (res == TRUE, NULL);
 #else
-    /* adder is picky, if a single seek fails it totaly fails */
+    /* adder is picky, if a single seek fails it totally fails */
     fail_unless (res == FALSE, NULL);
 #endif
 
@@ -675,7 +689,7 @@ GST_START_TEST (test_remove_pad)
   fail_unless (res == TRUE, NULL);
 
   /* create an unconnected sinkpad in adder */
-  pad = gst_element_get_request_pad (adder, "sink%d");
+  pad = gst_element_get_request_pad (adder, "sink_%u");
   fail_if (pad == NULL, NULL);
 
   srcpad = gst_element_get_static_pad (adder, "src");
@@ -748,7 +762,7 @@ GST_START_TEST (test_clip)
   GstFlowReturn ret;
   GstEvent *event;
   GstBuffer *buffer;
-//FIXME:  GstCaps *caps;
+  GstCaps *caps;
 
   GST_INFO ("preparing test");
 
@@ -777,7 +791,7 @@ GST_START_TEST (test_clip)
 
   /* create an unconnected sinkpad in adder, should also automatically activate
    * the pad */
-  sinkpad = gst_element_get_request_pad (adder, "sink%d");
+  sinkpad = gst_element_get_request_pad (adder, "sink_%u");
   fail_if (sinkpad == NULL, NULL);
 
   /* send segment to adder */
@@ -788,17 +802,22 @@ GST_START_TEST (test_clip)
   event = gst_event_new_segment (&segment);
   gst_pad_send_event (sinkpad, event);
 
-/*FIXME:  caps = gst_caps_new_simple ("audio/x-raw",
-      "format", G_TYPE_STRING, GST_AUDIO_NE (S16),
-      "rate", G_TYPE_INT, 44100,
-      "channels", G_TYPE_INT, 2, NULL);
-*/
+  caps = gst_caps_new_simple ("audio/x-raw",
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+      "format", G_TYPE_STRING, "S16BE",
+#else
+      "format", G_TYPE_STRING, "S16LE",
+#endif
+      "layout", G_TYPE_STRING, "interleaved",
+      "rate", G_TYPE_INT, 44100, "channels", G_TYPE_INT, 2, NULL);
+
+  gst_pad_set_caps (sinkpad, caps);
+  gst_caps_unref (caps);
 
   /* should be clipped and ok */
   buffer = gst_buffer_new_and_alloc (44100);
   GST_BUFFER_TIMESTAMP (buffer) = 0;
   GST_BUFFER_DURATION (buffer) = 250 * GST_MSECOND;
-//FIXME:  gst_buffer_set_caps (buffer, caps);
   GST_DEBUG ("pushing buffer %p", buffer);
   ret = gst_pad_chain (sinkpad, buffer);
   fail_unless (ret == GST_FLOW_OK);
@@ -808,7 +827,6 @@ GST_START_TEST (test_clip)
   buffer = gst_buffer_new_and_alloc (44100);
   GST_BUFFER_TIMESTAMP (buffer) = 900 * GST_MSECOND;
   GST_BUFFER_DURATION (buffer) = 250 * GST_MSECOND;
-//FIXME:  gst_buffer_set_caps (buffer, caps);
   GST_DEBUG ("pushing buffer %p", buffer);
   ret = gst_pad_chain (sinkpad, buffer);
   fail_unless (ret == GST_FLOW_OK);
@@ -819,7 +837,6 @@ GST_START_TEST (test_clip)
   buffer = gst_buffer_new_and_alloc (44100);
   GST_BUFFER_TIMESTAMP (buffer) = 1 * GST_SECOND;
   GST_BUFFER_DURATION (buffer) = 250 * GST_MSECOND;
-//FIXME:  gst_buffer_set_caps (buffer, caps);
   GST_DEBUG ("pushing buffer %p", buffer);
   ret = gst_pad_chain (sinkpad, buffer);
   fail_unless (ret == GST_FLOW_OK);
@@ -830,7 +847,6 @@ GST_START_TEST (test_clip)
   buffer = gst_buffer_new_and_alloc (44100);
   GST_BUFFER_TIMESTAMP (buffer) = 2 * GST_SECOND;
   GST_BUFFER_DURATION (buffer) = 250 * GST_MSECOND;
-//FIXME:  gst_buffer_set_caps (buffer, caps);
   GST_DEBUG ("pushing buffer %p", buffer);
   ret = gst_pad_chain (sinkpad, buffer);
   fail_unless (ret == GST_FLOW_OK);

@@ -78,8 +78,12 @@ static void gst_smart_encoder_dispose (GObject * object);
 
 static gboolean setup_recoder_pipeline (GstSmartEncoder * smart_encoder);
 
-static GstFlowReturn gst_smart_encoder_chain (GstPad * pad, GstBuffer * buf);
-static gboolean smart_encoder_sink_event (GstPad * pad, GstEvent * event);
+static GstFlowReturn gst_smart_encoder_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buf);
+static gboolean smart_encoder_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean smart_encoder_sink_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
 static GstCaps *smart_encoder_sink_getcaps (GstPad * pad, GstCaps * filter);
 static GstStateChangeReturn
 gst_smart_encoder_change_state (GstElement * element,
@@ -101,7 +105,7 @@ gst_smart_encoder_class_init (GstSmartEncoderClass * klass)
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&sink_template));
 
-  gst_element_class_set_details_simple (element_class, "Smart Video Encoder",
+  gst_element_class_set_static_metadata (element_class, "Smart Video Encoder",
       "Codec/Recoder/Video",
       "Re-encodes portions of Video that lay on segment boundaries",
       "Edward Hervey <bilboed@gmail.com>");
@@ -151,8 +155,7 @@ gst_smart_encoder_init (GstSmartEncoder * smart_encoder)
       gst_pad_new_from_static_template (&sink_template, "sink");
   gst_pad_set_chain_function (smart_encoder->sinkpad, gst_smart_encoder_chain);
   gst_pad_set_event_function (smart_encoder->sinkpad, smart_encoder_sink_event);
-  gst_pad_set_getcaps_function (smart_encoder->sinkpad,
-      smart_encoder_sink_getcaps);
+  gst_pad_set_query_function (smart_encoder->sinkpad, smart_encoder_sink_query);
   gst_element_add_pad (GST_ELEMENT (smart_encoder), smart_encoder->sinkpad);
 
   smart_encoder->srcpad =
@@ -289,13 +292,13 @@ gst_smart_encoder_push_pending_gop (GstSmartEncoder * smart_encoder)
 }
 
 static GstFlowReturn
-gst_smart_encoder_chain (GstPad * pad, GstBuffer * buf)
+gst_smart_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
   GstSmartEncoder *smart_encoder;
   GstFlowReturn res = GST_FLOW_OK;
   gboolean discont, keyframe;
 
-  smart_encoder = GST_SMART_ENCODER (gst_object_get_parent (GST_OBJECT (pad)));
+  smart_encoder = GST_SMART_ENCODER (parent);
 
   discont = GST_BUFFER_IS_DISCONT (buf);
   keyframe = !GST_BUFFER_FLAG_IS_SET (buf, GST_BUFFER_FLAG_DELTA_UNIT);
@@ -336,15 +339,14 @@ gst_smart_encoder_chain (GstPad * pad, GstBuffer * buf)
       GST_TIME_ARGS (smart_encoder->gop_stop));
 
 beach:
-  gst_object_unref (smart_encoder);
   return res;
 }
 
 static gboolean
-smart_encoder_sink_event (GstPad * pad, GstEvent * event)
+smart_encoder_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean res = TRUE;
-  GstSmartEncoder *smart_encoder = GST_SMART_ENCODER (gst_pad_get_parent (pad));
+  GstSmartEncoder *smart_encoder = GST_SMART_ENCODER (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_STOP:
@@ -376,7 +378,6 @@ smart_encoder_sink_event (GstPad * pad, GstEvent * event)
 
   res = gst_pad_push_event (smart_encoder->srcpad, event);
 
-  gst_object_unref (smart_encoder);
   return res;
 }
 
@@ -393,7 +394,7 @@ smart_encoder_sink_getcaps (GstPad * pad, GstCaps * filter)
     tmpl = gst_static_pad_template_get_caps (&src_template);
 
   /* Try getting it from downstream */
-  peer = gst_pad_peer_get_caps (smart_encoder->srcpad, tmpl);
+  peer = gst_pad_peer_query_caps (smart_encoder->srcpad, tmpl);
 
   if (peer == NULL) {
     res = tmpl;
@@ -403,6 +404,30 @@ smart_encoder_sink_getcaps (GstPad * pad, GstCaps * filter)
   }
 
   gst_object_unref (smart_encoder);
+  return res;
+}
+
+static gboolean
+smart_encoder_sink_query (GstPad * pad, GstObject * parent, GstQuery * query)
+{
+  gboolean res;
+
+  switch (GST_QUERY_TYPE (query)) {
+    case GST_QUERY_CAPS:
+    {
+      GstCaps *filter, *caps;
+
+      gst_query_parse_caps (query, &filter);
+      caps = smart_encoder_sink_getcaps (pad, filter);
+      gst_query_set_caps_result (query, caps);
+      gst_caps_unref (caps);
+      res = TRUE;
+      break;
+    }
+    default:
+      res = gst_pad_query_default (pad, parent, query);
+      break;
+  }
   return res;
 }
 
@@ -485,7 +510,7 @@ get_encoder (GstCaps * caps)
 }
 
 static GstFlowReturn
-internal_chain (GstPad * pad, GstBuffer * buf)
+internal_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
   GstSmartEncoder *smart_encoder =
       g_object_get_qdata ((GObject *) pad, INTERNAL_ELEMENT);
@@ -633,9 +658,10 @@ gst_smart_encoder_find_elements (GstSmartEncoder * smart_encoder)
 
   gst_caps_unref (tmpl);
 
-  if (gst_caps_is_empty (res))
+  if (gst_caps_is_empty (res)) {
+    gst_caps_unref (res);
     ret = GST_STATE_CHANGE_FAILURE;
-  else
+  } else
     smart_encoder->available_caps = res;
 
   GST_DEBUG_OBJECT (smart_encoder, "Done, available_caps:%" GST_PTR_FORMAT,

@@ -3,22 +3,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudioiec61937</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
-<link rel="prev" href="gst-plugins-base-libs-gstringbuffer.html" title="gstringbuffer">
-<link rel="next" href="gstreamer-cdda.html" title="CDDA Library">
+<link rel="prev" href="gst-plugins-base-libs-gstaudioringbuffer.html" title="gstaudioringbuffer">
+<link rel="next" href="gst-plugins-base-libs-gststreamvolume.html" title="gststreamvolume">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstringbuffer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstaudioringbuffer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
-<td><a accesskey="n" href="gstreamer-cdda.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
+<td><a accesskey="n" href="gst-plugins-base-libs-gststreamvolume.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstaudioiec61937.synopsis" class="shortcut">Top</a>
@@ -40,12 +40,12 @@
 <pre class="synopsis">
 #include &lt;gst/audio/gstaudioiec61937.h&gt;
 
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstaudioiec61937.html#gst-audio-iec61937-frame-size" title="gst_audio_iec61937_frame_size ()">gst_audio_iec61937_frame_size</a>       (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBufferSpec" title="struct GstRingBufferSpec"><span class="type">GstRingBufferSpec</span></a> *spec</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudioiec61937.html#gst-audio-iec61937-payload" title="gst_audio_iec61937_payload ()">gst_audio_iec61937_payload</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *src</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstaudioiec61937.html#gst-audio-iec61937-frame-size" title="gst_audio_iec61937_frame_size ()">gst_audio_iec61937_frame_size</a>       (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudioiec61937.html#gst-audio-iec61937-payload" title="gst_audio_iec61937_payload ()">gst_audio_iec61937_payload</a>          (<em class="parameter"><code>const <span class="type">guint8</span> *src</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> src_n</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *dst</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint8</span> *dst</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> dst_n</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBufferSpec" title="struct GstRingBufferSpec"><span class="type">GstRingBufferSpec</span></a> *spec</code></em>);
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -59,7 +59,7 @@ audio formats in IEC 61937 headers and padding.
 <a name="gst-plugins-base-libs-gstaudioiec61937.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="gst-audio-iec61937-frame-size"></a><h3>gst_audio_iec61937_frame_size ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_audio_iec61937_frame_size       (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBufferSpec" title="struct GstRingBufferSpec"><span class="type">GstRingBufferSpec</span></a> *spec</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_audio_iec61937_frame_size       (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);</pre>
 <p>
 Calculated the size of the buffer expected by <a class="link" href="gst-plugins-base-libs-gstaudioiec61937.html#gst-audio-iec61937-payload" title="gst_audio_iec61937_payload ()"><code class="function">gst_audio_iec61937_payload()</code></a> for
 payloading type from <em class="parameter"><code>spec</code></em>.
@@ -78,16 +78,16 @@ payloaded.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.35</p>
+<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-iec61937-payload"></a><h3>gst_audio_iec61937_payload ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_audio_iec61937_payload          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *src</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_audio_iec61937_payload          (<em class="parameter"><code>const <span class="type">guint8</span> *src</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> src_n</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *dst</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint8</span> *dst</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> dst_n</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstringbuffer.html#GstRingBufferSpec" title="struct GstRingBufferSpec"><span class="type">GstRingBufferSpec</span></a> *spec</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);</pre>
 <p>
 Payloads <em class="parameter"><code>src</code></em> in the form specified by IEC 61937 for the type from <em class="parameter"><code>spec</code></em> and
 stores the result in <em class="parameter"><code>dst</code></em>. <em class="parameter"><code>src</code></em> must contain exactly one frame of data and
@@ -126,7 +126,7 @@ otherwise.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.35</p>
+<p class="since">Since 0.10.36</p>
 </div>
 </div>
 </div>

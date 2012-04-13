@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>volume</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-videotestsrc.html" title="videotestsrc">
 <link rel="next" href="gst-plugins-base-plugins-vorbisdec.html" title="vorbisdec">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-videotestsrc.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-vorbisdec.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -54,7 +54,7 @@
          +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
                      +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html">GstBaseTransform</a>
-                           +----<a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstaudiofilter.html#GstAudioFilter">GstAudioFilter</a>
+                           +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiofilter.html#GstAudioFilter">GstAudioFilter</a>
                                  +----GstVolume
 </pre>
 </div>
@@ -62,7 +62,7 @@
 <a name="gst-plugins-base-plugins-volume.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GstVolume implements
- <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstImplementsInterface.html">GstImplementsInterface</a>,  <a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstmixer.html#GstMixer">GstMixer</a> and  <a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume">GstStreamVolume</a>.</p>
+ <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmixer.html#GstMixer">GstMixer</a> and  <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume">GstStreamVolume</a>.</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-volume.properties"></a><h2>Properties</h2>
@@ -79,10 +79,18 @@ The volume element changes the volume of the audio data.
 <p>
 </p>
 <div class="refsect2">
-<a name="id523359"></a><h3>Example launch line</h3>
-<div class="informalexample"><pre class="programlisting">
-gst-launch -v -m audiotestsrc ! volume volume=0.5 ! level ! fakesink silent=TRUE
-</pre></div> This pipeline shows that the level of audiotestsrc has been halved
+<a name="idp7711904"></a><h3>Example launch line</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v <span class="gtkdoc opt">-</span>m audiotestsrc <span class="gtkdoc opt">!</span> volume volume<span class="gtkdoc opt">=</span><span class="number">0.5</span> <span class="gtkdoc opt">!</span> level <span class="gtkdoc opt">!</span> fakesink silent<span class="gtkdoc opt">=</span>TRUE</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ This pipeline shows that the level of audiotestsrc has been halved
 (peak values are around -6 dB and RMS around -9 dB) compared to
 the same pipeline without the volume element.
 </div>
@@ -91,7 +99,7 @@ the same pipeline without the volume element.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id499668"></a><h3>Element Information</h3>
+<a name="idp13997168"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -114,7 +122,7 @@ the same pipeline without the volume element.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id496503"></a><h3>Element Pads</h3>
+<a name="idp15220144"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -132,23 +140,7 @@ the same pipeline without the volume element.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-raw-float, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int){ 32, 64 }</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)8, depth=(int)8, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)16, depth=(int)16, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)24, depth=(int)24, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)32, depth=(int)32, signed=(boolean)true</td>
+<td>audio/x-raw, format=(string){ F32LE, F64LE, S8, S16LE, S24LE, S32LE }, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ], layout=(string)interleaved</td>
 </tr>
 </tbody>
 </table></div>
@@ -169,23 +161,7 @@ the same pipeline without the volume element.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-raw-float, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int){ 32, 64 }</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)8, depth=(int)8, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)16, depth=(int)16, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)24, depth=(int)24, signed=(boolean)true</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, channels=(int)[ 1, 2147483647 ], rate=(int)[ 1, 2147483647 ], endianness=(int)1234, width=(int)32, depth=(int)32, signed=(boolean)true</td>
+<td>audio/x-raw, format=(string){ F32LE, F64LE, S8, S16LE, S24LE, S32LE }, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ], layout=(string)interleaved</td>
 </tr>
 </tbody>
 </table></div>

@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part I. GStreamer Base Plugins Libraries</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
-<link rel="up" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
-<link rel="prev" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
+<link rel="up" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
+<link rel="prev" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="next" href="compiling.html" title="Compiling">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -16,7 +16,7 @@
 <td><a accesskey="p" href="index.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td> </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="compiling.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="part">
@@ -37,7 +37,7 @@ How to compile against the base plugins libraries
     pipeline</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-appsink.html">appsink</a></span><span class="refpurpose"> — Easy way for applications to extract buffers from a
+<span class="refentrytitle"><a href="gst-plugins-base-libs-appsink.html">appsink</a></span><span class="refpurpose"> — Easy way for applications to extract samples from a
     pipeline</span>
 </dt>
 </dl></dd>
@@ -45,6 +45,9 @@ How to compile against the base plugins libraries
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudio.html">gstaudio</a></span><span class="refpurpose"> — Support library for audio elements</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudiocdsrc.html">gstaudiocdsrc</a></span><span class="refpurpose"> — Base class for Audio CD sources</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudioclock.html">gstaudioclock</a></span><span class="refpurpose"> — Helper object for implementing audio clocks</span>
@@ -69,25 +72,33 @@ How to compile against the base plugins libraries
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudiosrc.html">gstaudiosrc</a></span><span class="refpurpose"> — Simple base class for audio sources</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstbaseaudiosink.html">gstbaseaudiosink</a></span><span class="refpurpose"> — Base class for audio sinks</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudiobasesink.html">gstaudiobasesink</a></span><span class="refpurpose"> — Base class for audio sinks</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstbaseaudiosrc.html">gstbaseaudiosrc</a></span><span class="refpurpose"> — Base class for audio sources</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudiobasesrc.html">gstaudiobasesrc</a></span><span class="refpurpose"> — Base class for audio sources</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmultichannel.html">gstmultichannel</a></span><span class="refpurpose"> — Support for multichannel audio elements</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmultichannel.html">gstmultichannel</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstringbuffer.html">gstringbuffer</a></span><span class="refpurpose"> — Base class for audio ringbuffer implementations</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudioringbuffer.html">gstaudioringbuffer</a></span><span class="refpurpose"> — Base class for audio ringbuffer implementations</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstaudioiec61937.html">gstaudioiec61937</a></span><span class="refpurpose"> — Utility functions for IEC 61937 payloading</span>
 </dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gststreamvolume.html">gststreamvolume</a></span><span class="refpurpose"> — Interface for elements that provide a stream volume</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixer.html">gstmixer</a></span><span class="refpurpose"> — Interface for elements that provide mixer operations</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixeroptions.html">gstmixeroptions</a></span><span class="refpurpose"> — Multi-option mixer control</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixertrack.html">gstmixertrack</a></span><span class="refpurpose"> — Basic mixer control object (volume slider, switch)</span>
+</dt>
 </dl></dd>
-<dt><span class="chapter"><a href="gstreamer-cdda.html">CDDA Library</a></span></dt>
-<dd><dl><dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstcddabasesrc.html">gstcddabasesrc</a></span><span class="refpurpose"> — Base class for CD digital audio (CDDA) sources</span>
-</dt></dl></dd>
 <dt><span class="chapter"><a href="gstreamer-ffft.html">FFT Library</a></span></dt>
 <dd><dl>
 <dt>
@@ -109,30 +120,8 @@ How to compile against the base plugins libraries
 <dt><span class="chapter"><a href="gstreamer-interfaces.html">Interfaces Library</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstcolorbalance.html">gstcolorbalance</a></span><span class="refpurpose"> — Interface for adjusting color balance settings</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstcolorbalancechannel.html">gstcolorbalancechannel</a></span><span class="refpurpose"> — Object representing a channel from the <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a>
-        interface.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixer.html">gstmixer</a></span><span class="refpurpose"> — Interface for elements that provide mixer operations</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixeroptions.html">gstmixeroptions</a></span><span class="refpurpose"> — Multi-option mixer control</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstmixertrack.html">gstmixertrack</a></span><span class="refpurpose"> — Basic mixer control object (volume slider, switch)</span>
-</dt>
-<dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstnavigation.html">gstnavigation</a></span><span class="refpurpose"> — Interface for creating, sending and parsing navigation
 events.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstpropertyprobe.html">gstpropertyprobe</a></span><span class="refpurpose"> — Interface for probing possible property values</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gststreamvolume.html">gststreamvolume</a></span><span class="refpurpose"> — Interface for elements that provide a stream volume</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gsttuner.html">gsttuner</a></span><span class="refpurpose"> — Interface for elements providing tuner operations</span>
@@ -145,20 +134,7 @@ interface.</span>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gsttunernorm.html">gsttunernorm</a></span><span class="refpurpose"> — Encapsulates information about the data format(s)
 for a <a class="link" href="gst-plugins-base-libs-gsttunerchannel.html#GstTunerChannel"><span class="type">GstTunerChannel</span></a>.</span>
 </dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideoorientation.html">gstvideoorientation</a></span><span class="refpurpose"> — Interface for elements providing video orientation
-controls</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideooverlay.html">gstvideooverlay</a></span><span class="refpurpose"> — Interface for setting/getting a window system resource
-   on elements supporting it to configure a window into which to render a
-   video.</span>
-</dt>
 </dl></dd>
-<dt><span class="chapter"><a href="gstreamer-netbuffer.html">Network Buffer Library</a></span></dt>
-<dd><dl><dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstnetbuffer.html">gstnetbuffer</a></span><span class="refpurpose"> — Buffer for use in network sources and sinks</span>
-</dt></dl></dd>
 <dt><span class="chapter"><a href="gstreamer-riff.html">Riff Media Library</a></span></dt>
 <dd><dl><dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstriff.html">gstriff</a></span><span class="refpurpose"> — Riff fileformat utillity functions.</span>
@@ -166,13 +142,13 @@ controls</span>
 <dt><span class="chapter"><a href="gstreamer-rtp.html">RTP Library</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstbasertpaudiopayload.html">gstbasertpaudiopayload</a></span><span class="refpurpose"> — Base class for audio RTP payloader</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtpbaseaudiopayload.html">gstrtpbaseaudiopayload</a></span><span class="refpurpose"> — Base class for audio RTP payloader</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstbasertpdepayload.html">gstbasertpdepayload</a></span><span class="refpurpose"> — Base class for RTP depayloader</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtpbasedepayload.html">gstrtpbasedepayload</a></span><span class="refpurpose"> — Base class for RTP depayloader</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstbasertppayload.html">gstbasertppayload</a></span><span class="refpurpose"> — Base class for RTP payloader</span>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtpbasepayload.html">gstrtpbasepayload</a></span><span class="refpurpose"> — Base class for RTP payloader</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtpbuffer.html">gstrtpbuffer</a></span><span class="refpurpose"> — Helper methods for dealing with RTP buffers</span>
@@ -186,9 +162,6 @@ controls</span>
 </dl></dd>
 <dt><span class="chapter"><a href="gstreamer-rtsp.html">RTSP Library</a></span></dt>
 <dd><dl>
-<dt>
-<span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtspbase64.html">gstrtspbase64</a></span><span class="refpurpose"> — Helper functions to handle Base64</span>
-</dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstrtspconnection.html">gstrtspconnection</a></span><span class="refpurpose"> — manage RTSP connections</span>
 </dt>
@@ -288,10 +261,29 @@ and encoder, decoder, URI source and URI sink elements</span>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideo.html">gstvideo</a></span><span class="refpurpose"> — Support library for video operations</span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideooverlaycomposition.html">gstvideooverlaycomposition</a></span><span class="refpurpose"> — Video Buffer Overlay Compositions (Subtitles, Logos)</span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideofilter.html">gstvideofilter</a></span><span class="refpurpose"> — Base class for video filters</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideosink.html">gstvideosink</a></span><span class="refpurpose"> — Base class for video sinks</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstcolorbalance.html">gstcolorbalance</a></span><span class="refpurpose"> — Interface for adjusting color balance settings</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstcolorbalancechannel.html">gstcolorbalancechannel</a></span><span class="refpurpose"> — Object representing a channel from the <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a>
+        interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideoorientation.html">gstvideoorientation</a></span><span class="refpurpose"> — Interface for elements providing video orientation
+controls</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gst-plugins-base-libs-gstvideooverlay.html">gstvideooverlay</a></span><span class="refpurpose"> — Interface for setting/getting a window system resource
+   on elements supporting it to configure a window into which to render a
+   video.</span>
 </dt>
 </dl></dd>
 </dl>

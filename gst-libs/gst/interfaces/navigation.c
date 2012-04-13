@@ -53,7 +53,7 @@
  * mouse moving over a clickable region, or the set of available angles changing.
  * </para><para>
  * The GstNavigation message functions provide functions for creating and parsing
- * custom bus messages for signalling GstNavigation changes.
+ * custom bus messages for signaling GstNavigation changes.
  * </para>
  * </listitem>
  * </itemizedlist>
@@ -111,7 +111,7 @@ gst_navigation_class_init (GstNavigationInterface * iface)
 void
 gst_navigation_send_event (GstNavigation * navigation, GstStructure * structure)
 {
-  GstNavigationInterface *iface = GST_NAVIGATION_GET_IFACE (navigation);
+  GstNavigationInterface *iface = GST_NAVIGATION_GET_INTERFACE (navigation);
 
   if (iface->send_event) {
     iface->send_event (navigation, structure);

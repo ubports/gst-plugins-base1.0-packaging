@@ -22,11 +22,6 @@
 #ifndef __GST_AUDIO_ENCODER_H__
 #define __GST_AUDIO_ENCODER_H__
 
-#ifndef GST_USE_UNSTABLE_API
-#warning "GstAudioEncoder is unstable API and may change in future."
-#warning "You can define GST_USE_UNSTABLE_API to avoid this warning."
-#endif
-
 #include <gst/gst.h>
 #include <gst/audio/audio.h>
 
@@ -59,7 +54,7 @@ G_BEGIN_DECLS
 
 /**
  * GST_AUDIO_ENCODER_SRC_PAD:
- * @obj: base parse instance
+ * @obj: audio encoder instance
  *
  * Gives the pointer to the source #GstPad object of the element.
  *
@@ -69,7 +64,7 @@ G_BEGIN_DECLS
 
 /**
  * GST_AUDIO_ENCODER_SINK_PAD:
- * @obj: base parse instance
+ * @obj: audio encoder instance
  *
  * Gives the pointer to the sink #GstPad object of the element.
  *
@@ -78,17 +73,27 @@ G_BEGIN_DECLS
 #define GST_AUDIO_ENCODER_SINK_PAD(obj)	(GST_AUDIO_ENCODER_CAST (obj)->sinkpad)
 
 /**
- * GST_AUDIO_ENCODER_SEGMENT:
+ * GST_AUDIO_ENCODER_INPUT_SEGMENT:
  * @obj: base parse instance
  *
- * Gives the segment of the element.
+ * Gives the input segment of the element.
  *
  * Since: 0.10.36
  */
-#define GST_AUDIO_ENCODER_SEGMENT(obj)     (GST_AUDIO_ENCODER_CAST (obj)->segment)
+#define GST_AUDIO_ENCODER_INPUT_SEGMENT(obj)     (GST_AUDIO_ENCODER_CAST (obj)->input_segment)
 
-#define GST_AUDIO_ENCODER_STREAM_LOCK(enc) g_static_rec_mutex_lock (&GST_AUDIO_ENCODER (enc)->stream_lock)
-#define GST_AUDIO_ENCODER_STREAM_UNLOCK(enc) g_static_rec_mutex_unlock (&GST_AUDIO_ENCODER (enc)->stream_lock)
+/**
+ * GST_AUDIO_ENCODER_OUTPUT_SEGMENT:
+ * @obj: base parse instance
+ *
+ * Gives the output segment of the element.
+ *
+ * Since: 0.10.36
+ */
+#define GST_AUDIO_ENCODER_OUTPUT_SEGMENT(obj)     (GST_AUDIO_ENCODER_CAST (obj)->output_segment)
+
+#define GST_AUDIO_ENCODER_STREAM_LOCK(enc)   g_rec_mutex_lock (&GST_AUDIO_ENCODER (enc)->stream_lock)
+#define GST_AUDIO_ENCODER_STREAM_UNLOCK(enc) g_rec_mutex_unlock (&GST_AUDIO_ENCODER (enc)->stream_lock)
 
 typedef struct _GstAudioEncoder GstAudioEncoder;
 typedef struct _GstAudioEncoderClass GstAudioEncoderClass;
@@ -113,13 +118,15 @@ struct _GstAudioEncoder {
   /* protects all data processing, i.e. is locked
    * in the chain function, finish_frame and when
    * processing serialized events */
-  GStaticRecMutex stream_lock;
+  GRecMutex       stream_lock;
 
   /* MT-protected (with STREAM_LOCK) */
-  GstSegment      segment;
+  GstSegment      input_segment;
+  GstSegment      output_segment;
 
   /*< private >*/
   GstAudioEncoderPrivate *priv;
+
   gpointer       _gst_reserved[GST_PADDING_LARGE];
 };
 
@@ -137,14 +144,18 @@ struct _GstAudioEncoder {
  * @handle_frame:   Provides input samples (or NULL to clear any remaining data)
  *                  according to directions as configured by the subclass
  *                  using the API.  Input data ref management is performed
- *                  by base class, subclass should not care or intervene.
+ *                  by base class, subclass should not care or intervene,
+ *                  and input data is only valid until next call to base class,
+ *                  most notably a call to gst_audio_encoder_finish_frame().
  * @flush:          Optional.
  *                  Instructs subclass to clear any codec caches and discard
  *                  any pending samples and not yet returned encoded data.
- * @event:          Optional.
- *                  Event handler on the sink pad. This function should return
- *                  TRUE if the event was handled and should be discarded
- *                  (i.e. not unref'ed).
+ * @sink_event:     Optional.
+ *                  Event handler on the sink pad. Subclasses should chain up to
+ *                  the parent implementation to invoke the default handler.
+ * @src_event:      Optional.
+ *                  Event handler on the src pad. Subclasses should chain up to
+ *                  the parent implementation to invoke the default handler.
  * @pre_push:       Optional.
  *                  Called just prior to pushing (encoded data) buffer downstream.
  *                  Subclass has full discretionary access to buffer,
@@ -154,6 +165,12 @@ struct _GstAudioEncoder {
  *                  for multichannel input specification).  If not implemented,
  *                  default returns gst_audio_encoder_proxy_getcaps
  *                  applied to sink template caps.
+ * @open:           Optional.
+ *                  Called when the element changes to GST_STATE_READY.
+ *                  Allows opening external resources. Since: 0.10.37.
+ * @close:          Optional.
+ *                  Called when the element changes to GST_STATE_NULL.
+ *                  Allows closing external resources. Since: 0.10.37.
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @set_format and @handle_frame needs to be overridden.
@@ -181,13 +198,20 @@ struct _GstAudioEncoderClass {
   GstFlowReturn (*pre_push)           (GstAudioEncoder *enc,
                                        GstBuffer **buffer);
 
-  gboolean      (*event)              (GstAudioEncoder *enc,
+  gboolean      (*sink_event)         (GstAudioEncoder *enc,
+                                       GstEvent *event);
+
+  gboolean      (*src_event)          (GstAudioEncoder *enc,
                                        GstEvent *event);
 
   GstCaps *     (*getcaps)            (GstAudioEncoder *enc, GstCaps *filter);
 
+  gboolean      (*open)               (GstAudioEncoder *enc);
+
+  gboolean      (*close)              (GstAudioEncoder *enc);
+
   /*< private >*/
-  gpointer       _gst_reserved[GST_PADDING_LARGE];
+  gpointer       _gst_reserved[GST_PADDING_LARGE-2];
 };
 
 GType           gst_audio_encoder_get_type         (void);
@@ -198,6 +222,9 @@ GstFlowReturn   gst_audio_encoder_finish_frame (GstAudioEncoder * enc,
 
 GstCaps *       gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc,
                                                  GstCaps         * caps);
+
+gboolean        gst_audio_encoder_set_output_format  (GstAudioEncoder    * enc,
+                                                      GstCaps            * caps);
 
 
 /* context parameters */
@@ -227,6 +254,9 @@ void            gst_audio_encoder_set_latency (GstAudioEncoder * enc,
                                                GstClockTime      min,
                                                GstClockTime      max);
 
+void            gst_audio_encoder_set_headers (GstAudioEncoder * enc,
+                                               GList           * headers);
+
 /* object properties */
 
 void            gst_audio_encoder_set_mark_granule (GstAudioEncoder * enc,
@@ -248,6 +278,16 @@ void            gst_audio_encoder_set_tolerance (GstAudioEncoder * enc,
                                                  gint64            tolerance);
 
 gint64          gst_audio_encoder_get_tolerance (GstAudioEncoder * enc);
+
+void            gst_audio_encoder_set_hard_min (GstAudioEncoder * enc,
+                                                gboolean enabled);
+
+gboolean        gst_audio_encoder_get_hard_min (GstAudioEncoder * enc);
+
+void            gst_audio_encoder_set_drainable (GstAudioEncoder * enc,
+                                                 gboolean enabled);
+
+gboolean        gst_audio_encoder_get_drainable (GstAudioEncoder * enc);
 
 void            gst_audio_encoder_merge_tags (GstAudioEncoder * enc,
                                               const GstTagList * tags, GstTagMergeMode mode);

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins 0.8.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2004-08-07 20:29+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <begraj@hotmail.com>\n"
@@ -191,8 +191,7 @@ msgstr ""
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Gabim gjatë mbylljes së file \"%s\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
+msgid "This CD has no audio tracks"
 msgstr ""
 
 msgid "Can't record audio fast enough"
@@ -358,9 +357,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr ""
-
 msgid "ID3 tag"
 msgstr ""
 
@@ -392,6 +388,18 @@ msgid "Lossless MSZH"
 msgstr ""
 
 msgid "Run-length encoding"
+msgstr ""
+
+msgid "Subtitle"
+msgstr ""
+
+msgid "MPL2 subtitle format"
+msgstr ""
+
+msgid "DKS subtitle format"
+msgstr ""
+
+msgid "QTtext subtitle format"
 msgstr ""
 
 msgid "Sami subtitle format"

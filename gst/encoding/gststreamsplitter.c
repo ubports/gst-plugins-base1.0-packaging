@@ -25,7 +25,7 @@
 #include "gststreamsplitter.h"
 
 static GstStaticPadTemplate src_template =
-GST_STATIC_PAD_TEMPLATE ("src_%d", GST_PAD_SRC, GST_PAD_REQUEST,
+GST_STATIC_PAD_TEMPLATE ("src_%u", GST_PAD_SRC, GST_PAD_REQUEST,
     GST_STATIC_CAPS_ANY);
 
 static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE ("sink",
@@ -38,10 +38,11 @@ GST_DEBUG_CATEGORY_STATIC (gst_stream_splitter_debug);
 
 G_DEFINE_TYPE (GstStreamSplitter, gst_stream_splitter, GST_TYPE_ELEMENT);
 
-#define STREAMS_LOCK(obj) (g_mutex_lock(obj->lock))
-#define STREAMS_UNLOCK(obj) (g_mutex_unlock(obj->lock))
+#define STREAMS_LOCK(obj) (g_mutex_lock(&obj->lock))
+#define STREAMS_UNLOCK(obj) (g_mutex_unlock(&obj->lock))
 
 static void gst_stream_splitter_dispose (GObject * object);
+static void gst_stream_splitter_finalize (GObject * object);
 
 static gboolean gst_stream_splitter_sink_setcaps (GstPad * pad, GstCaps * caps);
 
@@ -60,6 +61,7 @@ gst_stream_splitter_class_init (GstStreamSplitterClass * klass)
   gstelement_klass = (GstElementClass *) klass;
 
   gobject_klass->dispose = gst_stream_splitter_dispose;
+  gobject_klass->finalize = gst_stream_splitter_finalize;
 
   GST_DEBUG_CATEGORY_INIT (gst_stream_splitter_debug, "streamsplitter", 0,
       "Stream Splitter");
@@ -74,7 +76,7 @@ gst_stream_splitter_class_init (GstStreamSplitterClass * klass)
   gstelement_klass->release_pad =
       GST_DEBUG_FUNCPTR (gst_stream_splitter_release_pad);
 
-  gst_element_class_set_details_simple (gstelement_klass,
+  gst_element_class_set_static_metadata (gstelement_klass,
       "streamsplitter", "Generic",
       "Splits streams based on their media type",
       "Edward Hervey <edward.hervey@collabora.co.uk>");
@@ -85,11 +87,6 @@ gst_stream_splitter_dispose (GObject * object)
 {
   GstStreamSplitter *stream_splitter = (GstStreamSplitter *) object;
 
-  if (stream_splitter->lock) {
-    g_mutex_free (stream_splitter->lock);
-    stream_splitter->lock = NULL;
-  }
-
   g_list_foreach (stream_splitter->pending_events, (GFunc) gst_event_unref,
       NULL);
   g_list_free (stream_splitter->pending_events);
@@ -98,11 +95,20 @@ gst_stream_splitter_dispose (GObject * object)
   G_OBJECT_CLASS (gst_stream_splitter_parent_class)->dispose (object);
 }
 
-static GstFlowReturn
-gst_stream_splitter_chain (GstPad * pad, GstBuffer * buf)
+static void
+gst_stream_splitter_finalize (GObject * object)
 {
-  GstStreamSplitter *stream_splitter =
-      (GstStreamSplitter *) GST_PAD_PARENT (pad);
+  GstStreamSplitter *stream_splitter = (GstStreamSplitter *) object;
+
+  g_mutex_clear (&stream_splitter->lock);
+
+  G_OBJECT_CLASS (gst_stream_splitter_parent_class)->finalize (object);
+}
+
+static GstFlowReturn
+gst_stream_splitter_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+{
+  GstStreamSplitter *stream_splitter = (GstStreamSplitter *) parent;
   GstFlowReturn res;
   GstPad *srcpad = NULL;
 
@@ -138,10 +144,10 @@ nopad:
 }
 
 static gboolean
-gst_stream_splitter_sink_event (GstPad * pad, GstEvent * event)
+gst_stream_splitter_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamSplitter *stream_splitter =
-      (GstStreamSplitter *) GST_PAD_PARENT (pad);
+  GstStreamSplitter *stream_splitter = (GstStreamSplitter *) parent;
   gboolean res = TRUE;
   gboolean toall = FALSE;
   gboolean store = FALSE;
@@ -180,7 +186,7 @@ gst_stream_splitter_sink_event (GstPad * pad, GstEvent * event)
       gst_event_unref (event);
       event =
           gst_event_new_custom (GST_EVENT_CUSTOM_DOWNSTREAM,
-          gst_structure_empty_new ("stream-switching-eos"));
+          gst_structure_new_empty ("stream-switching-eos"));
       toall = TRUE;
       eos = TRUE;
       break;
@@ -281,11 +287,11 @@ resync:
 
     STREAMS_UNLOCK (stream_splitter);
     if (res) {
-      GstCaps *peercaps = gst_pad_peer_get_caps (srcpad, filter);
+      GstCaps *peercaps = gst_pad_peer_query_caps (srcpad, filter);
       if (peercaps)
-        gst_caps_merge (res, gst_caps_make_writable (peercaps));
+        res = gst_caps_merge (res, peercaps);
     } else {
-      res = gst_pad_peer_get_caps (srcpad, filter);
+      res = gst_pad_peer_query_caps (srcpad, filter);
     }
     STREAMS_LOCK (stream_splitter);
 
@@ -299,6 +305,31 @@ resync:
 
 beach:
   STREAMS_UNLOCK (stream_splitter);
+  return res;
+}
+
+static gboolean
+gst_stream_splitter_sink_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
+{
+  gboolean res;
+
+  switch (GST_QUERY_TYPE (query)) {
+    case GST_QUERY_CAPS:
+    {
+      GstCaps *filter, *caps;
+
+      gst_query_parse_caps (query, &filter);
+      caps = gst_stream_splitter_sink_getcaps (pad, filter);
+      gst_query_set_caps_result (query, caps);
+      gst_caps_unref (caps);
+      res = TRUE;
+      break;
+    }
+    default:
+      res = gst_pad_query_default (pad, parent, query);
+      break;
+  }
   return res;
 }
 
@@ -331,7 +362,7 @@ resync:
     GstCaps *peercaps;
 
     STREAMS_UNLOCK (stream_splitter);
-    peercaps = gst_pad_peer_get_caps (srcpad, NULL);
+    peercaps = gst_pad_peer_query_caps (srcpad, NULL);
     if (peercaps) {
       res = gst_caps_can_intersect (caps, peercaps);
       gst_caps_unref (peercaps);
@@ -343,7 +374,7 @@ resync:
 
     if (res) {
       /* FIXME : we need to switch properly */
-      GST_DEBUG_OBJECT (srcpad, "Setting caps on this pad was succesfull");
+      GST_DEBUG_OBJECT (srcpad, "Setting caps on this pad was successful");
       stream_splitter->current = srcpad;
       goto beach;
     }
@@ -356,10 +387,10 @@ beach:
 }
 
 static gboolean
-gst_stream_splitter_src_event (GstPad * pad, GstEvent * event)
+gst_stream_splitter_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamSplitter *stream_splitter =
-      (GstStreamSplitter *) GST_PAD_PARENT (pad);
+  GstStreamSplitter *stream_splitter = (GstStreamSplitter *) parent;
 
   GST_DEBUG_OBJECT (pad, "%s", GST_EVENT_TYPE_NAME (event));
 
@@ -368,10 +399,10 @@ gst_stream_splitter_src_event (GstPad * pad, GstEvent * event)
 }
 
 static gboolean
-gst_stream_splitter_src_query (GstPad * pad, GstQuery * query)
+gst_stream_splitter_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
 {
-  GstStreamSplitter *stream_splitter =
-      (GstStreamSplitter *) GST_PAD_PARENT (pad);
+  GstStreamSplitter *stream_splitter = (GstStreamSplitter *) parent;
 
   GST_DEBUG_OBJECT (pad, "%s", GST_QUERY_TYPE_NAME (query));
 
@@ -384,18 +415,15 @@ gst_stream_splitter_init (GstStreamSplitter * stream_splitter)
 {
   stream_splitter->sinkpad =
       gst_pad_new_from_static_template (&sink_template, "sink");
-  /* FIXME : No buffer alloc for the time being, it will resort to the fallback */
-  /* gst_pad_set_bufferalloc_function (stream_splitter->sinkpad, */
-  /*     gst_stream_splitter_buffer_alloc); */
   gst_pad_set_chain_function (stream_splitter->sinkpad,
       gst_stream_splitter_chain);
   gst_pad_set_event_function (stream_splitter->sinkpad,
       gst_stream_splitter_sink_event);
-  gst_pad_set_getcaps_function (stream_splitter->sinkpad,
-      gst_stream_splitter_sink_getcaps);
+  gst_pad_set_query_function (stream_splitter->sinkpad,
+      gst_stream_splitter_sink_query);
   gst_element_add_pad (GST_ELEMENT (stream_splitter), stream_splitter->sinkpad);
 
-  stream_splitter->lock = g_mutex_new ();
+  g_mutex_init (&stream_splitter->lock);
 }
 
 static GstPad *

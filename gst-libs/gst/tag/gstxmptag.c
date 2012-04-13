@@ -173,9 +173,11 @@ xmp_tag_type_get_name (GstXmpTagType tagtype)
     case GstXmpTagTypeBag:
       return "rdf:Bag";
     default:
-      g_assert_not_reached ();
+      break;
   }
-  return NULL;                  /* make compiler happy with -DG_DISABLE_ASSERT */
+
+  /* Make compiler happy */
+  g_return_val_if_reached ("");
 }
 
 struct _PendingXmpTag
@@ -1222,7 +1224,7 @@ read_one_tag (GstTagList * list, XmpTag * xmptag,
           gst_date_time_unref (datetime);
         }
 
-      } else if (tag_type == GST_TYPE_DATE) {
+      } else if (tag_type == G_TYPE_DATE) {
         GDate *date;
         gint d, m, y;
 
@@ -1275,6 +1277,7 @@ GstTagList *
 gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
 {
   GstTagList *list = NULL;
+  GstMapInfo info;
   gchar *xps, *xp1, *xp2, *xpe, *ns, *ne;
   gsize len, max_ft_len;
   gboolean in_tag;
@@ -1310,7 +1313,9 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
 
   GST_LOG ("Starting xmp parsing");
 
-  xps = gst_buffer_map (buffer, &len, NULL, GST_MAP_READ);
+  gst_buffer_map (buffer, &info, GST_MAP_READ);
+  xps = (gchar *) info.data;
+  len = info.size;
   g_return_val_if_fail (len > 0, NULL);
 
   xpe = &xps[len + 1];
@@ -1325,7 +1330,10 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
   if (*xp1 != '>')
     goto missing_header;
 
-  max_ft_len = 1 + strlen ("<?xpacket end=\".\"?>");
+  /* Use 2 here to count for an extra trailing \n that was added
+   * in old versions, this makes it able to parse xmp packets with
+   * and without this trailing char */
+  max_ft_len = 2 + strlen ("<?xpacket end=\".\"?>");
   if (len < max_ft_len)
     goto missing_footer;
 
@@ -1343,7 +1351,7 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
 
   /* no tag can be longer that the whole buffer */
   part = g_malloc (xp2 - xp1);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
 
   /* parse data into a list of nodes */
   /* data is between xp1..xp2 */
@@ -1411,7 +1419,7 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
                 }
               } else {
                 XmpTag *xmp_tag = NULL;
-                /* FIXME: eventualy rewrite ns
+                /* FIXME: eventually rewrite ns
                  * find ':'
                  * check if ns before ':' is in ns_map and ns_map[i].gstreamer_ns!=NULL
                  * do 2 stage filter in tag_matches
@@ -1467,7 +1475,7 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
              <dc:type><rdf:Bag><rdf:li>Image</rdf:li></rdf:Bag></dc:type>
              <dc:creator><rdf:Seq><rdf:li/></rdf:Seq></dc:creator>
            */
-          /* FIXME: eventualy rewrite ns */
+          /* FIXME: eventually rewrite ns */
 
           /* skip rdf tags for now */
           if (strncmp (part, "rdf:", 4)) {
@@ -1574,7 +1582,7 @@ gst_tag_list_from_xmp_buffer (GstBuffer * buffer)
   }
   g_free (part);
 
-  gst_buffer_unmap (buffer, xps, len);
+  gst_buffer_unmap (buffer, &info);
 
   return list;
 
@@ -1625,8 +1633,8 @@ gst_value_serialize_xmp (const GValue * value)
       break;
   }
   /* put non-switchable types here */
-  if (G_VALUE_TYPE (value) == GST_TYPE_DATE) {
-    const GDate *date = gst_value_get_date (value);
+  if (G_VALUE_TYPE (value) == G_TYPE_DATE) {
+    const GDate *date = g_value_get_boxed (value);
 
     return g_strdup_printf ("%04d-%02d-%02d",
         (gint) g_date_get_year (date), (gint) g_date_get_month (date),
@@ -1852,7 +1860,7 @@ gst_tag_list_to_xmp_buffer_full (const GstTagList * list, gboolean read_only,
   g_string_append (data, "</x:xmpmeta>\n");
 
   if (!read_only) {
-    /* the xmp spec recommand to add 2-4KB padding for in-place editable xmp */
+    /* the xmp spec recommends to add 2-4KB padding for in-place editable xmp */
     guint i;
 
     for (i = 0; i < 32; i++) {
@@ -1866,9 +1874,7 @@ gst_tag_list_to_xmp_buffer_full (const GstTagList * list, gboolean read_only,
   bsize = data->len;
   bdata = g_string_free (data, FALSE);
 
-  buffer = gst_buffer_new ();
-  gst_buffer_take_memory (buffer, -1,
-      gst_memory_new_wrapped (0, bdata, g_free, bsize, 0, bsize));
+  buffer = gst_buffer_new_wrapped (bdata, bsize);
 
   return buffer;
 }

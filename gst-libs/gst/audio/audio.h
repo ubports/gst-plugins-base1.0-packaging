@@ -24,9 +24,9 @@
 #ifndef __GST_AUDIO_AUDIO_H__
 #define __GST_AUDIO_AUDIO_H__
 
-#include <gst/audio/multichannel.h>
-
 G_BEGIN_DECLS
+
+#include <gst/audio/audio-enumtypes.h>
 
 #if G_BYTE_ORDER == G_BIG_ENDIAN
 #define _GST_AUDIO_FORMAT_NE(fmt) GST_AUDIO_FORMAT_ ## fmt ## BE
@@ -141,7 +141,7 @@ typedef enum {
   GST_AUDIO_FORMAT_F64 = _GST_AUDIO_FORMAT_NE(F64)
 } GstAudioFormat;
 
-/* FIXME: need GTypes */
+
 typedef struct _GstAudioFormatInfo GstAudioFormatInfo;
 typedef struct _GstAudioInfo GstAudioInfo;
 
@@ -174,7 +174,7 @@ typedef enum
  * interleaved. @dest should at least be big enough to hold @length *
  * channels * size(unpack_format) bytes.
  */
-typedef void (*GstAudioFormatUnpack)         (GstAudioFormatInfo *info, gpointer dest,
+typedef void (*GstAudioFormatUnpack)         (const GstAudioFormatInfo *info, gpointer dest,
                                               const gpointer data, gint length);
 /**
  * GstAudioFormatPack:
@@ -187,7 +187,7 @@ typedef void (*GstAudioFormatUnpack)         (GstAudioFormatInfo *info, gpointer
  * The samples from source have each channel interleaved
  * and will be packed into @data.
  */
-typedef void (*GstAudioFormatPack)           (GstAudioFormatInfo *info, const gpointer src,
+typedef void (*GstAudioFormatPack)           (const GstAudioFormatInfo *info, const gpointer src,
                                               gpointer data, gint length);
 
 /**
@@ -219,7 +219,12 @@ struct _GstAudioFormatInfo {
   GstAudioFormat unpack_format;
   GstAudioFormatUnpack unpack_func;
   GstAudioFormatPack pack_func;
+
+  /*< private >*/
+  gpointer _gst_reserved[GST_PADDING];
 };
+
+GType gst_audio_format_info_get_type (void);
 
 #define GST_AUDIO_FORMAT_INFO_FORMAT(info)           ((info)->format)
 #define GST_AUDIO_FORMAT_INFO_NAME(info)             ((info)->name)
@@ -247,23 +252,140 @@ const GstAudioFormatInfo *
 
 void           gst_audio_format_fill_silence     (const GstAudioFormatInfo *info,
                                                   gpointer dest, gsize length);
+
+/**
+ * GstAudioChannelPosition:
+ * @GST_AUDIO_CHANNEL_POSITION_MONO: Mono without direction;
+ *     can only be used with 1 channel
+ * @GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT: Front left
+ * @GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT: Front right
+ * @GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER: Front center
+ * @GST_AUDIO_CHANNEL_POSITION_LFE1: Low-frequency effects 1 (subwoofer)
+ * @GST_AUDIO_CHANNEL_POSITION_REAR_LEFT: Rear left
+ * @GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT: Rear right
+ * @GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT_OF_CENTER: Front left of center
+ * @GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT_OF_CENTER: Front right of center
+ * @GST_AUDIO_CHANNEL_POSITION_REAR_CENTER: Rear center
+ * @GST_AUDIO_CHANNEL_POSITION_LFE2: Low-frequency effects 2 (subwoofer)
+ * @GST_AUDIO_CHANNEL_POSITION_SIDE_LEFT: Side left
+ * @GST_AUDIO_CHANNEL_POSITION_SIDE_RIGHT: Side right
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_LEFT: Top front left
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_RIGHT: Top front right
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_CENTER: Top front center
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_CENTER: Top center
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_REAR_LEFT: Top rear left
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_REAR_RIGHT: Top rear right
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_LEFT: Top side right
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_RIGHT: Top rear right
+ * @GST_AUDIO_CHANNEL_POSITION_TOP_REAR_CENTER: Top rear center
+ * @GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_CENTER: Bottom front center
+ * @GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_LEFT: Bottom front left
+ * @GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_RIGHT: Bottom front right
+ * @GST_AUDIO_CHANNEL_POSITION_WIDE_LEFT: Wide left (between front left and side left)
+ * @GST_AUDIO_CHANNEL_POSITION_WIDE_RIGHT: Wide right (between front right and side right)
+ * @GST_AUDIO_CHANNEL_POSITION_SURROUND_LEFT: Surround left (between rear left and side left)
+ * @GST_AUDIO_CHANNEL_POSITION_SURROUND_RIGHT: Surround right (between rear right and side right)
+ * @GST_AUDIO_CHANNEL_POSITION_NONE: used for position-less channels, e.g.
+ *     from a sound card that records 1024 channels; mutually exclusive with
+ *     any other channel position
+ * @GST_AUDIO_CHANNEL_POSITION_INVALID: invalid position
+ *
+ * Audio channel positions.
+ *
+ * These are the channels defined in SMPTE 2036-2-2008
+ * Table 1 for 22.2 audio systems with the Surround and Wide channels from
+ * DTS Coherent Acoustics (v.1.3.1) and 10.2 and 7.1 layouts. In the caps the
+ * actual channel layout is expressed with a channel count and a channel mask,
+ * which describes the existing channels. The positions in the bit mask correspond
+ * to the enum values.
+ * For negotiation it is allowed to have more bits set in the channel mask than
+ * the number of channels to specify the allowed channel positions but this is
+ * not allowed in negotiated caps. It is not allowed in any situation other
+ * than the one mentioned below to have less bits set in the channel mask than
+ * the number of channels.
+ *
+ * @GST_AUDIO_CHANNEL_POSITION_MONO can only be used with a single mono channel that
+ * has no direction information and would be mixed into all directional channels.
+ * This is expressed in caps by having a single channel and no channel mask.
+ *
+ * @GST_AUDIO_CHANNEL_POSITION_NONE can only be used if all channels have this position.
+ * This is expressed in caps by having a channel mask with no bits set.
+ *
+ * As another special case it is allowed to have two channels without a channel mask.
+ * This implicitely means that this is a stereo stream with a front left and front right
+ * channel.
+ */
+typedef enum {
+  /* These get negative indices to allow to use
+   * the enum values of the normal cases for the
+   * bit-mask position */
+  GST_AUDIO_CHANNEL_POSITION_NONE = -3,
+  GST_AUDIO_CHANNEL_POSITION_MONO = -2,
+  GST_AUDIO_CHANNEL_POSITION_INVALID = -1,
+
+  /* Normal cases */
+  GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT = 0,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_LFE1,
+  GST_AUDIO_CHANNEL_POSITION_REAR_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT_OF_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT_OF_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_REAR_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_LFE2,
+  GST_AUDIO_CHANNEL_POSITION_SIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_SIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_TOP_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_SIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_TOP_REAR_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_CENTER,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_BOTTOM_FRONT_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_WIDE_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_WIDE_RIGHT,
+  GST_AUDIO_CHANNEL_POSITION_SURROUND_LEFT,
+  GST_AUDIO_CHANNEL_POSITION_SURROUND_RIGHT
+} GstAudioChannelPosition;
+
+#define GST_AUDIO_CHANNEL_POSITION_MASK(pos) (G_GUINT64_CONSTANT(1)<< GST_AUDIO_CHANNEL_POSITION_ ## pos)
+
 /**
  * GstAudioFlags:
  * @GST_AUDIO_FLAG_NONE: no valid flag
- * @GST_AUDIO_FLAG_DEFAULT_POSITIONS: position array
- *     contains the default layout for the number of channels.
+ * @GST_AUDIO_FLAG_UNPOSITIONED: the position array explicitly
+ *     contains unpositioned channels.
  *
  * Extra audio flags
  */
 typedef enum {
   GST_AUDIO_FLAG_NONE              = 0,
-  GST_AUDIO_FLAG_DEFAULT_POSITIONS = (1 << 0)
+  GST_AUDIO_FLAG_UNPOSITIONED      = (1 << 0)
 } GstAudioFlags;
+
+/**
+ * GstAudioLayout:
+ * @GST_AUDIO_LAYOUT_INTERLEAVED: interleaved audio
+ * @GST_AUDIO_LAYOUT_NON_INTERLEAVED: non-interleaved audio
+ *
+ * Layout of the audio samples for the different channels.
+ */
+typedef enum {
+  GST_AUDIO_LAYOUT_INTERLEAVED = 0,
+  GST_AUDIO_LAYOUT_NON_INTERLEAVED
+} GstAudioLayout;
 
 /**
  * GstAudioInfo:
  * @finfo: the format info of the audio
  * @flags: additional audio flags
+ * @layout: audio layout
  * @rate: the audio sample rate
  * @channels: the number of channels
  * @bpf: the number of bytes for one frame, this is the size of one
@@ -278,11 +400,19 @@ typedef enum {
 struct _GstAudioInfo {
   const GstAudioFormatInfo *finfo;
   GstAudioFlags             flags;
+  GstAudioLayout            layout;
   gint                      rate;
   gint                      channels;
   gint                      bpf;
   GstAudioChannelPosition   position[64];
+
+  /*< private >*/
+  gpointer _gst_reserved[GST_PADDING];
 };
+
+GType gst_audio_info_get_type        (void);
+
+#define GST_AUDIO_INFO_IS_VALID(i)           ((i)->finfo != NULL && (i)->rate > 0 && (i)->channels > 0 && (i)->bpf > 0)
 
 #define GST_AUDIO_INFO_FORMAT(i)             (GST_AUDIO_FORMAT_INFO_FORMAT((i)->finfo))
 #define GST_AUDIO_INFO_NAME(i)               (GST_AUDIO_FORMAT_INFO_NAME((i)->finfo))
@@ -299,23 +429,29 @@ struct _GstAudioInfo {
 #define GST_AUDIO_INFO_IS_BIG_ENDIAN(i)      (GST_AUDIO_FORMAT_INFO_IS_BIG_ENDIAN((i)->finfo))
 
 #define GST_AUDIO_INFO_FLAGS(info)           ((info)->flags)
-#define GST_AUDIO_INFO_HAS_DEFAULT_POSITIONS(info) ((info)->flags & GST_AUDIO_FLAG_DEFAULT_POSITIONS)
+#define GST_AUDIO_INFO_IS_UNPOSITIONED(info) ((info)->flags & GST_AUDIO_FLAG_UNPOSITIONED)
+#define GST_AUDIO_INFO_LAYOUT(info)          ((info)->layout)
 
 #define GST_AUDIO_INFO_RATE(info)            ((info)->rate)
 #define GST_AUDIO_INFO_CHANNELS(info)        ((info)->channels)
 #define GST_AUDIO_INFO_BPF(info)             ((info)->bpf)
 #define GST_AUDIO_INFO_POSITION(info,c)      ((info)->position[c])
 
-void         gst_audio_info_init        (GstAudioInfo *info);
-void         gst_audio_info_set_format  (GstAudioInfo *info, GstAudioFormat format,
-                                         gint rate, gint channels);
+GstAudioInfo * gst_audio_info_new         (void);
+void           gst_audio_info_init        (GstAudioInfo *info);
+GstAudioInfo * gst_audio_info_copy        (const GstAudioInfo *info);
+void           gst_audio_info_free        (GstAudioInfo *info);
 
-gboolean     gst_audio_info_from_caps   (GstAudioInfo *info, const GstCaps *caps);
-GstCaps *    gst_audio_info_to_caps     (GstAudioInfo *info);
+void           gst_audio_info_set_format  (GstAudioInfo *info, GstAudioFormat format,
+                                           gint rate, gint channels,
+                                           const GstAudioChannelPosition *position);
 
-gboolean     gst_audio_info_convert     (GstAudioInfo * info,
-                                         GstFormat src_fmt, gint64 src_val,
-                                         GstFormat dest_fmt, gint64 * dest_val);
+gboolean       gst_audio_info_from_caps   (GstAudioInfo *info, const GstCaps *caps);
+GstCaps *      gst_audio_info_to_caps     (const GstAudioInfo *info);
+
+gboolean       gst_audio_info_convert     (const GstAudioInfo * info,
+                                           GstFormat src_fmt, gint64 src_val,
+                                           GstFormat dest_fmt, gint64 * dest_val);
 
 
 
@@ -399,6 +535,36 @@ gboolean     gst_audio_info_convert     (GstAudioInfo * info,
 
 GstBuffer *    gst_audio_buffer_clip     (GstBuffer *buffer, GstSegment *segment,
                                           gint rate, gint bpf);
+
+
+gboolean       gst_audio_buffer_reorder_channels (GstBuffer * buffer,
+                                                  GstAudioFormat format, 
+                                                  gint channels,
+                                                  const GstAudioChannelPosition * from,
+                                                  const GstAudioChannelPosition * to);
+
+gboolean       gst_audio_reorder_channels        (gpointer data, gsize size,
+                                                  GstAudioFormat format, 
+                                                  gint channels,
+                                                  const GstAudioChannelPosition * from,
+                                                  const GstAudioChannelPosition * to);
+
+gboolean       gst_audio_channel_positions_to_valid_order (GstAudioChannelPosition *position,
+                                                           gint channels);
+
+gboolean       gst_audio_check_valid_channel_positions (const GstAudioChannelPosition *position,
+                                                        gint channels, gboolean force_order);
+
+gboolean       gst_audio_channel_positions_to_mask  (const GstAudioChannelPosition *position,
+                                                     gint channels, guint64 *channel_mask);
+
+gboolean       gst_audio_channel_positions_from_mask (gint channels, guint64 channel_mask,
+                                                      GstAudioChannelPosition * position);
+
+gboolean       gst_audio_get_channel_reorder_map (gint channels,
+                                                  const GstAudioChannelPosition * from,
+                                                  const GstAudioChannelPosition * to,
+                                                  gint *reorder_map);
 
 G_END_DECLS
 

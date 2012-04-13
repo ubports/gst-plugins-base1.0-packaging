@@ -7,9 +7,9 @@
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>GStreamer Base Plugins &GST_MAJORMINOR; Plugins Reference Manual</title>
+    <title>GStreamer Base Plugins &GST_API_VERSION; Plugins Reference Manual</title>
     <releaseinfo>
-      for GStreamer Base Plugins &GST_MAJORMINOR; (&GST_VERSION;)
+      for GStreamer Base Plugins &GST_API_VERSION; (&GST_VERSION;)
       The latest version of this documentation can be found on-line at
       <ulink role="online-location" url="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/">http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/</ulink>.
     </releaseinfo>
@@ -30,7 +30,6 @@
     <xi:include href="xml/element-cdparanoiasrc.xml" />
     <xi:include href="xml/element-clockoverlay.xml" />
     <xi:include href="xml/element-decodebin.xml" />
-    <xi:include href="xml/element-decodebin2.xml" />
     <xi:include href="xml/element-encodebin.xml" />
     <xi:include href="xml/element-videoconvert.xml" />
     <xi:include href="xml/element-gdpdepay.xml" />
@@ -40,10 +39,10 @@
     <xi:include href="xml/element-giostreamsink.xml" />
     <xi:include href="xml/element-giostreamsrc.xml" />
     <xi:include href="xml/element-multifdsink.xml" />
+    <xi:include href="xml/element-multisocketsink.xml" />
     <xi:include href="xml/element-oggdemux.xml" />
     <xi:include href="xml/element-oggmux.xml" />
     <xi:include href="xml/element-playbin.xml" />
-    <xi:include href="xml/element-playbin2.xml" />
     <xi:include href="xml/element-subtitleoverlay.xml" />
     <xi:include href="xml/element-tcpclientsrc.xml" />
     <xi:include href="xml/element-tcpclientsink.xml" />
@@ -99,11 +98,6 @@
     <xi:include href="xml/plugin-vorbis.xml" />
     <xi:include href="xml/plugin-ximagesink.xml" />
     <xi:include href="xml/plugin-xvimagesink.xml" />
-  </chapter>
-
-  <chapter>
-    <title>gst-plugins-base Classes</title>
-    <xi:include href="xml/gstplaybasebin.xml" />
   </chapter>
 </book>
 

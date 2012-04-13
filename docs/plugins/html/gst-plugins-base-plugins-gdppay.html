@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gdppay</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-gdpdepay.html" title="gdpdepay">
 <link rel="next" href="gst-plugins-base-plugins-giosink.html" title="giosink">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-gdpdepay.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-giosink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -71,9 +71,17 @@ GStreamer Data Protocol.
 <p>
 </p>
 <div class="refsect2">
-<a name="id497584"></a><div class="informalexample"><pre class="programlisting">
-gst-launch -v -m videotestsrc num-buffers=50 ! gdppay ! filesink location=test.gdp
-</pre></div> This pipeline creates a serialized video stream that can be played back
+<a name="idp8286688"></a><div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v <span class="gtkdoc opt">-</span>m videotestsrc num<span class="gtkdoc opt">-</span>buffers<span class="gtkdoc opt">=</span><span class="number">50</span> <span class="gtkdoc opt">!</span> gdppay <span class="gtkdoc opt">!</span> filesink location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>gdp</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ This pipeline creates a serialized video stream that can be played back
 with the example shown in gdpdepay.
 </div>
 <p>
@@ -81,7 +89,7 @@ with the example shown in gdpdepay.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id504604"></a><h3>Element Information</h3>
+<a name="idp8461504"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -104,7 +112,7 @@ with the example shown in gdpdepay.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id521730"></a><h3>Element Pads</h3>
+<a name="idp10850384"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

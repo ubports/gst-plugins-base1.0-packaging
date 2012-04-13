@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstcolorbalance</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
-<link rel="up" href="gstreamer-interfaces.html" title="Interfaces Library">
-<link rel="prev" href="gstreamer-interfaces.html" title="Interfaces Library">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
+<link rel="up" href="gstreamer-video.html" title="Video Library">
+<link rel="prev" href="gst-plugins-base-libs-gstvideosink.html" title="gstvideosink">
 <link rel="next" href="gst-plugins-base-libs-gstcolorbalancechannel.html" title="gstcolorbalancechannel">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gstreamer-interfaces.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gstreamer-interfaces.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstvideosink.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstcolorbalancechannel.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -42,10 +42,10 @@
 <div class="refsynopsisdiv">
 <a name="gst-plugins-base-libs-gstcolorbalance.synopsis"></a><h2>Synopsis</h2>
 <a name="GstColorBalance"></a><pre class="synopsis">
-#include &lt;gst/interfaces/color.h&gt;
+#include &lt;gst/video/colorbalance.h&gt;
 
                     <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance-struct" title="GstColorBalance">GstColorBalance</a>;
-struct              <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceClass" title="struct GstColorBalanceClass">GstColorBalanceClass</a>;
+struct              <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceInterface" title="struct GstColorBalanceInterface">GstColorBalanceInterface</a>;
 enum                <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceType" title="enum GstColorBalanceType">GstColorBalanceType</a>;
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *       <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#gst-color-balance-list-channels" title="gst_color_balance_list_channels ()">gst_color_balance_list_channels</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a> *balance</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#gst-color-balance-get-value" title="gst_color_balance_get_value ()">gst_color_balance_get_value</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a> *balance</code></em>,
@@ -77,7 +77,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-L
 <p>
 </p>
 <div class="refsect2">
-<a name="id487947"></a><p>
+<a name="idp28326624"></a><p>
 This interface is implemented by elements which can perform some color
 balance operation on video frames they process. For example, modifying
 the brightness, contrast, hue or saturation.
@@ -97,11 +97,9 @@ Example elements are 'xvimagesink' and 'colorbalance'
 </div>
 <hr>
 <div class="refsect2">
-<a name="GstColorBalanceClass"></a><h3>struct GstColorBalanceClass</h3>
-<pre class="programlisting">struct GstColorBalanceClass {
-  GTypeInterface klass;
-
-  GstColorBalanceType balance_type;
+<a name="GstColorBalanceInterface"></a><h3>struct GstColorBalanceInterface</h3>
+<pre class="programlisting">struct GstColorBalanceInterface {
+  GTypeInterface iface;
 
   /* virtual functions */
   const GList * (* list_channels) (GstColorBalance        *balance);
@@ -111,6 +109,7 @@ Example elements are 'xvimagesink' and 'colorbalance'
                                    gint                    value);
   gint          (* get_value)     (GstColorBalance        *balance,
                                    GstColorBalanceChannel *channel);
+  GstColorBalanceType (*get_balance_type)  (GstColorBalance *balance);
 
   /* signals */
   void (* value_changed) (GstColorBalance        *balance,
@@ -125,27 +124,27 @@ Color-balance interface.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstColorBalanceClass.klass"></a>klass</code></em>;</span></p></td>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstColorBalanceInterface.iface"></a>iface</code></em>;</span></p></td>
 <td>the parent interface</td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceType" title="enum GstColorBalanceType"><span class="type">GstColorBalanceType</span></a> <em class="structfield"><code><a name="GstColorBalanceClass.balance-type"></a>balance_type</code></em>;</span></p></td>
-<td>implementation type</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceClass.list-channels"></a>list_channels</code></em> ()</span></p></td>
+<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceInterface.list-channels"></a>list_channels</code></em> ()</span></p></td>
 <td>list handled channels</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceClass.set-value"></a>set_value</code></em> ()</span></p></td>
+<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceInterface.set-value"></a>set_value</code></em> ()</span></p></td>
 <td>set a channel value</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceClass.get-value"></a>get_value</code></em> ()</span></p></td>
+<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceInterface.get-value"></a>get_value</code></em> ()</span></p></td>
 <td>get a channel value</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceClass.value-changed"></a>value_changed</code></em> ()</span></p></td>
+<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceInterface.get-balance-type"></a>get_balance_type</code></em> ()</span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstColorBalanceInterface.value-changed"></a>value_changed</code></em> ()</span></p></td>
 <td>default handler for value changed notification</td>
 </tr>
 </tbody>

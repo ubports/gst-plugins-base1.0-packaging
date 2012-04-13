@@ -36,9 +36,9 @@
 
 #define check_buffer_is_header(buffer,is_header) \
   fail_unless (GST_BUFFER_FLAG_IS_SET (buffer,   \
-          GST_BUFFER_FLAG_IN_CAPS) == is_header, \
+          GST_BUFFER_FLAG_HEADER) == is_header, \
       "GST_BUFFER_IN_CAPS is set to %d but expected %d", \
-      GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_IN_CAPS), is_header)
+      GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_HEADER), is_header)
 
 #define check_buffer_timestamp(buffer,timestamp) \
   fail_unless (GST_BUFFER_TIMESTAMP (buffer) == timestamp, \
@@ -308,16 +308,16 @@ GST_START_TEST (test_continuity)
 
 GST_END_TEST;
 
-static GstProbeReturn
-drop_second_data_buffer (GstPad * droppad, GstProbeType probe_type,
-    gpointer probe_obj, gpointer unused)
+static GstPadProbeReturn
+drop_second_data_buffer (GstPad * droppad, GstPadProbeInfo * info,
+    gpointer unused)
 {
-  GstBuffer *buffer = probe_obj;
+  GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER (info);
 
   if (GST_BUFFER_OFFSET (buffer) == 1)
-    return GST_PROBE_DROP;
+    return GST_PAD_PROBE_DROP;
   else
-    return GST_PROBE_OK;
+    return GST_PAD_PROBE_OK;
 }
 
 GST_START_TEST (test_discontinuity)
@@ -361,7 +361,7 @@ GST_START_TEST (test_discontinuity)
     gst_object_unref (sink);
   }
 
-  drop_id = gst_pad_add_probe (droppad, GST_PROBE_TYPE_BUFFER,
+  drop_id = gst_pad_add_probe (droppad, GST_PAD_PROBE_TYPE_BUFFER,
       drop_second_data_buffer, NULL, NULL);
   gst_buffer_straw_start_pipeline (bin, pad);
 

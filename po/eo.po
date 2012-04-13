@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-06-04 21:11+0100\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -186,8 +186,7 @@ msgstr "Font-elemento estas nevalide."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Eraro dum sendado de datumoj al \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
+msgid "This CD has no audio tracks"
 msgstr ""
 
 msgid "Can't record audio fast enough"
@@ -353,9 +352,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr ""
-
 msgid "ID3 tag"
 msgstr ""
 
@@ -387,6 +383,18 @@ msgid "Lossless MSZH"
 msgstr ""
 
 msgid "Run-length encoding"
+msgstr ""
+
+msgid "Subtitle"
+msgstr ""
+
+msgid "MPL2 subtitle format"
+msgstr ""
+
+msgid "DKS subtitle format"
+msgstr ""
+
+msgid "QTtext subtitle format"
 msgstr ""
 
 msgid "Sami subtitle format"

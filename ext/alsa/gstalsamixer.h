@@ -23,7 +23,7 @@
 
 #include "gstalsa.h"
 
-#include <gst/interfaces/mixer.h>
+#include <gst/audio/mixer.h>
 #include "gstalsamixeroptions.h"
 #include "gstalsamixertrack.h"
 
@@ -53,8 +53,9 @@ struct _GstAlsaMixer
   snd_mixer_t *         handle;
 
   GstTask *		task;
-  GStaticRecMutex *	task_mutex;
-  GStaticRecMutex *	rec_mutex;
+  GRecMutex	        task_mutex;
+
+  GRecMutex		rec_mutex;
 
   int			pfd[2];
 
@@ -65,6 +66,8 @@ struct _GstAlsaMixer
   GstAlsaMixerDirection dir;
 };
 
+#define GST_ALSA_MIXER_LOCK(mixer)   g_rec_mutex_lock (&mixer->rec_mutex)
+#define GST_ALSA_MIXER_UNLOCK(mixer) g_rec_mutex_unlock (&mixer->rec_mutex)
 
 GstAlsaMixer*   gst_alsa_mixer_new              (const gchar *device,
                                                  GstAlsaMixerDirection dir);
@@ -186,20 +189,25 @@ interface_as_function ## _get_mixer_flags (GstMixer * mixer)                    
   return gst_alsa_mixer_get_mixer_flags (this->mixer);                          \
 }                                                                               \
                                                                                 \
-static void                                                                     \
-interface_as_function ## _interface_init (GstMixerClass * klass)                \
+static GstMixerType                                                             \
+interface_as_function ## _get_mixer_type (GstMixer * mixer)                     \
 {                                                                               \
-  GST_MIXER_TYPE (klass) = GST_MIXER_HARDWARE;                                  \
+  return GST_MIXER_HARDWARE;                                                    \
+}                                                                               \
                                                                                 \
+static void                                                                     \
+interface_as_function ## _interface_init (GstMixerInterface * iface)            \
+{                                                                               \
   /* set up the interface hooks */                                              \
-  klass->list_tracks = interface_as_function ## _list_tracks;                   \
-  klass->set_volume = interface_as_function ## _set_volume;                     \
-  klass->get_volume = interface_as_function ## _get_volume;                     \
-  klass->set_mute = interface_as_function ## _set_mute;                         \
-  klass->set_record = interface_as_function ## _set_record;                     \
-  klass->set_option = interface_as_function ## _set_option;                     \
-  klass->get_option = interface_as_function ## _get_option;                     \
-  klass->get_mixer_flags = interface_as_function ## _get_mixer_flags;           \
+  iface->list_tracks = interface_as_function ## _list_tracks;                   \
+  iface->set_volume = interface_as_function ## _set_volume;                     \
+  iface->get_volume = interface_as_function ## _get_volume;                     \
+  iface->set_mute = interface_as_function ## _set_mute;                         \
+  iface->set_record = interface_as_function ## _set_record;                     \
+  iface->set_option = interface_as_function ## _set_option;                     \
+  iface->get_option = interface_as_function ## _get_option;                     \
+  iface->get_mixer_flags = interface_as_function ## _get_mixer_flags;           \
+  iface->get_mixer_type = interface_as_function ## _get_mixer_type;             \
 }
 
 

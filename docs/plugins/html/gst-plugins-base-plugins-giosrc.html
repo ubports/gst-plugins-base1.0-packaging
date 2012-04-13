@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>giosrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-giosink.html" title="giosink">
 <link rel="next" href="gst-plugins-base-plugins-giostreamsink.html" title="giostreamsink">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-giosink.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-giostreamsink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -73,10 +73,73 @@ GstGioSrc implements
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosrc.description"></a><h2>Description</h2>
+<p>
+This plugin reads data from a local or remote location specified
+by an URI. This location can be specified using any protocol supported by
+the GIO library or it's VFS backends. Common protocols are 'file', 'http',
+'ftp', or 'smb'.
+</p>
+<p>
+If an URI or <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> is not mounted giosrc will post a message of type
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-ELEMENT:CAPS"><code class="literal">GST_MESSAGE_ELEMENT</code></a> with name "not-mounted" on the bus. The message
+also contains the <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
+Applications can use the "not-mounted" message to mount the <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+by calling <a href="http://library.gnome.org/devel/gio/unstable/GFile.html#g-file-mount-enclosing-volume"><code class="function">g_file_mount_enclosing_volume()</code></a> and then restart the
+pipeline after the mounting has succeeded. Note that right after the
+"not-mounted" message a normal error message is posted on the bus which
+should be ignored if "not-mounted" is handled by the application, for
+example by calling gst_bus_set_flushing(bus, TRUE) after the "not-mounted"
+message was received and gst_bus_set_flushing(bus, FALSE) after the
+mounting was successful.
+</p>
+<p>
+</p>
+<div class="refsect2">
+<a name="idp10485616"></a><h3>Example launch lines</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v giosrc location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/joe/foo.xyz ! fakesink</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will simply read a local file and do nothing with the
+data read. Instead of giosrc, we could just as well have used the
+filesrc element here.
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v giosrc location<span class="gtkdoc opt">=</span>smb<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//othercomputer/foo.xyz ! filesink location=/home/joe/foo.xyz</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will copy a file from a remote host to the local file
+system using the Samba protocol.
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v giosrc location<span class="gtkdoc opt">=</span>http<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//music.foobar.com/demo.mp3 ! mad ! audioconvert ! audioresample ! alsasink</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will read and decode and play an mp3 file from a
+web server using the http protocol.
+</div>
+<p>
+</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id488494"></a><h3>Element Information</h3>
+<a name="idp10490464"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -99,7 +162,7 @@ GstGioSrc implements
 </div>
 <hr>
 <div class="refsect2">
-<a name="id525447"></a><h3>Element Pads</h3>
+<a name="idp11264176"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -132,6 +195,7 @@ GstGioSrc implements
 <a name="GstGioSrc-struct"></a><h3>struct GstGioSrc</h3>
 <pre class="programlisting">struct GstGioSrc;</pre>
 <p>
+Opaque data structure.
 </p>
 </div>
 </div>
@@ -147,8 +211,15 @@ GstGioSrc implements
 <div class="refsect2">
 <a name="GstGioSrc--file"></a><h3>The <code class="literal">"file"</code> property</h3>
 <pre class="programlisting">  "file"                     <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>*                : Read / Write</pre>
-<p>GFile to read from.</p>
+<p>
+<a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to read from.
+</p>
+<p class="since">Since 0.10.20</p>
 </div>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-giosrc.see-also"></a><h2>See Also</h2>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-plugins/html/gstreamer-plugins-filesrc.html#GstFileSrc"><span class="type">GstFileSrc</span></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-gnomevfssrc.html#GstGnomeVFSSrc"><span class="type">GstGnomeVFSSrc</span></a>, <a class="link" href="gst-plugins-base-plugins-giosink.html#GstGioSink"><span class="type">GstGioSink</span></a>
 </div>
 </div>
 <div class="footer">

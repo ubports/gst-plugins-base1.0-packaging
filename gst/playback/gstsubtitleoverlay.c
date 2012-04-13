@@ -40,10 +40,11 @@
 
 #include "gstsubtitleoverlay.h"
 
-#include <gst/gstfilter.h>
 #include <gst/pbutils/missing-plugins.h>
 #include <gst/video/video.h>
 #include <string.h>
+
+#include "gst/glib-compat-private.h"
 
 GST_DEBUG_CATEGORY_STATIC (subtitle_overlay_debug);
 #define GST_CAT_DEFAULT subtitle_overlay_debug
@@ -109,9 +110,8 @@ do_async_done (GstSubtitleOverlay * self)
   }
 }
 
-static GstProbeReturn
-_pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
-    gpointer user_data);
+static GstPadProbeReturn
+_pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data);
 
 static void
 block_video (GstSubtitleOverlay * self)
@@ -121,9 +121,8 @@ block_video (GstSubtitleOverlay * self)
 
   if (self->video_block_pad) {
     self->video_block_id =
-        gst_pad_add_probe (self->video_block_pad, GST_PROBE_TYPE_BLOCK,
-        _pad_blocked_cb, gst_object_ref (self),
-        (GDestroyNotify) gst_object_unref);
+        gst_pad_add_probe (self->video_block_pad,
+        GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM, _pad_blocked_cb, self, NULL);
   }
 }
 
@@ -145,9 +144,8 @@ block_subtitle (GstSubtitleOverlay * self)
 
   if (self->subtitle_block_pad) {
     self->subtitle_block_id =
-        gst_pad_add_probe (self->subtitle_block_pad, GST_PROBE_TYPE_BLOCK,
-        _pad_blocked_cb, gst_object_ref (self),
-        (GDestroyNotify) gst_object_unref);
+        gst_pad_add_probe (self->subtitle_block_pad,
+        GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM, _pad_blocked_cb, self, NULL);
   }
 }
 
@@ -222,7 +220,7 @@ _is_parser (GstElementFactory * factory)
   return FALSE;
 }
 
-static const gchar *_sub_pad_names[] = { "subpicture", "subpicture_sink",
+static const gchar *const _sub_pad_names[] = { "subpicture", "subpicture_sink",
   "text", "text_sink",
   "subtitle_sink", "subtitle"
 };
@@ -234,22 +232,49 @@ _is_raw_video (GstStructure * s)
 
   name = gst_structure_get_name (s);
 
-  if (g_str_has_prefix (name, "video/x-raw"))
+  if (g_str_equal (name, "video/x-raw"))
     return TRUE;
   return FALSE;
 }
 
 static gboolean
-_is_raw_video_pad (GstPad * pad)
+_is_video_pad (GstPad * pad, gboolean * hw_accelerated)
 {
-  GstCaps *caps = gst_pad_get_current_caps (pad);
-  gboolean raw;
+  GstPad *peer = gst_pad_get_peer (pad);
+  GstCaps *caps;
+  gboolean ret;
+  const gchar *name;
 
-  raw = _is_raw_video (gst_caps_get_structure (caps, 0));
+  if (peer) {
+    caps = gst_pad_get_current_caps (peer);
+    if (!caps) {
+      caps = gst_pad_query_caps (peer, NULL);
+    }
+    gst_object_unref (peer);
+  } else {
+    caps = gst_pad_query_caps (pad, NULL);
+  }
+
+  name = gst_structure_get_name (gst_caps_get_structure (caps, 0));
+  if (g_str_equal (name, "video/x-raw")) {
+    ret = TRUE;
+    if (hw_accelerated)
+      *hw_accelerated = FALSE;
+
+  } else if (g_str_has_prefix (name, "video/x-surface")) {
+    ret = TRUE;
+    if (hw_accelerated)
+      *hw_accelerated = TRUE;
+  } else {
+
+    ret = FALSE;
+    if (hw_accelerated)
+      *hw_accelerated = FALSE;
+  }
 
   gst_caps_unref (caps);
 
-  return raw;
+  return ret;
 }
 
 static GstCaps *
@@ -336,26 +361,16 @@ _factory_filter (GstPluginFeature * feature, GstCaps ** subcaps)
   templ_caps = _get_sub_caps (factory);
 
   if (is_renderer && have_video_sink && templ_caps) {
-    GstCaps *tmp;
-
     GST_DEBUG ("Found renderer element %s (%s) with caps %" GST_PTR_FORMAT,
         gst_element_factory_get_longname (factory),
         gst_plugin_feature_get_name (feature), templ_caps);
-    tmp = gst_caps_union (*subcaps, templ_caps);
-    gst_caps_unref (templ_caps);
-    gst_caps_replace (subcaps, tmp);
-    gst_caps_unref (tmp);
+    *subcaps = gst_caps_merge (*subcaps, templ_caps);
     return TRUE;
   } else if (!is_renderer && !have_video_sink && templ_caps) {
-    GstCaps *tmp;
-
     GST_DEBUG ("Found parser element %s (%s) with caps %" GST_PTR_FORMAT,
         gst_element_factory_get_longname (factory),
         gst_plugin_feature_get_name (feature), templ_caps);
-    tmp = gst_caps_union (*subcaps, templ_caps);
-    gst_caps_unref (templ_caps);
-    gst_caps_replace (subcaps, tmp);
-    gst_caps_unref (tmp);
+    *subcaps = gst_caps_merge (*subcaps, templ_caps);
     return TRUE;
   } else {
     if (templ_caps)
@@ -368,15 +383,18 @@ _factory_filter (GstPluginFeature * feature, GstCaps ** subcaps)
 static gboolean
 gst_subtitle_overlay_update_factory_list (GstSubtitleOverlay * self)
 {
-  if (!self->factories
-      || self->factories_cookie !=
-      gst_default_registry_get_feature_list_cookie ()) {
+  GstRegistry *registry;
+  guint cookie;
+
+  registry = gst_registry_get ();
+  cookie = gst_registry_get_feature_list_cookie (registry);
+  if (!self->factories || self->factories_cookie != cookie) {
     GstCaps *subcaps;
     GList *factories;
 
     subcaps = gst_caps_new_empty ();
 
-    factories = gst_default_registry_feature_filter (
+    factories = gst_registry_feature_filter (registry,
         (GstPluginFeatureFilter) _factory_filter, FALSE, &subcaps);
     GST_DEBUG_OBJECT (self, "Created factory caps: %" GST_PTR_FORMAT, subcaps);
     gst_caps_replace (&self->factory_caps, subcaps);
@@ -384,7 +402,7 @@ gst_subtitle_overlay_update_factory_list (GstSubtitleOverlay * self)
     if (self->factories)
       gst_plugin_feature_list_free (self->factories);
     self->factories = factories;
-    self->factories_cookie = gst_default_registry_get_feature_list_cookie ();
+    self->factories_cookie = cookie;
   }
 
   return (self->factories != NULL);
@@ -397,22 +415,24 @@ static guint32 _factory_caps_cookie = 0;
 GstCaps *
 gst_subtitle_overlay_create_factory_caps (void)
 {
+  GstRegistry *registry;
   GList *factories;
   GstCaps *subcaps = NULL;
+  guint cookie;
 
+  registry = gst_registry_get ();
+  cookie = gst_registry_get_feature_list_cookie (registry);
   G_LOCK (_factory_caps);
-  if (!_factory_caps
-      || _factory_caps_cookie !=
-      gst_default_registry_get_feature_list_cookie ()) {
+  if (!_factory_caps || _factory_caps_cookie != cookie) {
     if (_factory_caps)
       gst_caps_unref (_factory_caps);
     _factory_caps = gst_caps_new_empty ();
 
-    factories = gst_default_registry_feature_filter (
+    factories = gst_registry_feature_filter (registry,
         (GstPluginFeatureFilter) _factory_filter, FALSE, &_factory_caps);
     GST_DEBUG ("Created factory caps: %" GST_PTR_FORMAT, _factory_caps);
     gst_plugin_feature_list_free (factories);
-    _factory_caps_cookie = gst_default_registry_get_feature_list_cookie ();
+    _factory_caps_cookie = cookie;
   }
   subcaps = gst_caps_ref (_factory_caps);
   G_UNLOCK (_factory_caps);
@@ -421,7 +441,7 @@ gst_subtitle_overlay_create_factory_caps (void)
 }
 
 static gboolean
-_filter_factories_for_caps (GstElementFactory * factory, const GstCaps * caps)
+check_factory_for_caps (GstElementFactory * factory, const GstCaps * caps)
 {
   GstCaps *fcaps = _get_sub_caps (factory);
   gboolean ret = (fcaps) ? gst_caps_can_intersect (fcaps, caps) : FALSE;
@@ -432,6 +452,26 @@ _filter_factories_for_caps (GstElementFactory * factory, const GstCaps * caps)
   if (ret)
     gst_object_ref (factory);
   return ret;
+}
+
+static GList *
+gst_subtitle_overlay_get_factories_for_caps (const GList * list,
+    const GstCaps * caps)
+{
+  const GList *walk = list;
+  GList *result = NULL;
+
+  while (walk) {
+    GstElementFactory *factory = walk->data;
+
+    walk = g_list_next (walk);
+
+    if (check_factory_for_caps (factory, caps)) {
+      result = g_list_prepend (result, factory);
+    }
+  }
+
+  return result;
 }
 
 static gint
@@ -470,7 +510,7 @@ _get_sub_pad (GstElement * element)
 static GstPad *
 _get_video_pad (GstElement * element)
 {
-  static const gchar *pad_names[] = { "video", "video_sink" };
+  static const gchar *const pad_names[] = { "video", "video_sink" };
   GstPad *pad;
   guint i;
 
@@ -671,18 +711,25 @@ out:
 }
 
 /* Must be called with subtitleoverlay lock! */
-static void
-gst_subtitle_overlay_set_fps (GstSubtitleOverlay * self)
+static gboolean
+_has_property_with_type (GObject * object, const gchar * property, GType type)
 {
   GObjectClass *gobject_class;
   GParamSpec *pspec;
 
+  gobject_class = G_OBJECT_GET_CLASS (object);
+  pspec = g_object_class_find_property (gobject_class, property);
+  return (pspec && pspec->value_type == type);
+}
+
+static void
+gst_subtitle_overlay_set_fps (GstSubtitleOverlay * self)
+{
   if (!self->parser || self->fps_d == 0)
     return;
 
-  gobject_class = G_OBJECT_GET_CLASS (self->parser);
-  pspec = g_object_class_find_property (gobject_class, "video-fps");
-  if (!pspec || pspec->value_type != GST_TYPE_FRACTION)
+  if (!_has_property_with_type (G_OBJECT (self->parser), "video-fps",
+          GST_TYPE_FRACTION))
     return;
 
   GST_DEBUG_OBJECT (self, "Updating video-fps property in parser");
@@ -699,15 +746,11 @@ _get_silent_property (GstElement * element, gboolean * invert)
   } properties[] = { {
   "silent", FALSE}, {
   "enable", TRUE}};
-  GObjectClass *gobject_class;
-  GParamSpec *pspec;
   guint i;
 
-  gobject_class = G_OBJECT_GET_CLASS (element);
-
   for (i = 0; i < G_N_ELEMENTS (properties); i++) {
-    pspec = g_object_class_find_property (gobject_class, properties[i].name);
-    if (pspec && pspec->value_type == G_TYPE_BOOLEAN) {
+    if (_has_property_with_type (G_OBJECT (element), properties[i].name,
+            G_TYPE_BOOLEAN)) {
       *invert = properties[i].invert;
       return properties[i].name;
     }
@@ -716,29 +759,281 @@ _get_silent_property (GstElement * element, gboolean * invert)
 }
 
 static gboolean
-_has_subtitle_encoding_property (GstElement * element)
+_setup_parser (GstSubtitleOverlay * self)
 {
-  GParamSpec *pspec;
+  GstPad *video_peer;
 
-  pspec =
-      g_object_class_find_property (G_OBJECT_GET_CLASS (element),
-      "subtitle-encoding");
-  return (pspec && pspec->value_type == G_TYPE_STRING);
+  /* Try to get the latest video framerate */
+  video_peer = gst_pad_get_peer (self->video_sinkpad);
+  if (video_peer) {
+    GstCaps *video_caps;
+    gint fps_n, fps_d;
+
+    video_caps = gst_pad_get_current_caps (video_peer);
+    if (!video_caps) {
+      video_caps = gst_pad_query_caps (video_peer, NULL);
+      if (!gst_caps_is_fixed (video_caps)) {
+        gst_caps_unref (video_caps);
+        video_caps = NULL;
+      }
+    }
+
+    if (video_caps) {
+      GstStructure *st = gst_caps_get_structure (video_caps, 0);
+      if (gst_structure_get_fraction (st, "framerate", &fps_n, &fps_d)) {
+        GST_DEBUG_OBJECT (self, "New video fps: %d/%d", fps_n, fps_d);
+        self->fps_n = fps_n;
+        self->fps_d = fps_d;
+      }
+    }
+
+    if (video_caps)
+      gst_caps_unref (video_caps);
+    gst_object_unref (video_peer);
+  }
+
+  if (_has_property_with_type (G_OBJECT (self->parser), "subtitle-encoding",
+          G_TYPE_STRING))
+    g_object_set (self->parser, "subtitle-encoding", self->encoding, NULL);
+
+  /* Try to set video fps on the parser */
+  gst_subtitle_overlay_set_fps (self);
+
+
+  return TRUE;
 }
 
 static gboolean
-_has_font_desc_property (GstElement * element)
+_setup_renderer (GstSubtitleOverlay * self, GstElement * renderer)
 {
-  GParamSpec *pspec;
+  GstElementFactory *factory = gst_element_get_factory (renderer);
+  const gchar *name =
+      gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST (factory));
 
-  pspec =
-      g_object_class_find_property (G_OBJECT_GET_CLASS (element), "font-desc");
-  return (pspec && pspec->value_type == G_TYPE_STRING);
+  if (strcmp (name, "textoverlay") == 0) {
+    /* Set some textoverlay specific properties */
+    g_object_set (G_OBJECT (renderer),
+        "halign", "center", "valign", "bottom", "wait-text", FALSE, NULL);
+    if (self->font_desc)
+      g_object_set (G_OBJECT (renderer), "font-desc", self->font_desc, NULL);
+    self->silent_property = "silent";
+    self->silent_property_invert = FALSE;
+  } else {
+    self->silent_property =
+        _get_silent_property (renderer, &self->silent_property_invert);
+    if (_has_property_with_type (G_OBJECT (renderer), "subtitle-encoding",
+            G_TYPE_STRING))
+      g_object_set (renderer, "subtitle-encoding", self->encoding, NULL);
+    if (_has_property_with_type (G_OBJECT (renderer), "font-desc",
+            G_TYPE_STRING))
+      g_object_set (renderer, "font-desc", self->font_desc, NULL);
+  }
+
+  return TRUE;
 }
 
-static GstProbeReturn
-_pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
-    gpointer user_data)
+/* subtitle_src==NULL means: use subtitle_sink ghostpad */
+static gboolean
+_link_renderer (GstSubtitleOverlay * self, GstElement * renderer,
+    GstPad * subtitle_src)
+{
+  GstPad *sink, *src;
+  gboolean is_video, is_hw;
+
+  is_video = _is_video_pad (self->video_sinkpad, &is_hw);
+
+  if (is_video) {
+    gboolean render_is_hw;
+
+    /* First check that renderer also supports the video format */
+    sink = _get_video_pad (renderer);
+    if (G_UNLIKELY (!sink)) {
+      GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
+      return FALSE;
+    }
+
+    if (is_video != _is_video_pad (sink, &render_is_hw) ||
+        is_hw != render_is_hw) {
+      GST_DEBUG_OBJECT (self, "Renderer doesn't support %s video",
+          is_hw ? "surface" : "raw");
+      gst_object_unref (sink);
+      return FALSE;
+    }
+    gst_object_unref (sink);
+
+    if (!is_hw) {
+      /* First link everything internally */
+      if (G_UNLIKELY (!_create_element (self, &self->post_colorspace,
+                  COLORSPACE, NULL, "post-colorspace", FALSE))) {
+        return FALSE;
+      }
+      src = gst_element_get_static_pad (renderer, "src");
+      if (G_UNLIKELY (!src)) {
+        GST_WARNING_OBJECT (self, "Can't get src pad from renderer");
+        return FALSE;
+      }
+
+      sink = gst_element_get_static_pad (self->post_colorspace, "sink");
+      if (G_UNLIKELY (!sink)) {
+        GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
+        gst_object_unref (src);
+        return FALSE;
+      }
+
+      if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
+        GST_WARNING_OBJECT (self, "Can't link renderer with " COLORSPACE);
+        gst_object_unref (src);
+        gst_object_unref (sink);
+        return FALSE;
+      }
+      gst_object_unref (src);
+      gst_object_unref (sink);
+
+      if (G_UNLIKELY (!_create_element (self, &self->pre_colorspace,
+                  COLORSPACE, NULL, "pre-colorspace", FALSE))) {
+        return FALSE;
+      }
+
+      sink = _get_video_pad (renderer);
+      if (G_UNLIKELY (!sink)) {
+        GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
+        return FALSE;
+      }
+
+      src = gst_element_get_static_pad (self->pre_colorspace, "src");
+      if (G_UNLIKELY (!src)) {
+        GST_WARNING_OBJECT (self, "Can't get srcpad from " COLORSPACE);
+        gst_object_unref (sink);
+        return FALSE;
+      }
+
+      if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
+        GST_WARNING_OBJECT (self, "Can't link " COLORSPACE " to renderer");
+        gst_object_unref (src);
+        gst_object_unref (sink);
+        return FALSE;
+      }
+      gst_object_unref (src);
+      gst_object_unref (sink);
+
+      /* Set src ghostpad target */
+      src = gst_element_get_static_pad (self->post_colorspace, "src");
+      if (G_UNLIKELY (!src)) {
+        GST_WARNING_OBJECT (self, "Can't get src pad from " COLORSPACE);
+        return FALSE;
+      }
+    } else {
+      /* Set src ghostpad target in the harware accelerated case */
+
+      src = gst_element_get_static_pad (renderer, "src");
+      if (G_UNLIKELY (!src)) {
+        GST_WARNING_OBJECT (self, "Can't get src pad from renderer");
+        return FALSE;
+      }
+    }
+  } else {                      /* No video pad */
+    GstCaps *allowed_caps, *video_caps = NULL;
+    GstPad *video_peer;
+    gboolean can_intersect = FALSE;
+
+    video_peer = gst_pad_get_peer (self->video_sinkpad);
+    if (video_peer) {
+      video_caps = gst_pad_get_current_caps (video_peer);
+      if (!video_caps) {
+        video_caps = gst_pad_query_caps (video_peer, NULL);
+      }
+      gst_object_unref (video_peer);
+    }
+
+    sink = _get_video_pad (renderer);
+    if (G_UNLIKELY (!sink)) {
+      GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
+      return FALSE;
+    }
+    allowed_caps = gst_pad_query_caps (sink, NULL);
+    gst_object_unref (sink);
+
+    if (allowed_caps && video_caps)
+      can_intersect = gst_caps_can_intersect (allowed_caps, video_caps);
+
+    if (allowed_caps)
+      gst_caps_unref (allowed_caps);
+
+    if (video_caps)
+      gst_caps_unref (video_caps);
+
+    if (G_UNLIKELY (!can_intersect)) {
+      GST_WARNING_OBJECT (self, "Renderer with custom caps is not "
+          "compatible with video stream");
+      return FALSE;
+    }
+
+    src = gst_element_get_static_pad (renderer, "src");
+    if (G_UNLIKELY (!src)) {
+      GST_WARNING_OBJECT (self, "Can't get src pad from renderer");
+      return FALSE;
+    }
+  }
+
+  if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
+              (self->srcpad), src))) {
+    GST_WARNING_OBJECT (self, "Can't set srcpad target");
+    gst_object_unref (src);
+    return FALSE;
+  }
+  gst_object_unref (src);
+
+  /* Set the sink ghostpad targets */
+  if (self->pre_colorspace) {
+    sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
+    if (G_UNLIKELY (!sink)) {
+      GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
+      return FALSE;
+    }
+  } else {
+    sink = _get_video_pad (renderer);
+    if (G_UNLIKELY (!sink)) {
+      GST_WARNING_OBJECT (self, "Can't get sink pad from %" GST_PTR_FORMAT,
+          renderer);
+      return FALSE;
+    }
+  }
+
+  if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
+              (self->video_sinkpad), sink))) {
+    GST_WARNING_OBJECT (self, "Can't set video sinkpad target");
+    gst_object_unref (sink);
+    return FALSE;
+  }
+  gst_object_unref (sink);
+
+  sink = _get_sub_pad (renderer);
+  if (G_UNLIKELY (!sink)) {
+    GST_WARNING_OBJECT (self, "Failed to get subpad");
+    return FALSE;
+  }
+
+  if (subtitle_src) {
+    if (G_UNLIKELY (gst_pad_link (subtitle_src, sink) != GST_PAD_LINK_OK)) {
+      GST_WARNING_OBJECT (self, "Failed to link subtitle srcpad with renderer");
+      gst_object_unref (sink);
+      return FALSE;
+    }
+  } else {
+    if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
+                (self->subtitle_sinkpad), sink))) {
+      GST_WARNING_OBJECT (self, "Failed to set subtitle sink target");
+      gst_object_unref (sink);
+      return FALSE;
+    }
+  }
+  gst_object_unref (sink);
+
+  return TRUE;
+}
+
+static GstPadProbeReturn
+_pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
 {
   GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY_CAST (user_data);
   GstCaps *subcaps;
@@ -763,7 +1058,7 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
     if (peer) {
       subcaps = gst_pad_get_current_caps (peer);
       if (!subcaps) {
-        subcaps = gst_pad_get_caps (peer, NULL);
+        subcaps = gst_pad_query_caps (peer, NULL);
         if (!gst_caps_is_fixed (subcaps)) {
           gst_caps_unref (subcaps);
           subcaps = NULL;
@@ -797,7 +1092,7 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
     GstPad *target =
         gst_ghost_pad_get_target (GST_GHOST_PAD_CAST (self->subtitle_sinkpad));
 
-    if (target && gst_pad_accept_caps (target, subcaps)) {
+    if (target && gst_pad_query_accept_caps (target, subcaps)) {
       GST_DEBUG_OBJECT (pad, "Target accepts caps");
 
       gst_object_unref (target);
@@ -805,7 +1100,6 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
       /* Unblock pads */
       unblock_video (self);
       unblock_subtitle (self);
-
       goto out;
     } else if (target) {
       gst_object_unref (target);
@@ -824,8 +1118,8 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
   g_mutex_lock (self->factories_lock);
   gst_subtitle_overlay_update_factory_list (self);
   if (subcaps) {
-    factories = gst_filter_run (self->factories,
-        (GstFilterFunc) _filter_factories_for_caps, FALSE, subcaps);
+    factories =
+        gst_subtitle_overlay_get_factories_for_caps (self->factories, subcaps);
     if (!factories) {
       GstMessage *msg;
 
@@ -853,7 +1147,6 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
   for (l = factories; l; l = l->next) {
     GstElementFactory *factory = l->data;
     gboolean is_renderer = _is_renderer (factory);
-    GstElement *element;
     GstPad *sink, *src;
 
     /* Unlink & destroy everything */
@@ -881,446 +1174,122 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
                     "parser", FALSE))))
       continue;
 
-    element = is_renderer ? self->renderer : self->parser;
-
-    /* If this is a parser, create textoverlay and link video and the parser to it
-     * Else link the renderer to the output colorspace */
     if (!is_renderer) {
-      GstElement *overlay;
-      GstPad *video_peer;
+      GstCaps *parser_caps;
+      GList *overlay_factories, *k;
 
-      /* Try to get the latest video framerate */
-      video_peer = gst_pad_get_peer (self->video_sinkpad);
-      if (video_peer) {
-        GstCaps *video_caps;
-
-        video_caps = gst_pad_get_current_caps (video_peer);
-        if (!video_caps) {
-          video_caps = gst_pad_get_caps (video_peer, NULL);
-          if (!gst_caps_is_fixed (video_caps)) {
-            gst_caps_unref (video_caps);
-            video_caps = NULL;
-          }
-        }
-
-        if (video_caps) {
-          GstVideoInfo info;
-
-          if (gst_video_info_from_caps (&info, video_caps)) {
-            if (self->fps_n != info.fps_n || self->fps_d != info.fps_d) {
-              GST_DEBUG_OBJECT (self, "New video fps: %d/%d", info.fps_n,
-                  info.fps_d);
-              self->fps_n = info.fps_n;
-              self->fps_d = info.fps_d;
-            }
-          }
-        }
-
-        if (video_caps)
-          gst_caps_unref (video_caps);
-        gst_object_unref (video_peer);
-      }
-
-      if (_has_subtitle_encoding_property (self->parser))
-        g_object_set (self->parser, "subtitle-encoding", self->encoding, NULL);
-
-      /* Try to set video fps on the parser */
-      gst_subtitle_overlay_set_fps (self);
-
-      /* First link everything internally */
-      if (G_UNLIKELY (!_create_element (self, &self->overlay, "textoverlay",
-                  NULL, "overlay", FALSE))) {
+      if (!_setup_parser (self))
         continue;
-      }
-      overlay = self->overlay;
-      self->silent_property = "silent";
-      self->silent_property_invert = FALSE;
 
-      /* Set some properties */
-      g_object_set (G_OBJECT (overlay),
-          "halign", "center", "valign", "bottom", "wait-text", FALSE, NULL);
-      if (self->font_desc)
-        g_object_set (G_OBJECT (overlay), "font-desc", self->font_desc, NULL);
-
-      src = gst_element_get_static_pad (element, "src");
-      if (G_UNLIKELY (!src)) {
-        continue;
-      }
-
-      sink = gst_element_get_static_pad (overlay, "text_sink");
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Can't get text sink from textoverlay");
-        gst_object_unref (src);
-        continue;
-      }
-
-      if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
-        GST_WARNING_OBJECT (self, "Can't link parser to textoverlay");
-        gst_object_unref (sink);
-        gst_object_unref (src);
-        continue;
-      }
-      gst_object_unref (sink);
+      /* Find our factories */
+      src = gst_element_get_static_pad (self->parser, "src");
+      parser_caps = gst_pad_query_caps (src, NULL);
       gst_object_unref (src);
 
-      if (G_UNLIKELY (!_create_element (self, &self->post_colorspace,
-                  COLORSPACE, NULL, "post-colorspace", FALSE))) {
+      g_assert (parser_caps != NULL);
+
+      g_mutex_lock (self->factories_lock);
+      gst_subtitle_overlay_update_factory_list (self);
+      GST_DEBUG_OBJECT (self,
+          "Searching overlay factories for caps %" GST_PTR_FORMAT, parser_caps);
+      overlay_factories =
+          gst_subtitle_overlay_get_factories_for_caps (self->factories,
+          parser_caps);
+      g_mutex_unlock (self->factories_lock);
+
+      if (!overlay_factories) {
+        GST_WARNING_OBJECT (self,
+            "Found no suitable overlay factories for caps %" GST_PTR_FORMAT,
+            parser_caps);
+        gst_caps_unref (parser_caps);
         continue;
       }
+      gst_caps_unref (parser_caps);
 
-      src = gst_element_get_static_pad (overlay, "src");
-      if (G_UNLIKELY (!src)) {
-        GST_WARNING_OBJECT (self, "Can't get src pad from overlay");
-        continue;
-      }
+      /* Sort the factories by rank */
+      overlay_factories =
+          g_list_sort (overlay_factories, (GCompareFunc) _sort_by_ranks);
 
-      sink = gst_element_get_static_pad (self->post_colorspace, "sink");
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
-        gst_object_unref (src);
-        continue;
-      }
+      for (k = overlay_factories; k; k = k->next) {
+        GstElementFactory *overlay_factory = k->data;
 
-      if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
-        GST_WARNING_OBJECT (self, "Can't link overlay with " COLORSPACE);
-        gst_object_unref (src);
-        gst_object_unref (sink);
-        continue;
-      }
-      gst_object_unref (src);
-      gst_object_unref (sink);
+        GST_DEBUG_OBJECT (self, "Trying overlay factory '%s'",
+            GST_STR_NULL (gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST
+                    (overlay_factory))));
 
-      if (G_UNLIKELY (!_create_element (self, &self->pre_colorspace,
-                  COLORSPACE, NULL, "pre-colorspace", FALSE))) {
-        continue;
-      }
+        /* Try this factory and link it, otherwise unlink everything
+         * again and remove the overlay. Up to this point only the
+         * parser was instantiated and setup, nothing was linked
+         */
 
-      sink = gst_element_get_static_pad (overlay, "video_sink");
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Can't get video sink from textoverlay");
-        continue;
-      }
+        gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (self->srcpad), NULL);
+        gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (self->video_sinkpad),
+            NULL);
+        gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (self->subtitle_sinkpad),
+            NULL);
+        self->silent_property = NULL;
+        _remove_element (self, &self->post_colorspace);
+        _remove_element (self, &self->overlay);
+        _remove_element (self, &self->pre_colorspace);
 
-      src = gst_element_get_static_pad (self->pre_colorspace, "src");
-      if (G_UNLIKELY (!src)) {
-        GST_WARNING_OBJECT (self, "Can't get srcpad from " COLORSPACE);
-        gst_object_unref (sink);
-        continue;
-      }
-
-      if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
-        GST_WARNING_OBJECT (self, "Can't link " COLORSPACE " to textoverlay");
-        gst_object_unref (src);
-        gst_object_unref (sink);
-        continue;
-      }
-      gst_object_unref (src);
-      gst_object_unref (sink);
-
-      /* Set src ghostpad target */
-      src = gst_element_get_static_pad (self->post_colorspace, "src");
-      if (G_UNLIKELY (!src)) {
-        GST_WARNING_OBJECT (self, "Can't get src pad from " COLORSPACE);
-        continue;
-      }
-
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->srcpad), src))) {
-        GST_WARNING_OBJECT (self, "Can't set srcpad target");
-        gst_object_unref (src);
-        continue;
-      }
-      gst_object_unref (src);
-
-      /* Send segments to the parser/overlay if necessary. These are not sent
-       * outside this element because of the proxy pad event function */
-      if (self->video_segment.format != GST_FORMAT_UNDEFINED) {
-        GstEvent *event1;
-
-        sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
+        if (!_create_element (self, &self->overlay, NULL, overlay_factory,
+                "overlay", FALSE)) {
+          GST_DEBUG_OBJECT (self, "Could not create element");
           continue;
         }
 
-        _generate_update_segment_event (&self->video_segment, &event1);
-        GST_DEBUG_OBJECT (self,
-            "Pushing video segment event: %" GST_PTR_FORMAT, event1);
-        gst_pad_send_event (sink, event1);
-
-        gst_object_unref (sink);
-      }
-
-      if (self->subtitle_segment.format != GST_FORMAT_UNDEFINED) {
-        GstEvent *event1;
-
-        sink = gst_element_get_static_pad (element, "sink");
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Failed to get subpad");
+        if (!_setup_renderer (self, self->overlay)) {
+          GST_DEBUG_OBJECT (self, "Could not setup element");
           continue;
         }
 
-        _generate_update_segment_event (&self->subtitle_segment, &event1);
-        GST_DEBUG_OBJECT (self,
-            "Pushing subtitle segment event: %" GST_PTR_FORMAT, event1);
-        gst_pad_send_event (sink, event1);
+        src = gst_element_get_static_pad (self->parser, "src");
+        if (!_link_renderer (self, self->overlay, src)) {
+          GST_DEBUG_OBJECT (self, "Could not link element");
+          gst_object_unref (src);
+          continue;
+        }
+        gst_object_unref (src);
 
-        gst_object_unref (sink);
+        /* Everything done here, go out of loop */
+        GST_DEBUG_OBJECT (self, "%s is a suitable element",
+            GST_STR_NULL (gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST
+                    (overlay_factory))));
+        break;
       }
 
-      /* Set the sink ghostpad targets */
-      sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
+      if (overlay_factories)
+        gst_plugin_feature_list_free (overlay_factories);
+
+      if (G_UNLIKELY (k == NULL)) {
+        GST_WARNING_OBJECT (self, "Failed to find usable overlay factory");
         continue;
       }
 
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->video_sinkpad), sink))) {
-        GST_WARNING_OBJECT (self, "Can't set video sinkpad target");
-        gst_object_unref (sink);
-        continue;
-      }
-      gst_object_unref (sink);
-
-      /* Link subtitle identity to subtitle pad of our element */
-      sink = gst_element_get_static_pad (element, "sink");
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Failed to get subpad");
-        continue;
-      }
-
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->subtitle_sinkpad), sink))) {
-        GST_WARNING_OBJECT (self, "Failed to set subtitle sink target");
+      /* Now link subtitle sinkpad of the bin and the parser */
+      sink = gst_element_get_static_pad (self->parser, "sink");
+      if (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
+              (self->subtitle_sinkpad), sink)) {
         gst_object_unref (sink);
         continue;
       }
       gst_object_unref (sink);
+
+      /* Everything done here, go out of loop */
+      break;
     } else {
-      const gchar *name =
-          gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST (factory));
-      gboolean is_raw_video = _is_raw_video_pad (self->video_sinkpad);
+      /* Is renderer factory */
 
-      if (strcmp (name, "textoverlay") == 0) {
-        /* Set some textoverlay specific properties */
-        g_object_set (G_OBJECT (element),
-            "halign", "center", "valign", "bottom", "wait-text", FALSE, NULL);
-        if (self->font_desc)
-          g_object_set (G_OBJECT (element), "font-desc", self->font_desc, NULL);
-        self->silent_property = "silent";
-        self->silent_property_invert = FALSE;
-      } else {
-        self->silent_property =
-            _get_silent_property (element, &self->silent_property_invert);
-        if (_has_subtitle_encoding_property (self->renderer))
-          g_object_set (self->renderer, "subtitle-encoding", self->encoding,
-              NULL);
-        if (_has_font_desc_property (self->renderer))
-          g_object_set (self->renderer, "font-desc", self->font_desc, NULL);
-      }
-
-      if (is_raw_video) {
-        /* First check that renderer also supports raw video */
-        sink = _get_video_pad (element);
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
-          continue;
-        }
-
-        if (G_UNLIKELY (!_is_raw_video_pad (sink))) {
-          GST_DEBUG_OBJECT (self, "Renderer doesn't support raw video");
-          gst_object_unref (sink);
-          continue;
-        }
-        gst_object_unref (sink);
-
-        /* First link everything internally */
-        if (G_UNLIKELY (!_create_element (self, &self->post_colorspace,
-                    COLORSPACE, NULL, "post-colorspace", FALSE))) {
-          continue;
-        }
-        src = gst_element_get_static_pad (element, "src");
-        if (G_UNLIKELY (!src)) {
-          GST_WARNING_OBJECT (self, "Can't get src pad from renderer");
-          continue;
-        }
-
-        sink = gst_element_get_static_pad (self->post_colorspace, "sink");
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
-          gst_object_unref (src);
-          continue;
-        }
-
-        if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
-          GST_WARNING_OBJECT (self, "Can't link renderer with " COLORSPACE);
-          gst_object_unref (src);
-          gst_object_unref (sink);
-          continue;
-        }
-        gst_object_unref (src);
-        gst_object_unref (sink);
-
-        if (G_UNLIKELY (!_create_element (self, &self->pre_colorspace,
-                    COLORSPACE, NULL, "pre-colorspace", FALSE))) {
-          continue;
-        }
-
-        sink = _get_video_pad (element);
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
-          continue;
-        }
-
-        src = gst_element_get_static_pad (self->pre_colorspace, "src");
-        if (G_UNLIKELY (!src)) {
-          GST_WARNING_OBJECT (self, "Can't get srcpad from " COLORSPACE);
-          gst_object_unref (sink);
-          continue;
-        }
-
-        if (G_UNLIKELY (gst_pad_link (src, sink) != GST_PAD_LINK_OK)) {
-          GST_WARNING_OBJECT (self, "Can't link " COLORSPACE " to renderer");
-          gst_object_unref (src);
-          gst_object_unref (sink);
-          continue;
-        }
-        gst_object_unref (src);
-        gst_object_unref (sink);
-
-        /* Set src ghostpad target */
-        src = gst_element_get_static_pad (self->post_colorspace, "src");
-        if (G_UNLIKELY (!src)) {
-          GST_WARNING_OBJECT (self, "Can't get src pad from " COLORSPACE);
-          continue;
-        }
-      } else {                  /* No raw video pad */
-        GstCaps *allowed_caps, *video_caps = NULL;
-        GstPad *video_peer;
-        gboolean can_intersect = FALSE;
-
-        video_peer = gst_pad_get_peer (self->video_sinkpad);
-        if (video_peer) {
-          video_caps = gst_pad_get_current_caps (video_peer);
-          if (!video_caps) {
-            video_caps = gst_pad_get_caps (video_peer, NULL);
-          }
-          gst_object_unref (video_peer);
-        }
-
-        sink = _get_video_pad (element);
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get video sink from renderer");
-          continue;
-        }
-        allowed_caps = gst_pad_get_caps (sink, NULL);
-        gst_object_unref (sink);
-
-        if (allowed_caps && video_caps)
-          can_intersect = gst_caps_can_intersect (allowed_caps, video_caps);
-
-        if (allowed_caps)
-          gst_caps_unref (allowed_caps);
-
-        if (video_caps)
-          gst_caps_unref (video_caps);
-
-        if (G_UNLIKELY (!can_intersect)) {
-          GST_WARNING_OBJECT (self, "Renderer with custom caps is not "
-              "compatible with video stream");
-          continue;
-        }
-
-        src = gst_element_get_static_pad (element, "src");
-        if (G_UNLIKELY (!src)) {
-          GST_WARNING_OBJECT (self, "Can't get src pad from renderer");
-          continue;
-        }
-      }
-
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->srcpad), src))) {
-        GST_WARNING_OBJECT (self, "Can't set srcpad target");
-        gst_object_unref (src);
+      if (!_setup_renderer (self, self->renderer))
         continue;
-      }
-      gst_object_unref (src);
 
-      /* Send segments to the renderer if necessary. These are not sent
-       * outside this element because of the proxy pad event handler */
-      if (self->video_segment.format != GST_FORMAT_UNDEFINED) {
-        GstEvent *event1;
-
-        sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
-          continue;
-        }
-
-        _generate_update_segment_event (&self->video_segment, &event1);
-        GST_DEBUG_OBJECT (self,
-            "Pushing video segment event: %" GST_PTR_FORMAT, event1);
-        gst_pad_send_event (sink, event1);
-        gst_object_unref (sink);
-      }
-
-      if (self->subtitle_segment.format != GST_FORMAT_UNDEFINED) {
-        GstEvent *event1;
-
-        sink = _get_sub_pad (element);
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Failed to get subpad");
-          continue;
-        }
-
-        _generate_update_segment_event (&self->subtitle_segment, &event1);
-        GST_DEBUG_OBJECT (self,
-            "Pushing subtitle segment event: %" GST_PTR_FORMAT, event1);
-        gst_pad_send_event (sink, event1);
-        gst_object_unref (sink);
-      }
-
-      /* Set the sink ghostpad targets */
-      if (self->pre_colorspace) {
-        sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get sink pad from " COLORSPACE);
-          continue;
-        }
-      } else {
-        sink = _get_video_pad (element);
-        if (G_UNLIKELY (!sink)) {
-          GST_WARNING_OBJECT (self, "Can't get sink pad from %" GST_PTR_FORMAT,
-              element);
-          continue;
-        }
-      }
-
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->video_sinkpad), sink))) {
-        GST_WARNING_OBJECT (self, "Can't set video sinkpad target");
-        gst_object_unref (sink);
+      /* subtitle_src==NULL means: use subtitle_sink ghostpad */
+      if (!_link_renderer (self, self->renderer, NULL))
         continue;
-      }
-      gst_object_unref (sink);
 
-      sink = _get_sub_pad (element);
-      if (G_UNLIKELY (!sink)) {
-        GST_WARNING_OBJECT (self, "Failed to get subpad");
-        continue;
-      }
-
-      if (G_UNLIKELY (!gst_ghost_pad_set_target (GST_GHOST_PAD_CAST
-                  (self->subtitle_sinkpad), sink))) {
-        GST_WARNING_OBJECT (self, "Failed to set subtitle sink target");
-        gst_object_unref (sink);
-        continue;
-      }
-      gst_object_unref (sink);
+      /* Everything done here, go out of loop */
+      break;
     }
-
-    break;
   }
 
   if (G_UNLIKELY (l == NULL)) {
@@ -1329,19 +1298,57 @@ _pad_blocked_cb (GstPad * pad, GstProbeType type, gpointer type_data,
     self->subtitle_error = TRUE;
     _setup_passthrough (self);
     do_async_done (self);
-  } else {
-    GST_DEBUG_OBJECT (self, "Everything worked, unblocking pads");
-    unblock_video (self);
-    unblock_subtitle (self);
-    do_async_done (self);
+    goto out;
   }
+
+  /* Send segments to the renderer if necessary. These are not sent
+   * outside this element because of the proxy pad event handler */
+  if (self->video_segment.format != GST_FORMAT_UNDEFINED) {
+    GstEvent *event1;
+    GstPad *sink;
+
+    if (self->pre_colorspace) {
+      sink = gst_element_get_static_pad (self->pre_colorspace, "sink");
+    } else {
+      sink = _get_video_pad ((self->renderer) ? self->renderer : self->overlay);
+    }
+
+    _generate_update_segment_event (&self->video_segment, &event1);
+    GST_DEBUG_OBJECT (self,
+        "Pushing video update segment event: %" GST_PTR_FORMAT,
+        gst_event_get_structure (event1));
+    gst_pad_send_event (sink, event1);
+    gst_object_unref (sink);
+  }
+
+  if (self->subtitle_segment.format != GST_FORMAT_UNDEFINED) {
+    GstEvent *event1;
+    GstPad *sink;
+
+    if (self->renderer)
+      sink = _get_sub_pad (self->renderer);
+    else
+      sink = gst_element_get_static_pad (self->parser, "sink");
+
+    _generate_update_segment_event (&self->subtitle_segment, &event1);
+    GST_DEBUG_OBJECT (self,
+        "Pushing subtitle update segment event: %" GST_PTR_FORMAT,
+        gst_event_get_structure (event1));
+    gst_pad_send_event (sink, event1);
+    gst_object_unref (sink);
+  }
+
+  GST_DEBUG_OBJECT (self, "Everything worked, unblocking pads");
+  unblock_video (self);
+  unblock_subtitle (self);
+  do_async_done (self);
 
 out:
   if (factories)
     gst_plugin_feature_list_free (factories);
   GST_SUBTITLE_OVERLAY_UNLOCK (self);
 
-  return GST_PROBE_OK;
+  return GST_PAD_PROBE_OK;
 }
 
 static GstStateChangeReturn
@@ -1410,6 +1417,13 @@ gst_subtitle_overlay_change_state (GstElement * element,
       break;
     case GST_STATE_CHANGE_PAUSED_TO_READY:
       GST_DEBUG_OBJECT (self, "State change PAUSED->READY");
+
+      /* Set the pads back to blocking state */
+      GST_SUBTITLE_OVERLAY_LOCK (self);
+      block_video (self);
+      block_subtitle (self);
+      GST_SUBTITLE_OVERLAY_UNLOCK (self);
+
       do_async_done (self);
 
       break;
@@ -1549,9 +1563,13 @@ gst_subtitle_overlay_set_property (GObject * object, guint prop_id,
       GST_SUBTITLE_OVERLAY_LOCK (self);
       g_free (self->font_desc);
       self->font_desc = g_value_dup_string (value);
-      if (self->overlay)
+      if (self->overlay
+          && _has_property_with_type (G_OBJECT (self->overlay), "font-desc",
+              G_TYPE_STRING))
         g_object_set (self->overlay, "font-desc", self->font_desc, NULL);
-      else if (self->renderer && _has_font_desc_property (self->renderer))
+      else if (self->renderer
+          && _has_property_with_type (G_OBJECT (self->renderer), "font-desc",
+              G_TYPE_STRING))
         g_object_set (self->renderer, "font-desc", self->font_desc, NULL);
       GST_SUBTITLE_OVERLAY_UNLOCK (self);
       break;
@@ -1559,10 +1577,14 @@ gst_subtitle_overlay_set_property (GObject * object, guint prop_id,
       GST_SUBTITLE_OVERLAY_LOCK (self);
       g_free (self->encoding);
       self->encoding = g_value_dup_string (value);
-      if (self->renderer && _has_subtitle_encoding_property (self->renderer))
+      if (self->renderer
+          && _has_property_with_type (G_OBJECT (self->renderer),
+              "subtitle-encoding", G_TYPE_STRING))
         g_object_set (self->renderer, "subtitle-encoding", self->encoding,
             NULL);
-      if (self->parser && _has_subtitle_encoding_property (self->parser))
+      if (self->parser
+          && _has_property_with_type (G_OBJECT (self->parser),
+              "subtitle-encoding", G_TYPE_STRING))
         g_object_set (self->parser, "subtitle-encoding", self->encoding, NULL);
       GST_SUBTITLE_OVERLAY_UNLOCK (self);
       break;
@@ -1612,7 +1634,7 @@ gst_subtitle_overlay_class_init (GstSubtitleOverlayClass * klass)
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&subtitle_sinktemplate));
 
-  gst_element_class_set_details_simple (element_class, "Subtitle Overlay",
+  gst_element_class_set_static_metadata (element_class, "Subtitle Overlay",
       "Video/Overlay/Subtitle",
       "Overlays a video stream with subtitles",
       "Sebastian Dröge <sebastian.droege@collabora.co.uk>");
@@ -1625,13 +1647,14 @@ gst_subtitle_overlay_class_init (GstSubtitleOverlayClass * klass)
 }
 
 static GstFlowReturn
-gst_subtitle_overlay_src_proxy_chain (GstPad * proxypad, GstBuffer * buffer)
+gst_subtitle_overlay_src_proxy_chain (GstPad * proxypad, GstObject * parent,
+    GstBuffer * buffer)
 {
   GstPad *ghostpad;
   GstSubtitleOverlay *self;
   GstFlowReturn ret;
 
-  ghostpad = GST_PAD_CAST (gst_pad_get_parent (proxypad));
+  ghostpad = GST_PAD_CAST (parent);
   if (G_UNLIKELY (!ghostpad)) {
     gst_buffer_unref (buffer);
     return GST_FLOW_ERROR;
@@ -1643,7 +1666,7 @@ gst_subtitle_overlay_src_proxy_chain (GstPad * proxypad, GstBuffer * buffer)
     return GST_FLOW_ERROR;
   }
 
-  ret = gst_proxy_pad_chain_default (proxypad, buffer);
+  ret = gst_proxy_pad_chain_default (proxypad, parent, buffer);
 
   if (IS_VIDEO_CHAIN_IGNORE_ERROR (ret)) {
     GST_ERROR_OBJECT (self, "Downstream chain error: %s",
@@ -1652,20 +1675,20 @@ gst_subtitle_overlay_src_proxy_chain (GstPad * proxypad, GstBuffer * buffer)
   }
 
   gst_object_unref (self);
-  gst_object_unref (ghostpad);
 
   return ret;
 }
 
 static gboolean
-gst_subtitle_overlay_src_proxy_event (GstPad * proxypad, GstEvent * event)
+gst_subtitle_overlay_src_proxy_event (GstPad * proxypad, GstObject * parent,
+    GstEvent * event)
 {
   GstPad *ghostpad = NULL;
   GstSubtitleOverlay *self = NULL;
   gboolean ret = FALSE;
   const GstStructure *s;
 
-  ghostpad = GST_PAD_CAST (gst_pad_get_parent (proxypad));
+  ghostpad = GST_PAD_CAST (parent);
   if (G_UNLIKELY (!ghostpad))
     goto out;
   self = GST_SUBTITLE_OVERLAY_CAST (gst_pad_get_parent (ghostpad));
@@ -1674,13 +1697,14 @@ gst_subtitle_overlay_src_proxy_event (GstPad * proxypad, GstEvent * event)
 
   s = gst_event_get_structure (event);
   if (s && gst_structure_id_has_field (s, _subtitle_overlay_event_marker_id)) {
-    GST_DEBUG_OBJECT (ghostpad, "Dropping event with marker: %" GST_PTR_FORMAT,
-        event);
+    GST_DEBUG_OBJECT (ghostpad,
+        "Dropping event with marker: %" GST_PTR_FORMAT,
+        gst_event_get_structure (event));
     gst_event_unref (event);
     event = NULL;
     ret = TRUE;
   } else {
-    ret = gst_proxy_pad_event_default (proxypad, event);
+    ret = gst_proxy_pad_event_default (proxypad, parent, event);
     event = NULL;
   }
 
@@ -1689,8 +1713,7 @@ out:
     gst_event_unref (event);
   if (self)
     gst_object_unref (self);
-  if (ghostpad)
-    gst_object_unref (ghostpad);
+
   return ret;
 }
 
@@ -1715,14 +1738,13 @@ gst_subtitle_overlay_video_sink_setcaps (GstSubtitleOverlay * self,
 
   GST_SUBTITLE_OVERLAY_LOCK (self);
 
-  if (!target || !gst_pad_accept_caps (target, caps)) {
+  if (!target || !gst_pad_query_accept_caps (target, caps)) {
     GST_DEBUG_OBJECT (target, "Target did not accept caps -- reconfiguring");
 
     block_subtitle (self);
     block_video (self);
   }
 
-  GST_SUBTITLE_OVERLAY_LOCK (self);
   if (self->fps_n != info.fps_n || self->fps_d != info.fps_d) {
     GST_DEBUG_OBJECT (self, "New video fps: %d/%d", info.fps_n, info.fps_d);
     self->fps_n = info.fps_n;
@@ -1731,16 +1753,19 @@ gst_subtitle_overlay_video_sink_setcaps (GstSubtitleOverlay * self,
   }
   GST_SUBTITLE_OVERLAY_UNLOCK (self);
 
-out:
   if (target)
     gst_object_unref (target);
+
+out:
+
   return ret;
 }
 
 static gboolean
-gst_subtitle_overlay_video_sink_event (GstPad * pad, GstEvent * event)
+gst_subtitle_overlay_video_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (gst_pad_get_parent (pad));
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
   gboolean ret;
 
   switch (GST_EVENT_TYPE (event)) {
@@ -1766,7 +1791,7 @@ gst_subtitle_overlay_video_sink_event (GstPad * pad, GstEvent * event)
       break;
   }
 
-  ret = gst_proxy_pad_event_default (pad, gst_event_ref (event));
+  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_SEGMENT) {
     GST_DEBUG_OBJECT (pad, "segment event: %" GST_PTR_FORMAT, event);
@@ -1778,14 +1803,13 @@ gst_subtitle_overlay_video_sink_event (GstPad * pad, GstEvent * event)
 
 done:
   gst_event_unref (event);
-  gst_object_unref (self);
 
   return ret;
 
   /* ERRORS */
 invalid_format:
   {
-    GST_ERROR_OBJECT (pad, "Newsegment event in non-time format: %s",
+    GST_ERROR_OBJECT (pad, "Segment event in non-time format: %s",
         gst_format_get_name (self->video_segment.format));
     ret = FALSE;
     goto done;
@@ -1793,10 +1817,11 @@ invalid_format:
 }
 
 static GstFlowReturn
-gst_subtitle_overlay_video_sink_chain (GstPad * pad, GstBuffer * buffer)
+gst_subtitle_overlay_video_sink_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer)
 {
-  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (GST_PAD_PARENT (pad));
-  GstFlowReturn ret = gst_proxy_pad_chain_default (pad, buffer);
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
+  GstFlowReturn ret = gst_proxy_pad_chain_default (pad, parent, buffer);
 
   if (G_UNLIKELY (self->downstream_chain_error) || self->passthrough_identity) {
     return ret;
@@ -1816,15 +1841,16 @@ gst_subtitle_overlay_video_sink_chain (GstPad * pad, GstBuffer * buffer)
 }
 
 static GstFlowReturn
-gst_subtitle_overlay_subtitle_sink_chain (GstPad * pad, GstBuffer * buffer)
+gst_subtitle_overlay_subtitle_sink_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer)
 {
-  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (GST_PAD_PARENT (pad));
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
 
   if (self->subtitle_error) {
     gst_buffer_unref (buffer);
     return GST_FLOW_OK;
   } else {
-    GstFlowReturn ret = gst_proxy_pad_chain_default (pad, buffer);
+    GstFlowReturn ret = gst_proxy_pad_chain_default (pad, parent, buffer);
 
     if (IS_SUBTITLE_CHAIN_IGNORE_ERROR (ret)) {
       GST_DEBUG_OBJECT (self, "Subtitle chain error: %s",
@@ -1850,7 +1876,7 @@ gst_subtitle_overlay_subtitle_sink_getcaps (GstPad * pad, GstCaps * filter)
 
   g_mutex_lock (self->factories_lock);
   if (G_UNLIKELY (!gst_subtitle_overlay_update_factory_list (self)))
-    ret = GST_CAPS_NONE;
+    ret = gst_caps_new_empty ();
   else if (filter)
     ret =
         gst_caps_intersect_full (filter, self->factory_caps,
@@ -1862,17 +1888,6 @@ gst_subtitle_overlay_subtitle_sink_getcaps (GstPad * pad, GstCaps * filter)
   GST_DEBUG_OBJECT (pad, "Returning subtitle caps %" GST_PTR_FORMAT, ret);
 
   gst_object_unref (self);
-
-  return ret;
-}
-
-static gboolean
-gst_subtitle_overlay_subtitle_sink_acceptcaps (GstPad * pad, GstCaps * caps)
-{
-  GstCaps *othercaps = gst_subtitle_overlay_subtitle_sink_getcaps (pad, NULL);
-  gboolean ret = gst_caps_is_subset (caps, othercaps);
-
-  gst_caps_unref (othercaps);
 
   return ret;
 }
@@ -1892,7 +1907,7 @@ gst_subtitle_overlay_subtitle_sink_setcaps (GstSubtitleOverlay * self,
   GST_SUBTITLE_OVERLAY_LOCK (self);
   gst_caps_replace (&self->subcaps, caps);
 
-  if (target && gst_pad_accept_caps (target, caps)) {
+  if (target && gst_pad_query_accept_caps (target, caps)) {
     GST_DEBUG_OBJECT (self, "Target accepts caps");
     GST_SUBTITLE_OVERLAY_UNLOCK (self);
     goto out;
@@ -1923,7 +1938,7 @@ gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstPad * peer)
 
   caps = gst_pad_get_current_caps (peer);
   if (!caps) {
-    caps = gst_pad_get_caps (peer, NULL);
+    caps = gst_pad_query_caps (peer, NULL);
     if (!gst_caps_is_fixed (caps)) {
       gst_caps_unref (caps);
       caps = NULL;
@@ -1975,9 +1990,10 @@ gst_subtitle_overlay_subtitle_sink_unlink (GstPad * pad)
 }
 
 static gboolean
-gst_subtitle_overlay_subtitle_sink_event (GstPad * pad, GstEvent * event)
+gst_subtitle_overlay_subtitle_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (gst_pad_get_parent (pad));
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
   gboolean ret;
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_CUSTOM_DOWNSTREAM_OOB &&
@@ -2031,7 +2047,7 @@ gst_subtitle_overlay_subtitle_sink_event (GstPad * pad, GstEvent * event)
       break;
   }
 
-  ret = gst_proxy_pad_event_default (pad, gst_event_ref (event));
+  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_SEGMENT) {
     GST_DEBUG_OBJECT (pad, "segment event: %" GST_PTR_FORMAT, event);
@@ -2042,7 +2058,44 @@ gst_subtitle_overlay_subtitle_sink_event (GstPad * pad, GstEvent * event)
   gst_event_unref (event);
 
 out:
-  gst_object_unref (self);
+  return ret;
+}
+
+static gboolean
+gst_subtitle_overlay_subtitle_sink_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
+{
+  gboolean ret;
+
+  switch (GST_QUERY_TYPE (query)) {
+    case GST_QUERY_ACCEPT_CAPS:
+    {
+      GstCaps *caps, *othercaps;
+
+      gst_query_parse_accept_caps (query, &caps);
+      othercaps = gst_subtitle_overlay_subtitle_sink_getcaps (pad, NULL);
+      ret = gst_caps_is_subset (caps, othercaps);
+      gst_caps_unref (othercaps);
+      gst_query_set_accept_caps_result (query, ret);
+      ret = TRUE;
+      break;
+    }
+    case GST_QUERY_CAPS:
+    {
+      GstCaps *filter, *caps;
+
+      gst_query_parse_caps (query, &filter);
+      caps = gst_subtitle_overlay_subtitle_sink_getcaps (pad, filter);
+      gst_query_set_caps_result (query, caps);
+      gst_caps_unref (caps);
+      ret = TRUE;
+      break;
+    }
+    default:
+      ret = gst_pad_query_default (pad, parent, query);
+      break;
+  }
+
   return ret;
 }
 
@@ -2057,6 +2110,7 @@ gst_subtitle_overlay_init (GstSubtitleOverlay * self)
 
   templ = gst_static_pad_template_get (&srctemplate);
   self->srcpad = gst_ghost_pad_new_no_target_from_template ("src", templ);
+  gst_object_unref (templ);
 
   proxypad =
       GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD (self->srcpad)));
@@ -2071,6 +2125,7 @@ gst_subtitle_overlay_init (GstSubtitleOverlay * self)
   templ = gst_static_pad_template_get (&video_sinktemplate);
   self->video_sinkpad =
       gst_ghost_pad_new_no_target_from_template ("video_sink", templ);
+  gst_object_unref (templ);
   gst_pad_set_event_function (self->video_sinkpad,
       GST_DEBUG_FUNCPTR (gst_subtitle_overlay_video_sink_event));
   gst_pad_set_chain_function (self->video_sinkpad,
@@ -2080,29 +2135,29 @@ gst_subtitle_overlay_init (GstSubtitleOverlay * self)
       GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
           (self->video_sinkpad)));
   self->video_block_pad = proxypad;
-
+  gst_object_unref (proxypad);
   gst_element_add_pad (GST_ELEMENT_CAST (self), self->video_sinkpad);
 
   templ = gst_static_pad_template_get (&subtitle_sinktemplate);
   self->subtitle_sinkpad =
       gst_ghost_pad_new_no_target_from_template ("subtitle_sink", templ);
+  gst_object_unref (templ);
   gst_pad_set_link_function (self->subtitle_sinkpad,
       GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_link));
   gst_pad_set_unlink_function (self->subtitle_sinkpad,
       GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_unlink));
   gst_pad_set_event_function (self->subtitle_sinkpad,
       GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_event));
+  gst_pad_set_query_function (self->subtitle_sinkpad,
+      GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_query));
   gst_pad_set_chain_function (self->subtitle_sinkpad,
       GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_chain));
-  gst_pad_set_getcaps_function (self->subtitle_sinkpad,
-      GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_getcaps));
-  gst_pad_set_acceptcaps_function (self->subtitle_sinkpad,
-      GST_DEBUG_FUNCPTR (gst_subtitle_overlay_subtitle_sink_acceptcaps));
 
   proxypad =
       GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
           (self->subtitle_sinkpad)));
   self->subtitle_block_pad = proxypad;
+  gst_object_unref (proxypad);
 
   gst_element_add_pad (GST_ELEMENT_CAST (self), self->subtitle_sinkpad);
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-09-02 12:02-0000\n"
 "Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -192,9 +192,8 @@ msgstr "Avota elements ir nederīgs."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Radās kļūda nosūtot datus uz \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Savienojums ar %s:%d noraidīts."
+msgid "This CD has no audio tracks"
+msgstr "Šajā CD nav neviena audio celiņa"
 
 msgid "Can't record audio fast enough"
 msgstr "Nevar ierakstīt audio pietiekami ātri"
@@ -359,9 +358,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Šajā CD nav neviena audio celiņa"
-
 msgid "ID3 tag"
 msgstr "ID3 atzīme"
 
@@ -394,6 +390,21 @@ msgstr "Bez zudumu MSZH"
 
 msgid "Run-length encoding"
 msgstr "Sērijas garuma kodēšana"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer subtitru formāts"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami subtitru formāts"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate subtitru formāts"
 
 msgid "Sami subtitle format"
 msgstr "Sami subtitru formāts"
@@ -509,6 +520,9 @@ msgstr "Nezināms kodētāja elements"
 
 msgid "Plugin or element of unknown type"
 msgstr "Nezināma veida spraudnis vai elements"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Savienojums ar %s:%d noraidīts."
 
 #~ msgid "Could not open vfs file \"%s\" for writing: %s."
 #~ msgstr "Nevarēja atvērt vfs failu \"%s\" rakstīšanai: %s."

@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2011-04-28 16:38+0100\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -213,9 +213,8 @@ msgstr "Kildeelement er ugyldigt."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Der opstod en fejl under data-overførsel til \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Opkobling til %s:%d afvist."
+msgid "This CD has no audio tracks"
+msgstr "Denne cd har ingen lydspor"
 
 msgid "Can't record audio fast enough"
 msgstr "Kan ikke optage lyd hurtigt nok"
@@ -394,9 +393,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Denne cd har ingen lydspor"
-
 msgid "ID3 tag"
 msgstr "ID3-mærke"
 
@@ -429,6 +425,21 @@ msgstr "Lossless MSZH"
 
 msgid "Run-length encoding"
 msgstr "Kørsels-længde indkodning"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer undertekstformat"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami undertekstformat"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Undertekstformat Kate"
 
 msgid "Sami subtitle format"
 msgstr "Sami undertekstformat"
@@ -547,6 +558,9 @@ msgstr "Ukendt indkodeelement"
 
 msgid "Plugin or element of unknown type"
 msgstr "Plugin eller element af ukendt type"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Opkobling til %s:%d afvist."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Ukomprimeret plan-YUV 4:2:0"

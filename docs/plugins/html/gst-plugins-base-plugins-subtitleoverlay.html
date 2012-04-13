@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>subtitleoverlay</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-playbin.html" title="playbin">
 <link rel="next" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-playbin.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -84,17 +84,25 @@ DVD subpicture subtitles.
 <p>
 </p>
 <div class="refsect2">
-<a name="id479357"></a><h3>Examples</h3>
-<div class="informalexample"><pre class="programlisting">
-gst-launch -v filesrc location=test.mkv ! matroskademux name=demux ! "video/x-h264" ! queue2 ! decodebin ! subtitleoverlay name=overlay ! videoconvert ! autovideosink  demux. ! "video/x-dvd-subpicture" ! queue2 ! overlay.
-</pre></div> This will play back the given Matroska file with h264 video and subpicture subtitles.
+<a name="idp6514000"></a><h3>Examples</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> <span class="string">&quot;video/x-h264&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> <span class="string">&quot;video/x-dvd-subpicture&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ This will play back the given Matroska file with h264 video and subpicture subtitles.
 </div>
 <p>
 </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id489687"></a><h3>Element Information</h3>
+<a name="idp6107776"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -117,7 +125,7 @@ gst-launch -v filesrc location=test.mkv ! matroskademux name=demux ! "video/x-h2
 </div>
 <hr>
 <div class="refsect2">
-<a name="id534893"></a><h3>Element Pads</h3>
+<a name="idp12461872"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

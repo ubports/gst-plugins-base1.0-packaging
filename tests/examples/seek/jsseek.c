@@ -24,6 +24,9 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+/* FIXME 0.11: suppress warnings for deprecated API such as GStaticRecMutex
+ * with newer GTK versions (>= 3.3.0) */
+#define GDK_DISABLE_DEPRECATION_WARNINGS
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -45,25 +48,10 @@
 #ifdef HAVE_X
 #include <gdk/gdkx.h>
 #endif
-#include <gst/interfaces/videooverlay.h>
+#include <gst/video/videooverlay.h>
 
 GST_DEBUG_CATEGORY_STATIC (seek_debug);
 #define GST_CAT_DEFAULT (seek_debug)
-
-#if (!GTK_CHECK_VERSION(2, 23, 0) || GTK_CHECK_VERSION(2, 90, 0)) && !GTK_CHECK_VERSION(2, 91, 1)
-#define gtk_combo_box_text_new gtk_combo_box_new_text
-#define gtk_combo_box_text_append_text gtk_combo_box_append_text
-#define gtk_combo_box_text_remove gtk_combo_box_remove_text
-#define GTK_COMBO_BOX_TEXT GTK_COMBO_BOX
-#endif
-
-#if !GTK_CHECK_VERSION (2, 17, 7)
-static void
-gtk_widget_get_allocation (GtkWidget * w, GtkAllocation * a)
-{
-  *a = w->allocation;
-}
-#endif
 
 /* configuration */
 #define SOURCE "filesrc"
@@ -139,7 +127,7 @@ static GtkWidget *text_checkbox, *mute_checkbox, *volume_spinbutton;
 static GtkWidget *skip_checkbox, *video_window, *download_checkbox;
 static GtkWidget *buffer_checkbox, *rate_spinbutton;
 
-static GStaticMutex state_mutex = G_STATIC_MUTEX_INIT;
+static GMutex state_mutex;
 
 static GtkWidget *format_combo, *step_amount_spinbutton, *step_rate_spinbutton;
 static GtkWidget *shuttle_checkbox, *step_button;
@@ -963,9 +951,9 @@ make_playerbin_pipeline (const gchar * location)
 static GstElement *
 make_playerbin2_pipeline (const gchar * location)
 {
-  GstElement *pipeline = construct_playerbin ("playbin2", location);
+  GstElement *pipeline = construct_playerbin ("playbin", location);
 
-  /* FIXME: this is not triggered, playbin2 is not forwarding it from the sink */
+  /* FIXME: this is not triggered, playbin is not forwarding it from the sink */
   g_signal_connect (pipeline, "notify::volume", G_CALLBACK (volume_notify_cb),
       NULL);
   return pipeline;
@@ -1517,7 +1505,7 @@ failed:
 static void
 pause_cb (GtkButton * button, gpointer data)
 {
-  g_static_mutex_lock (&state_mutex);
+  g_mutex_lock (&state_mutex);
   if (state != GST_STATE_PAUSED) {
     GstStateChangeReturn ret;
 
@@ -1537,13 +1525,13 @@ pause_cb (GtkButton * button, gpointer data)
     state = GST_STATE_PAUSED;
     gtk_statusbar_push (GTK_STATUSBAR (statusbar), status_id, "Paused");
   }
-  g_static_mutex_unlock (&state_mutex);
+  g_mutex_unlock (&state_mutex);
 
   return;
 
 failed:
   {
-    g_static_mutex_unlock (&state_mutex);
+    g_mutex_unlock (&state_mutex);
     g_print ("PAUSE failed\n");
     gtk_statusbar_push (GTK_STATUSBAR (statusbar), status_id, "Pause failed");
   }
@@ -1558,13 +1546,14 @@ stop_cb (GtkButton * button, gpointer data)
     g_print ("READY pipeline\n");
     gtk_statusbar_pop (GTK_STATUSBAR (statusbar), status_id);
 
-    g_static_mutex_lock (&state_mutex);
+    g_mutex_lock (&state_mutex);
     ret = gst_element_set_state (pipeline, STOP_STATE);
     if (ret == GST_STATE_CHANGE_FAILURE)
       goto failed;
 
     state = STOP_STATE;
     gtk_statusbar_push (GTK_STATUSBAR (statusbar), status_id, "Stopped");
+    gtk_widget_queue_draw (video_window);
 
     is_live = FALSE;
     buffering = FALSE;
@@ -1574,7 +1563,7 @@ stop_cb (GtkButton * button, gpointer data)
 
     if (pipeline_type == 16)
       clear_streams (pipeline);
-    g_static_mutex_unlock (&state_mutex);
+    g_mutex_unlock (&state_mutex);
 
 #if 0
     /* if one uses parse_launch, play, stop and play again it fails as all the
@@ -1602,7 +1591,7 @@ stop_cb (GtkButton * button, gpointer data)
 
 failed:
   {
-    g_static_mutex_unlock (&state_mutex);
+    g_mutex_unlock (&state_mutex);
     g_print ("STOP failed\n");
     gtk_statusbar_push (GTK_STATUSBAR (statusbar), status_id, "Stop failed");
   }
@@ -1814,7 +1803,7 @@ update_streams (GstPipeline * pipeline)
     /* remove previous info */
     clear_streams (GST_ELEMENT_CAST (pipeline));
 
-    /* here we get and update the different streams detected by playbin2 */
+    /* here we get and update the different streams detected by playbin */
     g_object_get (pipeline, "n-video", &n_video, NULL);
     g_object_get (pipeline, "n-audio", &n_audio, NULL);
     g_object_get (pipeline, "n-text", &n_text, NULL);
@@ -1942,7 +1931,7 @@ init_visualization_features (void)
 
   vis_entries = g_array_new (FALSE, FALSE, sizeof (VisEntry));
 
-  list = gst_registry_feature_filter (gst_registry_get_default (),
+  list = gst_registry_feature_filter (gst_registry_get (),
       filter_features, FALSE, NULL);
 
   for (walk = list; walk; walk = g_list_next (walk)) {
@@ -1975,7 +1964,7 @@ vis_combo_cb (GtkComboBox * combo, GstPipeline * pipeline)
     if (!element)
       return;
 
-    /* set vis plugin for playbin2 */
+    /* set vis plugin for playbin */
     g_object_set (pipeline, "vis-plugin", element, NULL);
   }
 }
@@ -2035,8 +2024,7 @@ shot_cb (GtkButton * button, gpointer data)
     gint width, height;
     GdkPixbuf *pixbuf;
     GError *error = NULL;
-    gsize size;
-    guint8 *data;
+    GstMapInfo map;
 
     /* get the snapshot buffer format now. We set the caps on the appsink so
      * that it can only be an rgb buffer. The only thing we have not specified
@@ -2063,14 +2051,14 @@ shot_cb (GtkButton * button, gpointer data)
 
     /* create pixmap from buffer and save, gstreamer video buffers have a stride
      * that is rounded up to the nearest multiple of 4 */
-    data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
-    pixbuf = gdk_pixbuf_new_from_data (data,
+    gst_buffer_map (buffer, &map, GST_MAP_READ);
+    pixbuf = gdk_pixbuf_new_from_data (map.data,
         GDK_COLORSPACE_RGB, FALSE, 8, width, height,
         GST_ROUND_UP_4 (width * 3), NULL, NULL);
 
     /* save the pixbuf */
     gdk_pixbuf_save (pixbuf, "snapshot.png", "png", &error, NULL);
-    gst_buffer_unmap (buffer, data, size);
+    gst_buffer_unmap (buffer, &map);
 
     /* save the pixbuf */
     gdk_pixbuf_save (pixbuf, "snapshot.png", "png", &error, NULL);
@@ -2178,10 +2166,10 @@ msg_sync_step_done (GstBus * bus, GstMessage * message, GstElement * element)
     return;
   }
 
-  if (g_static_mutex_trylock (&state_mutex)) {
+  if (g_mutex_trylock (&state_mutex)) {
     if (shuttling)
       do_shuttle (element);
-    g_static_mutex_unlock (&state_mutex);
+    g_mutex_unlock (&state_mutex);
   } else {
     /* ignore step messages that come while we are doing a state change */
     g_print ("state change is busy\n");
@@ -2473,19 +2461,17 @@ bus_sync_handler (GstBus * bus, GstMessage * message, GstPipeline * data)
 #endif
 
 static gboolean
-handle_expose_cb (GtkWidget * widget, GdkEventExpose * event, gpointer data)
+draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 {
   if (state < GST_STATE_PAUSED) {
-    GtkAllocation allocation;
-    GdkWindow *window = gtk_widget_get_window (widget);
-    cairo_t *cr;
+    int width, height;
 
-    gtk_widget_get_allocation (widget, &allocation);
-    cr = gdk_cairo_create (window);
+    width = gtk_widget_get_allocated_width (widget);
+    height = gtk_widget_get_allocated_height (widget);
     cairo_set_source_rgb (cr, 0, 0, 0);
-    cairo_rectangle (cr, 0, 0, allocation.width, allocation.height);
+    cairo_rectangle (cr, 0, 0, width, height);
     cairo_fill (cr);
-    cairo_destroy (cr);
+    return TRUE;
   }
   return FALSE;
 }
@@ -2493,24 +2479,16 @@ handle_expose_cb (GtkWidget * widget, GdkEventExpose * event, gpointer data)
 static void
 realize_cb (GtkWidget * widget, gpointer data)
 {
-#if GTK_CHECK_VERSION(2,18,0)
-  {
-    GdkWindow *window = gtk_widget_get_window (widget);
+  GdkWindow *window = gtk_widget_get_window (widget);
 
-    /* This is here just for pedagogical purposes, GDK_WINDOW_XID will call it
-     * as well */
-    if (!gdk_window_ensure_native (window))
-      g_error ("Couldn't create native window needed for GstVideoOverlay!");
-  }
-#endif
+  /* This is here just for pedagogical purposes, GDK_WINDOW_XID will call it
+   * as well */
+  if (!gdk_window_ensure_native (window))
+    g_error ("Couldn't create native window needed for GstXOverlay!");
 
 #ifdef HAVE_X
-  {
-    GdkWindow *window = gtk_widget_get_window (video_window);
-
-    embed_xid = GDK_WINDOW_XID (window);
-    g_print ("Window realize: video window XID = %lu\n", embed_xid);
-  }
+  embed_xid = GDK_WINDOW_XID (window);
+  g_print ("Window realize: video window XID = %lu\n", embed_xid);
 #endif
 }
 
@@ -2700,9 +2678,6 @@ main (int argc, char **argv)
   GOptionContext *ctx;
   GError *err = NULL;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-
   ctx = g_option_context_new ("- test seeking in gsteamer");
   g_option_context_add_main_entries (ctx, options, NULL);
   g_option_context_add_group (ctx, gst_init_get_option_group ());
@@ -2758,8 +2733,7 @@ main (int argc, char **argv)
   /* initialize gui elements ... */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   video_window = gtk_drawing_area_new ();
-  g_signal_connect (video_window, "expose-event",
-      G_CALLBACK (handle_expose_cb), NULL);
+  g_signal_connect (video_window, "draw", G_CALLBACK (draw_cb), NULL);
   g_signal_connect (video_window, "realize", G_CALLBACK (realize_cb), NULL);
   gtk_widget_set_double_buffered (video_window, FALSE);
 
@@ -2878,7 +2852,7 @@ main (int argc, char **argv)
       pipeline);
 
   if (pipeline_type == 16) {
-    /* the playbin2 panel controls for the video/audio/subtitle tracks */
+    /* the playbin panel controls for the video/audio/subtitle tracks */
     panel = gtk_hbox_new (FALSE, 0);
     video_combo = gtk_combo_box_text_new ();
     audio_combo = gtk_combo_box_text_new ();
@@ -2895,7 +2869,7 @@ main (int argc, char **argv)
         G_CALLBACK (audio_combo_cb), pipeline);
     g_signal_connect (G_OBJECT (text_combo), "changed",
         G_CALLBACK (text_combo_cb), pipeline);
-    /* playbin2 panel for flag checkboxes and volume/mute */
+    /* playbin panel for flag checkboxes and volume/mute */
     boxes = gtk_hbox_new (FALSE, 0);
     vis_checkbox = gtk_check_button_new_with_label ("Vis");
     video_checkbox = gtk_check_button_new_with_label ("Video");
@@ -2939,7 +2913,7 @@ main (int argc, char **argv)
         G_CALLBACK (buffer_toggle_cb), pipeline);
     g_signal_connect (G_OBJECT (volume_spinbutton), "value_changed",
         G_CALLBACK (volume_spinbutton_changed_cb), pipeline);
-    /* playbin2 panel for snapshot */
+    /* playbin panel for snapshot */
     boxes2 = gtk_hbox_new (FALSE, 0);
     shot_button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
     gtk_widget_set_tooltip_text (shot_button,
@@ -2984,7 +2958,7 @@ main (int argc, char **argv)
   gtk_table_attach_defaults (GTK_TABLE (flagtable), rate_spinbutton, 4, 5, 1,
       2);
   if (panel && boxes && boxes2) {
-    expander = gtk_expander_new ("playbin2 options");
+    expander = gtk_expander_new ("playbin options");
     pb2vbox = gtk_vbox_new (FALSE, 0);
     gtk_box_pack_start (GTK_BOX (pb2vbox), panel, FALSE, FALSE, 2);
     gtk_box_pack_start (GTK_BOX (pb2vbox), boxes, FALSE, FALSE, 2);

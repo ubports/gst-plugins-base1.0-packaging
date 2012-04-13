@@ -369,14 +369,22 @@ gst_discoverer_info_new (void)
   return (GstDiscovererInfo *) g_object_new (GST_TYPE_DISCOVERER_INFO, NULL);
 }
 
+/**
+ * gst_discoverer_info_copy:
+ * @ptr: (transfer none): a #GstDiscovererInfo
+ *
+ * Returns: (transfer full): A copy of the #GstDiscovererInfo
+ */
 GstDiscovererInfo *
 gst_discoverer_info_copy (GstDiscovererInfo * ptr)
 {
   GstDiscovererInfo *ret;
-  GHashTable *stream_map = g_hash_table_new (g_direct_hash, NULL);
+  GHashTable *stream_map;
   GList *tmp;
 
   g_return_val_if_fail (ptr != NULL, NULL);
+
+  stream_map = g_hash_table_new (g_direct_hash, NULL);
 
   ret = gst_discoverer_info_new ();
 
@@ -416,7 +424,7 @@ gst_discoverer_info_class_init (GObjectClass * klass)
 
 /**
  * gst_discoverer_stream_info_list_free:
- * @infos: a #GList of #GstDiscovererStreamInfo
+ * @infos: (element-type GstPbutils.DiscovererStreamInfo): a #GList of #GstDiscovererStreamInfo
  *
  * Decrements the reference count of all contained #GstDiscovererStreamInfo
  * and fress the #GList.
@@ -439,7 +447,7 @@ gst_discoverer_stream_info_list_free (GList * infos)
  * Finds the #GstDiscovererStreamInfo contained in @info that match the
  * given @streamtype.
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): A #GList of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): A #GList of
  * matching #GstDiscovererStreamInfo. The caller should free it with
  * gst_discoverer_stream_info_list_free().
  *
@@ -466,7 +474,7 @@ gst_discoverer_info_get_streams (GstDiscovererInfo * info, GType streamtype)
  *
  * Finds all the #GstDiscovererAudioInfo contained in @info
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): A #GList of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): A #GList of
  * matching #GstDiscovererStreamInfo. The caller should free it with
  * gst_discoverer_stream_info_list_free().
  *
@@ -484,7 +492,7 @@ gst_discoverer_info_get_audio_streams (GstDiscovererInfo * info)
  *
  * Finds all the #GstDiscovererVideoInfo contained in @info
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): A #GList of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): A #GList of
  * matching #GstDiscovererStreamInfo. The caller should free it with
  * gst_discoverer_stream_info_list_free().
  *
@@ -502,7 +510,7 @@ gst_discoverer_info_get_video_streams (GstDiscovererInfo * info)
  *
  * Finds all the #GstDiscovererSubtitleInfo contained in @info
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): A #GList of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): A #GList of
  * matching #GstDiscovererStreamInfo. The caller should free it with
  * gst_discoverer_stream_info_list_free().
  *
@@ -521,7 +529,7 @@ gst_discoverer_info_get_subtitle_streams (GstDiscovererInfo * info)
  *
  * Finds all the #GstDiscovererContainerInfo contained in @info
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): A #GList of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): A #GList of
  * matching #GstDiscovererStreamInfo. The caller should free it with
  * gst_discoverer_stream_info_list_free().
  *
@@ -673,7 +681,7 @@ gst_discoverer_stream_info_get_misc (GstDiscovererStreamInfo * info)
  * gst_discoverer_container_info_get_streams:
  * @info: a #GstDiscovererStreamInfo
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): the list of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): the list of
  * #GstDiscovererStreamInfo this container stream offers.
  * Free with gst_discoverer_stream_info_list_free() after usage.
  *
@@ -981,7 +989,7 @@ gst_discoverer_info_get_stream_info (GstDiscovererInfo * info)
  * gst_discoverer_info_get_stream_list:
  * @info: a #GstDiscovererInfo
  *
- * Returns: (transfer full) (element-type Gst.DiscovererStreamInfo): the list of
+ * Returns: (transfer full) (element-type GstPbutils.DiscovererStreamInfo): the list of
  * all streams contained in the #info. Free after usage
  * with gst_discoverer_stream_info_list_free().
  *
@@ -1017,7 +1025,7 @@ DISCOVERER_INFO_ACCESSOR_CODE (duration, GstClockTime, GST_CLOCK_TIME_NONE);
  * gst_discoverer_info_get_seekable:
  * @info: a #GstDiscovererInfo
  *
- * Returns: the wheter the URI is seekable.
+ * Returns: the whether the URI is seekable.
  *
  * Since: 0.10.32
  */

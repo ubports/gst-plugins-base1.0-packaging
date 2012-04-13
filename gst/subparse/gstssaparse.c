@@ -50,9 +50,12 @@ G_DEFINE_TYPE (GstSsaParse, gst_ssa_parse, GST_TYPE_ELEMENT);
 static GstStateChangeReturn gst_ssa_parse_change_state (GstElement *
     element, GstStateChange transition);
 static gboolean gst_ssa_parse_setcaps (GstPad * sinkpad, GstCaps * caps);
-static gboolean gst_ssa_parse_src_event (GstPad * pad, GstEvent * event);
-static gboolean gst_ssa_parse_sink_event (GstPad * pad, GstEvent * event);
-static GstFlowReturn gst_ssa_parse_chain (GstPad * sinkpad, GstBuffer * buf);
+static gboolean gst_ssa_parse_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_ssa_parse_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static GstFlowReturn gst_ssa_parse_chain (GstPad * sinkpad, GstObject * parent,
+    GstBuffer * buf);
 
 static void
 gst_ssa_parse_dispose (GObject * object)
@@ -100,7 +103,7 @@ gst_ssa_parse_class_init (GstSsaParseClass * klass)
       gst_static_pad_template_get (&sink_templ));
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&src_templ));
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "SSA Subtitle Parser", "Codec/Parser/Subtitle",
       "Parses SSA subtitle streams",
       "Tim-Philipp Müller <tim centricular net>");
@@ -112,13 +115,13 @@ gst_ssa_parse_class_init (GstSsaParseClass * klass)
 }
 
 static gboolean
-gst_ssa_parse_src_event (GstPad * pad, GstEvent * event)
+gst_ssa_parse_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
-  return gst_pad_event_default (pad, event);
+  return gst_pad_event_default (pad, parent, event);
 }
 
 static gboolean
-gst_ssa_parse_sink_event (GstPad * pad, GstEvent * event)
+gst_ssa_parse_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean res;
 
@@ -133,7 +136,7 @@ gst_ssa_parse_sink_event (GstPad * pad, GstEvent * event)
       break;
     }
     default:
-      res = gst_pad_event_default (pad, event);
+      res = gst_pad_event_default (pad, parent, event);
       break;
   }
   return res;
@@ -143,12 +146,15 @@ static gboolean
 gst_ssa_parse_setcaps (GstPad * sinkpad, GstCaps * caps)
 {
   GstSsaParse *parse = GST_SSA_PARSE (GST_PAD_PARENT (sinkpad));
+  GstCaps *outcaps;
   const GValue *val;
   GstStructure *s;
   const guchar bom_utf8[] = { 0xEF, 0xBB, 0xBF };
   GstBuffer *priv;
-  gchar *data, *ptr;
-  gsize size, left;
+  GstMapInfo map;
+  gchar *ptr;
+  gsize left;
+  gboolean ret;
 
   s = gst_caps_get_structure (caps, 0);
   val = gst_structure_get_value (s, "codec_data");
@@ -166,10 +172,10 @@ gst_ssa_parse_setcaps (GstPad * sinkpad, GstCaps * caps)
 
   gst_buffer_ref (priv);
 
-  data = gst_buffer_map (priv, &size, NULL, GST_MAP_READ);
+  gst_buffer_map (priv, &map, GST_MAP_READ);
 
-  ptr = data;
-  left = size;
+  ptr = (gchar *) map.data;
+  left = map.size;
 
   /* skip UTF-8 BOM */
   if (left >= 3 && memcmp (ptr, bom_utf8, 3) == 0) {
@@ -177,26 +183,40 @@ gst_ssa_parse_setcaps (GstPad * sinkpad, GstCaps * caps)
     left -= 3;
   }
 
-  if (!strstr (data, "[Script Info]")) {
-    GST_WARNING_OBJECT (parse, "Invalid Init section - no Script Info header");
-    gst_buffer_unref (priv);
-    return FALSE;
-  }
+  if (!strstr (ptr, "[Script Info]"))
+    goto invalid_init;
 
-  if (!g_utf8_validate (ptr, left, NULL)) {
-    GST_WARNING_OBJECT (parse, "Init section is not valid UTF-8");
-    gst_buffer_unref (priv);
-    return FALSE;
-  }
+  if (!g_utf8_validate (ptr, left, NULL))
+    goto invalid_utf8;
 
   /* FIXME: parse initial section */
   parse->ini = g_strndup (ptr, left);
   GST_LOG_OBJECT (parse, "Init section:\n%s", parse->ini);
 
-  gst_buffer_unmap (priv, data, size);
+  gst_buffer_unmap (priv, &map);
   gst_buffer_unref (priv);
 
-  return TRUE;
+  outcaps = gst_caps_new_empty_simple ("text/x-pango-markup");
+  ret = gst_pad_set_caps (parse->srcpad, outcaps);
+  gst_caps_unref (outcaps);
+
+  return ret;
+
+  /* ERRORS */
+invalid_init:
+  {
+    GST_WARNING_OBJECT (parse, "Invalid Init section - no Script Info header");
+    gst_buffer_unmap (priv, &map);
+    gst_buffer_unref (priv);
+    return FALSE;
+  }
+invalid_utf8:
+  {
+    GST_WARNING_OBJECT (parse, "Init section is not valid UTF-8");
+    gst_buffer_unmap (priv, &map);
+    gst_buffer_unref (priv);
+    return FALSE;
+  }
 }
 
 static gboolean
@@ -304,14 +324,13 @@ gst_ssa_parse_push_line (GstSsaParse * parse, gchar * txt,
 }
 
 static GstFlowReturn
-gst_ssa_parse_chain (GstPad * sinkpad, GstBuffer * buf)
+gst_ssa_parse_chain (GstPad * sinkpad, GstObject * parent, GstBuffer * buf)
 {
   GstFlowReturn ret;
-  GstSsaParse *parse = GST_SSA_PARSE (GST_PAD_PARENT (sinkpad));
+  GstSsaParse *parse = GST_SSA_PARSE (parent);
   GstClockTime ts;
   gchar *txt;
-  gchar *data;
-  gsize size;
+  GstMapInfo map;
 
   if (G_UNLIKELY (!parse->framed))
     goto not_framed;
@@ -319,17 +338,17 @@ gst_ssa_parse_chain (GstPad * sinkpad, GstBuffer * buf)
   if (G_UNLIKELY (parse->send_tags)) {
     GstTagList *tags;
 
-    tags = gst_tag_list_new ();
+    tags = gst_tag_list_new_empty ();
     gst_tag_list_add (tags, GST_TAG_MERGE_APPEND, GST_TAG_SUBTITLE_CODEC,
         "SubStation Alpha", NULL);
-    gst_element_found_tags_for_pad (GST_ELEMENT (parse), parse->srcpad, tags);
+    gst_pad_push_event (parse->srcpad, gst_event_new_tag (tags));
     parse->send_tags = FALSE;
   }
 
   /* make double-sure it's 0-terminated and all */
-  data = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
-  txt = g_strndup (data, size);
-  gst_buffer_unmap (buf, data, size);
+  gst_buffer_map (buf, &map, GST_MAP_READ);
+  txt = g_strndup ((gchar *) map.data, map.size);
+  gst_buffer_unmap (buf, &map);
 
   if (txt == NULL)
     goto empty_text;
