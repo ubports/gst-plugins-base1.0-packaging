@@ -34,7 +34,7 @@ Architecture: all
 Section: doc
 Depends: ${misc:Depends},
          libglib2.0-doc,
-         gstreamer0.11-doc
+         gstreamer@GST_ABI@-doc
 Description: GStreamer documentation for plugins from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
