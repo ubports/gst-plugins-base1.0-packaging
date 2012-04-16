@@ -465,18 +465,9 @@ gst_install_plugins_context_copy (GstInstallPluginsContext * ctx)
   return ret;
 }
 
-GType
-gst_install_plugins_context_get_type (void)
-{
-  static GType gst_ipc_type = 0;
-
-  if (G_UNLIKELY (gst_ipc_type == 0)) {
-    gst_ipc_type = g_boxed_type_register_static ("GstInstallPluginsContext",
-        (GBoxedCopyFunc) gst_install_plugins_context_copy,
-        (GBoxedFreeFunc) gst_install_plugins_context_free);
-  }
-  return gst_ipc_type;
-}
+G_DEFINE_BOXED_TYPE (GstInstallPluginsContext, gst_install_plugins_context,
+    (GBoxedCopyFunc) gst_install_plugins_context_copy,
+    (GBoxedFreeFunc) gst_install_plugins_context_free);
 
 static const gchar *
 gst_install_plugins_get_helper (void)
@@ -569,7 +560,7 @@ gst_install_plugins_return_from_status (gint status)
     ret = (GstInstallPluginsReturn) WEXITSTATUS (status);
 
     /* did the helper return an invalid status code? */
-    if ((ret < 0 || ret >= GST_INSTALL_PLUGINS_STARTED_OK) &&
+    if (((guint) ret) >= GST_INSTALL_PLUGINS_STARTED_OK &&
         ret != GST_INSTALL_PLUGINS_INTERNAL_FAILURE) {
       ret = GST_INSTALL_PLUGINS_INVALID;
     }
@@ -606,8 +597,9 @@ gst_install_plugins_installer_exited (GPid pid, gint status, gpointer data)
 
 /**
  * gst_install_plugins_async:
- * @details: NULL-terminated array of installer string details (see below)
- * @ctx: a #GstInstallPluginsContext, or NULL
+ * @details: (array zero-terminated=1) (transfer none): NULL-terminated array
+ *     of installer string details (see below)
+ * @ctx: (allow-none): a #GstInstallPluginsContext, or NULL
  * @func: (scope async): the function to call when the installer program returns
  * @user_data: (closure): the user data to pass to @func when called, or NULL
  * 
@@ -665,8 +657,9 @@ gst_install_plugins_async (gchar ** details, GstInstallPluginsContext * ctx,
 
 /**
  * gst_install_plugins_sync:
- * @details: NULL-terminated array of installer string details
- * @ctx: a #GstInstallPluginsContext, or NULL
+ * @details: (array zero-terminated=1) (transfer none): NULL-terminated array
+ *     of installer string details
+ * @ctx: (allow-none): a #GstInstallPluginsContext, or NULL
  * 
  * Requests plugin installation and block until the plugins have been
  * installed or installation has failed.

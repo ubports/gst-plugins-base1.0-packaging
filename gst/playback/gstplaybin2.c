@@ -44,7 +44,7 @@
  * meta info (tag) extraction
  * </listitem>
  * <listitem>
- * easy access to the last video frame
+ * easy access to the last video sample
  * </listitem>
  * <listitem>
  * buffering when playing streams over a network
@@ -169,19 +169,21 @@
  * <title>Embedding the video window in your application</title>
  * By default, playbin (or rather the video sinks used) will create their own
  * window. Applications will usually want to force output to a window of their
- * own, however. This can be done using the #GstXOverlay interface, which most
+ * own, however. This can be done using the #GstVideoOverlay interface, which most
  * video sinks implement. See the documentation there for more details.
  * </refsect2>
  * <refsect2>
  * <title>Specifying which CD/DVD device to use</title>
  * The device to use for CDs/DVDs needs to be set on the source element
- * playbin creates before it is opened. The only way to do this at the moment
- * is to connect to playbin's "notify::source" signal, which will be emitted
- * by playbin when it has created the source element for a particular URI.
- * In the signal callback you can check if the source element has a "device"
- * property and set it appropriately. In future ways might be added to specify
- * the device as part of the URI, but at the time of writing this is not
- * possible yet.
+ * playbin creates before it is opened. The most generic way of doing this
+ * is to connect to playbin's "source-setup" (or "notify::source") signal,
+ * which will be emitted by playbin2 when it has created the source element
+ * for a particular URI. In the signal callback you can check if the source
+ * element has a "device" property and set it appropriately. In some cases
+ * the device can also be set as part of the URI, but it depends on the
+ * elements involved if this will work or not. For example, for DVD menu
+ * playback, the following syntax might work (if the resindvd plugin is used):
+ * dvd://[/path/to/device]
  * </refsect2>
  * <refsect2>
  * <title>Handling redirects</title>
@@ -196,22 +198,26 @@
  * <refsect2>
  * <title>Examples</title>
  * |[
- * gst-launch -v playbin uri=file:///path/to/somefile.avi
+ * gst-launch -v playbin2 uri=file:///path/to/somefile.avi
  * ]| This will play back the given AVI video file, given that the video and
  * audio decoders required to decode the content are installed. Since no
  * special audio sink or video sink is supplied (not possible via gst-launch),
  * playbin will try to find a suitable audio and video sink automatically
  * using the autoaudiosink and autovideosink elements.
  * |[
- * gst-launch -v playbin uri=cdda://4
+ * gst-launch -v playbin2 uri=cdda://4
  * ]| This will play back track 4 on an audio CD in your disc drive (assuming
  * the drive is detected automatically by the plugin).
  * |[
- * gst-launch -v playbin uri=dvd://1
- * ]| This will play back title 1 of a DVD in your disc drive (assuming
+ * gst-launch -v playbin2 uri=dvd://
+ * ]| This will play back the DVD in your disc drive (assuming
  * the drive is detected automatically by the plugin).
  * </refsect2>
  */
+
+/* FIXME 0.11: suppress warnings for deprecated API such as GValueArray
+ * with newer GLib versions (>= 2.31.0) */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -222,14 +228,15 @@
 
 #include <gst/gst-i18n-plugin.h>
 #include <gst/pbutils/pbutils.h>
-#include <gst/interfaces/streamvolume.h>
-
+#include <gst/audio/streamvolume.h>
+#include <gst/video/videooverlay.h>
+#include <gst/interfaces/navigation.h>
+#include <gst/video/colorbalance.h>
 #include "gstplay-enum.h"
-#include "gstplay-marshal.h"
 #include "gstplayback.h"
 #include "gstplaysink.h"
 #include "gstsubtitleoverlay.h"
-
+#include "gst/glib-compat-private.h"
 GST_DEBUG_CATEGORY_STATIC (gst_play_bin_debug);
 #define GST_CAT_DEFAULT gst_play_bin_debug
 
@@ -266,7 +273,7 @@ struct _GstSourceSelect
   gulong block_id;
 };
 
-#define GST_SOURCE_GROUP_GET_LOCK(group) (((GstSourceGroup*)(group))->lock)
+#define GST_SOURCE_GROUP_GET_LOCK(group) (&((GstSourceGroup*)(group))->lock)
 #define GST_SOURCE_GROUP_LOCK(group) (g_mutex_lock (GST_SOURCE_GROUP_GET_LOCK(group)))
 #define GST_SOURCE_GROUP_UNLOCK(group) (g_mutex_unlock (GST_SOURCE_GROUP_GET_LOCK(group)))
 
@@ -284,7 +291,7 @@ struct _GstSourceGroup
 {
   GstPlayBin *playbin;
 
-  GMutex *lock;
+  GMutex lock;
 
   gboolean valid;               /* the group has valid info to start playback */
   gboolean active;              /* the group is active */
@@ -324,7 +331,7 @@ struct _GstSourceGroup
 
   gulong block_id;
 
-  GMutex *stream_changed_pending_lock;
+  GMutex stream_changed_pending_lock;
   GList *stream_changed_pending;
 
   /* selectors for different streams */
@@ -332,12 +339,12 @@ struct _GstSourceGroup
 };
 
 #define GST_PLAY_BIN_GET_LOCK(bin) (&((GstPlayBin*)(bin))->lock)
-#define GST_PLAY_BIN_LOCK(bin) (g_static_rec_mutex_lock (GST_PLAY_BIN_GET_LOCK(bin)))
-#define GST_PLAY_BIN_UNLOCK(bin) (g_static_rec_mutex_unlock (GST_PLAY_BIN_GET_LOCK(bin)))
+#define GST_PLAY_BIN_LOCK(bin) (g_rec_mutex_lock (GST_PLAY_BIN_GET_LOCK(bin)))
+#define GST_PLAY_BIN_UNLOCK(bin) (g_rec_mutex_unlock (GST_PLAY_BIN_GET_LOCK(bin)))
 
 /* lock to protect dynamic callbacks, like no-more-pads */
-#define GST_PLAY_BIN_DYN_LOCK(bin)    g_mutex_lock ((bin)->dyn_lock)
-#define GST_PLAY_BIN_DYN_UNLOCK(bin)  g_mutex_unlock ((bin)->dyn_lock)
+#define GST_PLAY_BIN_DYN_LOCK(bin)    g_mutex_lock (&(bin)->dyn_lock)
+#define GST_PLAY_BIN_DYN_UNLOCK(bin)  g_mutex_unlock (&(bin)->dyn_lock)
 
 /* lock for shutdown */
 #define GST_PLAY_BIN_SHUTDOWN_LOCK(bin,label)           \
@@ -364,7 +371,7 @@ struct _GstPlayBin
 {
   GstPipeline parent;
 
-  GStaticRecMutex lock;         /* to protect group switching */
+  GRecMutex lock;               /* to protect group switching */
 
   /* the groups, we use a double buffer to switch between current and next */
   GstSourceGroup groups[2];     /* array with group info */
@@ -372,7 +379,7 @@ struct _GstPlayBin
   GstSourceGroup *next_group;   /* pointer to the next group */
 
   /* properties */
-  guint connection_speed;       /* connection speed in bits/sec (0 = unknown) */
+  guint64 connection_speed;     /* connection speed in bits/sec (0 = unknown) */
   gint current_video;           /* the currently selected stream */
   gint current_audio;           /* the currently selected stream */
   gint current_text;            /* the currently selected stream */
@@ -387,11 +394,11 @@ struct _GstPlayBin
   GstElement *source;
 
   /* lock protecting dynamic adding/removing */
-  GMutex *dyn_lock;
+  GMutex dyn_lock;
   /* if we are shutting down or not */
   gint shutdown;
 
-  GMutex *elements_lock;
+  GMutex elements_lock;
   guint32 elements_cookie;
   GList *elements;              /* factories we can use for selecting elements */
 
@@ -436,8 +443,8 @@ struct _GstPlayBinClass
   GstTagList *(*get_audio_tags) (GstPlayBin * playbin, gint stream);
   GstTagList *(*get_text_tags) (GstPlayBin * playbin, gint stream);
 
-  /* get the last video frame and convert it to the given caps */
-  GstBuffer *(*convert_frame) (GstPlayBin * playbin, GstCaps * caps);
+  /* get the last video sample and convert it to the given caps */
+  GstSample *(*convert_sample) (GstPlayBin * playbin, GstCaps * caps);
 
   /* get audio/video/text pad for a stream */
   GstPad *(*get_video_pad) (GstPlayBin * playbin, gint stream);
@@ -450,7 +457,7 @@ struct _GstPlayBinClass
 #define DEFAULT_SUBURI            NULL
 #define DEFAULT_SOURCE            NULL
 #define DEFAULT_FLAGS             GST_PLAY_FLAG_AUDIO | GST_PLAY_FLAG_VIDEO | GST_PLAY_FLAG_TEXT | \
-                                  GST_PLAY_FLAG_SOFT_VOLUME
+                                  GST_PLAY_FLAG_SOFT_VOLUME | GST_PLAY_FLAG_SOFT_COLORBALANCE
 #define DEFAULT_N_VIDEO           0
 #define DEFAULT_CURRENT_VIDEO     -1
 #define DEFAULT_N_AUDIO           0
@@ -491,7 +498,7 @@ enum
   PROP_TEXT_SINK,
   PROP_VOLUME,
   PROP_MUTE,
-  PROP_FRAME,
+  PROP_SAMPLE,
   PROP_FONT_DESC,
   PROP_CONNECTION_SPEED,
   PROP_BUFFER_SIZE,
@@ -505,7 +512,7 @@ enum
 enum
 {
   SIGNAL_ABOUT_TO_FINISH,
-  SIGNAL_CONVERT_FRAME,
+  SIGNAL_CONVERT_SAMPLE,
   SIGNAL_VIDEO_CHANGED,
   SIGNAL_AUDIO_CHANGED,
   SIGNAL_TEXT_CHANGED,
@@ -544,7 +551,7 @@ static GstTagList *gst_play_bin_get_audio_tags (GstPlayBin * playbin,
 static GstTagList *gst_play_bin_get_text_tags (GstPlayBin * playbin,
     gint stream);
 
-static GstBuffer *gst_play_bin_convert_frame (GstPlayBin * playbin,
+static GstSample *gst_play_bin_convert_sample (GstPlayBin * playbin,
     GstCaps * caps);
 
 static GstPad *gst_play_bin_get_video_pad (GstPlayBin * playbin, gint stream);
@@ -572,6 +579,12 @@ if (id) {                                \
   id = 0;                                \
 }
 
+static void gst_play_bin_overlay_init (gpointer g_iface, gpointer g_iface_data);
+static void gst_play_bin_navigation_init (gpointer g_iface,
+    gpointer g_iface_data);
+static void gst_play_bin_colorbalance_init (gpointer g_iface,
+    gpointer g_iface_data);
+
 static GType
 gst_play_bin_get_type (void)
 {
@@ -593,12 +606,30 @@ gst_play_bin_get_type (void)
     static const GInterfaceInfo svol_info = {
       NULL, NULL, NULL
     };
+    static const GInterfaceInfo ov_info = {
+      gst_play_bin_overlay_init,
+      NULL, NULL
+    };
+    static const GInterfaceInfo nav_info = {
+      gst_play_bin_navigation_init,
+      NULL, NULL
+    };
+    static const GInterfaceInfo col_info = {
+      gst_play_bin_colorbalance_init,
+      NULL, NULL
+    };
 
     gst_play_bin_type = g_type_register_static (GST_TYPE_PIPELINE,
         "GstPlayBin", &gst_play_bin_info, 0);
 
     g_type_add_interface_static (gst_play_bin_type, GST_TYPE_STREAM_VOLUME,
         &svol_info);
+    g_type_add_interface_static (gst_play_bin_type, GST_TYPE_VIDEO_OVERLAY,
+        &ov_info);
+    g_type_add_interface_static (gst_play_bin_type, GST_TYPE_NAVIGATION,
+        &nav_info);
+    g_type_add_interface_static (gst_play_bin_type, GST_TYPE_COLOR_BALANCE,
+        &col_info);
   }
 
   return gst_play_bin_type;
@@ -756,16 +787,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GstPlayBin:frame:
+   * GstPlayBin:sample:
    * @playbin: a #GstPlayBin
    *
-   * Get the currently rendered or prerolled frame in the video sink.
-   * The #GstCaps on the buffer will describe the format of the buffer.
+   * Get the currently rendered or prerolled sample in the video sink.
+   * The #GstCaps in the sample will describe the format of the buffer.
    */
-  g_object_class_install_property (gobject_klass, PROP_FRAME,
-      g_param_spec_boxed ("frame", "Frame",
-          "The last frame (NULL = no video available)",
-          GST_TYPE_BUFFER, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_klass, PROP_SAMPLE,
+      g_param_spec_boxed ("sample", "Sample",
+          "The last sample (NULL = no video available)",
+          GST_TYPE_SAMPLE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (gobject_klass, PROP_FONT_DESC,
       g_param_spec_string ("subtitle-font-desc",
           "Subtitle font description",
@@ -774,9 +806,9 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
           G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_klass, PROP_CONNECTION_SPEED,
-      g_param_spec_uint ("connection-speed", "Connection Speed",
+      g_param_spec_uint64 ("connection-speed", "Connection Speed",
           "Network connection speed in kbps (0 = unknown)",
-          0, G_MAXUINT / 1000, DEFAULT_CONNECTION_SPEED,
+          0, G_MAXUINT64 / 1000, DEFAULT_CONNECTION_SPEED,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_klass, PROP_BUFFER_SIZE,
@@ -825,12 +857,14 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    *
    * This signal is emitted when the current uri is about to finish. You can
    * set the uri and suburi to make sure that playback continues.
+   *
+   * This signal is emitted from the context of a GStreamer streaming thread.
    */
   gst_play_bin_signals[SIGNAL_ABOUT_TO_FINISH] =
       g_signal_new ("about-to-finish", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, about_to_finish), NULL, NULL,
-      gst_marshal_VOID__VOID, G_TYPE_NONE, 0, G_TYPE_NONE);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 0, G_TYPE_NONE);
 
   /**
    * GstPlayBin::video-changed
@@ -839,12 +873,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the number or order of the video
    * streams has changed. The application will most likely want to select
    * a new video stream.
+   *
+   * This signal is usually emitted from the context of a GStreamer streaming
+   * thread. You can use gst_message_new_application() and
+   * gst_element_post_message() to notify your application's main thread.
    */
+  /* FIXME 0.11: turn video-changed signal into message? */
   gst_play_bin_signals[SIGNAL_VIDEO_CHANGED] =
       g_signal_new ("video-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, video_changed), NULL, NULL,
-      gst_marshal_VOID__VOID, G_TYPE_NONE, 0, G_TYPE_NONE);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 0, G_TYPE_NONE);
   /**
    * GstPlayBin::audio-changed
    * @playbin: a #GstPlayBin
@@ -852,12 +891,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the number or order of the audio
    * streams has changed. The application will most likely want to select
    * a new audio stream.
+   *
+   * This signal may be emitted from the context of a GStreamer streaming thread.
+   * You can use gst_message_new_application() and gst_element_post_message()
+   * to notify your application's main thread.
    */
+  /* FIXME 0.11: turn audio-changed signal into message? */
   gst_play_bin_signals[SIGNAL_AUDIO_CHANGED] =
       g_signal_new ("audio-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, audio_changed), NULL, NULL,
-      gst_marshal_VOID__VOID, G_TYPE_NONE, 0, G_TYPE_NONE);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 0, G_TYPE_NONE);
   /**
    * GstPlayBin::text-changed
    * @playbin: a #GstPlayBin
@@ -865,12 +909,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the number or order of the text
    * streams has changed. The application will most likely want to select
    * a new text stream.
+   *
+   * This signal may be emitted from the context of a GStreamer streaming thread.
+   * You can use gst_message_new_application() and gst_element_post_message()
+   * to notify your application's main thread.
    */
+  /* FIXME 0.11: turn text-changed signal into message? */
   gst_play_bin_signals[SIGNAL_TEXT_CHANGED] =
       g_signal_new ("text-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, text_changed), NULL, NULL,
-      gst_marshal_VOID__VOID, G_TYPE_NONE, 0, G_TYPE_NONE);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 0, G_TYPE_NONE);
 
   /**
    * GstPlayBin::video-tags-changed
@@ -880,13 +929,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the tags of a video stream have changed.
    * The application will most likely want to get the new tags.
    *
+   * This signal may be emitted from the context of a GStreamer streaming thread.
+   * You can use gst_message_new_application() and gst_element_post_message()
+   * to notify your application's main thread.
+   *
    * Since: 0.10.24
    */
   gst_play_bin_signals[SIGNAL_VIDEO_TAGS_CHANGED] =
       g_signal_new ("video-tags-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, video_tags_changed), NULL, NULL,
-      gst_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 1, G_TYPE_INT);
 
   /**
    * GstPlayBin::audio-tags-changed
@@ -896,13 +949,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the tags of an audio stream have changed.
    * The application will most likely want to get the new tags.
    *
+   * This signal may be emitted from the context of a GStreamer streaming thread.
+   * You can use gst_message_new_application() and gst_element_post_message()
+   * to notify your application's main thread.
+   *
    * Since: 0.10.24
    */
   gst_play_bin_signals[SIGNAL_AUDIO_TAGS_CHANGED] =
       g_signal_new ("audio-tags-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, audio_tags_changed), NULL, NULL,
-      gst_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 1, G_TYPE_INT);
 
   /**
    * GstPlayBin::text-tags-changed
@@ -912,13 +969,17 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * This signal is emitted whenever the tags of a text stream have changed.
    * The application will most likely want to get the new tags.
    *
+   * This signal may be emitted from the context of a GStreamer streaming thread.
+   * You can use gst_message_new_application() and gst_element_post_message()
+   * to notify your application's main thread.
+   *
    * Since: 0.10.24
    */
   gst_play_bin_signals[SIGNAL_TEXT_TAGS_CHANGED] =
       g_signal_new ("text-tags-changed", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstPlayBinClass, text_tags_changed), NULL, NULL,
-      gst_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 1, G_TYPE_INT);
 
   /**
    * GstPlayBin::source-setup:
@@ -931,12 +992,15 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * an audio cd source). This is functionally equivalent to connecting to
    * the notify::source signal, but more convenient.
    *
+   * This signal is usually emitted from the context of a GStreamer streaming
+   * thread.
+   *
    * Since: 0.10.33
    */
   gst_play_bin_signals[SIGNAL_SOURCE_SETUP] =
       g_signal_new ("source-setup", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-      gst_marshal_VOID__OBJECT, G_TYPE_NONE, 1, GST_TYPE_ELEMENT);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 1, GST_TYPE_ELEMENT);
 
   /**
    * GstPlayBin::get-video-tags
@@ -953,7 +1017,7 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-video-tags", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_video_tags), NULL, NULL,
-      gst_play_marshal_BOXED__INT, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
   /**
    * GstPlayBin::get-audio-tags
    * @playbin: a #GstPlayBin
@@ -969,7 +1033,7 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-audio-tags", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_audio_tags), NULL, NULL,
-      gst_play_marshal_BOXED__INT, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
   /**
    * GstPlayBin::get-text-tags
    * @playbin: a #GstPlayBin
@@ -985,9 +1049,9 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-text-tags", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_text_tags), NULL, NULL,
-      gst_play_marshal_BOXED__INT, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_TAG_LIST, 1, G_TYPE_INT);
   /**
-   * GstPlayBin::convert-frame
+   * GstPlayBin::convert-sample
    * @playbin: a #GstPlayBin
    * @caps: the target format of the frame
    *
@@ -1001,11 +1065,11 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
    * %NULL is returned when no current buffer can be retrieved or when the
    * conversion failed.
    */
-  gst_play_bin_signals[SIGNAL_CONVERT_FRAME] =
-      g_signal_new ("convert-frame", G_TYPE_FROM_CLASS (klass),
+  gst_play_bin_signals[SIGNAL_CONVERT_SAMPLE] =
+      g_signal_new ("convert-sample", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (GstPlayBinClass, convert_frame), NULL, NULL,
-      gst_play_marshal_BUFFER__BOXED, GST_TYPE_BUFFER, 1, GST_TYPE_CAPS);
+      G_STRUCT_OFFSET (GstPlayBinClass, convert_sample), NULL, NULL,
+      g_cclosure_marshal_generic, GST_TYPE_SAMPLE, 1, GST_TYPE_CAPS);
 
   /**
    * GstPlayBin::get-video-pad
@@ -1023,7 +1087,7 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-video-pad", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_video_pad), NULL, NULL,
-      gst_play_marshal_OBJECT__INT, GST_TYPE_PAD, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_PAD, 1, G_TYPE_INT);
   /**
    * GstPlayBin::get-audio-pad
    * @playbin: a #GstPlayBin
@@ -1040,7 +1104,7 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-audio-pad", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_audio_pad), NULL, NULL,
-      gst_play_marshal_OBJECT__INT, GST_TYPE_PAD, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_PAD, 1, G_TYPE_INT);
   /**
    * GstPlayBin::get-text-pad
    * @playbin: a #GstPlayBin
@@ -1057,19 +1121,19 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
       g_signal_new ("get-text-pad", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstPlayBinClass, get_text_pad), NULL, NULL,
-      gst_play_marshal_OBJECT__INT, GST_TYPE_PAD, 1, G_TYPE_INT);
+      g_cclosure_marshal_generic, GST_TYPE_PAD, 1, G_TYPE_INT);
 
   klass->get_video_tags = gst_play_bin_get_video_tags;
   klass->get_audio_tags = gst_play_bin_get_audio_tags;
   klass->get_text_tags = gst_play_bin_get_text_tags;
 
-  klass->convert_frame = gst_play_bin_convert_frame;
+  klass->convert_sample = gst_play_bin_convert_sample;
 
   klass->get_video_pad = gst_play_bin_get_video_pad;
   klass->get_audio_pad = gst_play_bin_get_audio_pad;
   klass->get_text_pad = gst_play_bin_get_text_pad;
 
-  gst_element_class_set_details_simple (gstelement_klass,
+  gst_element_class_set_static_metadata (gstelement_klass,
       "Player Bin 2", "Generic/Bin/Player",
       "Autoplug and play media from an uri",
       "Wim Taymans <wim.taymans@gmail.com>");
@@ -1091,12 +1155,12 @@ init_group (GstPlayBin * playbin, GstSourceGroup * group)
   group->video_channels = g_ptr_array_new ();
   group->audio_channels = g_ptr_array_new ();
   group->text_channels = g_ptr_array_new ();
-  group->lock = g_mutex_new ();
+  g_mutex_init (&group->lock);
   /* init selectors. The selector is found by finding the first prefix that
    * matches the media. */
   group->playbin = playbin;
   /* If you add any items to these lists, check that media_list[] is defined
-   * above to be large enough to hold MAX(items)+1, so as to accomodate a
+   * above to be large enough to hold MAX(items)+1, so as to accommodate a
    * NULL terminator (set when the memory is zeroed on allocation) */
   group->selector[PLAYBIN_STREAM_AUDIO].media_list[0] = "audio/";
   group->selector[PLAYBIN_STREAM_AUDIO].type = GST_PLAY_SINK_TYPE_AUDIO;
@@ -1142,7 +1206,7 @@ free_group (GstPlayBin * playbin, GstSourceGroup * group)
   g_ptr_array_free (group->audio_channels, TRUE);
   g_ptr_array_free (group->text_channels, TRUE);
 
-  g_mutex_free (group->lock);
+  g_mutex_clear (&group->lock);
   if (group->audio_sink) {
     if (group->audio_sink != playbin->audio_sink)
       gst_element_set_state (group->audio_sink, GST_STATE_NULL);
@@ -1159,9 +1223,9 @@ free_group (GstPlayBin * playbin, GstSourceGroup * group)
   g_list_free (group->stream_changed_pending);
   group->stream_changed_pending = NULL;
 
-  if (group->stream_changed_pending_lock)
-    g_mutex_free (group->stream_changed_pending_lock);
-  group->stream_changed_pending_lock = NULL;
+  if (group->stream_changed_pending_lock.p)
+    g_mutex_clear (&group->stream_changed_pending_lock);
+  group->stream_changed_pending_lock.p = NULL;
 }
 
 static void
@@ -1176,15 +1240,22 @@ notify_mute_cb (GObject * selector, GParamSpec * pspec, GstPlayBin * playbin)
   g_object_notify (G_OBJECT (playbin), "mute");
 }
 
+static void
+colorbalance_value_changed_cb (GstColorBalance * balance,
+    GstColorBalanceChannel * channel, gint value, GstPlayBin * playbin)
+{
+  gst_color_balance_value_changed (GST_COLOR_BALANCE (playbin), channel, value);
+}
+
 /* Must be called with elements lock! */
 static void
 gst_play_bin_update_elements_list (GstPlayBin * playbin)
 {
   GList *res, *tmp;
+  guint cookie;
 
-  if (!playbin->elements ||
-      playbin->elements_cookie !=
-      gst_default_registry_get_feature_list_cookie ()) {
+  cookie = gst_registry_get_feature_list_cookie (gst_registry_get ());
+  if (!playbin->elements || playbin->elements_cookie != cookie) {
     if (playbin->elements)
       gst_plugin_feature_list_free (playbin->elements);
     res =
@@ -1196,15 +1267,15 @@ gst_play_bin_update_elements_list (GstPlayBin * playbin)
     playbin->elements = g_list_concat (res, tmp);
     playbin->elements =
         g_list_sort (playbin->elements, gst_plugin_feature_rank_compare_func);
-    playbin->elements_cookie = gst_default_registry_get_feature_list_cookie ();
+    playbin->elements_cookie = cookie;
   }
 }
 
 static void
 gst_play_bin_init (GstPlayBin * playbin)
 {
-  g_static_rec_mutex_init (&playbin->lock);
-  playbin->dyn_lock = g_mutex_new ();
+  g_rec_mutex_init (&playbin->lock);
+  g_mutex_init (&playbin->dyn_lock);
 
   /* assume we can create a selector */
   playbin->have_selector = TRUE;
@@ -1216,10 +1287,12 @@ gst_play_bin_init (GstPlayBin * playbin)
   init_group (playbin, &playbin->groups[1]);
 
   /* first filter out the interesting element factories */
-  playbin->elements_lock = g_mutex_new ();
+  g_mutex_init (&playbin->elements_lock);
 
   /* add sink */
-  playbin->playsink = g_object_new (GST_TYPE_PLAY_SINK, NULL);
+  playbin->playsink =
+      g_object_new (GST_TYPE_PLAY_SINK, "name", "playsink", "send-event-mode",
+      1, NULL);
   gst_bin_add (GST_BIN_CAST (playbin), GST_ELEMENT_CAST (playbin->playsink));
   gst_play_sink_set_flags (playbin->playsink, DEFAULT_FLAGS);
   /* Connect to notify::volume and notify::mute signals for proxying */
@@ -1227,6 +1300,8 @@ gst_play_bin_init (GstPlayBin * playbin)
       G_CALLBACK (notify_volume_cb), playbin);
   g_signal_connect (playbin->playsink, "notify::mute",
       G_CALLBACK (notify_mute_cb), playbin);
+  g_signal_connect (playbin->playsink, "value-changed",
+      G_CALLBACK (colorbalance_value_changed_cb), playbin);
 
   playbin->current_video = DEFAULT_CURRENT_VIDEO;
   playbin->current_audio = DEFAULT_CURRENT_AUDIO;
@@ -1265,9 +1340,9 @@ gst_play_bin_finalize (GObject * object)
   if (playbin->elements)
     gst_plugin_feature_list_free (playbin->elements);
 
-  g_static_rec_mutex_free (&playbin->lock);
-  g_mutex_free (playbin->dyn_lock);
-  g_mutex_free (playbin->elements_lock);
+  g_rec_mutex_clear (&playbin->lock);
+  g_mutex_clear (&playbin->dyn_lock);
+  g_mutex_clear (&playbin->elements_lock);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -1312,12 +1387,12 @@ gst_play_bin_set_uri (GstPlayBin * playbin, const gchar * uri)
 
   if (!gst_playbin_uri_is_valid (playbin, uri)) {
     if (g_str_has_prefix (uri, "file:")) {
-      GST_ERROR_OBJECT (playbin, "malformed file URI '%s' - make sure to "
-          "escape spaces and non-ASCII characters properly and specify an "
-          "absolute path. Use gst_filename_to_uri() to convert filenames "
+      GST_WARNING_OBJECT (playbin, "not entirely correct file URI '%s' - make "
+          "sure to escape spaces and non-ASCII characters properly and specify "
+          "an absolute path. Use gst_filename_to_uri() to convert filenames "
           "to URIs", uri);
     } else {
-      GST_ERROR_OBJECT (playbin, "malformed URI '%s'", uri);
+      /* GST_ERROR_OBJECT (playbin, "malformed URI '%s'", uri); */
     }
   }
 
@@ -1492,10 +1567,10 @@ gst_play_bin_get_text_tags (GstPlayBin * playbin, gint stream)
   return result;
 }
 
-static GstBuffer *
-gst_play_bin_convert_frame (GstPlayBin * playbin, GstCaps * caps)
+static GstSample *
+gst_play_bin_convert_sample (GstPlayBin * playbin, GstCaps * caps)
 {
-  return gst_play_sink_convert_frame (playbin->playsink, caps);
+  return gst_play_sink_convert_sample (playbin->playsink, caps);
 }
 
 /* Returns current stream number, or -1 if none has been selected yet */
@@ -1671,8 +1746,8 @@ gst_play_bin_suburidecodebin_block (GstSourceGroup * group,
         sinkpad = g_value_get_object (&item);
         if (block) {
           group->block_id =
-              gst_pad_add_probe (sinkpad, GST_PROBE_TYPE_BLOCK, NULL, NULL,
-              NULL);
+              gst_pad_add_probe (sinkpad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+              NULL, NULL, NULL);
         } else if (group->block_id) {
           gst_pad_remove_probe (sinkpad, group->block_id);
           group->block_id = 0;
@@ -1780,7 +1855,7 @@ gst_play_bin_set_current_text_stream (GstPlayBin * playbin, gint stream)
            * currently displayed subtitles. This event will
            * never travel outside subtitleoverlay!
            */
-          s = gst_structure_empty_new ("subtitleoverlay-flush-subtitle");
+          s = gst_structure_new_empty ("subtitleoverlay-flush-subtitle");
           event = gst_event_new_custom (GST_EVENT_CUSTOM_DOWNSTREAM_OOB, s);
           gst_pad_send_event (peer, event);
           gst_object_unref (peer);
@@ -1911,7 +1986,7 @@ gst_play_bin_set_property (GObject * object, guint prop_id,
       break;
     case PROP_CONNECTION_SPEED:
       GST_PLAY_BIN_LOCK (playbin);
-      playbin->connection_speed = g_value_get_uint (value) * 1000;
+      playbin->connection_speed = g_value_get_uint64 (value) * 1000;
       GST_PLAY_BIN_UNLOCK (playbin);
       break;
     case PROP_BUFFER_SIZE:
@@ -2072,9 +2147,9 @@ gst_play_bin_get_property (GObject * object, guint prop_id, GValue * value,
     case PROP_MUTE:
       g_value_set_boolean (value, gst_play_sink_get_mute (playbin->playsink));
       break;
-    case PROP_FRAME:
-      gst_value_take_buffer (value,
-          gst_play_sink_get_last_frame (playbin->playsink));
+    case PROP_SAMPLE:
+      gst_value_take_sample (value,
+          gst_play_sink_get_last_sample (playbin->playsink));
       break;
     case PROP_FONT_DESC:
       g_value_take_string (value,
@@ -2082,7 +2157,7 @@ gst_play_bin_get_property (GObject * object, guint prop_id, GValue * value,
       break;
     case PROP_CONNECTION_SPEED:
       GST_PLAY_BIN_LOCK (playbin);
-      g_value_set_uint (value, playbin->connection_speed / 1000);
+      g_value_set_uint64 (value, playbin->connection_speed / 1000);
       GST_PLAY_BIN_UNLOCK (playbin);
       break;
     case PROP_BUFFER_SIZE:
@@ -2171,10 +2246,10 @@ gst_play_bin_query (GstElement * element, GstQuery * query)
     gboolean pending;
 
     GST_SOURCE_GROUP_LOCK (group);
-    if (group->stream_changed_pending_lock) {
-      g_mutex_lock (group->stream_changed_pending_lock);
+    if (group->stream_changed_pending_lock.p) {
+      g_mutex_lock (&group->stream_changed_pending_lock);
       pending = group->pending || group->stream_changed_pending;
-      g_mutex_unlock (group->stream_changed_pending_lock);
+      g_mutex_unlock (&group->stream_changed_pending_lock);
     } else {
       pending = group->pending;
     }
@@ -2249,7 +2324,7 @@ gst_play_bin_handle_message (GstBin * bin, GstMessage * msg)
       GList *l, *l_prev;
 
       group = playbin->curr_group;
-      g_mutex_lock (group->stream_changed_pending_lock);
+      g_mutex_lock (&group->stream_changed_pending_lock);
       for (l = group->stream_changed_pending; l;) {
         guint32 l_seqnum = GPOINTER_TO_UINT (l->data);
 
@@ -2267,7 +2342,7 @@ gst_play_bin_handle_message (GstBin * bin, GstMessage * msg)
           l = l->next;
         }
       }
-      g_mutex_unlock (group->stream_changed_pending_lock);
+      g_mutex_unlock (&group->stream_changed_pending_lock);
     }
   } else if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ASYNC_START ||
       GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ASYNC_DONE) {
@@ -2410,10 +2485,10 @@ selector_active_pad_changed (GObject * selector, GParamSpec * pspec,
 }
 
 /* this callback sends a delayed event once the pad becomes unblocked */
-static GstProbeReturn
-stream_changed_data_probe (GstPad * pad, GstProbeType type,
-    GstMiniObject * object, gpointer data)
+static GstPadProbeReturn
+stream_changed_data_probe (GstPad * pad, GstPadProbeInfo * info, gpointer data)
 {
+  GstMiniObject *object = GST_PAD_PROBE_INFO_DATA (info);
   GstSourceSelect *select = (GstSourceSelect *) data;
   GstEvent *e;
 
@@ -2426,7 +2501,7 @@ stream_changed_data_probe (GstPad * pad, GstProbeType type,
   /* really, this should not happen */
   if (!e) {
     GST_WARNING ("Data probed called, but no delayed event");
-    return GST_PROBE_OK;
+    return GST_PAD_PROBE_OK;
   }
 
   if (GST_IS_EVENT (object)
@@ -2435,22 +2510,24 @@ stream_changed_data_probe (GstPad * pad, GstProbeType type,
     gst_event_ref (GST_EVENT_CAST (object));
     gst_pad_send_event (pad, GST_EVENT_CAST (object));
     gst_pad_send_event (pad, e);
-    return GST_PROBE_DROP;
+    return GST_PAD_PROBE_DROP;
   } else {
     /* send delayed event, then allow the caller to go on */
     gst_pad_send_event (pad, e);
-    return GST_PROBE_OK;
+    return GST_PAD_PROBE_OK;
   }
 }
 
 /* helper function to lookup stuff in lists */
 static gboolean
-array_has_value (const gchar * values[], const gchar * value)
+array_has_value (const gchar * values[], const gchar * value, gboolean exact)
 {
   gint i;
 
   for (i = 0; values[i]; i++) {
-    if (values[i] && g_str_has_prefix (value, values[i]))
+    if (exact && !strcmp (value, values[i]))
+      return TRUE;
+    if (!exact && g_str_has_prefix (value, values[i]))
       return TRUE;
   }
   return FALSE;
@@ -2508,12 +2585,12 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   GstPad *sinkpad;
   GstPadLinkReturn res;
   GstSourceSelect *select = NULL;
-  gint i;
+  gint i, pass;
   gboolean changed = FALSE;
 
   playbin = group->playbin;
 
-  caps = gst_pad_get_caps (pad, NULL);
+  caps = gst_pad_query_caps (pad, NULL);
   s = gst_caps_get_structure (caps, 0);
   name = gst_structure_get_name (s);
 
@@ -2521,20 +2598,24 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
       "pad %s:%s with caps %" GST_PTR_FORMAT " added in group %p",
       GST_DEBUG_PAD_NAME (pad), caps, group);
 
-  /* major type of the pad, this determines the selector to use */
-  for (i = 0; i < PLAYBIN_STREAM_LAST; i++) {
-    if (array_has_value (group->selector[i].media_list, name)) {
-      select = &group->selector[i];
-      break;
-    } else if (group->selector[i].get_media_caps) {
-      GstCaps *media_caps = group->selector[i].get_media_caps ();
-
-      if (media_caps && gst_caps_can_intersect (media_caps, caps)) {
+  /* major type of the pad, this determines the selector to use,
+     try exact match first so we don't prematurely match video/
+     for video/x-dvd-subpicture */
+  for (pass = 0; !select && pass < 2; pass++) {
+    for (i = 0; i < PLAYBIN_STREAM_LAST; i++) {
+      if (array_has_value (group->selector[i].media_list, name, pass == 0)) {
         select = &group->selector[i];
-        gst_caps_unref (media_caps);
         break;
+      } else if (group->selector[i].get_media_caps) {
+        GstCaps *media_caps = group->selector[i].get_media_caps ();
+
+        if (media_caps && gst_caps_can_intersect (media_caps, caps)) {
+          select = &group->selector[i];
+          gst_caps_unref (media_caps);
+          break;
+        }
+        gst_caps_unref (media_caps);
       }
-      gst_caps_unref (media_caps);
     }
   }
   /* no selector found for the media type, don't bother linking it to a
@@ -2583,13 +2664,13 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
      * configured the sinks we will unblock them all. */
     GST_DEBUG_OBJECT (playbin, "blocking %" GST_PTR_FORMAT, select->srcpad);
     select->block_id =
-        gst_pad_add_probe (select->srcpad, GST_PROBE_TYPE_BLOCK, NULL, NULL,
-        NULL);
+        gst_pad_add_probe (select->srcpad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+        NULL, NULL, NULL);
   }
 
   /* get sinkpad for the new stream */
   if (select->selector) {
-    if ((sinkpad = gst_element_get_request_pad (select->selector, "sink%d"))) {
+    if ((sinkpad = gst_element_get_request_pad (select->selector, "sink_%u"))) {
       gulong notify_tags_handler = 0;
       NotifyTagsData *ntdata;
 
@@ -2875,7 +2956,7 @@ no_more_pads_cb (GstElement * decodebin, GstSourceGroup * group)
         msg = gst_message_new_element (GST_OBJECT_CAST (playbin), s);
         seqnum = gst_message_get_seqnum (msg);
         event = gst_event_new_sink_message (msg);
-        g_mutex_lock (group->stream_changed_pending_lock);
+        g_mutex_lock (&group->stream_changed_pending_lock);
         group->stream_changed_pending =
             g_list_prepend (group->stream_changed_pending,
             GUINT_TO_POINTER (seqnum));
@@ -2893,11 +2974,11 @@ no_more_pads_cb (GstElement * decodebin, GstSourceGroup * group)
            pad might not be linked yet. Additionally, sending it here
            apparently would be on the wrong thread */
         select->sinkpad_data_probe =
-            gst_pad_add_probe (select->sinkpad, GST_PROBE_TYPE_DATA,
-            (GstPadProbeCallback) stream_changed_data_probe, (gpointer) select,
-            NULL);
+            gst_pad_add_probe (select->sinkpad,
+            GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM,
+            stream_changed_data_probe, (gpointer) select, NULL);
 
-        g_mutex_unlock (group->stream_changed_pending_lock);
+        g_mutex_unlock (&group->stream_changed_pending_lock);
         gst_message_unref (msg);
       }
 
@@ -3014,12 +3095,12 @@ autoplug_factories_cb (GstElement * decodebin, GstPad * pad,
       group, GST_DEBUG_PAD_NAME (pad), caps);
 
   /* filter out the elements based on the caps. */
-  g_mutex_lock (playbin->elements_lock);
+  g_mutex_lock (&playbin->elements_lock);
   gst_play_bin_update_elements_list (playbin);
   mylist =
       gst_element_factory_list_filter (playbin->elements, caps, GST_PAD_SINK,
       FALSE);
-  g_mutex_unlock (playbin->elements_lock);
+  g_mutex_unlock (&playbin->elements_lock);
 
   GST_DEBUG_OBJECT (playbin, "found factories %p", mylist);
   GST_PLUGIN_FEATURE_LIST_DEBUG (mylist);
@@ -3085,7 +3166,7 @@ autoplug_factories_cb (GstElement * decodebin, GstPad * pad,
  * supported subtitles directly */
 
 /* FIXME 0.11: Remove the checks for ANY caps, a sink should specify
- * explicitely the caps it supports and if it claims to support ANY
+ * explicitly the caps it supports and if it claims to support ANY
  * caps it really should support everything */
 static gboolean
 autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
@@ -3109,9 +3190,9 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
     if (GST_STATE (sink) < GST_STATE_READY)
       gst_element_set_state (sink, GST_STATE_READY);
 
-    sinkcaps = gst_pad_get_caps (sinkpad, NULL);
+    sinkcaps = gst_pad_query_caps (sinkpad, NULL);
     if (!gst_caps_is_any (sinkcaps))
-      ret = !gst_pad_accept_caps (sinkpad, caps);
+      ret = !gst_pad_query_accept_caps (sinkpad, caps);
     gst_caps_unref (sinkcaps);
     gst_object_unref (sinkpad);
   } else {
@@ -3141,9 +3222,9 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
       if (GST_STATE (sink) < GST_STATE_READY)
         gst_element_set_state (sink, GST_STATE_READY);
 
-      sinkcaps = gst_pad_get_caps (sinkpad, NULL);
+      sinkcaps = gst_pad_query_caps (sinkpad, NULL);
       if (!gst_caps_is_any (sinkcaps))
-        ret = !gst_pad_accept_caps (sinkpad, caps);
+        ret = !gst_pad_query_accept_caps (sinkpad, caps);
       gst_caps_unref (sinkcaps);
       gst_object_unref (sinkpad);
     }
@@ -3162,9 +3243,9 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
       if (GST_STATE (sink) < GST_STATE_READY)
         gst_element_set_state (sink, GST_STATE_READY);
 
-      sinkcaps = gst_pad_get_caps (sinkpad, NULL);
+      sinkcaps = gst_pad_query_caps (sinkpad, NULL);
       if (!gst_caps_is_any (sinkcaps))
-        ret = !gst_pad_accept_caps (sinkpad, caps);
+        ret = !gst_pad_query_accept_caps (sinkpad, caps);
       gst_caps_unref (sinkcaps);
       gst_object_unref (sinkpad);
     }
@@ -3198,7 +3279,7 @@ sink_accepts_caps (GstElement * sink, GstCaps * caps)
   if ((sinkpad = gst_element_get_static_pad (sink, "sink"))) {
     /* Got the sink pad, now let's see if the element actually does accept the
      * caps that we have */
-    if (!gst_pad_accept_caps (sinkpad, caps)) {
+    if (!gst_pad_query_accept_caps (sinkpad, caps)) {
       gst_object_unref (sinkpad);
       return FALSE;
     }
@@ -3207,6 +3288,9 @@ sink_accepts_caps (GstElement * sink, GstCaps * caps)
 
   return TRUE;
 }
+
+static GstStaticCaps raw_audio_caps = GST_STATIC_CAPS ("audio/x-raw");
+static GstStaticCaps raw_video_caps = GST_STATIC_CAPS ("video/x-raw");
 
 /* We are asked to select an element. See if the next element to check
  * is a sink. If this is the case, we see if the sink works by setting it to
@@ -3229,10 +3313,75 @@ autoplug_select_cb (GstElement * decodebin, GstPad * pad,
 
   GST_DEBUG_OBJECT (playbin, "checking factory %s", GST_OBJECT_NAME (factory));
 
-  /* if it's not a sink, we just make decodebin try it */
+  /* if it's not a sink, we make sure the element is compatible with
+   * the fixed sink */
   if (!gst_element_factory_list_is_type (factory,
-          GST_ELEMENT_FACTORY_TYPE_SINK))
-    return GST_AUTOPLUG_SELECT_TRY;
+          GST_ELEMENT_FACTORY_TYPE_SINK)) {
+    gboolean isvideodec = gst_element_factory_list_is_type (factory,
+        GST_ELEMENT_FACTORY_TYPE_DECODER |
+        GST_ELEMENT_FACTORY_TYPE_MEDIA_VIDEO |
+        GST_ELEMENT_FACTORY_TYPE_MEDIA_IMAGE);
+    gboolean isaudiodec = gst_element_factory_list_is_type (factory,
+        GST_ELEMENT_FACTORY_TYPE_DECODER |
+        GST_ELEMENT_FACTORY_TYPE_MEDIA_AUDIO);
+
+    /* If it is a decoder and we have a fixed sink for the media
+     * type it outputs, check that the decoder is compatible with this sink */
+    if ((isvideodec && group->video_sink) || (isaudiodec && group->audio_sink)) {
+      gboolean compatible = TRUE;
+      GstPad *sinkpad;
+      GstCaps *caps;
+      GstElement *sink;
+
+      if (isaudiodec)
+        sink = group->audio_sink;
+      else
+        sink = group->video_sink;
+
+      if ((sinkpad = gst_element_get_static_pad (sink, "sink"))) {
+        GstPlayFlags flags = gst_play_bin_get_flags (playbin);
+        GstCaps *raw_caps =
+            (isaudiodec) ? gst_static_caps_get (&raw_audio_caps) :
+            gst_static_caps_get (&raw_video_caps);
+
+        caps = gst_pad_query_caps (sinkpad, NULL);
+
+        /* If the sink supports raw audio/video, we first check
+         * if the decoder could output any raw audio/video format
+         * and assume it is compatible with the sink then. We don't
+         * do a complete compatibility check here if converters
+         * are plugged between the decoder and the sink because
+         * the converters will convert between raw formats and
+         * even if the decoder format is not supported by the decoder
+         * a converter will convert it.
+         *
+         * We assume here that the converters can convert between
+         * any raw format.
+         */
+        if ((isaudiodec && !(flags & GST_PLAY_FLAG_NATIVE_AUDIO)
+                && gst_caps_can_intersect (caps, raw_caps)) || (!isaudiodec
+                && !(flags & GST_PLAY_FLAG_NATIVE_VIDEO)
+                && gst_caps_can_intersect (caps, raw_caps))) {
+          compatible = gst_element_factory_can_src_any_caps (factory, raw_caps)
+              || gst_element_factory_can_src_any_caps (factory, caps);
+        } else {
+          compatible = gst_element_factory_can_src_any_caps (factory, caps);
+        }
+
+        gst_object_unref (sinkpad);
+        gst_caps_unref (caps);
+      }
+
+      if (compatible)
+        return GST_AUTOPLUG_SELECT_TRY;
+
+      GST_DEBUG_OBJECT (playbin, "%s not compatible with the fixed sink",
+          GST_OBJECT_NAME (factory));
+
+      return GST_AUTOPLUG_SELECT_SKIP;
+    } else
+      return GST_AUTOPLUG_SELECT_TRY;
+  }
 
   /* it's a sink, see if an instance of it actually works */
   GST_DEBUG_OBJECT (playbin, "we found a sink");
@@ -3380,14 +3529,17 @@ activate_group (GstPlayBin * playbin, GstSourceGroup * group, GstState target)
 
   g_list_free (group->stream_changed_pending);
   group->stream_changed_pending = NULL;
-  if (!group->stream_changed_pending_lock)
-    group->stream_changed_pending_lock = g_mutex_new ();
+  if (!group->stream_changed_pending_lock.p)
+    g_mutex_init (&group->stream_changed_pending_lock);
 
   if (group->uridecodebin) {
     GST_DEBUG_OBJECT (playbin, "reusing existing uridecodebin");
     uridecodebin = group->uridecodebin;
     gst_element_set_state (uridecodebin, GST_STATE_READY);
-    gst_bin_add (GST_BIN_CAST (playbin), gst_object_ref (uridecodebin));
+    /* no need to take extra ref, we already have one
+     * and the bin will add one since it is no longer floating,
+     * as it was at least added once before (below) */
+    gst_bin_add (GST_BIN_CAST (playbin), uridecodebin);
   } else {
     GST_DEBUG_OBJECT (playbin, "making new uridecodebin");
     uridecodebin = gst_element_factory_make ("uridecodebin", NULL);
@@ -3450,7 +3602,10 @@ activate_group (GstPlayBin * playbin, GstSourceGroup * group, GstState target)
       GST_DEBUG_OBJECT (playbin, "reusing existing suburidecodebin");
       suburidecodebin = group->suburidecodebin;
       gst_element_set_state (suburidecodebin, GST_STATE_READY);
-      gst_bin_add (GST_BIN_CAST (playbin), gst_object_ref (suburidecodebin));
+      /* no need to take extra ref, we already have one
+       * and the bin will add one since it is no longer floating,
+       * as it was at least added once before (below) */
+      gst_bin_add (GST_BIN_CAST (playbin), suburidecodebin);
     } else {
       GST_DEBUG_OBJECT (playbin, "making new suburidecodebin");
       suburidecodebin = gst_element_factory_make ("uridecodebin", NULL);
@@ -3740,7 +3895,7 @@ save_current_group (GstPlayBin * playbin)
   /* see if there is a current group */
   GST_PLAY_BIN_LOCK (playbin);
   curr_group = playbin->curr_group;
-  if (curr_group && curr_group->valid) {
+  if (curr_group && curr_group->valid && curr_group->active) {
     /* unlink our pads with the sink */
     deactivate_group (playbin, curr_group);
   }
@@ -3909,6 +4064,121 @@ failure:
     }
     return ret;
   }
+}
+
+static void
+gst_play_bin_overlay_expose (GstVideoOverlay * overlay)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (overlay);
+
+  gst_video_overlay_expose (GST_VIDEO_OVERLAY (playbin->playsink));
+}
+
+static void
+gst_play_bin_overlay_handle_events (GstVideoOverlay * overlay,
+    gboolean handle_events)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (overlay);
+
+  gst_video_overlay_handle_events (GST_VIDEO_OVERLAY (playbin->playsink),
+      handle_events);
+}
+
+static void
+gst_play_bin_overlay_set_render_rectangle (GstVideoOverlay * overlay, gint x,
+    gint y, gint width, gint height)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (overlay);
+
+  gst_video_overlay_set_render_rectangle (GST_VIDEO_OVERLAY (playbin->playsink),
+      x, y, width, height);
+}
+
+static void
+gst_play_bin_overlay_set_window_handle (GstVideoOverlay * overlay,
+    guintptr handle)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (overlay);
+
+  gst_video_overlay_set_window_handle (GST_VIDEO_OVERLAY (playbin->playsink),
+      handle);
+}
+
+static void
+gst_play_bin_overlay_init (gpointer g_iface, gpointer g_iface_data)
+{
+  GstVideoOverlayInterface *iface = (GstVideoOverlayInterface *) g_iface;
+  iface->expose = gst_play_bin_overlay_expose;
+  iface->handle_events = gst_play_bin_overlay_handle_events;
+  iface->set_render_rectangle = gst_play_bin_overlay_set_render_rectangle;
+  iface->set_window_handle = gst_play_bin_overlay_set_window_handle;
+}
+
+static void
+gst_play_bin_navigation_send_event (GstNavigation * navigation,
+    GstStructure * structure)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (navigation);
+
+  gst_navigation_send_event (GST_NAVIGATION (playbin->playsink), structure);
+}
+
+static void
+gst_play_bin_navigation_init (gpointer g_iface, gpointer g_iface_data)
+{
+  GstNavigationInterface *iface = (GstNavigationInterface *) g_iface;
+
+  iface->send_event = gst_play_bin_navigation_send_event;
+}
+
+static const GList *
+gst_play_bin_colorbalance_list_channels (GstColorBalance * balance)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (balance);
+
+  return
+      gst_color_balance_list_channels (GST_COLOR_BALANCE (playbin->playsink));
+}
+
+static void
+gst_play_bin_colorbalance_set_value (GstColorBalance * balance,
+    GstColorBalanceChannel * channel, gint value)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (balance);
+
+  gst_color_balance_set_value (GST_COLOR_BALANCE (playbin->playsink), channel,
+      value);
+}
+
+static gint
+gst_play_bin_colorbalance_get_value (GstColorBalance * balance,
+    GstColorBalanceChannel * channel)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (balance);
+
+  return gst_color_balance_get_value (GST_COLOR_BALANCE (playbin->playsink),
+      channel);
+}
+
+static GstColorBalanceType
+gst_play_bin_colorbalance_get_balance_type (GstColorBalance * balance)
+{
+  GstPlayBin *playbin = GST_PLAY_BIN (balance);
+
+  return
+      gst_color_balance_get_balance_type (GST_COLOR_BALANCE
+      (playbin->playsink));
+}
+
+static void
+gst_play_bin_colorbalance_init (gpointer g_iface, gpointer g_iface_data)
+{
+  GstColorBalanceInterface *iface = (GstColorBalanceInterface *) g_iface;
+
+  iface->list_channels = gst_play_bin_colorbalance_list_channels;
+  iface->set_value = gst_play_bin_colorbalance_set_value;
+  iface->get_value = gst_play_bin_colorbalance_get_value;
+  iface->get_balance_type = gst_play_bin_colorbalance_get_balance_type;
 }
 
 gboolean

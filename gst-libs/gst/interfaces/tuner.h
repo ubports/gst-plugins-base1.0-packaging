@@ -29,27 +29,21 @@
 
 G_BEGIN_DECLS
 
-/* FIXME 0.11: remove all CLASS bits, this is an interface */
-
 #define GST_TYPE_TUNER \
   (gst_tuner_get_type ())
 #define GST_TUNER(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_TUNER, GstTuner))
-#define GST_TUNER_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), GST_TYPE_TUNER, GstTunerClass))
 #define GST_IS_TUNER(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GST_TYPE_TUNER))
-#define GST_IS_TUNER_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), GST_TYPE_TUNER))
-#define GST_TUNER_GET_CLASS(inst) \
-  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), GST_TYPE_TUNER, GstTunerClass))
+#define GST_TUNER_GET_INTERFACE(inst) \
+  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), GST_TYPE_TUNER, GstTunerInterface))
 
 typedef struct _GstTuner GstTuner;
-typedef struct _GstTunerClass GstTunerClass;
+typedef struct _GstTunerInterface GstTunerInterface;
 
 /**
- * GstTunerClass:
- * @klass: the parent interface
+ * GstTunerInterface:
+ * @iface: the parent interface
  * @list_channels: list available channels
  * @set_channel: set to a channel
  * @get_channel: return the current channel
@@ -66,8 +60,8 @@ typedef struct _GstTunerClass GstTunerClass;
  *
  * Tuner interface.
  */
-struct _GstTunerClass {
-  GTypeInterface klass;
+struct _GstTunerInterface {
+  GTypeInterface iface;
 
   /* virtual functions */
   const GList * (* list_channels)   (GstTuner        *tuner);
@@ -100,9 +94,6 @@ struct _GstTunerClass {
   void (*signal_changed)    (GstTuner        *tuner,
                              GstTunerChannel *channel,
                              gint             signal);
-
-  /*< private >*/
-  gpointer _gst_reserved[GST_PADDING];
 };
 
 GType           gst_tuner_get_type              (void);

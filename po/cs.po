@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base-0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
-"PO-Revision-Date: 2010-10-31 10:51+0100\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
+"PO-Revision-Date: 2011-05-29 16:49+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -190,9 +190,8 @@ msgstr "Zdrojový prvek je neplatný."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Chyba při odesílání dat na \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Spojení s %s:%d bylo odmítnuto."
+msgid "This CD has no audio tracks"
+msgstr "Toto CD nemá žádné zvukové stopy"
 
 msgid "Can't record audio fast enough"
 msgstr "Zvuk nelze zaznamenat s dostatečnou rychlostí"
@@ -360,9 +359,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Toto CD nemá žádné zvukové stopy"
-
 msgid "ID3 tag"
 msgstr "Značka ID3"
 
@@ -395,6 +391,21 @@ msgstr "Bezeztrátové MSZH"
 
 msgid "Run-length encoding"
 msgstr "RLE (Run-Length Encoding)"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Formát titulků TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Formát titulků Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Formát titulků Kate"
 
 msgid "Sami subtitle format"
 msgstr "Formát titulků Sami"
@@ -511,44 +522,8 @@ msgstr "Neznámý kodérový prvek"
 msgid "Plugin or element of unknown type"
 msgstr "Zásuvný modul nebo prvek neznámého typu"
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Nekomprimovaný planární YUV 4:2:0"
-
-#~ msgid "Uncompressed planar YVU 4:2:0"
-#~ msgstr "Nekomprimovaný planární YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Nekomprimovaný zabalený YUV 4:2:2"
-
-#~ msgid "Uncompressed packed YUV 4:1:0"
-#~ msgstr "Nekomprimovaný zabalený YUV 4:1:0"
-
-#~ msgid "Uncompressed packed YVU 4:1:0"
-#~ msgstr "Nekomprimovaný zabalený YVU 4:1:0"
-
-#~ msgid "Uncompressed packed YUV 4:1:1"
-#~ msgstr "Nekomprimovaný zabalený YUV 4:1:1"
-
-#~ msgid "Uncompressed packed YUV 4:4:4"
-#~ msgstr "Nekomprimovaný zabalený YUV 4:4:4"
-
-#~ msgid "Uncompressed planar YUV 4:2:2"
-#~ msgstr "Nekomprimovaný planární YUV 4:2:2"
-
-#~ msgid "Uncompressed planar YUV 4:1:1"
-#~ msgstr "Nekomprimovaný planární YUV 4:1:1"
-
-#~ msgid "Uncompressed black and white Y-plane"
-#~ msgstr "Nekomprimovaná černá a bílá rovina Y"
-
-#~ msgid "Raw PCM audio"
-#~ msgstr "Surový zvuk PCM"
-
-#~ msgid "Raw %d-bit floating-point audio"
-#~ msgstr "Surový %dbitový zvuk s pohyblivou desetinnou čárkou"
-
-#~ msgid "Raw floating-point audio"
-#~ msgstr "Surový zvuk s pohyblivou desetinnou čárkou"
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Spojení s %s:%d bylo odmítnuto."
 
 #~ msgid "Could not open vfs file \"%s\" for writing: %s."
 #~ msgstr "Nezdařilo se otevření souboru vfs \"%s\" k zápisu: %s."
@@ -604,6 +579,45 @@ msgstr "Zásuvný modul nebo prvek neznámého typu"
 
 #~ msgid "Error while sending gdp payload data to \"%s:%d\"."
 #~ msgstr "Chyba při odesílání zátěžových dat gdp na \"%s:%d\"."
+
+#~ msgid "Uncompressed planar YUV 4:2:0"
+#~ msgstr "Nekomprimovaný planární YUV 4:2:0"
+
+#~ msgid "Uncompressed planar YVU 4:2:0"
+#~ msgstr "Nekomprimovaný planární YVU 4:2:0"
+
+#~ msgid "Uncompressed packed YUV 4:2:2"
+#~ msgstr "Nekomprimovaný zabalený YUV 4:2:2"
+
+#~ msgid "Uncompressed packed YUV 4:1:0"
+#~ msgstr "Nekomprimovaný zabalený YUV 4:1:0"
+
+#~ msgid "Uncompressed packed YVU 4:1:0"
+#~ msgstr "Nekomprimovaný zabalený YVU 4:1:0"
+
+#~ msgid "Uncompressed packed YUV 4:1:1"
+#~ msgstr "Nekomprimovaný zabalený YUV 4:1:1"
+
+#~ msgid "Uncompressed packed YUV 4:4:4"
+#~ msgstr "Nekomprimovaný zabalený YUV 4:4:4"
+
+#~ msgid "Uncompressed planar YUV 4:2:2"
+#~ msgstr "Nekomprimovaný planární YUV 4:2:2"
+
+#~ msgid "Uncompressed planar YUV 4:1:1"
+#~ msgstr "Nekomprimovaný planární YUV 4:1:1"
+
+#~ msgid "Uncompressed black and white Y-plane"
+#~ msgstr "Nekomprimovaná černá a bílá rovina Y"
+
+#~ msgid "Raw PCM audio"
+#~ msgstr "Surový zvuk PCM"
+
+#~ msgid "Raw %d-bit floating-point audio"
+#~ msgstr "Surový %dbitový zvuk s pohyblivou desetinnou čárkou"
+
+#~ msgid "Raw floating-point audio"
+#~ msgstr "Surový zvuk s pohyblivou desetinnou čárkou"
 
 #~ msgid "No device specified."
 #~ msgstr "Nezadáno zařízení."

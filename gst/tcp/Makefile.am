@@ -13,28 +13,35 @@ built_headers = gsttcp-enumtypes.h gsttcp-marshal.h
 
 BUILT_SOURCES = $(built_sources) $(built_headers)
 
+if HAVE_SYS_SOCKET_H
+multifdsink_SOURCES = \
+	gstmultifdsink.c
+else
+multifdsink_SOURCES =
+endif
+
 libgsttcp_la_SOURCES = \
 	gsttcpplugin.c \
-	gsttcp.c \
-	gstmultifdsink.c  \
 	gsttcpclientsrc.c gsttcpclientsink.c \
+	$(multifdsink_SOURCES) \
+	gstmultihandlesink.c  \
+	gstmultisocketsink.c  \
 	gsttcpserversrc.c gsttcpserversink.c
 
 nodist_libgsttcp_la_SOURCES = \
 	$(built_sources)
 
-# remove ENABLE_NEW when dataprotocol is stable
-libgsttcp_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_GDP_CFLAGS) $(GST_CFLAGS) -DGST_ENABLE_NEW
+libgsttcp_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) $(GIO_CFLAGS)
 libgsttcp_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-libgsttcp_la_LIBADD = $(GST_BASE_LIBS) $(GST_GDP_LIBS) $(GST_LIBS)
+libgsttcp_la_LIBADD = $(GST_BASE_LIBS) $(GST_LIBS) $(GIO_LIBS)
 libgsttcp_la_LIBTOOLFLAGS = --tag=disable-static
 
 noinst_HEADERS = \
-  gsttcpplugin.h \
   gsttcp.h \
-  gstmultifdsink.h  \
   gsttcpclientsrc.h gsttcpclientsink.h \
-  gsttcpserversrc.h gsttcpserversink.h
+  gstmultifdsink.h  \
+  gstmultisocketsink.h  \
+  gsttcpserversrc.h gsttcpserversink.h gstmultihandlesink.h
 
 CLEANFILES = $(BUILT_SOURCES)
 

@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudio</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gstreamer-audio.html" title="Audio Library">
-<link rel="next" href="gst-plugins-base-libs-gstaudioclock.html" title="gstaudioclock">
+<link rel="next" href="gst-plugins-base-libs-gstaudiocdsrc.html" title="gstaudiocdsrc">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -17,8 +17,8 @@
 <td><a accesskey="p" href="gstreamer-audio.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstaudioclock.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
+<td><a accesskey="n" href="gst-plugins-base-libs-gstaudiocdsrc.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstaudio.synopsis" class="shortcut">Top</a>
@@ -48,12 +48,12 @@ struct              <a class="link" href="gst-plugins-base-libs-gstaudio.html#Gs
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-init" title="gst_audio_info_init ()">gst_audio_info_init</a>                 (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-from-caps" title="gst_audio_info_from_caps ()">gst_audio_info_from_caps</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-to-caps" title="gst_audio_info_to_caps ()">gst_audio_info_to_caps</a>              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-convert" title="gst_audio_info_convert ()">gst_audio_info_convert</a>              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-to-caps" title="gst_audio_info_to_caps ()">gst_audio_info_to_caps</a>              (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-convert" title="gst_audio_info_convert ()">gst_audio_info_convert</a>              (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_fmt</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> src_val</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> src_val</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_fmt</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest_val</code></em>);
+                                                         <em class="parameter"><code><span class="type">gint64</span> *dest_val</code></em>);
 const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormatInfo" title="struct GstAudioFormatInfo"><span class="returnvalue">GstAudioFormatInfo</span></a> * <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-format-get-info" title="gst_audio_format_get_info ()">gst_audio_format_get_info</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> format</code></em>);
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-FORMAT-INFO-DEPTH:CAPS" title="GST_AUDIO_FORMAT_INFO_DEPTH()">GST_AUDIO_FORMAT_INFO_DEPTH</a>         (info)
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-FORMAT-INFO-ENDIANNESS:CAPS" title="GST_AUDIO_FORMAT_INFO_ENDIANNESS()">GST_AUDIO_FORMAT_INFO_ENDIANNESS</a>    (info)
@@ -72,7 +72,6 @@ const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormatIn
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-DEPTH:CAPS" title="GST_AUDIO_INFO_DEPTH()">GST_AUDIO_INFO_DEPTH</a>                (i)
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-FLAGS:CAPS" title="GST_AUDIO_INFO_FLAGS()">GST_AUDIO_INFO_FLAGS</a>                (info)
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-FORMAT:CAPS" title="GST_AUDIO_INFO_FORMAT()">GST_AUDIO_INFO_FORMAT</a>               (i)
-#define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-HAS-DEFAULT-POSITIONS:CAPS" title="GST_AUDIO_INFO_HAS_DEFAULT_POSITIONS()">GST_AUDIO_INFO_HAS_DEFAULT_POSITIONS</a>(info)
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-NAME:CAPS" title="GST_AUDIO_INFO_NAME()">GST_AUDIO_INFO_NAME</a>                 (i)
 #define             <a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-INFO-POSITION:CAPS" title="GST_AUDIO_INFO_POSITION()">GST_AUDIO_INFO_POSITION</a>             (info,
                                                          c)
@@ -101,7 +100,7 @@ This library contains some helper functions for audio elements.
 <a name="GstAudioFlags"></a><h3>enum GstAudioFlags</h3>
 <pre class="programlisting">typedef enum {
   GST_AUDIO_FLAG_NONE              = 0,
-  GST_AUDIO_FLAG_DEFAULT_POSITIONS = (1 &lt;&lt; 0)
+  GST_AUDIO_FLAG_UNPOSITIONED      = (1 &lt;&lt; 0)
 } GstAudioFlags;
 </pre>
 <p>
@@ -116,9 +115,9 @@ Extra audio flags
 </td>
 </tr>
 <tr>
-<td><p><a name="GST-AUDIO-FLAG-DEFAULT-POSITIONS:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FLAG_DEFAULT_POSITIONS</code></span></p></td>
-<td>position array
-    contains the default layout for the number of channels.
+<td><p><a name="GST-AUDIO-FLAG-UNPOSITIONED:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FLAG_UNPOSITIONED</code></span></p></td>
+<td>the position array explicitly
+    contains unpositioned channels.
 </td>
 </tr>
 </tbody>
@@ -511,7 +510,7 @@ Information for an audio format.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstAudioFormatInfo.silence"></a>silence</code></em>[8];</span></p></td>
+<td><p><span class="term"><span class="type">guint8</span> <em class="structfield"><code><a name="GstAudioFormatInfo.silence"></a>silence</code></em>[8];</span></p></td>
 <td>
 <em class="parameter"><code>width</code></em>/8 bytes with 1 silent sample</td>
 </tr>
@@ -536,6 +535,7 @@ Information for an audio format.
 <pre class="programlisting">struct GstAudioInfo {
   const GstAudioFormatInfo *finfo;
   GstAudioFlags             flags;
+  GstAudioLayout            layout;
   gint                      rate;
   gint                      channels;
   gint                      bpf;
@@ -559,6 +559,10 @@ Use the provided macros to access the info in this structure.
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFlags" title="enum GstAudioFlags"><span class="type">GstAudioFlags</span></a> <em class="structfield"><code><a name="GstAudioInfo.flags"></a>flags</code></em>;</span></p></td>
 <td>additional audio flags</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">GstAudioLayout</span> <em class="structfield"><code><a name="GstAudioInfo.layout"></a>layout</code></em>;</span></p></td>
+<td>audio layout</td>
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstAudioInfo.rate"></a>rate</code></em>;</span></p></td>
@@ -628,7 +632,7 @@ Parse <em class="parameter"><code>caps</code></em> and update <em class="paramet
 <hr>
 <div class="refsect2">
 <a name="gst-audio-info-to-caps"></a><h3>gst_audio_info_to_caps ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           gst_audio_info_to_caps              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);</pre>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           gst_audio_info_to_caps              (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);</pre>
 <p>
 Convert the values of <em class="parameter"><code>info</code></em> into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
 </p>
@@ -652,11 +656,11 @@ info of <em class="parameter"><code>info</code></em>. <span class="annotation">[
 <hr>
 <div class="refsect2">
 <a name="gst-audio-info-convert"></a><h3>gst_audio_info_convert ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_audio_info_convert              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_audio_info_convert              (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_fmt</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> src_val</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> src_val</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_fmt</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest_val</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gint64</span> *dest_val</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -784,12 +788,6 @@ Get the <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat
 </div>
 <hr>
 <div class="refsect2">
-<a name="GST-AUDIO-INFO-HAS-DEFAULT-POSITIONS:CAPS"></a><h3>GST_AUDIO_INFO_HAS_DEFAULT_POSITIONS()</h3>
-<pre class="programlisting">#define GST_AUDIO_INFO_HAS_DEFAULT_POSITIONS(info) ((info)-&gt;flags &amp; GST_AUDIO_FLAG_DEFAULT_POSITIONS)
-</pre>
-</div>
-<hr>
-<div class="refsect2">
 <a name="GST-AUDIO-INFO-NAME:CAPS"></a><h3>GST_AUDIO_INFO_NAME()</h3>
 <pre class="programlisting">#define GST_AUDIO_INFO_NAME(i)               (GST_AUDIO_FORMAT_INFO_NAME((i)-&gt;finfo))
 </pre>
@@ -871,7 +869,7 @@ Standard sampling rate used in consumer audio.
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rate</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpf</code></em>);</pre>
 <p>
-Clip the the buffer to the given <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSegment.html#GstSegment"><code class="literal">GstSegment</code></a>.
+Clip the buffer to the given <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSegment.html#GstSegment"><code class="literal">GstSegment</code></a>.
 </p>
 <p>
 After calling this function the caller does not own a reference to

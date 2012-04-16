@@ -56,6 +56,7 @@ GType gst_autoplug_select_result_get_type (void);
  * @GST_PLAY_FLAG_DOWNLOAD: enable progressice download buffering for selected
  *   formats.
  * @GST_PLAY_FLAG_BUFFERING: enable buffering of the demuxed or parsed data.
+ * @GST_PLAY_FLAG_DEINTERLACE: deinterlace raw video (if native not forced).
  *
  * Extra flags to configure the behaviour of the sinks.
  */
@@ -69,7 +70,8 @@ typedef enum {
   GST_PLAY_FLAG_NATIVE_VIDEO  = (1 << 6),
   GST_PLAY_FLAG_DOWNLOAD      = (1 << 7),
   GST_PLAY_FLAG_BUFFERING     = (1 << 8),
-  GST_PLAY_FLAG_DEINTERLACE   = (1 << 9)
+  GST_PLAY_FLAG_DEINTERLACE   = (1 << 9),
+  GST_PLAY_FLAG_SOFT_COLORBALANCE = (1 << 10)
 } GstPlayFlags;
 
 #define GST_TYPE_PLAY_FLAGS (gst_play_flags_get_type())

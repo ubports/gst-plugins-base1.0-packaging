@@ -3,7 +3,7 @@ GST_DOC_SCANOBJ = $(top_srcdir)/common/gstdoc-scangobj
 ## Process this file with automake to produce Makefile.in
 
 # The name of the module, e.g. 'glib'.
-#DOC_MODULE=gst-plugins-libs-@GST_MAJORMINOR@
+#DOC_MODULE=gst-plugins-libs-@GST_API_VERSION@
 MODULE=gst-plugins-base
 DOC_MODULE=$(MODULE)-plugins
 
@@ -54,10 +54,6 @@ EXTRA_HFILES = \
 	$(top_srcdir)/ext/alsa/gstalsasink.h \
 	$(top_srcdir)/ext/alsa/gstalsasrc.h \
 	$(top_srcdir)/ext/cdparanoia/gstcdparanoiasrc.h \
-	$(top_srcdir)/ext/gio/gstgiosink.h \
-	$(top_srcdir)/ext/gio/gstgiosrc.h \
-	$(top_srcdir)/ext/gio/gstgiostreamsink.h \
-	$(top_srcdir)/ext/gio/gstgiostreamsrc.h \
 	$(top_srcdir)/ext/ogg/gstoggdemux.h \
 	$(top_srcdir)/ext/ogg/gstoggmux.h \
 	$(top_srcdir)/ext/pango/gstclockoverlay.h \
@@ -78,11 +74,15 @@ EXTRA_HFILES = \
 	$(top_srcdir)/gst/encoding/gstencodebin.h \
 	$(top_srcdir)/gst/gdp/gstgdpdepay.h \
 	$(top_srcdir)/gst/gdp/gstgdppay.h \
+	$(top_srcdir)/gst/gio/gstgiosink.h \
+	$(top_srcdir)/gst/gio/gstgiosrc.h \
+	$(top_srcdir)/gst/gio/gstgiostreamsink.h \
+	$(top_srcdir)/gst/gio/gstgiostreamsrc.h \
 	$(top_srcdir)/gst/playback/gstplay-enum.h \
 	$(top_srcdir)/gst/playback/gstsubtitleoverlay.h \
 	$(top_srcdir)/gst/audiorate/gstaudiorate.h \
 	$(top_srcdir)/gst/audioresample/gstaudioresample.h \
-	$(top_srcdir)/gst/tcp/gstmultifdsink.h \
+	$(top_srcdir)/gst/tcp/gstmultisocketsink.h \
 	$(top_srcdir)/gst/tcp/gsttcpclientsrc.h \
 	$(top_srcdir)/gst/tcp/gsttcpclientsink.h \
 	$(top_srcdir)/gst/tcp/gsttcpserversrc.h \

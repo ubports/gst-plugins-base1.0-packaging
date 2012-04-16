@@ -26,7 +26,9 @@
 #include <string.h>
 
 #include "video.h"
-#include "gstmetavideo.h"
+#include "gstvideometa.h"
+
+GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
 
 static int fill_planes (GstVideoInfo * info);
 
@@ -107,11 +109,15 @@ typedef struct
 
 #define MAKE_RGB_FORMAT(name, desc, depth, pstride, plane, offs, sub) \
  { 0x00000000, {GST_VIDEO_FORMAT_ ##name, G_STRINGIFY(name), desc, GST_VIDEO_FORMAT_FLAG_RGB, depth, pstride, plane, offs, sub } }
+#define MAKE_RGB_LE_FORMAT(name, desc, depth, pstride, plane, offs, sub) \
+ { 0x00000000, {GST_VIDEO_FORMAT_ ##name, G_STRINGIFY(name), desc, GST_VIDEO_FORMAT_FLAG_RGB | GST_VIDEO_FORMAT_FLAG_LE, depth, pstride, plane, offs, sub } }
 #define MAKE_RGBA_FORMAT(name, desc, depth, pstride, plane, offs, sub) \
  { 0x00000000, {GST_VIDEO_FORMAT_ ##name, G_STRINGIFY(name), desc, GST_VIDEO_FORMAT_FLAG_RGB | GST_VIDEO_FORMAT_FLAG_ALPHA, depth, pstride, plane, offs, sub } }
 
 #define MAKE_GRAY_FORMAT(name, desc, depth, pstride, plane, offs, sub) \
  { 0x00000000, {GST_VIDEO_FORMAT_ ##name, G_STRINGIFY(name), desc, GST_VIDEO_FORMAT_FLAG_GRAY, depth, pstride, plane, offs, sub } }
+#define MAKE_GRAY_LE_FORMAT(name, desc, depth, pstride, plane, offs, sub) \
+ { 0x00000000, {GST_VIDEO_FORMAT_ ##name, G_STRINGIFY(name), desc, GST_VIDEO_FORMAT_FLAG_GRAY | GST_VIDEO_FORMAT_FLAG_LE, depth, pstride, plane, offs, sub } }
 
 static VideoFormat formats[] = {
   {0x00000000, {GST_VIDEO_FORMAT_UNKNOWN, "UNKNOWN", "unknown video", 0, DPTH0,
@@ -179,7 +185,8 @@ static VideoFormat formats[] = {
 
   MAKE_GRAY_FORMAT (GRAY8, "raw video", DPTH8, PSTR1, PLANE0, OFFS0, SUB4),
   MAKE_GRAY_FORMAT (GRAY16_BE, "raw video", DPTH16, PSTR2, PLANE0, OFFS0, SUB4),
-  MAKE_GRAY_FORMAT (GRAY16_LE, "raw video", DPTH16, PSTR2, PLANE0, OFFS0, SUB4),
+  MAKE_GRAY_LE_FORMAT (GRAY16_LE, "raw video", DPTH16, PSTR2, PLANE0, OFFS0,
+      SUB4),
 
   MAKE_YUV_FORMAT (v308, "raw video", GST_MAKE_FOURCC ('v', '3', '0', '8'),
       DPTH888, PSTR333,
@@ -191,10 +198,21 @@ static VideoFormat formats[] = {
       DPTH16, PSTR2,
       PLANE0, OFFS0, SUB4),
 
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  MAKE_RGB_LE_FORMAT (RGB16, "raw video", DPTH565, PSTR222, PLANE0, OFFS0,
+      SUB444),
+  MAKE_RGB_LE_FORMAT (BGR16, "raw video", DPTH565, PSTR222, PLANE0, OFFS0,
+      SUB444),
+  MAKE_RGB_LE_FORMAT (RGB15, "raw video", DPTH555, PSTR222, PLANE0, OFFS0,
+      SUB444),
+  MAKE_RGB_LE_FORMAT (BGR15, "raw video", DPTH555, PSTR222, PLANE0, OFFS0,
+      SUB444),
+#else
   MAKE_RGB_FORMAT (RGB16, "raw video", DPTH565, PSTR222, PLANE0, OFFS0, SUB444),
   MAKE_RGB_FORMAT (BGR16, "raw video", DPTH565, PSTR222, PLANE0, OFFS0, SUB444),
   MAKE_RGB_FORMAT (RGB15, "raw video", DPTH555, PSTR222, PLANE0, OFFS0, SUB444),
   MAKE_RGB_FORMAT (BGR15, "raw video", DPTH555, PSTR222, PLANE0, OFFS0, SUB444),
+#endif
 
   MAKE_YUV_FORMAT (UYVP, "raw video", GST_MAKE_FOURCC ('U', 'Y', 'V', 'P'),
       DPTH10_10_10,
@@ -535,6 +553,8 @@ gst_video_format_from_string (const gchar * format)
 {
   guint i;
 
+  g_return_val_if_fail (format != NULL, GST_VIDEO_FORMAT_UNKNOWN);
+
   for (i = 0; i < G_N_ELEMENTS (formats); i++) {
     if (strcmp (GST_VIDEO_FORMAT_INFO_NAME (&formats[i].info), format) == 0)
       return GST_VIDEO_FORMAT_INFO_FORMAT (&formats[i].info);
@@ -606,6 +626,9 @@ gst_video_info_init (GstVideoInfo * info)
   g_return_if_fail (info != NULL);
 
   memset (info, 0, sizeof (GstVideoInfo));
+
+  info->finfo = &formats[GST_VIDEO_FORMAT_UNKNOWN].info;
+
   info->views = 1;
   /* arrange for sensible defaults, e.g. if turned into caps */
   info->fps_n = 0;
@@ -640,6 +663,33 @@ gst_video_info_set_format (GstVideoInfo * info, GstVideoFormat format,
   info->height = height;
 
   fill_planes (info);
+}
+
+static const gchar *interlace_mode[] = {
+  "progressive",
+  "interleaved",
+  "mixed",
+  "fields"
+};
+
+static const gchar *
+gst_interlace_mode_to_string (GstVideoInterlaceMode mode)
+{
+  if (((guint) mode) >= G_N_ELEMENTS (interlace_mode))
+    return NULL;
+
+  return interlace_mode[mode];
+}
+
+static GstVideoInterlaceMode
+gst_interlace_mode_from_string (const gchar * mode)
+{
+  gint i;
+  for (i = 0; i < G_N_ELEMENTS (interlace_mode); i++) {
+    if (g_str_equal (interlace_mode[i], mode))
+      return i;
+  }
+  return GST_VIDEO_INTERLACE_MODE_PROGRESSIVE;
 }
 
 typedef struct
@@ -792,7 +842,6 @@ gst_video_info_from_caps (GstVideoInfo * info, const GstCaps * caps)
   GstVideoFormat format;
   gint width, height, views;
   gint fps_n, fps_d;
-  gboolean interlaced;
   gint par_n, par_d;
 
   g_return_val_if_fail (info != NULL, FALSE);
@@ -821,19 +870,24 @@ gst_video_info_from_caps (GstVideoInfo * info, const GstCaps * caps)
   gst_video_info_set_format (info, format, width, height);
 
   if (gst_structure_get_fraction (structure, "framerate", &fps_n, &fps_d)) {
+    if (fps_n == 0) {
+      /* variable framerate */
+      info->flags |= GST_VIDEO_FLAG_VARIABLE_FPS;
+      /* see if we have a max-framerate */
+      gst_structure_get_fraction (structure, "max-framerate", &fps_n, &fps_d);
+    }
     info->fps_n = fps_n;
     info->fps_d = fps_d;
   } else {
+    /* unspecified is variable framerate */
     info->fps_n = 0;
     info->fps_d = 1;
   }
 
-  if (!gst_structure_get_boolean (structure, "interlaced", &interlaced))
-    interlaced = FALSE;
-  if (interlaced)
-    info->flags |= GST_VIDEO_FLAG_INTERLACED;
+  if ((s = gst_structure_get_string (structure, "interlace-mode")))
+    info->interlace_mode = gst_interlace_mode_from_string (s);
   else
-    info->flags &= ~GST_VIDEO_FLAG_INTERLACED;
+    info->interlace_mode = GST_VIDEO_INTERLACE_MODE_PROGRESSIVE;
 
   if (gst_structure_get_int (structure, "views", &views))
     info->views = views;
@@ -842,9 +896,13 @@ gst_video_info_from_caps (GstVideoInfo * info, const GstCaps * caps)
 
   if ((s = gst_structure_get_string (structure, "chroma-site")))
     info->chroma_site = gst_video_chroma_from_string (s);
+  else
+    info->chroma_site = GST_VIDEO_CHROMA_SITE_UNKNOWN;
 
   if ((s = gst_structure_get_string (structure, "colorimetry")))
     gst_video_colorimetry_from_string (&info->colorimetry, s);
+  else
+    memset (&info->colorimetry, 0, sizeof (GstVideoColorimetry));
 
   if (gst_structure_get_fraction (structure, "pixel-aspect-ratio",
           &par_n, &par_d)) {
@@ -859,7 +917,8 @@ gst_video_info_from_caps (GstVideoInfo * info, const GstCaps * caps)
   /* ERROR */
 wrong_name:
   {
-    GST_ERROR ("wrong name, expected video/x-raw");
+    GST_ERROR ("wrong name '%s', expected video/x-raw",
+        gst_structure_get_name (structure));
     return FALSE;
   }
 no_format:
@@ -869,7 +928,7 @@ no_format:
   }
 unknown_format:
   {
-    GST_ERROR ("unknown format given");
+    GST_ERROR ("unknown format '%s' given", s);
     return FALSE;
   }
 no_width:
@@ -909,11 +968,10 @@ gst_video_info_to_caps (GstVideoInfo * info)
       "format", G_TYPE_STRING, format,
       "width", G_TYPE_INT, info->width,
       "height", G_TYPE_INT, info->height,
-      "framerate", GST_TYPE_FRACTION, info->fps_n, info->fps_d,
       "pixel-aspect-ratio", GST_TYPE_FRACTION, info->par_n, info->par_d, NULL);
 
-  if (info->flags & GST_VIDEO_FLAG_INTERLACED)
-    gst_caps_set_simple (caps, "interlaced", G_TYPE_BOOLEAN, TRUE, NULL);
+  gst_caps_set_simple (caps, "interlace-mode", G_TYPE_STRING,
+      gst_interlace_mode_to_string (info->interlace_mode), NULL);
 
   if (info->chroma_site != GST_VIDEO_CHROMA_SITE_UNKNOWN)
     gst_caps_set_simple (caps, "chroma-site", G_TYPE_STRING,
@@ -923,6 +981,16 @@ gst_video_info_to_caps (GstVideoInfo * info)
 
   if (info->views > 1)
     gst_caps_set_simple (caps, "views", G_TYPE_INT, info->views, NULL);
+
+  if (info->flags & GST_VIDEO_FLAG_VARIABLE_FPS && info->fps_n != 0) {
+    /* variable fps with a max-framerate */
+    gst_caps_set_simple (caps, "framerate", GST_TYPE_FRACTION, 0, 1,
+        "max-framerate", GST_TYPE_FRACTION, info->fps_n, info->fps_d, NULL);
+  } else {
+    /* no variable fps or no max-framerate */
+    gst_caps_set_simple (caps, "framerate", GST_TYPE_FRACTION,
+        info->fps_n, info->fps_d, NULL);
+  }
 
   return caps;
 }
@@ -939,7 +1007,7 @@ gst_video_info_to_caps (GstVideoInfo * info)
  * information of frame @id.
  *
  * When @id is -1, the default frame is mapped. When @id != -1, this function
- * will return %FALSE when there is no GstMetaVideo with that id.
+ * will return %FALSE when there is no GstVideoMeta with that id.
  *
  * All video planes of @buffer will be mapped and the pointers will be set in
  * @frame->data.
@@ -950,9 +1018,7 @@ gboolean
 gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
     GstBuffer * buffer, gint id, GstMapFlags flags)
 {
-  GstMetaVideo *meta;
-  guint8 *data;
-  gsize size;
+  GstVideoMeta *meta;
   gint i;
 
   g_return_val_if_fail (frame != NULL, FALSE);
@@ -960,12 +1026,9 @@ gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
   g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
 
   if (id == -1)
-    meta = gst_buffer_get_meta_video (buffer);
+    meta = gst_buffer_get_video_meta (buffer);
   else
-    meta = gst_buffer_get_meta_video_id (buffer, id);
-
-  frame->buffer = buffer;
-  frame->meta = meta;
+    meta = gst_buffer_get_video_meta_id (buffer, id);
 
   if (meta) {
     frame->info.flags = meta->flags;
@@ -974,10 +1037,9 @@ gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
     frame->info.height = meta->height;
     frame->id = meta->id;
 
-    for (i = 0; i < info->finfo->n_planes; i++) {
-      frame->data[i] =
-          gst_meta_video_map (meta, i, &frame->info.stride[i], flags);
-    }
+    for (i = 0; i < info->finfo->n_planes; i++)
+      gst_video_meta_map (meta, i, &frame->map[i], &frame->data[i],
+          &frame->info.stride[i], flags);
   } else {
     /* no metadata, we really need to have the metadata when the id is
      * specified. */
@@ -988,30 +1050,33 @@ gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
     frame->info = *info;
     frame->id = id;
 
-    data = gst_buffer_map (buffer, &size, NULL, flags);
+    gst_buffer_map (buffer, &frame->map[0], flags);
 
     /* do some sanity checks */
-    if (size < info->size)
+    if (frame->map[0].size < info->size)
       goto invalid_size;
 
     /* set up pointers */
     for (i = 0; i < info->finfo->n_planes; i++) {
-      frame->data[i] = data + info->offset[i];
+      frame->data[i] = frame->map[0].data + info->offset[i];
     }
   }
+  frame->buffer = gst_buffer_ref (buffer);
+  frame->meta = meta;
+
   return TRUE;
 
   /* ERRORS */
 no_metadata:
   {
-    GST_ERROR ("no GstMetaVideo for id", id);
+    GST_ERROR ("no GstVideoMeta for id %d", id);
     return FALSE;
   }
 invalid_size:
   {
     GST_ERROR ("invalid buffer size %" G_GSIZE_FORMAT " < %" G_GSIZE_FORMAT,
-        size, info->size);
-    gst_buffer_unmap (buffer, data, size);
+        frame->map[0].size, info->size);
+    gst_buffer_unmap (buffer, &frame->map[0]);
     return FALSE;
   }
 }
@@ -1047,7 +1112,7 @@ void
 gst_video_frame_unmap (GstVideoFrame * frame)
 {
   GstBuffer *buffer;
-  GstMetaVideo *meta;
+  GstVideoMeta *meta;
   gint i;
 
   g_return_if_fail (frame != NULL);
@@ -1057,15 +1122,62 @@ gst_video_frame_unmap (GstVideoFrame * frame)
 
   if (meta) {
     for (i = 0; i < frame->info.finfo->n_planes; i++) {
-      gst_meta_video_unmap (meta, i, frame->data[i]);
+      gst_video_meta_unmap (meta, i, &frame->map[i]);
     }
   } else {
-    guint8 *data;
-
-    data = frame->data[0];
-    data -= frame->info.offset[0];
-    gst_buffer_unmap (buffer, data, -1);
+    gst_buffer_unmap (buffer, &frame->map[0]);
   }
+  gst_buffer_unref (buffer);
+}
+
+/**
+ * gst_video_frame_copy:
+ * @dest: a #GstVideoFrame
+ * @src: a #GstVideoFrame
+ * @plane: a plane
+ *
+ * Copy the plane with index @plane from @src to @dest.
+ *
+ * Returns: TRUE if the contents could be copied.
+ */
+gboolean
+gst_video_frame_copy_plane (GstVideoFrame * dest, const GstVideoFrame * src,
+    guint plane)
+{
+  const GstVideoInfo *sinfo;
+  GstVideoInfo *dinfo;
+  guint w, h, j;
+  guint8 *sp, *dp;
+  gint ss, ds;
+
+  g_return_val_if_fail (dest != NULL, FALSE);
+  g_return_val_if_fail (src != NULL, FALSE);
+
+  sinfo = &src->info;
+  dinfo = &dest->info;
+
+  g_return_val_if_fail (dinfo->finfo->format == sinfo->finfo->format, FALSE);
+  g_return_val_if_fail (dinfo->width == sinfo->width
+      && dinfo->height == sinfo->height, FALSE);
+  g_return_val_if_fail (dinfo->finfo->n_planes > plane, FALSE);
+
+  sp = src->data[plane];
+  dp = dest->data[plane];
+
+  ss = sinfo->stride[plane];
+  ds = dinfo->stride[plane];
+
+  w = MIN (ABS (ss), ABS (ds));
+  h = GST_VIDEO_FRAME_COMP_HEIGHT (dest, plane);
+
+  GST_CAT_DEBUG (GST_CAT_PERFORMANCE, "copy plane %d, w:%d h:%d ", plane, w, h);
+
+  for (j = 0; j < h; j++) {
+    memcpy (dp, sp, w);
+    dp += ds;
+    sp += ss;
+  }
+  return TRUE;
 }
 
 /**
@@ -1084,6 +1196,9 @@ gst_video_frame_copy (GstVideoFrame * dest, const GstVideoFrame * src)
   const GstVideoInfo *sinfo;
   GstVideoInfo *dinfo;
 
+  g_return_val_if_fail (dest != NULL, FALSE);
+  g_return_val_if_fail (src != NULL, FALSE);
+
   sinfo = &src->info;
   dinfo = &dest->info;
 
@@ -1093,28 +1208,9 @@ gst_video_frame_copy (GstVideoFrame * dest, const GstVideoFrame * src)
 
   n_planes = dinfo->finfo->n_planes;
 
-  for (i = 0; i < n_planes; i++) {
-    guint w, h, j;
-    guint8 *sp, *dp;
-    gint ss, ds;
+  for (i = 0; i < n_planes; i++)
+    gst_video_frame_copy_plane (dest, src, i);
 
-    sp = src->data[i];
-    dp = dest->data[i];
-
-    ss = sinfo->stride[i];
-    ds = dinfo->stride[i];
-
-    w = MIN (ABS (ss), ABS (ds));
-    h = GST_VIDEO_FRAME_COMP_HEIGHT (dest, i);
-
-    GST_DEBUG ("w %d h %d", w, h);
-
-    for (j = 0; j < h; j++) {
-      memcpy (dp, sp, w);
-      dp += ds;
-      sp += ss;
-    }
-  }
   return TRUE;
 }
 
@@ -1209,6 +1305,7 @@ fill_planes (GstVideoInfo * info)
       info->size = info->stride[0] * height;
       break;
     case GST_VIDEO_FORMAT_I420:
+    case GST_VIDEO_FORMAT_YV12:        /* same as I420, but plane 1+2 swapped */
       info->stride[0] = GST_ROUND_UP_4 (width);
       info->stride[1] = GST_ROUND_UP_4 (GST_ROUND_UP_2 (width) / 2);
       info->stride[2] = info->stride[1];
@@ -1217,17 +1314,6 @@ fill_planes (GstVideoInfo * info)
       info->offset[2] = info->offset[1] +
           info->stride[1] * (GST_ROUND_UP_2 (height) / 2);
       info->size = info->offset[2] +
-          info->stride[2] * (GST_ROUND_UP_2 (height) / 2);
-      break;
-    case GST_VIDEO_FORMAT_YV12:        /* same as I420, but plane 1+2 swapped */
-      info->stride[0] = GST_ROUND_UP_4 (width);
-      info->stride[1] = GST_ROUND_UP_4 (GST_ROUND_UP_2 (width) / 2);
-      info->stride[2] = info->stride[1];
-      info->offset[0] = 0;
-      info->offset[2] = info->stride[0] * GST_ROUND_UP_2 (height);
-      info->offset[1] = info->offset[2] +
-          info->stride[1] * (GST_ROUND_UP_2 (height) / 2);
-      info->size = info->offset[1] +
           info->stride[2] * (GST_ROUND_UP_2 (height) / 2);
       break;
     case GST_VIDEO_FORMAT_Y41B:
@@ -1281,23 +1367,13 @@ fill_planes (GstVideoInfo * info)
       info->size = info->offset[3] + info->stride[0];
       break;
     case GST_VIDEO_FORMAT_YUV9:
+    case GST_VIDEO_FORMAT_YVU9:
       info->stride[0] = GST_ROUND_UP_4 (width);
       info->stride[1] = GST_ROUND_UP_4 (GST_ROUND_UP_4 (width) / 4);
       info->stride[2] = info->stride[1];
       info->offset[0] = 0;
       info->offset[1] = info->stride[0] * height;
       info->offset[2] = info->offset[1] +
-          info->stride[1] * (GST_ROUND_UP_4 (height) / 4);
-      info->size = info->offset[2] +
-          info->stride[2] * (GST_ROUND_UP_4 (height) / 4);
-      break;
-    case GST_VIDEO_FORMAT_YVU9:
-      info->stride[0] = GST_ROUND_UP_4 (width);
-      info->stride[1] = GST_ROUND_UP_4 (GST_ROUND_UP_4 (width) / 4);
-      info->stride[2] = info->stride[1];
-      info->offset[0] = 0;
-      info->offset[2] = info->stride[0] * height;
-      info->offset[1] = info->offset[2] +
           info->stride[1] * (GST_ROUND_UP_4 (height) / 4);
       info->size = info->offset[2] +
           info->stride[2] * (GST_ROUND_UP_4 (height) / 4);
@@ -1535,4 +1611,228 @@ gst_video_parse_caps_palette (GstCaps * caps)
   p = g_value_dup_boxed (p_v);
 
   return p;
+}
+
+#define GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME "GstForceKeyUnit"
+
+/**
+ * gst_video_event_new_downstream_force_key_unit:
+ * @timestamp: the timestamp of the buffer that starts a new key unit
+ * @stream_time: the stream_time of the buffer that starts a new key unit
+ * @running_time: the running_time of the buffer that starts a new key unit
+ * @all_headers: %TRUE to produce headers when starting a new key unit
+ * @count: integer that can be used to number key units
+ *
+ * Creates a new downstream force key unit event. A downstream force key unit
+ * event can be sent down the pipeline to request downstream elements to produce
+ * a key unit. A downstream force key unit event must also be sent when handling
+ * an upstream force key unit event to notify downstream that the latter has been
+ * handled.
+ *
+ * To parse an event created by gst_video_event_new_downstream_force_key_unit() use
+ * gst_video_event_parse_downstream_force_key_unit().
+ *
+ * Returns: The new GstEvent
+ * Since: 0.10.36
+ */
+GstEvent *
+gst_video_event_new_downstream_force_key_unit (GstClockTime timestamp,
+    GstClockTime stream_time, GstClockTime running_time, gboolean all_headers,
+    guint count)
+{
+  GstEvent *force_key_unit_event;
+  GstStructure *s;
+
+  s = gst_structure_new (GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME,
+      "timestamp", G_TYPE_UINT64, timestamp,
+      "stream-time", G_TYPE_UINT64, stream_time,
+      "running-time", G_TYPE_UINT64, running_time,
+      "all-headers", G_TYPE_BOOLEAN, all_headers,
+      "count", G_TYPE_UINT, count, NULL);
+  force_key_unit_event = gst_event_new_custom (GST_EVENT_CUSTOM_DOWNSTREAM, s);
+
+  return force_key_unit_event;
+}
+
+/**
+ * gst_video_event_new_upstream_force_key_unit:
+ * @running_time: the running_time at which a new key unit should be produced
+ * @all_headers: %TRUE to produce headers when starting a new key unit
+ * @count: integer that can be used to number key units
+ *
+ * Creates a new upstream force key unit event. An upstream force key unit event
+ * can be sent to request upstream elements to produce a key unit. 
+ *
+ * @running_time can be set to request a new key unit at a specific
+ * running_time. If set to GST_CLOCK_TIME_NONE, upstream elements will produce a
+ * new key unit as soon as possible.
+ *
+ * To parse an event created by gst_video_event_new_downstream_force_key_unit() use
+ * gst_video_event_parse_downstream_force_key_unit().
+ *
+ * Returns: The new GstEvent
+ * Since: 0.10.36
+ */
+GstEvent *
+gst_video_event_new_upstream_force_key_unit (GstClockTime running_time,
+    gboolean all_headers, guint count)
+{
+  GstEvent *force_key_unit_event;
+  GstStructure *s;
+
+  s = gst_structure_new (GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME,
+      "running-time", GST_TYPE_CLOCK_TIME, running_time,
+      "all-headers", G_TYPE_BOOLEAN, all_headers,
+      "count", G_TYPE_UINT, count, NULL);
+  force_key_unit_event = gst_event_new_custom (GST_EVENT_CUSTOM_UPSTREAM, s);
+
+  return force_key_unit_event;
+}
+
+/**
+ * gst_video_event_is_force_key_unit:
+ * @event: A #GstEvent to check
+ *
+ * Checks if an event is a force key unit event. Returns true for both upstream
+ * and downstream force key unit events.
+ *
+ * Returns: %TRUE if the event is a valid force key unit event
+ * Since: 0.10.36
+ */
+gboolean
+gst_video_event_is_force_key_unit (GstEvent * event)
+{
+  const GstStructure *s;
+
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  if (GST_EVENT_TYPE (event) != GST_EVENT_CUSTOM_DOWNSTREAM &&
+      GST_EVENT_TYPE (event) != GST_EVENT_CUSTOM_UPSTREAM)
+    return FALSE;               /* Not a force key unit event */
+
+  s = gst_event_get_structure (event);
+  if (s == NULL
+      || !gst_structure_has_name (s, GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME))
+    return FALSE;
+
+  return TRUE;
+}
+
+/**
+ * gst_video_event_parse_downstream_force_key_unit:
+ * @event: A #GstEvent to parse
+ * @timestamp: (out): A pointer to the timestamp in the event
+ * @stream_time: (out): A pointer to the stream-time in the event
+ * @running_time: (out): A pointer to the running-time in the event
+ * @all_headers: (out): A pointer to the all_headers flag in the event
+ * @count: (out): A pointer to the count field of the event
+ *
+ * Get timestamp, stream-time, running-time, all-headers and count in the force
+ * key unit event. See gst_video_event_new_downstream_force_key_unit() for a
+ * full description of the downstream force key unit event.
+ *
+ * Returns: %TRUE if the event is a valid downstream force key unit event.
+ * Since: 0.10.36
+ */
+gboolean
+gst_video_event_parse_downstream_force_key_unit (GstEvent * event,
+    GstClockTime * timestamp, GstClockTime * stream_time,
+    GstClockTime * running_time, gboolean * all_headers, guint * count)
+{
+  const GstStructure *s;
+  GstClockTime ev_timestamp, ev_stream_time, ev_running_time;
+  gboolean ev_all_headers;
+  guint ev_count;
+
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  if (GST_EVENT_TYPE (event) != GST_EVENT_CUSTOM_DOWNSTREAM)
+    return FALSE;               /* Not a force key unit event */
+
+  s = gst_event_get_structure (event);
+  if (s == NULL
+      || !gst_structure_has_name (s, GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME))
+    return FALSE;
+
+  if (!gst_structure_get_clock_time (s, "timestamp", &ev_timestamp))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_clock_time (s, "stream-time", &ev_stream_time))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_clock_time (s, "running-time", &ev_running_time))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_boolean (s, "all-headers", &ev_all_headers))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_uint (s, "count", &ev_count))
+    return FALSE;               /* Not a force key unit event */
+
+  if (timestamp)
+    *timestamp = ev_timestamp;
+
+  if (stream_time)
+    *stream_time = ev_stream_time;
+
+  if (running_time)
+    *running_time = ev_running_time;
+
+  if (all_headers)
+    *all_headers = ev_all_headers;
+
+  if (count)
+    *count = ev_count;
+
+  return TRUE;
+}
+
+/**
+ * gst_video_event_parse_upstream_force_key_unit:
+ * @event: A #GstEvent to parse
+ * @running_time: (out): A pointer to the running_time in the event
+ * @all_headers: (out): A pointer to the all_headers flag in the event
+ * @count: (out): A pointer to the count field in the event
+ *
+ * Get running-time, all-headers and count in the force key unit event. See
+ * gst_video_event_new_upstream_force_key_unit() for a full description of the
+ * upstream force key unit event.
+ *
+ * Create an upstream force key unit event using  gst_video_event_new_upstream_force_key_unit()
+ *
+ * Returns: %TRUE if the event is a valid upstream force-key-unit event. %FALSE if not
+ * Since: 0.10.36
+ */
+gboolean
+gst_video_event_parse_upstream_force_key_unit (GstEvent * event,
+    GstClockTime * running_time, gboolean * all_headers, guint * count)
+{
+  const GstStructure *s;
+  GstClockTime ev_running_time;
+  gboolean ev_all_headers;
+  guint ev_count;
+
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  if (GST_EVENT_TYPE (event) != GST_EVENT_CUSTOM_UPSTREAM)
+    return FALSE;               /* Not a force key unit event */
+
+  s = gst_event_get_structure (event);
+  if (s == NULL
+      || !gst_structure_has_name (s, GST_VIDEO_EVENT_FORCE_KEY_UNIT_NAME))
+    return FALSE;
+
+  if (!gst_structure_get_clock_time (s, "running-time", &ev_running_time))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_boolean (s, "all-headers", &ev_all_headers))
+    return FALSE;               /* Not a force key unit event */
+  if (!gst_structure_get_uint (s, "count", &ev_count))
+    return FALSE;               /* Not a force key unit event */
+
+  if (running_time)
+    *running_time = ev_running_time;
+
+  if (all_headers)
+    *all_headers = ev_all_headers;
+
+  if (count)
+    *count = ev_count;
+
+  return TRUE;
 }

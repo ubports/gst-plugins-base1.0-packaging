@@ -185,7 +185,7 @@ GST_START_TEST (test_musicbrainz_tag_registration)
 
   gst_tag_register_musicbrainz_tags ();
 
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
 
   /* musicbrainz tags aren't registered yet */
   gst_vorbis_tag_add (list, "MUSICBRAINZ_TRACKID", "123456");
@@ -234,7 +234,7 @@ GST_START_TEST (test_vorbis_tags)
 {
   GstTagList *list;
 
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
 
   /* NULL pointers aren't allowed */
   ASSERT_CRITICAL (gst_vorbis_tag_add (NULL, "key", "value"));
@@ -370,46 +370,45 @@ GST_START_TEST (test_vorbis_tags)
 
   /* there can only be one language per taglist ... */
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "fr");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "fr");
 
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "[fr]");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "fr");
 
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "French [fr]");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "fr");
 
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "[eng] English");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "eng");
 
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "eng");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "eng");
 
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "[eng]");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "eng");
 
   /* free-form *sigh* */
   gst_tag_list_free (list);
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
   gst_vorbis_tag_add (list, "LANGUAGE", "English");
   ASSERT_TAG_LIST_HAS_STRING (list, GST_TAG_LANGUAGE_CODE, "English");
 
   /* now, while we still have a taglist, test _to_vorbiscomment_buffer() */
   {
     GstBuffer *buf1, *buf2;
-    guint8 *data1, *data2;
-    gsize size1, size2;
+    GstMapInfo map1, map2;
 
     ASSERT_CRITICAL (gst_tag_list_to_vorbiscomment_buffer (NULL,
             (const guint8 *) "x", 1, "x"));
@@ -421,13 +420,13 @@ GST_START_TEST (test_vorbis_tags)
         (const guint8 *) "foo", 3, NULL);
     fail_unless (buf2 != NULL);
 
-    data1 = gst_buffer_map (buf1, &size1, NULL, GST_MAP_READ);
-    data2 = gst_buffer_map (buf2, &size2, NULL, GST_MAP_READ);
+    gst_buffer_map (buf1, &map1, GST_MAP_READ);
+    gst_buffer_map (buf2, &map2, GST_MAP_READ);
 
-    fail_unless (memcmp (data1, data2 + 3, size1) == 0);
+    fail_unless (memcmp (map1.data, map2.data + 3, map1.size) == 0);
 
-    gst_buffer_unmap (buf2, data2, size2);
-    gst_buffer_unmap (buf1, data1, size1);
+    gst_buffer_unmap (buf2, &map2);
+    gst_buffer_unmap (buf1, &map1);
 
     gst_buffer_unref (buf1);
     gst_buffer_unref (buf2);
@@ -445,10 +444,11 @@ GST_START_TEST (test_vorbis_tags)
     gchar *vendor = NULL;
 
     buf = gst_buffer_new ();
-    gst_buffer_take_memory (buf, -1,
+    gst_buffer_append_memory (buf,
         gst_memory_new_wrapped (GST_MEMORY_FLAG_READONLY,
-            (gpointer) speex_comments_buf1, NULL,
-            sizeof (speex_comments_buf1), 0, sizeof (speex_comments_buf1)));
+            (gpointer) speex_comments_buf1,
+            sizeof (speex_comments_buf1), 0, sizeof (speex_comments_buf1), NULL,
+            NULL));
 
     /* make sure it doesn't memcmp over the end of the buffer */
     fail_unless (gst_tag_list_from_vorbiscomment_buffer (buf,
@@ -490,10 +490,11 @@ GST_START_TEST (test_vorbis_tags)
     gchar *vendor = NULL;
 
     buf = gst_buffer_new ();
-    gst_buffer_take_memory (buf, -1,
+    gst_buffer_append_memory (buf,
         gst_memory_new_wrapped (GST_MEMORY_FLAG_READONLY,
-            (gpointer) vorbis_comments_buf, NULL,
-            sizeof (vorbis_comments_buf), 0, sizeof (vorbis_comments_buf)));
+            (gpointer) vorbis_comments_buf,
+            sizeof (vorbis_comments_buf), 0, sizeof (vorbis_comments_buf), NULL,
+            NULL));
 
     /* make sure it doesn't memcmp over the end of the buffer */
     fail_unless (gst_tag_list_from_vorbiscomment_buffer (buf,
@@ -532,7 +533,7 @@ GST_START_TEST (test_vorbis_tags)
   {
     GDate *date = NULL;
 
-    list = gst_tag_list_new ();
+    list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "2006-09-25 22:02:38");
 
     fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
@@ -549,7 +550,7 @@ GST_START_TEST (test_vorbis_tags)
   {
     GDate *date = NULL;
 
-    list = gst_tag_list_new ();
+    list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "1992-00-00");
 
     fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
@@ -564,7 +565,7 @@ GST_START_TEST (test_vorbis_tags)
   {
     GDate *date = NULL;
 
-    list = gst_tag_list_new ();
+    list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "1992-05-00");
 
     fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
@@ -759,6 +760,16 @@ GST_START_TEST (test_language_utils)
   ASSERT_STRINGS_EQUAL (gst_tag_get_language_code_iso_639_2B ("de"), "ger");
   ASSERT_STRINGS_EQUAL (gst_tag_get_language_code_iso_639_2B ("deu"), "ger");
   ASSERT_STRINGS_EQUAL (gst_tag_get_language_code_iso_639_2B ("ger"), "ger");
+
+  fail_unless (gst_tag_check_language_code ("de"));
+  fail_unless (gst_tag_check_language_code ("deu"));
+  fail_unless (gst_tag_check_language_code ("ger"));
+  fail_if (gst_tag_check_language_code ("xxx"));
+  fail_if (gst_tag_check_language_code ("und"));
+  fail_if (gst_tag_check_language_code ("un"));
+  fail_if (gst_tag_check_language_code (""));
+  fail_if (gst_tag_check_language_code ("\377"));
+  fail_if (gst_tag_check_language_code ("deutsch"));
 }
 
 GST_END_TEST;
@@ -953,18 +964,21 @@ GST_START_TEST (test_xmp_formatting)
 {
   GstTagList *list;
   GstBuffer *buf;
+  GstMapInfo map;
   const gchar *text;
   gsize len;
 
   /* test data */
-  list = gst_tag_list_new_full (GST_TAG_TITLE, "test title",
+  list = gst_tag_list_new (GST_TAG_TITLE, "test title",
       GST_TAG_DESCRIPTION, "test decription",
       GST_TAG_KEYWORDS, "keyword1", GST_TAG_KEYWORDS, "keyword2", NULL);
 
   buf = gst_tag_list_to_xmp_buffer (list, FALSE);
   fail_unless (buf != NULL);
 
-  text = gst_buffer_map (buf, &len, NULL, GST_MAP_READ);
+  gst_buffer_map (buf, &map, GST_MAP_READ);
+  text = (gchar *) map.data;
+  len = map.size;
 
   /* check the content */
   fail_unless (g_strrstr_len (text, len, "<?xpacket begin") == text);
@@ -973,7 +987,7 @@ GST_START_TEST (test_xmp_formatting)
   fail_unless (g_strrstr_len (text, len, ">keyword1<") != NULL);
   fail_unless (g_strrstr_len (text, len, ">keyword2<") != NULL);
   fail_unless (g_strrstr_len (text, len, "<?xpacket end") != NULL);
-  gst_buffer_unmap (buf, (gpointer) text, len);
+  gst_buffer_unmap (buf, &map);
 
   gst_buffer_unref (buf);
   gst_tag_list_free (list);
@@ -986,13 +1000,21 @@ GST_START_TEST (test_xmp_parsing)
 {
   GstTagList *list;
   GstBuffer *buf;
-  guint i, result_size;
+  guint i, j, result_size;
   gchar *text;
   const gchar *xmp_header =
       "<?xpacket begin=\"\xEF\xBB\xBF\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>"
       "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"GStreamer\">"
       "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">";
-  const gchar *xmp_footer = "</rdf:RDF>" "</x:xmpmeta>" "<?xpacket end=\"r\"?>";
+
+  /* We used to write an extra trailing \n after the footer, keep compatibility
+   * with our old generated media by checking that it still can be parsed */
+  const gchar *xmp_footers[] = {
+    "</rdf:RDF>" "</x:xmpmeta>" "<?xpacket end=\"r\"?>",
+    "</rdf:RDF>" "</x:xmpmeta>" "<?xpacket end=\"r\"?>\n",
+    NULL
+  };
+
   struct
   {
     const gchar *xmp_data;
@@ -1012,104 +1034,50 @@ GST_START_TEST (test_xmp_parsing)
   };
 
   /* test data */
+  j = 0;
   i = 0;
-  while (test_data[i].xmp_data) {
-    gsize len;
+  while (xmp_footers[j]) {
+    while (test_data[i].xmp_data) {
+      gsize len;
 
-    GST_DEBUG ("trying test-data %u", i);
+      GST_DEBUG ("trying test-data %u", i);
 
-    text = g_strconcat (xmp_header, test_data[i].xmp_data, xmp_footer, NULL);
+      text =
+          g_strconcat (xmp_header, test_data[i].xmp_data, xmp_footers[j], NULL);
 
-    buf = gst_buffer_new ();
-    len = strlen (text) + 1;
-    gst_buffer_take_memory (buf, -1,
-        gst_memory_new_wrapped (0, text, NULL, len, 0, len));
+      buf = gst_buffer_new ();
+      len = strlen (text) + 1;
+      gst_buffer_append_memory (buf,
+          gst_memory_new_wrapped (0, text, len, 0, len, NULL, NULL));
 
-    list = gst_tag_list_from_xmp_buffer (buf);
-    if (test_data[i].result_size >= 0) {
-      fail_unless (list != NULL);
+      list = gst_tag_list_from_xmp_buffer (buf);
+      if (test_data[i].result_size >= 0) {
+        fail_unless (list != NULL);
 
-      result_size = gst_structure_n_fields ((GstStructure *) list);
-      fail_unless (result_size == test_data[i].result_size);
+        result_size = gst_structure_n_fields ((GstStructure *) list);
+        fail_unless (result_size == test_data[i].result_size);
 
-      /* check the taglist content */
-      switch (test_data[i].result_test) {
-        case 0:
-          ASSERT_TAG_LIST_HAS_STRING (list, "description", "test");
-          break;
-        default:
-          break;
+        /* check the taglist content */
+        switch (test_data[i].result_test) {
+          case 0:
+            ASSERT_TAG_LIST_HAS_STRING (list, "description", "test");
+            break;
+          default:
+            break;
+        }
       }
-    }
-    if (list)
-      gst_tag_list_free (list);
+      if (list)
+        gst_tag_list_free (list);
 
-    gst_buffer_unref (buf);
-    g_free (text);
-    i++;
+      gst_buffer_unref (buf);
+      g_free (text);
+      i++;
+    }
+    j++;
   }
 }
 
 GST_END_TEST;
-
-static void
-tag_list_equals (GstTagList * taglist, GstTagList * taglist2)
-{
-  const gchar *name_sent, *name_recv;
-  const GValue *value_sent, *value_recv;
-  gboolean found;
-  gint comparison;
-  gint n_recv;
-  gint n_sent;
-  gint i, j;
-
-  /* verify tags */
-  fail_unless (taglist2 != NULL);
-  n_recv = gst_structure_n_fields (taglist2);
-  n_sent = gst_structure_n_fields (taglist);
-  fail_unless (n_recv == n_sent);
-  fail_unless (n_sent > 0);
-
-  /* FIXME: compare taglist values */
-  for (i = 0; i < n_sent; i++) {
-    name_sent = gst_structure_nth_field_name (taglist, i);
-    value_sent = gst_structure_get_value (taglist, name_sent);
-    found = FALSE;
-    for (j = 0; j < n_recv; j++) {
-      name_recv = gst_structure_nth_field_name (taglist2, j);
-      if (!strcmp (name_sent, name_recv)) {
-        value_recv = gst_structure_get_value (taglist2, name_recv);
-        comparison = gst_value_compare (value_sent, value_recv);
-        if (comparison != GST_VALUE_EQUAL) {
-          gchar *vs = g_strdup_value_contents (value_sent);
-          gchar *vr = g_strdup_value_contents (value_recv);
-          GST_DEBUG ("sent = %s:'%s', recv = %s:'%s'",
-              G_VALUE_TYPE_NAME (value_sent), vs,
-              G_VALUE_TYPE_NAME (value_recv), vr);
-          g_free (vs);
-          g_free (vr);
-        }
-        if (comparison != GST_VALUE_EQUAL &&
-            G_VALUE_HOLDS (value_sent, G_TYPE_DOUBLE)) {
-          gdouble vs;
-          gdouble vr;
-
-          /* add some tolerance for doubles */
-          vs = g_value_get_double (value_sent);
-          vr = g_value_get_double (value_recv);
-          if (vr >= vs - 0.001 && vr <= vs + 0.001)
-            comparison = GST_VALUE_EQUAL;
-        }
-        fail_unless (comparison == GST_VALUE_EQUAL,
-            "tag item %s has been received with different type or value",
-            name_sent);
-        found = TRUE;
-        break;
-      }
-    }
-    fail_unless (found, "tag item %s is lost", name_sent);
-  }
-}
 
 static void
 do_xmp_tag_serialization_deserialization (GstTagList * taglist,
@@ -1121,7 +1089,7 @@ do_xmp_tag_serialization_deserialization (GstTagList * taglist,
   buf = gst_tag_list_to_xmp_buffer_full (taglist, TRUE, schemas);
   taglist2 = gst_tag_list_from_xmp_buffer (buf);
 
-  tag_list_equals (taglist, taglist2);
+  fail_unless (gst_tag_list_is_equal (taglist, taglist2));
 
   gst_buffer_unref (buf);
   gst_tag_list_free (taglist2);
@@ -1131,7 +1099,7 @@ static void
 do_simple_xmp_tag_serialization_deserialization (const gchar * gsttag,
     GValue * value)
 {
-  GstTagList *taglist = gst_tag_list_new ();
+  GstTagList *taglist = gst_tag_list_new_empty ();
 
   gst_tag_list_add_value (taglist, GST_TAG_MERGE_REPLACE, gsttag, value);
 
@@ -1269,9 +1237,9 @@ GST_START_TEST (test_xmp_tags_serialization_deserialization)
       (GST_TAG_CAPTURING_EXPOSURE_COMPENSATION, &value);
   g_value_unset (&value);
 
-  g_value_init (&value, GST_TYPE_DATE);
+  g_value_init (&value, G_TYPE_DATE);
   date = g_date_new_dmy (22, 3, 2010);
-  gst_value_set_date (&value, date);
+  g_value_set_boxed (&value, date);
   g_date_free (date);
   do_simple_xmp_tag_serialization_deserialization (GST_TAG_DATE, &value);
   g_value_unset (&value);
@@ -1323,7 +1291,7 @@ GST_END_TEST;
 GST_START_TEST (test_xmp_compound_tags)
 {
   const gchar *schemas[] = { "Iptc4xmpExt", NULL };
-  GstTagList *taglist = gst_tag_list_new ();
+  GstTagList *taglist = gst_tag_list_new_empty ();
 
   gst_tag_list_add (taglist, GST_TAG_MERGE_APPEND, GST_TAG_KEYWORDS, "k1",
       GST_TAG_KEYWORDS, "k2", GST_TAG_TITLE, "title", GST_TAG_KEYWORDS, "k3",
@@ -1331,7 +1299,7 @@ GST_START_TEST (test_xmp_compound_tags)
   do_xmp_tag_serialization_deserialization (taglist, NULL);
   gst_tag_list_free (taglist);
 
-  taglist = gst_tag_list_new ();
+  taglist = gst_tag_list_new_empty ();
   gst_tag_list_add (taglist, GST_TAG_MERGE_APPEND, GST_TAG_GEO_LOCATION_COUNTRY,
       "Brazil", GST_TAG_GEO_LOCATION_CITY, "Campina Grande", NULL);
   do_xmp_tag_serialization_deserialization (taglist, schemas);
@@ -1346,36 +1314,37 @@ GST_START_TEST (test_exif_parsing)
   GstTagList *taglist;
   GstBuffer *buf;
   GstByteWriter writer;
-  const gchar *str;
+  gboolean res = TRUE;
+  const gchar *str = NULL;
 
   gst_byte_writer_init (&writer);
 
   /* write the IFD */
   /* 1 entry */
-  gst_byte_writer_put_uint16_le (&writer, 1);
+  res &= gst_byte_writer_put_uint16_le (&writer, 1);
 
   /* copyright tag */
   /* tag id */
-  gst_byte_writer_put_uint16_le (&writer, 0x8298);
+  res &= gst_byte_writer_put_uint16_le (&writer, 0x8298);
   /* tag type */
-  gst_byte_writer_put_uint16_le (&writer, 0x2);
+  res &= gst_byte_writer_put_uint16_le (&writer, 0x2);
   /* count */
-  gst_byte_writer_put_uint32_le (&writer, strlen ("my copyright") + 1);
+  res &= gst_byte_writer_put_uint32_le (&writer, strlen ("my copyright") + 1);
   /* offset */
-  gst_byte_writer_put_uint32_le (&writer, 8 + 14);
+  res &= gst_byte_writer_put_uint32_le (&writer, 8 + 14);
 
   /* data */
-  gst_byte_writer_put_string (&writer, "my copyright");
+  res &= gst_byte_writer_put_string (&writer, "my copyright");
+
+  fail_unless (res, "Failed to write tag");
 
   buf = gst_byte_writer_reset_and_get_buffer (&writer);
 
   taglist = gst_tag_list_from_exif_buffer (buf, G_LITTLE_ENDIAN, 8);
 
-  fail_unless (gst_structure_n_fields (taglist) == 1);
-  fail_unless (gst_structure_has_field_typed (taglist, GST_TAG_COPYRIGHT,
-          G_TYPE_STRING));
-  str = gst_structure_get_string (taglist, GST_TAG_COPYRIGHT);
-  fail_unless (strcmp (str, "my copyright") == 0);
+  fail_unless (gst_tag_list_get_tag_size (taglist, GST_TAG_COPYRIGHT) == 1);
+  gst_tag_list_peek_string_index (taglist, GST_TAG_COPYRIGHT, 0, &str);
+  fail_unless_equals_string (str, "my copyright");
 
   gst_tag_list_free (taglist);
   gst_buffer_unref (buf);
@@ -1395,7 +1364,7 @@ do_exif_tag_serialization_deserialization (GstTagList * taglist)
   taglist2 = gst_tag_list_from_exif_buffer (buf, G_LITTLE_ENDIAN, 0);
   gst_buffer_unref (buf);
 
-  tag_list_equals (taglist, taglist2);
+  fail_unless (gst_tag_list_is_equal (taglist, taglist2));
   gst_tag_list_free (taglist2);
 
   /* BE */
@@ -1403,7 +1372,7 @@ do_exif_tag_serialization_deserialization (GstTagList * taglist)
   taglist2 = gst_tag_list_from_exif_buffer (buf, G_BIG_ENDIAN, 0);
   gst_buffer_unref (buf);
 
-  tag_list_equals (taglist, taglist2);
+  fail_unless (gst_tag_list_is_equal (taglist, taglist2));
   gst_tag_list_free (taglist2);
 
   /* APP1 */
@@ -1411,7 +1380,7 @@ do_exif_tag_serialization_deserialization (GstTagList * taglist)
   taglist2 = gst_tag_list_from_exif_buffer_with_tiff_header (buf);
   gst_buffer_unref (buf);
 
-  tag_list_equals (taglist, taglist2);
+  fail_unless (gst_tag_list_is_equal (taglist, taglist2));
   gst_tag_list_free (taglist2);
 }
 
@@ -1419,7 +1388,7 @@ static void
 do_simple_exif_tag_serialization_deserialization (const gchar * gsttag,
     GValue * value)
 {
-  GstTagList *taglist = gst_tag_list_new ();
+  GstTagList *taglist = gst_tag_list_new_empty ();
 
   gst_tag_list_add_value (taglist, GST_TAG_MERGE_REPLACE, gsttag, value);
   do_exif_tag_serialization_deserialization (taglist);
@@ -1438,7 +1407,7 @@ GST_START_TEST (test_exif_multiple_tags)
 
   gst_tag_register_musicbrainz_tags ();
 
-  taglist = gst_tag_list_new_full (GST_TAG_ARTIST, "artist",
+  taglist = gst_tag_list_new (GST_TAG_ARTIST, "artist",
       GST_TAG_DEVICE_MANUFACTURER, "make",
       GST_TAG_DEVICE_MODEL, "model", GST_TAG_GEO_LOCATION_LATITUDE, 45.5,
       GST_TAG_GEO_LOCATION_LONGITUDE, -10.25,
@@ -1468,6 +1437,7 @@ GST_START_TEST (test_exif_tags_serialization_deserialization)
   GstBuffer *buf = NULL;
   gint i;
   GstTagList *taglist;
+  GstMapInfo map;
   guint8 *data;
 
   gst_tag_register_musicbrainz_tags ();
@@ -1779,10 +1749,11 @@ GST_START_TEST (test_exif_tags_serialization_deserialization)
 
   g_value_init (&value, GST_TYPE_BUFFER);
   buf = gst_buffer_new_and_alloc (1024);
-  data = gst_buffer_map (buf, NULL, NULL, GST_MAP_WRITE);
+  gst_buffer_map (buf, &map, GST_MAP_WRITE);
+  data = map.data;
   for (i = 0; i < 1024; i++)
     data[i] = i % 255;
-  gst_buffer_unmap (buf, data, 1024);
+  gst_buffer_unmap (buf, &map);
   gst_value_set_buffer (&value, buf);
   gst_buffer_unref (buf);
   do_simple_exif_tag_serialization_deserialization (GST_TAG_APPLICATION_DATA,
@@ -1806,22 +1777,22 @@ GST_START_TEST (test_exif_tags_serialization_deserialization)
 
   /* flash is a little bit more tricky, because 2 tags are merged into 1 in
    * exif */
-  taglist = gst_tag_list_new_full (GST_TAG_CAPTURING_FLASH_FIRED, FALSE,
+  taglist = gst_tag_list_new (GST_TAG_CAPTURING_FLASH_FIRED, FALSE,
       GST_TAG_CAPTURING_FLASH_MODE, "auto", NULL);
   do_exif_tag_serialization_deserialization (taglist);
   gst_tag_list_free (taglist);
 
-  taglist = gst_tag_list_new_full (GST_TAG_CAPTURING_FLASH_FIRED, TRUE,
+  taglist = gst_tag_list_new (GST_TAG_CAPTURING_FLASH_FIRED, TRUE,
       GST_TAG_CAPTURING_FLASH_MODE, "auto", NULL);
   do_exif_tag_serialization_deserialization (taglist);
   gst_tag_list_free (taglist);
 
-  taglist = gst_tag_list_new_full (GST_TAG_CAPTURING_FLASH_FIRED, FALSE,
+  taglist = gst_tag_list_new (GST_TAG_CAPTURING_FLASH_FIRED, FALSE,
       GST_TAG_CAPTURING_FLASH_MODE, "never", NULL);
   do_exif_tag_serialization_deserialization (taglist);
   gst_tag_list_free (taglist);
 
-  taglist = gst_tag_list_new_full (GST_TAG_CAPTURING_FLASH_FIRED, TRUE,
+  taglist = gst_tag_list_new (GST_TAG_CAPTURING_FLASH_FIRED, TRUE,
       GST_TAG_CAPTURING_FLASH_MODE, "always", NULL);
   do_exif_tag_serialization_deserialization (taglist);
   gst_tag_list_free (taglist);

@@ -21,7 +21,7 @@
 /**
  * SECTION:gstrtpbuffer
  * @short_description: Helper methods for dealing with RTP buffers
- * @see_also: #GstBaseRTPPayload, #GstBaseRTPDepayload, gstrtcpbuffer
+ * @see_also: #GstRTPBasePayload, #GstRTPBaseDepayload, gstrtcpbuffer
  *
  * <refsect2>
  * <para>
@@ -92,41 +92,44 @@ typedef struct _GstRTPHeader
  *
  * Allocate enough data in @buffer to hold an RTP packet with @csrc_count CSRCs,
  * a payload length of @payload_len and padding of @pad_len.
- * MALLOCDATA of @buffer will be overwritten and will not be freed. 
+ * @buffer must be writable and all previous memory in @buffer will be freed.
  * All other RTP header fields will be set to 0/FALSE.
  */
 void
 gst_rtp_buffer_allocate_data (GstBuffer * buffer, guint payload_len,
     guint8 pad_len, guint8 csrc_count)
 {
-  guint len;
-  guint8 *data;
+  GstMapInfo map;
   GstMemory *mem;
+  gsize len;
 
   g_return_if_fail (csrc_count <= 15);
   g_return_if_fail (GST_IS_BUFFER (buffer));
+  g_return_if_fail (gst_buffer_is_writable (buffer));
+
+  gst_buffer_remove_all_memory (buffer);
 
   len = GST_RTP_HEADER_LEN + csrc_count * sizeof (guint32)
       + payload_len + pad_len;
 
-  mem = gst_allocator_alloc (NULL, len, 0);
+  mem = gst_allocator_alloc (NULL, len, NULL);
 
-  data = gst_memory_map (mem, NULL, NULL, GST_MAP_WRITE);
+  gst_memory_map (mem, &map, GST_MAP_WRITE);
   /* fill in defaults */
-  GST_RTP_HEADER_VERSION (data) = GST_RTP_VERSION;
-  GST_RTP_HEADER_PADDING (data) = FALSE;
-  GST_RTP_HEADER_EXTENSION (data) = FALSE;
-  GST_RTP_HEADER_CSRC_COUNT (data) = csrc_count;
-  memset (GST_RTP_HEADER_CSRC_LIST_OFFSET (data, 0), 0,
+  GST_RTP_HEADER_VERSION (map.data) = GST_RTP_VERSION;
+  GST_RTP_HEADER_PADDING (map.data) = FALSE;
+  GST_RTP_HEADER_EXTENSION (map.data) = FALSE;
+  GST_RTP_HEADER_CSRC_COUNT (map.data) = csrc_count;
+  memset (GST_RTP_HEADER_CSRC_LIST_OFFSET (map.data, 0), 0,
       csrc_count * sizeof (guint32));
-  GST_RTP_HEADER_MARKER (data) = FALSE;
-  GST_RTP_HEADER_PAYLOAD_TYPE (data) = 0;
-  GST_RTP_HEADER_SEQ (data) = 0;
-  GST_RTP_HEADER_TIMESTAMP (data) = 0;
-  GST_RTP_HEADER_SSRC (data) = 0;
-  gst_memory_unmap (mem, data, len);
+  GST_RTP_HEADER_MARKER (map.data) = FALSE;
+  GST_RTP_HEADER_PAYLOAD_TYPE (map.data) = 0;
+  GST_RTP_HEADER_SEQ (map.data) = 0;
+  GST_RTP_HEADER_TIMESTAMP (map.data) = 0;
+  GST_RTP_HEADER_SSRC (map.data) = 0;
+  gst_memory_unmap (mem, &map);
 
-  gst_buffer_take_memory (buffer, -1, mem);
+  gst_buffer_append_memory (buffer, mem);
 }
 
 /**
@@ -143,16 +146,10 @@ gst_rtp_buffer_allocate_data (GstBuffer * buffer, guint payload_len,
 GstBuffer *
 gst_rtp_buffer_new_take_data (gpointer data, gsize len)
 {
-  GstBuffer *result;
-
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail (len > 0, NULL);
 
-  result = gst_buffer_new ();
-  gst_buffer_take_memory (result, -1,
-      gst_memory_new_wrapped (0, data, g_free, len, 0, len));
-
-  return result;
+  return gst_buffer_new_wrapped (data, len);
 }
 
 /**
@@ -201,7 +198,7 @@ gst_rtp_buffer_new_allocate (guint payload_len, guint8 pad_len,
 
 /**
  * gst_rtp_buffer_new_allocate_len:
- * @rtp_len: the total length of the packet
+ * @packet_len: the total length of the packet
  * @pad_len: the amount of padding
  * @csrc_count: the number of CSRC entries
  *
@@ -323,7 +320,7 @@ validate_data (guint8 * data, guint len, guint8 * payload, guint payload_len)
     guint8 *extpos;
     guint16 extlen;
 
-    /* this points to the extenstion bits and header length */
+    /* this points to the extension bits and header length */
     extpos = &data[header_len];
 
     /* skip the header and check that we have enough space */
@@ -411,14 +408,13 @@ gboolean
 gst_rtp_buffer_validate (GstBuffer * buffer)
 {
   gboolean res;
-  guint8 *data;
-  gsize len;
+  GstMapInfo map;
 
   g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
 
-  data = gst_buffer_map (buffer, &len, NULL, GST_MAP_READ);
-  res = validate_data (data, len, NULL, 0);
-  gst_buffer_unmap (buffer, data, len);
+  gst_buffer_map (buffer, &map, GST_MAP_READ);
+  res = validate_data (map.data, map.size, NULL, 0);
+  gst_buffer_unmap (buffer, &map);
 
   return res;
 }
@@ -426,22 +422,16 @@ gst_rtp_buffer_validate (GstBuffer * buffer)
 gboolean
 gst_rtp_buffer_map (GstBuffer * buffer, GstMapFlags flags, GstRTPBuffer * rtp)
 {
-  guint8 *data;
-  gsize size, maxsize;
-
   g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
   g_return_val_if_fail (rtp != NULL, FALSE);
   g_return_val_if_fail (rtp->buffer == NULL, FALSE);
 
-  data = gst_buffer_map (buffer, &size, &maxsize, flags);
-  if (data == NULL)
+  if (!gst_buffer_map (buffer, &rtp->map[0], flags))
     return FALSE;
 
   rtp->buffer = buffer;
-  rtp->flags = flags;
-  rtp->data = data;
-  rtp->size = size;
-  rtp->maxsize = maxsize;
+  rtp->state = 0;
+  rtp->n_map = 1;
 
   return TRUE;
 }
@@ -452,9 +442,9 @@ gst_rtp_buffer_unmap (GstRTPBuffer * rtp)
   g_return_val_if_fail (rtp != NULL, FALSE);
   g_return_val_if_fail (rtp->buffer != NULL, FALSE);
 
-  gst_buffer_unmap (rtp->buffer, rtp->data, rtp->size);
-
+  gst_buffer_unmap (rtp->buffer, &rtp->map[0]);
   rtp->buffer = NULL;
+  rtp->n_map = 0;
 
   return TRUE;
 }
@@ -473,15 +463,15 @@ gst_rtp_buffer_set_packet_len (GstRTPBuffer * rtp, guint len)
 {
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
-  if (rtp->maxsize <= len) {
+  if (rtp->map[0].maxsize <= len) {
     /* FIXME, realloc bigger space */
     g_warning ("not implemented");
   }
 
   gst_buffer_set_size (rtp->buffer, len);
-  rtp->size = len;
+  rtp->map[0].size = len;
 
   /* remove any padding */
   GST_RTP_HEADER_PADDING (data) = FALSE;
@@ -516,7 +506,7 @@ gst_rtp_buffer_get_header_len (GstRTPBuffer * rtp)
   guint len;
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
   len = GST_RTP_HEADER_LEN + GST_RTP_HEADER_CSRC_SIZE (data);
   if (GST_RTP_HEADER_EXTENSION (data))
@@ -536,7 +526,7 @@ gst_rtp_buffer_get_header_len (GstRTPBuffer * rtp)
 guint8
 gst_rtp_buffer_get_version (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_VERSION (rtp->data);
+  return GST_RTP_HEADER_VERSION (rtp->map[0].data);
 }
 
 /**
@@ -551,7 +541,7 @@ gst_rtp_buffer_set_version (GstRTPBuffer * rtp, guint8 version)
 {
   g_return_if_fail (version < 0x04);
 
-  GST_RTP_HEADER_VERSION (rtp->data) = version;
+  GST_RTP_HEADER_VERSION (rtp->map[0].data) = version;
 }
 
 /**
@@ -565,12 +555,12 @@ gst_rtp_buffer_set_version (GstRTPBuffer * rtp, guint8 version)
 gboolean
 gst_rtp_buffer_get_padding (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_PADDING (rtp->data);
+  return GST_RTP_HEADER_PADDING (rtp->map[0].data);
 }
 
 /**
  * gst_rtp_buffer_set_padding:
- * @buffer: the buffer
+ * @rtp: the buffer
  * @padding: the new padding
  *
  * Set the padding bit on the RTP packet in @buffer to @padding.
@@ -578,7 +568,7 @@ gst_rtp_buffer_get_padding (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_padding (GstRTPBuffer * rtp, gboolean padding)
 {
-  GST_RTP_HEADER_PADDING (rtp->data) = padding;
+  GST_RTP_HEADER_PADDING (rtp->map[0].data) = padding;
 }
 
 /**
@@ -596,7 +586,7 @@ gst_rtp_buffer_pad_to (GstRTPBuffer * rtp, guint len)
 {
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
   if (len > 0)
     GST_RTP_HEADER_PADDING (data) = TRUE;
@@ -617,7 +607,7 @@ gst_rtp_buffer_pad_to (GstRTPBuffer * rtp, guint len)
 gboolean
 gst_rtp_buffer_get_extension (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_EXTENSION (rtp->data);
+  return GST_RTP_HEADER_EXTENSION (rtp->map[0].data);
 }
 
 /**
@@ -630,7 +620,7 @@ gst_rtp_buffer_get_extension (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_extension (GstRTPBuffer * rtp, gboolean extension)
 {
-  GST_RTP_HEADER_EXTENSION (rtp->data) = extension;
+  GST_RTP_HEADER_EXTENSION (rtp->map[0].data) = extension;
 }
 
 /**
@@ -658,7 +648,7 @@ gst_rtp_buffer_get_extension_data (GstRTPBuffer * rtp, guint16 * bits,
   guint len;
   guint8 *pdata;
 
-  pdata = rtp->data;
+  pdata = rtp->map[0].data;
 
   if (!GST_RTP_HEADER_EXTENSION (pdata))
     return FALSE;
@@ -671,8 +661,9 @@ gst_rtp_buffer_get_extension_data (GstRTPBuffer * rtp, guint16 * bits,
     *bits = GST_READ_UINT16_BE (pdata);
   if (wordlen)
     *wordlen = GST_READ_UINT16_BE (pdata + 2);
+  pdata += 4;
   if (data)
-    *data = pdata + 4;
+    *data = (gpointer *) pdata;
 
   return TRUE;
 }
@@ -699,17 +690,17 @@ gst_rtp_buffer_set_extension_data (GstRTPBuffer * rtp, guint16 bits,
   guint32 min_size = 0;
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
   /* check if the buffer is big enough to hold the extension */
   min_size =
       GST_RTP_HEADER_LEN + GST_RTP_HEADER_CSRC_SIZE (data) + 4 +
       length * sizeof (guint32);
-  if (G_UNLIKELY (min_size > rtp->size))
+  if (G_UNLIKELY (min_size > rtp->map[0].size))
     goto too_small;
 
   /* now we can set the extension bit */
-  GST_RTP_HEADER_EXTENSION (rtp->data) = TRUE;
+  GST_RTP_HEADER_EXTENSION (rtp->map[0].data) = TRUE;
 
   data += GST_RTP_HEADER_LEN + GST_RTP_HEADER_CSRC_SIZE (data);
   GST_WRITE_UINT16_BE (data, bits);
@@ -722,7 +713,7 @@ too_small:
   {
     g_warning
         ("rtp buffer too small: need more than %d bytes but only have %"
-        G_GSIZE_FORMAT " bytes", min_size, rtp->size);
+        G_GSIZE_FORMAT " bytes", min_size, rtp->map[0].size);
     return FALSE;
   }
 }
@@ -738,7 +729,7 @@ too_small:
 guint32
 gst_rtp_buffer_get_ssrc (GstRTPBuffer * rtp)
 {
-  return g_ntohl (GST_RTP_HEADER_SSRC (rtp->data));
+  return g_ntohl (GST_RTP_HEADER_SSRC (rtp->map[0].data));
 }
 
 /**
@@ -751,7 +742,7 @@ gst_rtp_buffer_get_ssrc (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_ssrc (GstRTPBuffer * rtp, guint32 ssrc)
 {
-  GST_RTP_HEADER_SSRC (rtp->data) = g_htonl (ssrc);
+  GST_RTP_HEADER_SSRC (rtp->map[0].data) = g_htonl (ssrc);
 }
 
 /**
@@ -765,7 +756,7 @@ gst_rtp_buffer_set_ssrc (GstRTPBuffer * rtp, guint32 ssrc)
 guint8
 gst_rtp_buffer_get_csrc_count (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_CSRC_COUNT (rtp->data);
+  return GST_RTP_HEADER_CSRC_COUNT (rtp->map[0].data);
 }
 
 /**
@@ -782,7 +773,7 @@ gst_rtp_buffer_get_csrc (GstRTPBuffer * rtp, guint8 idx)
 {
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
   g_return_val_if_fail (idx < GST_RTP_HEADER_CSRC_COUNT (data), 0);
 
@@ -802,7 +793,7 @@ gst_rtp_buffer_set_csrc (GstRTPBuffer * rtp, guint8 idx, guint32 csrc)
 {
   guint8 *data;
 
-  data = rtp->data;
+  data = rtp->map[0].data;
 
   g_return_if_fail (idx < GST_RTP_HEADER_CSRC_COUNT (data));
 
@@ -820,7 +811,7 @@ gst_rtp_buffer_set_csrc (GstRTPBuffer * rtp, guint8 idx, guint32 csrc)
 gboolean
 gst_rtp_buffer_get_marker (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_MARKER (rtp->data);
+  return GST_RTP_HEADER_MARKER (rtp->map[0].data);
 }
 
 /**
@@ -833,7 +824,7 @@ gst_rtp_buffer_get_marker (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_marker (GstRTPBuffer * rtp, gboolean marker)
 {
-  GST_RTP_HEADER_MARKER (rtp->data) = marker;
+  GST_RTP_HEADER_MARKER (rtp->map[0].data) = marker;
 }
 
 /**
@@ -847,7 +838,7 @@ gst_rtp_buffer_set_marker (GstRTPBuffer * rtp, gboolean marker)
 guint8
 gst_rtp_buffer_get_payload_type (GstRTPBuffer * rtp)
 {
-  return GST_RTP_HEADER_PAYLOAD_TYPE (rtp->data);
+  return GST_RTP_HEADER_PAYLOAD_TYPE (rtp->map[0].data);
 }
 
 /**
@@ -862,7 +853,7 @@ gst_rtp_buffer_set_payload_type (GstRTPBuffer * rtp, guint8 payload_type)
 {
   g_return_if_fail (payload_type < 0x80);
 
-  GST_RTP_HEADER_PAYLOAD_TYPE (rtp->data) = payload_type;
+  GST_RTP_HEADER_PAYLOAD_TYPE (rtp->map[0].data) = payload_type;
 }
 
 /**
@@ -876,7 +867,7 @@ gst_rtp_buffer_set_payload_type (GstRTPBuffer * rtp, guint8 payload_type)
 guint16
 gst_rtp_buffer_get_seq (GstRTPBuffer * rtp)
 {
-  return g_ntohs (GST_RTP_HEADER_SEQ (rtp->data));
+  return g_ntohs (GST_RTP_HEADER_SEQ (rtp->map[0].data));
 }
 
 /**
@@ -889,7 +880,7 @@ gst_rtp_buffer_get_seq (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_seq (GstRTPBuffer * rtp, guint16 seq)
 {
-  GST_RTP_HEADER_SEQ (rtp->data) = g_htons (seq);
+  GST_RTP_HEADER_SEQ (rtp->map[0].data) = g_htons (seq);
 }
 
 /**
@@ -903,7 +894,7 @@ gst_rtp_buffer_set_seq (GstRTPBuffer * rtp, guint16 seq)
 guint32
 gst_rtp_buffer_get_timestamp (GstRTPBuffer * rtp)
 {
-  return g_ntohl (GST_RTP_HEADER_TIMESTAMP (rtp->data));
+  return g_ntohl (GST_RTP_HEADER_TIMESTAMP (rtp->map[0].data));
 }
 
 /**
@@ -916,7 +907,7 @@ gst_rtp_buffer_get_timestamp (GstRTPBuffer * rtp)
 void
 gst_rtp_buffer_set_timestamp (GstRTPBuffer * rtp, guint32 timestamp)
 {
-  GST_RTP_HEADER_TIMESTAMP (rtp->data) = g_htonl (timestamp);
+  GST_RTP_HEADER_TIMESTAMP (rtp->map[0].data) = g_htonl (timestamp);
 }
 
 
@@ -994,8 +985,8 @@ gst_rtp_buffer_get_payload_len (GstRTPBuffer * rtp)
   guint len, size;
   guint8 *data;
 
-  size = rtp->size;
-  data = rtp->data;
+  size = rtp->map[0].size;
+  data = rtp->map[0].data;
 
   len = size - gst_rtp_buffer_get_header_len (rtp);
 
@@ -1017,7 +1008,7 @@ gst_rtp_buffer_get_payload_len (GstRTPBuffer * rtp)
 gpointer
 gst_rtp_buffer_get_payload (GstRTPBuffer * rtp)
 {
-  return rtp->data + gst_rtp_buffer_get_header_len (rtp);
+  return rtp->map[0].data + gst_rtp_buffer_get_header_len (rtp);
 }
 
 /**
@@ -1216,13 +1207,13 @@ gst_rtp_buffer_get_extension_twobytes_header (GstRTPBuffer * rtp,
     guint8 * appbits, guint8 id, guint nth, gpointer * data, guint * size)
 {
   guint16 bits;
-  guint8 *pdata;
+  guint8 *pdata = NULL;
   guint wordlen;
   guint bytelen;
   gulong offset = 0;
   guint count = 0;
 
-  if (!gst_rtp_buffer_get_extension_data (rtp, &bits, (gpointer) & pdata,
+  if (!gst_rtp_buffer_get_extension_data (rtp, &bits, (gpointer *) & pdata,
           &wordlen))
     return FALSE;
 
@@ -1333,7 +1324,7 @@ gst_rtp_buffer_add_extension_onebyte_header (GstRTPBuffer * rtp, guint8 id,
     gpointer data, guint size)
 {
   guint16 bits;
-  guint8 *pdata;
+  guint8 *pdata = 0;
   guint wordlen;
   gboolean has_bit;
 
@@ -1357,10 +1348,10 @@ gst_rtp_buffer_add_extension_onebyte_header (GstRTPBuffer * rtp, guint8 id,
       return FALSE;
 
     nextext = pdata + offset;
-    offset = nextext - rtp->data;
+    offset = nextext - rtp->map[0].data;
 
     /* Don't add extra header if there isn't enough space */
-    if (rtp->size < offset + size + 1)
+    if (rtp->map[0].size < offset + size + 1)
       return FALSE;
 
     nextext[0] = (id << 4) | (0x0F & (size - 1));
@@ -1454,7 +1445,7 @@ gst_rtp_buffer_add_extension_twobytes_header (GstRTPBuffer * rtp,
     guint8 appbits, guint8 id, gpointer data, guint size)
 {
   guint16 bits;
-  guint8 *pdata;
+  guint8 *pdata = 0;
   guint wordlen;
   gboolean has_bit;
 
@@ -1477,10 +1468,10 @@ gst_rtp_buffer_add_extension_twobytes_header (GstRTPBuffer * rtp,
 
     nextext = pdata + offset;
 
-    offset = nextext - rtp->data;
+    offset = nextext - rtp->map[0].data;
 
     /* Don't add extra header if there isn't enough space */
-    if (rtp->size < offset + size + 2)
+    if (rtp->map[0].size < offset + size + 2)
       return FALSE;
 
     nextext[0] = id;

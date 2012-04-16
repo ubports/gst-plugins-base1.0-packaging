@@ -3,22 +3,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstnavigation</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-interfaces.html" title="Interfaces Library">
-<link rel="prev" href="gst-plugins-base-libs-gstmixertrack.html" title="gstmixertrack">
-<link rel="next" href="gst-plugins-base-libs-gstpropertyprobe.html" title="gstpropertyprobe">
+<link rel="prev" href="gstreamer-interfaces.html" title="Interfaces Library">
+<link rel="next" href="gst-plugins-base-libs-gsttuner.html" title="gsttuner">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstmixertrack.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gstreamer-interfaces.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-interfaces.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstpropertyprobe.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
+<td><a accesskey="n" href="gst-plugins-base-libs-gsttuner.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstnavigation.synopsis" class="shortcut">Top</a>
@@ -161,7 +161,7 @@ mouse moving over a clickable region, or the set of available angles changing.
 </p>
 <p>
 The GstNavigation message functions provide functions for creating and parsing
-custom bus messages for signalling GstNavigation changes.
+custom bus messages for signaling GstNavigation changes.
 </p>
 </li>
 </ul></div>
@@ -178,20 +178,20 @@ custom bus messages for signalling GstNavigation changes.
 <div class="refsect2">
 <a name="GstNavigationInterface"></a><h3>struct GstNavigationInterface</h3>
 <pre class="programlisting">struct GstNavigationInterface {
-  GTypeInterface g_iface;
+  GTypeInterface iface;
 
   /* virtual functions */
   void (*send_event) (GstNavigation *navigation, GstStructure *structure);
 };
 </pre>
 <p>
-Color-balance interface.
+Navigation interface.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstNavigationInterface.g-iface"></a>g_iface</code></em>;</span></p></td>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstNavigationInterface.iface"></a>iface</code></em>;</span></p></td>
 <td>the parent interface</td>
 </tr>
 <tr>

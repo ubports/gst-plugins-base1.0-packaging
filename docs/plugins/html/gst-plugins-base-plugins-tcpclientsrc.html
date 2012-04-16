@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>tcpclientsrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-subtitleoverlay.html" title="subtitleoverlay">
 <link rel="next" href="gst-plugins-base-plugins-tcpclientsink.html" title="tcpclientsink">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-subtitleoverlay.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -69,20 +69,31 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="id535377"></a><h3>Example launch line</h3>
-<div class="informalexample"><pre class="programlisting">
-# server:
-nc -l -p 3000
-# client:
-gst-launch tcpclientsrc protocol=none port=3000 ! fdsink fd=2
-</pre></div> everything you type in the server is shown on the client
+<a name="idp11302480"></a><h3>Example launch line</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc"># server:</span>
+nc <span class="gtkdoc opt">-</span>l <span class="gtkdoc opt">-</span>p <span class="number">3000</span>
+<span class="gtkdoc ppc"># client:</span>
+gst<span class="gtkdoc opt">-</span>launch tcpclientsrc port<span class="gtkdoc opt">=</span><span class="number">3000</span> <span class="gtkdoc opt">!</span> fdsink fd<span class="gtkdoc opt">=</span><span class="number">2</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ everything you type in the server is shown on the client
 </div>
 <p>
 </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id535400"></a><h3>Element Information</h3>
+<a name="idp11305088"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -105,7 +116,7 @@ gst-launch tcpclientsrc protocol=none port=3000 ! fdsink fd=2
 </div>
 <hr>
 <div class="refsect2">
-<a name="id530891"></a><h3>Element Pads</h3>
+<a name="idp12412608"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

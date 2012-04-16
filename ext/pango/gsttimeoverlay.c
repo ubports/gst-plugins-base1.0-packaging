@@ -48,7 +48,7 @@
 
 #include <gst/video/video.h>
 
-#include <gsttimeoverlay.h>
+#include "gsttimeoverlay.h"
 
 #define gst_time_overlay_parent_class parent_class
 G_DEFINE_TYPE (GstTimeOverlay, gst_time_overlay, GST_TYPE_BASE_TEXT_OVERLAY);
@@ -113,7 +113,7 @@ gst_time_overlay_class_init (GstTimeOverlayClass * klass)
   gsttextoverlay_class = (GstBaseTextOverlayClass *) klass;
   gstelement_class = (GstElementClass *) klass;
 
-  gst_element_class_set_details_simple (gstelement_class, "Time overlay",
+  gst_element_class_set_static_metadata (gstelement_class, "Time overlay",
       "Filter/Editor/Video",
       "Overlays buffer time stamps on a video stream",
       "Tim-Philipp Müller <tim@centricular.net>");

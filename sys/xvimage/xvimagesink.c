@@ -22,7 +22,7 @@
  * SECTION:element-xvimagesink
  *
  * XvImageSink renders video frames to a drawable (XWindow) on a local display
- * using the XVideo extension. Rendering to a remote display is theorically
+ * using the XVideo extension. Rendering to a remote display is theoretically
  * possible but i doubt that the XVideo extension is actually available when
  * connecting to a remote display. This element can receive a Window ID from the
  * application through the XOverlay interface and will then render video frames
@@ -109,23 +109,31 @@
 
 /* for developers: there are two useful tools : xvinfo and xvattr */
 
+/* FIXME 0.11: suppress warnings for deprecated API such as GValueArray
+ * with newer GLib versions (>= 2.31.0) */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 /* Our interfaces */
 #include <gst/interfaces/navigation.h>
-#include <gst/interfaces/videooverlay.h>
-#include <gst/interfaces/colorbalance.h>
-#include <gst/interfaces/propertyprobe.h>
+#include <gst/video/videooverlay.h>
+#include <gst/video/colorbalance.h>
 /* Helper functions */
-#include <gst/video/gstmetavideo.h>
+#include <gst/video/gstvideometa.h>
 
 /* Object header */
 #include "xvimagesink.h"
 
 /* Debugging category */
 #include <gst/gstinfo.h>
+
+#include "gst/glib-compat-private.h"
+
+/* for XkbKeycodeToKeysym */
+#include <X11/XKBlib.h>
 
 GST_DEBUG_CATEGORY_EXTERN (gst_debug_xvimagesink);
 GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
@@ -194,10 +202,9 @@ enum
 /*                                             */
 /* =========================================== */
 static void gst_xvimagesink_navigation_init (GstNavigationInterface * iface);
-static void gst_xvimagesink_video_overlay_init (GstVideoOverlayIface * iface);
-static void gst_xvimagesink_colorbalance_init (GstColorBalanceClass * iface);
-static void
-gst_xvimagesink_property_probe_interface_init (GstPropertyProbeInterface *
+static void gst_xvimagesink_video_overlay_init (GstVideoOverlayInterface *
+    iface);
+static void gst_xvimagesink_colorbalance_init (GstColorBalanceInterface *
     iface);
 #define gst_xvimagesink_parent_class parent_class
 G_DEFINE_TYPE_WITH_CODE (GstXvImageSink, gst_xvimagesink, GST_TYPE_VIDEO_SINK,
@@ -206,9 +213,7 @@ G_DEFINE_TYPE_WITH_CODE (GstXvImageSink, gst_xvimagesink, GST_TYPE_VIDEO_SINK,
     G_IMPLEMENT_INTERFACE (GST_TYPE_VIDEO_OVERLAY,
         gst_xvimagesink_video_overlay_init);
     G_IMPLEMENT_INTERFACE (GST_TYPE_COLOR_BALANCE,
-        gst_xvimagesink_colorbalance_init);
-    G_IMPLEMENT_INTERFACE (GST_TYPE_PROPERTY_PROBE,
-        gst_xvimagesink_property_probe_interface_init));
+        gst_xvimagesink_colorbalance_init));
 
 
 /* ============================================================= */
@@ -267,8 +272,8 @@ gst_xvimagesink_xwindow_draw_borders (GstXvImageSink * xvimagesink,
 static gboolean
 gst_xvimagesink_xvimage_put (GstXvImageSink * xvimagesink, GstBuffer * xvimage)
 {
-  GstMetaXvImage *meta;
-  GstMetaVideoCrop *crop;
+  GstXvImageMeta *meta;
+  GstVideoCropMeta *crop;
   GstVideoRectangle result;
   gboolean draw_border = FALSE;
   GstVideoRectangle src, dst;
@@ -309,15 +314,17 @@ gst_xvimagesink_xvimage_put (GstXvImageSink * xvimagesink, GstBuffer * xvimage)
     }
   }
 
-  meta = gst_buffer_get_meta_xvimage (xvimage);
+  meta = gst_buffer_get_xvimage_meta (xvimage);
 
-  crop = gst_buffer_get_meta_video_crop (xvimage);
+  crop = gst_buffer_get_video_crop_meta (xvimage);
 
   if (crop) {
     src.x = crop->x + meta->x;
     src.y = crop->y + meta->y;
     src.w = crop->width;
     src.h = crop->height;
+    GST_LOG_OBJECT (xvimagesink,
+        "crop %dx%d-%dx%d", crop->x, crop->y, crop->width, crop->height);
   } else {
     src.x = meta->x;
     src.y = meta->y;
@@ -718,6 +725,7 @@ gst_xvimagesink_handle_xevents (GstXvImageSink * xvimagesink)
           KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask,
           &e)) {
     KeySym keysym;
+    const char *key_str = NULL;
 
     /* We lock only for the X function call */
     g_mutex_unlock (xvimagesink->x_lock);
@@ -744,24 +752,20 @@ gst_xvimagesink_handle_xevents (GstXvImageSink * xvimagesink)
       case KeyRelease:
         /* Key pressed/released over our window. We send upstream
            events for interactivity/navigation */
-        GST_DEBUG ("xvimagesink key %d pressed over window at %d,%d",
-            e.xkey.keycode, e.xkey.x, e.xkey.y);
         g_mutex_lock (xvimagesink->x_lock);
-        keysym = XKeycodeToKeysym (xvimagesink->xcontext->disp,
-            e.xkey.keycode, 0);
-        g_mutex_unlock (xvimagesink->x_lock);
+        keysym = XkbKeycodeToKeysym (xvimagesink->xcontext->disp,
+            e.xkey.keycode, 0, 0);
         if (keysym != NoSymbol) {
-          char *key_str = NULL;
-
-          g_mutex_lock (xvimagesink->x_lock);
           key_str = XKeysymToString (keysym);
-          g_mutex_unlock (xvimagesink->x_lock);
-          gst_navigation_send_key_event (GST_NAVIGATION (xvimagesink),
-              e.type == KeyPress ? "key-press" : "key-release", key_str);
         } else {
-          gst_navigation_send_key_event (GST_NAVIGATION (xvimagesink),
-              e.type == KeyPress ? "key-press" : "key-release", "unknown");
+          key_str = "unknown";
         }
+        g_mutex_unlock (xvimagesink->x_lock);
+        GST_DEBUG_OBJECT (xvimagesink,
+            "key %d pressed over window at %d,%d (%s)",
+            e.xkey.keycode, e.xkey.x, e.xkey.y, key_str);
+        gst_navigation_send_key_event (GST_NAVIGATION (xvimagesink),
+            e.type == KeyPress ? "key-press" : "key-release", key_str);
         break;
       default:
         GST_DEBUG_OBJECT (xvimagesink, "xvimagesink unhandled X event (%d)",
@@ -909,7 +913,7 @@ gst_xvimagesink_get_xv_support (GstXvImageSink * xvimagesink,
     xcontext->adaptors[i] = g_strdup (adaptors[i].name);
   }
 
-  if (xvimagesink->adaptor_no >= 0 &&
+  if (xvimagesink->adaptor_no != -1 &&
       xvimagesink->adaptor_no < xcontext->nb_adaptors) {
     /* Find xv port from user defined adaptor */
     gst_lookup_xv_port_from_adaptor (xcontext, adaptors,
@@ -1173,8 +1177,8 @@ gst_xvimagesink_manage_event_thread (GstXvImageSink * xvimagesink)
       GST_DEBUG_OBJECT (xvimagesink, "run xevent thread, expose %d, events %d",
           xvimagesink->handle_expose, xvimagesink->handle_events);
       xvimagesink->running = TRUE;
-      xvimagesink->event_thread = g_thread_create (
-          (GThreadFunc) gst_xvimagesink_event_thread, xvimagesink, TRUE, NULL);
+      xvimagesink->event_thread = g_thread_try_new ("xvimagesink-events",
+          (GThreadFunc) gst_xvimagesink_event_thread, xvimagesink, NULL);
     }
   } else {
     if (xvimagesink->event_thread) {
@@ -1544,6 +1548,7 @@ gst_xvimagesink_setcaps (GstBaseSink * bsink, GstCaps * caps)
   gint display_par_n, display_par_d;    /* display's PAR */
   guint num, den;
   gint size;
+  static GstAllocationParams params = { 0, 0, 0, 15, };
 
   xvimagesink = GST_XVIMAGESINK (bsink);
 
@@ -1652,11 +1657,15 @@ gst_xvimagesink_setcaps (GstBaseSink * bsink, GstCaps * caps)
   newpool = gst_xvimage_buffer_pool_new (xvimagesink);
 
   structure = gst_buffer_pool_get_config (newpool);
-  gst_buffer_pool_config_set (structure, caps, size, 2, 0, 0, 15);
+  gst_buffer_pool_config_set_params (structure, caps, size, 2, 0);
+  gst_buffer_pool_config_set_allocator (structure, NULL, &params);
   if (!gst_buffer_pool_set_config (newpool, structure))
     goto config_failed;
 
   oldpool = xvimagesink->pool;
+  /* we don't activate the pool yet, this will be done by downstream after it
+   * has configured the pool. If downstream does not want our pool we will
+   * activate it when we render into it */
   xvimagesink->pool = newpool;
   g_mutex_unlock (xvimagesink->flow_lock);
 
@@ -1801,12 +1810,12 @@ gst_xvimagesink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
 {
   GstFlowReturn res;
   GstXvImageSink *xvimagesink;
-  GstMetaXvImage *meta;
+  GstXvImageMeta *meta;
   GstBuffer *to_put;
 
   xvimagesink = GST_XVIMAGESINK (vsink);
 
-  meta = gst_buffer_get_meta_xvimage (buf);
+  meta = gst_buffer_get_xvimage_meta (buf);
 
   if (meta && meta->sink == xvimagesink) {
     /* If this buffer has been allocated using our buffer management we simply
@@ -1829,13 +1838,10 @@ gst_xvimagesink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
     if (!gst_buffer_pool_set_active (xvimagesink->pool, TRUE))
       goto activate_failed;
 
-    /* take a buffer form our pool */
+    /* take a buffer from our pool */
     res = gst_buffer_pool_acquire_buffer (xvimagesink->pool, &to_put, NULL);
     if (res != GST_FLOW_OK)
       goto no_buffer;
-
-    if (gst_buffer_get_size (to_put) < gst_buffer_get_size (buf))
-      goto wrong_size;
 
     GST_CAT_LOG_OBJECT (GST_CAT_PERFORMANCE, xvimagesink,
         "slow copy into bufferpool buffer %p", to_put);
@@ -1876,16 +1882,6 @@ no_buffer:
     /* No image available. That's very bad ! */
     GST_WARNING_OBJECT (xvimagesink, "could not create image");
     return res;
-  }
-wrong_size:
-  {
-    GST_ELEMENT_ERROR (xvimagesink, RESOURCE, WRITE,
-        ("Failed to create output image buffer"),
-        ("XServer allocated buffer size did not match input buffer %"
-            G_GSIZE_FORMAT " - %" G_GSIZE_FORMAT, gst_buffer_get_size (to_put),
-            gst_buffer_get_size (buf)));
-    res = GST_FLOW_ERROR;
-    goto done;
   }
 invalid_buffer:
   {
@@ -1934,10 +1930,7 @@ gst_xvimagesink_event (GstBaseSink * sink, GstEvent * event)
     default:
       break;
   }
-  if (GST_BASE_SINK_CLASS (parent_class)->event)
-    return GST_BASE_SINK_CLASS (parent_class)->event (sink, event);
-  else
-    return TRUE;
+  return GST_BASE_SINK_CLASS (parent_class)->event (sink, event);
 }
 
 static gboolean
@@ -1961,12 +1954,12 @@ gst_xvimagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
   g_mutex_unlock (xvimagesink->flow_lock);
 
   if (pool != NULL) {
-    const GstCaps *pcaps;
+    GstCaps *pcaps;
 
     /* we had a pool, check caps */
     GST_DEBUG_OBJECT (xvimagesink, "check existing pool caps");
     config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_get (config, &pcaps, &size, NULL, NULL, NULL, NULL);
+    gst_buffer_pool_config_get_params (config, &pcaps, &size, NULL, NULL);
 
     if (!gst_caps_is_equal (caps, pcaps)) {
       GST_DEBUG_OBJECT (xvimagesink, "pool has different caps");
@@ -1974,6 +1967,7 @@ gst_xvimagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
       gst_object_unref (pool);
       pool = NULL;
     }
+    gst_structure_free (config);
   }
   if (pool == NULL && need_pool) {
     GstVideoInfo info;
@@ -1988,16 +1982,16 @@ gst_xvimagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
     size = info.size;
 
     config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_set (config, caps, size, 0, 0, 0, 0);
+    gst_buffer_pool_config_set_params (config, caps, size, 0, 0);
     if (!gst_buffer_pool_set_config (pool, config))
       goto config_failed;
   }
   /* we need at least 2 buffer because we hold on to the last one */
-  gst_query_set_allocation_params (query, size, 2, 0, 0, 0, pool);
+  gst_query_add_allocation_pool (query, pool, size, 2, 0);
 
   /* we also support various metadata */
-  gst_query_add_allocation_meta (query, GST_META_API_VIDEO);
-  gst_query_add_allocation_meta (query, GST_META_API_VIDEO_CROP);
+  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE);
+  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE);
 
   gst_object_unref (pool);
 
@@ -2240,7 +2234,7 @@ gst_xvimagesink_set_render_rectangle (GstVideoOverlay * overlay, gint x, gint y,
 }
 
 static void
-gst_xvimagesink_video_overlay_init (GstVideoOverlayIface * iface)
+gst_xvimagesink_video_overlay_init (GstVideoOverlayInterface * iface)
 {
   iface->set_window_handle = gst_xvimagesink_set_window_handle;
   iface->expose = gst_xvimagesink_expose;
@@ -2321,15 +2315,22 @@ gst_xvimagesink_colorbalance_get_value (GstColorBalance * balance,
   return value;
 }
 
-static void
-gst_xvimagesink_colorbalance_init (GstColorBalanceClass * iface)
+static GstColorBalanceType
+gst_xvimagesink_colorbalance_get_balance_type (GstColorBalance * balance)
 {
-  GST_COLOR_BALANCE_TYPE (iface) = GST_COLOR_BALANCE_HARDWARE;
+  return GST_COLOR_BALANCE_HARDWARE;
+}
+
+static void
+gst_xvimagesink_colorbalance_init (GstColorBalanceInterface * iface)
+{
   iface->list_channels = gst_xvimagesink_colorbalance_list_channels;
   iface->set_value = gst_xvimagesink_colorbalance_set_value;
   iface->get_value = gst_xvimagesink_colorbalance_get_value;
+  iface->get_balance_type = gst_xvimagesink_colorbalance_get_balance_type;
 }
 
+#if 0
 static const GList *
 gst_xvimagesink_probe_get_properties (GstPropertyProbe * probe)
 {
@@ -2488,6 +2489,7 @@ gst_xvimagesink_property_probe_interface_init (GstPropertyProbeInterface *
   iface->needs_probe = gst_xvimagesink_probe_needs_probe;
   iface->get_values = gst_xvimagesink_probe_get_values;
 }
+#endif
 
 /* =========================================== */
 /*                                             */
@@ -2824,8 +2826,8 @@ gst_xvimagesink_class_init (GstXvImageSinkClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_SYNCHRONOUS,
       g_param_spec_boolean ("synchronous", "Synchronous",
-          "When enabled, runs "
-          "the X display in synchronous mode. (used only for debugging)", FALSE,
+          "When enabled, runs the X display in synchronous mode. "
+          "(unrelated to A/V sync, used only for debugging)", FALSE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_PIXEL_ASPECT_RATIO,
       g_param_spec_string ("pixel-aspect-ratio", "Pixel Aspect Ratio",
@@ -2934,7 +2936,7 @@ gst_xvimagesink_class_init (GstXvImageSinkClass * klass)
 
   gobject_class->finalize = gst_xvimagesink_finalize;
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Video sink", "Sink/Video",
       "A Xv based videosink", "Julien Moutte <julien@moutte.net>");
 

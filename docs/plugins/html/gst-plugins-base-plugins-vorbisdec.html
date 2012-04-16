@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>vorbisdec</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-volume.html" title="volume">
 <link rel="next" href="gst-plugins-base-plugins-vorbisenc.html" title="vorbisenc">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-volume.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-vorbisenc.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -49,7 +49,8 @@
    +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
          +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
-                     +----GstVorbisDec
+                     +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder">GstAudioDecoder</a>
+                           +----GstVorbisDec
 </pre>
 </div>
 <div class="refsect1">
@@ -57,7 +58,7 @@
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id487196"></a><h3>Element Information</h3>
+<a name="idp7430624"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -80,7 +81,7 @@
 </div>
 <hr>
 <div class="refsect2">
-<a name="id506258"></a><h3>Element Pads</h3>
+<a name="idp6941312"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -119,7 +120,7 @@
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-raw-float, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 256 ], endianness=(int)1234, width=(int)32</td>
+<td>audio/x-raw, format=(string)F32LE, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 256 ]</td>
 </tr>
 </tbody>
 </table></div>

@@ -21,7 +21,7 @@
 /**
  * SECTION:element-videotestsrc
  *
- * The videotestsrc element is used to produce test video data in a wide variaty
+ * The videotestsrc element is used to produce test video data in a wide variety
  * of formats. The video test data produced can be controlled with the "pattern"
  * property.
  *
@@ -92,7 +92,8 @@ static void gst_video_test_src_get_property (GObject * object, guint prop_id,
 static GstCaps *gst_video_test_src_getcaps (GstBaseSrc * bsrc,
     GstCaps * filter);
 static gboolean gst_video_test_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps);
-static void gst_video_test_src_src_fixate (GstBaseSrc * bsrc, GstCaps * caps);
+static GstCaps *gst_video_test_src_src_fixate (GstBaseSrc * bsrc,
+    GstCaps * caps);
 
 static gboolean gst_video_test_src_is_seekable (GstBaseSrc * psrc);
 static gboolean gst_video_test_src_do_seek (GstBaseSrc * bsrc,
@@ -263,7 +264,7 @@ gst_video_test_src_class_init (GstVideoTestSrcClass * klass)
           G_MININT32, G_MAXINT32, DEFAULT_HORIZONTAL_SPEED,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Video test source", "Source/Video",
       "Creates a test video stream", "David A. Schleef <ds@schleef.org>");
 
@@ -301,10 +302,12 @@ gst_video_test_src_init (GstVideoTestSrc * src)
   gst_base_src_set_live (GST_BASE_SRC (src), DEFAULT_IS_LIVE);
 }
 
-static void
+static GstCaps *
 gst_video_test_src_src_fixate (GstBaseSrc * bsrc, GstCaps * caps)
 {
   GstStructure *structure;
+
+  caps = gst_caps_make_writable (caps);
 
   structure = gst_caps_get_structure (caps, 0);
 
@@ -322,7 +325,9 @@ gst_video_test_src_src_fixate (GstBaseSrc * bsrc, GstCaps * caps)
   if (gst_structure_has_field (structure, "interlaced"))
     gst_structure_fixate_field_boolean (structure, "interlaced", FALSE);
 
-  GST_BASE_SRC_CLASS (parent_class)->fixate (bsrc, caps);
+  caps = GST_BASE_SRC_CLASS (parent_class)->fixate (bsrc, caps);
+
+  return caps;
 }
 
 static void
@@ -606,25 +611,44 @@ gst_video_test_src_decide_allocation (GstBaseSrc * bsrc, GstQuery * query)
 {
   GstVideoTestSrc *videotestsrc;
   GstBufferPool *pool;
-  guint size, min, max, prefix, alignment;
+  gboolean update;
+  guint size, min, max;
+  GstStructure *config;
 
   videotestsrc = GST_VIDEO_TEST_SRC (bsrc);
 
-  gst_query_parse_allocation_params (query, &size, &min, &max, &prefix,
-      &alignment, &pool);
-  /* adjust size */
-  size = MAX (size, videotestsrc->info.size);
+  if (gst_query_get_n_allocation_pools (query) > 0) {
+    gst_query_parse_nth_allocation_pool (query, 0, &pool, &size, &min, &max);
 
-  if (pool) {
-    GstStructure *config;
-
-    config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_add_option (config,
-        GST_BUFFER_POOL_OPTION_META_VIDEO);
-    gst_buffer_pool_set_config (pool, config);
+    /* adjust size */
+    size = MAX (size, videotestsrc->info.size);
+    update = TRUE;
+  } else {
+    pool = NULL;
+    size = videotestsrc->info.size;
+    min = max = 0;
+    update = FALSE;
   }
-  gst_query_set_allocation_params (query, size, min, max, prefix,
-      alignment, pool);
+
+  /* no downstream pool, make our own */
+  if (pool == NULL) {
+    pool = gst_video_buffer_pool_new ();
+  }
+
+  config = gst_buffer_pool_get_config (pool);
+  if (gst_query_has_allocation_meta (query, GST_VIDEO_META_API_TYPE)) {
+    gst_buffer_pool_config_add_option (config,
+        GST_BUFFER_POOL_OPTION_VIDEO_META);
+  }
+  gst_buffer_pool_set_config (pool, config);
+
+  if (update)
+    gst_query_set_nth_allocation_pool (query, 0, pool, size, min, max);
+  else
+    gst_query_add_allocation_pool (query, pool, size, min, max);
+
+  if (pool)
+    gst_object_unref (pool);
 
   return TRUE;
 }
@@ -646,7 +670,7 @@ gst_video_test_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps)
     if (!gst_video_info_from_caps (&info, caps))
       goto parse_failed;
 
-  } else if (gst_structure_has_name (structure, "video/x-raw-bayer")) {
+  } else if (gst_structure_has_name (structure, "video/x-bayer")) {
     if (!gst_video_test_src_parse_caps (caps, &info.width, &info.height,
             &info.fps_n, &info.fps_d, &info.colorimetry))
       goto parse_failed;
@@ -829,7 +853,7 @@ not_negotiated:
 eos:
   {
     GST_DEBUG_OBJECT (src, "eos: 0 framerate, frame %d", (gint) src->n_frames);
-    return GST_FLOW_UNEXPECTED;
+    return GST_FLOW_EOS;
   }
 invalid_frame:
   {
@@ -867,8 +891,6 @@ gst_video_test_src_stop (GstBaseSrc * basesrc)
 static gboolean
 plugin_init (GstPlugin * plugin)
 {
-  gst_videotestsrc_orc_init ();
-
   GST_DEBUG_CATEGORY_INIT (video_test_src_debug, "videotestsrc", 0,
       "Video Test Source");
 
@@ -878,6 +900,6 @@ plugin_init (GstPlugin * plugin)
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
     GST_VERSION_MINOR,
-    "videotestsrc",
+    videotestsrc,
     "Creates a test video stream",
     plugin_init, VERSION, GST_LICENSE, GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)

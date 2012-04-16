@@ -261,14 +261,15 @@ GST_START_TEST (test_timestamps)
 
 GST_END_TEST;
 
-static GstProbeReturn
-drop_second_data_buffer (GstPad * droppad, GstProbeType type,
-    GstBuffer * buffer, gpointer unused)
+static GstPadProbeReturn
+drop_second_data_buffer (GstPad * droppad, GstPadProbeInfo * info,
+    gpointer unused)
 {
-  GstProbeReturn res = GST_PROBE_OK;
+  GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER (info);
+  GstPadProbeReturn res = GST_PAD_PROBE_OK;
 
-  if (GST_BUFFER_OFFSET (buffer) == 1024)
-    res = GST_PROBE_DROP;
+  if (GST_BUFFER_OFFSET (buffer) == 4096)
+    res = GST_PAD_PROBE_DROP;
 
   GST_DEBUG ("dropping %d", res);
 
@@ -284,8 +285,10 @@ GST_START_TEST (test_discontinuity)
   GError *error = NULL;
   guint drop_id;
 
+  /* make audioencoder act sufficiently pedantic */
   pipe_str = g_strdup_printf ("audiotestsrc samplesperbuffer=1024"
-      " ! audio/x-raw,rate=44100" " ! audioconvert ! vorbisenc ! fakesink");
+      " ! audio/x-raw,rate=44100" " ! audioconvert "
+      " ! vorbisenc tolerance=10000000 ! fakesink");
 
   bin = gst_parse_launch (pipe_str, &error);
   fail_unless (bin != NULL, "Error parsing pipeline: %s",
@@ -315,7 +318,7 @@ GST_START_TEST (test_discontinuity)
     gst_object_unref (sink);
   }
 
-  drop_id = gst_pad_add_probe (droppad, GST_PROBE_TYPE_BUFFER,
+  drop_id = gst_pad_add_probe (droppad, GST_PAD_PROBE_TYPE_BUFFER,
       (GstPadProbeCallback) drop_second_data_buffer, NULL, NULL);
   gst_buffer_straw_start_pipeline (bin, pad);
 
@@ -338,38 +341,27 @@ GST_START_TEST (test_discontinuity)
   check_buffer_granulepos (buffer, 0);
   gst_buffer_unref (buffer);
 
-  /* two phases: continuous granulepos values up to 1024, then a first
-     discontinuous granulepos whose granulepos corresponds to a gap ending at
-     2048. */
   {
     GstClockTime next_timestamp = 0;
-    gint64 last_granulepos = 0;
+    gint64 last_granulepos = 0, granulepos;
+    gint i;
 
-    while (last_granulepos < 1024) {
+    for (i = 0; i < 10; i++) {
       buffer = gst_buffer_straw_get_buffer (bin, pad);
-      last_granulepos = GST_BUFFER_OFFSET_END (buffer);
+      granulepos = GST_BUFFER_OFFSET_END (buffer);
+      /* discont is either at start, or following gap */
+      if (GST_BUFFER_IS_DISCONT (buffer)) {
+        if (next_timestamp) {
+          fail_unless (granulepos - last_granulepos > 1024,
+              "expected discont of at least 1024 samples");
+          next_timestamp = GST_BUFFER_TIMESTAMP (buffer);
+        }
+      }
       check_buffer_timestamp (buffer, next_timestamp);
-      fail_if (GST_BUFFER_IS_DISCONT (buffer), "expected continuous buffer");
       next_timestamp += GST_BUFFER_DURATION (buffer);
+      last_granulepos = granulepos;
       gst_buffer_unref (buffer);
     }
-
-    fail_unless (last_granulepos == 1024,
-        "unexpected granulepos: %" G_GUINT64_FORMAT, last_granulepos);
-  }
-
-  {
-    buffer = gst_buffer_straw_get_buffer (bin, pad);
-    /* The first buffer after the discontinuity will produce zero output
-     * samples (because of the overlap/add), so it won't increment the 
-     * granulepos, which should be 2048 after the discontinuity.
-     */
-    fail_unless (GST_BUFFER_IS_DISCONT (buffer),
-        "expected discontinuous buffer");
-    fail_unless (GST_BUFFER_OFFSET_END (buffer) == 2048,
-        "expected granulepos after gap: %" G_GUINT64_FORMAT,
-        GST_BUFFER_OFFSET_END (buffer));
-    gst_buffer_unref (buffer);
   }
 
   gst_buffer_straw_stop_pipeline (bin, pad);

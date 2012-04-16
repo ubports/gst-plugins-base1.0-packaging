@@ -23,6 +23,11 @@
 #include "config.h"
 #endif
 
+/* FIXME 0.11: suppress warnings for deprecated API such as GStaticRecMutex
+ * with newer GTK versions (>= 3.3.0) */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GDK_DISABLE_DEPRECATION_WARNINGS
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,16 +36,7 @@
 #include <gtk/gtk.h>
 
 #include <gst/gst.h>
-#include <gst/interfaces/videooverlay.h>
-#include <gst/interfaces/propertyprobe.h>
-
-#if !GTK_CHECK_VERSION (2, 17, 7)
-static void
-gtk_widget_get_allocation (GtkWidget * w, GtkAllocation * a)
-{
-  *a = w->allocation;
-}
-#endif
+#include <gst/video/videooverlay.h>
 
 static GtkWidget *video_window = NULL;
 static GstElement *sink = NULL;
@@ -89,7 +85,7 @@ handle_resize_cb (GtkWidget * widget, GdkEventConfigure * event, gpointer data)
 }
 
 static gboolean
-handle_expose_cb (GtkWidget * widget, GdkEventExpose * event, gpointer data)
+draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 {
   redraw_overlay (widget);
   return FALSE;
@@ -98,23 +94,15 @@ handle_expose_cb (GtkWidget * widget, GdkEventExpose * event, gpointer data)
 static void
 realize_cb (GtkWidget * widget, gpointer data)
 {
-#if GTK_CHECK_VERSION(2,18,0)
-  {
-    GdkWindow *window = gtk_widget_get_window (widget);
+  GdkWindow *window = gtk_widget_get_window (widget);
 
-    /* This is here just for pedagogical purposes, GDK_WINDOW_XID will call it
-     * as well */
-    if (!gdk_window_ensure_native (window))
-      g_error ("Couldn't create native window needed for GstVideoOverlay!");
-  }
-#endif
+  /* This is here just for pedagogical purposes, GDK_WINDOW_XID will call it
+   * as well */
+  if (!gdk_window_ensure_native (window))
+    g_error ("Couldn't create native window needed for GstXOverlay!");
 
-  {
-    GdkWindow *window = gtk_widget_get_window (video_window);
-
-    embed_xid = GDK_WINDOW_XID (window);
-    g_print ("Window realize: video window XID = %lu\n", embed_xid);
-  }
+  embed_xid = GDK_WINDOW_XID (window);
+  g_print ("Window realize: video window XID = %lu\n", embed_xid);
 }
 
 static void
@@ -185,11 +173,10 @@ main (int argc, char **argv)
   GstElement *pipeline, *src;
   GstBus *bus;
   GstStateChangeReturn sret;
+#if 0
   GstPropertyProbe *probe;
   GValueArray *arr;
-
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
+#endif
 
   gst_init (&argc, &argv);
   gtk_init (&argc, &argv);
@@ -215,7 +202,7 @@ main (int argc, char **argv)
     gst_object_unref (pipeline);
     return -1;
   }
-
+#if 0
   probe = GST_PROPERTY_PROBE (sink);
   if (!probe) {
     g_printerr ("Can't probe sink\n");
@@ -234,6 +221,7 @@ main (int argc, char **argv)
   }
   if (arr)
     g_value_array_free (arr);
+#endif
 
   bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
   gst_bus_add_signal_watch_full (bus, G_PRIORITY_HIGH);
@@ -251,8 +239,8 @@ main (int argc, char **argv)
   video_window = gtk_drawing_area_new ();
   g_signal_connect (G_OBJECT (video_window), "configure-event",
       G_CALLBACK (handle_resize_cb), NULL);
-  g_signal_connect (G_OBJECT (video_window), "expose-event",
-      G_CALLBACK (handle_expose_cb), NULL);
+  g_signal_connect (G_OBJECT (video_window), "draw",
+      G_CALLBACK (draw_cb), NULL);
   g_signal_connect (video_window, "realize", G_CALLBACK (realize_cb), NULL);
   gtk_widget_set_double_buffered (video_window, FALSE);
   gtk_container_add (GTK_CONTAINER (window), video_window);

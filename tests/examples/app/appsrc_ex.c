@@ -54,14 +54,14 @@ main (int argc, char *argv[])
 
   for (i = 0; i < 10; i++) {
     GstBuffer *buf;
-    void *data;
+    GstMapInfo map;
 
     buf = gst_buffer_new_and_alloc (100);
-    data = gst_buffer_map (buf, NULL, NULL, GST_MAP_WRITE);
-    memset (data, i, 100);
-    gst_buffer_unmap (buf, data, 100);
+    gst_buffer_map (buf, &map, GST_MAP_WRITE);
+    memset (map.data, i, 100);
+    gst_buffer_unmap (buf, &map);
 
-    printf ("%d: pushing buffer for pointer %p, %p\n", i, data, buf);
+    printf ("%d: pushing buffer for pointer %p, %p\n", i, map.data, buf);
     gst_app_src_push_buffer (GST_APP_SRC (app->src), buf);
   }
 
@@ -71,14 +71,14 @@ main (int argc, char *argv[])
   /* _is_eos() does not block and returns TRUE if there is not currently an EOS
    * to be retrieved */
   while (!gst_app_sink_is_eos (GST_APP_SINK (app->sink))) {
-    GstBuffer *buf;
+    GstSample *sample;
 
     /* pull the next item, this can return NULL when there is no more data and
      * EOS has been received */
-    buf = gst_app_sink_pull_buffer (GST_APP_SINK (app->sink));
-    printf ("retrieved buffer %p\n", buf);
-    if (buf)
-      gst_buffer_unref (buf);
+    sample = gst_app_sink_pull_sample (GST_APP_SINK (app->sink));
+    printf ("retrieved sample %p\n", sample);
+    if (sample)
+      gst_sample_unref (sample);
   }
   gst_element_set_state (app->pipe, GST_STATE_NULL);
 

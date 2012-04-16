@@ -48,6 +48,7 @@
 
 #include "gstalsasrc.h"
 #include "gstalsadeviceprobe.h"
+#include "gst/glib-compat-private.h"
 
 #include <gst/gst-i18n-plugin.h>
 
@@ -81,18 +82,12 @@ static GstCaps *gst_alsasrc_getcaps (GstBaseSrc * bsrc, GstCaps * filter);
 
 static gboolean gst_alsasrc_open (GstAudioSrc * asrc);
 static gboolean gst_alsasrc_prepare (GstAudioSrc * asrc,
-    GstRingBufferSpec * spec);
+    GstAudioRingBufferSpec * spec);
 static gboolean gst_alsasrc_unprepare (GstAudioSrc * asrc);
 static gboolean gst_alsasrc_close (GstAudioSrc * asrc);
 static guint gst_alsasrc_read (GstAudioSrc * asrc, gpointer data, guint length);
 static guint gst_alsasrc_delay (GstAudioSrc * asrc);
 static void gst_alsasrc_reset (GstAudioSrc * asrc);
-static GstStateChangeReturn gst_alsasrc_change_state (GstElement * element,
-    GstStateChange transition);
-static GstFlowReturn gst_alsasrc_create (GstBaseSrc * bsrc, guint64 offset,
-    guint length, GstBuffer ** outbuf);
-static GstClockTime gst_alsasrc_get_timestamp (GstAlsaSrc * src);
-
 
 /* AlsaSrc signals and args */
 enum
@@ -112,6 +107,7 @@ GST_STATIC_PAD_TEMPLATE ("src",
     GST_PAD_ALWAYS,
     GST_STATIC_CAPS ("audio/x-raw, "
         "format = (string) " GST_AUDIO_FORMATS_ALL ", "
+        "layout = (string) interleaved, "
         "rate = (int) [ 1, MAX ], " "channels = (int) [ 1, MAX ]")
     );
 
@@ -137,7 +133,9 @@ gst_alsasrc_init_interfaces (GType type)
 
   g_type_add_interface_static (type, GST_TYPE_MIXER, &mixer_iface_info);
 
+#if 0
   gst_alsa_type_add_device_property_probe_interface (type);
+#endif
 }
 
 static void
@@ -157,17 +155,14 @@ gst_alsasrc_class_init (GstAlsaSrcClass * klass)
   gobject_class->get_property = gst_alsasrc_get_property;
   gobject_class->set_property = gst_alsasrc_set_property;
 
-  gst_element_class_set_details_simple (gstelement_class,
+  gst_element_class_set_static_metadata (gstelement_class,
       "Audio source (ALSA)", "Source/Audio",
       "Read from a sound card via ALSA", "Wim Taymans <wim@fluendo.com>");
 
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&alsasrc_src_factory));
 
-  gstelement_class->change_state = GST_DEBUG_FUNCPTR (gst_alsasrc_change_state);
-
   gstbasesrc_class->get_caps = GST_DEBUG_FUNCPTR (gst_alsasrc_getcaps);
-  gstbasesrc_class->create = GST_DEBUG_FUNCPTR (gst_alsasrc_create);
 
   gstaudiosrc_class->open = GST_DEBUG_FUNCPTR (gst_alsasrc_open);
   gstaudiosrc_class->prepare = GST_DEBUG_FUNCPTR (gst_alsasrc_prepare);
@@ -191,49 +186,6 @@ gst_alsasrc_class_init (GstAlsaSrcClass * klass)
       g_param_spec_string ("card-name", "Card name",
           "Human-readable name of the sound card",
           DEFAULT_PROP_CARD_NAME, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
-}
-
-static GstClockTime
-gst_alsasrc_get_timestamp (GstAlsaSrc * src)
-{
-  snd_pcm_status_t *status;
-  snd_htimestamp_t tstamp;
-  GstClockTime timestamp;
-  snd_pcm_uframes_t availmax;
-
-  GST_DEBUG_OBJECT (src, "Getting alsa timestamp!");
-
-  if (!src) {
-    GST_ERROR_OBJECT (src, "No alsa handle created yet !");
-    return 0;
-  }
-
-  if (snd_pcm_status_malloc (&status) != 0) {
-    GST_ERROR_OBJECT (src, "snd_pcm_status_malloc failed");
-  }
-
-  if (snd_pcm_status (src->handle, status) != 0) {
-    GST_ERROR_OBJECT (src, "snd_pcm_status failed");
-  }
-
-  /* get high resolution time stamp from driver */
-  snd_pcm_status_get_htstamp (status, &tstamp);
-  timestamp = GST_TIMESPEC_TO_TIME (tstamp);
-
-  /* Max available frames sets the depth of the buffer */
-  availmax = snd_pcm_status_get_avail_max (status);
-
-  /* Compensate the fact that the timestamp references the last sample */
-  timestamp -= gst_util_uint64_scale_int (availmax * 2, GST_SECOND, src->rate);
-  /* Compensate for the delay until the package is available */
-  timestamp += gst_util_uint64_scale_int (snd_pcm_status_get_delay (status),
-      GST_SECOND, src->rate);
-
-  snd_pcm_status_free (status);
-
-  GST_DEBUG_OBJECT (src, "ALSA timestamp : %" GST_TIME_FORMAT,
-      GST_TIME_ARGS (timestamp));
-  return timestamp;
 }
 
 static void
@@ -286,57 +238,6 @@ gst_alsasrc_get_property (GObject * object, guint prop_id,
   }
 }
 
-static GstStateChangeReturn
-gst_alsasrc_change_state (GstElement * element, GstStateChange transition)
-{
-  GstStateChangeReturn ret = GST_STATE_CHANGE_SUCCESS;
-  GstBaseAudioSrc *src = GST_BASE_AUDIO_SRC (element);
-  GstAlsaSrc *asrc = GST_ALSA_SRC (element);
-  GstClock *clk;
-
-  switch (transition) {
-      /* Show the compiler that we care */
-    case GST_STATE_CHANGE_NULL_TO_READY:
-    case GST_STATE_CHANGE_READY_TO_PAUSED:
-    case GST_STATE_CHANGE_PLAYING_TO_PAUSED:
-    case GST_STATE_CHANGE_PAUSED_TO_READY:
-    case GST_STATE_CHANGE_READY_TO_NULL:
-      break;
-
-    case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
-      clk = src->clock;
-      asrc->driver_timestamps = FALSE;
-      if (GST_IS_SYSTEM_CLOCK (clk)) {
-        gint clocktype;
-        g_object_get (clk, "clock-type", &clocktype, NULL);
-        if (clocktype == GST_CLOCK_TYPE_MONOTONIC) {
-          asrc->driver_timestamps = TRUE;
-        }
-      }
-      break;
-  }
-  ret = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
-
-  return ret;
-}
-
-static GstFlowReturn
-gst_alsasrc_create (GstBaseSrc * bsrc, guint64 offset, guint length,
-    GstBuffer ** outbuf)
-{
-  GstFlowReturn ret = GST_FLOW_OK;
-  GstAlsaSrc *asrc = GST_ALSA_SRC (bsrc);
-
-  ret =
-      GST_BASE_SRC_CLASS (parent_class)->create (bsrc, offset, length, outbuf);
-  if (asrc->driver_timestamps == TRUE && *outbuf) {
-    GST_BUFFER_TIMESTAMP (*outbuf) =
-        gst_alsasrc_get_timestamp ((GstAlsaSrc *) bsrc);
-  }
-
-  return ret;
-}
-
 static void
 gst_alsasrc_init (GstAlsaSrc * alsasrc)
 {
@@ -344,7 +245,6 @@ gst_alsasrc_init (GstAlsaSrc * alsasrc)
 
   alsasrc->device = g_strdup (DEFAULT_PROP_DEVICE);
   alsasrc->cached_caps = NULL;
-  alsasrc->driver_timestamps = FALSE;
 
   alsasrc->alsa_lock = g_mutex_new ();
 }
@@ -368,7 +268,7 @@ gst_alsasrc_getcaps (GstBaseSrc * bsrc, GstCaps * filter)
 
   if (src->handle == NULL) {
     GST_DEBUG_OBJECT (src, "device not open, using template caps");
-    return NULL;                /* base class will get template caps for us */
+    return GST_BASE_SRC_CLASS (parent_class)->get_caps (bsrc, filter);
   }
 
   if (src->cached_caps) {
@@ -385,6 +285,8 @@ gst_alsasrc_getcaps (GstBaseSrc * bsrc, GstCaps * filter)
   g_return_val_if_fail (pad_template != NULL, NULL);
 
   templ_caps = gst_pad_template_get_caps (pad_template);
+  GST_INFO_OBJECT (src, "template caps %" GST_PTR_FORMAT, templ_caps);
+
   caps = gst_alsa_probe_supported_formats (GST_OBJECT (src), src->handle,
       templ_caps);
   gst_caps_unref (templ_caps);
@@ -626,10 +528,10 @@ set_sw_params:
 }
 
 static gboolean
-alsasrc_parse_spec (GstAlsaSrc * alsa, GstRingBufferSpec * spec)
+alsasrc_parse_spec (GstAlsaSrc * alsa, GstAudioRingBufferSpec * spec)
 {
   switch (spec->type) {
-    case GST_BUFTYPE_RAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_RAW:
       switch (GST_AUDIO_INFO_FORMAT (&spec->info)) {
         case GST_AUDIO_FORMAT_U8:
           alsa->format = SND_PCM_FORMAT_U8;
@@ -725,10 +627,10 @@ alsasrc_parse_spec (GstAlsaSrc * alsa, GstRingBufferSpec * spec)
           goto error;
       }
       break;
-    case GST_BUFTYPE_A_LAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_A_LAW:
       alsa->format = SND_PCM_FORMAT_A_LAW;
       break;
-    case GST_BUFTYPE_MU_LAW:
+    case GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MU_LAW:
       alsa->format = SND_PCM_FORMAT_MU_LAW;
       break;
     default:
@@ -740,6 +642,10 @@ alsasrc_parse_spec (GstAlsaSrc * alsa, GstRingBufferSpec * spec)
   alsa->buffer_time = spec->buffer_time;
   alsa->period_time = spec->latency_time;
   alsa->access = SND_PCM_ACCESS_RW_INTERLEAVED;
+
+  if (spec->type == GST_AUDIO_RING_BUFFER_FORMAT_TYPE_RAW && alsa->channels < 9)
+    gst_audio_ring_buffer_set_channel_positions (GST_AUDIO_BASE_SRC
+        (alsa)->ringbuffer, alsa_position[alsa->channels - 1]);
 
   return TRUE;
 
@@ -785,7 +691,7 @@ open_error:
 }
 
 static gboolean
-gst_alsasrc_prepare (GstAudioSrc * asrc, GstRingBufferSpec * spec)
+gst_alsasrc_prepare (GstAudioSrc * asrc, GstAudioRingBufferSpec * spec)
 {
   GstAlsaSrc *alsa;
   gint err;

@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstmixer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
-<link rel="up" href="gstreamer-interfaces.html" title="Interfaces Library">
-<link rel="prev" href="gst-plugins-base-libs-gstcolorbalancechannel.html" title="gstcolorbalancechannel">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
+<link rel="up" href="gstreamer-audio.html" title="Audio Library">
+<link rel="prev" href="gst-plugins-base-libs-gststreamvolume.html" title="gststreamvolume">
 <link rel="next" href="gst-plugins-base-libs-gstmixeroptions.html" title="gstmixeroptions">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstcolorbalancechannel.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gstreamer-interfaces.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gststreamvolume.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstmixeroptions.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -26,8 +26,6 @@
                   <a href="#gst-plugins-base-libs-gstmixer.description" class="shortcut">Description</a>
                    | 
                   <a href="#gst-plugins-base-libs-gstmixer.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#gst-plugins-base-libs-gstmixer.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
 <div class="refentry">
@@ -42,7 +40,7 @@
 <div class="refsynopsisdiv">
 <a name="gst-plugins-base-libs-gstmixer.synopsis"></a><h2>Synopsis</h2>
 <a name="GstMixer"></a><pre class="synopsis">
-#include &lt;gst/interfaces/mixer.h&gt;
+#include &lt;gst/audio/mixer.h&gt;
 
                     <a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer-struct" title="GstMixer">GstMixer</a>;
 enum                <a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixerType" title="enum GstMixerType">GstMixerType</a>;
@@ -111,15 +109,6 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <pre class="synopsis">
   GInterface
    +----GstMixer
-</pre>
-</div>
-<div class="refsect1">
-<a name="gst-plugins-base-libs-gstmixer.signals"></a><h2>Signals</h2>
-<pre class="synopsis">
-  "<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer-mute-toggled" title='The "mute-toggled" signal'>mute-toggled</a>"                                   : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
-  "<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer-option-changed" title='The "option-changed" signal'>option-changed</a>"                                 : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
-  "<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer-record-toggled" title='The "record-toggled" signal'>record-toggled</a>"                                 : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
-  "<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer-volume-changed" title='The "volume-changed" signal'>volume-changed</a>"                                 : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
 </pre>
 </div>
 <div class="refsect1">
@@ -304,7 +293,7 @@ it is allowed to only provide input elements in this list.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> consisting of zero or more <a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstmixertrack.html#GstMixerTrack"><span class="type">GstMixerTracks</span></a>.
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> consisting of zero or more <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmixertrack.html#GstMixerTrack"><span class="type">GstMixerTracks</span></a>.
 The list is owned by the <a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer"><span class="type">GstMixer</span></a> instance and must not be freed
 or modified.</td>
 </tr>
@@ -915,40 +904,6 @@ do not need to unref it.
 </tbody>
 </table></div>
 <p class="since">Since 0.10.18</p>
-</div>
-</div>
-<div class="refsect1">
-<a name="gst-plugins-base-libs-gstmixer.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2">
-<a name="GstMixer-mute-toggled"></a><h3>The <code class="literal">"mute-toggled"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer"><span class="type">GstMixer</span></a>      *gstmixer,
-                                                        <a class="link" href="gst-plugins-base-libs-gstmixertrack.html#GstMixerTrack"><span class="type">GstMixerTrack</span></a> *arg1,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>       arg2,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstMixer-option-changed"></a><h3>The <code class="literal">"option-changed"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer"><span class="type">GstMixer</span></a>        *gstmixer,
-                                                        <a class="link" href="gst-plugins-base-libs-gstmixeroptions.html#GstMixerOptions"><span class="type">GstMixerOptions</span></a> *arg1,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>           *arg2,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>         user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstMixer-record-toggled"></a><h3>The <code class="literal">"record-toggled"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer"><span class="type">GstMixer</span></a>      *gstmixer,
-                                                        <a class="link" href="gst-plugins-base-libs-gstmixertrack.html#GstMixerTrack"><span class="type">GstMixerTrack</span></a> *arg1,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>       arg2,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstMixer-volume-changed"></a><h3>The <code class="literal">"volume-changed"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstmixer.html#GstMixer"><span class="type">GstMixer</span></a>      *gstmixer,
-                                                        <a class="link" href="gst-plugins-base-libs-gstmixertrack.html#GstMixerTrack"><span class="type">GstMixerTrack</span></a> *arg1,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       arg2,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 </div>
 </div>
 <div class="refsect1">

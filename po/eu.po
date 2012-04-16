@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base-0.10.26.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-03-25 12:32+0100\n"
 "Last-Translator: Mikel Olasagasti Uranga <hey_neken@mundurat.net>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
@@ -191,9 +191,8 @@ msgstr "Iturburuko elementua baliogabea da."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Errorea gertatu da datuak \"%s:%d\"(e)ra bidaltzean."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "%s:%d(e)ra konektatzea ukatu da."
+msgid "This CD has no audio tracks"
+msgstr "CD honek ez du audio-pistarik"
 
 msgid "Can't record audio fast enough"
 msgstr "Ezin da behar bezain bizkor grabatu audioa"
@@ -358,9 +357,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "CD honek ez du audio-pistarik"
-
 msgid "ID3 tag"
 msgstr "ID3 etiketa"
 
@@ -393,6 +389,21 @@ msgstr "Galerarik gabeko MSZH"
 
 msgid "Run-length encoding"
 msgstr "Run-length kodeketa"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer azpititulu-formatua"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami azpititulu-formatua"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "'Kate' azpititulu-formatua"
 
 msgid "Sami subtitle format"
 msgstr "Sami azpititulu-formatua"
@@ -508,6 +519,9 @@ msgstr "Kodetzailearen elementu ezezaguna"
 
 msgid "Plugin or element of unknown type"
 msgstr "Mota ezezaguneko plugina edo elementua"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "%s:%d(e)ra konektatzea ukatu da."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Konprimitu gabeko YUV 4:2:0 planarra"

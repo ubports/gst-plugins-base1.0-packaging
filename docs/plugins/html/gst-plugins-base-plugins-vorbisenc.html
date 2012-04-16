@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>vorbisenc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-vorbisdec.html" title="vorbisdec">
 <link rel="next" href="gst-plugins-base-plugins-vorbisparse.html" title="vorbisparse">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-vorbisdec.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-vorbisparse.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -53,7 +53,8 @@
    +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
          +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
-                     +----GstVorbisEnc
+                     +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder">GstAudioEncoder</a>
+                           +----GstVorbisEnc
 </pre>
 </div>
 <div class="refsect1">
@@ -78,7 +79,7 @@ GstVorbisEnc implements
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id548991"></a><h3>Element Information</h3>
+<a name="idp15409296"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -101,7 +102,7 @@ GstVorbisEnc implements
 </div>
 <hr>
 <div class="refsect2">
-<a name="id552484"></a><h3>Element Pads</h3>
+<a name="idp14864224"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -119,7 +120,7 @@ GstVorbisEnc implements
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-raw-float, rate=(int)[ 1, 200000 ], channels=(int)[ 1, 256 ], endianness=(int)1234, width=(int)32</td>
+<td>audio/x-raw, format=(string)F32LE, layout=(string)interleaved, rate=(int)[ 1, 200000 ], channels=(int)[ 1, 255 ]</td>
 </tr>
 </tbody>
 </table></div>
@@ -140,7 +141,7 @@ GstVorbisEnc implements
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-vorbis</td>
+<td>audio/x-vorbis, rate=(int)[ 1, 200000 ], channels=(int)[ 1, 255 ]</td>
 </tr>
 </tbody>
 </table></div>
@@ -164,7 +165,7 @@ GstVorbisEnc implements
 <a name="GstVorbisEnc--bitrate"></a><h3>The <code class="literal">"bitrate"</code> property</h3>
 <pre class="programlisting">  "bitrate"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write</pre>
 <p>Attempt to encode at a bitrate averaging this (in bps). This uses the bitrate management engine, and is not recommended for most users. Quality is a better alternative. (-1 == disabled).</p>
-<p>Allowed values: [-1,250001]</p>
+<p>Allowed values: [G_MAXULONG,250001]</p>
 <p>Default value: -1</p>
 </div>
 <hr>
@@ -186,7 +187,7 @@ GstVorbisEnc implements
 <a name="GstVorbisEnc--max-bitrate"></a><h3>The <code class="literal">"max-bitrate"</code> property</h3>
 <pre class="programlisting">  "max-bitrate"              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write</pre>
 <p>Specify a maximum bitrate (in bps). Useful for streaming applications. (-1 == disabled).</p>
-<p>Allowed values: [-1,250001]</p>
+<p>Allowed values: [G_MAXULONG,250001]</p>
 <p>Default value: -1</p>
 </div>
 <hr>
@@ -194,7 +195,7 @@ GstVorbisEnc implements
 <a name="GstVorbisEnc--min-bitrate"></a><h3>The <code class="literal">"min-bitrate"</code> property</h3>
 <pre class="programlisting">  "min-bitrate"              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write</pre>
 <p>Specify a minimum bitrate (in bps). Useful for encoding for a fixed-size channel. (-1 == disabled).</p>
-<p>Allowed values: [-1,250001]</p>
+<p>Allowed values: [G_MAXULONG,250001]</p>
 <p>Default value: -1</p>
 </div>
 <hr>

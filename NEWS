@@ -1,9 +1,31 @@
-This is GStreamer Base Plug-ins 0.11.1, "A handful sometimes, A heartful always"
+This is GStreamer Base Plug-ins 0.11.90 "Golden bells! What a world of happiness their harmony foretells!"
 
-New in 0.11.1:
+New in 0.11.90:
 
-      * Ported to 0.11.0 core API changes
-      * Rename GstXOverlay -> GstVideoOverlay
-      * Reworked audio caps
-      * Support for multiple frames in buffers
-      * Add video colorimetry support
+      * Lots of bugfixes, cleanup and other improvements
+      * API cleanup in the audio base classes
+      * Improvements to the RTP buffer
+
+New in 0.11.3:
+
+      * Many fixes and improvements
+      * video: Improve video frame map/unmap
+      * theora: Improve video negotiation
+      * Various performance improvements
+
+Bugs fixed in this release
+
+      * 668343 : [0.11] - segfault when using missing plugin support in 0.11
+      * 668542 : [0.11] EncodingProfileClass is missing from GstPbutils-0.11.gir
+
+
+New in 0.11.2:
+
+      * Parallel installability with 0.10.x series
+      * Many API cleanups
+      * Ported to new 0.11 core API changes
+      * Use new GstSample for snapshots
+      * Improved video filter base class
+      * New multichannel caps with mask
+      * Port network elements to GIO
+      * Many fixes and improvements

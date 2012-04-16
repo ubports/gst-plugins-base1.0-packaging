@@ -25,7 +25,7 @@
 
 #include <glib.h>
 #include <gst/gst.h>
-#include <gst/interfaces/videooverlay.h>
+#include <gst/video/videooverlay.h>
 
 #include <QApplication>
 #include <QTimer>
@@ -80,9 +80,6 @@ find_video_sink (void)
 
 int main(int argc, char *argv[])
 {
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-
   gst_init (&argc, &argv);
   QApplication app(argc, argv);
   app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit ()));

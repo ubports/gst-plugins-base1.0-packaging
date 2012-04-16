@@ -222,7 +222,7 @@ typedef void (*GstVideoFormatPack)           (GstVideoFormatInfo *info, const gp
  *    less than the amount of components when multiple components are packed into
  *    one plane.
  * @plane: the plane number where a component can be found
- * @offset: the offset in the plane where the first pixel of the components
+ * @poffset: the offset in the plane where the first pixel of the components
  *    can be found. If bits < 8 the amount is specified in bits.
  * @w_sub: subsampling factor of the width for the component. Use
  *     GST_VIDEO_SUB_SCALE to scale a width.
@@ -246,7 +246,7 @@ struct _GstVideoFormatInfo {
   gint  pixel_stride[GST_VIDEO_MAX_COMPONENTS];
   guint n_planes;
   guint plane[GST_VIDEO_MAX_COMPONENTS];
-  guint offset[GST_VIDEO_MAX_COMPONENTS];
+  guint poffset[GST_VIDEO_MAX_COMPONENTS];
   guint w_sub[GST_VIDEO_MAX_COMPONENTS];
   guint h_sub[GST_VIDEO_MAX_COMPONENTS];
 
@@ -273,18 +273,21 @@ struct _GstVideoFormatInfo {
 #define GST_VIDEO_FORMAT_INFO_PSTRIDE(info,c)    ((info)->pixel_stride[c])
 #define GST_VIDEO_FORMAT_INFO_N_PLANES(info)     ((info)->n_planes)
 #define GST_VIDEO_FORMAT_INFO_PLANE(info,c)      ((info)->plane[c])
-#define GST_VIDEO_FORMAT_INFO_OFFSET(info,c)     ((info)->offset[c])
+#define GST_VIDEO_FORMAT_INFO_POFFSET(info,c)    ((info)->poffset[c])
 #define GST_VIDEO_FORMAT_INFO_W_SUB(info,c)      ((info)->w_sub[c])
 #define GST_VIDEO_FORMAT_INFO_H_SUB(info,c)      ((info)->h_sub[c])
 
-#define GST_VIDEO_SUB_SCALE(scale,val)   (-((-((gint)val))>>(scale)))
+/* rounds up */
+#define GST_VIDEO_SUB_SCALE(scale,val)   (-((-((gint)(val)))>>(scale)))
 
-#define GST_VIDEO_FORMAT_INFO_SCALE_WIDTH(info,c,w)  GST_VIDEO_SUB_SCALE ((info)->w_sub[(c)],(w))
-#define GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT(info,c,h) GST_VIDEO_SUB_SCALE ((info)->h_sub[(c)],(h))
+#define GST_VIDEO_FORMAT_INFO_SCALE_WIDTH(info,c,w)  GST_VIDEO_SUB_SCALE ((info)->w_sub[c],(w))
+#define GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT(info,c,h) GST_VIDEO_SUB_SCALE ((info)->h_sub[c],(h))
 
 #define GST_VIDEO_FORMAT_INFO_DATA(info,planes,comp) \
-  (((guint8*)(planes)[info->plane[comp]]) + info->offset[comp])
-#define GST_VIDEO_FORMAT_INFO_STRIDE(info,strides,comp) ((strides)[info->plane[comp]])
+  (((guint8*)(planes)[(info)->plane[comp]]) + (info)->poffset[comp])
+#define GST_VIDEO_FORMAT_INFO_STRIDE(info,strides,comp) ((strides)[(info)->plane[comp]])
+#define GST_VIDEO_FORMAT_INFO_OFFSET(info,offsets,comp) \
+  (((offsets)[(info)->plane[comp]]) + (info)->poffset[comp])
 
 /* format properties */
 GstVideoFormat gst_video_format_from_masks           (gint depth, gint bpp, gint endianness,
@@ -304,25 +307,44 @@ typedef struct _GstVideoInfo GstVideoInfo;
 typedef struct _GstVideoFrame GstVideoFrame;
 
 /**
+ * GstVideoInterlaceMode:
+ * @GST_VIDEO_INTERLACE_MODE_PROGRESSIVE: all frames are progressive
+ * @GST_VIDEO_INTERLACE_MODE_INTERLEAVED: video is interlaced and all fields
+ *     are interlaced in one frame.
+ * @GST_VIDEO_INTERLACE_MODE_MIXED: video contains both interlaced and
+ *     progressive frames, the buffer flags describe the frame and fields.
+ * @GST_VIDEO_INTERLACE_MODE_FIELDS: video is interlaced and fields are stored
+ *     separately. Use the id property to get access to the required field.
+ *
+ * The possible values of the #GstVideoInterlaceMode describing the interlace
+ * mode of the stream.
+ */
+typedef enum {
+  GST_VIDEO_INTERLACE_MODE_PROGRESSIVE = 0,
+  GST_VIDEO_INTERLACE_MODE_INTERLEAVED,
+  GST_VIDEO_INTERLACE_MODE_MIXED,
+  GST_VIDEO_INTERLACE_MODE_FIELDS
+} GstVideoInterlaceMode;
+
+/**
  * GstVideoFlags:
- * @GST_META_VIDEO_FLAG_NONE: no flags
- * @GST_META_VIDEO_FLAG_INTERLACED: The video is interlaced
- * @GST_META_VIDEO_FLAG_TFF: The video has the top field first
- * @GST_META_VIDEO_FLAG_RFF: The video has the repeat flag
- * @GST_META_VIDEO_FLAG_ONEFIELD: one field
- * @GST_META_VIDEO_FLAG_TELECINE: telecine
- * @GST_META_VIDEO_FLAG_PROGRESSIVE: video is progressive
+ * @GST_VIDEO_FLAG_NONE: no flags
+ * @GST_VIDEO_FLAG_INTERLACED: The video is interlaced
+ * @GST_VIDEO_FLAG_TFF: The video has the top field first
+ * @GST_VIDEO_FLAG_RFF: The video has the repeat flag
+ * @GST_VIDEO_FLAG_ONEFIELD: one field
+ * @GST_VIDEO_FLAG_VARIABLE_FPS: a variable fps is selected, fps_n and fps_d
+ * denote the maximum fps of the video
  *
  * Extra video flags
  */
 typedef enum {
-  GST_VIDEO_FLAG_NONE        = 0,
-  GST_VIDEO_FLAG_INTERLACED  = (1 << 0),
-  GST_VIDEO_FLAG_TFF         = (1 << 1),
-  GST_VIDEO_FLAG_RFF         = (1 << 2),
-  GST_VIDEO_FLAG_ONEFIELD    = (1 << 3),
-  GST_VIDEO_FLAG_TELECINE    = (1 << 4),
-  GST_VIDEO_FLAG_PROGRESSIVE = (1 << 5)
+  GST_VIDEO_FLAG_NONE         = 0,
+  GST_VIDEO_FLAG_INTERLACED   = (1 << 0),
+  GST_VIDEO_FLAG_TFF          = (1 << 1),
+  GST_VIDEO_FLAG_RFF          = (1 << 2),
+  GST_VIDEO_FLAG_ONEFIELD     = (1 << 3),
+  GST_VIDEO_FLAG_VARIABLE_FPS = (1 << 4)
 } GstVideoFlags;
 
 /**
@@ -372,9 +394,10 @@ typedef enum {
  * GstVideoColorMatrix:
  * @GST_VIDEO_COLOR_MATRIX_UNKNOWN: unknown matrix
  * @GST_VIDEO_COLOR_MATRIX_RGB: identity matrix
- * @GST_VIDEO_COLOR_MATRIX_BT709: ITU-R BT.709 transfer matrix
- * @GST_VIDEO_COLOR_MATRIX_BT601: ITU-R BT.601 transfer matrix
- * @GST_VIDEO_COLOR_MATRIX_SMPTE240M: SMPTE 240M transfer matrix
+ * @GST_VIDEO_COLOR_MATRIX_FCC: FCC color matrix
+ * @GST_VIDEO_COLOR_MATRIX_BT709: ITU-R BT.709 color matrix
+ * @GST_VIDEO_COLOR_MATRIX_BT601: ITU-R BT.601 color matrix
+ * @GST_VIDEO_COLOR_MATRIX_SMPTE240M: SMPTE 240M color matrix
  *
  * The color matrix is used to convert between Y'PbPr and
  * non-linear RGB (R'G'B')
@@ -382,6 +405,7 @@ typedef enum {
 typedef enum {
   GST_VIDEO_COLOR_MATRIX_UNKNOWN = 0,
   GST_VIDEO_COLOR_MATRIX_RGB,
+  GST_VIDEO_COLOR_MATRIX_FCC,
   GST_VIDEO_COLOR_MATRIX_BT709,
   GST_VIDEO_COLOR_MATRIX_BT601,
   GST_VIDEO_COLOR_MATRIX_SMPTE240M
@@ -401,6 +425,10 @@ typedef enum {
  * @GST_VIDEO_TRANSFER_SRGB: Gamma 2.4 curve with a linear segment in the lower
  *                          range
  * @GST_VIDEO_TRANSFER_GAMMA28: Gamma 2.8 curve
+ * @GST_VIDEO_TRANSFER_LOG100: Logarithmic transfer characteristic
+ *                             100:1 range
+ * @GST_VIDEO_TRANSFER_LOG316: Logarithmic transfer characteristic
+ *                             316.22777:1 range
  *
  * The video transfer function defines the formula for converting between
  * non-linear RGB (R'G'B') and linear RGB
@@ -414,7 +442,9 @@ typedef enum {
   GST_VIDEO_TRANSFER_BT709,
   GST_VIDEO_TRANSFER_SMPTE240M,
   GST_VIDEO_TRANSFER_SRGB,
-  GST_VIDEO_TRANSFER_GAMMA28
+  GST_VIDEO_TRANSFER_GAMMA28,
+  GST_VIDEO_TRANSFER_LOG100,
+  GST_VIDEO_TRANSFER_LOG316
 } GstVideoTransferFunction;
 
 /**
@@ -468,6 +498,7 @@ gchar *      gst_video_colorimetry_to_string   (GstVideoColorimetry *cinfo);
 /**
  * GstVideoInfo:
  * @finfo: the format info of the video
+ * @interlace_mode: the interlace mode
  * @flags: additional video flags
  * @width: the width of the video
  * @height: the height of the video
@@ -492,6 +523,8 @@ gchar *      gst_video_colorimetry_to_string   (GstVideoColorimetry *cinfo);
  */
 struct _GstVideoInfo {
   const GstVideoFormatInfo *finfo;
+
+  GstVideoInterlaceMode     interlace_mode;
   GstVideoFlags             flags;
   gint                      width;
   gint                      height;
@@ -520,6 +553,8 @@ struct _GstVideoInfo {
 #define GST_VIDEO_INFO_IS_GRAY(i)        (GST_VIDEO_FORMAT_INFO_IS_GRAY((i)->finfo))
 #define GST_VIDEO_INFO_HAS_ALPHA(i)      (GST_VIDEO_FORMAT_INFO_HAS_ALPHA((i)->finfo))
 
+#define GST_VIDEO_INFO_INTERLACE_MODE(i) ((i)->interlace_mode)
+#define GST_VIDEO_INFO_IS_INTERLACED(i)  ((i)->interlace_mode != GST_VIDEO_INTERLACE_MODE_PROGRESSIVE)
 #define GST_VIDEO_INFO_FLAGS(i)          ((i)->flags)
 #define GST_VIDEO_INFO_WIDTH(i)          ((i)->width)
 #define GST_VIDEO_INFO_HEIGHT(i)         ((i)->height)
@@ -530,6 +565,11 @@ struct _GstVideoInfo {
 #define GST_VIDEO_INFO_FPS_N(i)          ((i)->fps_n)
 #define GST_VIDEO_INFO_FPS_D(i)          ((i)->fps_d)
 
+/* dealing with GstVideoInfo flags */
+#define GST_VIDEO_INFO_FLAG_IS_SET(i,flag) ((GST_VIDEO_INFO_FLAGS(i) & (flag)) == (flag))
+#define GST_VIDEO_INFO_FLAG_SET(i,flag)    (GST_VIDEO_INFO_FLAGS(i) |= (flag))
+#define GST_VIDEO_INFO_FLAG_UNSET(i,flag)  (GST_VIDEO_INFO_FLAGS(i) &= ~(flag))
+
 /* dealing with planes */
 #define GST_VIDEO_INFO_N_PLANES(i)       (GST_VIDEO_FORMAT_INFO_N_PLANES((i)->finfo))
 #define GST_VIDEO_INFO_PLANE_OFFSET(i,p) ((i)->offset[p])
@@ -537,13 +577,15 @@ struct _GstVideoInfo {
 
 /* dealing with components */
 #define GST_VIDEO_INFO_N_COMPONENTS(i)   GST_VIDEO_FORMAT_INFO_N_COMPONENTS((i)->finfo)
-#define GST_VIDEO_INFO_COMP_DATA(i,d,c)  GST_VIDEO_FORMAT_INFO_DATA((i)->finfo,d,c)
-#define GST_VIDEO_INFO_COMP_STRIDE(i,c)  GST_VIDEO_FORMAT_INFO_STRIDE((i)->finfo,(i)->stride,c)
-#define GST_VIDEO_INFO_COMP_WIDTH(i,c)   GST_VIDEO_FORMAT_INFO_SCALE_WIDTH((i)->finfo,c,(i)->width)
-#define GST_VIDEO_INFO_COMP_HEIGHT(i,c)  GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT((i)->finfo,c,(i)->height)
-#define GST_VIDEO_INFO_COMP_PLANE(i,c)   GST_VIDEO_FORMAT_INFO_PLANE((i)->finfo,c)
-#define GST_VIDEO_INFO_COMP_OFFSET(i,c)  GST_VIDEO_FORMAT_INFO_OFFSET((i)->finfo,c)
-#define GST_VIDEO_INFO_COMP_PSTRIDE(i,c) GST_VIDEO_FORMAT_INFO_PSTRIDE((i)->finfo,c)
+#define GST_VIDEO_INFO_COMP_DEPTH(i,c)   GST_VIDEO_FORMAT_INFO_DEPTH((i)->finfo,(c))
+#define GST_VIDEO_INFO_COMP_DATA(i,d,c)  GST_VIDEO_FORMAT_INFO_DATA((i)->finfo,d,(c))
+#define GST_VIDEO_INFO_COMP_OFFSET(i,c)  GST_VIDEO_FORMAT_INFO_OFFSET((i)->finfo,(i)->offset,(c))
+#define GST_VIDEO_INFO_COMP_STRIDE(i,c)  GST_VIDEO_FORMAT_INFO_STRIDE((i)->finfo,(i)->stride,(c))
+#define GST_VIDEO_INFO_COMP_WIDTH(i,c)   GST_VIDEO_FORMAT_INFO_SCALE_WIDTH((i)->finfo,(c),(i)->width)
+#define GST_VIDEO_INFO_COMP_HEIGHT(i,c)  GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT((i)->finfo,(c),(i)->height)
+#define GST_VIDEO_INFO_COMP_PLANE(i,c)   GST_VIDEO_FORMAT_INFO_PLANE((i)->finfo,(c))
+#define GST_VIDEO_INFO_COMP_PSTRIDE(i,c) GST_VIDEO_FORMAT_INFO_PSTRIDE((i)->finfo,(c))
+#define GST_VIDEO_INFO_COMP_POFFSET(i,c) GST_VIDEO_FORMAT_INFO_POFFSET((i)->finfo,(c))
 
 void         gst_video_info_init        (GstVideoInfo *info);
 
@@ -568,6 +610,7 @@ gboolean     gst_video_info_convert     (GstVideoInfo *info,
  * @id: id of the mapped frame. the id can for example be used to
  *   indentify the frame in case of multiview video.
  * @data: pointers to the plane data
+ * @map: mappings of the planes
  *
  * A video frame obtained from gst_video_frame_map()
  */
@@ -579,6 +622,7 @@ struct _GstVideoFrame {
   gint       id;
 
   gpointer   data[GST_VIDEO_MAX_PLANES];
+  GstMapInfo map[GST_VIDEO_MAX_PLANES];
 };
 
 gboolean    gst_video_frame_map           (GstVideoFrame *frame, GstVideoInfo *info,
@@ -588,6 +632,8 @@ gboolean    gst_video_frame_map_id        (GstVideoFrame *frame, GstVideoInfo *i
 void        gst_video_frame_unmap         (GstVideoFrame *frame);
 
 gboolean    gst_video_frame_copy          (GstVideoFrame *dest, const GstVideoFrame *src);
+gboolean    gst_video_frame_copy_plane    (GstVideoFrame *dest, const GstVideoFrame *src,
+                                           guint plane);
 
 /* general info */
 #define GST_VIDEO_FRAME_FORMAT(f)         (GST_VIDEO_INFO_FORMAT(&(f)->info))
@@ -598,18 +644,19 @@ gboolean    gst_video_frame_copy          (GstVideoFrame *dest, const GstVideoFr
 /* dealing with planes */
 #define GST_VIDEO_FRAME_N_PLANES(f)       (GST_VIDEO_INFO_N_PLANES(&(f)->info))
 #define GST_VIDEO_FRAME_PLANE_DATA(f,p)   ((f)->data[p])
-#define GST_VIDEO_FRAME_PLANE_OFFSET(f,p) (GST_VIDEO_INFO_PLANE_OFFSET(&(f)->info,p))
-#define GST_VIDEO_FRAME_PLANE_STRIDE(f,p) (GST_VIDEO_INFO_PLANE_STRIDE(&(f)->info,p))
+#define GST_VIDEO_FRAME_PLANE_OFFSET(f,p) (GST_VIDEO_INFO_PLANE_OFFSET(&(f)->info,(p)))
+#define GST_VIDEO_FRAME_PLANE_STRIDE(f,p) (GST_VIDEO_INFO_PLANE_STRIDE(&(f)->info,(p)))
 
 /* dealing with components */
 #define GST_VIDEO_FRAME_N_COMPONENTS(f)   GST_VIDEO_INFO_N_COMPONENTS(&(f)->info)
-#define GST_VIDEO_FRAME_COMP_DATA(f,c)    GST_VIDEO_INFO_COMP_DATA(&(f)->info,(f)->data,c)
-#define GST_VIDEO_FRAME_COMP_STRIDE(f,c)  GST_VIDEO_INFO_COMP_STRIDE(&(f)->info,c)
-#define GST_VIDEO_FRAME_COMP_WIDTH(f,c)   GST_VIDEO_INFO_COMP_WIDTH(&(f)->info,c)
-#define GST_VIDEO_FRAME_COMP_HEIGHT(f,c)  GST_VIDEO_INFO_COMP_HEIGHT(&(f)->info,c)
-#define GST_VIDEO_FRAME_COMP_PLANE(f,c)   GST_VIDEO_INFO_COMP_PLANE(&(f)->info,c)
-#define GST_VIDEO_FRAME_COMP_OFFSET(f,c)  GST_VIDEO_INFO_COMP_OFFSET(&(f)->info,c)
-#define GST_VIDEO_FRAME_COMP_PSTRIDE(f,c) GST_VIDEO_INFO_COMP_PSTRIDE(&(f)->info,c)
+#define GST_VIDEO_FRAME_COMP_DATA(f,c)    GST_VIDEO_INFO_COMP_DATA(&(f)->info,(f)->data,(c))
+#define GST_VIDEO_FRAME_COMP_STRIDE(f,c)  GST_VIDEO_INFO_COMP_STRIDE(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_OFFSET(f,c)  GST_VIDEO_INFO_COMP_OFFSET(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_WIDTH(f,c)   GST_VIDEO_INFO_COMP_WIDTH(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_HEIGHT(f,c)  GST_VIDEO_INFO_COMP_HEIGHT(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_PLANE(f,c)   GST_VIDEO_INFO_COMP_PLANE(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_PSTRIDE(f,c) GST_VIDEO_INFO_COMP_PSTRIDE(&(f)->info,(c))
+#define GST_VIDEO_FRAME_COMP_POFFSET(f,c) GST_VIDEO_INFO_COMP_POFFSET(&(f)->info,(c))
 
 #define GST_VIDEO_SIZE_RANGE "(int) [ 1, max ]"
 #define GST_VIDEO_FPS_RANGE "(fraction) [ 0, max ]"
@@ -646,6 +693,7 @@ gboolean    gst_video_frame_copy          (GstVideoFrame *dest, const GstVideoFr
 
 /**
  * GstVideoBufferFlags:
+ * @GST_VIDEO_BUFFER_FLAG_INTERLACED:  Mark #GstBuffer as interlaced
  * @GST_VIDEO_BUFFER_FLAG_TFF:         If the #GstBuffer is interlaced, then the first field
  *                                     in the video frame is the top field.  If unset, the
  *                                     bottom field is first.
@@ -655,17 +703,14 @@ gboolean    gst_video_frame_copy          (GstVideoFrame *dest, const GstVideoFr
  * @GST_VIDEO_BUFFER_FLAG_ONEFIELD:    If the #GstBuffer is interlaced, then only the
  *                                     first field (as defined by the %GST_VIDEO_BUFFER_TFF
  *                                     flag setting) is to be displayed.
- * @GST_VIDEO_BUFFER_FLAG_PROGRESSIVE: If the #GstBuffer is telecined, then the
- *                                     buffer is progressive if the %GST_VIDEO_BUFFER_PROGRESSIVE
- *                                     flag is set, else it is telecine mixed.
  *
  * Additional video buffer flags.
  */
 typedef enum {
-  GST_VIDEO_BUFFER_FLAG_TFF         = (GST_BUFFER_FLAG_LAST << 0),
-  GST_VIDEO_BUFFER_FLAG_RFF         = (GST_BUFFER_FLAG_LAST << 1),
-  GST_VIDEO_BUFFER_FLAG_ONEFIELD    = (GST_BUFFER_FLAG_LAST << 2),
-  GST_VIDEO_BUFFER_FLAG_PROGRESSIVE = (GST_BUFFER_FLAG_LAST << 3),
+  GST_VIDEO_BUFFER_FLAG_INTERLACED  = (GST_BUFFER_FLAG_LAST << 0),
+  GST_VIDEO_BUFFER_FLAG_TFF         = (GST_BUFFER_FLAG_LAST << 1),
+  GST_VIDEO_BUFFER_FLAG_RFF         = (GST_BUFFER_FLAG_LAST << 2),
+  GST_VIDEO_BUFFER_FLAG_ONEFIELD    = (GST_BUFFER_FLAG_LAST << 3),
 
   GST_VIDEO_BUFFER_FLAG_LAST        = (GST_BUFFER_FLAG_LAST << 8)
 } GstVideoBufferFlags;
@@ -688,21 +733,44 @@ GstEvent *     gst_video_event_new_still_frame   (gboolean in_still);
 
 gboolean       gst_video_event_parse_still_frame (GstEvent * event, gboolean * in_still);
 
+/* video force key unit event creation and parsing */
 
-/* convert/encode video frame from one format to another */
+GstEvent * gst_video_event_new_downstream_force_key_unit (GstClockTime timestamp,
+                                                          GstClockTime stream_time,
+                                                          GstClockTime running_time,
+                                                          gboolean all_headers,
+                                                          guint count);
 
-typedef void (*GstVideoConvertFrameCallback) (GstBuffer * buf, GError *error, gpointer user_data);
+gboolean gst_video_event_parse_downstream_force_key_unit (GstEvent * event,
+                                                          GstClockTime * timestamp,
+                                                          GstClockTime * stream_time,
+                                                          GstClockTime * running_time,
+                                                          gboolean * all_headers,
+                                                          guint * count);
 
-void           gst_video_convert_frame_async (GstBuffer                    * buf,
-                                              GstCaps                      * from_caps,
+GstEvent * gst_video_event_new_upstream_force_key_unit (GstClockTime running_time,
+                                                        gboolean all_headers,
+                                                        guint count);
+
+gboolean gst_video_event_parse_upstream_force_key_unit (GstEvent * event,
+                                                        GstClockTime * running_time,
+                                                        gboolean * all_headers,
+                                                        guint * count);
+
+gboolean gst_video_event_is_force_key_unit(GstEvent *event);
+
+/* convert/encode video sample from one format to another */
+
+typedef void (*GstVideoConvertSampleCallback) (GstSample * sample, GError *error, gpointer user_data);
+
+void          gst_video_convert_sample_async (GstSample                    * sample,
                                               const GstCaps                * to_caps,
                                               GstClockTime                   timeout,
-                                              GstVideoConvertFrameCallback   callback,
+                                              GstVideoConvertSampleCallback  callback,
                                               gpointer                       user_data,
                                               GDestroyNotify                 destroy_notify);
 
-GstBuffer *    gst_video_convert_frame       (GstBuffer     * buf,
-                                              GstCaps       * from_caps,
+GstSample *   gst_video_convert_sample       (GstSample     * sample,
                                               const GstCaps * to_caps,
                                               GstClockTime    timeout,
                                               GError       ** error);

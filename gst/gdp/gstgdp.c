@@ -21,7 +21,7 @@
 #  include <config.h>
 #endif
 
-#include <gst/dataprotocol/dataprotocol.h>
+#include "dataprotocol.h"
 
 #include "gstgdppay.h"
 #include "gstgdpdepay.h"
@@ -41,6 +41,6 @@ plugin_init (GstPlugin * plugin)
 }
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR, GST_VERSION_MINOR,
-    "gdp",
+    gdp,
     "Payload/depayload GDP packets", plugin_init,
     VERSION, GST_LICENSE, GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN);

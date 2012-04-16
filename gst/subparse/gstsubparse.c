@@ -80,14 +80,18 @@ static GstStaticPadTemplate src_templ = GST_STATIC_PAD_TEMPLATE ("src",
     );
 
 
-static gboolean gst_sub_parse_src_event (GstPad * pad, GstEvent * event);
-static gboolean gst_sub_parse_src_query (GstPad * pad, GstQuery * query);
-static gboolean gst_sub_parse_sink_event (GstPad * pad, GstEvent * event);
+static gboolean gst_sub_parse_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_sub_parse_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
+static gboolean gst_sub_parse_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
 
 static GstStateChangeReturn gst_sub_parse_change_state (GstElement * element,
     GstStateChange transition);
 
-static GstFlowReturn gst_sub_parse_chain (GstPad * sinkpad, GstBuffer * buf);
+static GstFlowReturn gst_sub_parse_chain (GstPad * sinkpad, GstObject * parent,
+    GstBuffer * buf);
 
 #define gst_sub_parse_parent_class parent_class
 G_DEFINE_TYPE (GstSubParse, gst_sub_parse, GST_TYPE_ELEMENT);
@@ -149,7 +153,7 @@ gst_sub_parse_class_init (GstSubParseClass * klass)
       gst_static_pad_template_get (&sink_templ));
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&src_templ));
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Subtitle parser", "Codec/Parser/Subtitle",
       "Parses subtitle (.sub) files into text streams",
       "Gustavo J. A. M. Carneiro <gjc@inescporto.pt>, "
@@ -209,9 +213,9 @@ gst_sub_parse_init (GstSubParse * subparse)
  */
 
 static gboolean
-gst_sub_parse_src_query (GstPad * pad, GstQuery * query)
+gst_sub_parse_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
-  GstSubParse *self = GST_SUBPARSE (gst_pad_get_parent (pad));
+  GstSubParse *self = GST_SUBPARSE (parent);
   gboolean ret = FALSE;
 
   GST_DEBUG ("Handling %s query", GST_QUERY_TYPE_NAME (query));
@@ -254,15 +258,13 @@ gst_sub_parse_src_query (GstPad * pad, GstQuery * query)
       break;
   }
 
-  gst_object_unref (self);
-
   return ret;
 }
 
 static gboolean
-gst_sub_parse_src_event (GstPad * pad, GstEvent * event)
+gst_sub_parse_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
-  GstSubParse *self = GST_SUBPARSE (gst_pad_get_parent (pad));
+  GstSubParse *self = GST_SUBPARSE (parent);
   gboolean ret = FALSE;
 
   GST_DEBUG ("Handling %s event", GST_EVENT_TYPE_NAME (event));
@@ -311,13 +313,11 @@ gst_sub_parse_src_event (GstPad * pad, GstEvent * event)
       break;
     }
     default:
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
   }
 
 beach:
-  gst_object_unref (self);
-
   return ret;
 }
 
@@ -1339,36 +1339,36 @@ gst_sub_parse_format_autodetect (GstSubParse * self)
   switch (format) {
     case GST_SUB_PARSE_FORMAT_MDVDSUB:
       self->parse_line = parse_mdvdsub;
-      return gst_caps_new_simple ("text/x-pango-markup", NULL);
+      return gst_caps_new_empty_simple ("text/x-pango-markup");
     case GST_SUB_PARSE_FORMAT_SUBRIP:
       self->parse_line = parse_subrip;
-      return gst_caps_new_simple ("text/x-pango-markup", NULL);
+      return gst_caps_new_empty_simple ("text/x-pango-markup");
     case GST_SUB_PARSE_FORMAT_MPSUB:
       self->parse_line = parse_mpsub;
-      return gst_caps_new_simple ("text/plain", NULL);
+      return gst_caps_new_empty_simple ("text/plain");
 #ifndef GST_DISABLE_XML
     case GST_SUB_PARSE_FORMAT_SAMI:
       self->parse_line = parse_sami;
       sami_context_init (&self->state);
-      return gst_caps_new_simple ("text/x-pango-markup", NULL);
+      return gst_caps_new_empty_simple ("text/x-pango-markup");
 #endif
     case GST_SUB_PARSE_FORMAT_TMPLAYER:
       self->parse_line = parse_tmplayer;
       self->state.max_duration = 5 * GST_SECOND;
-      return gst_caps_new_simple ("text/plain", NULL);
+      return gst_caps_new_empty_simple ("text/plain");
     case GST_SUB_PARSE_FORMAT_MPL2:
       self->parse_line = parse_mpl2;
-      return gst_caps_new_simple ("text/x-pango-markup", NULL);
+      return gst_caps_new_empty_simple ("text/x-pango-markup");
     case GST_SUB_PARSE_FORMAT_DKS:
       self->parse_line = parse_dks;
-      return gst_caps_new_simple ("text/plain", NULL);
+      return gst_caps_new_empty_simple ("text/plain");
     case GST_SUB_PARSE_FORMAT_SUBVIEWER:
       self->parse_line = parse_subviewer;
-      return gst_caps_new_simple ("text/plain", NULL);
+      return gst_caps_new_empty_simple ("text/plain");
     case GST_SUB_PARSE_FORMAT_QTTEXT:
       self->parse_line = parse_qttext;
       qttext_context_init (&self->state);
-      return gst_caps_new_simple ("text/x-pango-markup", NULL);
+      return gst_caps_new_empty_simple ("text/x-pango-markup");
     case GST_SUB_PARSE_FORMAT_UNKNOWN:
     default:
       GST_DEBUG ("no subtitle format detected");
@@ -1421,9 +1421,10 @@ feed_textbuf (GstSubParse * self, GstBuffer * buf)
 
   if (input && consumed > 0) {
     self->textbuf = g_string_append (self->textbuf, input);
-    gst_adapter_unmap (self->adapter, consumed);
+    gst_adapter_unmap (self->adapter);
+    gst_adapter_flush (self->adapter, consumed);
   } else {
-    gst_adapter_unmap (self->adapter, 0);
+    gst_adapter_unmap (self->adapter);
   }
 
   g_free (input);
@@ -1434,13 +1435,14 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
 {
   GstFlowReturn ret = GST_FLOW_OK;
   GstCaps *caps = NULL;
-  gchar *line, *subtitle, *data;
-  gsize size;
+  gchar *line, *subtitle;
 
   if (self->first_buffer) {
-    data = gst_buffer_map (buf, &size, NULL, GST_MAP_READ);
-    self->detected_encoding = detect_encoding (data, size);
-    gst_buffer_unmap (buf, data, size);
+    GstMapInfo map;
+
+    gst_buffer_map (buf, &map, GST_MAP_READ);
+    self->detected_encoding = detect_encoding ((gchar *) map.data, map.size);
+    gst_buffer_unmap (buf, &map);
     self->first_buffer = FALSE;
     self->state.fps_n = self->fps_n;
     self->state.fps_d = self->fps_d;
@@ -1451,11 +1453,11 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
   /* make sure we know the format */
   if (G_UNLIKELY (self->parser_type == GST_SUB_PARSE_FORMAT_UNKNOWN)) {
     if (!(caps = gst_sub_parse_format_autodetect (self))) {
-      return GST_FLOW_UNEXPECTED;
+      return GST_FLOW_EOS;
     }
     if (!gst_pad_set_caps (self->srcpad, caps)) {
       gst_caps_unref (caps);
-      return GST_FLOW_UNEXPECTED;
+      return GST_FLOW_EOS;
     }
     gst_caps_unref (caps);
 
@@ -1463,10 +1465,9 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
     if (self->subtitle_codec != NULL) {
       GstTagList *tags;
 
-      tags = gst_tag_list_new ();
-      gst_tag_list_add (tags, GST_TAG_MERGE_APPEND, GST_TAG_SUBTITLE_CODEC,
-          self->subtitle_codec, NULL);
-      gst_element_found_tags_for_pad (GST_ELEMENT (self), self->srcpad, tags);
+      tags = gst_tag_list_new (GST_TAG_SUBTITLE_CODEC, self->subtitle_codec,
+          NULL);
+      gst_pad_push_event (self->srcpad, gst_event_new_tag (tags));
     }
   }
 
@@ -1529,12 +1530,12 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
 }
 
 static GstFlowReturn
-gst_sub_parse_chain (GstPad * sinkpad, GstBuffer * buf)
+gst_sub_parse_chain (GstPad * sinkpad, GstObject * parent, GstBuffer * buf)
 {
   GstFlowReturn ret;
   GstSubParse *self;
 
-  self = GST_SUBPARSE (GST_PAD_PARENT (sinkpad));
+  self = GST_SUBPARSE (parent);
 
   /* Push newsegment if needed */
   if (self->need_segment) {
@@ -1551,9 +1552,9 @@ gst_sub_parse_chain (GstPad * sinkpad, GstBuffer * buf)
 }
 
 static gboolean
-gst_sub_parse_sink_event (GstPad * pad, GstEvent * event)
+gst_sub_parse_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
-  GstSubParse *self = GST_SUBPARSE (gst_pad_get_parent (pad));
+  GstSubParse *self = GST_SUBPARSE (parent);
   gboolean ret = FALSE;
 
   GST_DEBUG ("Handling %s event", GST_EVENT_TYPE_NAME (event));
@@ -1574,14 +1575,17 @@ gst_sub_parse_sink_event (GstPad * pad, GstEvent * event)
         gst_buffer_set_size (buf, 2);
 
         GST_BUFFER_OFFSET (buf) = self->offset;
-        gst_sub_parse_chain (pad, buf);
+        gst_sub_parse_chain (pad, parent, buf);
       }
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     }
     case GST_EVENT_SEGMENT:
     {
-      gst_event_copy_segment (event, &self->segment);
+      const GstSegment *s;
+      gst_event_parse_segment (event, &s);
+      if (s->format == GST_FORMAT_TIME)
+        gst_event_copy_segment (event, &self->segment);
       GST_DEBUG_OBJECT (self, "newsegment (%s)",
           gst_format_get_name (self->segment.format));
 
@@ -1601,22 +1605,20 @@ gst_sub_parse_sink_event (GstPad * pad, GstEvent * event)
     {
       self->flushing = TRUE;
 
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     }
     case GST_EVENT_FLUSH_STOP:
     {
       self->flushing = FALSE;
 
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
     }
     default:
-      ret = gst_pad_event_default (pad, event);
+      ret = gst_pad_event_default (pad, parent, event);
       break;
   }
-
-  gst_object_unref (self);
 
   return ret;
 }
@@ -1717,12 +1719,11 @@ gst_subparse_type_find (GstTypeFind * tf, gpointer private)
       GST_DEBUG ("Encoding '%s' detected but conversion failed: %s", encoding,
           err->message);
       g_error_free (err);
-      g_free (encoding);
     } else {
       g_free (str);
       str = converted_str;
-      g_free (encoding);
     }
+    g_free (encoding);
   }
 
   /* Check if at least the first 120 chars are valid UTF8,
@@ -1807,13 +1808,11 @@ gst_subparse_type_find (GstTypeFind * tf, gpointer private)
 static gboolean
 plugin_init (GstPlugin * plugin)
 {
-  static const gchar *sub_exts[] =
-      { "srt", "sub", "mpsub", "mdvd", "smi", "txt", "dks", NULL };
-
   GST_DEBUG_CATEGORY_INIT (sub_parse_debug, "subparse", 0, ".sub parser");
 
   if (!gst_type_find_register (plugin, "subparse_typefind", GST_RANK_MARGINAL,
-          gst_subparse_type_find, (gchar **) sub_exts, SUB_CAPS, NULL, NULL))
+          gst_subparse_type_find, "srt,sub,mpsub,mdvd,smi,txt,dks", SUB_CAPS,
+          NULL, NULL))
     return FALSE;
 
   if (!gst_element_register (plugin, "subparse",
@@ -1828,6 +1827,6 @@ plugin_init (GstPlugin * plugin)
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
     GST_VERSION_MINOR,
-    "subparse",
+    subparse,
     "Subtitle parsing",
     plugin_init, VERSION, "LGPL", GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)

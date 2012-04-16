@@ -23,7 +23,7 @@
 /**
  * SECTION:gstrtcpbuffer
  * @short_description: Helper methods for dealing with RTCP buffers
- * @see_also: #GstBaseRTPPayload, #GstBaseRTPDepayload, #gstrtpbuffer
+ * @see_also: #GstRTPBasePayload, #GstRTPBaseDepayload, #gstrtpbuffer
  *
  * Note: The API in this module is not yet declared stable.
  *
@@ -69,9 +69,7 @@ gst_rtcp_buffer_new_take_data (gpointer data, guint len)
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail (len > 0, NULL);
 
-  result = gst_buffer_new ();
-  gst_buffer_take_memory (result, -1,
-      gst_memory_new_wrapped (0, data, g_free, len, 0, len));
+  result = gst_buffer_new_wrapped (data, len);
 
   return result;
 }
@@ -109,7 +107,7 @@ gboolean
 gst_rtcp_buffer_validate_data (guint8 * data, guint len)
 {
   guint16 header_mask;
-  guint16 header_len;
+  guint header_len;
   guint8 version;
   guint data_len;
   gboolean padding;
@@ -197,21 +195,20 @@ wrong_padding:
  *
  * Check if the data pointed to by @buffer is a valid RTCP packet using
  * gst_rtcp_buffer_validate_data().
- *  
+ *
  * Returns: TRUE if @buffer is a valid RTCP packet.
  */
 gboolean
 gst_rtcp_buffer_validate (GstBuffer * buffer)
 {
   gboolean res;
-  guint8 *data;
-  gsize len;
+  GstMapInfo map;
 
   g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
 
-  data = gst_buffer_map (buffer, &len, NULL, GST_MAP_READ);
-  res = gst_rtcp_buffer_validate_data (data, len);
-  gst_buffer_unmap (buffer, data, len);
+  gst_buffer_map (buffer, &map, GST_MAP_READ);
+  res = gst_rtcp_buffer_validate_data (map.data, map.size);
+  gst_buffer_unmap (buffer, &map);
 
   return res;
 }
@@ -229,12 +226,13 @@ GstBuffer *
 gst_rtcp_buffer_new (guint mtu)
 {
   GstBuffer *result;
+  guint8 *data;
 
   g_return_val_if_fail (mtu > 0, NULL);
 
-  result = gst_buffer_new ();
-  gst_buffer_take_memory (result, -1,
-      gst_memory_new_wrapped (0, g_malloc0 (mtu), g_free, mtu, 0, mtu));
+  data = g_malloc0 (mtu);
+
+  result = gst_buffer_new_wrapped_full (0, data, mtu, 0, 0, data, g_free);
 
   return result;
 }
@@ -255,58 +253,48 @@ gst_rtcp_buffer_map (GstBuffer * buffer, GstMapFlags flags,
   g_return_val_if_fail (rtcp != NULL, FALSE);
   g_return_val_if_fail (rtcp->buffer == NULL, FALSE);
   g_return_val_if_fail (GST_IS_BUFFER (buffer), FALSE);
+  g_return_val_if_fail (flags & GST_MAP_READ, FALSE);
 
   rtcp->buffer = buffer;
-  rtcp->flags = flags;
-  rtcp->data = gst_buffer_map (buffer, &rtcp->size, &rtcp->maxsize, flags);
-
-  /* allow for expansion, e.g. adding packets, if needed */
-  if ((flags & GST_MAP_WRITE) != 0) {
-    /* unmap and adjust to max available, and remap */
-    gst_buffer_unmap (buffer, rtcp->data, rtcp->maxsize);
-    rtcp->data = gst_buffer_map (buffer, &rtcp->size, &rtcp->maxsize, flags);
-  }
+  gst_buffer_map (buffer, &rtcp->map, flags);
 
   return TRUE;
 }
 
 /**
  * gst_rtcp_buffer_unmap:
- * @buffer: a buffer with an RTCP packet
+ * @rtcp: a buffer with an RTCP packet
  *
  * Finish @rtcp after being constructured. This function is usually called
  * after gst_rtcp_buffer_map() and after adding the RTCP items to the new buffer.
  *
- * The function adjusts the size of @buffer with the total length of all the
+ * The function adjusts the size of @rtcp with the total length of all the
  * added packets.
  */
 gboolean
 gst_rtcp_buffer_unmap (GstRTCPBuffer * rtcp)
 {
-  gboolean res;
-  GstRTCPPacket packet;
-
   g_return_val_if_fail (rtcp != NULL, FALSE);
   g_return_val_if_fail (GST_IS_BUFFER (rtcp->buffer), FALSE);
 
-  /* move to the first free space */
-  if (gst_rtcp_buffer_get_first_packet (rtcp, &packet))
-    while (gst_rtcp_packet_move_to_next (&packet));
+  if (rtcp->map.flags & GST_MAP_WRITE) {
+    /* shrink size */
+    gst_buffer_resize (rtcp->buffer, 0, rtcp->map.size);
+  }
 
-  /* shrink size */
-  res = gst_buffer_unmap (rtcp->buffer, rtcp->data, packet.offset);
+  gst_buffer_unmap (rtcp->buffer, &rtcp->map);
   rtcp->buffer = NULL;
 
-  return res;
+  return TRUE;
 }
 
 /**
  * gst_rtcp_buffer_get_packet_count:
- * @buffer: a valid RTCP buffer
+ * @rtcp: a valid RTCP buffer
  *
- * Get the number of RTCP packets in @buffer.
+ * Get the number of RTCP packets in @rtcp.
  *
- * Returns: the number of RTCP packets in @buffer.
+ * Returns: the number of RTCP packets in @rtcp.
  */
 guint
 gst_rtcp_buffer_get_packet_count (GstRTCPBuffer * rtcp)
@@ -316,6 +304,8 @@ gst_rtcp_buffer_get_packet_count (GstRTCPBuffer * rtcp)
 
   g_return_val_if_fail (rtcp != NULL, 0);
   g_return_val_if_fail (GST_IS_BUFFER (rtcp->buffer), 0);
+  g_return_val_if_fail (rtcp != NULL, 0);
+  g_return_val_if_fail (rtcp->map.flags & GST_MAP_READ, 0);
 
   count = 0;
   if (gst_rtcp_buffer_get_first_packet (rtcp, &packet)) {
@@ -339,19 +329,19 @@ static gboolean
 read_packet_header (GstRTCPPacket * packet)
 {
   guint8 *data;
-  guint size;
+  gsize maxsize;
   guint offset;
 
   g_return_val_if_fail (packet != NULL, FALSE);
 
-  data = packet->rtcp->data;
-  size = packet->rtcp->size;
+  data = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.size;
 
   offset = packet->offset;
 
   /* check if we are at the end of the buffer, we add 4 because we also want to
    * ensure we can read the header. */
-  if (offset + 4 > size)
+  if (offset + 4 > maxsize)
     return FALSE;
 
   if ((data[offset] & 0xc0) != (GST_RTCP_VERSION << 6))
@@ -371,13 +361,13 @@ read_packet_header (GstRTCPPacket * packet)
 
 /**
  * gst_rtcp_buffer_get_first_packet:
- * @buffer: a valid RTCP buffer
+ * @rtcp: a valid RTCP buffer
  * @packet: a #GstRTCPPacket
  *
  * Initialize a new #GstRTCPPacket pointer that points to the first packet in
- * @buffer.
+ * @rtcp.
  *
- * Returns: TRUE if the packet existed in @buffer.
+ * Returns: TRUE if the packet existed in @rtcp.
  */
 gboolean
 gst_rtcp_buffer_get_first_packet (GstRTCPBuffer * rtcp, GstRTCPPacket * packet)
@@ -385,6 +375,8 @@ gst_rtcp_buffer_get_first_packet (GstRTCPBuffer * rtcp, GstRTCPPacket * packet)
   g_return_val_if_fail (rtcp != NULL, FALSE);
   g_return_val_if_fail (GST_IS_BUFFER (rtcp->buffer), FALSE);
   g_return_val_if_fail (packet != NULL, FALSE);
+  g_return_val_if_fail (rtcp != NULL, 0);
+  g_return_val_if_fail (rtcp->map.flags & GST_MAP_READ, 0);
 
   /* init to 0 */
   packet->rtcp = rtcp;
@@ -412,6 +404,8 @@ gst_rtcp_packet_move_to_next (GstRTCPPacket * packet)
 {
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type != GST_RTCP_TYPE_INVALID, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   /* if we have a padding or invalid packet, it must be the last, 
    * return FALSE */
@@ -437,11 +431,11 @@ end:
 
 /**
  * gst_rtcp_buffer_add_packet:
- * @buffer: a valid RTCP buffer
+ * @rtcp: a valid RTCP buffer
  * @type: the #GstRTCPType of the new packet
  * @packet: pointer to new packet
  *
- * Add a new packet of @type to @buffer. @packet will point to the newly created 
+ * Add a new packet of @type to @rtcp. @packet will point to the newly created 
  * packet.
  *
  * Returns: %TRUE if the packet could be created. This function returns %FALSE
@@ -451,7 +445,8 @@ gboolean
 gst_rtcp_buffer_add_packet (GstRTCPBuffer * rtcp, GstRTCPType type,
     GstRTCPPacket * packet)
 {
-  guint len, size;
+  guint len;
+  gsize maxsize;
   guint8 *data;
   gboolean result;
 
@@ -459,12 +454,13 @@ gst_rtcp_buffer_add_packet (GstRTCPBuffer * rtcp, GstRTCPType type,
   g_return_val_if_fail (GST_IS_BUFFER (rtcp->buffer), FALSE);
   g_return_val_if_fail (type != GST_RTCP_TYPE_INVALID, FALSE);
   g_return_val_if_fail (packet != NULL, FALSE);
+  g_return_val_if_fail (rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   /* find free space */
   if (gst_rtcp_buffer_get_first_packet (rtcp, packet))
     while (gst_rtcp_packet_move_to_next (packet));
 
-  size = rtcp->size;
+  maxsize = rtcp->map.maxsize;
 
   /* packet->offset is now pointing to the next free offset in the buffer to
    * start a compount packet. Next we figure out if we have enough free space in
@@ -494,10 +490,12 @@ gst_rtcp_buffer_add_packet (GstRTCPBuffer * rtcp, GstRTCPType type,
     default:
       goto unknown_type;
   }
-  if (packet->offset + len >= size)
+  if (packet->offset + len >= maxsize)
     goto no_space;
 
-  data = rtcp->data + packet->offset;
+  rtcp->map.size += len;
+
+  data = rtcp->map.data + packet->offset;
 
   data[0] = (GST_RTCP_VERSION << 6);
   data[1] = type;
@@ -541,13 +539,17 @@ gst_rtcp_packet_remove (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type != GST_RTCP_TYPE_INVALID, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   /* The next packet starts at offset + length + 4 (the header) */
   offset = packet->offset + (packet->length << 2) + 4;
 
   /* Overwrite this packet with the rest of the data */
-  memmove (packet->rtcp->data + packet->offset,
-      packet->rtcp->data + offset, packet->rtcp->size - offset);
+  memmove (packet->rtcp->map.data + packet->offset,
+      packet->rtcp->map.data + offset, packet->rtcp->map.size - offset);
+
+  packet->rtcp->map.size -= offset - packet->offset;
 
   /* try to read next header */
   ret = read_packet_header (packet);
@@ -634,7 +636,7 @@ gst_rtcp_packet_get_length (GstRTCPPacket * packet)
  * @ntptime: result NTP time
  * @rtptime: result RTP time
  * @packet_count: result packet count
- * @octet_count: result octect count
+ * @octet_count: result octet count
  *
  * Parse the SR sender info and store the values.
  */
@@ -647,8 +649,10 @@ gst_rtcp_packet_sr_get_sender_info (GstRTCPPacket * packet, guint32 * ssrc,
 
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_SR);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_READ);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -675,7 +679,7 @@ gst_rtcp_packet_sr_get_sender_info (GstRTCPPacket * packet, guint32 * ssrc,
  * @ntptime: the NTP time
  * @rtptime: the RTP time
  * @packet_count: the packet count
- * @octet_count: the octect count
+ * @octet_count: the octet count
  *
  * Set the given values in the SR packet @packet.
  */
@@ -687,8 +691,10 @@ gst_rtcp_packet_sr_set_sender_info (GstRTCPPacket * packet, guint32 ssrc,
 
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_SR);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -719,8 +725,10 @@ gst_rtcp_packet_rr_get_ssrc (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RR, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -743,8 +751,10 @@ gst_rtcp_packet_rr_set_ssrc (GstRTCPPacket * packet, guint32 ssrc)
 
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RR);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -765,6 +775,8 @@ gst_rtcp_packet_get_rb_count (GstRTCPPacket * packet)
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RR ||
       packet->type == GST_RTCP_TYPE_SR, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
   return packet->count;
 }
@@ -795,8 +807,10 @@ gst_rtcp_packet_get_rb (GstRTCPPacket * packet, guint nth, guint32 * ssrc,
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RR ||
       packet->type == GST_RTCP_TYPE_SR);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_READ);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -859,17 +873,19 @@ gst_rtcp_packet_add_rb (GstRTCPPacket * packet, guint32 ssrc,
     guint32 jitter, guint32 lsr, guint32 dlsr)
 {
   guint8 *data;
-  guint size, offset;
+  guint maxsize, offset;
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RR ||
       packet->type == GST_RTCP_TYPE_SR, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   if (packet->count >= GST_RTCP_MAX_RB_COUNT)
     goto no_space;
 
-  data = packet->rtcp->data;
-  size = packet->rtcp->size;
+  data = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.maxsize;
 
   /* skip header */
   offset = packet->offset + 4;
@@ -882,7 +898,7 @@ gst_rtcp_packet_add_rb (GstRTCPPacket * packet, guint32 ssrc,
   offset += (packet->count * 24);
 
   /* we need 24 free bytes now */
-  if (offset + 24 >= size)
+  if (offset + 24 >= maxsize)
     goto no_space;
 
   /* increment packet count and length */
@@ -891,6 +907,7 @@ gst_rtcp_packet_add_rb (GstRTCPPacket * packet, guint32 ssrc,
   packet->length += 6;
   data[packet->offset + 2] = (packet->length) >> 8;
   data[packet->offset + 3] = (packet->length) & 0xff;
+  packet->rtcp->map.size += 6 * 4;
 
   /* move to new report block offset */
   data += offset;
@@ -939,6 +956,8 @@ gst_rtcp_packet_set_rb (GstRTCPPacket * packet, guint nth, guint32 ssrc,
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RR ||
       packet->type == GST_RTCP_TYPE_SR);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE);
 
   g_warning ("not implemented");
 }
@@ -1002,13 +1021,15 @@ gst_rtcp_packet_sdes_next_item (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   /* if we are at the last item, we are done */
   if (packet->item_count == packet->count)
     return FALSE;
 
   /* move to SDES */
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
   data += packet->offset;
   /* move to item */
   offset = packet->item_offset;
@@ -1052,9 +1073,11 @@ gst_rtcp_packet_sdes_get_ssrc (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
   /* move to SDES */
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
   data += packet->offset;
   /* move to item */
   data += packet->item_offset;
@@ -1080,9 +1103,11 @@ gst_rtcp_packet_sdes_first_entry (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   /* move to SDES */
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
   data += packet->offset;
   /* move to item */
   offset = packet->item_offset;
@@ -1118,9 +1143,11 @@ gst_rtcp_packet_sdes_next_entry (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   /* move to SDES */
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
   data += packet->offset;
   /* move to item */
   offset = packet->item_offset;
@@ -1158,7 +1185,7 @@ gst_rtcp_packet_sdes_next_entry (GstRTCPPacket * packet)
  *
  * When @type refers to a text item, @data will point to a UTF8 string. Note
  * that this UTF8 string is NOT null-terminated. Use
- * gst_rtcp_packet_sdes_copy_entry() to get a null-termined copy of the entry.
+ * gst_rtcp_packet_sdes_copy_entry() to get a null-terminated copy of the entry.
  *
  * Returns: %TRUE if there was valid data.
  */
@@ -1171,9 +1198,11 @@ gst_rtcp_packet_sdes_get_entry (GstRTCPPacket * packet,
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   /* move to SDES */
-  bdata = packet->rtcp->data;
+  bdata = packet->rtcp->map.data;
   bdata += packet->offset;
   /* move to item */
   offset = packet->item_offset;
@@ -1214,6 +1243,8 @@ gst_rtcp_packet_sdes_copy_entry (GstRTCPPacket * packet,
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, FALSE);
 
   if (!gst_rtcp_packet_sdes_get_entry (packet, type, &tlen, &tdata))
     return FALSE;
@@ -1240,10 +1271,13 @@ gboolean
 gst_rtcp_packet_sdes_add_item (GstRTCPPacket * packet, guint32 ssrc)
 {
   guint8 *data;
-  guint offset, size;
+  guint offset;
+  gsize maxsize;
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   /* increment item count when possible */
   if (packet->count >= GST_RTCP_MAX_SDES_ITEM_COUNT)
@@ -1256,14 +1290,14 @@ gst_rtcp_packet_sdes_add_item (GstRTCPPacket * packet, guint32 ssrc)
   gst_rtcp_packet_sdes_next_item (packet);
 
   /* move to SDES */
-  data = packet->rtcp->data;
-  size = packet->rtcp->size;
+  data = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.maxsize;
   data += packet->offset;
   /* move to current item */
   offset = packet->item_offset;
 
   /* we need 2 free words now */
-  if (offset + 8 >= size)
+  if (offset + 8 >= maxsize)
     goto no_next;
 
   /* write SSRC */
@@ -1277,6 +1311,8 @@ gst_rtcp_packet_sdes_add_item (GstRTCPPacket * packet, guint32 ssrc)
   packet->length += 2;
   data[2] = (packet->length) >> 8;
   data[3] = (packet->length) & 0xff;
+
+  packet->rtcp->map.size += 8;
 
   return TRUE;
 
@@ -1309,14 +1345,17 @@ gst_rtcp_packet_sdes_add_entry (GstRTCPPacket * packet, GstRTCPSDESType type,
     guint8 len, const guint8 * data)
 {
   guint8 *bdata;
-  guint offset, size, padded;
+  guint offset, padded;
+  gsize maxsize;
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_SDES, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   /* move to SDES */
-  bdata = packet->rtcp->data;
-  size = packet->rtcp->size;
+  bdata = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.maxsize;
   bdata += packet->offset;
   /* move to item */
   offset = packet->item_offset;
@@ -1327,8 +1366,10 @@ gst_rtcp_packet_sdes_add_entry (GstRTCPPacket * packet, GstRTCPSDESType type,
   padded = (offset + 2 + len + 1 + 3) & ~3;
 
   /* we need enough space for type, len, data and padding */
-  if (packet->offset + padded >= size)
+  if (packet->offset + padded >= maxsize)
     goto no_space;
+
+  packet->rtcp->map.size = packet->offset + padded;
 
   bdata[offset] = type;
   bdata[offset + 1] = len;
@@ -1388,6 +1429,8 @@ gst_rtcp_packet_bye_get_nth_ssrc (GstRTCPPacket * packet, guint nth)
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
   /* get amount of sources and check that we don't read too much */
   sc = packet->count;
@@ -1405,10 +1448,10 @@ gst_rtcp_packet_bye_get_nth_ssrc (GstRTCPPacket * packet, guint nth)
   offset += packet->offset;
 
   /* check if the packet is valid */
-  if (offset + 4 > packet->rtcp->size)
+  if (offset + 4 > packet->rtcp->map.size)
     return 0;
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
   data += offset;
 
   ssrc = GST_READ_UINT32_BE (data);
@@ -1431,16 +1474,19 @@ gboolean
 gst_rtcp_packet_bye_add_ssrc (GstRTCPPacket * packet, guint32 ssrc)
 {
   guint8 *data;
-  guint size, offset;
+  gsize maxsize;
+  guint offset;
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   if (packet->count >= GST_RTCP_MAX_BYE_SSRC_COUNT)
     goto no_space;
 
-  data = packet->rtcp->data;
-  size = packet->rtcp->size;
+  data = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.maxsize;
 
   /* skip header */
   offset = packet->offset + 4;
@@ -1448,7 +1494,7 @@ gst_rtcp_packet_bye_add_ssrc (GstRTCPPacket * packet, guint32 ssrc)
   /* move to current index */
   offset += (packet->count * 4);
 
-  if (offset + 4 >= size)
+  if (offset + 4 >= maxsize)
     goto no_space;
 
   /* increment packet count and length */
@@ -1457,6 +1503,8 @@ gst_rtcp_packet_bye_add_ssrc (GstRTCPPacket * packet, guint32 ssrc)
   packet->length += 1;
   data[packet->offset + 2] = (packet->length) >> 8;
   data[packet->offset + 3] = (packet->length) & 0xff;
+
+  packet->rtcp->map.size += 4;
 
   /* move to new SSRC offset and write ssrc */
   data += offset;
@@ -1492,6 +1540,8 @@ gst_rtcp_packet_bye_add_ssrcs (GstRTCPPacket * packet, guint32 * ssrc,
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   res = TRUE;
   for (i = 0; i < len && res; i++) {
@@ -1518,7 +1568,7 @@ get_reason_offset (GstRTCPPacket * packet)
   offset += packet->offset;
 
   /* check if the packet is valid */
-  if (offset + 1 > packet->rtcp->size)
+  if (offset + 1 > packet->rtcp->map.size)
     return 0;
 
   return offset;
@@ -1541,12 +1591,14 @@ gst_rtcp_packet_bye_get_reason_len (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
   roffset = get_reason_offset (packet);
   if (roffset == 0)
     return 0;
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   return data[roffset];
 }
@@ -1569,12 +1621,14 @@ gst_rtcp_packet_bye_get_reason (GstRTCPPacket * packet)
 
   g_return_val_if_fail (packet != NULL, NULL);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, NULL);
+  g_return_val_if_fail (packet->rtcp != NULL, NULL);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, NULL);
 
   roffset = get_reason_offset (packet);
   if (roffset == 0)
     return NULL;
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* get length of reason string */
   len = data[roffset];
@@ -1585,7 +1639,7 @@ gst_rtcp_packet_bye_get_reason (GstRTCPPacket * packet)
   roffset += 1;
 
   /* check if enough data to copy */
-  if (roffset + len > packet->rtcp->size)
+  if (roffset + len > packet->rtcp->map.size)
     return NULL;
 
   return g_strndup ((gconstpointer) (data + roffset), len);
@@ -1604,11 +1658,14 @@ gboolean
 gst_rtcp_packet_bye_set_reason (GstRTCPPacket * packet, const gchar * reason)
 {
   guint8 *data;
-  guint roffset, size;
+  guint roffset;
+  gsize maxsize;
   guint8 len, padded;
 
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
   if (reason == NULL)
     return TRUE;
@@ -1624,14 +1681,14 @@ gst_rtcp_packet_bye_set_reason (GstRTCPPacket * packet, const gchar * reason)
   if (roffset == 0)
     goto no_space;
 
-  data = packet->rtcp->data;
-  size = packet->rtcp->size;
+  data = packet->rtcp->map.data;
+  maxsize = packet->rtcp->map.maxsize;
 
   /* we have 1 byte length and we need to pad to 4 bytes */
   padded = ((len + 1) + 3) & ~3;
 
   /* we need enough space for the padded length */
-  if (roffset + padded >= size)
+  if (roffset + padded >= maxsize)
     goto no_space;
 
   data[roffset] = len;
@@ -1641,6 +1698,8 @@ gst_rtcp_packet_bye_set_reason (GstRTCPPacket * packet, const gchar * reason)
   packet->length += (padded >> 2) - 1;
   data[packet->offset + 2] = (packet->length) >> 8;
   data[packet->offset + 3] = (packet->length) & 0xff;
+
+  packet->rtcp->map.size += padded;
 
   return TRUE;
 
@@ -1671,8 +1730,10 @@ gst_rtcp_packet_fb_get_sender_ssrc (GstRTCPPacket * packet)
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail ((packet->type == GST_RTCP_TYPE_RTPFB ||
           packet->type == GST_RTCP_TYPE_PSFB), 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -1698,8 +1759,10 @@ gst_rtcp_packet_fb_set_sender_ssrc (GstRTCPPacket * packet, guint32 ssrc)
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_READ);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header */
   data += packet->offset + 4;
@@ -1725,8 +1788,10 @@ gst_rtcp_packet_fb_get_media_ssrc (GstRTCPPacket * packet)
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail ((packet->type == GST_RTCP_TYPE_RTPFB ||
           packet->type == GST_RTCP_TYPE_PSFB), 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header and sender ssrc */
   data += packet->offset + 8;
@@ -1752,8 +1817,10 @@ gst_rtcp_packet_fb_set_media_ssrc (GstRTCPPacket * packet, guint32 ssrc)
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   /* skip header and sender ssrc */
   data += packet->offset + 8;
@@ -1797,8 +1864,10 @@ gst_rtcp_packet_fb_set_type (GstRTCPPacket * packet, GstRTCPFBType type)
   g_return_if_fail (packet != NULL);
   g_return_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB);
+  g_return_if_fail (packet->rtcp != NULL);
+  g_return_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE);
 
-  data = packet->rtcp->data;
+  data = packet->rtcp->map.data;
 
   data[packet->offset] = (data[packet->offset] & 0xe0) | type;
   packet->count = type;
@@ -1969,8 +2038,10 @@ gst_rtcp_packet_fb_get_fci_length (GstRTCPPacket * packet)
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB, 0);
+  g_return_val_if_fail (packet->rtcp != NULL, 0);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
 
-  data = packet->rtcp->data + packet->offset + 2;
+  data = packet->rtcp->map.data + packet->offset + 2;
 
   return GST_READ_UINT16_BE (data) - 2;
 }
@@ -1995,13 +2066,17 @@ gst_rtcp_packet_fb_set_fci_length (GstRTCPPacket * packet, guint16 wordlen)
   g_return_val_if_fail (packet != NULL, FALSE);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB, FALSE);
+  g_return_val_if_fail (packet->rtcp != NULL, FALSE);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_WRITE, FALSE);
 
-  if (packet->rtcp->size < packet->offset + ((wordlen + 3) * 4))
+  if (packet->rtcp->map.maxsize < packet->offset + ((wordlen + 3) * 4))
     return FALSE;
 
-  data = packet->rtcp->data + packet->offset + 2;
+  data = packet->rtcp->map.data + packet->offset + 2;
   wordlen += 2;
   GST_WRITE_UINT16_BE (data, wordlen);
+
+  packet->rtcp->map.size += wordlen * 4;
 
   return TRUE;
 }
@@ -2024,8 +2099,10 @@ gst_rtcp_packet_fb_get_fci (GstRTCPPacket * packet)
   g_return_val_if_fail (packet != NULL, NULL);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_RTPFB ||
       packet->type == GST_RTCP_TYPE_PSFB, NULL);
+  g_return_val_if_fail (packet->rtcp != NULL, NULL);
+  g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, NULL);
 
-  data = packet->rtcp->data + packet->offset;
+  data = packet->rtcp->map.data + packet->offset;
 
   if (GST_READ_UINT16_BE (data + 2) <= 2)
     return NULL;

@@ -28,7 +28,7 @@
 #include <gtk/gtk.h>
 
 #include <gst/gst.h>
-#include <gst/interfaces/videooverlay.h>
+#include <gst/video/videooverlay.h>
 
 #include <string.h>
 
@@ -97,9 +97,6 @@ main (int argc, char **argv)
   GstElement *pipeline, *src, *sink;
   gulong embed_xid;
   GstStateChangeReturn sret;
-
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
 
   gst_init (&argc, &argv);
   gtk_init (&argc, &argv);

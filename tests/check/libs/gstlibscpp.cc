@@ -30,17 +30,19 @@
 
 #include <gst/audio/audio-enumtypes.h>
 #include <gst/audio/audio.h>
+#include <gst/audio/gstaudiocdsrc.h>
 #include <gst/audio/gstaudioclock.h>
 #include <gst/audio/gstaudiofilter.h>
 #include <gst/audio/gstaudiosink.h>
 #include <gst/audio/gstaudiosrc.h>
-#include <gst/audio/gstbaseaudiosink.h>
-#include <gst/audio/gstbaseaudiosrc.h>
-#include <gst/audio/gstringbuffer.h>
+#include <gst/audio/gstaudiobasesink.h>
+#include <gst/audio/gstaudiobasesrc.h>
+#include <gst/audio/gstaudioringbuffer.h>
 #include <gst/audio/mixerutils.h>
-#include <gst/audio/multichannel.h>
-
-#include <gst/cdda/gstcddabasesrc.h>
+#include <gst/audio/mixer.h>
+#include <gst/audio/mixeroptions.h>
+#include <gst/audio/mixertrack.h>
+#include <gst/audio/streamvolume.h>
 
 #include <gst/fft/gstfftf32.h>
 #include <gst/fft/gstfftf64.h>
@@ -48,23 +50,12 @@
 #include <gst/fft/gstffts16.h>
 #include <gst/fft/gstffts32.h>
 
-#include <gst/interfaces/colorbalancechannel.h>
-#include <gst/interfaces/colorbalance.h>
 #include <gst/interfaces/interfaces-enumtypes.h>
 #include <gst/interfaces/interfaces-marshal.h>
-#include <gst/interfaces/mixer.h>
-#include <gst/interfaces/mixeroptions.h>
-#include <gst/interfaces/mixertrack.h>
 #include <gst/interfaces/navigation.h>
-#include <gst/interfaces/propertyprobe.h>
-#include <gst/interfaces/streamvolume.h>
 #include <gst/interfaces/tunerchannel.h>
 #include <gst/interfaces/tuner.h>
 #include <gst/interfaces/tunernorm.h>
-#include <gst/interfaces/videoorientation.h>
-#include <gst/interfaces/videooverlay.h>
-
-#include <gst/netbuffer/gstnetbuffer.h>
 
 #include <gst/pbutils/codec-utils.h>
 #include <gst/pbutils/descriptions.h>
@@ -82,14 +73,13 @@
 #include <gst/riff/riff-media.h>
 #include <gst/riff/riff-read.h>
 
-#include <gst/rtp/gstbasertpaudiopayload.h>
-#include <gst/rtp/gstbasertpdepayload.h>
-#include <gst/rtp/gstbasertppayload.h>
+#include <gst/rtp/gstrtpbaseaudiopayload.h>
+#include <gst/rtp/gstrtpbasedepayload.h>
+#include <gst/rtp/gstrtpbasepayload.h>
 #include <gst/rtp/gstrtcpbuffer.h>
 #include <gst/rtp/gstrtpbuffer.h>
 #include <gst/rtp/gstrtppayloads.h>
 
-#include <gst/rtsp/gstrtspbase64.h>
 #include <gst/rtsp/gstrtspconnection.h>
 #include <gst/rtsp/gstrtspdefs.h>
 #include <gst/rtsp/gstrtsp-enumtypes.h>
@@ -110,7 +100,12 @@
 #include <gst/video/gstvideofilter.h>
 #include <gst/video/gstvideosink.h>
 #include <gst/video/video-enumtypes.h>
+#include <gst/video/video-marshal.h>
 #include <gst/video/video.h>
+#include <gst/video/colorbalancechannel.h>
+#include <gst/video/colorbalance.h>
+#include <gst/video/videoorientation.h>
+#include <gst/video/videooverlay.h>
 
 /* we mostly just want to make sure that our library headers don't
  * contain anything a C++ compiler might not like */

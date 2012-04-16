@@ -26,33 +26,27 @@
 #include <gst/app/gstappsrc.h>
 #include <gst/app/gstappsink.h>
 #include <gst/audio/audio.h>
+#include <gst/audio/gstaudiocdsrc.h>
 #include <gst/audio/gstaudioclock.h>
 #include <gst/audio/gstaudiofilter.h>
 #include <gst/audio/gstaudiosrc.h>
 #include <gst/audio/gstaudiosink.h>
-#include <gst/audio/gstringbuffer.h>
-#include <gst/audio/multichannel.h>
-#include <gst/cdda/gstcddabasesrc.h>
+#include <gst/audio/gstaudioringbuffer.h>
+#include <gst/audio/mixer.h>
+#include <gst/audio/streamvolume.h>
 #include <gst/fft/gstfft.h>
 #include <gst/fft/gstffts16.h>
 #include <gst/fft/gstffts32.h>
 #include <gst/fft/gstfftf32.h>
 #include <gst/fft/gstfftf64.h>
-#include <gst/interfaces/colorbalance.h>
-#include <gst/interfaces/mixer.h>
 #include <gst/interfaces/navigation.h>
-#include <gst/interfaces/propertyprobe.h>
-#include <gst/interfaces/streamvolume.h>
 #include <gst/interfaces/tuner.h>
-#include <gst/interfaces/videoorientation.h>
-#include <gst/interfaces/videooverlay.h>
-#include <gst/netbuffer/gstnetbuffer.h>
 #include <gst/pbutils/pbutils.h>
 #include <gst/riff/riff-media.h>
 #include <gst/riff/riff-read.h>
-#include <gst/rtp/gstbasertpaudiopayload.h>
-#include <gst/rtp/gstbasertpdepayload.h>
-#include <gst/rtp/gstbasertppayload.h>
+#include <gst/rtp/gstrtpbaseaudiopayload.h>
+#include <gst/rtp/gstrtpbasedepayload.h>
+#include <gst/rtp/gstrtpbasepayload.h>
 #include <gst/rtp/gstrtpbuffer.h>
 #include <gst/rtp/gstrtcpbuffer.h>
 #include <gst/rtp/gstrtppayloads.h>
@@ -70,6 +64,9 @@
 #include <gst/video/video.h>
 #include <gst/video/gstvideofilter.h>
 #include <gst/video/gstvideosink.h>
+#include <gst/video/colorbalance.h>
+#include <gst/video/videoorientation.h>
+#include <gst/video/videooverlay.h>
 
 /* initial version of the file was generated using:
  * grep -A1 "<STRUCT>" ../../docs/libs/gst-plugins-base-libs-decl.txt | \
@@ -102,10 +99,6 @@
 #endif
 #endif
 #endif
-
-/* disabled for 0.11 */
-#undef HAVE_ABI_SIZES
-#define HAVE_ABI_SIZES FALSE
 
 GST_START_TEST (test_ABI)
 {

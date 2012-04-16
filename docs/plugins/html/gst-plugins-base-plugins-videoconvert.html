@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>videoconvert</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-encodebin.html" title="encodebin">
 <link rel="next" href="gst-plugins-base-plugins-gdpdepay.html" title="gdpdepay">
@@ -17,13 +17,17 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-encodebin.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-gdpdepay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-plugins-videoconvert.synopsis" class="shortcut">Top</a>
                    | 
                   <a href="#gst-plugins-base-plugins-videoconvert.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gst-plugins-base-plugins-videoconvert.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#gst-plugins-base-plugins-videoconvert.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
 <div class="refentry">
@@ -31,13 +35,31 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-videoconvert.top_of_page"></a>videoconvert</span></h2>
-<p>videoconvert</p>
+<p>videoconvert — Converts video from one colorspace to another</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="gst-plugins-base-plugins-videoconvert.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert" title="struct GstVideoConvert">GstVideoConvert</a>;
+<a name="GstVideoConvert"></a><pre class="synopsis">struct              <a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert-struct" title="struct GstVideoConvert">GstVideoConvert</a>;
+</pre>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-videoconvert.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
+               +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
+                     +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html">GstBaseTransform</a>
+                           +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideofilter.html#GstVideoFilter">GstVideoFilter</a>
+                                 +----GstVideoConvert
+</pre>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-videoconvert.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither" title='The "dither" property'>dither</a>"                   <span class="type">GstColorspaceDitherMethod</span>  : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -48,37 +70,112 @@ Convert video frames between a great variety of video formats.
 <p>
 </p>
 <div class="refsect2">
-<a name="id503871"></a><h3>Example launch line</h3>
-<div class="informalexample"><pre class="programlisting">
-gst-launch -v videotestsrc ! video/x-raw,format=\(fourcc\)YUY2 ! videoconvert ! ximagesink
-</pre></div>
+<a name="idp5648672"></a><h3>Example launch line</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v videotestsrc <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>format<span class="gtkdoc opt">=</span>\<span class="gtkdoc opt">(</span>fourcc\<span class="gtkdoc opt">)</span>YUY2 <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> ximagesink</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </div>
 <p>
 </p>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="refsect2">
+<a name="idp8168640"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">plugin</span></p></td>
+<td>
+            <a class="link" href="gst-plugins-base-plugins-plugin-videoconvert.html#plugin-videoconvert">videoconvert</a>
+          </td>
+</tr>
+<tr>
+<td><p><span class="term">author</span></p></td>
+<td>GStreamer maintainers &lt;gstreamer-devel@lists.sourceforge.net&gt;</td>
+</tr>
+<tr>
+<td><p><span class="term">class</span></p></td>
+<td>Filter/Converter/Video</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="idp11017520"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">name</span></p></td>
+<td>sink</td>
+</tr>
+<tr>
+<td><p><span class="term">direction</span></p></td>
+<td>sink</td>
+</tr>
+<tr>
+<td><p><span class="term">presence</span></p></td>
+<td>always</td>
+</tr>
+<tr>
+<td><p><span class="term">details</span></p></td>
+<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, GRAY8, GRAY16_BE, GRAY16_LE, v308, Y800, Y16, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8_PALETTED, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+</tr>
+</tbody>
+</table></div>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">name</span></p></td>
+<td>src</td>
+</tr>
+<tr>
+<td><p><span class="term">direction</span></p></td>
+<td>source</td>
+</tr>
+<tr>
+<td><p><span class="term">presence</span></p></td>
+<td>always</td>
+</tr>
+<tr>
+<td><p><span class="term">details</span></p></td>
+<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, GRAY8, GRAY16_BE, GRAY16_LE, v308, Y800, Y16, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8_PALETTED, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
 <p>
 </p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videoconvert.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="GstVideoConvert"></a><h3>struct GstVideoConvert</h3>
-<pre class="programlisting">struct GstVideoConvert {
-  GstVideoFilter element;
-
-  GstVideoInfo from_info;
-  GstVideoInfo to_info;
-  gboolean negotiated;
-
-  ColorSpaceColorSpec from_spec;
-  ColorSpaceColorSpec to_spec;
-
-  VideoConvert *convert;
-  gboolean dither;
-};
-</pre>
+<a name="GstVideoConvert-struct"></a><h3>struct GstVideoConvert</h3>
+<pre class="programlisting">struct GstVideoConvert;</pre>
 <p>
 Opaque object data structure.
 </p>
+</div>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-videoconvert.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GstVideoConvert--dither"></a><h3>The <code class="literal">"dither"</code> property</h3>
+<pre class="programlisting">  "dither"                   <span class="type">GstColorspaceDitherMethod</span>  : Read / Write</pre>
+<p>Apply dithering while converting.</p>
+<p>Default value: No dithering (default)</p>
 </div>
 </div>
 </div>

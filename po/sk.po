@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-11-08 15:34+0100\n"
 "Last-Translator: Peter Tuhársky <tuharsky@misbb.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -191,9 +191,8 @@ msgstr "Zdrojový prvok je chybný."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Chyba pri posielaní údajov do \"%s:%d\"."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "Spojenie s %s:%d bolo odmietnuté."
+msgid "This CD has no audio tracks"
+msgstr "Toto CD nemá zvukové stopy"
 
 msgid "Can't record audio fast enough"
 msgstr "Zvuk sa nedá nahrávať dostatočne rýchlo"
@@ -360,9 +359,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Toto CD nemá zvukové stopy"
-
 msgid "ID3 tag"
 msgstr "ID3 značka"
 
@@ -395,6 +391,21 @@ msgstr "Bezstratové MSZH"
 
 msgid "Run-length encoding"
 msgstr "Kódovanie počas prehrávania"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Titulkový formát TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Formát titulkov sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Formát titulkov Kate"
 
 msgid "Sami subtitle format"
 msgstr "Formát titulkov sami"
@@ -510,6 +521,9 @@ msgstr "Neznámy prvok enkodéra"
 
 msgid "Plugin or element of unknown type"
 msgstr "Neznámy typ zásuvného modulu alebo prvku"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Spojenie s %s:%d bolo odmietnuté."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Nekomprimovaný planar YUV 4:2:0"

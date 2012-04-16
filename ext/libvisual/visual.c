@@ -24,6 +24,7 @@
 #include <gst/gst.h>
 #include <gst/base/gstadapter.h>
 #include <gst/video/video.h>
+#include <gst/video/gstvideopool.h>
 #include <gst/audio/audio.h>
 #include <libvisual/libvisual.h>
 
@@ -113,7 +114,7 @@ static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE ("sink",
     GST_PAD_ALWAYS,
     GST_STATIC_CAPS ("audio/x-raw, "
         "format = (string) " GST_AUDIO_NE (S16) ", "
-        "channels = (int) { 1, 2 }, "
+        "layout = (string) interleaved, " "channels = (int) { 1, 2 }, "
 #if defined(VISUAL_API_VERSION) && VISUAL_API_VERSION >= 4000 && VISUAL_API_VERSION < 5000
         "rate = (int) { 8000, 11250, 22500, 32000, 44100, 48000, 96000 }"
 #else
@@ -129,11 +130,15 @@ static void gst_visual_finalize (GObject * object);
 
 static GstStateChangeReturn gst_visual_change_state (GstElement * element,
     GstStateChange transition);
-static GstFlowReturn gst_visual_chain (GstPad * pad, GstBuffer * buffer);
-static gboolean gst_visual_sink_event (GstPad * pad, GstEvent * event);
-static gboolean gst_visual_src_event (GstPad * pad, GstEvent * event);
+static GstFlowReturn gst_visual_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
+static gboolean gst_visual_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_visual_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
 
-static gboolean gst_visual_src_query (GstPad * pad, GstQuery * query);
+static gboolean gst_visual_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
 
 static gboolean gst_visual_sink_setcaps (GstPad * pad, GstCaps * caps);
 static GstCaps *gst_visual_getcaps (GstPad * pad, GstCaps * filter);
@@ -195,7 +200,7 @@ gst_visual_class_init (gpointer g_class, gpointer class_data)
     gst_element_class_add_pad_template (element,
         gst_static_pad_template_get (&sink_template));
 
-    gst_element_class_set_details_simple (element,
+    gst_element_class_set_static_metadata (element,
         longname, "Visualization",
         klass->plugin->info->about, "Benjamin Otte <otte@gnome.org>");
 
@@ -215,7 +220,6 @@ gst_visual_init (GstVisual * visual)
   gst_element_add_pad (GST_ELEMENT (visual), visual->sinkpad);
 
   visual->srcpad = gst_pad_new_from_static_template (&src_template, "src");
-  gst_pad_set_getcaps_function (visual->srcpad, gst_visual_getcaps);
   gst_pad_set_event_function (visual->srcpad, gst_visual_src_event);
   gst_pad_set_query_function (visual->srcpad, gst_visual_src_query);
   gst_element_add_pad (GST_ELEMENT (visual), visual->srcpad);
@@ -269,7 +273,7 @@ static GstCaps *
 gst_visual_getcaps (GstPad * pad, GstCaps * filter)
 {
   GstCaps *ret;
-  GstVisual *visual = GST_VISUAL (gst_pad_get_parent (pad));
+  GstVisual *visual = GST_VISUAL (GST_PAD_PARENT (pad));
   int depths;
 
   if (!visual->actor) {
@@ -320,7 +324,7 @@ beach:
   }
 
   GST_DEBUG_OBJECT (visual, "returning caps %" GST_PTR_FORMAT, ret);
-  gst_object_unref (visual);
+
   return ret;
 }
 
@@ -383,7 +387,7 @@ error:
 static gboolean
 gst_visual_sink_setcaps (GstPad * pad, GstCaps * caps)
 {
-  GstVisual *visual = GST_VISUAL (gst_pad_get_parent (pad));
+  GstVisual *visual = GST_VISUAL (GST_PAD_PARENT (pad));
   GstAudioInfo info;
   gint rate;
 
@@ -401,15 +405,12 @@ gst_visual_sink_setcaps (GstPad * pad, GstCaps * caps)
         gst_util_uint64_scale_int (rate, visual->fps_d, visual->fps_n);
   }
 
-  gst_object_unref (visual);
-
   return TRUE;
 
   /* ERRORS */
 invalid_caps:
   {
     GST_ERROR_OBJECT (visual, "invalid caps received");
-    gst_object_unref (visual);
     return FALSE;
   }
 }
@@ -422,12 +423,13 @@ gst_vis_src_negotiate (GstVisual * visual)
   GstCaps *caps;
   GstQuery *query;
   GstBufferPool *pool = NULL;
-  guint size, min, max, prefix, alignment;
+  GstStructure *config;
+  guint size, min, max;
 
-  caps = gst_pad_get_caps (visual->srcpad, NULL);
+  caps = gst_pad_query_caps (visual->srcpad, NULL);
 
   /* see what the peer can do */
-  othercaps = gst_pad_peer_get_caps (visual->srcpad, caps);
+  othercaps = gst_pad_peer_query_caps (visual->srcpad, caps);
   if (othercaps) {
     target = othercaps;
     gst_caps_unref (caps);
@@ -435,15 +437,14 @@ gst_vis_src_negotiate (GstVisual * visual)
     if (gst_caps_is_empty (target))
       goto no_format;
 
-    target = gst_caps_make_writable (target);
-    gst_caps_truncate (target);
+    target = gst_caps_truncate (target);
   } else {
     /* need a copy, we'll be modifying it when fixating */
-    target = gst_caps_copy (caps);
-    gst_caps_unref (caps);
+    target = gst_caps_ref (caps);
   }
   GST_DEBUG_OBJECT (visual, "before fixate caps %" GST_PTR_FORMAT, target);
 
+  target = gst_caps_make_writable (target);
   /* fixate in case something is not fixed. This does nothing if the value is
    * already fixed. For video we always try to fixate to something like
    * 320x240x25 by convention. */
@@ -452,8 +453,7 @@ gst_vis_src_negotiate (GstVisual * visual)
   gst_structure_fixate_field_nearest_int (structure, "height", DEFAULT_HEIGHT);
   gst_structure_fixate_field_nearest_fraction (structure, "framerate",
       DEFAULT_FPS_N, DEFAULT_FPS_D);
-
-  gst_pad_fixate_caps (visual->srcpad, target);
+  target = gst_caps_fixate (target);
 
   GST_DEBUG_OBJECT (visual, "after fixate caps %" GST_PTR_FORMAT, target);
 
@@ -463,28 +463,31 @@ gst_vis_src_negotiate (GstVisual * visual)
   /* find a pool for the negotiated caps now */
   query = gst_query_new_allocation (target, TRUE);
 
-  if (gst_pad_peer_query (visual->srcpad, query)) {
-    /* we got configuration from our peer, parse them */
-    gst_query_parse_allocation_params (query, &size, &min, &max, &prefix,
-        &alignment, &pool);
+  if (!gst_pad_peer_query (visual->srcpad, query)) {
+    /* not a problem, we deal with the defaults of the query */
+    GST_DEBUG_OBJECT (visual, "allocation query failed");
+  }
+
+  if (gst_query_get_n_allocation_pools (query) > 0) {
+    gst_query_parse_nth_allocation_pool (query, 0, &pool, &size, &min, &max);
+
+    size = MAX (size, visual->outsize);
   } else {
+    pool = NULL;
     size = visual->outsize;
     min = max = 0;
-    prefix = 0;
-    alignment = 0;
   }
 
   if (pool == NULL) {
-    GstStructure *config;
-
-    /* we did not get a pool, make one ourselves then */
-    pool = gst_buffer_pool_new ();
-
-    config = gst_buffer_pool_get_config (pool);
-    gst_buffer_pool_config_set (config, target, size, min, max, prefix,
-        alignment);
-    gst_buffer_pool_set_config (pool, config);
+    /* no pool, just parameters, we can make our own */
+    GST_DEBUG_OBJECT (visual, "no pool, making new pool");
+    pool = gst_video_buffer_pool_new ();
   }
+
+  /* and configure */
+  config = gst_buffer_pool_get_config (pool);
+  gst_buffer_pool_config_set_params (config, target, size, min, max);
+  gst_buffer_pool_set_config (pool, config);
 
   if (visual->pool)
     gst_object_unref (visual->pool);
@@ -508,12 +511,12 @@ no_format:
 }
 
 static gboolean
-gst_visual_sink_event (GstPad * pad, GstEvent * event)
+gst_visual_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   GstVisual *visual;
   gboolean res;
 
-  visual = GST_VISUAL (gst_pad_get_parent (pad));
+  visual = GST_VISUAL (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_START:
@@ -545,21 +548,20 @@ gst_visual_sink_event (GstPad * pad, GstEvent * event)
       break;
     }
     default:
-      res = gst_pad_event_default (pad, event);
+      res = gst_pad_event_default (pad, parent, event);
       break;
   }
 
-  gst_object_unref (visual);
   return res;
 }
 
 static gboolean
-gst_visual_src_event (GstPad * pad, GstEvent * event)
+gst_visual_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   GstVisual *visual;
   gboolean res;
 
-  visual = GST_VISUAL (gst_pad_get_parent (pad));
+  visual = GST_VISUAL (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_QOS:
@@ -591,21 +593,20 @@ gst_visual_src_event (GstPad * pad, GstEvent * event)
       res = TRUE;
       break;
     default:
-      res = gst_pad_event_default (pad, event);
+      res = gst_pad_event_default (pad, parent, event);
       break;
   }
 
-  gst_object_unref (visual);
   return res;
 }
 
 static gboolean
-gst_visual_src_query (GstPad * pad, GstQuery * query)
+gst_visual_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   gboolean res;
   GstVisual *visual;
 
-  visual = GST_VISUAL (gst_pad_get_parent (pad));
+  visual = GST_VISUAL (parent);
 
   switch (GST_QUERY_TYPE (query)) {
     case GST_QUERY_LATENCY:
@@ -624,7 +625,7 @@ gst_visual_src_query (GstPad * pad, GstQuery * query)
             GST_TIME_FORMAT " max %" GST_TIME_FORMAT,
             GST_TIME_ARGS (min_latency), GST_TIME_ARGS (max_latency));
 
-        /* the max samples we must buffer buffer */
+        /* the max samples we must buffer */
         max_samples = MAX (VISUAL_SAMPLES, visual->spf);
         our_latency =
             gst_util_uint64_scale_int (max_samples, GST_SECOND,
@@ -647,12 +648,20 @@ gst_visual_src_query (GstPad * pad, GstQuery * query)
       }
       break;
     }
+    case GST_QUERY_CAPS:
+    {
+      GstCaps *filter, *caps;
+
+      gst_query_parse_caps (query, &filter);
+      caps = gst_visual_getcaps (pad, filter);
+      gst_query_set_caps_result (query, caps);
+      gst_caps_unref (caps);
+      res = TRUE;
+    }
     default:
-      res = gst_pad_peer_query (visual->sinkpad, query);
+      res = gst_pad_query_default (pad, parent, query);
       break;
   }
-
-  gst_object_unref (visual);
 
   return res;
 }
@@ -663,10 +672,7 @@ ensure_negotiated (GstVisual * visual)
 {
   gboolean reconfigure;
 
-  GST_OBJECT_LOCK (visual->srcpad);
-  reconfigure = GST_PAD_NEEDS_RECONFIGURE (visual->srcpad);
-  GST_OBJECT_FLAG_UNSET (visual->srcpad, GST_PAD_NEED_RECONFIGURE);
-  GST_OBJECT_UNLOCK (visual->srcpad);
+  reconfigure = gst_pad_check_reconfigure (visual->srcpad);
 
   /* we don't know an output format yet, pick one */
   if (reconfigure || !gst_pad_has_current_caps (visual->srcpad)) {
@@ -677,11 +683,11 @@ ensure_negotiated (GstVisual * visual)
 }
 
 static GstFlowReturn
-gst_visual_chain (GstPad * pad, GstBuffer * buffer)
+gst_visual_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstBuffer *outbuf = NULL;
   guint i;
-  GstVisual *visual = GST_VISUAL (gst_pad_get_parent (pad));
+  GstVisual *visual = GST_VISUAL (parent);
   GstFlowReturn ret = GST_FLOW_OK;
   guint avail;
   gint bpf, rate, channels;
@@ -705,7 +711,7 @@ gst_visual_chain (GstPad * pad, GstBuffer * buffer)
   channels = GST_AUDIO_INFO_CHANNELS (&visual->info);
 
   GST_DEBUG_OBJECT (visual,
-      "Input buffer has %d samples, time=%" G_GUINT64_FORMAT,
+      "Input buffer has %" G_GSIZE_FORMAT " samples, time=%" G_GUINT64_FORMAT,
       gst_buffer_get_size (buffer) / bpf, GST_BUFFER_TIMESTAMP (buffer));
 
   gst_adapter_push (visual->adapter, buffer);
@@ -714,8 +720,7 @@ gst_visual_chain (GstPad * pad, GstBuffer * buffer)
     gboolean need_skip;
     const guint16 *data;
     guint64 dist, timestamp;
-    guint8 *outdata;
-    gsize outsize;
+    GstMapInfo outmap;
 
     GST_DEBUG_OBJECT (visual, "processing buffer");
 
@@ -849,19 +854,19 @@ gst_visual_chain (GstPad * pad, GstBuffer * buffer)
       GST_DEBUG_OBJECT (visual, "allocating output buffer");
       ret = gst_buffer_pool_acquire_buffer (visual->pool, &outbuf, NULL);
       if (ret != GST_FLOW_OK) {
-        gst_adapter_unmap (visual->adapter, 0);
+        gst_adapter_unmap (visual->adapter);
         goto beach;
       }
     }
-    outdata = gst_buffer_map (outbuf, &outsize, NULL, GST_MAP_WRITE);
-    visual_video_set_buffer (visual->video, outdata);
+    gst_buffer_map (outbuf, &outmap, GST_MAP_WRITE);
+    visual_video_set_buffer (visual->video, outmap.data);
     visual_audio_analyze (visual->audio);
     visual_actor_run (visual->actor, visual->audio);
     visual_video_set_buffer (visual->video, NULL);
-    gst_buffer_unmap (outbuf, outdata, outsize);
+    gst_buffer_unmap (outbuf, &outmap);
     GST_DEBUG_OBJECT (visual, "rendered one frame");
 
-    gst_adapter_unmap (visual->adapter, 0);
+    gst_adapter_unmap (visual->adapter);
 
     GST_BUFFER_TIMESTAMP (outbuf) = timestamp;
     GST_BUFFER_DURATION (outbuf) = visual->duration;
@@ -886,8 +891,6 @@ beach:
   if (outbuf != NULL)
     gst_buffer_unref (outbuf);
 
-  gst_object_unref (visual);
-
   return ret;
 }
 
@@ -900,8 +903,8 @@ gst_visual_change_state (GstElement * element, GstStateChange transition)
   switch (transition) {
     case GST_STATE_CHANGE_NULL_TO_READY:
       visual->actor =
-          visual_actor_new (GST_VISUAL_GET_CLASS (visual)->plugin->info->
-          plugname);
+          visual_actor_new (GST_VISUAL_GET_CLASS (visual)->plugin->
+          info->plugname);
       visual->video = visual_video_new ();
       visual->audio = visual_audio_new ();
       /* can't have a play without actors */
@@ -1099,6 +1102,6 @@ plugin_init (GstPlugin * plugin)
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
     GST_VERSION_MINOR,
-    "libvisual",
+    libvisual,
     "libvisual visualization plugins",
     plugin_init, VERSION, "LGPL", GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)

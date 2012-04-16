@@ -20,12 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* FIXME 0.11: suppress warnings for deprecated API such as GValueArray
+ * with newer GLib versions (>= 2.31.0) */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <unistd.h>
 
 #include <gst/check/gstcheck.h>
-#include <gst/interfaces/propertyprobe.h>
-#include <gst/interfaces/mixer.h>
+#include <gst/audio/mixer.h>
 
+#if 0
 /* just a simple test that runs device probing on
  * an alsasrc, alsasink and alsamixer instance */
 
@@ -70,6 +74,7 @@ GST_START_TEST (test_device_property_probe)
 }
 
 GST_END_TEST;
+#endif
 
 GST_START_TEST (test_alsa_mixer_track)
 {
@@ -125,7 +130,7 @@ alsa_suite (void)
   TCase *tc_chain = tcase_create ("general");
 
   suite_add_tcase (s, tc_chain);
-  tcase_add_test (tc_chain, test_device_property_probe);
+  /* tcase_add_test (tc_chain, test_device_property_probe); */
   tcase_add_test (tc_chain, test_alsa_mixer_track);
 
   return s;

@@ -79,14 +79,12 @@ static gboolean gst_audio_convert_get_unit_size (GstBaseTransform * base,
     GstCaps * caps, gsize * size);
 static GstCaps *gst_audio_convert_transform_caps (GstBaseTransform * base,
     GstPadDirection direction, GstCaps * caps, GstCaps * filter);
-static void gst_audio_convert_fixate_caps (GstBaseTransform * base,
+static GstCaps *gst_audio_convert_fixate_caps (GstBaseTransform * base,
     GstPadDirection direction, GstCaps * caps, GstCaps * othercaps);
 static gboolean gst_audio_convert_set_caps (GstBaseTransform * base,
     GstCaps * incaps, GstCaps * outcaps);
 static GstFlowReturn gst_audio_convert_transform (GstBaseTransform * base,
     GstBuffer * inbuf, GstBuffer * outbuf);
-static GstFlowReturn gst_audio_convert_transform_ip (GstBaseTransform * base,
-    GstBuffer * buf);
 static void gst_audio_convert_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
 static void gst_audio_convert_get_property (GObject * object, guint prop_id,
@@ -116,7 +114,8 @@ G_DEFINE_TYPE_WITH_CODE (GstAudioConvert, gst_audio_convert,
 /*** GSTREAMER PROTOTYPES *****************************************************/
 
 #define STATIC_CAPS \
-GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL))
+GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL) \
+    ", layout = (string) interleaved")
 
 static GstStaticPadTemplate gst_audio_convert_src_template =
 GST_STATIC_PAD_TEMPLATE ("src",
@@ -202,7 +201,7 @@ gst_audio_convert_class_init (GstAudioConvertClass * klass)
       gst_static_pad_template_get (&gst_audio_convert_src_template));
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&gst_audio_convert_sink_template));
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Audio converter", "Filter/Converter/Audio",
       "Convert audio to different formats", "Benjamin Otte <otte@gnome.org>");
 
@@ -214,8 +213,6 @@ gst_audio_convert_class_init (GstAudioConvertClass * klass)
       GST_DEBUG_FUNCPTR (gst_audio_convert_fixate_caps);
   basetransform_class->set_caps =
       GST_DEBUG_FUNCPTR (gst_audio_convert_set_caps);
-  basetransform_class->transform_ip =
-      GST_DEBUG_FUNCPTR (gst_audio_convert_transform_ip);
   basetransform_class->transform =
       GST_DEBUG_FUNCPTR (gst_audio_convert_transform);
 
@@ -275,6 +272,7 @@ gst_audio_convert_caps_remove_format_info (GstCaps * caps)
   GstStructure *st;
   gint i, n;
   GstCaps *res;
+  guint64 channel_mask;
 
   res = gst_caps_new_empty ();
 
@@ -288,7 +286,16 @@ gst_audio_convert_caps_remove_format_info (GstCaps * caps)
       continue;
 
     st = gst_structure_copy (st);
-    gst_structure_remove_fields (st, "format", "channel-positions", NULL);
+    gst_structure_remove_field (st, "format");
+
+    /* Only remove the channels and channel-mask for non-NONE layouts */
+    if (gst_structure_get (st, "channel-mask", GST_TYPE_BITMASK, &channel_mask,
+            NULL)) {
+      if (channel_mask != 0)
+        gst_structure_remove_fields (st, "channel-mask", "channels", NULL);
+    } else {
+      gst_structure_remove_fields (st, "channel-mask", "channels", NULL);
+    }
 
     gst_caps_append_structure (res, st);
   }
@@ -305,8 +312,6 @@ gst_audio_convert_transform_caps (GstBaseTransform * btrans,
 {
   GstCaps *tmp, *tmp2;
   GstCaps *result;
-
-  result = gst_caps_copy (caps);
 
   /* Get all possible caps that we can transform to */
   tmp = gst_audio_convert_caps_remove_format_info (caps);
@@ -328,7 +333,7 @@ gst_audio_convert_transform_caps (GstBaseTransform * btrans,
 static const GstAudioChannelPosition default_positions[8][8] = {
   /* 1 channel */
   {
-        GST_AUDIO_CHANNEL_POSITION_FRONT_MONO,
+        GST_AUDIO_CHANNEL_POSITION_MONO,
       },
   /* 2 channels */
   {
@@ -339,9 +344,9 @@ static const GstAudioChannelPosition default_positions[8][8] = {
   {
         GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
-        GST_AUDIO_CHANNEL_POSITION_LFE, /* or FRONT_CENTER for 3.0? */
+        GST_AUDIO_CHANNEL_POSITION_LFE1,
       },
-  /* 4 channels (4.0 or 3.1?) */
+  /* 4 channels (4.0) */
   {
         GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
@@ -356,68 +361,82 @@ static const GstAudioChannelPosition default_positions[8][8] = {
         GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
       },
-  /* 6 channels */
+  /* 6 channels (5.1) */
   {
         GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_REAR_LEFT,
         GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
-        GST_AUDIO_CHANNEL_POSITION_LFE,
+        GST_AUDIO_CHANNEL_POSITION_LFE1,
       },
-  /* 7 channels */
+  /* 7 channels (6.1) */
   {
         GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_REAR_LEFT,
         GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
-        GST_AUDIO_CHANNEL_POSITION_LFE,
+        GST_AUDIO_CHANNEL_POSITION_LFE1,
         GST_AUDIO_CHANNEL_POSITION_REAR_CENTER,
       },
-  /* 8 channels */
+  /* 8 channels (7.1) */
   {
         GST_AUDIO_CHANNEL_POSITION_FRONT_LEFT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_REAR_LEFT,
         GST_AUDIO_CHANNEL_POSITION_REAR_RIGHT,
         GST_AUDIO_CHANNEL_POSITION_FRONT_CENTER,
-        GST_AUDIO_CHANNEL_POSITION_LFE,
+        GST_AUDIO_CHANNEL_POSITION_LFE1,
         GST_AUDIO_CHANNEL_POSITION_SIDE_LEFT,
         GST_AUDIO_CHANNEL_POSITION_SIDE_RIGHT,
       }
 };
 
-static const GValue *
-find_suitable_channel_layout (const GValue * val, guint chans)
+static gint
+n_bits_set (guint64 x)
 {
-  /* if output layout is fixed already and looks sane, we're done */
-  if (GST_VALUE_HOLDS_ARRAY (val) && gst_value_array_get_size (val) == chans)
-    return val;
+  gint i;
+  gint c = 0;
+  guint64 y = 1;
 
-  /* if it's a list, go through it recursively and return the first
-   * sane-enough looking value we find */
-  if (GST_VALUE_HOLDS_LIST (val)) {
-    gint i;
-
-    for (i = 0; i < gst_value_list_get_size (val); ++i) {
-      const GValue *v, *ret;
-
-      v = gst_value_list_get_value (val, i);
-      if ((ret = find_suitable_channel_layout (v, chans)))
-        return ret;
-    }
+  for (i = 0; i < 64; i++) {
+    if (x & y)
+      c++;
+    y <<= 1;
   }
 
-  return NULL;
+  return c;
+}
+
+static guint64
+find_suitable_mask (guint64 mask, gint n_chans)
+{
+  guint64 intersection;
+  gint i;
+
+  i = 0;
+
+  g_assert (n_bits_set (mask) >= n_chans);
+
+  intersection = mask;
+  do {
+    intersection = intersection & ((~G_GUINT64_CONSTANT (0)) >> i);
+    i++;
+  } while (n_bits_set (intersection) > n_chans && i < 64);
+
+  if (i < 64)
+    return intersection;
+  return 0;
 }
 
 static void
 gst_audio_convert_fixate_channels (GstBaseTransform * base, GstStructure * ins,
     GstStructure * outs)
 {
-  const GValue *in_layout, *out_layout;
   gint in_chans, out_chans;
+  guint64 in_mask = 0, out_mask = 0;
+  gboolean has_in_mask = FALSE, has_out_mask = FALSE;
 
   if (!gst_structure_get_int (ins, "channels", &in_chans))
     return;                     /* this shouldn't really happen, should it? */
@@ -425,7 +444,7 @@ gst_audio_convert_fixate_channels (GstBaseTransform * base, GstStructure * ins,
   if (!gst_structure_has_field (outs, "channels")) {
     /* we could try to get the implied number of channels from the layout,
      * but that seems overdoing it for a somewhat exotic corner case */
-    gst_structure_remove_field (outs, "channel-positions");
+    gst_structure_remove_field (outs, "channel-mask");
     return;
   }
 
@@ -434,70 +453,103 @@ gst_audio_convert_fixate_channels (GstBaseTransform * base, GstStructure * ins,
 
   if (!gst_structure_get_int (outs, "channels", &out_chans)) {
     /* shouldn't really happen ... */
-    gst_structure_remove_field (outs, "channel-positions");
+    gst_structure_remove_field (outs, "channel-mask");
     return;
   }
 
-  /* check if the output has a channel layout (or a list of layouts) */
-  out_layout = gst_structure_get_value (outs, "channel-positions");
-
-  /* get the channel layout of the input if any */
-  in_layout = gst_structure_get_value (ins, "channel-positions");
-
-  if (out_layout == NULL) {
-    if (out_chans <= 2 && (in_chans != out_chans || in_layout == NULL))
-      return;                   /* nothing to do, default layout will be assumed */
-    GST_WARNING_OBJECT (base, "downstream caps contain no channel layout");
+  /* get the channel layout of the output if any */
+  has_out_mask = gst_structure_has_field (outs, "channel-mask");
+  if (has_out_mask) {
+    gst_structure_get (outs, "channel-mask", GST_TYPE_BITMASK, &out_mask, NULL);
+  } else {
+    /* channels == 1 => MONO */
+    if (out_chans == 2) {
+      out_mask =
+          GST_AUDIO_CHANNEL_POSITION_MASK (FRONT_LEFT) |
+          GST_AUDIO_CHANNEL_POSITION_MASK (FRONT_RIGHT);
+      has_out_mask = TRUE;
+      gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, out_mask,
+          NULL);
+    }
   }
 
-  if (in_chans == out_chans && in_layout != NULL) {
-    GValue res = { 0, };
+  /* get the channel layout of the input if any */
+  has_in_mask = gst_structure_has_field (ins, "channel-mask");
+  if (has_in_mask) {
+    gst_structure_get (ins, "channel-mask", GST_TYPE_BITMASK, &in_mask, NULL);
+  } else {
+    /* channels == 1 => MONO */
+    if (in_chans == 2) {
+      in_mask =
+          GST_AUDIO_CHANNEL_POSITION_MASK (FRONT_LEFT) |
+          GST_AUDIO_CHANNEL_POSITION_MASK (FRONT_RIGHT);
+      has_in_mask = TRUE;
+    } else if (in_chans > 2)
+      g_warning ("%s: Upstream caps contain no channel mask",
+          GST_ELEMENT_NAME (base));
+  }
 
+  if (!has_out_mask && out_chans == 1 && (in_chans != out_chans
+          || !has_in_mask))
+    return;                     /* nothing to do, default layout will be assumed */
+
+  if (in_chans == out_chans && (has_in_mask || in_chans == 1)) {
     /* same number of channels and no output layout: just use input layout */
-    if (out_layout == NULL) {
-      gst_structure_set_value (outs, "channel-positions", in_layout);
+    if (!has_out_mask) {
+      /* in_chans == 1 handled above already */
+      gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, in_mask, NULL);
       return;
     }
+
+    /* If both masks are the same we're done, this includes the NONE layout case */
+    if (in_mask == out_mask)
+      return;
 
     /* if output layout is fixed already and looks sane, we're done */
-    if (GST_VALUE_HOLDS_ARRAY (out_layout) &&
-        gst_value_array_get_size (out_layout) == out_chans) {
+    if (n_bits_set (out_mask) == out_chans)
       return;
-    }
 
-    /* if the output layout is not fixed, check if the output layout contains
-     * the input layout */
-    if (gst_value_intersect (&res, in_layout, out_layout)) {
-      gst_structure_set_value (outs, "channel-positions", in_layout);
-      g_value_unset (&res);
-      return;
-    }
+    if (n_bits_set (out_mask) < in_chans) {
+      /* Not much we can do here, this shouldn't just happen */
+      g_warning ("%s: Invalid downstream channel-mask with too few bits set",
+          GST_ELEMENT_NAME (base));
+    } else {
+      guint64 intersection;
 
-    /* output layout is not fixed and does not contain the input layout, so
-     * just pick the first layout in the list (it should be a list ...) */
-    if ((out_layout = find_suitable_channel_layout (out_layout, out_chans))) {
-      gst_structure_set_value (outs, "channel-positions", out_layout);
-      return;
+      /* if the output layout is not fixed, check if the output layout contains
+       * the input layout */
+      intersection = in_mask & out_mask;
+      if (n_bits_set (intersection) >= in_chans) {
+        gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, in_mask,
+            NULL);
+        return;
+      }
+
+      /* output layout is not fixed and does not contain the input layout, so
+       * just pick the first possibility */
+      intersection = find_suitable_mask (out_mask, out_chans);
+      if (intersection) {
+        gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, intersection,
+            NULL);
+        return;
+      }
     }
 
     /* ... else fall back to default layout (NB: out_layout is NULL here) */
     GST_WARNING_OBJECT (base, "unexpected output channel layout");
-  }
+  } else {
+    guint64 intersection;
 
-  /* number of input channels != number of output channels:
-   * if this value contains a list of channel layouts (or even worse: a list
-   * with another list), just pick the first value and repeat until we find a
-   * channel position array or something else that's not a list; we assume
-   * the input if half-way sane and don't try to fall back on other list items
-   * if the first one is something unexpected or non-channel-pos-array-y */
-  if (out_layout != NULL && GST_VALUE_HOLDS_LIST (out_layout))
-    out_layout = find_suitable_channel_layout (out_layout, out_chans);
-
-  if (out_layout != NULL) {
-    if (GST_VALUE_HOLDS_ARRAY (out_layout) &&
-        gst_value_array_get_size (out_layout) == out_chans) {
-      /* looks sane enough, let's use it */
-      gst_structure_set_value (outs, "channel-positions", out_layout);
+    /* number of input channels != number of output channels:
+     * if this value contains a list of channel layouts (or even worse: a list
+     * with another list), just pick the first value and repeat until we find a
+     * channel position array or something else that's not a list; we assume
+     * the input if half-way sane and don't try to fall back on other list items
+     * if the first one is something unexpected or non-channel-pos-array-y */
+    if (n_bits_set (out_mask) >= out_chans) {
+      intersection = find_suitable_mask (out_mask, out_chans);
+      gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, intersection,
+          NULL);
       return;
     }
 
@@ -511,43 +563,55 @@ gst_audio_convert_fixate_channels (GstBaseTransform * base, GstStructure * ins,
    * layout based on LFE-presence in input layout, but let's save that for
    * another day) */
   if (out_chans > 0 && out_chans <= G_N_ELEMENTS (default_positions[0])) {
+    gint i;
+
     GST_DEBUG_OBJECT (base, "using default channel layout as fallback");
-    gst_audio_set_channel_positions (outs, default_positions[out_chans - 1]);
+
+    out_mask = 0;
+    for (i = 0; i < out_chans; i++)
+      out_mask |= G_GUINT64_CONSTANT (1) << default_positions[out_chans - 1][i];
+
+    gst_structure_set (outs, "channel-mask", GST_TYPE_BITMASK, out_mask, NULL);
+  } else {
+    GST_ERROR_OBJECT (base, "Have no default layout for %d channels",
+        out_chans);
   }
 }
 
 /* try to keep as many of the structure members the same by fixating the
  * possible ranges; this way we convert the least amount of things as possible
  */
-static void
+static GstCaps *
 gst_audio_convert_fixate_caps (GstBaseTransform * base,
     GstPadDirection direction, GstCaps * caps, GstCaps * othercaps)
 {
   GstStructure *ins, *outs;
-  gint rate;
-  const gchar *fmt;
-
-  g_return_if_fail (gst_caps_is_fixed (caps));
+  GstCaps *result;
 
   GST_DEBUG_OBJECT (base, "trying to fixate othercaps %" GST_PTR_FORMAT
       " based on caps %" GST_PTR_FORMAT, othercaps, caps);
 
+  result = gst_caps_intersect (othercaps, caps);
+  if (gst_caps_is_empty (result)) {
+    if (result)
+      gst_caps_unref (result);
+    result = othercaps;
+  } else {
+    gst_caps_unref (othercaps);
+  }
+
+  /* fixate remaining fields */
+  result = gst_caps_make_writable (result);
+
   ins = gst_caps_get_structure (caps, 0);
-  outs = gst_caps_get_structure (othercaps, 0);
+  outs = gst_caps_get_structure (result, 0);
 
   gst_audio_convert_fixate_channels (base, ins, outs);
+  result = gst_caps_fixate (result);
 
-  if ((fmt = gst_structure_get_string (ins, "format"))) {
-    /* FIXME, find the best format */
-    gst_structure_fixate_field_string (outs, "format", fmt);
-  }
+  GST_DEBUG_OBJECT (base, "fixated othercaps to %" GST_PTR_FORMAT, result);
 
-  if (gst_structure_get_int (ins, "rate", &rate)) {
-    if (gst_structure_has_field (outs, "rate")) {
-      gst_structure_fixate_field_nearest_int (outs, "rate", rate);
-    }
-  }
-  GST_DEBUG_OBJECT (base, "fixated othercaps to %" GST_PTR_FORMAT, othercaps);
+  return result;
 }
 
 static gboolean
@@ -591,22 +655,15 @@ no_converter:
 }
 
 static GstFlowReturn
-gst_audio_convert_transform_ip (GstBaseTransform * base, GstBuffer * buf)
-{
-  /* nothing to do here */
-  return GST_FLOW_OK;
-}
-
-static GstFlowReturn
 gst_audio_convert_transform (GstBaseTransform * base, GstBuffer * inbuf,
     GstBuffer * outbuf)
 {
   GstFlowReturn ret;
   GstAudioConvert *this = GST_AUDIO_CONVERT (base);
-  gsize srcsize, dstsize;
+  GstMapInfo srcmap, dstmap;
   gint insize, outsize;
+
   gint samples;
-  gpointer src, dst;
 
   /* get amount of samples to convert. */
   samples = gst_buffer_get_size (inbuf) / this->ctx.in.bpf;
@@ -620,29 +677,29 @@ gst_audio_convert_transform (GstBaseTransform * base, GstBuffer * inbuf,
     return GST_FLOW_OK;
 
   /* get src and dst data */
-  src = gst_buffer_map (inbuf, &srcsize, NULL, GST_MAP_READ);
-  dst = gst_buffer_map (outbuf, &dstsize, NULL, GST_MAP_WRITE);
+  gst_buffer_map (inbuf, &srcmap, GST_MAP_READ);
+  gst_buffer_map (outbuf, &dstmap, GST_MAP_WRITE);
 
   /* check in and outsize */
-  if (srcsize < insize)
+  if (srcmap.size < insize)
     goto wrong_size;
-  if (dstsize < outsize)
+  if (dstmap.size < outsize)
     goto wrong_size;
 
   /* and convert the samples */
   if (!GST_BUFFER_FLAG_IS_SET (inbuf, GST_BUFFER_FLAG_GAP)) {
-    if (!audio_convert_convert (&this->ctx, src, dst,
+    if (!audio_convert_convert (&this->ctx, srcmap.data, dstmap.data,
             samples, gst_buffer_is_writable (inbuf)))
       goto convert_error;
   } else {
     /* Create silence buffer */
-    gst_audio_format_fill_silence (this->ctx.out.finfo, dst, outsize);
+    gst_audio_format_fill_silence (this->ctx.out.finfo, dstmap.data, outsize);
   }
   ret = GST_FLOW_OK;
 
 done:
-  gst_buffer_unmap (outbuf, dst, outsize);
-  gst_buffer_unmap (inbuf, src, srcsize);
+  gst_buffer_unmap (outbuf, &dstmap);
+  gst_buffer_unmap (inbuf, &srcmap);
 
   return ret;
 
@@ -659,7 +716,7 @@ wrong_size:
         (NULL),
         ("input/output buffers are of wrong size in: %" G_GSIZE_FORMAT " < %d"
             " or out: %" G_GSIZE_FORMAT " < %d",
-            srcsize, insize, dstsize, outsize));
+            srcmap.size, insize, dstmap.size, outsize));
     ret = GST_FLOW_ERROR;
     goto done;
   }

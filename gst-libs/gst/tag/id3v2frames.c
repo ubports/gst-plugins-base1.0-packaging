@@ -167,7 +167,7 @@ id3v2_parse_frame (ID3TagsWorking * work)
     work->parse_data = uncompressed_data;
 #else
     GST_WARNING ("Compressed ID3v2 tag frame could not be decompressed, because"
-        " libgsttag-" GST_MAJORMINOR " was compiled without zlib support");
+        " libgsttag-" GST_API_VERSION " was compiled without zlib support");
     g_free (uu_data);
     return FALSE;
 #endif
@@ -786,7 +786,7 @@ id3v2_tag_to_taglist (ID3TagsWorking * work, const gchar * tag_name,
       GValue dest = { 0, };
 
       /* Ensure that any date string is complete */
-      if (tag_type == GST_TYPE_DATE) {
+      if (tag_type == G_TYPE_DATE) {
         guint year = 1901, month = 1, day = 1;
 
         /* Dates can be yyyy-MM-dd, yyyy-MM or yyyy, but we need

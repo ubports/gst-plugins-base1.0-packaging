@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstpbutilsinstallplugins</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html" title="gstpbutilsmissingplugins">
 <link rel="next" href="gst-plugins-base-libs-gstdiscoverer.html" title="gstdiscoverer">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-base-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstdiscoverer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -67,7 +67,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="id583118"></a><h3>Overview</h3>
+<a name="idp23108064"></a><h3>Overview</h3>
 <p>
 Using this API, applications can request the installation of missing
 GStreamer plugins. These may be missing decoders/demuxers or encoders/muxers
@@ -596,11 +596,14 @@ installed but no suitable video decoder and no suitable audio decoder).
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>details</code></em> :</span></p></td>
-<td>NULL-terminated array of installer string details (see below)</td>
+<td>NULL-terminated array
+of installer string details (see below). <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL</td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>func</code></em> :</span></p></td>
@@ -641,11 +644,14 @@ using the other non-GLib main loop. You should almost always use
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>details</code></em> :</span></p></td>
-<td>NULL-terminated array of installer string details</td>
+<td>NULL-terminated array
+of installer string details. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL</td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

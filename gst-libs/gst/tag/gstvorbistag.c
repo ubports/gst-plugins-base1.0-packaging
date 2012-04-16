@@ -272,7 +272,7 @@ gst_vorbis_tag_add (GstTagList * list, const gchar * tag, const gchar * value)
       break;
     }
     default:{
-      if (tag_type == GST_TYPE_DATE) {
+      if (tag_type == G_TYPE_DATE) {
         guint y, d = 1, m = 1;
         gchar *check = (gchar *) value;
 
@@ -318,7 +318,7 @@ static void
 gst_vorbis_tag_add_coverart (GstTagList * tags, gchar * img_data_base64,
     gint base64_len)
 {
-  GstBuffer *img;
+  GstSample *img;
   gsize img_len;
 
   if (base64_len < 2)
@@ -332,7 +332,7 @@ gst_vorbis_tag_add_coverart (GstTagList * tags, gchar * img_data_base64,
     goto decode_failed;
 
   img =
-      gst_tag_image_data_to_image_buffer ((const guint8 *) img_data_base64,
+      gst_tag_image_data_to_image_sample ((const guint8 *) img_data_base64,
       img_len, GST_TAG_IMAGE_TYPE_NONE);
 
   if (img == NULL)
@@ -341,7 +341,7 @@ gst_vorbis_tag_add_coverart (GstTagList * tags, gchar * img_data_base64,
   gst_tag_list_add (tags, GST_TAG_MERGE_APPEND,
       GST_TAG_PREVIEW_IMAGE, img, NULL);
 
-  gst_buffer_unref (img);
+  gst_sample_unref (img);
   return;
 
 /* ERRORS */
@@ -459,7 +459,7 @@ gst_tag_list_from_vorbiscomment (const guint8 * data, gsize size,
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail (id_data != NULL || id_data_length == 0, NULL);
 
-  list = gst_tag_list_new ();
+  list = gst_tag_list_new_empty ();
 
   if (size < 11 || size <= id_data_length + 4)
     goto error;
@@ -532,14 +532,13 @@ gst_tag_list_from_vorbiscomment_buffer (GstBuffer * buffer,
     const guint8 * id_data, const guint id_data_length, gchar ** vendor_string)
 {
   GstTagList *res;
-  guint8 *data;
-  gsize size;
+  GstMapInfo info;
 
-  data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
+  g_assert (gst_buffer_map (buffer, &info, GST_MAP_READ));
   res =
-      gst_tag_list_from_vorbiscomment (data, size, id_data, id_data_length,
-      vendor_string);
-  gst_buffer_unmap (buffer, data, size);
+      gst_tag_list_from_vorbiscomment (info.data, info.size, id_data,
+      id_data_length, vendor_string);
+  gst_buffer_unmap (buffer, &info);
 
   return res;
 }
@@ -647,7 +646,7 @@ gst_tag_to_metadata_block_picture (const gchar * tag,
  * Creates a new tag list that contains the information parsed out of a
  * vorbiscomment packet.
  *
- * Returns: A #GList of newly-allowcated key=value strings. Free with
+ * Returns: A #GList of newly-allocated key=value strings. Free with
  *          g_list_foreach (list, (GFunc) g_free, NULL) plus g_list_free (list)
  */
 GList *
@@ -728,7 +727,7 @@ gst_tag_to_vorbis_comments (const GstTagList * list, const gchar * tag)
         break;
       }
       default:{
-        if (tag_type == GST_TYPE_DATE) {
+        if (tag_type == G_TYPE_DATE) {
           GDate *date;
 
           if (!gst_tag_list_get_date_index (list, tag, i, &date))
@@ -791,7 +790,8 @@ gst_tag_list_to_vorbiscomment_buffer (const GstTagList * list,
     const gchar * vendor_string)
 {
   GstBuffer *buffer;
-  guint8 *data, *odata;
+  GstMapInfo info;
+  guint8 *data;
   guint i;
   GList *l;
   MyForEach my_data = { 0, 0, NULL };
@@ -809,7 +809,8 @@ gst_tag_list_to_vorbiscomment_buffer (const GstTagList * list,
   required_size += 4 * my_data.count + my_data.data_count;
 
   buffer = gst_buffer_new_and_alloc (required_size);
-  odata = data = gst_buffer_map (buffer, NULL, NULL, GST_MAP_WRITE);
+  gst_buffer_map (buffer, &info, GST_MAP_WRITE);
+  data = info.data;
   if (id_data_length > 0) {
     memcpy (data, id_data, id_data_length);
     data += id_data_length;
@@ -837,7 +838,7 @@ gst_tag_list_to_vorbiscomment_buffer (const GstTagList * list,
   g_list_foreach (my_data.entries, (GFunc) g_free, NULL);
   g_list_free (my_data.entries);
   *data = 1;
-  gst_buffer_unmap (buffer, odata, required_size);
+  gst_buffer_unmap (buffer, &info);
 
   return buffer;
 }

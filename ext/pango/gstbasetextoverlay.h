@@ -3,7 +3,6 @@
 
 #include <gst/gst.h>
 #include <gst/video/video.h>
-#include <gst/controller/gstcontroller.h>
 #include <pango/pangocairo.h>
 
 G_BEGIN_DECLS
@@ -110,7 +109,7 @@ struct _GstBaseTextOverlay {
     gboolean                text_flushing;
     gboolean                text_eos;
 
-    GCond                   *cond;  /* to signal removal of a queued text
+    GCond                    cond;  /* to signal removal of a queued text
                                      * buffer, arrival of a text buffer,
                                      * a text segment update, or a change
                                      * in status (e.g. shutdown, flushing) */

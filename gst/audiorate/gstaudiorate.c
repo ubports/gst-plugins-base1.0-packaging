@@ -96,19 +96,24 @@ static GstStaticPadTemplate gst_audio_rate_src_template =
 GST_STATIC_PAD_TEMPLATE ("src",
     GST_PAD_SRC,
     GST_PAD_ALWAYS,
-    GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL))
+    GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL)
+        ", layout = (string) { interleaved, non-interleaved }")
     );
 
 static GstStaticPadTemplate gst_audio_rate_sink_template =
 GST_STATIC_PAD_TEMPLATE ("sink",
     GST_PAD_SINK,
     GST_PAD_ALWAYS,
-    GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL))
+    GST_STATIC_CAPS (GST_AUDIO_CAPS_MAKE (GST_AUDIO_FORMATS_ALL)
+        ", layout = (string) { interleaved, non-interleaved }")
     );
 
-static gboolean gst_audio_rate_sink_event (GstPad * pad, GstEvent * event);
-static gboolean gst_audio_rate_src_event (GstPad * pad, GstEvent * event);
-static GstFlowReturn gst_audio_rate_chain (GstPad * pad, GstBuffer * buf);
+static gboolean gst_audio_rate_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_audio_rate_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static GstFlowReturn gst_audio_rate_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buf);
 
 static void gst_audio_rate_set_property (GObject * object,
     guint prop_id, const GValue * value, GParamSpec * pspec);
@@ -178,7 +183,7 @@ gst_audio_rate_class_init (GstAudioRateClass * klass)
           "Don't produce buffers before the first one we receive",
           DEFAULT_SKIP_TO_FIRST, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Audio rate adjuster", "Filter/Effect/Audio",
       "Drops/duplicates/adjusts timestamps on audio samples to make a perfect stream",
       "Wim Taymans <wim@fluendo.com>");
@@ -230,13 +235,13 @@ gst_audio_rate_init (GstAudioRate * audiorate)
       gst_pad_new_from_static_template (&gst_audio_rate_sink_template, "sink");
   gst_pad_set_event_function (audiorate->sinkpad, gst_audio_rate_sink_event);
   gst_pad_set_chain_function (audiorate->sinkpad, gst_audio_rate_chain);
-  gst_pad_set_getcaps_function (audiorate->sinkpad, gst_pad_proxy_getcaps);
+  GST_PAD_SET_PROXY_CAPS (audiorate->sinkpad);
   gst_element_add_pad (GST_ELEMENT (audiorate), audiorate->sinkpad);
 
   audiorate->srcpad =
       gst_pad_new_from_static_template (&gst_audio_rate_src_template, "src");
   gst_pad_set_event_function (audiorate->srcpad, gst_audio_rate_src_event);
-  gst_pad_set_getcaps_function (audiorate->srcpad, gst_pad_proxy_getcaps);
+  GST_PAD_SET_PROXY_CAPS (audiorate->srcpad);
   gst_element_add_pad (GST_ELEMENT (audiorate), audiorate->srcpad);
 
   audiorate->in = 0;
@@ -264,16 +269,16 @@ gst_audio_rate_fill_to_time (GstAudioRate * audiorate, GstClockTime time)
    * it will take care of filling */
   buf = gst_buffer_new ();
   GST_BUFFER_TIMESTAMP (buf) = time;
-  gst_audio_rate_chain (audiorate->sinkpad, buf);
+  gst_audio_rate_chain (audiorate->sinkpad, GST_OBJECT_CAST (audiorate), buf);
 }
 
 static gboolean
-gst_audio_rate_sink_event (GstPad * pad, GstEvent * event)
+gst_audio_rate_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean res;
   GstAudioRate *audiorate;
 
-  audiorate = GST_AUDIO_RATE (gst_pad_get_parent (pad));
+  audiorate = GST_AUDIO_RATE (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_CAPS:
@@ -336,30 +341,26 @@ gst_audio_rate_sink_event (GstPad * pad, GstEvent * event)
       res = gst_pad_push_event (audiorate->srcpad, event);
       break;
     default:
-      res = gst_pad_push_event (audiorate->srcpad, event);
+      res = gst_pad_event_default (pad, parent, event);
       break;
   }
-
-  gst_object_unref (audiorate);
 
   return res;
 }
 
 static gboolean
-gst_audio_rate_src_event (GstPad * pad, GstEvent * event)
+gst_audio_rate_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
   gboolean res;
   GstAudioRate *audiorate;
 
-  audiorate = GST_AUDIO_RATE (gst_pad_get_parent (pad));
+  audiorate = GST_AUDIO_RATE (parent);
 
   switch (GST_EVENT_TYPE (event)) {
     default:
       res = gst_pad_push_event (audiorate->sinkpad, event);
       break;
   }
-
-  gst_object_unref (audiorate);
 
   return res;
 }
@@ -401,25 +402,17 @@ gst_audio_rate_convert_segments (GstAudioRate * audiorate)
 static void
 gst_audio_rate_notify_drop (GstAudioRate * audiorate)
 {
-#if !GLIB_CHECK_VERSION(2,26,0)
-  g_object_notify ((GObject *) audiorate, "drop");
-#else
   g_object_notify_by_pspec ((GObject *) audiorate, pspec_drop);
-#endif
 }
 
 static void
 gst_audio_rate_notify_add (GstAudioRate * audiorate)
 {
-#if !GLIB_CHECK_VERSION(2,26,0)
-  g_object_notify ((GObject *) audiorate, "add");
-#else
   g_object_notify_by_pspec ((GObject *) audiorate, pspec_add);
-#endif
 }
 
 static GstFlowReturn
-gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
+gst_audio_rate_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
   GstAudioRate *audiorate;
   GstClockTime in_time;
@@ -429,7 +422,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
   GstClockTimeDiff diff;
   gint rate, bpf;
 
-  audiorate = GST_AUDIO_RATE (gst_pad_get_parent (pad));
+  audiorate = GST_AUDIO_RATE (parent);
 
   rate = GST_AUDIO_INFO_RATE (&audiorate->info);
   bpf = GST_AUDIO_INFO_BPF (&audiorate->info);
@@ -474,8 +467,6 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
     }
   }
 
-  audiorate->in++;
-
   in_time = GST_BUFFER_TIMESTAMP (buf);
   if (in_time == GST_CLOCK_TIME_NONE) {
     GST_DEBUG_OBJECT (audiorate, "no timestamp, using expected next time");
@@ -484,6 +475,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
 
   in_size = gst_buffer_get_size (buf);
   in_samples = in_size / bpf;
+  audiorate->in += in_samples;
 
   /* calculate the buffer offset */
   in_offset = gst_util_uint64_scale_int_round (in_time, rate, GST_SECOND);
@@ -509,6 +501,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
     /* The outgoing buffer's offset will be set to ->next_offset, we also
      * need to adjust the offset_end value accordingly */
     in_offset_end = audiorate->next_offset + in_samples;
+    audiorate->out += in_samples;
     goto send;
   }
 
@@ -525,17 +518,14 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
 
     while (fillsamples > 0) {
       guint64 cursamples = MIN (fillsamples, rate);
-      guint8 *data;
 
       fillsamples -= cursamples;
       fillsize = cursamples * bpf;
 
       fill = gst_buffer_new_and_alloc (fillsize);
 
-      data = gst_buffer_map (fill, NULL, NULL, GST_MAP_WRITE);
       /* FIXME, 0 might not be the silence byte for the negotiated format. */
-      memset (data, 0, fillsize);
-      gst_buffer_unmap (fill, data, fillsize);
+      gst_buffer_memset (fill, 0, 0, fillsize);
 
       GST_DEBUG_OBJECT (audiorate, "inserting %" G_GUINT64_FORMAT " samples",
           cursamples);
@@ -545,7 +535,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
       GST_BUFFER_OFFSET_END (fill) = audiorate->next_offset;
 
       /* Use next timestamp, then calculate following timestamp based on 
-       * offset to get duration. Neccesary complexity to get 'perfect' 
+       * offset to get duration. Necessary complexity to get 'perfect' 
        * streams */
       GST_BUFFER_TIMESTAMP (fill) = audiorate->next_ts;
       audiorate->next_ts = gst_util_uint64_scale_int (audiorate->next_offset,
@@ -565,7 +555,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
       ret = gst_pad_push (audiorate->srcpad, fill);
       if (ret != GST_FLOW_OK)
         goto beach;
-      audiorate->out++;
+      audiorate->out += cursamples;
       audiorate->add += cursamples;
 
       if (!audiorate->silent)
@@ -608,6 +598,7 @@ gst_audio_rate_chain (GstPad * pad, GstBuffer * buf)
       buf = trunc;
 
       audiorate->drop += truncsamples;
+      audiorate->out += (leftsize / bpf);
       GST_DEBUG_OBJECT (audiorate, "truncating %" G_GUINT64_FORMAT " samples",
           truncsamples);
 
@@ -650,15 +641,12 @@ send:
 
   ret = gst_pad_push (audiorate->srcpad, buf);
   buf = NULL;
-  audiorate->out++;
 
   audiorate->next_offset = in_offset_end;
 beach:
 
   if (buf)
     gst_buffer_unref (buf);
-
-  gst_object_unref (audiorate);
 
   return ret;
 
@@ -764,6 +752,6 @@ plugin_init (GstPlugin * plugin)
 
 GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
     GST_VERSION_MINOR,
-    "audiorate",
+    audiorate,
     "Adjusts audio frames",
     plugin_init, VERSION, GST_LICENSE, GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)

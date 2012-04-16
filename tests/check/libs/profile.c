@@ -31,15 +31,27 @@
 #include <gst/pbutils/encoding-profile.h>
 #include <gst/pbutils/encoding-target.h>
 
+static inline gboolean
+gst_caps_is_equal_unref (GstCaps * caps1, GstCaps * caps2)
+{
+  gboolean ret;
+
+  ret = gst_caps_is_equal (caps1, caps2);
+  gst_caps_unref (caps1);
+
+  return ret;
+}
+
 #define CHECK_PROFILE(profile, name, description, format, preset, presence, restriction) \
   {									\
   fail_if(profile == NULL);						\
   fail_unless_equals_string (gst_encoding_profile_get_name (profile), name); \
   fail_unless_equals_string (gst_encoding_profile_get_description (profile), description); \
-  fail_unless (gst_caps_is_equal (gst_encoding_profile_get_format (profile), format)); \
+  fail_unless (gst_caps_is_equal_unref (gst_encoding_profile_get_format (profile), format)); \
   fail_unless_equals_string (gst_encoding_profile_get_preset (profile), preset); \
   fail_unless_equals_int (gst_encoding_profile_get_presence (profile), presence); \
-  fail_unless (gst_caps_is_equal (gst_encoding_profile_get_restriction (profile), restriction)); \
+  if (restriction) \
+    fail_unless (gst_caps_is_equal_unref (gst_encoding_profile_get_restriction (profile), restriction)); \
   }
 
 GST_START_TEST (test_profile_creation)
@@ -50,9 +62,9 @@ GST_START_TEST (test_profile_creation)
   GstCaps *ogg, *vorbis, *theora;
   GstCaps *test1, *test2;
 
-  ogg = gst_caps_new_simple ("application/ogg", NULL);
-  vorbis = gst_caps_new_simple ("audio/x-vorbis", NULL);
-  theora = gst_caps_new_simple ("video/x-theora", NULL);
+  ogg = gst_caps_new_empty_simple ("application/ogg");
+  vorbis = gst_caps_new_empty_simple ("audio/x-vorbis");
+  theora = gst_caps_new_empty_simple ("video/x-theora");
 
   encprof = (GstEncodingProfile *) gst_encoding_container_profile_new ((gchar *)
       "ogg-theora-vorbis", "dumb-profile", ogg, (gchar *) "dumb-preset");
@@ -96,7 +108,7 @@ GST_START_TEST (test_profile_input_caps)
   GstCaps *vorbis;
   GstCaps *out, *restriction, *test1;
 
-  vorbis = gst_caps_new_simple ("audio/x-vorbis", NULL);
+  vorbis = gst_caps_new_empty_simple ("audio/x-vorbis");
 
   /* Simple case, no restriction */
   sprof = (GstEncodingProfile *)
@@ -291,7 +303,7 @@ GST_START_TEST (test_saving_profile)
 
   /* Check we can load it */
   profile_file_name =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", "myponytarget2.gep", NULL);
   GST_DEBUG ("Loading target from '%s'", profile_file_name);
   loaded = gst_encoding_target_load_from_file (profile_file_name, NULL);
@@ -415,7 +427,7 @@ GST_START_TEST (test_loading_profile)
 
   /* Test loading using fully specified path */
   profile_file_name =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", "myponytarget.gep", NULL);
 
   GST_DEBUG ("Loading target from '%s'", profile_file_name);
@@ -549,12 +561,12 @@ remove_profile_file (void)
   gchar *profile_file_name;
 
   profile_file_name =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", "myponytarget.gep", NULL);
   g_unlink (profile_file_name);
   g_free (profile_file_name);
   profile_file_name =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", "myponytarget2.gep", NULL);
   g_unlink (profile_file_name);
   g_free (profile_file_name);
@@ -568,10 +580,10 @@ create_profile_file (void)
   GError *error = NULL;
 
   profile_dir =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", NULL);
   profile_file_name =
-      g_build_filename (g_get_user_data_dir (), "gstreamer-0.11",
+      g_build_filename (g_get_user_data_dir (), "gstreamer-1.0",
       "encoding-profiles", "herding", "myponytarget.gep", NULL);
   g_mkdir_with_parents (profile_dir, S_IRUSR | S_IWUSR | S_IXUSR);
   if (!g_file_set_contents (profile_file_name, profile_string,
@@ -603,7 +615,7 @@ profile_suite (void)
   gchar *gst_dir;
 
   /* cehck if we can create profiles */
-  gst_dir = g_build_filename (g_get_user_data_dir (), "gstreamer-0.11", NULL);
+  gst_dir = g_build_filename (g_get_user_data_dir (), "gstreamer-1.0", NULL);
   can_write = (g_access (gst_dir, R_OK | W_OK | X_OK) == 0);
   g_free (gst_dir);
 

@@ -22,10 +22,11 @@
 #ifndef __GST_AUDIO_IEC61937_H__
 #define __GST_AUDIO_IEC61937_H__
 
-#include <gst/audio/gstringbuffer.h>
+#include <gst/audio/gstaudioringbuffer.h>
 
-guint gst_audio_iec61937_frame_size (const GstRingBufferSpec * spec);
-gboolean gst_audio_iec61937_payload (const guint8 * src, guint src_n,
-    guint8 * dst, guint dst_n, const GstRingBufferSpec * spec);
+guint       gst_audio_iec61937_frame_size  (const GstAudioRingBufferSpec * spec);
+gboolean    gst_audio_iec61937_payload     (const guint8 * src, guint src_n,
+                                            guint8 * dst, guint dst_n,
+                                            const GstAudioRingBufferSpec * spec);
 
 #endif /* __GST_AUDIO_IEC61937_H__ */

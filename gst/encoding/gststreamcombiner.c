@@ -28,7 +28,7 @@ static GstStaticPadTemplate src_template =
 GST_STATIC_PAD_TEMPLATE ("src", GST_PAD_SRC, GST_PAD_ALWAYS,
     GST_STATIC_CAPS_ANY);
 
-static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE ("sink_%d",
+static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE ("sink_%u",
     GST_PAD_SINK,
     GST_PAD_REQUEST,
     GST_STATIC_CAPS_ANY);
@@ -38,10 +38,10 @@ GST_DEBUG_CATEGORY_STATIC (gst_stream_combiner_debug);
 
 G_DEFINE_TYPE (GstStreamCombiner, gst_stream_combiner, GST_TYPE_ELEMENT);
 
-#define STREAMS_LOCK(obj) (g_mutex_lock(obj->lock))
-#define STREAMS_UNLOCK(obj) (g_mutex_unlock(obj->lock))
+#define STREAMS_LOCK(obj) (g_mutex_lock(&obj->lock))
+#define STREAMS_UNLOCK(obj) (g_mutex_unlock(&obj->lock))
 
-static void gst_stream_combiner_dispose (GObject * object);
+static void gst_stream_combiner_finalize (GObject * object);
 
 static GstPad *gst_stream_combiner_request_new_pad (GstElement * element,
     GstPadTemplate * templ, const gchar * name, const GstCaps * caps);
@@ -57,7 +57,7 @@ gst_stream_combiner_class_init (GstStreamCombinerClass * klass)
   gobject_klass = (GObjectClass *) klass;
   gstelement_klass = (GstElementClass *) klass;
 
-  gobject_klass->dispose = gst_stream_combiner_dispose;
+  gobject_klass->finalize = gst_stream_combiner_finalize;
 
   GST_DEBUG_CATEGORY_INIT (gst_stream_combiner_debug, "streamcombiner", 0,
       "Stream Combiner");
@@ -72,30 +72,26 @@ gst_stream_combiner_class_init (GstStreamCombinerClass * klass)
   gstelement_klass->release_pad =
       GST_DEBUG_FUNCPTR (gst_stream_combiner_release_pad);
 
-  gst_element_class_set_details_simple (gstelement_klass,
+  gst_element_class_set_static_metadata (gstelement_klass,
       "streamcombiner", "Generic",
       "Recombines streams splitted by the streamsplitter element",
       "Edward Hervey <edward.hervey@collabora.co.uk>");
 }
 
 static void
-gst_stream_combiner_dispose (GObject * object)
+gst_stream_combiner_finalize (GObject * object)
 {
   GstStreamCombiner *stream_combiner = (GstStreamCombiner *) object;
 
-  if (stream_combiner->lock) {
-    g_mutex_free (stream_combiner->lock);
-    stream_combiner->lock = NULL;
-  }
+  g_mutex_clear (&stream_combiner->lock);
 
-  G_OBJECT_CLASS (gst_stream_combiner_parent_class)->dispose (object);
+  G_OBJECT_CLASS (gst_stream_combiner_parent_class)->finalize (object);
 }
 
 static GstFlowReturn
-gst_stream_combiner_chain (GstPad * pad, GstBuffer * buf)
+gst_stream_combiner_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
-  GstStreamCombiner *stream_combiner =
-      (GstStreamCombiner *) GST_PAD_PARENT (pad);
+  GstStreamCombiner *stream_combiner = (GstStreamCombiner *) parent;
   /* FIXME : IMPLEMENT */
 
   /* with lock taken, check if we're the active stream, if not drop */
@@ -103,10 +99,10 @@ gst_stream_combiner_chain (GstPad * pad, GstBuffer * buf)
 }
 
 static gboolean
-gst_stream_combiner_sink_event (GstPad * pad, GstEvent * event)
+gst_stream_combiner_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamCombiner *stream_combiner =
-      (GstStreamCombiner *) GST_PAD_PARENT (pad);
+  GstStreamCombiner *stream_combiner = (GstStreamCombiner *) parent;
   /* FIXME : IMPLEMENT */
 
   GST_DEBUG_OBJECT (pad, "Got event %s", GST_EVENT_TYPE_NAME (event));
@@ -131,20 +127,20 @@ gst_stream_combiner_sink_event (GstPad * pad, GstEvent * event)
   return gst_pad_push_event (stream_combiner->srcpad, event);
 }
 
-static GstCaps *
-gst_stream_combiner_sink_getcaps (GstPad * pad, GstCaps * filter)
+static gboolean
+gst_stream_combiner_sink_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
 {
-  GstStreamCombiner *stream_combiner =
-      (GstStreamCombiner *) GST_PAD_PARENT (pad);
+  GstStreamCombiner *stream_combiner = (GstStreamCombiner *) parent;
 
-  return gst_pad_peer_get_caps (stream_combiner->srcpad, filter);
+  return gst_pad_peer_query (stream_combiner->srcpad, query);
 }
 
 static gboolean
-gst_stream_combiner_src_event (GstPad * pad, GstEvent * event)
+gst_stream_combiner_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamCombiner *stream_combiner =
-      (GstStreamCombiner *) GST_PAD_PARENT (pad);
+  GstStreamCombiner *stream_combiner = (GstStreamCombiner *) parent;
   GstPad *sinkpad = NULL;
 
   STREAMS_LOCK (stream_combiner);
@@ -157,28 +153,36 @@ gst_stream_combiner_src_event (GstPad * pad, GstEvent * event)
   if (sinkpad)
     /* Forward upstream as is */
     return gst_pad_push_event (sinkpad, event);
+
   return FALSE;
 }
 
 static gboolean
-gst_stream_combiner_src_query (GstPad * pad, GstQuery * query)
+gst_stream_combiner_src_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
 {
-  GstStreamCombiner *stream_combiner =
-      (GstStreamCombiner *) GST_PAD_PARENT (pad);
-
+  GstStreamCombiner *stream_combiner = (GstStreamCombiner *) parent;
   GstPad *sinkpad = NULL;
+  gboolean ret = FALSE;
 
-  STREAMS_LOCK (stream_combiner);
-  if (stream_combiner->current)
-    sinkpad = stream_combiner->current;
-  else if (stream_combiner->sinkpads)
-    sinkpad = (GstPad *) stream_combiner->sinkpads->data;
-  STREAMS_UNLOCK (stream_combiner);
+  switch (GST_QUERY_TYPE (query)) {
+    case GST_QUERY_CAPS:
+      ret = gst_pad_query_default (pad, parent, query);
+      break;
+    default:
+      STREAMS_LOCK (stream_combiner);
+      if (stream_combiner->current)
+        sinkpad = stream_combiner->current;
+      else if (stream_combiner->sinkpads)
+        sinkpad = (GstPad *) stream_combiner->sinkpads->data;
+      STREAMS_UNLOCK (stream_combiner);
 
-  if (sinkpad)
-    /* Forward upstream as is */
-    return gst_pad_peer_query (sinkpad, query);
-  return FALSE;
+      if (sinkpad)
+        /* Forward upstream as is */
+        ret = gst_pad_peer_query (sinkpad, query);
+      break;
+  }
+  return ret;
 }
 
 static void
@@ -192,7 +196,7 @@ gst_stream_combiner_init (GstStreamCombiner * stream_combiner)
       gst_stream_combiner_src_query);
   gst_element_add_pad (GST_ELEMENT (stream_combiner), stream_combiner->srcpad);
 
-  stream_combiner->lock = g_mutex_new ();
+  g_mutex_init (&stream_combiner->lock);
 }
 
 static GstPad *
@@ -207,7 +211,7 @@ gst_stream_combiner_request_new_pad (GstElement * element,
   sinkpad = gst_pad_new_from_static_template (&sink_template, name);
   gst_pad_set_chain_function (sinkpad, gst_stream_combiner_chain);
   gst_pad_set_event_function (sinkpad, gst_stream_combiner_sink_event);
-  gst_pad_set_getcaps_function (sinkpad, gst_stream_combiner_sink_getcaps);
+  gst_pad_set_query_function (sinkpad, gst_stream_combiner_sink_query);
 
   STREAMS_LOCK (stream_combiner);
   stream_combiner->sinkpads =

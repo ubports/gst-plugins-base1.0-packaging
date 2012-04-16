@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2011-09-29 17:27+0200\n"
+"POT-Creation-Date: 2012-04-12 10:10+0200\n"
 "PO-Revision-Date: 2010-11-03 02:48+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -191,9 +191,8 @@ msgstr "A forráselem érvénytelen."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Hiba adatok küldése során a következőnek: „%s:%d”."
 
-#, c-format
-msgid "Connection to %s:%d refused."
-msgstr "A kapcsolat visszautasítva a következőhöz: %s:%d."
+msgid "This CD has no audio tracks"
+msgstr "Ez a CD nem rendelkezik hangsávokkal"
 
 msgid "Can't record audio fast enough"
 msgstr "Nem lehet elég gyorsan rögzíteni a hangot"
@@ -360,9 +359,6 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "This CD has no audio tracks"
-msgstr "Ez a CD nem rendelkezik hangsávokkal"
-
 msgid "ID3 tag"
 msgstr "ID3 címke"
 
@@ -395,6 +391,21 @@ msgstr "Veszteségmentes MSZH"
 
 msgid "Run-length encoding"
 msgstr "Műsorhossz-kódolás"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer feliratformátum"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami feliratformátum"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate feliratformátum"
 
 msgid "Sami subtitle format"
 msgstr "Sami feliratformátum"
@@ -510,6 +521,9 @@ msgstr "Ismeretlen kódolóelem"
 
 msgid "Plugin or element of unknown type"
 msgstr "Ismeretlen típusú bővítmény vagy elem"
+
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "A kapcsolat visszautasítva a következőhöz: %s:%d."
 
 #~ msgid "Uncompressed planar YUV 4:2:0"
 #~ msgstr "Tömörítetlen síkbeli YUV 4:2:0"

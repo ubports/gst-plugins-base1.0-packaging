@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>giosink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-gdppay.html" title="gdppay">
 <link rel="next" href="gst-plugins-base-plugins-giosrc.html" title="giosrc">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-gdppay.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-giosrc.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -73,10 +73,78 @@ GstGioSink implements
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.description"></a><h2>Description</h2>
+<p>
+This plugin writes incoming data to a local or remote location specified
+by an URI. This location can be specified using any protocol supported by
+the GIO library or it's VFS backends. Common protocols are 'file', 'ftp',
+or 'smb'.
+</p>
+<p>
+If the URI or <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> already exists giosink will post a message of
+type <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-ELEMENT:CAPS"><code class="literal">GST_MESSAGE_ELEMENT</code></a> with name "file-exists" on the bus. The message
+also contains the <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
+Applications can use the "file-exists" message to notify the user about
+the problem and to set a different target location or to remove the
+existing file. Note that right after the "file-exists" message a normal
+error message is posted on the bus which should be ignored if "file-exists"
+is handled by the application, for example by calling
+gst_bus_set_flushing(bus, TRUE) after the "file-exists" message was
+received and gst_bus_set_flushing(bus, FALSE) after the problem is
+resolved.
+</p>
+<p>
+Similar to the "file-exist" message a "not-mounted" message is posted
+on the bus if the target location is not mounted yet and needs to be
+mounted. This message can be used by application to mount the location
+and retry after the location was mounted successfully.
+</p>
+<p>
+</p>
+<div class="refsect2">
+<a name="idp8731776"></a><h3>Example pipelines</h3>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>input<span class="gtkdoc opt">.</span>xyz <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/joe/out.xyz</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will simply copy a local file. Instead of giosink,
+we could just as well have used the filesink element here.
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>foo<span class="gtkdoc opt">.</span>mp3 <span class="gtkdoc opt">!</span> mad <span class="gtkdoc opt">!</span> flacenc <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>smb<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//othercomputer/foo.flac</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will re-encode an mp3 file into FLAC format and store
+it on a remote host using the Samba protocol.
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v audiotestsrc num<span class="gtkdoc opt">-</span>buffers<span class="gtkdoc opt">=</span><span class="number">100</span> <span class="gtkdoc opt">!</span> vorbisenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/foo/bar.ogg</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ The above pipeline will encode a 440Hz sine wave to Ogg Vorbis and stores
+it in the home directory of user foo.
+</div>
+<p>
+</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id488791"></a><h3>Element Information</h3>
+<a name="idp8736624"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -99,7 +167,7 @@ GstGioSink implements
 </div>
 <hr>
 <div class="refsect2">
-<a name="id525824"></a><h3>Element Pads</h3>
+<a name="idp10448080"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -132,6 +200,7 @@ GstGioSink implements
 <a name="GstGioSink-struct"></a><h3>struct GstGioSink</h3>
 <pre class="programlisting">struct GstGioSink;</pre>
 <p>
+Opaque data structure.
 </p>
 </div>
 </div>
@@ -147,8 +216,15 @@ GstGioSink implements
 <div class="refsect2">
 <a name="GstGioSink--file"></a><h3>The <code class="literal">"file"</code> property</h3>
 <pre class="programlisting">  "file"                     <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>*                : Read / Write</pre>
-<p>GFile to write to.</p>
+<p>
+<a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to write to.
+</p>
+<p class="since">Since 0.10.20</p>
 </div>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-giosink.see-also"></a><h2>See Also</h2>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-plugins/html/gstreamer-plugins-filesink.html#GstFileSink"><span class="type">GstFileSink</span></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-gnomevfssink.html#GstGnomeVFSSink"><span class="type">GstGnomeVFSSink</span></a>, <a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc"><span class="type">GstGioSrc</span></a>
 </div>
 </div>
 <div class="footer">

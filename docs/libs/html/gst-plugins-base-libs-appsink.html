@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>appsink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-app.html" title="App Library">
 <link rel="prev" href="gst-plugins-base-libs-appsrc.html" title="appsrc">
 <link rel="next" href="gstreamer-audio.html" title="Audio Library">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-libs-appsrc.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-app.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gstreamer-audio.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -31,7 +31,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-libs-appsink.top_of_page"></a>appsink</span></h2>
-<p>appsink — Easy way for applications to extract buffers from a
+<p>appsink — Easy way for applications to extract samples from a
     pipeline</p>
 </td>
 <td valign="top" align="right"></td>
@@ -54,9 +54,8 @@
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-set-drop" title="gst_app_sink_set_drop ()">gst_app_sink_set_drop</a>               (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> drop</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-get-drop" title="gst_app_sink_get_drop ()">gst_app_sink_get_drop</a>               (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()">gst_app_sink_pull_preroll</a>           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer" title="gst_app_sink_pull_buffer ()">gst_app_sink_pull_buffer</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferList.html#GstBufferList"><span class="returnvalue">GstBufferList</span></a> *     <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer-list" title="gst_app_sink_pull_buffer_list ()">gst_app_sink_pull_buffer_list</a>       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
+<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()">gst_app_sink_pull_preroll</a>           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
+<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()">gst_app_sink_pull_sample</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
                     <a class="link" href="gst-plugins-base-libs-appsink.html#GstAppSinkCallbacks" title="GstAppSinkCallbacks">GstAppSinkCallbacks</a>;
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-set-callbacks" title="gst_app_sink_set_callbacks ()">gst_app_sink_set_callbacks</a>          (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-appsink.html#GstAppSinkCallbacks" title="GstAppSinkCallbacks"><span class="type">GstAppSinkCallbacks</span></a> *callbacks</code></em>,
@@ -76,14 +75,14 @@ appsink can be used by linking to the gstappsink.h header file to access the
 methods or by using the appsink action signals and properties.
 </p>
 <p>
-The normal way of retrieving buffers from appsink is by using the
-<a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer" title="gst_app_sink_pull_buffer ()"><code class="function">gst_app_sink_pull_buffer()</code></a> and <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()"><code class="function">gst_app_sink_pull_preroll()</code></a> methods.
-These methods block until a buffer becomes available in the sink or when the
+The normal way of retrieving samples from appsink is by using the
+<a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()"><code class="function">gst_app_sink_pull_sample()</code></a> and <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()"><code class="function">gst_app_sink_pull_preroll()</code></a> methods.
+These methods block until a sample becomes available in the sink or when the
 sink is shut down or reaches EOS.
 </p>
 <p>
 Appsink will internally use a queue to collect buffers from the streaming
-thread. If the application is not pulling buffers fast enough, this queue
+thread. If the application is not pulling samples fast enough, this queue
 will consume a lot of memory over time. The "max-buffers" property can be
 used to limit the queue size. The "drop" property controls whether the
 streaming thread blocks or if older buffers are dropped when the maximum
@@ -92,16 +91,16 @@ affect real-time performance and should be avoided.
 </p>
 <p>
 If a blocking behaviour is not desirable, setting the "emit-signals" property
-to <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> will make appsink emit the "new-buffer" and "new-preroll" signals
-when a buffer can be pulled without blocking.
+to <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> will make appsink emit the "new-sample" and "new-preroll" signals
+when a sample can be pulled without blocking.
 </p>
 <p>
 The "caps" property on appsink can be used to control the formats that
 appsink can receive. This property can contain non-fixed caps, the format of
-the pulled buffers can be obtained by getting the buffer caps.
+the pulled samples can be obtained by getting the sample caps.
 </p>
 <p>
-If one of the pull-preroll or pull-buffer methods return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the appsink
+If one of the pull-preroll or pull-sample methods return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the appsink
 is stopped or in the EOS state. You can check for the EOS state with the
 "eos" property or with the <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-is-eos" title="gst_app_sink_is_eos ()"><code class="function">gst_app_sink_is_eos()</code></a> method.
 </p>
@@ -169,7 +168,7 @@ Get the configured caps on <em class="parameter"><code>appsink</code></em>.
 <a name="gst-app-sink-is-eos"></a><h3>gst_app_sink_is_eos ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_app_sink_is_eos                 (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
-Check if <em class="parameter"><code>appsink</code></em> is EOS, which is when no more buffers can be pulled because
+Check if <em class="parameter"><code>appsink</code></em> is EOS, which is when no more samples can be pulled because
 an EOS event was received.
 </p>
 <p>
@@ -187,7 +186,7 @@ PLAYING state.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if no more buffers can be pulled and the appsink is EOS.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if no more samples can be pulled and the appsink is EOS.</td>
 </tr>
 </tbody>
 </table></div>
@@ -199,7 +198,7 @@ PLAYING state.
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_app_sink_set_emit_signals       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> emit</code></em>);</pre>
 <p>
-Make appsink emit the "new-preroll" and "new-buffer" signals. This option is
+Make appsink emit the "new-preroll" and "new-sample" signals. This option is
 by default disabled because signal emission is expensive and unneeded when
 the application prefers to operate in pull mode.
 </p>
@@ -224,7 +223,7 @@ the application prefers to operate in pull mode.
 <a name="gst-app-sink-get-emit-signals"></a><h3>gst_app_sink_get_emit_signals ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_app_sink_get_emit_signals       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
-Check if appsink will emit the "new-preroll" and "new-buffer" signals.
+Check if appsink will emit the "new-preroll" and "new-sample" signals.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -237,7 +236,7 @@ Check if appsink will emit the "new-preroll" and "new-buffer" signals.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>appsink</code></em> is emiting the "new-preroll" and "new-buffer"
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>appsink</code></em> is emiting the "new-preroll" and "new-sample"
 signals.</td>
 </tr>
 </tbody>
@@ -252,7 +251,7 @@ signals.</td>
 <p>
 Set the maximum amount of buffers that can be queued in <em class="parameter"><code>appsink</code></em>. After this
 amount of buffers are queued in appsink, any more buffers will block upstream
-elements until a buffer is pulled from <em class="parameter"><code>appsink</code></em>.
+elements until a sample is pulled from <em class="parameter"><code>appsink</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -347,27 +346,27 @@ filled.</td>
 <hr>
 <div class="refsect2">
 <a name="gst-app-sink-pull-preroll"></a><h3>gst_app_sink_pull_preroll ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_app_sink_pull_preroll           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_app_sink_pull_preroll           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
-Get the last preroll buffer in <em class="parameter"><code>appsink</code></em>. This was the buffer that caused the
-appsink to preroll in the PAUSED state. This buffer can be pulled many times
+Get the last preroll sample in <em class="parameter"><code>appsink</code></em>. This was the sample that caused the
+appsink to preroll in the PAUSED state. This sample can be pulled many times
 and remains available to the application even after EOS.
 </p>
 <p>
 This function is typically used when dealing with a pipeline in the PAUSED
-state. Calling this function after doing a seek will give the buffer right
+state. Calling this function after doing a seek will give the sample right
 after the seek position.
 </p>
 <p>
-Note that the preroll buffer will also be returned as the first buffer
-when calling <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer" title="gst_app_sink_pull_buffer ()"><code class="function">gst_app_sink_pull_buffer()</code></a>.
+Note that the preroll sample will also be returned as the first sample
+when calling <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()"><code class="function">gst_app_sink_pull_sample()</code></a>.
 </p>
 <p>
 If an EOS event was received before any buffers, this function returns
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Use <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-is-eos" title="gst_app_sink_is_eos ()"><code class="function">gst_app_sink_is_eos()</code></a> to check for the EOS condition.
 </p>
 <p>
-This function blocks until a preroll buffer or EOS is received or the appsink
+This function blocks until a preroll sample or EOS is received or the appsink
 element is set to the READY/NULL state.
 </p>
 <div class="variablelist"><table border="0">
@@ -388,17 +387,17 @@ element is set to the READY/NULL state.
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-app-sink-pull-buffer"></a><h3>gst_app_sink_pull_buffer ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_app_sink_pull_buffer            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
+<a name="gst-app-sink-pull-sample"></a><h3>gst_app_sink_pull_sample ()</h3>
+<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_app_sink_pull_sample            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
-This function blocks until a buffer or EOS becomes available or the appsink
+This function blocks until a sample or EOS becomes available or the appsink
 element is set to the READY/NULL state.
 </p>
 <p>
-This function will only return buffers when the appsink is in the PLAYING
+This function will only return samples when the appsink is in the PLAYING
 state. All rendered buffers will be put in a queue so that the application
-can pull buffers at its own rate. Note that when the application does not
-pull buffers fast enough, the queued buffers could consume a lot of memory,
+can pull samples at its own rate. Note that when the application does not
+pull samples fast enough, the queued buffers could consume a lot of memory,
 especially when dealing with raw video frames.
 </p>
 <p>
@@ -423,47 +422,11 @@ If an EOS event was received before any buffers, this function returns
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-app-sink-pull-buffer-list"></a><h3>gst_app_sink_pull_buffer_list ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferList.html#GstBufferList"><span class="returnvalue">GstBufferList</span></a> *     gst_app_sink_pull_buffer_list       (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
-<p>
-This function blocks until a buffer list or EOS becomes available or the
-appsink element is set to the READY/NULL state.
-</p>
-<p>
-This function will only return buffer lists when the appsink is in the
-PLAYING state. All rendered buffer lists will be put in a queue so that
-the application can pull buffer lists at its own rate. Note that when
-the application does not pull buffer lists fast enough, the queued buffer
-lists could consume a lot of memory, especially when dealing with raw
-video frames.
-</p>
-<p>
-If an EOS event was received before any buffer lists, this function returns
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Use <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-is-eos" title="gst_app_sink_is_eos ()"><code class="function">gst_app_sink_is_eos()</code></a> to check for the EOS condition.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferList.html#GstBufferList"><span class="type">GstBufferList</span></a> or NULL when the appsink is stopped or EOS.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="GstAppSinkCallbacks"></a><h3>GstAppSinkCallbacks</h3>
 <pre class="programlisting">typedef struct {
   void          (*eos)              (GstAppSink *sink, gpointer user_data);
   GstFlowReturn (*new_preroll)      (GstAppSink *sink, gpointer user_data);
-  GstFlowReturn (*new_buffer)       (GstAppSink *sink, gpointer user_data);
-  GstFlowReturn (*new_buffer_list)  (GstAppSink *sink, gpointer user_data);
+  GstFlowReturn (*new_sample)       (GstAppSink *sink, gpointer user_data);
 } GstAppSinkCallbacks;
 </pre>
 <p>
@@ -480,26 +443,18 @@ is called from the steaming thread.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAppSinkCallbacks.new-preroll"></a>new_preroll</code></em> ()</span></p></td>
-<td>Called when a new preroll buffer is available.
+<td>Called when a new preroll sample is available.
 This callback is called from the steaming thread.
-The new preroll buffer can be retrieved with
+The new preroll sample can be retrieved with
 <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()"><code class="function">gst_app_sink_pull_preroll()</code></a> either from this callback
 or from any other thread.</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstAppSinkCallbacks.new-buffer"></a>new_buffer</code></em> ()</span></p></td>
-<td>Called when a new buffer is available.
+<td><p><span class="term"><em class="structfield"><code><a name="GstAppSinkCallbacks.new-sample"></a>new_sample</code></em> ()</span></p></td>
+<td>Called when a new sample is available.
 This callback is called from the steaming thread.
-The new buffer can be retrieved with
-<a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer" title="gst_app_sink_pull_buffer ()"><code class="function">gst_app_sink_pull_buffer()</code></a> either from this callback
-or from any other thread.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="structfield"><code><a name="GstAppSinkCallbacks.new-buffer-list"></a>new_buffer_list</code></em> ()</span></p></td>
-<td>Called when a new bufferlist is available.
-This callback is called from the steaming thread.
-The new bufferlist can be retrieved with
-<a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-buffer-list" title="gst_app_sink_pull_buffer_list ()"><code class="function">gst_app_sink_pull_buffer_list()</code></a> either from this callback
+The new sample can be retrieved with
+<a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()"><code class="function">gst_app_sink_pull_sample()</code></a> either from this callback
 or from any other thread.</td>
 </tr>
 </tbody>
@@ -514,12 +469,12 @@ or from any other thread.</td>
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> notify</code></em>);</pre>
 <p>
-Set callbacks which will be executed for each new preroll, new buffer and eos.
+Set callbacks which will be executed for each new preroll, new sample and eos.
 This is an alternative to using the signals, it has lower overhead and is thus
 less expensive, but also less flexible.
 </p>
 <p>
-If callbacks are installed, no signals will be emited for performance
+If callbacks are installed, no signals will be emitted for performance
 reasons.
 </p>
 <div class="variablelist"><table border="0">
@@ -549,7 +504,7 @@ reasons.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-appsink.see-also"></a><h2>See Also</h2>
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html"><span class="type">GstBaseSink</span></a>, appsrc
+<span class="type">GstSample</span>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html"><span class="type">GstBaseSink</span></a>, appsrc
 </div>
 </div>
 <div class="footer">

@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>alsasrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Plugins Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-alsasink.html" title="alsasink">
 <link rel="next" href="gst-plugins-base-plugins-audioconvert.html" title="audioconvert">
@@ -17,7 +17,7 @@
 <td><a accesskey="p" href="gst-plugins-base-plugins-alsasink.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Plugins Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Plugins Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-plugins-audioconvert.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -55,8 +55,8 @@
                +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
                      +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSrc.html">GstBaseSrc</a>
                            +----<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstPushSrc.html">GstPushSrc</a>
-                                 +----<a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstbaseaudiosrc.html#GstBaseAudioSrc">GstBaseAudioSrc</a>
-                                       +----<a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrc">GstAudioSrc</a>
+                                 +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc">GstAudioBaseSrc</a>
+                                       +----<a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrc">GstAudioSrc</a>
                                              +----GstAlsaSrc
 </pre>
 </div>
@@ -64,7 +64,7 @@
 <a name="gst-plugins-base-plugins-alsasrc.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GstAlsaSrc implements
- <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstImplementsInterface.html">GstImplementsInterface</a>,  <a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstmixer.html#GstMixer">GstMixer</a> and  <a href="../gst-plugins-base-libs-0.11/gst-plugins-base-libs-gstpropertyprobe.html#GstPropertyProbe">GstPropertyProbe</a>.</p>
+ <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmixer.html#GstMixer">GstMixer</a>.</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-alsasrc.properties"></a><h2>Properties</h2>
@@ -79,7 +79,7 @@ GstAlsaSrc implements
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id486142"></a><h3>Element Information</h3>
+<a name="idp5974112"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -102,7 +102,7 @@ GstAlsaSrc implements
 </div>
 <hr>
 <div class="refsect2">
-<a name="id515248"></a><h3>Element Pads</h3>
+<a name="idp5981568"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -120,23 +120,7 @@ GstAlsaSrc implements
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>audio/x-raw-int, endianness=(int){ 1234, 4321 }, signed=(boolean){ true, false }, width=(int)32, depth=(int)32, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, endianness=(int){ 1234, 4321 }, signed=(boolean){ true, false }, width=(int)32, depth=(int)24, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, endianness=(int){ 1234, 4321 }, signed=(boolean){ true, false }, width=(int)24, depth=(int)24, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, endianness=(int){ 1234, 4321 }, signed=(boolean){ true, false }, width=(int)16, depth=(int)16, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
-</tr>
-<tr>
-<td><p><span class="term"></span></p></td>
-<td> audio/x-raw-int, signed=(boolean){ true, false }, width=(int)8, depth=(int)8, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
+<td>audio/x-raw, format=(string){ S8, U8, S16LE, S16BE, U16LE, U16BE, S24_32LE, S24_32BE, U24_32LE, U24_32BE, S32LE, S32BE, U32LE, U32BE, S24LE, S24BE, U24LE, U24BE, S20LE, S20BE, U20LE, U20BE, S18LE, S18BE, U18LE, U18BE, F32LE, F32BE, F64LE, F64BE }, layout=(string)interleaved, rate=(int)[ 1, 2147483647 ], channels=(int)[ 1, 2147483647 ]</td>
 </tr>
 </tbody>
 </table></div>

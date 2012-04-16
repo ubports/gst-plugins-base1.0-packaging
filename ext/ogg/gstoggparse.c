@@ -212,14 +212,15 @@ GST_STATIC_PAD_TEMPLATE ("sink",
 static void gst_ogg_parse_dispose (GObject * object);
 static GstStateChangeReturn gst_ogg_parse_change_state (GstElement * element,
     GstStateChange transition);
-static GstFlowReturn gst_ogg_parse_chain (GstPad * pad, GstBuffer * buffer);
+static GstFlowReturn gst_ogg_parse_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer);
 
 static void
 gst_ogg_parse_base_init (gpointer g_class)
 {
   GstElementClass *element_class = GST_ELEMENT_CLASS (g_class);
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Ogg parser", "Codec/Parser",
       "parse ogg streams into pages (info about ogg: http://xiph.org)",
       "Michael Smith <msmith@fluendo.com>");
@@ -287,11 +288,10 @@ static GstFlowReturn
 gst_ogg_parse_submit_buffer (GstOggParse * ogg, GstBuffer * buffer)
 {
   gsize size;
-  guint8 *data;
   gchar *oggbuffer;
   GstFlowReturn ret = GST_FLOW_OK;
 
-  data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
+  size = gst_buffer_get_size (buffer);
 
   GST_DEBUG_OBJECT (ogg, "submitting %" G_GSIZE_FORMAT " bytes", size);
   if (G_UNLIKELY (size == 0))
@@ -305,7 +305,7 @@ gst_ogg_parse_submit_buffer (GstOggParse * ogg, GstBuffer * buffer)
     goto done;
   }
 
-  memcpy (oggbuffer, data, size);
+  size = gst_buffer_extract (buffer, 0, oggbuffer, size);
   if (G_UNLIKELY (ogg_sync_wrote (&ogg->sync, size) < 0)) {
     GST_ELEMENT_ERROR (ogg, STREAM, DECODE, (NULL),
         ("failed to write %" G_GSIZE_FORMAT " bytes to the sync buffer", size));
@@ -313,7 +313,6 @@ gst_ogg_parse_submit_buffer (GstOggParse * ogg, GstBuffer * buffer)
   }
 
 done:
-  gst_buffer_unmap (buffer, data, size);
   gst_buffer_unref (buffer);
 
   return ret;
@@ -326,7 +325,7 @@ gst_ogg_parse_append_header (GValue * array, GstBuffer * buf)
   /* We require a copy to avoid circular refcounts */
   GstBuffer *buffer = gst_buffer_copy (buf);
 
-  GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_IN_CAPS);
+  GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_HEADER);
 
   g_value_init (&value, GST_TYPE_BUFFER);
   gst_value_set_buffer (&value, buffer);
@@ -383,7 +382,7 @@ gst_ogg_parse_buffer_from_page (ogg_page * page,
  * pages to output pad.
  */
 static GstFlowReturn
-gst_ogg_parse_chain (GstPad * pad, GstBuffer * buffer)
+gst_ogg_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 {
   GstOggParse *ogg;
   GstFlowReturn result = GST_FLOW_OK;
@@ -392,7 +391,7 @@ gst_ogg_parse_chain (GstPad * pad, GstBuffer * buffer)
   GstBuffer *pagebuffer;
   GstClockTime buffertimestamp = GST_BUFFER_TIMESTAMP (buffer);
 
-  ogg = GST_OGG_PARSE (GST_OBJECT_PARENT (pad));
+  ogg = GST_OGG_PARSE (parent);
 
   GST_LOG_OBJECT (ogg,
       "Chain function received buffer of size %" G_GSIZE_FORMAT,
@@ -582,7 +581,7 @@ gst_ogg_parse_chain (GstPad * pad, GstBuffer * buffer)
               }
             }
 
-            caps = gst_pad_get_caps (ogg->srcpad, NULL);
+            caps = gst_pad_query_caps (ogg->srcpad, NULL);
             caps = gst_caps_make_writable (caps);
 
             structure = gst_caps_get_structure (caps, 0);

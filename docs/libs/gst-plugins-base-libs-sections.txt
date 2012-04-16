@@ -60,8 +60,7 @@ gst_app_sink_get_max_buffers
 gst_app_sink_set_drop
 gst_app_sink_get_drop
 gst_app_sink_pull_preroll
-gst_app_sink_pull_buffer
-gst_app_sink_pull_buffer_list
+gst_app_sink_pull_sample
 GstAppSinkCallbacks
 gst_app_sink_set_callbacks
 <SUBSECTION Standard>
@@ -134,7 +133,6 @@ _GST_AUDIO_FORMAT_NE
 GstAudioClock
 GstAudioClockGetTimeFunc
 gst_audio_clock_new
-gst_audio_clock_new_full
 gst_audio_clock_adjust
 gst_audio_clock_get_time
 gst_audio_clock_reset
@@ -151,6 +149,26 @@ GST_AUDIO_CLOCK_CAST
 </SECTION>
 
 <SECTION>
+<FILE>gstaudiocdsrc</FILE>
+<INCLUDE>gst/audio/gstaudiocdsrc.h</INCLUDE>
+GstAudioCdSrc
+GstAudioCdSrcClass
+GstAudioCdSrcTrack
+GstAudioCdSrcMode
+gst_audio_cd_src_add_track
+<SUBSECTION Standard>
+GST_TYPE_AUDIO_CD_SRC_MODE
+gst_audio_cd_src_mode_get_type
+GST_AUDIO_CD_SRC
+GST_AUDIO_CD_SRC_CLASS
+GST_AUDIO_CD_SRC_GET_CLASS
+GST_IS_AUDIO_CD_SRC
+GST_IS_AUDIO_CD_SRC_CLASS
+GST_TYPE_AUDIO_CD_SRC
+gst_audio_cd_src_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gstaudiodecoder</FILE>
 <INCLUDE>gst/audio/gstaudiodecoder.h</INCLUDE>
 GstAudioDecoder
@@ -162,19 +180,23 @@ GST_AUDIO_DECODER_SRC_NAME
 GST_AUDIO_DECODER_SRC_PAD
 gst_audio_decoder_finish_frame
 gst_audio_decoder_get_audio_info
-gst_audio_decoder_get_byte_time
+gst_audio_decoder_get_estimate_rate
 gst_audio_decoder_get_delay
+gst_audio_decoder_get_drainable
 gst_audio_decoder_get_latency
 gst_audio_decoder_get_max_errors
 gst_audio_decoder_get_min_latency
+gst_audio_decoder_get_needs_format
 gst_audio_decoder_get_parse_state
 gst_audio_decoder_get_plc
 gst_audio_decoder_get_plc_aware
 gst_audio_decoder_get_tolerance
-gst_audio_decoder_set_byte_time
+gst_audio_decoder_set_estimate_rate
+gst_audio_decoder_set_drainable
 gst_audio_decoder_set_latency
 gst_audio_decoder_set_max_errors
 gst_audio_decoder_set_min_latency
+gst_audio_decoder_set_needs_format
 gst_audio_decoder_set_plc
 gst_audio_decoder_set_plc_aware
 gst_audio_decoder_set_tolerance
@@ -201,9 +223,11 @@ GST_AUDIO_ENCODER_SRC_NAME
 GST_AUDIO_ENCODER_SRC_PAD
 gst_audio_encoder_finish_frame
 gst_audio_encoder_get_audio_info
+gst_audio_encoder_get_drainable
 gst_audio_encoder_get_frame_max
 gst_audio_encoder_get_frame_samples_min
 gst_audio_encoder_get_frame_samples_max
+gst_audio_encoder_get_hard_min
 gst_audio_encoder_get_hard_resync
 gst_audio_encoder_get_latency
 gst_audio_encoder_get_lookahead
@@ -211,10 +235,13 @@ gst_audio_encoder_get_mark_granule
 gst_audio_encoder_get_perfect_timestamp
 gst_audio_encoder_get_tolerance
 gst_audio_encoder_proxy_getcaps
+gst_audio_encoder_set_drainable
 gst_audio_encoder_set_frame_max
 gst_audio_encoder_set_frame_samples_min
 gst_audio_encoder_set_frame_samples_max
+gst_audio_encoder_set_hard_min
 gst_audio_encoder_set_hard_resync
+gst_audio_encoder_set_headers
 gst_audio_encoder_set_latency
 gst_audio_encoder_set_lookahead
 gst_audio_encoder_set_mark_granule
@@ -287,59 +314,59 @@ GST_AUDIO_SRC_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>gstbaseaudiosink</FILE>
-<INCLUDE>gst/audio/gstbaseaudiosink.h</INCLUDE>
-GstBaseAudioSink
-GstBaseAudioSinkClass
-GstBaseAudioSinkSlaveMethod
+<FILE>gstaudiobasesink</FILE>
+<INCLUDE>gst/audio/gstaudiobasesink.h</INCLUDE>
+GstAudioBaseSink
+GstAudioBaseSinkClass
+GstAudioBaseSinkSlaveMethod
 
-GST_BASE_AUDIO_SINK_CLOCK
-GST_BASE_AUDIO_SINK_PAD
-gst_base_audio_sink_create_ringbuffer
-gst_base_audio_sink_set_provide_clock
-gst_base_audio_sink_get_provide_clock
-gst_base_audio_sink_set_slave_method
-gst_base_audio_sink_get_slave_method
-gst_base_audio_sink_get_drift_tolerance
-gst_base_audio_sink_set_drift_tolerance
+GST_AUDIO_BASE_SINK_CLOCK
+GST_AUDIO_BASE_SINK_PAD
+gst_audio_base_sink_create_ringbuffer
+gst_audio_base_sink_set_provide_clock
+gst_audio_base_sink_get_provide_clock
+gst_audio_base_sink_set_slave_method
+gst_audio_base_sink_get_slave_method
+gst_audio_base_sink_get_drift_tolerance
+gst_audio_base_sink_set_drift_tolerance
 <SUBSECTION Standard>
-GST_BASE_AUDIO_SINK
-GST_IS_BASE_AUDIO_SINK
-GST_TYPE_BASE_AUDIO_SINK
-gst_base_audio_sink_get_type
-GST_BASE_AUDIO_SINK_CLASS
-GST_IS_BASE_AUDIO_SINK_CLASS
-GST_BASE_AUDIO_SINK_GET_CLASS
-GstBaseAudioSinkPrivate
-gst_base_audio_sink_slave_method_get_type
-GST_TYPE_BASE_AUDIO_SINK_SLAVE_METHOD
+GST_AUDIO_BASE_SINK
+GST_IS_AUDIO_BASE_SINK
+GST_TYPE_AUDIO_BASE_SINK
+gst_audio_base_sink_get_type
+GST_AUDIO_BASE_SINK_CLASS
+GST_IS_AUDIO_BASE_SINK_CLASS
+GST_AUDIO_BASE_SINK_GET_CLASS
+GstAudioBaseSinkPrivate
+gst_audio_base_sink_slave_method_get_type
+GST_TYPE_AUDIO_BASE_SINK_SLAVE_METHOD
 </SECTION>
 
 <SECTION>
-<FILE>gstbaseaudiosrc</FILE>
-<INCLUDE>gst/audio/gstbaseaudiosrc.h</INCLUDE>
-GstBaseAudioSrc
-GstBaseAudioSrcClass
-GstBaseAudioSrcSlaveMethod
+<FILE>gstaudiobasesrc</FILE>
+<INCLUDE>gst/audio/gstaudiobasesrc.h</INCLUDE>
+GstAudioBaseSrc
+GstAudioBaseSrcClass
+GstAudioBaseSrcSlaveMethod
 
-GST_BASE_AUDIO_SRC_CLOCK
-GST_BASE_AUDIO_SRC_PAD
-gst_base_audio_src_create_ringbuffer
-gst_base_audio_src_set_provide_clock
-gst_base_audio_src_get_provide_clock
-gst_base_audio_src_get_slave_method
-gst_base_audio_src_set_slave_method
+GST_AUDIO_BASE_SRC_CLOCK
+GST_AUDIO_BASE_SRC_PAD
+gst_audio_base_src_create_ringbuffer
+gst_audio_base_src_set_provide_clock
+gst_audio_base_src_get_provide_clock
+gst_audio_base_src_get_slave_method
+gst_audio_base_src_set_slave_method
 <SUBSECTION Standard>
-GstBaseAudioSrcPrivate
-GST_BASE_AUDIO_SRC
-GST_IS_BASE_AUDIO_SRC
-GST_TYPE_BASE_AUDIO_SRC
-gst_base_audio_src_get_type
-GST_BASE_AUDIO_SRC_CLASS
-GST_IS_BASE_AUDIO_SRC_CLASS
-GST_BASE_AUDIO_SRC_GET_CLASS
-gst_base_audio_src_slave_method_get_type
-GST_TYPE_BASE_AUDIO_SRC_SLAVE_METHOD
+GstAudioBaseSrcPrivate
+GST_AUDIO_BASE_SRC
+GST_IS_AUDIO_BASE_SRC
+GST_TYPE_AUDIO_BASE_SRC
+gst_audio_base_src_get_type
+GST_AUDIO_BASE_SRC_CLASS
+GST_IS_AUDIO_BASE_SRC_CLASS
+GST_AUDIO_BASE_SRC_GET_CLASS
+gst_audio_base_src_slave_method_get_type
+GST_TYPE_AUDIO_BASE_SRC_SLAVE_METHOD
 </SECTION>
 
 <SECTION>
@@ -358,71 +385,69 @@ gst_audio_channel_position_get_type
 </SECTION>
 
 <SECTION>
-<FILE>gstringbuffer</FILE>
-<INCLUDE>gst/audio/gstringbuffer.h</INCLUDE>
-GstRingBuffer
-GstRingBufferClass
-GstRingBufferSpec
-GstRingBufferCallback
-GstRingBufferSegState
-GstRingBufferState
-GstBufferFormatType
+<FILE>gstaudioringbuffer</FILE>
+<INCLUDE>gst/audio/gstaudioringbuffer.h</INCLUDE>
+GstAudioRingBuffer
+GstAudioRingBufferClass
+GstAudioRingBufferSpec
+GstAudioRingBufferCallback
+GstAudioRingBufferState
+GstAudioRingBufferFormatType
 
-GST_RING_BUFFER_BROADCAST
-GST_RING_BUFFER_GET_COND
-GST_RING_BUFFER_SIGNAL
-GST_RING_BUFFER_WAIT
+GST_AUDIO_RING_BUFFER_BROADCAST
+GST_AUDIO_RING_BUFFER_GET_COND
+GST_AUDIO_RING_BUFFER_SIGNAL
+GST_AUDIO_RING_BUFFER_WAIT
 
-gst_ring_buffer_set_callback
+gst_audio_ring_buffer_set_callback
 
-gst_ring_buffer_acquire
-gst_ring_buffer_release
-gst_ring_buffer_is_acquired
+gst_audio_ring_buffer_acquire
+gst_audio_ring_buffer_release
+gst_audio_ring_buffer_is_acquired
 
-gst_ring_buffer_activate
-gst_ring_buffer_is_active
+gst_audio_ring_buffer_activate
+gst_audio_ring_buffer_is_active
 
-gst_ring_buffer_start
-gst_ring_buffer_pause
-gst_ring_buffer_stop
+gst_audio_ring_buffer_start
+gst_audio_ring_buffer_pause
+gst_audio_ring_buffer_stop
 
-gst_ring_buffer_delay
-gst_ring_buffer_samples_done
-gst_ring_buffer_set_sample
-gst_ring_buffer_commit
-gst_ring_buffer_commit_full
-gst_ring_buffer_convert
+gst_audio_ring_buffer_delay
+gst_audio_ring_buffer_samples_done
+gst_audio_ring_buffer_set_sample
+gst_audio_ring_buffer_commit
+gst_audio_ring_buffer_convert
 
-gst_ring_buffer_prepare_read
-gst_ring_buffer_read
-gst_ring_buffer_clear
-gst_ring_buffer_clear_all
-gst_ring_buffer_advance
+gst_audio_ring_buffer_prepare_read
+gst_audio_ring_buffer_read
+gst_audio_ring_buffer_clear
+gst_audio_ring_buffer_clear_all
+gst_audio_ring_buffer_advance
 
-gst_ring_buffer_close_device
-gst_ring_buffer_open_device
-gst_ring_buffer_device_is_open
+gst_audio_ring_buffer_close_device
+gst_audio_ring_buffer_open_device
+gst_audio_ring_buffer_device_is_open
 
-gst_ring_buffer_may_start
-gst_ring_buffer_parse_caps
-gst_ring_buffer_set_flushing
+gst_audio_ring_buffer_may_start
+gst_audio_ring_buffer_parse_caps
+gst_audio_ring_buffer_set_flushing
 
 <SUBSECTION Standard>
-GST_TYPE_RING_BUFFER
-GST_RING_BUFFER
-GST_RING_BUFFER_CLASS
-GST_RING_BUFFER_GET_CLASS
-GST_IS_RING_BUFFER
-GST_IS_RING_BUFFER_CLASS
-GST_RING_BUFFER_CAST
-gst_ring_buffer_get_type
-GST_TYPE_RING_BUFFER_SEG_STATE
-gst_ring_buffer_seg_state_get_type
-GST_TYPE_RING_BUFFER_STATE
-gst_ring_buffer_state_get_type
+GST_TYPE_AUDIO_RING_BUFFER
+GST_AUDIO_RING_BUFFER
+GST_AUDIO_RING_BUFFER_CLASS
+GST_AUDIO_RING_BUFFER_GET_CLASS
+GST_IS_AUDIO_RING_BUFFER
+GST_IS_AUDIO_RING_BUFFER_CLASS
+GST_AUDIO_RING_BUFFER_CAST
+gst_audio_ring_buffer_get_type
+GST_TYPE_AUDIO_RING_BUFFER_SEG_STATE
+gst_audio_ring_buffer_seg_state_get_type
+GST_TYPE_AUDIO_RING_BUFFER_STATE
+gst_audio_ring_buffer_state_get_type
 <SUBSECTION Private>
-gst_ring_buffer_debug_spec_buff
-gst_ring_buffer_debug_spec_caps
+gst_audio_ring_buffer_debug_spec_buff
+gst_audio_ring_buffer_debug_spec_caps
 </SECTION>
 
 <SECTION>
@@ -430,29 +455,6 @@ gst_ring_buffer_debug_spec_caps
 <INCLUDE>gst/audio/gstaudioiec61937.h</INCLUDE>
 gst_audio_iec61937_frame_size
 gst_audio_iec61937_payload
-</SECTION>
-
-
-# cdda
-
-<SECTION>
-<FILE>gstcddabasesrc</FILE>
-<INCLUDE>gst/cdda/gstcddabasesrc.h</INCLUDE>
-GstCddaBaseSrc
-GstCddaBaseSrcClass
-GstCddaBaseSrcTrack
-GstCddaBaseSrcMode
-gst_cdda_base_src_add_track
-<SUBSECTION Standard>
-GST_TYPE_CDDA_BASE_SRC_MODE
-gst_cdda_base_src_mode_get_type
-GST_CDDA_BASE_SRC
-GST_CDDA_BASE_SRC_CLASS
-GST_CDDA_BASE_SRC_GET_CLASS
-GST_IS_CDDA_BASE_SRC
-GST_IS_CDDA_BASE_SRC_CLASS
-GST_TYPE_CDDA_BASE_SRC
-gst_cdda_base_src_get_type
 </SECTION>
 
 # fft
@@ -569,9 +571,9 @@ KISS_FFT_F64_SIN
 
 <SECTION>
 <FILE>gstcolorbalance</FILE>
-<INCLUDE>gst/interfaces/color.h</INCLUDE>
+<INCLUDE>gst/video/colorbalance.h</INCLUDE>
 GstColorBalance
-GstColorBalanceClass
+GstColorBalanceInterface
 GstColorBalanceType
 gst_color_balance_list_channels
 gst_color_balance_get_value
@@ -580,11 +582,9 @@ gst_color_balance_value_changed
 gst_color_balance_get_balance_type
 <SUBSECTION Standard>
 GST_COLOR_BALANCE
-GST_COLOR_BALANCE_CLASS
-GST_COLOR_BALANCE_GET_CLASS
+GST_COLOR_BALANCE_GET_INTERACE
 GST_COLOR_BALANCE_TYPE
 GST_IS_COLOR_BALANCE
-GST_IS_COLOR_BALANCE_CLASS
 GST_TYPE_COLOR_BALANCE
 GST_TYPE_COLOR_BALANCE_TYPE
 gst_color_balance_get_type
@@ -593,7 +593,7 @@ gst_color_balance_type_get_type
 
 <SECTION>
 <FILE>gstcolorbalancechannel</FILE>
-<INCLUDE>gst/interfaces/colorbalancechannel.h</INCLUDE>
+<INCLUDE>gst/video/colorbalancechannel.h</INCLUDE>
 GstColorBalanceChannel
 GstColorBalanceChannelClass
 <SUBSECTION Standard>
@@ -607,7 +607,7 @@ gst_color_balance_channel_get_type
 
 <SECTION>
 <FILE>gstmixer</FILE>
-<INCLUDE>gst/interfaces/mixer.h</INCLUDE>
+<INCLUDE>gst/audio/mixer.h</INCLUDE>
 GstMixer
 GstMixerType
 GstMixerFlags
@@ -647,11 +647,9 @@ GST_TYPE_MIXER_TYPE
 GST_TYPE_MIXER_FLAGS
 GST_TYPE_MIXER_MESSAGE_TYPE
 GST_MIXER
-GST_MIXER_CLASS
-GST_MIXER_GET_CLASS
+GST_MIXER_GET_INTERFACE
 GST_MIXER_TYPE
 GST_IS_MIXER
-GST_IS_MIXER_CLASS
 GST_TYPE_STREAM_VOLUME_FORMAT
 gst_mixer_get_type
 gst_mixer_type_get_type
@@ -662,7 +660,7 @@ gst_stream_volume_format_get_type
 
 <SECTION>
 <FILE>gstmixeroptions</FILE>
-<INCLUDE>gst/interfaces/mixer.h</INCLUDE>
+<INCLUDE>gst/audio/mixer.h</INCLUDE>
 GstMixerOptions
 gst_mixer_options_get_values
 <SUBSECTION Standard>
@@ -678,7 +676,7 @@ gst_mixer_options_get_type
 
 <SECTION>
 <FILE>gstmixertrack</FILE>
-<INCLUDE>gst/interfaces/mixer.h</INCLUDE>
+<INCLUDE>gst/audio/mixer.h</INCLUDE>
 GstMixerTrack
 GstMixerTrackFlags
 GST_MIXER_TRACK_HAS_FLAG
@@ -740,7 +738,7 @@ GST_NAVIGATION_COMMAND_DVD_TITLE_MENU
 <SUBSECTION Standard>
 GST_TYPE_NAVIGATION
 GST_NAVIGATION
-GST_NAVIGATION_GET_IFACE
+GST_NAVIGATION_GET_INTERFACE
 GST_TYPE_NAVIGATION_COMMAND
 GST_TYPE_NAVIGATION_EVENT_TYPE
 GST_TYPE_NAVIGATION_MESSAGE_TYPE
@@ -755,32 +753,8 @@ gst_navigation_command_get_type
 </SECTION>
 
 <SECTION>
-<FILE>gstpropertyprobe</FILE>
-<INCLUDE>gst/interfaces/propertyprobe.h</INCLUDE>
-GstPropertyProbe
-GstPropertyProbeInterface
-
-gst_property_probe_get_properties
-gst_property_probe_get_property
-gst_property_probe_get_values
-gst_property_probe_get_values_name
-gst_property_probe_needs_probe
-gst_property_probe_needs_probe_name
-gst_property_probe_probe_and_get_values
-gst_property_probe_probe_and_get_values_name
-gst_property_probe_probe_property
-gst_property_probe_probe_property_name
-<SUBSECTION Standard>
-GST_TYPE_PROPERTY_PROBE
-GST_PROPERTY_PROBE
-GST_PROPERTY_PROBE_GET_IFACE
-GST_IS_PROPERTY_PROBE
-gst_property_probe_get_type
-</SECTION>
-
-<SECTION>
 <FILE>gststreamvolume</FILE>
-<INCLUDE>gst/interfaces/streamvolume.h</INCLUDE>
+<INCLUDE>gst/audio/streamvolume.h</INCLUDE>
 GstStreamVolume
 GstStreamVolumeFormat
 
@@ -807,7 +781,7 @@ gst_stream_volume_get_type
 <FILE>gsttuner</FILE>
 <INCLUDE>gst/interfaces/tuner.h</INCLUDE>
 GstTuner
-GstTunerClass
+GstTunerInterface
 
 gst_tuner_list_channels
 gst_tuner_get_channel
@@ -831,10 +805,8 @@ gst_tuner_signal_changed
 <SUBSECTION Standard>
 GST_TYPE_TUNER
 GST_TUNER
-GST_TUNER_CLASS
-GST_TUNER_GET_CLASS
+GST_TUNER_GET_INTERFACE
 GST_IS_TUNER
-GST_IS_TUNER_CLASS
 gst_tuner_get_type
 </SECTION>
 
@@ -872,7 +844,7 @@ gst_tuner_norm_get_type
 
 <SECTION>
 <FILE>gstvideoorientation</FILE>
-<INCLUDE>gst/interfaces/videoorientation.h</INCLUDE>
+<INCLUDE>gst/video/videoorientation.h</INCLUDE>
 GstVideoOrientation
 GstVideoOrientationInterface
 gst_video_orientation_get_hcenter
@@ -887,15 +859,15 @@ gst_video_orientation_set_vflip
 GST_TYPE_VIDEO_ORIENTATION
 GST_VIDEO_ORIENTATION
 GST_IS_VIDEO_ORIENTATION
-GST_VIDEO_ORIENTATION_GET_IFACE
+GST_VIDEO_ORIENTATION_GET_INTERFACE
 gst_video_orientation_get_type
 </SECTION>
 
 <SECTION>
 <FILE>gstvideooverlay</FILE>
-<INCLUDE>gst/interfaces/videooverlay.h</INCLUDE>
-GstXOverlay
-GstXOverlayIface
+<INCLUDE>gst/video/videooverlay.h</INCLUDE>
+GstVideoOverlay
+GstVideoOverlayInterface
 gst_video_overlay_got_window_handle
 gst_video_overlay_set_window_handle
 gst_video_overlay_prepare_window_handle
@@ -906,46 +878,11 @@ gst_video_overlay_set_render_rectangle
 GST_TYPE_VIDEO_OVERLAY
 GST_VIDEO_OVERLAY
 GST_IS_VIDEO_OVERLAY
-GST_VIDEO_OVERLAY_GET_IFACE
+GST_VIDEO_OVERLAY_GET_INTERFACE
 gst_video_overlay_get_type
 </SECTION>
 
 
-# netbuffer
-
-<SECTION>
-<FILE>gstnetbuffer</FILE>
-<INCLUDE>gst/netbuffer/gstnetbuffer.h</INCLUDE>
-GstNetBuffer
-GstNetType
-GST_NETADDRESS_MAX_LEN
-GstNetAddress
-
-gst_netbuffer_new
-gst_netaddress_get_net_type
-
-gst_netaddress_set_ip4_address
-gst_netaddress_get_ip4_address
-
-gst_netaddress_set_ip6_address
-gst_netaddress_get_ip6_address
-
-gst_netaddress_get_address_bytes
-gst_netaddress_set_address_bytes
-
-gst_netaddress_equal
-
-gst_netaddress_to_string
-<SUBSECTION Standard>
-GstNetBufferClass
-GST_TYPE_NETBUFFER
-GST_NETBUFFER
-GST_NETBUFFER_CLASS
-GST_NETBUFFER_GET_CLASS
-GST_IS_NETBUFFER
-GST_IS_NETBUFFER_CLASS
-gst_netbuffer_get_type
-</SECTION>
 
 
 # riff
@@ -1165,54 +1102,53 @@ gst_riff_strh
 # rtp
 
 <SECTION>
-<FILE>gstbasertpaudiopayload</FILE>
-<INCLUDE>gst/rtp/gstbasertpaudiopayload.h</INCLUDE>
-GstBaseRTPAudioPayload
-GstBaseRTPAudioPayloadClass
+<FILE>gstrtpbaseaudiopayload</FILE>
+<INCLUDE>gst/rtp/gstrtpbaseaudiopayload.h</INCLUDE>
+GstRTPBaseAudioPayload
+GstRTPBaseAudioPayloadClass
 
-gst_base_rtp_audio_payload_set_frame_based
-gst_base_rtp_audio_payload_set_frame_options
-gst_base_rtp_audio_payload_set_sample_based
-gst_base_rtp_audio_payload_set_sample_options
-gst_base_rtp_audio_payload_get_adapter
-gst_base_rtp_audio_payload_push
-gst_base_rtp_audio_payload_flush
-gst_base_rtp_audio_payload_set_samplebits_options
+gst_rtp_base_audio_payload_set_frame_based
+gst_rtp_base_audio_payload_set_frame_options
+gst_rtp_base_audio_payload_set_sample_based
+gst_rtp_base_audio_payload_set_sample_options
+gst_rtp_base_audio_payload_get_adapter
+gst_rtp_base_audio_payload_push
+gst_rtp_base_audio_payload_flush
+gst_rtp_base_audio_payload_set_samplebits_options
 <SUBSECTION Standard>
-GST_TYPE_BASE_RTP_AUDIO_PAYLOAD
-GST_BASE_RTP_AUDIO_PAYLOAD
-GST_BASE_RTP_AUDIO_PAYLOAD_CLASS
-GST_IS_BASE_RTP_AUDIO_PAYLOAD
-GST_IS_BASE_RTP_AUDIO_PAYLOAD_CLASS
-GST_BASE_RTP_AUDIO_PAYLOAD_CAST
-gst_base_rtp_audio_payload_get_type
-GstBaseRTPAudioPayloadPrivate
+GST_TYPE_RTP_BASE_AUDIO_PAYLOAD
+GST_RTP_BASE_AUDIO_PAYLOAD
+GST_RTP_BASE_AUDIO_PAYLOAD_CLASS
+GST_IS_RTP_BASE_AUDIO_PAYLOAD
+GST_IS_RTP_BASE_AUDIO_PAYLOAD_CLASS
+GST_RTP_BASE_AUDIO_PAYLOAD_CAST
+gst_rtp_base_audio_payload_get_type
+GstRTPBaseAudioPayloadPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gstbasertpdepayload</FILE>
-<INCLUDE>gst/rtp/gstbasertpdepayload.h</INCLUDE>
-GstBaseRTPDepayload
-GstBaseRTPDepayloadClass
+<FILE>gstrtpbasedepayload</FILE>
+<INCLUDE>gst/rtp/gstrtpbasedepayload.h</INCLUDE>
+GstRTPBaseDepayload
+GstRTPBaseDepayloadClass
 
-GST_BASE_RTP_DEPAYLOAD_SINKPAD
-GST_BASE_RTP_DEPAYLOAD_SRCPAD
+GST_RTP_BASE_DEPAYLOAD_SINKPAD
+GST_RTP_BASE_DEPAYLOAD_SRCPAD
 
-gst_base_rtp_depayload_push
-gst_base_rtp_depayload_push_ts
-gst_base_rtp_depayload_push_list
+gst_rtp_base_depayload_push
+gst_rtp_base_depayload_push_list
 
 <SUBSECTION Standard>
-GstBaseRTPDepayloadPrivate
-GST_TYPE_BASE_RTP_DEPAYLOAD
-GST_BASE_RTP_DEPAYLOAD
-GST_BASE_RTP_DEPAYLOAD_CLASS
-GST_BASE_RTP_DEPAYLOAD_GET_CLASS
-GST_IS_BASE_RTP_DEPAYLOAD
-GST_IS_BASE_RTP_DEPAYLOAD_CLASS
-GST_BASE_RTP_PAYLOAD_CAST
-gst_base_rtp_depayload_get_type
-GstBaseRTPPayloadPrivate
+GstRTPBaseDepayloadPrivate
+GST_TYPE_RTP_BASE_DEPAYLOAD
+GST_RTP_BASE_DEPAYLOAD
+GST_RTP_BASE_DEPAYLOAD_CLASS
+GST_RTP_BASE_DEPAYLOAD_GET_CLASS
+GST_IS_RTP_BASE_DEPAYLOAD
+GST_IS_RTP_BASE_DEPAYLOAD_CLASS
+GST_RTP_BASE_PAYLOAD_CAST
+gst_rtp_base_depayload_get_type
+GstRTPBasePayloadPrivate
 
 <SUBSECTION Private>
 QUEUE_LOCK_INIT
@@ -1222,29 +1158,29 @@ QUEUE_UNLOCK
 </SECTION>
 
 <SECTION>
-<FILE>gstbasertppayload</FILE>
-<INCLUDE>gst/rtp/gstbasertppayload.h</INCLUDE>
-GstBaseRTPPayload
-GstBaseRTPPayloadClass
+<FILE>gstrtpbasepayload</FILE>
+<INCLUDE>gst/rtp/gstrtpbasepayload.h</INCLUDE>
+GstRTPBasePayload
+GstRTPBasePayloadClass
 
-GST_BASE_RTP_PAYLOAD_MTU
-GST_BASE_RTP_PAYLOAD_PT
-GST_BASE_RTP_PAYLOAD_SINKPAD
-GST_BASE_RTP_PAYLOAD_SRCPAD
+GST_RTP_BASE_PAYLOAD_MTU
+GST_RTP_BASE_PAYLOAD_PT
+GST_RTP_BASE_PAYLOAD_SINKPAD
+GST_RTP_BASE_PAYLOAD_SRCPAD
 
-gst_basertppayload_is_filled
-gst_basertppayload_push
-gst_basertppayload_push_list
-gst_basertppayload_set_options
-gst_basertppayload_set_outcaps
+gst_rtp_base_payload_is_filled
+gst_rtp_base_payload_push
+gst_rtp_base_payload_push_list
+gst_rtp_base_payload_set_options
+gst_rtp_base_payload_set_outcaps
 <SUBSECTION Standard>
-GST_TYPE_BASE_RTP_PAYLOAD
-GST_BASE_RTP_PAYLOAD
-GST_BASE_RTP_PAYLOAD_CLASS
-GST_BASE_RTP_PAYLOAD_GET_CLASS
-GST_IS_BASE_RTP_PAYLOAD
-GST_IS_BASE_RTP_PAYLOAD_CLASS
-gst_basertppayload_get_type
+GST_TYPE_RTP_BASE_PAYLOAD
+GST_RTP_BASE_PAYLOAD
+GST_RTP_BASE_PAYLOAD_CLASS
+GST_RTP_BASE_PAYLOAD_GET_CLASS
+GST_IS_RTP_BASE_PAYLOAD
+GST_IS_RTP_BASE_PAYLOAD_CLASS
+gst_rtp_base_payload_get_type
 </SECTION>
 
 <SECTION>
@@ -1272,7 +1208,8 @@ gst_rtcp_buffer_validate_data
 gst_rtcp_buffer_validate
 
 gst_rtcp_buffer_new
-gst_rtcp_buffer_end
+gst_rtcp_buffer_map
+gst_rtcp_buffer_unmap
 
 gst_rtcp_buffer_get_packet_count
 gst_rtcp_buffer_get_first_packet
@@ -1400,7 +1337,6 @@ gst_rtp_buffer_new_take_data
 gst_rtp_buffer_new_copy_data
 gst_rtp_buffer_new_allocate
 gst_rtp_buffer_new_allocate_len
-gst_rtp_buffer_list_from_buffer
 
 gst_rtp_buffer_calc_header_len
 gst_rtp_buffer_calc_packet_len
@@ -1454,31 +1390,10 @@ gst_rtp_buffer_compare_seqnum
 gst_rtp_buffer_ext_timestamp
 gst_rtp_buffer_set_extension_data
 
-gst_rtp_buffer_list_validate
-
-gst_rtp_buffer_list_get_payload_len
-
-gst_rtp_buffer_list_get_payload_type
-gst_rtp_buffer_list_set_payload_type
-
-gst_rtp_buffer_list_get_seq
-gst_rtp_buffer_list_set_seq
-
-gst_rtp_buffer_list_get_ssrc
-gst_rtp_buffer_list_set_ssrc
-
-gst_rtp_buffer_list_get_timestamp
-gst_rtp_buffer_list_set_timestamp
-
 gst_rtp_buffer_get_extension_onebyte_header
 gst_rtp_buffer_get_extension_twobytes_header
 gst_rtp_buffer_add_extension_onebyte_header
 gst_rtp_buffer_add_extension_twobytes_header
-
-gst_rtp_buffer_list_get_extension_onebyte_header
-gst_rtp_buffer_list_get_extension_twobytes_header
-gst_rtp_buffer_list_add_extension_onebyte_header
-gst_rtp_buffer_list_add_extension_twobytes_header
 </SECTION>
 
 # rtsp
@@ -1548,13 +1463,6 @@ gst_rtsp_lower_trans_get_type
 </SECTION>
 
 <SECTION>
-<FILE>gstrtspbase64</FILE>
-<INCLUDE>gst/rtsp/gstrtspbase64.h</INCLUDE>
-gst_rtsp_base64_encode
-gst_rtsp_base64_decode_ip
-</SECTION>
-
-<SECTION>
 <FILE>gstrtspconnection</FILE>
 <INCLUDE>gst/rtsp/gstrtspconnection.h</INCLUDE>
 GstRTSPConnection
@@ -1605,8 +1513,6 @@ gst_rtsp_watch_new
 gst_rtsp_watch_unref
 gst_rtsp_watch_attach
 gst_rtsp_watch_reset
-gst_rtsp_watch_queue_message
-gst_rtsp_watch_queue_data
 gst_rtsp_watch_send_message
 gst_rtsp_watch_write_data
 </SECTION>
@@ -1619,7 +1525,7 @@ GstRTSPExtensionInterface
 <SUBSECTION Standard>
 GST_IS_RTSP_EXTENSION
 GST_RTSP_EXTENSION
-GST_RTSP_EXTENSION_GET_IFACE
+GST_RTSP_EXTENSION_GET_INTERFACE
 GST_TYPE_RTSP_EXTENSION
 gst_rtsp_extension_after_send
 gst_rtsp_extension_before_send
@@ -1807,7 +1713,6 @@ GST_TAG_MUSICBRAINZ_ARTISTID
 GST_TAG_MUSICBRAINZ_ALBUMID
 GST_TAG_MUSICBRAINZ_ALBUMARTISTID
 GST_TAG_MUSICBRAINZ_TRMID
-GST_TAG_MUSICBRAINZ_SORTNAME
 GST_TAG_CDDA_CDDB_DISCID
 GST_TAG_CDDA_CDDB_DISCID_FULL
 GST_TAG_CDDA_MUSICBRAINZ_DISCID
@@ -1840,7 +1745,6 @@ GST_TAG_ID3V2_HEADER_SIZE
 gst_tag_register_musicbrainz_tags
 gst_tag_freeform_string_to_utf8
 gst_tag_parse_extended_comment
-gst_tag_image_data_to_image_buffer
 GstTagImageType
 <SUBSECTION Standard>
 GST_TYPE_TAG_IMAGE_TYPE
@@ -1941,6 +1845,7 @@ gst_tag_get_language_code
 gst_tag_get_language_code_iso_639_1
 gst_tag_get_language_code_iso_639_2B
 gst_tag_get_language_code_iso_639_2T
+gst_tag_check_language_code
 </SECTION>
 
 <SECTION>
@@ -2084,6 +1989,7 @@ GstEncodingProfile
 gst_encoding_profile_unref
 gst_encoding_profile_ref
 gst_encoding_profile_find
+gst_encoding_profile_from_discoverer
 gst_encoding_profile_get_name
 gst_encoding_profile_get_description
 gst_encoding_profile_get_format
@@ -2178,14 +2084,70 @@ gst_video_calculate_display_ratio
 gst_video_format_to_fourcc
 gst_video_format_from_fourcc
 gst_video_parse_caps_palette
-GstVideoConvertFrameCallback
-gst_video_convert_frame
-gst_video_convert_frame_async
+GstVideoConvertSampleCallback
+gst_video_convert_sample
+gst_video_convert_sample_async
 gst_video_event_new_still_frame
 gst_video_event_parse_still_frame
+gst_video_event_new_upstream_force_key_unit
+gst_video_event_new_downstream_force_key_unit
+gst_video_event_is_force_key_unit
+gst_video_event_parse_upstream_force_key_unit
+gst_video_event_parse_downstream_force_key_unit
 <SUBSECTION Standard>
 gst_video_format_get_type
 GST_TYPE_VIDEO_FORMAT
+</SECTION>
+
+<SECTION>
+<FILE>gstvideooverlaycomposition</FILE>
+<INCLUDE>gst/video/video-overlay-composition.h</INCLUDE>
+<SUBSECTION composition>
+GstVideoOverlayComposition
+GstVideoOverlayCompositionClass
+gst_video_overlay_composition_new
+gst_video_overlay_composition_ref
+gst_video_overlay_composition_unref
+gst_video_overlay_composition_add_rectangle
+gst_video_overlay_composition_n_rectangles
+gst_video_overlay_composition_get_rectangle
+gst_video_overlay_composition_get_seqnum
+gst_video_overlay_composition_copy
+gst_video_overlay_composition_make_writable
+gst_video_overlay_composition_blend
+<SUBSECTION composition-set-get>
+gst_video_buffer_get_overlay_composition
+gst_video_buffer_set_overlay_composition
+<SUBSECTION rectangle>
+GstVideoOverlayFormatFlags
+GstVideoOverlayRectangle
+GstVideoOverlayRectangleClass
+gst_video_overlay_rectangle_new_argb
+gst_video_overlay_rectangle_ref
+gst_video_overlay_rectangle_unref
+gst_video_overlay_rectangle_get_pixels_argb
+gst_video_overlay_rectangle_get_pixels_unscaled_argb
+gst_video_overlay_rectangle_get_render_rectangle
+gst_video_overlay_rectangle_get_seqnum
+gst_video_overlay_rectangle_set_render_rectangle
+gst_video_overlay_rectangle_copy
+gst_video_overlay_rectangle_get_flags
+<SUBSECTION Standard>
+GST_TYPE_VIDEO_OVERLAY_COMPOSITION
+GST_VIDEO_OVERLAY_COMPOSITION
+GST_VIDEO_OVERLAY_COMPOSITION_CLASS
+GST_VIDEO_OVERLAY_COMPOSITION_GET_CLASS
+GST_IS_VIDEO_OVERLAY_COMPOSITION
+GST_IS_VIDEO_VIDEO_OVERLAY_COMPOSITION_CLASS
+gst_video_overlay_composition_get_type
+
+GST_TYPE_VIDEO_OVERLAY_RECTANGLE
+GST_VIDEO_OVERLAY_RECTANGLE
+GST_VIDEO_OVERLAY_RECTANGLE_CLASS
+GST_VIDEO_OVERLAY_RECTANGLE_GET_CLASS
+GST_IS_VIDEO_OVERLAY_RECTANGLE
+GST_IS_VIDEO_VIDEO_OVERLAY_RECTANGLE_CLASS
+gst_video_overlay_rectangle_get_type
 </SECTION>
 
 <SECTION>

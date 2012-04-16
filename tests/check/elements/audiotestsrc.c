@@ -50,7 +50,7 @@ setup_audiotestsrc (void)
 
   GST_DEBUG ("setup_audiotestsrc");
   audiotestsrc = gst_check_setup_element ("audiotestsrc");
-  mysinkpad = gst_check_setup_sink_pad (audiotestsrc, &sinktemplate, NULL);
+  mysinkpad = gst_check_setup_sink_pad (audiotestsrc, &sinktemplate);
   gst_pad_set_active (mysinkpad, TRUE);
 
   return audiotestsrc;
@@ -87,6 +87,7 @@ GST_START_TEST (test_all_waves)
 
   while (values[j].value_name) {
     GST_DEBUG_OBJECT (audiotestsrc, "testing wave %s", values[j].value_name);
+    g_object_set (audiotestsrc, "wave", values[j].value, NULL);
 
     fail_unless (gst_element_set_state (audiotestsrc,
             GST_STATE_PLAYING) == GST_STATE_CHANGE_SUCCESS,

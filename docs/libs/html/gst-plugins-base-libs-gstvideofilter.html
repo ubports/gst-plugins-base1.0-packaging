@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideofilter</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="GStreamer Base Plugins 0.11 Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
-<link rel="prev" href="gst-plugins-base-libs-gstvideo.html" title="gstvideo">
+<link rel="prev" href="gst-plugins-base-libs-gstvideooverlaycomposition.html" title="gstvideooverlaycomposition">
 <link rel="next" href="gst-plugins-base-libs-gstvideosink.html" title="gstvideosink">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstvideo.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstvideooverlaycomposition.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GStreamer Base Plugins 0.11 Library Reference Manual</th>
+<th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstvideosink.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
@@ -62,7 +62,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideofilter.h
 <p>
 </p>
 <div class="refsect2">
-<a name="id583206"></a><p>
+<a name="idp16308896"></a><p>
 Provides useful functions and a base class for video filters.
 </p>
 <p>
@@ -84,6 +84,15 @@ to implement frame dropping.
 <a name="GstVideoFilterClass"></a><h3>struct GstVideoFilterClass</h3>
 <pre class="programlisting">struct GstVideoFilterClass {
   GstBaseTransformClass parent_class;
+
+  gboolean      (*set_info)           (GstVideoFilter *filter,
+                                       GstCaps *incaps, GstVideoInfo *in_info,
+                                       GstCaps *outcaps, GstVideoInfo *out_info);
+
+  /* transform */
+  GstFlowReturn (*transform_frame)    (GstVideoFilter *filter,
+                                       GstVideoFrame *inframe, GstVideoFrame *outframe);
+  GstFlowReturn (*transform_frame_ip) (GstVideoFilter *trans, GstVideoFrame *frame);
 };
 </pre>
 <p>
@@ -91,10 +100,24 @@ The video filter class structure.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody><tr>
+<tbody>
+<tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseTransform.html#GstBaseTransformClass"><span class="type">GstBaseTransformClass</span></a> <em class="structfield"><code><a name="GstVideoFilterClass.parent-class"></a>parent_class</code></em>;</span></p></td>
 <td>the parent class structure</td>
-</tr></tbody>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstVideoFilterClass.set-info"></a>set_info</code></em> ()</span></p></td>
+<td>function to be called with the negotiated caps and video infos</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstVideoFilterClass.transform-frame"></a>transform_frame</code></em> ()</span></p></td>
+<td>transform a video frame</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstVideoFilterClass.transform-frame-ip"></a>transform_frame_ip</code></em> ()</span></p></td>
+<td>transform a video frame in place</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 </div>

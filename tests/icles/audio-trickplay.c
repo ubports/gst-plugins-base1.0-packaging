@@ -15,9 +15,10 @@
  * GST_DEBUG_NO_COLOR=1 GST_DEBUG="*:2,default:3,*sink*:4,*ring*:4,*pulse*:5" ./audio-trickplay -a -f 2>log-af.txt
  */
 
+#include <string.h>
 #include <gst/gst.h>
-#include <gst/controller/gstcontroller.h>
 #include <gst/controller/gstinterpolationcontrolsource.h>
+#include <gst/controller/gstdirectcontrolbinding.h>
 
 static void
 check_position (GstElement * elem, GstQuery * pos, const gchar * info)
@@ -31,16 +32,15 @@ check_position (GstElement * elem, GstQuery * pos, const gchar * info)
   }
 }
 
-static GstProbeReturn
-print_buffer_ts (GstPad * pad, GstProbeType type, gpointer type_data,
-    gpointer user_data)
+static GstPadProbeReturn
+print_buffer_ts (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
 {
-  GstBuffer *buffer = type_data;
+  GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER (info);
 
   GST_DEBUG_OBJECT (pad, "  ts: %" GST_TIME_FORMAT,
       GST_TIME_ARGS (GST_BUFFER_TIMESTAMP (buffer)));
 
-  return GST_PROBE_OK;
+  return GST_PAD_PROBE_OK;
 }
 
 gint
@@ -49,12 +49,11 @@ main (gint argc, gchar ** argv)
   gint res = 1;
   GstElement *src, *mix = NULL, *sink;
   GstElement *bin;
-  GstController *ctrl;
-  GstInterpolationControlSource *csource1, *csource2;
+  GstControlSource *cs1, *cs2;
+  GstTimedValueControlSource *tvcs;
   GstClock *clock;
   GstClockID clock_id;
   GstClockReturn wait_ret;
-  GValue vol = { 0, };
   GstEvent *pos_seek, *rate_seek1, *rate_seek2;
   GstQuery *pos;
   GstSeekFlags flags;
@@ -65,7 +64,6 @@ main (gint argc, gchar ** argv)
   gboolean be_quiet = FALSE;
 
   gst_init (&argc, &argv);
-  gst_controller_init (&argc, &argv);
 
   if (argc) {
     gint arg;
@@ -123,48 +121,36 @@ main (gint argc, gchar ** argv)
   }
 
   src_pad = gst_element_get_static_pad (src, "src");
-  gst_pad_add_probe (src_pad, GST_PROBE_TYPE_BUFFER, print_buffer_ts, NULL,
+  gst_pad_add_probe (src_pad, GST_PAD_PROBE_TYPE_BUFFER, print_buffer_ts, NULL,
       NULL);
   gst_object_unref (src_pad);
 
-  /* add a controller to the source */
-  if (!(ctrl = gst_controller_new (G_OBJECT (src), "freq", "volume", NULL))) {
-    GST_WARNING ("can't control source element");
-    goto Error;
-  }
+  cs1 = gst_interpolation_control_source_new ();
+  cs2 = gst_interpolation_control_source_new ();
 
-  csource1 = gst_interpolation_control_source_new ();
-  csource2 = gst_interpolation_control_source_new ();
-
-  gst_controller_set_control_source (ctrl, "volume",
-      GST_CONTROL_SOURCE (csource1));
-  gst_controller_set_control_source (ctrl, "freq",
-      GST_CONTROL_SOURCE (csource2));
+  gst_object_add_control_binding (GST_OBJECT_CAST (src),
+      gst_direct_control_binding_new (GST_OBJECT_CAST (src), "volume", cs1));
+  gst_object_add_control_binding (GST_OBJECT_CAST (src),
+      gst_direct_control_binding_new (GST_OBJECT_CAST (src), "freq", cs2));
 
   /* Set interpolation mode */
 
-  gst_interpolation_control_source_set_interpolation_mode (csource1,
-      GST_INTERPOLATE_LINEAR);
-  gst_interpolation_control_source_set_interpolation_mode (csource2,
-      GST_INTERPOLATE_LINEAR);
+  g_object_set (cs1, "mode", GST_INTERPOLATION_MODE_LINEAR, NULL);
+  g_object_set (cs2, "mode", GST_INTERPOLATION_MODE_LINEAR, NULL);
 
   /* set control values */
-  g_value_init (&vol, G_TYPE_DOUBLE);
-  g_value_set_double (&vol, 0.0);
-  gst_interpolation_control_source_set (csource1, 0 * GST_SECOND, &vol);
-  g_value_set_double (&vol, 1.0);
-  gst_interpolation_control_source_set (csource1, 5 * GST_SECOND, &vol);
+  tvcs = (GstTimedValueControlSource *) cs1;
+  gst_timed_value_control_source_set (tvcs, 0 * GST_SECOND, 0.0);
+  gst_timed_value_control_source_set (tvcs, 5 * GST_SECOND, 1.0);
 
-  g_object_unref (csource1);
+  gst_object_unref (cs1);
 
-  g_value_set_double (&vol, 220.0);
-  gst_interpolation_control_source_set (csource2, 0 * GST_SECOND, &vol);
-  g_value_set_double (&vol, 3520.0);
-  gst_interpolation_control_source_set (csource2, 2 * GST_SECOND, &vol);
-  g_value_set_double (&vol, 440.0);
-  gst_interpolation_control_source_set (csource2, 6 * GST_SECOND, &vol);
+  tvcs = (GstTimedValueControlSource *) cs2;
+  gst_timed_value_control_source_set (tvcs, 0 * GST_SECOND, 20000.0 / 220.0);
+  gst_timed_value_control_source_set (tvcs, 2 * GST_SECOND, 20000.0 / 3520.0);
+  gst_timed_value_control_source_set (tvcs, 6 * GST_SECOND, 20000.0 / 440.0);
 
-  g_object_unref (csource2);
+  gst_object_unref (cs2);
 
   /* prepare events */
   flags = use_flush ? GST_SEEK_FLAG_FLUSH : GST_SEEK_FLAG_NONE;
@@ -260,9 +246,8 @@ main (gint argc, gchar ** argv)
 
   /* cleanup */
   gst_query_unref (pos);
-  g_object_unref (G_OBJECT (ctrl));
-  gst_object_unref (G_OBJECT (clock));
-  gst_object_unref (G_OBJECT (bin));
+  gst_object_unref (clock);
+  gst_object_unref (bin);
   res = 0;
 Error:
   return (res);

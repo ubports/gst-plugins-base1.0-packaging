@@ -93,8 +93,7 @@ have_subtitle (GstElement * appsink, App * app)
   g_signal_emit_by_name (appsink, "pull-buffer", &buffer);
 
   if (buffer) {
-    guint8 *data;
-    gsize size;
+    GstMapInfo map;
     gint64 position;
     GstClock *clock;
     GstClockTime base_time, running_time;
@@ -112,9 +111,9 @@ have_subtitle (GstElement * appsink, App * app)
         ", running_time %" GST_TIME_FORMAT, GST_TIME_ARGS (position),
         GST_TIME_ARGS (running_time));
 
-    data = gst_buffer_map (buffer, &size, NULL, GST_MAP_READ);
-    gst_util_dump_mem (data, size);
-    gst_buffer_unmap (buffer, data, size);
+    gst_buffer_map (buffer, &map, GST_MAP_READ);
+    gst_util_dump_mem (map.data, map.size);
+    gst_buffer_unmap (buffer, &map);
   }
 }
 
@@ -135,7 +134,7 @@ main (int argc, char *argv[])
   /* create a mainloop to get messages */
   app->loop = g_main_loop_new (NULL, TRUE);
 
-  app->playbin = gst_element_factory_make ("playbin2", NULL);
+  app->playbin = gst_element_factory_make ("playbin", NULL);
   g_assert (app->playbin);
 
   /* set appsink to get the subtitles */

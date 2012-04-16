@@ -225,7 +225,7 @@ pad_added_cb (GstElement * uridecodebin, GstPad * pad, GstElement * encodebin)
     GstCaps *caps;
 
     /* Ask encodebin for a compatible pad */
-    caps = gst_pad_get_caps (pad, NULL);
+    caps = gst_pad_query_caps (pad, NULL);
     g_signal_emit_by_name (encodebin, "request-pad", caps, &sinkpad);
     if (caps)
       gst_caps_unref (caps);
@@ -395,9 +395,6 @@ main (int argc, char **argv)
   GstEncodingProfile *prof;
   gchar *inputuri;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-
   ctx = g_option_context_new ("- encode URIs with GstProfile and encodebin");
   g_option_context_add_main_entries (ctx, options, NULL);
   g_option_context_add_group (ctx, gst_init_get_option_group ());
@@ -501,7 +498,7 @@ main (int argc, char **argv)
       return 1;
     }
 
-    /* Trancode file */
+    /* Transcode file */
     transcode_file (inputuri, outputuri, prof);
 
     /* cleanup */

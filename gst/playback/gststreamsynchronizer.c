@@ -22,6 +22,7 @@
 #endif
 
 #include "gststreamsynchronizer.h"
+#include "gst/glib-compat-private.h"
 
 GST_DEBUG_CATEGORY_STATIC (stream_synchronizer_debug);
 #define GST_CAT_DEFAULT stream_synchronizer_debug
@@ -43,11 +44,11 @@ GST_DEBUG_CATEGORY_STATIC (stream_synchronizer_debug);
     g_mutex_unlock (GST_STREAM_SYNCHRONIZER_CAST(obj)->lock);              \
 } G_STMT_END
 
-static GstStaticPadTemplate srctemplate = GST_STATIC_PAD_TEMPLATE ("src_%d",
+static GstStaticPadTemplate srctemplate = GST_STATIC_PAD_TEMPLATE ("src_%u",
     GST_PAD_SRC,
     GST_PAD_SOMETIMES,
     GST_STATIC_CAPS_ANY);
-static GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE ("sink_%d",
+static GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE ("sink_%u",
     GST_PAD_SINK,
     GST_PAD_REQUEST,
     GST_STATIC_CAPS_ANY);
@@ -90,11 +91,16 @@ gst_stream_get_other_pad (GstStream * stream, GstPad * pad)
 static GstPad *
 gst_stream_get_other_pad_from_pad (GstPad * pad)
 {
-  GstStreamSynchronizer *self =
-      GST_STREAM_SYNCHRONIZER (gst_pad_get_parent (pad));
+  GstObject *parent = gst_pad_get_parent (pad);
+  GstStreamSynchronizer *self;
   GstStream *stream;
   GstPad *opad = NULL;
 
+  /* released pad does not have parent anymore */
+  if (!G_LIKELY (parent))
+    goto exit;
+
+  self = GST_STREAM_SYNCHRONIZER (parent);
   GST_STREAM_SYNCHRONIZER_LOCK (self);
   stream = gst_pad_get_element_private (pad);
   if (!stream)
@@ -106,6 +112,7 @@ out:
   GST_STREAM_SYNCHRONIZER_UNLOCK (self);
   gst_object_unref (self);
 
+exit:
   if (!opad)
     GST_WARNING_OBJECT (pad, "Trying to get other pad after releasing");
 
@@ -114,7 +121,8 @@ out:
 
 /* Generic pad functions */
 static GstIterator *
-gst_stream_synchronizer_iterate_internal_links (GstPad * pad)
+gst_stream_synchronizer_iterate_internal_links (GstPad * pad,
+    GstObject * parent)
 {
   GstIterator *it = NULL;
   GstPad *opad;
@@ -134,7 +142,8 @@ gst_stream_synchronizer_iterate_internal_links (GstPad * pad)
 }
 
 static gboolean
-gst_stream_synchronizer_query (GstPad * pad, GstQuery * query)
+gst_stream_synchronizer_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
 {
   GstPad *opad;
   gboolean ret = FALSE;
@@ -150,50 +159,12 @@ gst_stream_synchronizer_query (GstPad * pad, GstQuery * query)
   return ret;
 }
 
-static GstCaps *
-gst_stream_synchronizer_getcaps (GstPad * pad, GstCaps * filter)
-{
-  GstPad *opad;
-  GstCaps *ret = NULL;
-
-  opad = gst_stream_get_other_pad_from_pad (pad);
-  if (opad) {
-    ret = gst_pad_peer_get_caps (opad, filter);
-    gst_object_unref (opad);
-  }
-
-  if (ret == NULL)
-    ret = (filter ? gst_caps_ref (filter) : gst_caps_new_any ());
-
-  GST_LOG_OBJECT (pad, "Returning caps: %" GST_PTR_FORMAT, ret);
-
-  return ret;
-}
-
-static gboolean
-gst_stream_synchronizer_acceptcaps (GstPad * pad, GstCaps * caps)
-{
-  GstPad *opad;
-  gboolean ret = FALSE;
-
-  opad = gst_stream_get_other_pad_from_pad (pad);
-  if (opad) {
-    ret = gst_pad_peer_accept_caps (opad, caps);
-    gst_object_unref (opad);
-  }
-
-  GST_LOG_OBJECT (pad, "Caps%s accepted: %" GST_PTR_FORMAT, (ret ? "" : " not"),
-      caps);
-
-  return ret;
-}
-
 /* srcpad functions */
 static gboolean
-gst_stream_synchronizer_src_event (GstPad * pad, GstEvent * event)
+gst_stream_synchronizer_src_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamSynchronizer *self =
-      GST_STREAM_SYNCHRONIZER (gst_pad_get_parent (pad));
+  GstStreamSynchronizer *self = GST_STREAM_SYNCHRONIZER (parent);
   GstPad *opad;
   gboolean ret = FALSE;
 
@@ -263,17 +234,15 @@ skip_adjustments:
   }
 
 out:
-  gst_object_unref (self);
-
   return ret;
 }
 
 /* sinkpad functions */
 static gboolean
-gst_stream_synchronizer_sink_event (GstPad * pad, GstEvent * event)
+gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
+    GstEvent * event)
 {
-  GstStreamSynchronizer *self =
-      GST_STREAM_SYNCHRONIZER (gst_pad_get_parent (pad));
+  GstStreamSynchronizer *self = GST_STREAM_SYNCHRONIZER (parent);
   GstPad *opad;
   gboolean ret = FALSE;
 
@@ -534,16 +503,15 @@ skip_adjustments:
   }
 
 done:
-  gst_object_unref (self);
 
   return ret;
 }
 
 static GstFlowReturn
-gst_stream_synchronizer_sink_chain (GstPad * pad, GstBuffer * buffer)
+gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
+    GstBuffer * buffer)
 {
-  GstStreamSynchronizer *self =
-      GST_STREAM_SYNCHRONIZER (gst_pad_get_parent (pad));
+  GstStreamSynchronizer *self = GST_STREAM_SYNCHRONIZER (parent);
   GstPad *opad;
   GstFlowReturn ret = GST_FLOW_ERROR;
   GstStream *stream;
@@ -575,7 +543,8 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstBuffer * buffer)
   GST_STREAM_SYNCHRONIZER_LOCK (self);
   stream = gst_pad_get_element_private (pad);
 
-  stream->seen_data = TRUE;
+  if (stream)
+    stream->seen_data = TRUE;
   if (stream && stream->drop_discont) {
     buffer = gst_buffer_make_writable (buffer);
     GST_BUFFER_FLAG_UNSET (buffer, GST_BUFFER_FLAG_DISCONT);
@@ -654,9 +623,6 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstBuffer * buffer)
   }
 
 done:
-
-  gst_object_unref (self);
-
   return ret;
 }
 
@@ -677,7 +643,7 @@ gst_stream_synchronizer_request_new_pad (GstElement * element,
   stream->transform = self;
   stream->stream_number = self->current_stream_number;
 
-  tmp = g_strdup_printf ("sink_%d", self->current_stream_number);
+  tmp = g_strdup_printf ("sink_%u", self->current_stream_number);
   stream->sinkpad = gst_pad_new_from_static_template (&sinktemplate, tmp);
   g_free (tmp);
   gst_pad_set_element_private (stream->sinkpad, stream);
@@ -685,16 +651,12 @@ gst_stream_synchronizer_request_new_pad (GstElement * element,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_iterate_internal_links));
   gst_pad_set_query_function (stream->sinkpad,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_query));
-  gst_pad_set_getcaps_function (stream->sinkpad,
-      GST_DEBUG_FUNCPTR (gst_stream_synchronizer_getcaps));
-  gst_pad_set_acceptcaps_function (stream->sinkpad,
-      GST_DEBUG_FUNCPTR (gst_stream_synchronizer_acceptcaps));
   gst_pad_set_event_function (stream->sinkpad,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_sink_event));
   gst_pad_set_chain_function (stream->sinkpad,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_sink_chain));
 
-  tmp = g_strdup_printf ("src_%d", self->current_stream_number);
+  tmp = g_strdup_printf ("src_%u", self->current_stream_number);
   stream->srcpad = gst_pad_new_from_static_template (&srctemplate, tmp);
   g_free (tmp);
   gst_pad_set_element_private (stream->srcpad, stream);
@@ -702,10 +664,6 @@ gst_stream_synchronizer_request_new_pad (GstElement * element,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_iterate_internal_links));
   gst_pad_set_query_function (stream->srcpad,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_query));
-  gst_pad_set_getcaps_function (stream->srcpad,
-      GST_DEBUG_FUNCPTR (gst_stream_synchronizer_getcaps));
-  gst_pad_set_acceptcaps_function (stream->srcpad,
-      GST_DEBUG_FUNCPTR (gst_stream_synchronizer_acceptcaps));
   gst_pad_set_event_function (stream->srcpad,
       GST_DEBUG_FUNCPTR (gst_stream_synchronizer_src_event));
 
@@ -716,14 +674,14 @@ gst_stream_synchronizer_request_new_pad (GstElement * element,
   GST_STREAM_SYNCHRONIZER_UNLOCK (self);
 
   /* Add pads and activate unless we're going to NULL */
-  g_static_rec_mutex_lock (GST_STATE_GET_LOCK (self));
+  g_rec_mutex_lock (GST_STATE_GET_LOCK (self));
   if (GST_STATE_TARGET (self) != GST_STATE_NULL) {
     gst_pad_set_active (stream->srcpad, TRUE);
     gst_pad_set_active (stream->sinkpad, TRUE);
   }
   gst_element_add_pad (GST_ELEMENT_CAST (self), stream->srcpad);
   gst_element_add_pad (GST_ELEMENT_CAST (self), stream->sinkpad);
-  g_static_rec_mutex_unlock (GST_STATE_GET_LOCK (self));
+  g_rec_mutex_unlock (GST_STATE_GET_LOCK (self));
 
   return stream->sinkpad;
 }
@@ -930,7 +888,7 @@ gst_stream_synchronizer_class_init (GstStreamSynchronizerClass * klass)
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&sinktemplate));
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_static_metadata (element_class,
       "Stream Synchronizer", "Generic",
       "Synchronizes a group of streams to have equal durations and starting points",
       "Sebastian Dröge <sebastian.droege@collabora.co.uk>");
