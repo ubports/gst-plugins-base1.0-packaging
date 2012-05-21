@@ -92,7 +92,6 @@ libgstaudio-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_audio_decoder_set_plc@Base 0.11.91
  gst_audio_decoder_set_plc_aware@Base 0.11.91
  gst_audio_decoder_set_tolerance@Base 0.11.91
- gst_audio_default_registry_mixer_filter@Base 0.11.91
  gst_audio_downmix_meta_api_get_type@Base 0.11.91
  gst_audio_downmix_meta_get_info@Base 0.11.91
  gst_audio_encoder_finish_frame@Base 0.11.91
@@ -186,31 +185,6 @@ libgstaudio-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_audio_src_get_type@Base 0.11.91
  gst_buffer_add_audio_downmix_meta@Base 0.11.91
  gst_buffer_get_audio_downmix_meta_for_channels@Base 0.11.91
- gst_mixer_get_mixer_flags@Base 0.11.91
- gst_mixer_get_mixer_type@Base 0.11.91
- gst_mixer_get_option@Base 0.11.91
- gst_mixer_get_type@Base 0.11.91
- gst_mixer_get_volume@Base 0.11.91
- gst_mixer_list_tracks@Base 0.11.91
- gst_mixer_message_get_type@Base 0.11.91
- gst_mixer_message_parse_mute_toggled@Base 0.11.91
- gst_mixer_message_parse_option_changed@Base 0.11.91
- gst_mixer_message_parse_options_list_changed@Base 0.11.91
- gst_mixer_message_parse_record_toggled@Base 0.11.91
- gst_mixer_message_parse_volume_changed@Base 0.11.91
- gst_mixer_mixer_changed@Base 0.11.91
- gst_mixer_mute_toggled@Base 0.11.91
- gst_mixer_option_changed@Base 0.11.91
- gst_mixer_options_get_type@Base 0.11.91
- gst_mixer_options_get_values@Base 0.11.91
- gst_mixer_options_list_changed@Base 0.11.91
- gst_mixer_record_toggled@Base 0.11.91
- gst_mixer_set_mute@Base 0.11.91
- gst_mixer_set_option@Base 0.11.91
- gst_mixer_set_record@Base 0.11.91
- gst_mixer_set_volume@Base 0.11.91
- gst_mixer_track_get_type@Base 0.11.91
- gst_mixer_volume_changed@Base 0.11.91
  gst_stream_volume_convert_volume@Base 0.11.91
  gst_stream_volume_get_mute@Base 0.11.91
  gst_stream_volume_get_type@Base 0.11.91
@@ -239,57 +213,6 @@ libgstfft-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_fft_s32_inverse_fft@Base 0.11.91
  gst_fft_s32_new@Base 0.11.91
  gst_fft_s32_window@Base 0.11.91
-libgstinterfaces-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
- gst_interfaces_marshal_VOID__OBJECT_INT@Base 0.11.91
- gst_interfaces_marshal_VOID__OBJECT_ULONG@Base 0.11.91
- gst_navigation_command_get_type@Base 0.11.91
- gst_navigation_event_get_type@Base 0.11.91
- gst_navigation_event_parse_command@Base 0.11.91
- gst_navigation_event_parse_key_event@Base 0.11.91
- gst_navigation_event_parse_mouse_button_event@Base 0.11.91
- gst_navigation_event_parse_mouse_move_event@Base 0.11.91
- gst_navigation_event_type_get_type@Base 0.11.91
- gst_navigation_get_type@Base 0.11.91
- gst_navigation_message_get_type@Base 0.11.91
- gst_navigation_message_new_angles_changed@Base 0.11.91
- gst_navigation_message_new_commands_changed@Base 0.11.91
- gst_navigation_message_new_mouse_over@Base 0.11.91
- gst_navigation_message_parse_angles_changed@Base 0.11.91
- gst_navigation_message_parse_mouse_over@Base 0.11.91
- gst_navigation_message_type_get_type@Base 0.11.91
- gst_navigation_query_get_type@Base 0.11.91
- gst_navigation_query_new_angles@Base 0.11.91
- gst_navigation_query_new_commands@Base 0.11.91
- gst_navigation_query_parse_angles@Base 0.11.91
- gst_navigation_query_parse_commands_length@Base 0.11.91
- gst_navigation_query_parse_commands_nth@Base 0.11.91
- gst_navigation_query_set_angles@Base 0.11.91
- gst_navigation_query_set_commands@Base 0.11.91
- gst_navigation_query_set_commandsv@Base 0.11.91
- gst_navigation_query_type_get_type@Base 0.11.91
- gst_navigation_send_command@Base 0.11.91
- gst_navigation_send_event@Base 0.11.91
- gst_navigation_send_key_event@Base 0.11.91
- gst_navigation_send_mouse_event@Base 0.11.91
- gst_tuner_channel_changed@Base 0.11.91
- gst_tuner_channel_flags_get_type@Base 0.11.91
- gst_tuner_channel_get_type@Base 0.11.91
- gst_tuner_find_channel_by_name@Base 0.11.91
- gst_tuner_find_norm_by_name@Base 0.11.91
- gst_tuner_frequency_changed@Base 0.11.91
- gst_tuner_get_channel@Base 0.11.91
- gst_tuner_get_frequency@Base 0.11.91
- gst_tuner_get_norm@Base 0.11.91
- gst_tuner_get_type@Base 0.11.91
- gst_tuner_list_channels@Base 0.11.91
- gst_tuner_list_norms@Base 0.11.91
- gst_tuner_norm_changed@Base 0.11.91
- gst_tuner_norm_get_type@Base 0.11.91
- gst_tuner_set_channel@Base 0.11.91
- gst_tuner_set_frequency@Base 0.11.91
- gst_tuner_set_norm@Base 0.11.91
- gst_tuner_signal_changed@Base 0.11.91
- gst_tuner_signal_strength@Base 0.11.91
 libgstpbutils-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_codec_utils_aac_caps_set_level_and_profile@Base 0.11.91
  gst_codec_utils_aac_get_level@Base 0.11.91
@@ -813,6 +736,7 @@ libgsttag-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_tag_xmp_writer_tag_list_to_xmp_buffer@Base 0.11.91
  gst_vorbis_tag_add@Base 0.11.91
 libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
+ _gst_video_decoder_error@Base 0.11.91
  gst_buffer_add_video_meta@Base 0.11.91
  gst_buffer_add_video_meta_full@Base 0.11.91
  gst_buffer_get_video_meta_id@Base 0.11.91
@@ -827,12 +751,48 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_color_balance_type_get_type@Base 0.11.91
  gst_color_balance_value_changed@Base 0.11.91
  gst_is_video_overlay_prepare_window_handle_message@Base 0.11.91
+ gst_navigation_command_get_type@Base 0.11.91
+ gst_navigation_event_get_type@Base 0.11.91
+ gst_navigation_event_parse_command@Base 0.11.91
+ gst_navigation_event_parse_key_event@Base 0.11.91
+ gst_navigation_event_parse_mouse_button_event@Base 0.11.91
+ gst_navigation_event_parse_mouse_move_event@Base 0.11.91
+ gst_navigation_event_type_get_type@Base 0.11.91
+ gst_navigation_get_type@Base 0.11.91
+ gst_navigation_message_get_type@Base 0.11.91
+ gst_navigation_message_new_angles_changed@Base 0.11.91
+ gst_navigation_message_new_commands_changed@Base 0.11.91
+ gst_navigation_message_new_mouse_over@Base 0.11.91
+ gst_navigation_message_parse_angles_changed@Base 0.11.91
+ gst_navigation_message_parse_mouse_over@Base 0.11.91
+ gst_navigation_message_type_get_type@Base 0.11.91
+ gst_navigation_query_get_type@Base 0.11.91
+ gst_navigation_query_new_angles@Base 0.11.91
+ gst_navigation_query_new_commands@Base 0.11.91
+ gst_navigation_query_parse_angles@Base 0.11.91
+ gst_navigation_query_parse_commands_length@Base 0.11.91
+ gst_navigation_query_parse_commands_nth@Base 0.11.91
+ gst_navigation_query_set_angles@Base 0.11.91
+ gst_navigation_query_set_commands@Base 0.11.91
+ gst_navigation_query_set_commandsv@Base 0.11.91
+ gst_navigation_query_type_get_type@Base 0.11.91
+ gst_navigation_send_command@Base 0.11.91
+ gst_navigation_send_event@Base 0.11.91
+ gst_navigation_send_key_event@Base 0.11.91
+ gst_navigation_send_mouse_event@Base 0.11.91
  gst_video_alignment_reset@Base 0.11.91
  gst_video_buffer_flags_get_type@Base 0.11.91
  gst_video_buffer_pool_get_type@Base 0.11.91
  gst_video_buffer_pool_new@Base 0.11.91
  gst_video_calculate_display_ratio@Base 0.11.91
  gst_video_chroma_site_get_type@Base 0.11.91
+ gst_video_codec_frame_get_type@Base 0.11.91
+ gst_video_codec_frame_ref@Base 0.11.91
+ gst_video_codec_frame_set_hook@Base 0.11.91
+ gst_video_codec_frame_unref@Base 0.11.91
+ gst_video_codec_state_get_type@Base 0.11.91
+ gst_video_codec_state_ref@Base 0.11.91
+ gst_video_codec_state_unref@Base 0.11.91
  gst_video_color_matrix_get_type@Base 0.11.91
  gst_video_color_primaries_get_type@Base 0.11.91
  gst_video_color_range_get_type@Base 0.11.91
@@ -842,6 +802,36 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_convert_sample_async@Base 0.11.91
  gst_video_crop_meta_api_get_type@Base 0.11.91
  gst_video_crop_meta_get_info@Base 0.11.91
+ gst_video_decoder_add_to_frame@Base 0.11.91
+ gst_video_decoder_alloc_output_buffer@Base 0.11.91
+ gst_video_decoder_alloc_output_frame@Base 0.11.91
+ gst_video_decoder_drop_frame@Base 0.11.91
+ gst_video_decoder_finish_frame@Base 0.11.91
+ gst_video_decoder_get_estimate_rate@Base 0.11.91
+ gst_video_decoder_get_frame@Base 0.11.91
+ gst_video_decoder_get_latency@Base 0.11.91
+ gst_video_decoder_get_max_decode_time@Base 0.11.91
+ gst_video_decoder_get_max_errors@Base 0.11.91
+ gst_video_decoder_get_oldest_frame@Base 0.11.91
+ gst_video_decoder_get_output_state@Base 0.11.91
+ gst_video_decoder_get_packetized@Base 0.11.91
+ gst_video_decoder_get_type@Base 0.11.91
+ gst_video_decoder_have_frame@Base 0.11.91
+ gst_video_decoder_set_estimate_rate@Base 0.11.91
+ gst_video_decoder_set_latency@Base 0.11.91
+ gst_video_decoder_set_max_errors@Base 0.11.91
+ gst_video_decoder_set_output_state@Base 0.11.91
+ gst_video_decoder_set_packetized@Base 0.11.91
+ gst_video_encoder_finish_frame@Base 0.11.91
+ gst_video_encoder_get_frame@Base 0.11.91
+ gst_video_encoder_get_latency@Base 0.11.91
+ gst_video_encoder_get_oldest_frame@Base 0.11.91
+ gst_video_encoder_get_output_state@Base 0.11.91
+ gst_video_encoder_get_type@Base 0.11.91
+ gst_video_encoder_proxy_getcaps@Base 0.11.91
+ gst_video_encoder_set_headers@Base 0.11.91
+ gst_video_encoder_set_latency@Base 0.11.91
+ gst_video_encoder_set_output_state@Base 0.11.91
  gst_video_event_is_force_key_unit@Base 0.11.91
  gst_video_event_new_downstream_force_key_unit@Base 0.11.91
  gst_video_event_new_still_frame@Base 0.11.91
@@ -861,16 +851,17 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_format_to_string@Base 0.11.91
  gst_video_frame_copy@Base 0.11.91
  gst_video_frame_copy_plane@Base 0.11.91
+ gst_video_frame_flags_get_type@Base 0.11.91
  gst_video_frame_map@Base 0.11.91
  gst_video_frame_map_id@Base 0.11.91
  gst_video_frame_unmap@Base 0.11.91
  gst_video_info_convert@Base 0.11.91
  gst_video_info_from_caps@Base 0.11.91
  gst_video_info_init@Base 0.11.91
+ gst_video_info_is_equal@Base 0.11.91
  gst_video_info_set_format@Base 0.11.91
  gst_video_info_to_caps@Base 0.11.91
  gst_video_interlace_mode_get_type@Base 0.11.91
- gst_video_marshal_VOID__OBJECT_INT@Base 0.11.91
  gst_video_meta_api_get_type@Base 0.11.91
  gst_video_meta_get_info@Base 0.11.91
  gst_video_meta_map@Base 0.11.91
