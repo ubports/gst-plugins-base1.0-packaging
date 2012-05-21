@@ -1235,25 +1235,50 @@ gen_source_element (GstURIDecodeBin * decoder)
 
   /* make HTTP sources send extra headers so we get icecast
    * metadata in case the stream is an icecast stream */
-  if (!strncmp (decoder->uri, "http://", 7) &&
-      g_object_class_find_property (source_class, "iradio-mode")) {
-    GST_LOG_OBJECT (decoder, "configuring iradio-mode");
-    g_object_set (source, "iradio-mode", TRUE, NULL);
+  if (!strncmp (decoder->uri, "http://", 7)) {
+    pspec = g_object_class_find_property (source_class, "iradio-mode");
+
+    if (pspec && G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_STRING) {
+      GST_LOG_OBJECT (decoder, "configuring iradio-mode");
+      g_object_set (source, "iradio-mode", TRUE, NULL);
+    }
   }
 
   pspec = g_object_class_find_property (source_class, "connection-speed");
   if (pspec != NULL) {
-    if (G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_UINT64 ||
-        G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_INT64) {
-      GST_DEBUG_OBJECT (decoder,
-          "setting connection-speed=%" G_GUINT64_FORMAT " on source element %s",
-          decoder->connection_speed / 1000, G_OBJECT_TYPE_NAME (source));
+    guint64 speed = decoder->connection_speed / 1000;
+    gboolean wrong_type = FALSE;
 
-      g_object_set (source, "connection-speed",
-          decoder->connection_speed / 1000, NULL);
+    if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_UINT) {
+      GParamSpecUInt *pspecuint = G_PARAM_SPEC_UINT (pspec);
+
+      speed = CLAMP (speed, pspecuint->minimum, pspecuint->maximum);
+    } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT) {
+      GParamSpecInt *pspecint = G_PARAM_SPEC_INT (pspec);
+
+      speed = CLAMP (speed, pspecint->minimum, pspecint->maximum);
+    } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_UINT64) {
+      GParamSpecUInt64 *pspecuint = G_PARAM_SPEC_UINT64 (pspec);
+
+      speed = CLAMP (speed, pspecuint->minimum, pspecuint->maximum);
+    } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT64) {
+      GParamSpecInt64 *pspecint = G_PARAM_SPEC_INT64 (pspec);
+
+      speed = CLAMP (speed, pspecint->minimum, pspecint->maximum);
     } else {
-      g_warning ("connection-speed property of '%s' is not a 64-bit int type",
-          G_OBJECT_TYPE_NAME (source));
+      GST_WARNING_OBJECT (decoder,
+          "The connection speed property %" G_GUINT64_FORMAT
+          " of type %s is not usefull not setting it", speed,
+          g_type_name (G_PARAM_SPEC_TYPE (pspec)));
+      wrong_type = TRUE;
+    }
+
+    if (wrong_type == FALSE) {
+      g_object_set (source, "connection-speed", speed, NULL);
+
+      GST_DEBUG_OBJECT (decoder,
+          "setting connection-speed=%" G_GUINT64_FORMAT " to source element",
+          speed);
     }
   }
 
@@ -1687,9 +1712,9 @@ make_decoder (GstURIDecodeBin * decoder)
   if (decoder->caps)
     g_object_set (decodebin, "caps", decoder->caps, NULL);
 
-  /* Propagate expose-all-streams property */
+  /* Propagate expose-all-streams and connection-speed properties */
   g_object_set (decodebin, "expose-all-streams", decoder->expose_allstreams,
-      NULL);
+      "connection-speed", decoder->connection_speed / 1000, NULL);
 
   if (!decoder->is_stream) {
     /* propagate the use-buffering property but only when we are not already
@@ -2009,6 +2034,23 @@ could_not_link:
   }
 }
 
+static gboolean
+is_live_source (GstElement * source)
+{
+  GObjectClass *source_class = NULL;
+  gboolean is_live = FALSE;
+  GParamSpec *pspec;
+
+  source_class = G_OBJECT_GET_CLASS (source);
+  pspec = g_object_class_find_property (source_class, "is-live");
+  if (!pspec || G_PARAM_SPEC_VALUE_TYPE (pspec) != G_TYPE_BOOLEAN)
+    return FALSE;
+
+  g_object_get (G_OBJECT (source), "is-live", &is_live, NULL);
+
+  return is_live;
+}
+
 /* construct and run the source and decoder elements until we found
  * all the streams or until a preroll queue has been filled.
 */
@@ -2037,6 +2079,9 @@ setup_source (GstURIDecodeBin * decoder)
 
   g_signal_emit (decoder, gst_uri_decode_bin_signals[SIGNAL_SOURCE_SETUP],
       0, decoder->source);
+
+  if (is_live_source (decoder->source))
+    decoder->is_stream = FALSE;
 
   /* remove the old decoders now, if any */
   remove_decoders (decoder, FALSE);

@@ -54,8 +54,8 @@
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-set-drop" title="gst_app_sink_set_drop ()">gst_app_sink_set_drop</a>               (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> drop</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-get-drop" title="gst_app_sink_get_drop ()">gst_app_sink_get_drop</a>               (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
-<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()">gst_app_sink_pull_preroll</a>           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
-<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()">gst_app_sink_pull_sample</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()">gst_app_sink_pull_preroll</a>           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()">gst_app_sink_pull_sample</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);
                     <a class="link" href="gst-plugins-base-libs-appsink.html#GstAppSinkCallbacks" title="GstAppSinkCallbacks">GstAppSinkCallbacks</a>;
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-set-callbacks" title="gst_app_sink_set_callbacks ()">gst_app_sink_set_callbacks</a>          (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-appsink.html#GstAppSinkCallbacks" title="GstAppSinkCallbacks"><span class="type">GstAppSinkCallbacks</span></a> *callbacks</code></em>,
@@ -346,7 +346,7 @@ filled.</td>
 <hr>
 <div class="refsect2">
 <a name="gst-app-sink-pull-preroll"></a><h3>gst_app_sink_pull_preroll ()</h3>
-<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_app_sink_pull_preroll           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         gst_app_sink_pull_preroll           (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
 Get the last preroll sample in <em class="parameter"><code>appsink</code></em>. This was the sample that caused the
 appsink to preroll in the PAUSED state. This sample can be pulled many times
@@ -388,7 +388,7 @@ element is set to the READY/NULL state.
 <hr>
 <div class="refsect2">
 <a name="gst-app-sink-pull-sample"></a><h3>gst_app_sink_pull_sample ()</h3>
-<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_app_sink_pull_sample            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         gst_app_sink_pull_sample            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsink.html#GstAppSink"><span class="type">GstAppSink</span></a> *appsink</code></em>);</pre>
 <p>
 This function blocks until a sample or EOS becomes available or the appsink
 element is set to the READY/NULL state.
@@ -504,7 +504,7 @@ reasons.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-appsink.see-also"></a><h2>See Also</h2>
-<span class="type">GstSample</span>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html"><span class="type">GstBaseSink</span></a>, appsrc
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html"><span class="type">GstBaseSink</span></a>, appsrc
 </div>
 </div>
 <div class="footer">

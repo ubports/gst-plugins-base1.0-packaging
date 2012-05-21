@@ -31,7 +31,7 @@
 #include <gst/audio/streamvolume.h>
 #include <gst/video/colorbalance.h>
 #include <gst/video/videooverlay.h>
-#include <gst/interfaces/navigation.h>
+#include <gst/video/navigation.h>
 
 #include "gstplaysink.h"
 #include "gststreamsynchronizer.h"
@@ -1492,6 +1492,8 @@ update_colorbalance (GstPlaySink * playsink)
 
   g_signal_handlers_unblock_by_func (balance,
       G_CALLBACK (colorbalance_value_changed_cb), playsink);
+
+  gst_object_unref (balance);
 }
 
 /* make the element (bin) that contains the elements needed to perform
@@ -3505,6 +3507,55 @@ caps_notify_cb (GstPad * pad, GParamSpec * unused, GstPlaySink * playsink)
   }
 }
 
+void
+gst_play_sink_refresh_pad (GstPlaySink * playsink, GstPad * pad,
+    GstPlaySinkType type)
+{
+  gulong *block_id = NULL;
+
+  GST_DEBUG_OBJECT (playsink, "refresh pad %" GST_PTR_FORMAT, pad);
+
+  GST_PLAY_SINK_LOCK (playsink);
+  if (pad == playsink->video_pad) {
+    if (type != GST_PLAY_SINK_TYPE_VIDEO_RAW &&
+        type != GST_PLAY_SINK_TYPE_VIDEO)
+      goto wrong_type;
+    block_id = &playsink->video_block_id;
+  } else if (pad == playsink->audio_pad) {
+    if (type != GST_PLAY_SINK_TYPE_AUDIO_RAW &&
+        type != GST_PLAY_SINK_TYPE_AUDIO)
+      goto wrong_type;
+    block_id = &playsink->audio_block_id;
+  } else if (pad == playsink->text_pad) {
+    if (type != GST_PLAY_SINK_TYPE_TEXT)
+      goto wrong_type;
+    block_id = &playsink->text_block_id;
+  }
+
+  if (type != GST_PLAY_SINK_TYPE_FLUSHING) {
+    GstPad *blockpad =
+        GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD (pad)));
+
+    *block_id =
+        gst_pad_add_probe (blockpad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+        sinkpad_blocked_cb, playsink, NULL);
+    PENDING_FLAG_SET (playsink, type);
+    gst_object_unref (blockpad);
+  }
+  GST_PLAY_SINK_UNLOCK (playsink);
+
+  return;
+
+  /* ERRORS */
+wrong_type:
+  {
+    GST_WARNING_OBJECT (playsink, "wrong type %u for pad %" GST_PTR_FORMAT,
+        type, pad);
+    GST_PLAY_SINK_UNLOCK (playsink);
+    return;
+  }
+}
+
 /**
  * gst_play_sink_request_pad
  * @playsink: a #GstPlaySink
@@ -3628,6 +3679,7 @@ gst_play_sink_request_pad (GstPlaySink * playsink, GstPlaySinkType type)
 
   return res;
 }
+
 
 static GstPad *
 gst_play_sink_request_new_pad (GstElement * element, GstPadTemplate * templ,
@@ -3906,6 +3958,42 @@ gst_play_sink_change_state (GstElement * element, GstStateChange transition)
        * sinks */
       do_async_start (playsink);
       ret = GST_STATE_CHANGE_ASYNC;
+
+      /* block all pads here */
+      GST_PLAY_SINK_LOCK (playsink);
+      if (playsink->video_pad && playsink->video_block_id == 0) {
+        GstPad *opad =
+            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
+                (playsink->video_pad)));
+        playsink->video_block_id =
+            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+            sinkpad_blocked_cb, playsink, NULL);
+        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_VIDEO);
+        gst_object_unref (opad);
+      }
+
+      if (playsink->audio_pad && playsink->audio_block_id == 0) {
+        GstPad *opad =
+            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
+                (playsink->audio_pad)));
+        playsink->audio_block_id =
+            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+            sinkpad_blocked_cb, playsink, NULL);
+        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_AUDIO);
+        gst_object_unref (opad);
+      }
+
+      if (playsink->text_pad && playsink->text_block_id == 0) {
+        GstPad *opad =
+            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
+                (playsink->text_pad)));
+        playsink->text_block_id =
+            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
+            sinkpad_blocked_cb, playsink, NULL);
+        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_TEXT);
+        gst_object_unref (opad);
+      }
+      GST_PLAY_SINK_UNLOCK (playsink);
       break;
     case GST_STATE_CHANGE_PAUSED_TO_READY:
       /* unblock all pads here */

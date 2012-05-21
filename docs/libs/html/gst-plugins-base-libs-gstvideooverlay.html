@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideoorientation.html" title="gstvideoorientation">
-<link rel="next" href="gstreamer-libs-hierarchy.html" title="Part II. Object Hierarchy">
+<link rel="next" href="gst-plugins-base-libs-GstVideoDecoder.html" title="GstVideoDecoder">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
-<td><a accesskey="n" href="gstreamer-libs-hierarchy.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-libs-GstVideoDecoder.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstvideooverlay.synopsis" class="shortcut">Top</a>
@@ -75,7 +75,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlay.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp27344640"></a><p>
+<a name="idp28156752"></a><p>
 The <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface is used for 2 main purposes :
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -159,7 +159,7 @@ immediately. Here is an example on how to do that correctly:
 
  <span class="function">XSync</span> <span class="gtkdoc opt">(</span>disp<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
 
- <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-SRC:CAPS">GST_MESSAGE_SRC</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">)),</span>
+ <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-SRC:CAPS">GST_MESSAGE_SRC</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">)),</span>
      win<span class="gtkdoc opt">);</span>
 
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-unref">gst_message_unref</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">);</span>
@@ -187,7 +187,7 @@ immediately. Here is an example on how to do that correctly:
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp27354736"></a><h3>Two basic usage scenarios</h3>
+<a name="idp28166848"></a><h3>Two basic usage scenarios</h3>
 <p>
 There are two basic usage scenarios: in the simplest case, the application
 knows exactly what particular element is used for video output, which is
@@ -232,7 +232,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp30120224"></a><h3>GstVideoOverlay and Gtk+</h3>
+<a name="idp29541664"></a><h3>GstVideoOverlay and Gtk+</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -334,7 +334,7 @@ used in the callback).
 93
 94
 95</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc">#include &lt;gst/interfaces/xoverlay.h&gt;</span>
+        <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc">#include &lt;gst/video/xoverlay.h&gt;</span>
 <span class="gtkdoc ppc">#include &lt;gtk/gtk.h&gt;</span>
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
 <span class="gtkdoc ppc">#include &lt;gdk/gdkx.h&gt;</span>  <span class="gtkdoc slc">// for GDK_WINDOW_XID</span>
@@ -380,13 +380,13 @@ used in the callback).
 
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
   <span class="gtkdoc opt">{</span>
-    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">=</span> xid<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_WIN32</span>
   <span class="gtkdoc opt">{</span>
-    HWND wnd <span class="gtkdoc opt">=</span> <span class="function">GDK_WINDOW_HWND</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    HWND wnd <span class="gtkdoc opt">=</span> <span class="function">GDK_WINDOW_HWND</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">= (</span>guintptr<span class="gtkdoc opt">)</span> wnd<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
@@ -398,25 +398,25 @@ used in the callback).
   GtkWidget <span class="gtkdoc opt">*</span>video_window<span class="gtkdoc opt">;</span>
   GtkWidget <span class="gtkdoc opt">*</span>app_window<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">...</span>
-  app_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWindow.html#gtk-window-new">gtk_window_new</a></span> <span class="gtkdoc opt">(</span>GTK_WINDOW_TOPLEVEL<span class="gtkdoc opt">);</span>
+  app_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWindow.html#gtk-window-new">gtk_window_new</a></span> <span class="gtkdoc opt">(</span>GTK_WINDOW_TOPLEVEL<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
-  video_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkDrawingArea.html#gtk-drawing-area-new">gtk_drawing_area_new</a></span> <span class="gtkdoc opt">();</span>
+  video_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkDrawingArea.html#gtk-drawing-area-new">gtk_drawing_area_new</a></span> <span class="gtkdoc opt">();</span>
   <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-connect">g_signal_connect</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> <span class="string">&quot;realize&quot;</span><span class="gtkdoc opt">,</span>
       <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Closures.html#G-CALLBACK:CAPS">G_CALLBACK</a></span> <span class="gtkdoc opt">(</span>video_widget_realize_cb<span class="gtkdoc opt">),</span> NULL<span class="gtkdoc opt">);</span>
-  <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-set-double-buffered">gtk_widget_set_double_buffered</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-set-double-buffered">gtk_widget_set_double_buffered</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// usually the video_window will not be directly embedded into the</span>
   <span class="gtkdoc slc">// application window like this, but there will be many other widgets</span>
   <span class="gtkdoc slc">// and the video window will be embedded in one of them instead</span>
-  <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkContainer.html#gtk-container-add">gtk_container_add</a></span> <span class="gtkdoc opt">(</span><span class="function">GTK_CONTAINER</span> <span class="gtkdoc opt">(</span>ap_window<span class="gtkdoc opt">),</span> video_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkContainer.html#gtk-container-add">gtk_container_add</a></span> <span class="gtkdoc opt">(</span><span class="function">GTK_CONTAINER</span> <span class="gtkdoc opt">(</span>ap_window<span class="gtkdoc opt">),</span> video_window<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// show the GUI</span>
-  <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-show-all">gtk_widget_show_all</a></span> <span class="gtkdoc opt">(</span>app_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-show-all">gtk_widget_show_all</a></span> <span class="gtkdoc opt">(</span>app_window<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// realize window now so that the video window gets created and we can</span>
   <span class="gtkdoc slc">// obtain its XID/HWND before the pipeline is started up and the videosink</span>
   <span class="gtkdoc slc">// asks for the XID/HWND of the window to render onto</span>
-  <span class="function"><a href="http://library.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-realize">gtk_widget_realize</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-realize">gtk_widget_realize</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// we should have the XID/HWND now</span>
   <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Testing.html#g-assert">g_assert</a></span> <span class="gtkdoc opt">(</span>video_window_handle <span class="gtkdoc opt">!=</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
@@ -441,7 +441,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp30125408"></a><h3>GstVideoOverlay and Qt</h3>
+<a name="idp29546832"></a><h3>GstVideoOverlay and Qt</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -503,7 +503,7 @@ used in the callback).
 53</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc">#include &lt;glib.h&gt;</span>
 <span class="gtkdoc ppc">#include &lt;gst/gst.h&gt;</span>
-<span class="gtkdoc ppc">#include &lt;gst/interfaces/videooverlay.h&gt;</span>
+<span class="gtkdoc ppc">#include &lt;gst/video/videooverlay.h&gt;</span>
 
 <span class="gtkdoc ppc">#include &lt;QApplication&gt;</span>
 <span class="gtkdoc ppc">#include &lt;QTimer&gt;</span>
@@ -533,7 +533,7 @@ used in the callback).
   window<span class="gtkdoc opt">.</span><span class="function">show</span><span class="gtkdoc opt">();</span>
 
   WId xwinid <span class="gtkdoc opt">=</span> window<span class="gtkdoc opt">.</span><span class="function">winId</span><span class="gtkdoc opt">();</span>
-  <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span>sink<span class="gtkdoc opt">),</span> xwinid<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span>sink<span class="gtkdoc opt">),</span> xwinid<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// run the pipeline</span>
 

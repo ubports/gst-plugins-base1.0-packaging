@@ -182,7 +182,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-L
 <p>
 </p>
 <div class="refsect2">
-<a name="idp26918624"></a><p>
+<a name="idp25528832"></a><p>
 Functions to create and handle encoding profiles.
 </p>
 <p>
@@ -212,7 +212,7 @@ to) file using the <a class="link" href="gst-plugins-base-libs-encoding-profile.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp26926192"></a><h3>Example: Creating a profile</h3>
+<a name="idp25536400"></a><h3>Example: Creating a profile</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -254,19 +254,19 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
  GstCaps <span class="gtkdoc opt">*</span>caps<span class="gtkdoc opt">;</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;application/ogg&quot;</span><span class="gtkdoc opt">);</span>
- prof <span class="gtkdoc opt">=</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-new">gst_encoding_container_profile_new</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;Ogg audio/video&quot;</span><span class="gtkdoc opt">,</span>
+ prof <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-new">gst_encoding_container_profile_new</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;Ogg audio/video&quot;</span><span class="gtkdoc opt">,</span>
     <span class="string">&quot;Standard OGG/THEORA/VORBIS&quot;</span><span class="gtkdoc opt">,</span>
     caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">);</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;video/x-theora&quot;</span><span class="gtkdoc opt">);</span>
- <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
-      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-video-profile-new">gst_encoding_video_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
+ <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
+      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-video-profile-new">gst_encoding_video_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;audio/x-vorbis&quot;</span><span class="gtkdoc opt">);</span>
- <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
-      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-audio-profile-new">gst_encoding_audio_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
+ <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
+      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-audio-profile-new">gst_encoding_audio_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  <span class="keyword">return</span> <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> prof<span class="gtkdoc opt">;</span>
@@ -283,7 +283,7 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp26929184"></a><h3>Example: Listing categories, targets and profiles</h3>
+<a name="idp25539392"></a><h3>Example: Listing categories, targets and profiles</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -1186,7 +1186,7 @@ constance framerate.
 <p>
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for device-specific targets.
 The name of the target will usually be the constructor and model of the device,
-and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that device.
+and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that device.
 </p>
 </div>
 <hr>
@@ -1197,7 +1197,7 @@ and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-b
 <p>
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for online-services.
 The name of the target will usually be the name of the online service
-and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that online
+and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that online
 service.
 </p>
 </div>
@@ -1210,7 +1210,7 @@ service.
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for storage, archiving and editing targets.
 Those targets can be lossless and/or provide very fast random access content.
 The name of the target will usually be the container type or editing target,
-and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for editing or
+and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for editing or
 storage.
 </p>
 </div>

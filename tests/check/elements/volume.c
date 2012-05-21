@@ -1694,7 +1694,7 @@ GST_START_TEST (test_passthrough)
   GstElement *volume;
   GstBuffer *inbuffer, *outbuffer;
   GstCaps *caps;
-  gint16 in[2] = { 16384, -256 };
+  gint16 *out, in[2] = { 16384, -256 };
   GstMapInfo map;
 
   volume = setup_volume ();
@@ -1718,8 +1718,8 @@ GST_START_TEST (test_passthrough)
   fail_if ((outbuffer = (GstBuffer *) buffers->data) == NULL);
   fail_unless (inbuffer == outbuffer);
   gst_buffer_map (outbuffer, &map, GST_MAP_READ);
-  GST_INFO ("expected %+5d %+5d  real %+5d %+5d", in[0], in[1], map.data[0],
-      map.data[1]);
+  out = (gint16 *) map.data;
+  GST_INFO ("expected %+5d %+5d  real %+5d %+5d", in[0], in[1], out[0], out[1]);
   fail_unless (memcmp (map.data, in, 4) == 0);
   gst_buffer_unmap (outbuffer, &map);
 
@@ -1733,6 +1733,7 @@ GST_START_TEST (test_controller_usability)
 {
   GstControlSource *cs;
   GstTimedValueControlSource *tvcs;
+  GstControlBinding *cb;
   GstElement *volume;
 
   volume = setup_volume ();
@@ -1740,8 +1741,8 @@ GST_START_TEST (test_controller_usability)
   /* this shouldn't crash, whether this mode is implemented or not */
   cs = gst_interpolation_control_source_new ();
   g_object_set (cs, "mode", GST_INTERPOLATION_MODE_CUBIC, NULL);
-  gst_object_add_control_binding (GST_OBJECT_CAST (volume),
-      gst_direct_control_binding_new (GST_OBJECT_CAST (volume), "volume", cs));
+  cb = gst_direct_control_binding_new (GST_OBJECT_CAST (volume), "volume", cs);
+  gst_object_add_control_binding (GST_OBJECT_CAST (volume), cb);
 
   tvcs = (GstTimedValueControlSource *) cs;
   gst_timed_value_control_source_set (tvcs, 0 * GST_SECOND, 0.0);
@@ -1749,6 +1750,7 @@ GST_START_TEST (test_controller_usability)
   gst_timed_value_control_source_set (tvcs, 10 * GST_SECOND, 0.0);
 
   gst_object_unref (cs);
+  gst_object_remove_control_binding (GST_OBJECT_CAST (volume), cb);
 
   cleanup_volume (volume);
 }
@@ -1758,10 +1760,11 @@ GST_END_TEST;
 GST_START_TEST (test_controller_processing)
 {
   GstControlSource *cs;
+  GstTimedValueControlSource *tvcs;
   GstElement *volume;
   GstBuffer *inbuffer, *outbuffer;
   GstCaps *caps;
-  gint16 in[2] = { 16384, -256 };
+  gint16 *out, in[2] = { 16384, -256 };
   GstMapInfo map;
   GstSegment seg;
 
@@ -1771,6 +1774,10 @@ GST_START_TEST (test_controller_processing)
   g_object_set (cs, "mode", GST_INTERPOLATION_MODE_CUBIC, NULL);
   gst_object_add_control_binding (GST_OBJECT_CAST (volume),
       gst_direct_control_binding_new (GST_OBJECT_CAST (volume), "volume", cs));
+
+  /* the value range for volume is 0.0 ... 10.0 */
+  tvcs = (GstTimedValueControlSource *) cs;
+  gst_timed_value_control_source_set (tvcs, 0 * GST_SECOND, 0.1);
 
   fail_unless (gst_element_set_state (volume,
           GST_STATE_PLAYING) == GST_STATE_CHANGE_SUCCESS,
@@ -1796,8 +1803,8 @@ GST_START_TEST (test_controller_processing)
   fail_if ((outbuffer = (GstBuffer *) buffers->data) == NULL);
   fail_unless (inbuffer == outbuffer);
   gst_buffer_map (outbuffer, &map, GST_MAP_READ);
-  GST_INFO ("expected %+5d %+5d  real %+5d %+5d", in[0], in[1], map.data[0],
-      map.data[1]);
+  out = (gint16 *) map.data;
+  GST_INFO ("expected %+5d %+5d  real %+5d %+5d", in[0], in[1], out[0], out[1]);
   fail_unless (memcmp (map.data, in, 4) == 0);
   gst_buffer_unmap (outbuffer, &map);
 

@@ -1,5 +1,8 @@
 /* GStreamer
  * Copyright (C) 2004 Wim Taymans <wim@fluendo.com>
+ * Copyright (c) 2012 Collabora Ltd.
+ *	Author : Edward Hervey <edward@collabora.com>
+ *      Author : Mark Nauwelaerts <mark.nauwelaerts@collabora.co.uk>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,9 +25,8 @@
 
 #include <gst/gst.h>
 #include <gst/base/gstadapter.h>
+#include <gst/video/gstvideoencoder.h>
 #include <theora/theoraenc.h>
-
-#include <gst/video/video.h>
 
 G_BEGIN_DECLS
 
@@ -63,12 +65,7 @@ typedef enum
  */
 struct _GstTheoraEnc
 {
-  GstElement element;
-
-  GstPad *sinkpad;
-  GstPad *srcpad;
-
-  GstSegment segment;
+  GstVideoEncoder element;
 
   ogg_stream_state to;
 
@@ -85,19 +82,16 @@ struct _GstTheoraEnc
   gint keyframe_freq;
   gint keyframe_force;
 
-  GstVideoInfo vinfo;
-  gint info_width, info_height;
-  GstClockTime next_ts;
+  GstVideoCodecState *input_state;
 
-  GstClockTime expected_ts;
-  gboolean next_discont;
-
-  gboolean force_keyframe;
+  gint width, height;
+  gint fps_n, fps_d;
 
   guint packetno;
   guint64 bytes_out;
   guint64 granulepos_offset;
   guint64 timestamp_offset;
+  guint64 pfn_offset;
 
   gint speed_level;
   gboolean vp3_compatible;
@@ -105,13 +99,6 @@ struct _GstTheoraEnc
   gboolean cap_overflow;
   gboolean cap_underflow;
   int rate_buffer;
-
-  /* variables for dup-on-gap */
-  gboolean dup_on_gap;
-  gboolean current_discont;
-  GstBuffer *prevbuf;
-  GQueue *t_queue;
-  /* end dup-on-gap */
 
   GstTheoraEncMultipassMode multipass_mode;
   GIOChannel *multipass_cache_fd;
@@ -121,10 +108,11 @@ struct _GstTheoraEnc
 
 struct _GstTheoraEncClass
 {
-  GstElementClass parent_class;
+  GstVideoEncoderClass parent_class;
 };
 
 GType gst_theora_enc_get_type (void);
+gboolean gst_theora_enc_register (GstPlugin * plugin);
 
 G_END_DECLS
 

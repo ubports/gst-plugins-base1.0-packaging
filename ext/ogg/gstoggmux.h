@@ -24,7 +24,7 @@
 #include <ogg/ogg.h>
 
 #include <gst/gst.h>
-#include <gst/base/gstcollectpads2.h>
+#include <gst/base/gstcollectpads.h>
 #include "gstoggstream.h"
 
 G_BEGIN_DECLS
@@ -48,7 +48,7 @@ GstOggPadState;
 /* all information needed for one ogg stream */
 typedef struct
 {
-  GstCollectData2 collect;       /* we extend the CollectData */
+  GstCollectData collect;       /* we extend the CollectData */
 
   GstOggStream map;
   gboolean have_type;
@@ -82,8 +82,6 @@ typedef struct
   gint64  next_granule;         /* expected granule of next buffer ts */
   gint64  keyframe_granule;     /* granule of last preceding keyframe */
 
-  GstPadEventFunction collect_event;
-
   GstTagList *tags;
 }
 GstOggPadData;
@@ -101,7 +99,7 @@ struct _GstOggMux
   GstPad *srcpad;
 
   /* sinkpads */
-  GstCollectPads2 *collect;
+  GstCollectPads *collect;
 
   /* number of pads which have not received EOS */
   gint active_pads;

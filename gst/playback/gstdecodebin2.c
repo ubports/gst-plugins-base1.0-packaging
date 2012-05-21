@@ -152,6 +152,7 @@ struct _GstDecodeBin
   guint max_size_buffers;
   guint64 max_size_time;
   gboolean post_stream_topology;
+  guint64 connection_speed;
 
   GstElement *typefind;         /* this holds the typefind object */
 
@@ -240,6 +241,7 @@ enum
 #define DEFAULT_MAX_SIZE_TIME     0
 #define DEFAULT_POST_STREAM_TOPOLOGY FALSE
 #define DEFAULT_EXPOSE_ALL_STREAMS  TRUE
+#define DEFAULT_CONNECTION_SPEED    0
 
 /* Properties */
 enum
@@ -256,6 +258,7 @@ enum
   PROP_MAX_SIZE_TIME,
   PROP_POST_STREAM_TOPOLOGY,
   PROP_EXPOSE_ALL_STREAMS,
+  PROP_CONNECTION_SPEED,
   PROP_LAST
 };
 
@@ -887,6 +890,19 @@ gst_decode_bin_class_init (GstDecodeBinClass * klass)
           DEFAULT_EXPOSE_ALL_STREAMS,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GstDecodeBin2::connection-speed
+   *
+   * Network connection speed in kbps (0 = unknownw)
+   *
+   * Since: 0.10.XX
+   */
+  g_object_class_install_property (gobject_klass, PROP_CONNECTION_SPEED,
+      g_param_spec_uint64 ("connection-speed", "Connection Speed",
+          "Network connection speed in kbps (0 = unknown)",
+          0, G_MAXUINT64 / 1000, DEFAULT_CONNECTION_SPEED,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
 
 
   klass->autoplug_continue =
@@ -994,6 +1010,7 @@ gst_decode_bin_init (GstDecodeBin * decode_bin)
   decode_bin->max_size_time = DEFAULT_MAX_SIZE_TIME;
 
   decode_bin->expose_allstreams = DEFAULT_EXPOSE_ALL_STREAMS;
+  decode_bin->connection_speed = DEFAULT_CONNECTION_SPEED;
 }
 
 static void
@@ -1189,6 +1206,11 @@ gst_decode_bin_set_property (GObject * object, guint prop_id,
     case PROP_EXPOSE_ALL_STREAMS:
       dbin->expose_allstreams = g_value_get_boolean (value);
       break;
+    case PROP_CONNECTION_SPEED:
+      GST_OBJECT_LOCK (dbin);
+      dbin->connection_speed = g_value_get_uint64 (value) * 1000;
+      GST_OBJECT_UNLOCK (dbin);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1235,6 +1257,11 @@ gst_decode_bin_get_property (GObject * object, guint prop_id,
       break;
     case PROP_EXPOSE_ALL_STREAMS:
       g_value_set_boolean (value, dbin->expose_allstreams);
+      break;
+    case PROP_CONNECTION_SPEED:
+      GST_OBJECT_LOCK (dbin);
+      g_value_set_uint64 (value, dbin->connection_speed / 1000);
+      GST_OBJECT_UNLOCK (dbin);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1770,6 +1797,7 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
     GstDecodeElement *delem;
     GstElement *element;
     GstPad *sinkpad;
+    GParamSpec *pspec;
     gboolean subtitle;
 
     /* Set dpad target to pad again, it might've been unset
@@ -1944,12 +1972,55 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
     chain->demuxer = is_demuxer_element (element);
     CHAIN_MUTEX_UNLOCK (chain);
 
+    /* Set connection-speed property if needed */
+    if (chain->demuxer == TRUE) {
+      GParamSpec *pspec;
+
+      if ((pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (element),
+                  "connection-speed"))) {
+        guint64 speed = dbin->connection_speed / 1000;
+        gboolean wrong_type = FALSE;
+
+        if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_UINT) {
+          GParamSpecUInt *pspecuint = G_PARAM_SPEC_UINT (pspec);
+
+          speed = CLAMP (speed, pspecuint->minimum, pspecuint->maximum);
+        } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT) {
+          GParamSpecInt *pspecint = G_PARAM_SPEC_INT (pspec);
+
+          speed = CLAMP (speed, pspecint->minimum, pspecint->maximum);
+        } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_UINT64) {
+          GParamSpecUInt64 *pspecuint = G_PARAM_SPEC_UINT64 (pspec);
+
+          speed = CLAMP (speed, pspecuint->minimum, pspecuint->maximum);
+        } else if (G_PARAM_SPEC_TYPE (pspec) == G_TYPE_PARAM_INT64) {
+          GParamSpecInt64 *pspecint = G_PARAM_SPEC_INT64 (pspec);
+
+          speed = CLAMP (speed, pspecint->minimum, pspecint->maximum);
+        } else {
+          GST_WARNING_OBJECT (dbin,
+              "The connection speed property %" G_GUINT64_FORMAT " of type %s"
+              " is not usefull not setting it", speed,
+              g_type_name (G_PARAM_SPEC_TYPE (pspec)));
+          wrong_type = TRUE;
+        }
+
+        if (wrong_type == FALSE) {
+          GST_DEBUG_OBJECT (dbin, "setting connection-speed=%" G_GUINT64_FORMAT
+              " to demuxer element", speed);
+
+          g_object_set (element, "connection-speed", speed, NULL);
+        }
+      }
+    }
+
     /* link this element further */
     connect_element (dbin, element, chain);
 
     /* try to configure the subtitle encoding property when we can */
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (element),
-            "subtitle-encoding")) {
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (element),
+        "subtitle-encoding");
+    if (pspec && G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_STRING) {
       SUBTITLE_LOCK (dbin);
       GST_DEBUG_OBJECT (dbin,
           "setting subtitle-encoding=%s to element", dbin->encoding);
@@ -1957,8 +2028,9 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
           NULL);
       SUBTITLE_UNLOCK (dbin);
       subtitle = TRUE;
-    } else
+    } else {
       subtitle = FALSE;
+    }
 
     /* Bring the element to the state of the parent */
     if ((gst_element_set_state (element,
@@ -3748,6 +3820,14 @@ source_pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
   GstDecodePad *dpad = user_data;
   GstDecodeChain *chain;
   GstDecodeBin *dbin;
+
+  if ((GST_PAD_PROBE_INFO_TYPE (info) & GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM) &&
+      (GST_EVENT_IS_STICKY (GST_PAD_PROBE_INFO_EVENT (info))
+          || !GST_EVENT_IS_SERIALIZED (GST_PAD_PROBE_INFO_EVENT (info)))) {
+    /* do not block on sticky or out of band events otherwise the allocation query
+       from demuxer might block the loop thread */
+    return GST_PAD_PROBE_PASS;
+  }
 
   chain = dpad->chain;
   dbin = chain->dbin;
