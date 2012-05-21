@@ -5,6 +5,8 @@ gst-plugins-base1.0 (0.11.91-1) experimental; urgency=low
       - Update symbols file.
     + debian/rules:
       - (Build-) depend on GStreamer >= 0.11.91.
+    + debian/libgstreamer-plugins-base-dev.install:
+      - Drop removed interfaces library.
   * debian/control.in,
     debian/build-deps.in:
     + Update debhelper dependency version and Standards-Version.

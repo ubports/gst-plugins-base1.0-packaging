@@ -2,7 +2,6 @@ debian/tmp/usr/lib/*/libgstaudio-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstapp-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstpbutils-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstfft-@GST_ABI@.so.*
-debian/tmp/usr/lib/*/libgstinterfaces-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstriff-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstrtp-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstrtsp-@GST_ABI@.so.*
