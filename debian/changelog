@@ -5,6 +5,9 @@ gst-plugins-base1.0 (0.11.91-1) experimental; urgency=low
       - Update symbols file.
     + debian/rules:
       - (Build-) depend on GStreamer >= 0.11.91.
+  * debian/control.in,
+    debian/build-deps.in:
+    + Update debhelper dependency version and Standards-Version.
 
  -- Sebastian Dröge <slomo@debian.org>  Mon, 21 May 2012 11:43:57 +0200
 
