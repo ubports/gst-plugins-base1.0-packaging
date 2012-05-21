@@ -1,9 +1,9 @@
 @GST_LIB_DEV_DEP@
 @GST_EXTRA_BUILD_DEPENDS@
 autotools-dev
-automake (>= 1.10)
-autoconf (>= 2.60)
-libtool (>= 2.0)
+automake (>= 1.11)
+autoconf (>= 2.62)
+libtool (>= 2.2.6)
 dh-autoreconf
 autopoint (>= 0.17)
 cdbs (>= 0.4.93~)
