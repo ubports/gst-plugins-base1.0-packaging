@@ -1,22 +1,21 @@
-# variables used for enum/marshal generation
-glib_enum_headers = video.h colorbalance.h
+# variables used for enum generation
+glib_enum_headers = video.h colorbalance.h navigation.h
 glib_enum_define = GST_VIDEO
 glib_gen_prefix = gst_video
 glib_gen_basename = video
 
-built_sources = video-enumtypes.c video-marshal.c
-built_headers = video-enumtypes.h video-marshal.h
+built_sources = video-enumtypes.c
+built_headers = video-enumtypes.h
 BUILT_SOURCES = $(built_sources) $(built_headers)
 
 lib_LTLIBRARIES = libgstvideo-@GST_API_VERSION@.la
 
 CLEANFILES = $(BUILT_SOURCES)
 
-EXTRA_DIST = video-marshal.list
-
 libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	colorbalance.c   	\
 	colorbalancechannel.c   \
+	navigation.c            \
 	video.c          	\
 	gstvideosink.c   	\
 	gstvideofilter.c 	\
@@ -24,7 +23,10 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	gstvideometa.c   	\
 	gstvideopool.c		\
 	videoorientation.c	\
-	videooverlay.c
+	videooverlay.c          \
+	gstvideodecoder.c       \
+	gstvideoencoder.c       \
+	gstvideoutils.c
 
 nodist_libgstvideo_@GST_API_VERSION@_la_SOURCES = $(BUILT_SOURCES)
 
@@ -32,13 +34,17 @@ libgstvideo_@GST_API_VERSION@includedir = $(includedir)/gstreamer-@GST_API_VERSI
 libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	colorbalance.h 		\
 	colorbalancechannel.h	\
+	navigation.h            \
 	video.h			\
 	gstvideosink.h 		\
 	gstvideofilter.h	\
 	gstvideometa.h		\
 	gstvideopool.h		\
 	videoorientation.h 	\
-	videooverlay.h
+	videooverlay.h          \
+	gstvideodecoder.h       \
+	gstvideoencoder.h       \
+	gstvideoutils.h
 nodist_libgstvideo_@GST_API_VERSION@include_HEADERS = $(built_headers)
 
 libgstvideo_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
@@ -68,8 +74,8 @@ GstVideo-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstvideo-@GST_API_VE
 		-DGST_USE_UNSTABLE_API \
 		-I$(top_srcdir)/gst-libs \
 		-I$(top_builddir)/gst-libs \
-		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
-		--add-include-path=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
+		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
+		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
 		--library=libgstvideo-@GST_API_VERSION@.la \
 		--include=Gst-@GST_API_VERSION@ \
 		--include=GstBase-@GST_API_VERSION@ \
@@ -96,8 +102,8 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 		$(INTROSPECTION_COMPILER) \
 		--includedir=$(srcdir) \
 		--includedir=$(builddir) \
-		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
-		--includedir=`$(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
+		--includedir=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
+		--includedir=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
 		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)

@@ -65,16 +65,8 @@
 <ANCHOR id="GstAppSink-pull-sample" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink-pull-sample">
 <ANCHOR id="gst-plugins-base-plugins-alsamixer" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html">
 <ANCHOR id="gst-plugins-base-plugins-alsamixer.synopsis" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.synopsis">
-<ANCHOR id="GstAlsaMixerElement" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#GstAlsaMixerElement">
-<ANCHOR id="gst-plugins-base-plugins-alsamixer.object-hierarchy" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.object-hierarchy">
-<ANCHOR id="gst-plugins-base-plugins-alsamixer.implemented-interfaces" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.implemented-interfaces">
-<ANCHOR id="gst-plugins-base-plugins-alsamixer.properties" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.properties">
 <ANCHOR id="gst-plugins-base-plugins-alsamixer.description" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.description">
 <ANCHOR id="gst-plugins-base-plugins-alsamixer.details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.details">
-<ANCHOR id="GstAlsaMixerElement-struct" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#GstAlsaMixerElement-struct">
-<ANCHOR id="gst-plugins-base-plugins-alsamixer.property-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#gst-plugins-base-plugins-alsamixer.property-details">
-<ANCHOR id="GstAlsaMixerElement--device" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#GstAlsaMixerElement--device">
-<ANCHOR id="GstAlsaMixerElement--device-name" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsamixer.html#GstAlsaMixerElement--device-name">
 <ANCHOR id="gst-plugins-base-plugins-alsasink" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsasink.html">
 <ANCHOR id="gst-plugins-base-plugins-alsasink.synopsis" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsasink.html#gst-plugins-base-plugins-alsasink.synopsis">
 <ANCHOR id="GstAlsaSink" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-alsasink.html#GstAlsaSink">

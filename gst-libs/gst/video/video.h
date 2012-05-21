@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 /**
  * GstVideoFormat:
  * @GST_VIDEO_FORMAT_UNKNOWN: Unknown or unset video format id
+ * @GST_VIDEO_FORMAT_ENCODED: Encoded video format
  * @GST_VIDEO_FORMAT_I420: planar 4:2:0 YUV
  * @GST_VIDEO_FORMAT_YV12: planar 4:2:0 YVU (like I420 but UV planes swapped)
  * @GST_VIDEO_FORMAT_YUY2: packed 4:2:2 YUV (Y0-U0-Y1-V0 Y2-U2-Y3-V2 Y4 ...)
@@ -117,7 +118,8 @@ typedef enum {
   GST_VIDEO_FORMAT_IYU1,
   GST_VIDEO_FORMAT_ARGB64,
   GST_VIDEO_FORMAT_AYUV64,
-  GST_VIDEO_FORMAT_r210
+  GST_VIDEO_FORMAT_r210,
+  GST_VIDEO_FORMAT_ENCODED
 } GstVideoFormat;
 
 #define GST_VIDEO_MAX_PLANES 4
@@ -265,6 +267,7 @@ struct _GstVideoFormatInfo {
 #define GST_VIDEO_FORMAT_INFO_HAS_ALPHA(info)    ((info)->flags & GST_VIDEO_FORMAT_FLAG_ALPHA)
 #define GST_VIDEO_FORMAT_INFO_IS_LE(info)        ((info)->flags & GST_VIDEO_FORMAT_FLAG_LE)
 #define GST_VIDEO_FORMAT_INFO_HAS_PALETTE(info)  ((info)->flags & GST_VIDEO_FORMAT_FLAG_PALETTE)
+#define GST_VIDEO_FORMAT_INFO_IS_COMPLEX(info)   ((info)->flags & GST_VIDEO_FORMAT_FLAG_COMPLEX)
 
 #define GST_VIDEO_FORMAT_INFO_BITS(info)         ((info)->bits)
 #define GST_VIDEO_FORMAT_INFO_N_COMPONENTS(info) ((info)->n_components)
@@ -309,12 +312,17 @@ typedef struct _GstVideoFrame GstVideoFrame;
 /**
  * GstVideoInterlaceMode:
  * @GST_VIDEO_INTERLACE_MODE_PROGRESSIVE: all frames are progressive
- * @GST_VIDEO_INTERLACE_MODE_INTERLEAVED: video is interlaced and all fields
- *     are interlaced in one frame.
- * @GST_VIDEO_INTERLACE_MODE_MIXED: video contains both interlaced and
- *     progressive frames, the buffer flags describe the frame and fields.
- * @GST_VIDEO_INTERLACE_MODE_FIELDS: video is interlaced and fields are stored
- *     separately. Use the id property to get access to the required field.
+ * @GST_VIDEO_INTERLACE_MODE_INTERLEAVED: 2 fields are interleaved in one video
+ *     frame. Extra buffer flags describe the field order.
+ * @GST_VIDEO_INTERLACE_MODE_MIXED: frames contains both interlaced and
+ *     progressive video, the buffer flags describe the frame and fields.
+ * @GST_VIDEO_INTERLACE_MODE_FIELDS: 2 fields are stored in one buffer, use the
+ *     frame ID to get access to the required field. For multiview (the
+ *     'views' property > 1) the fields of view N can be found at frame ID
+ *     (N * 2) and (N * 2) + 1.
+ *     Each field has only half the amount of lines as noted in the
+ *     height property. This mode requires multiple GstVideoMeta metadata
+ *     to describe the fields.
  *
  * The possible values of the #GstVideoInterlaceMode describing the interlace
  * mode of the stream.
@@ -329,10 +337,6 @@ typedef enum {
 /**
  * GstVideoFlags:
  * @GST_VIDEO_FLAG_NONE: no flags
- * @GST_VIDEO_FLAG_INTERLACED: The video is interlaced
- * @GST_VIDEO_FLAG_TFF: The video has the top field first
- * @GST_VIDEO_FLAG_RFF: The video has the repeat flag
- * @GST_VIDEO_FLAG_ONEFIELD: one field
  * @GST_VIDEO_FLAG_VARIABLE_FPS: a variable fps is selected, fps_n and fps_d
  * denote the maximum fps of the video
  *
@@ -340,11 +344,7 @@ typedef enum {
  */
 typedef enum {
   GST_VIDEO_FLAG_NONE         = 0,
-  GST_VIDEO_FLAG_INTERLACED   = (1 << 0),
-  GST_VIDEO_FLAG_TFF          = (1 << 1),
-  GST_VIDEO_FLAG_RFF          = (1 << 2),
-  GST_VIDEO_FLAG_ONEFIELD     = (1 << 3),
-  GST_VIDEO_FLAG_VARIABLE_FPS = (1 << 4)
+  GST_VIDEO_FLAG_VARIABLE_FPS = (1 << 0)
 } GstVideoFlags;
 
 /**
@@ -601,6 +601,24 @@ gboolean     gst_video_info_convert     (GstVideoInfo *info,
                                          gint64        src_value,
                                          GstFormat     dest_format,
                                          gint64       *dest_value);
+gboolean     gst_video_info_is_equal    (const GstVideoInfo *info,
+					 const GstVideoInfo *other);
+
+/**
+ * GstVideoFrameFlags:
+ * @GST_VIDEO_FRAME_FLAG_NONE: no flags
+ * @GST_VIDEO_FRAME_FLAG_TFF: The video frame has the top field first
+ * @GST_VIDEO_FRAME_FLAG_RFF: The video frame has the repeat flag
+ * @GST_VIDEO_FRAME_FLAG_ONEFIELD: The video frame has one field
+ *
+ * Extra video frame flags
+ */
+typedef enum {
+  GST_VIDEO_FRAME_FLAG_NONE         = 0,
+  GST_VIDEO_FRAME_FLAG_TFF          = (1 << 0),
+  GST_VIDEO_FRAME_FLAG_RFF          = (1 << 1),
+  GST_VIDEO_FRAME_FLAG_ONEFIELD     = (1 << 2)
+} GstVideoFrameFlags;
 
 /**
  * GstVideoFrame:
@@ -616,6 +634,7 @@ gboolean     gst_video_info_convert     (GstVideoInfo *info,
  */
 struct _GstVideoFrame {
   GstVideoInfo info;
+  GstVideoFrameFlags flags;
 
   GstBuffer *buffer;
   gpointer   meta;
@@ -693,7 +712,6 @@ gboolean    gst_video_frame_copy_plane    (GstVideoFrame *dest, const GstVideoFr
 
 /**
  * GstVideoBufferFlags:
- * @GST_VIDEO_BUFFER_FLAG_INTERLACED:  Mark #GstBuffer as interlaced
  * @GST_VIDEO_BUFFER_FLAG_TFF:         If the #GstBuffer is interlaced, then the first field
  *                                     in the video frame is the top field.  If unset, the
  *                                     bottom field is first.
@@ -707,10 +725,9 @@ gboolean    gst_video_frame_copy_plane    (GstVideoFrame *dest, const GstVideoFr
  * Additional video buffer flags.
  */
 typedef enum {
-  GST_VIDEO_BUFFER_FLAG_INTERLACED  = (GST_BUFFER_FLAG_LAST << 0),
-  GST_VIDEO_BUFFER_FLAG_TFF         = (GST_BUFFER_FLAG_LAST << 1),
-  GST_VIDEO_BUFFER_FLAG_RFF         = (GST_BUFFER_FLAG_LAST << 2),
-  GST_VIDEO_BUFFER_FLAG_ONEFIELD    = (GST_BUFFER_FLAG_LAST << 3),
+  GST_VIDEO_BUFFER_FLAG_TFF         = (GST_BUFFER_FLAG_LAST << 0),
+  GST_VIDEO_BUFFER_FLAG_RFF         = (GST_BUFFER_FLAG_LAST << 1),
+  GST_VIDEO_BUFFER_FLAG_ONEFIELD    = (GST_BUFFER_FLAG_LAST << 2),
 
   GST_VIDEO_BUFFER_FLAG_LAST        = (GST_BUFFER_FLAG_LAST << 8)
 } GstVideoBufferFlags;

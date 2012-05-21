@@ -42,7 +42,138 @@
 
 #define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FPS-RANGE:CAPS" title="GST_VIDEO_FPS_RANGE">GST_VIDEO_FPS_RANGE</a>
 #define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-SIZE-RANGE:CAPS" title="GST_VIDEO_SIZE_RANGE">GST_VIDEO_SIZE_RANGE</a>
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoChromaSite" title="enum GstVideoChromaSite">GstVideoChromaSite</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorMatrix" title="enum GstVideoColorMatrix">GstVideoColorMatrix</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorPrimaries" title="enum GstVideoColorPrimaries">GstVideoColorPrimaries</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorRange" title="enum GstVideoColorRange">GstVideoColorRange</a>;
+                    <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorimetry" title="GstVideoColorimetry">GstVideoColorimetry</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFlags" title="enum GstVideoFlags">GstVideoFlags</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatFlags" title="enum GstVideoFormatFlags">GstVideoFormatFlags</a>;
+<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatPack" title="GstVideoFormatPack ()">*GstVideoFormatPack</a>)               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> src</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> stride[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatUnpack" title="GstVideoFormatUnpack ()">*GstVideoFormatUnpack</a>)             (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> dest</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> stride[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode" title="enum GstVideoInterlaceMode">GstVideoInterlaceMode</a>;
+enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoTransferFunction" title="enum GstVideoTransferFunction">GstVideoTransferFunction</a>;
 enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat">GstVideoFormat</a>;
+struct              <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo">GstVideoFormatInfo</a>;
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-BITS:CAPS" title="GST_VIDEO_FORMAT_INFO_BITS()">GST_VIDEO_FORMAT_INFO_BITS</a>          (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-DATA:CAPS" title="GST_VIDEO_FORMAT_INFO_DATA()">GST_VIDEO_FORMAT_INFO_DATA</a>          (info,
+                                                         planes,
+                                                         comp)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-DEPTH:CAPS" title="GST_VIDEO_FORMAT_INFO_DEPTH()">GST_VIDEO_FORMAT_INFO_DEPTH</a>         (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-FLAGS:CAPS" title="GST_VIDEO_FORMAT_INFO_FLAGS()">GST_VIDEO_FORMAT_INFO_FLAGS</a>         (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-FORMAT:CAPS" title="GST_VIDEO_FORMAT_INFO_FORMAT()">GST_VIDEO_FORMAT_INFO_FORMAT</a>        (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-HAS-ALPHA:CAPS" title="GST_VIDEO_FORMAT_INFO_HAS_ALPHA()">GST_VIDEO_FORMAT_INFO_HAS_ALPHA</a>     (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-HAS-PALETTE:CAPS" title="GST_VIDEO_FORMAT_INFO_HAS_PALETTE()">GST_VIDEO_FORMAT_INFO_HAS_PALETTE</a>   (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-H-SUB:CAPS" title="GST_VIDEO_FORMAT_INFO_H_SUB()">GST_VIDEO_FORMAT_INFO_H_SUB</a>         (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-IS-GRAY:CAPS" title="GST_VIDEO_FORMAT_INFO_IS_GRAY()">GST_VIDEO_FORMAT_INFO_IS_GRAY</a>       (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-IS-LE:CAPS" title="GST_VIDEO_FORMAT_INFO_IS_LE()">GST_VIDEO_FORMAT_INFO_IS_LE</a>         (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-IS-RGB:CAPS" title="GST_VIDEO_FORMAT_INFO_IS_RGB()">GST_VIDEO_FORMAT_INFO_IS_RGB</a>        (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-IS-YUV:CAPS" title="GST_VIDEO_FORMAT_INFO_IS_YUV()">GST_VIDEO_FORMAT_INFO_IS_YUV</a>        (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-IS-COMPLEX:CAPS" title="GST_VIDEO_FORMAT_INFO_IS_COMPLEX()">GST_VIDEO_FORMAT_INFO_IS_COMPLEX</a>    (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-NAME:CAPS" title="GST_VIDEO_FORMAT_INFO_NAME()">GST_VIDEO_FORMAT_INFO_NAME</a>          (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-N-COMPONENTS:CAPS" title="GST_VIDEO_FORMAT_INFO_N_COMPONENTS()">GST_VIDEO_FORMAT_INFO_N_COMPONENTS</a>  (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-N-PLANES:CAPS" title="GST_VIDEO_FORMAT_INFO_N_PLANES()">GST_VIDEO_FORMAT_INFO_N_PLANES</a>      (info)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-OFFSET:CAPS" title="GST_VIDEO_FORMAT_INFO_OFFSET()">GST_VIDEO_FORMAT_INFO_OFFSET</a>        (info,
+                                                         offsets,
+                                                         comp)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-PLANE:CAPS" title="GST_VIDEO_FORMAT_INFO_PLANE()">GST_VIDEO_FORMAT_INFO_PLANE</a>         (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-POFFSET:CAPS" title="GST_VIDEO_FORMAT_INFO_POFFSET()">GST_VIDEO_FORMAT_INFO_POFFSET</a>       (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-PSTRIDE:CAPS" title="GST_VIDEO_FORMAT_INFO_PSTRIDE()">GST_VIDEO_FORMAT_INFO_PSTRIDE</a>       (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-SCALE-HEIGHT:CAPS" title="GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT()">GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT</a>  (info,
+                                                         c,
+                                                         h)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-SCALE-WIDTH:CAPS" title="GST_VIDEO_FORMAT_INFO_SCALE_WIDTH()">GST_VIDEO_FORMAT_INFO_SCALE_WIDTH</a>   (info,
+                                                         c,
+                                                         w)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-SHIFT:CAPS" title="GST_VIDEO_FORMAT_INFO_SHIFT()">GST_VIDEO_FORMAT_INFO_SHIFT</a>         (info,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-STRIDE:CAPS" title="GST_VIDEO_FORMAT_INFO_STRIDE()">GST_VIDEO_FORMAT_INFO_STRIDE</a>        (info,
+                                                         strides,
+                                                         comp)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-W-SUB:CAPS" title="GST_VIDEO_FORMAT_INFO_W_SUB()">GST_VIDEO_FORMAT_INFO_W_SUB</a>         (info,
+                                                         c)
+struct              <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo">GstVideoInfo</a>;
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-DATA:CAPS" title="GST_VIDEO_INFO_COMP_DATA()">GST_VIDEO_INFO_COMP_DATA</a>            (i,
+                                                         d,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-DEPTH:CAPS" title="GST_VIDEO_INFO_COMP_DEPTH()">GST_VIDEO_INFO_COMP_DEPTH</a>           (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-HEIGHT:CAPS" title="GST_VIDEO_INFO_COMP_HEIGHT()">GST_VIDEO_INFO_COMP_HEIGHT</a>          (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-OFFSET:CAPS" title="GST_VIDEO_INFO_COMP_OFFSET()">GST_VIDEO_INFO_COMP_OFFSET</a>          (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PLANE:CAPS" title="GST_VIDEO_INFO_COMP_PLANE()">GST_VIDEO_INFO_COMP_PLANE</a>           (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-POFFSET:CAPS" title="GST_VIDEO_INFO_COMP_POFFSET()">GST_VIDEO_INFO_COMP_POFFSET</a>         (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PSTRIDE:CAPS" title="GST_VIDEO_INFO_COMP_PSTRIDE()">GST_VIDEO_INFO_COMP_PSTRIDE</a>         (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-STRIDE:CAPS" title="GST_VIDEO_INFO_COMP_STRIDE()">GST_VIDEO_INFO_COMP_STRIDE</a>          (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-WIDTH:CAPS" title="GST_VIDEO_INFO_COMP_WIDTH()">GST_VIDEO_INFO_COMP_WIDTH</a>           (i,
+                                                         c)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FLAGS:CAPS" title="GST_VIDEO_INFO_FLAGS()">GST_VIDEO_INFO_FLAGS</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FLAG-IS-SET:CAPS" title="GST_VIDEO_INFO_FLAG_IS_SET()">GST_VIDEO_INFO_FLAG_IS_SET</a>          (i,
+                                                         flag)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FLAG-SET:CAPS" title="GST_VIDEO_INFO_FLAG_SET()">GST_VIDEO_INFO_FLAG_SET</a>             (i,
+                                                         flag)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FLAG-UNSET:CAPS" title="GST_VIDEO_INFO_FLAG_UNSET()">GST_VIDEO_INFO_FLAG_UNSET</a>           (i,
+                                                         flag)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FORMAT:CAPS" title="GST_VIDEO_INFO_FORMAT()">GST_VIDEO_INFO_FORMAT</a>               (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FPS-D:CAPS" title="GST_VIDEO_INFO_FPS_D()">GST_VIDEO_INFO_FPS_D</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FPS-N:CAPS" title="GST_VIDEO_INFO_FPS_N()">GST_VIDEO_INFO_FPS_N</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-HAS-ALPHA:CAPS" title="GST_VIDEO_INFO_HAS_ALPHA()">GST_VIDEO_INFO_HAS_ALPHA</a>            (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-HEIGHT:CAPS" title="GST_VIDEO_INFO_HEIGHT()">GST_VIDEO_INFO_HEIGHT</a>               (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-INTERLACE-MODE:CAPS" title="GST_VIDEO_INFO_INTERLACE_MODE()">GST_VIDEO_INFO_INTERLACE_MODE</a>       (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-IS-GRAY:CAPS" title="GST_VIDEO_INFO_IS_GRAY()">GST_VIDEO_INFO_IS_GRAY</a>              (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-IS-INTERLACED:CAPS" title="GST_VIDEO_INFO_IS_INTERLACED()">GST_VIDEO_INFO_IS_INTERLACED</a>        (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-IS-RGB:CAPS" title="GST_VIDEO_INFO_IS_RGB()">GST_VIDEO_INFO_IS_RGB</a>               (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-IS-YUV:CAPS" title="GST_VIDEO_INFO_IS_YUV()">GST_VIDEO_INFO_IS_YUV</a>               (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-NAME:CAPS" title="GST_VIDEO_INFO_NAME()">GST_VIDEO_INFO_NAME</a>                 (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-N-COMPONENTS:CAPS" title="GST_VIDEO_INFO_N_COMPONENTS()">GST_VIDEO_INFO_N_COMPONENTS</a>         (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-N-PLANES:CAPS" title="GST_VIDEO_INFO_N_PLANES()">GST_VIDEO_INFO_N_PLANES</a>             (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-PAR-D:CAPS" title="GST_VIDEO_INFO_PAR_D()">GST_VIDEO_INFO_PAR_D</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-PAR-N:CAPS" title="GST_VIDEO_INFO_PAR_N()">GST_VIDEO_INFO_PAR_N</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-PLANE-OFFSET:CAPS" title="GST_VIDEO_INFO_PLANE_OFFSET()">GST_VIDEO_INFO_PLANE_OFFSET</a>         (i,
+                                                         p)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-PLANE-STRIDE:CAPS" title="GST_VIDEO_INFO_PLANE_STRIDE()">GST_VIDEO_INFO_PLANE_STRIDE</a>         (i,
+                                                         p)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-SIZE:CAPS" title="GST_VIDEO_INFO_SIZE()">GST_VIDEO_INFO_SIZE</a>                 (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-WIDTH:CAPS" title="GST_VIDEO_INFO_WIDTH()">GST_VIDEO_INFO_WIDTH</a>                (i)
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-COMPONENTS:CAPS" title="GST_VIDEO_MAX_COMPONENTS">GST_VIDEO_MAX_COMPONENTS</a>
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-PLANES:CAPS" title="GST_VIDEO_MAX_PLANES">GST_VIDEO_MAX_PLANES</a>
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-SUB-SCALE:CAPS" title="GST_VIDEO_SUB_SCALE()">GST_VIDEO_SUB_SCALE</a>                 (scale,
+                                                         val)
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-convert" title="gst_video_info_convert ()">gst_video_info_convert</a>              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_format</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> src_value</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_format</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> *dest_value</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps" title="gst_video_info_from_caps ()">gst_video_info_from_caps</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-init" title="gst_video_info_init ()">gst_video_info_init</a>                 (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format" title="gst_video_info_set_format ()">gst_video_info_set_format</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-to-caps" title="gst_video_info_to_caps ()">gst_video_info_to_caps</a>              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-calculate-display-ratio" title="gst_video_calculate_display_ratio ()">gst_video_calculate_display_ratio</a>   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *dar_n</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *dar_d</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> video_width</code></em>,
@@ -54,14 +185,14 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <span class="returnvalue">guint32</span>             <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-fourcc" title="gst_video_format_to_fourcc ()">gst_video_format_to_fourcc</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-fourcc" title="gst_video_format_from_fourcc ()">gst_video_format_from_fourcc</a>        (<em class="parameter"><code><span class="type">guint32</span> fourcc</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-parse-caps-palette" title="gst_video_parse_caps_palette ()">gst_video_parse_caps_palette</a>        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()">*GstVideoConvertSampleCallback</a>)    (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<span class="returnvalue">void</span>                (<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()">*GstVideoConvertSampleCallback</a>)    (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<span class="returnvalue">GstSample</span> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample" title="gst_video_convert_sample ()">gst_video_convert_sample</a>            (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample" title="gst_video_convert_sample ()">gst_video_convert_sample</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample-async" title="gst_video_convert_sample_async ()">gst_video_convert_sample_async</a>      (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample-async" title="gst_video_convert_sample_async ()">gst_video_convert_sample_async</a>      (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><span class="type">GstVideoConvertSampleCallback</span></a> callback</code></em>,
@@ -100,7 +231,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp28434336"></a><p>
+<a name="idp25775616"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -120,6 +251,526 @@ videosink and videofilter base classes.
 <a name="GST-VIDEO-SIZE-RANGE:CAPS"></a><h3>GST_VIDEO_SIZE_RANGE</h3>
 <pre class="programlisting">#define GST_VIDEO_SIZE_RANGE "(int) [ 1, max ]"
 </pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoChromaSite"></a><h3>enum GstVideoChromaSite</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_CHROMA_SITE_UNKNOWN   =  0,
+  GST_VIDEO_CHROMA_SITE_NONE      = (1 &lt;&lt; 0),
+  GST_VIDEO_CHROMA_SITE_H_COSITED = (1 &lt;&lt; 1),
+  GST_VIDEO_CHROMA_SITE_V_COSITED = (1 &lt;&lt; 2),
+  GST_VIDEO_CHROMA_SITE_ALT_LINE  = (1 &lt;&lt; 3),
+  /* some common chroma cositing */
+  GST_VIDEO_CHROMA_SITE_COSITED   = (GST_VIDEO_CHROMA_SITE_H_COSITED | GST_VIDEO_CHROMA_SITE_V_COSITED),
+  GST_VIDEO_CHROMA_SITE_JPEG      = (GST_VIDEO_CHROMA_SITE_NONE),
+  GST_VIDEO_CHROMA_SITE_MPEG2     = (GST_VIDEO_CHROMA_SITE_H_COSITED),
+  GST_VIDEO_CHROMA_SITE_DV        = (GST_VIDEO_CHROMA_SITE_COSITED | GST_VIDEO_CHROMA_SITE_ALT_LINE),
+} GstVideoChromaSite;
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoColorMatrix"></a><h3>enum GstVideoColorMatrix</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_COLOR_MATRIX_UNKNOWN = 0,
+  GST_VIDEO_COLOR_MATRIX_RGB,
+  GST_VIDEO_COLOR_MATRIX_FCC,
+  GST_VIDEO_COLOR_MATRIX_BT709,
+  GST_VIDEO_COLOR_MATRIX_BT601,
+  GST_VIDEO_COLOR_MATRIX_SMPTE240M
+} GstVideoColorMatrix;
+</pre>
+<p>
+The color matrix is used to convert between Y'PbPr and
+non-linear RGB (R'G'B')
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_UNKNOWN</code></span></p></td>
+<td>unknown matrix
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-RGB:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_RGB</code></span></p></td>
+<td>identity matrix
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-FCC:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_FCC</code></span></p></td>
+<td>FCC color matrix
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-BT709:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_BT709</code></span></p></td>
+<td>ITU-R BT.709 color matrix
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-BT601:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_BT601</code></span></p></td>
+<td>ITU-R BT.601 color matrix
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-MATRIX-SMPTE240M:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_SMPTE240M</code></span></p></td>
+<td>SMPTE 240M color matrix
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoColorPrimaries"></a><h3>enum GstVideoColorPrimaries</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_COLOR_PRIMARIES_UNKNOWN = 0,
+  GST_VIDEO_COLOR_PRIMARIES_BT709,
+  GST_VIDEO_COLOR_PRIMARIES_BT470M,
+  GST_VIDEO_COLOR_PRIMARIES_BT470BG,
+  GST_VIDEO_COLOR_PRIMARIES_SMPTE170M,
+  GST_VIDEO_COLOR_PRIMARIES_SMPTE240M
+} GstVideoColorPrimaries;
+</pre>
+<p>
+The color primaries define the how to transform linear RGB values to and from
+the CIE XYZ colorspace.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_UNKNOWN</code></span></p></td>
+<td>unknown color primaries
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-BT709:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_BT709</code></span></p></td>
+<td>BT709 primaries
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-BT470M:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_BT470M</code></span></p></td>
+<td>BT470M primaries
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-BT470BG:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_BT470BG</code></span></p></td>
+<td>BT470BG primaries
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-SMPTE170M:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_SMPTE170M</code></span></p></td>
+<td>SMPTE170M primaries
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-PRIMARIES-SMPTE240M:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_SMPTE240M</code></span></p></td>
+<td>SMPTE240M primaries
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoColorRange"></a><h3>enum GstVideoColorRange</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_COLOR_RANGE_UNKNOWN = 0,
+  GST_VIDEO_COLOR_RANGE_0_255,
+  GST_VIDEO_COLOR_RANGE_16_235
+} GstVideoColorRange;
+</pre>
+<p>
+Possible color range values. These constants are defined for 8 bit color
+values and can be scaled for other bit depths.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-RANGE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_RANGE_UNKNOWN</code></span></p></td>
+<td>unknown range
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-RANGE-0-255:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_RANGE_0_255</code></span></p></td>
+<td>[0..255] for 8 bit components
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-COLOR-RANGE-16-235:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_RANGE_16_235</code></span></p></td>
+<td>[16..235] for 8 bit components. Chroma has
+                [16..240] range.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoColorimetry"></a><h3>GstVideoColorimetry</h3>
+<pre class="programlisting">typedef struct {
+  GstVideoColorRange        range;
+  GstVideoColorMatrix       matrix;
+  GstVideoTransferFunction  transfer;
+  GstVideoColorPrimaries    primaries;
+} GstVideoColorimetry;
+</pre>
+<p>
+Structure describing the color info.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorRange" title="enum GstVideoColorRange"><span class="type">GstVideoColorRange</span></a> <em class="structfield"><code><a name="GstVideoColorimetry.range"></a>range</code></em>;</span></p></td>
+<td>the color range. This is the valid range for the samples.
+It is used to convert the samples to Y'PbPr values.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorMatrix" title="enum GstVideoColorMatrix"><span class="type">GstVideoColorMatrix</span></a> <em class="structfield"><code><a name="GstVideoColorimetry.matrix"></a>matrix</code></em>;</span></p></td>
+<td>the color matrix. Used to convert between Y'PbPr and
+non-linear RGB (R'G'B')</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoTransferFunction" title="enum GstVideoTransferFunction"><span class="type">GstVideoTransferFunction</span></a> <em class="structfield"><code><a name="GstVideoColorimetry.transfer"></a>transfer</code></em>;</span></p></td>
+<td>the transfer function. used to convert between R'G'B' and RGB</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorPrimaries" title="enum GstVideoColorPrimaries"><span class="type">GstVideoColorPrimaries</span></a> <em class="structfield"><code><a name="GstVideoColorimetry.primaries"></a>primaries</code></em>;</span></p></td>
+<td>color primaries. used to convert between R'G'B' and CIE XYZ</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoFlags"></a><h3>enum GstVideoFlags</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_FLAG_NONE         = 0,
+  GST_VIDEO_FLAG_VARIABLE_FPS = (1 &lt;&lt; 0)
+} GstVideoFlags;
+</pre>
+<p>
+Extra video flags
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-FLAG-NONE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FLAG_NONE</code></span></p></td>
+<td>no flags
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FLAG-VARIABLE-FPS:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FLAG_VARIABLE_FPS</code></span></p></td>
+<td>a variable fps is selected, fps_n and fps_d
+denote the maximum fps of the video
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoFormatFlags"></a><h3>enum GstVideoFormatFlags</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_FORMAT_FLAG_YUV      = (1 &lt;&lt; 0),
+  GST_VIDEO_FORMAT_FLAG_RGB      = (1 &lt;&lt; 1),
+  GST_VIDEO_FORMAT_FLAG_GRAY     = (1 &lt;&lt; 2),
+  GST_VIDEO_FORMAT_FLAG_ALPHA    = (1 &lt;&lt; 3),
+  GST_VIDEO_FORMAT_FLAG_LE       = (1 &lt;&lt; 4),
+  GST_VIDEO_FORMAT_FLAG_PALETTE  = (1 &lt;&lt; 5),
+  GST_VIDEO_FORMAT_FLAG_COMPLEX  = (1 &lt;&lt; 6)
+} GstVideoFormatFlags;
+</pre>
+<p>
+The different video flags that a format info can have.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-YUV:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_YUV</code></span></p></td>
+<td>The video format is YUV, components are numbered
+  0=Y, 1=U, 2=V.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-RGB:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_RGB</code></span></p></td>
+<td>The video format is RGB, components are numbered
+  0=R, 1=G, 2=B.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-GRAY:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_GRAY</code></span></p></td>
+<td>The video is gray, there is one gray component
+  with index 0.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-ALPHA:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_ALPHA</code></span></p></td>
+<td>The video format has an alpha components with
+  the number 3.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-LE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_LE</code></span></p></td>
+<td>The video format has data stored in little
+  endianness.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-PALETTE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_PALETTE</code></span></p></td>
+<td>The video format has a palette.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-FLAG-COMPLEX:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_COMPLEX</code></span></p></td>
+<td>The video format has a complex layout that
+  can't be described with the usual information in the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoFormatPack"></a><h3>GstVideoFormatPack ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoFormatPack)               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> src</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> stride[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);</pre>
+<p>
+Packs <em class="parameter"><code>width</code></em> pixels from <em class="parameter"><code>src</code></em> to the given planes and strides in the
+format <em class="parameter"><code>info</code></em>. The pixels from source have each component interleaved
+and will be packed into the planes in <em class="parameter"><code>data</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>a source array</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>pointers to the destination data planes</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
+<td>strides of the destination planes</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>the x position in the image to pack to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>the y position in the image to pack to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>the amount of pixels to pack.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoFormatUnpack"></a><h3>GstVideoFormatUnpack ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoFormatUnpack)             (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> dest</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> stride[GST_VIDEO_MAX_PLANES]</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);</pre>
+<p>
+Unpacks <em class="parameter"><code>width</code></em> pixels from the given planes and strides containing data of
+format <em class="parameter"><code>info</code></em>. The pixels will be unpacked into <em class="parameter"><code>dest</code></em> which each component
+interleaved. <em class="parameter"><code>dest</code></em> should at least be big enough to hold <em class="parameter"><code>width</code></em> *
+n_components * size(unpack_format) bytes.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
+<td>a destination array</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>pointers to the data planes</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
+<td>strides of the planes</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>the x position in the image to start from</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>the y position in the image to start from</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>the amount of pixels to unpack.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoInterlaceMode"></a><h3>enum GstVideoInterlaceMode</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_INTERLACE_MODE_PROGRESSIVE = 0,
+  GST_VIDEO_INTERLACE_MODE_INTERLEAVED,
+  GST_VIDEO_INTERLACE_MODE_MIXED,
+  GST_VIDEO_INTERLACE_MODE_FIELDS
+} GstVideoInterlaceMode;
+</pre>
+<p>
+The possible values of the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode" title="enum GstVideoInterlaceMode"><span class="type">GstVideoInterlaceMode</span></a> describing the interlace
+mode of the stream.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-INTERLACE-MODE-PROGRESSIVE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_INTERLACE_MODE_PROGRESSIVE</code></span></p></td>
+<td>all frames are progressive
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-INTERLACE-MODE-INTERLEAVED:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_INTERLACE_MODE_INTERLEAVED</code></span></p></td>
+<td>2 fields are interleaved in one video
+    frame. Extra buffer flags describe the field order.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-INTERLACE-MODE-MIXED:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_INTERLACE_MODE_MIXED</code></span></p></td>
+<td>frames contains both interlaced and
+    progressive video, the buffer flags describe the frame and fields.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-INTERLACE-MODE-FIELDS:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_INTERLACE_MODE_FIELDS</code></span></p></td>
+<td>2 fields are stored in one buffer, use the
+    frame ID to get access to the required field. For multiview (the
+    'views' property &gt; 1) the fields of view N can be found at frame ID
+    (N * 2) and (N * 2) + 1.
+    Each field has only half the amount of lines as noted in the
+    height property. This mode requires multiple GstVideoMeta metadata
+    to describe the fields.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoTransferFunction"></a><h3>enum GstVideoTransferFunction</h3>
+<pre class="programlisting">typedef enum {
+  GST_VIDEO_TRANSFER_UNKNOWN = 0,
+  GST_VIDEO_TRANSFER_GAMMA10,
+  GST_VIDEO_TRANSFER_GAMMA18,
+  GST_VIDEO_TRANSFER_GAMMA20,
+  GST_VIDEO_TRANSFER_GAMMA22,
+  GST_VIDEO_TRANSFER_BT709,
+  GST_VIDEO_TRANSFER_SMPTE240M,
+  GST_VIDEO_TRANSFER_SRGB,
+  GST_VIDEO_TRANSFER_GAMMA28,
+  GST_VIDEO_TRANSFER_LOG100,
+  GST_VIDEO_TRANSFER_LOG316
+} GstVideoTransferFunction;
+</pre>
+<p>
+The video transfer function defines the formula for converting between
+non-linear RGB (R'G'B') and linear RGB
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_UNKNOWN</code></span></p></td>
+<td>unknown transfer function
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-GAMMA10:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_GAMMA10</code></span></p></td>
+<td>linear RGB, gamma 1.0 curve
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-GAMMA18:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_GAMMA18</code></span></p></td>
+<td>Gamma 1.8 curve
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-GAMMA20:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_GAMMA20</code></span></p></td>
+<td>Gamma 2.0 curve
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-GAMMA22:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_GAMMA22</code></span></p></td>
+<td>Gamma 2.2 curve
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-BT709:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_BT709</code></span></p></td>
+<td>Gamma 2.2 curve with a linear segment in the lower
+                          range
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-SMPTE240M:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_SMPTE240M</code></span></p></td>
+<td>Gamma 2.2 curve with a linear segment in the
+                              lower range
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-SRGB:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_SRGB</code></span></p></td>
+<td>Gamma 2.4 curve with a linear segment in the lower
+                         range
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-GAMMA28:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_GAMMA28</code></span></p></td>
+<td>Gamma 2.8 curve
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-LOG100:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_LOG100</code></span></p></td>
+<td>Logarithmic transfer characteristic
+                            100:1 range
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-TRANSFER-LOG316:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_LOG316</code></span></p></td>
+<td>Logarithmic transfer characteristic
+                            316.22777:1 range
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -167,7 +818,8 @@ videosink and videofilter base classes.
   GST_VIDEO_FORMAT_IYU1,
   GST_VIDEO_FORMAT_ARGB64,
   GST_VIDEO_FORMAT_AYUV64,
-  GST_VIDEO_FORMAT_r210
+  GST_VIDEO_FORMAT_r210,
+  GST_VIDEO_FORMAT_ENCODED
 } GstVideoFormat;
 </pre>
 <p>
@@ -391,6 +1043,694 @@ Enum value describing the most common video formats.
 <td>packed 4:4:4 RGB, 10 bits per channel (Since: 0.10.33)
 </td>
 </tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-ENCODED:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_ENCODED</code></span></p></td>
+<td>Encoded video format
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoFormatInfo"></a><h3>struct GstVideoFormatInfo</h3>
+<pre class="programlisting">struct GstVideoFormatInfo {
+  GstVideoFormat format;
+  const gchar *name;
+  const gchar *description;
+  GstVideoFormatFlags flags;
+  guint bits;
+  guint n_components;
+  guint shift[GST_VIDEO_MAX_COMPONENTS];
+  guint depth[GST_VIDEO_MAX_COMPONENTS];
+  gint  pixel_stride[GST_VIDEO_MAX_COMPONENTS];
+  guint n_planes;
+  guint plane[GST_VIDEO_MAX_COMPONENTS];
+  guint poffset[GST_VIDEO_MAX_COMPONENTS];
+  guint w_sub[GST_VIDEO_MAX_COMPONENTS];
+  guint h_sub[GST_VIDEO_MAX_COMPONENTS];
+
+  GstVideoFormat unpack_format;
+  GstVideoFormatUnpack unpack_func;
+  GstVideoFormatPack pack_func;
+};
+</pre>
+<p>
+Information for a video format.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.format"></a>format</code></em>;</span></p></td>
+<td><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a></td>
+</tr>
+<tr>
+<td><p><span class="term">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstVideoFormatInfo.name"></a>name</code></em>;</span></p></td>
+<td>string representation of the format</td>
+</tr>
+<tr>
+<td><p><span class="term">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstVideoFormatInfo.description"></a>description</code></em>;</span></p></td>
+<td>use readable description of the format</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatFlags" title="enum GstVideoFormatFlags"><span class="type">GstVideoFormatFlags</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.flags"></a>flags</code></em>;</span></p></td>
+<td><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatFlags" title="enum GstVideoFormatFlags"><span class="type">GstVideoFormatFlags</span></a></td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.bits"></a>bits</code></em>;</span></p></td>
+<td>The number of bits used to pack data items. This can be less than 8
+when multiple pixels are stored in a byte. for values &gt; 8 multiple bytes
+should be read according to the endianness flag before applying the shift
+and mask.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.n-components"></a>n_components</code></em>;</span></p></td>
+<td>the number of components in the video format.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.shift"></a>shift</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>the number of bits to shift away to get the component data</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.depth"></a>depth</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>the depth in bits for each component</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.pixel-stride"></a>pixel_stride</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>the pixel stride of each component. This is the amount of
+bytes to the pixel immediately to the right. When bits &lt; 8, the stride is
+expressed in bits.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.n-planes"></a>n_planes</code></em>;</span></p></td>
+<td>the number of planes for this format. The number of planes can be
+less than the amount of components when multiple components are packed into
+one plane.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.plane"></a>plane</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>the plane number where a component can be found</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.poffset"></a>poffset</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>the offset in the plane where the first pixel of the components
+can be found. If bits &lt; 8 the amount is specified in bits.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.w-sub"></a>w_sub</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>subsampling factor of the width for the component. Use
+GST_VIDEO_SUB_SCALE to scale a width.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.h-sub"></a>h_sub</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
+<td>subsampling factor of the height for the component. Use
+GST_VIDEO_SUB_SCALE to scale a height.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.unpack-format"></a>unpack_format</code></em>;</span></p></td>
+<td>the format of the unpacked pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatUnpack" title="GstVideoFormatUnpack ()"><span class="type">GstVideoFormatUnpack</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.unpack-func"></a>unpack_func</code></em>;</span></p></td>
+<td>an unpack function for this format</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatPack" title="GstVideoFormatPack ()"><span class="type">GstVideoFormatPack</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.pack-func"></a>pack_func</code></em>;</span></p></td>
+<td>an pack function for this format</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-BITS:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_BITS()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_BITS(info)         ((info)-&gt;bits)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-DATA:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_DATA()</h3>
+<pre class="programlisting">#define             GST_VIDEO_FORMAT_INFO_DATA(info,planes,comp)</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-DEPTH:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_DEPTH()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_DEPTH(info,c)      ((info)-&gt;depth[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-FLAGS:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_FLAGS()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_FLAGS(info)        ((info)-&gt;flags)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-FORMAT:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_FORMAT()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_FORMAT(info)       ((info)-&gt;format)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-HAS-ALPHA:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_HAS_ALPHA()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_HAS_ALPHA(info)    ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_ALPHA)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-HAS-PALETTE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_HAS_PALETTE()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_HAS_PALETTE(info)  ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_PALETTE)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-H-SUB:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_H_SUB()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_H_SUB(info,c)      ((info)-&gt;h_sub[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-IS-GRAY:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_IS_GRAY()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_IS_GRAY(info)      ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_GRAY)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-IS-LE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_IS_LE()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_IS_LE(info)        ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_LE)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-IS-RGB:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_IS_RGB()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_IS_RGB(info)       ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_RGB)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-IS-YUV:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_IS_YUV()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_IS_YUV(info)       ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_YUV)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-IS-COMPLEX:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_IS_COMPLEX()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_IS_COMPLEX(info)   ((info)-&gt;flags &amp; GST_VIDEO_FORMAT_FLAG_COMPLEX)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-NAME:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_NAME()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_NAME(info)         ((info)-&gt;name)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-N-COMPONENTS:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_N_COMPONENTS()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_N_COMPONENTS(info) ((info)-&gt;n_components)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-N-PLANES:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_N_PLANES()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_N_PLANES(info)     ((info)-&gt;n_planes)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-OFFSET:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_OFFSET()</h3>
+<pre class="programlisting">#define             GST_VIDEO_FORMAT_INFO_OFFSET(info,offsets,comp)</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-PLANE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_PLANE()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_PLANE(info,c)      ((info)-&gt;plane[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-POFFSET:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_POFFSET()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_POFFSET(info,c)    ((info)-&gt;poffset[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-PSTRIDE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_PSTRIDE()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_PSTRIDE(info,c)    ((info)-&gt;pixel_stride[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-SCALE-HEIGHT:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT(info,c,h) GST_VIDEO_SUB_SCALE ((info)-&gt;h_sub[c],(h))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-SCALE-WIDTH:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_SCALE_WIDTH()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_SCALE_WIDTH(info,c,w)  GST_VIDEO_SUB_SCALE ((info)-&gt;w_sub[c],(w))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-SHIFT:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_SHIFT()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_SHIFT(info,c)      ((info)-&gt;shift[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-STRIDE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_STRIDE()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_STRIDE(info,strides,comp) ((strides)[(info)-&gt;plane[comp]])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-FORMAT-INFO-W-SUB:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_W_SUB()</h3>
+<pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_W_SUB(info,c)      ((info)-&gt;w_sub[c])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoInfo"></a><h3>struct GstVideoInfo</h3>
+<pre class="programlisting">struct GstVideoInfo {
+  const GstVideoFormatInfo *finfo;
+
+  GstVideoInterlaceMode     interlace_mode;
+  GstVideoFlags             flags;
+  gint                      width;
+  gint                      height;
+  gsize                     size;
+  gint                      views;
+
+  GstVideoChromaSite        chroma_site;
+  GstVideoColorimetry       colorimetry;
+
+  GstBuffer                *palette;
+
+  gint                      par_n;
+  gint                      par_d;
+  gint                      fps_n;
+  gint                      fps_d;
+
+  gsize                     offset[GST_VIDEO_MAX_PLANES];
+  gint                      stride[GST_VIDEO_MAX_PLANES];
+};
+</pre>
+<p>
+Information describing image properties. This information can be filled
+in from GstCaps with <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps" title="gst_video_info_from_caps ()"><code class="function">gst_video_info_from_caps()</code></a>. The information is also used
+to store the specific video info when mapping a video frame with
+<code class="function">gst_video_frame_map()</code>.
+</p>
+<p>
+Use the provided macros to access the info in this structure.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *<em class="structfield"><code><a name="GstVideoInfo.finfo"></a>finfo</code></em>;</span></p></td>
+<td>the format info of the video</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode" title="enum GstVideoInterlaceMode"><span class="type">GstVideoInterlaceMode</span></a> <em class="structfield"><code><a name="GstVideoInfo.interlace-mode"></a>interlace_mode</code></em>;</span></p></td>
+<td>the interlace mode</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFlags" title="enum GstVideoFlags"><span class="type">GstVideoFlags</span></a> <em class="structfield"><code><a name="GstVideoInfo.flags"></a>flags</code></em>;</span></p></td>
+<td>additional video flags</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.width"></a>width</code></em>;</span></p></td>
+<td>the width of the video</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.height"></a>height</code></em>;</span></p></td>
+<td>the height of the video</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gsize</span> <em class="structfield"><code><a name="GstVideoInfo.size"></a>size</code></em>;</span></p></td>
+<td>the default size of one frame</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.views"></a>views</code></em>;</span></p></td>
+<td>the number of views for multiview video</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoChromaSite" title="enum GstVideoChromaSite"><span class="type">GstVideoChromaSite</span></a> <em class="structfield"><code><a name="GstVideoInfo.chroma-site"></a>chroma_site</code></em>;</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoChromaSite" title="enum GstVideoChromaSite"><span class="type">GstVideoChromaSite</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorimetry" title="GstVideoColorimetry"><span class="type">GstVideoColorimetry</span></a> <em class="structfield"><code><a name="GstVideoInfo.colorimetry"></a>colorimetry</code></em>;</span></p></td>
+<td>the colorimetry info</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *<em class="structfield"><code><a name="GstVideoInfo.palette"></a>palette</code></em>;</span></p></td>
+<td>a buffer with palette data</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.par-n"></a>par_n</code></em>;</span></p></td>
+<td>the pixel-aspect-ratio numerator</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.par-d"></a>par_d</code></em>;</span></p></td>
+<td>the pixel-aspect-ratio demnominator</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.fps-n"></a>fps_n</code></em>;</span></p></td>
+<td>the framerate numerator</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.fps-d"></a>fps_d</code></em>;</span></p></td>
+<td>the framerate demnominator</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">gsize</span> <em class="structfield"><code><a name="GstVideoInfo.offset"></a>offset</code></em>[GST_VIDEO_MAX_PLANES];</span></p></td>
+<td>offsets of the planes</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoInfo.stride"></a>stride</code></em>[GST_VIDEO_MAX_PLANES];</span></p></td>
+<td>strides of the planes</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-DATA:CAPS"></a><h3>GST_VIDEO_INFO_COMP_DATA()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_DATA(i,d,c)  GST_VIDEO_FORMAT_INFO_DATA((i)-&gt;finfo,d,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-DEPTH:CAPS"></a><h3>GST_VIDEO_INFO_COMP_DEPTH()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_DEPTH(i,c)   GST_VIDEO_FORMAT_INFO_DEPTH((i)-&gt;finfo,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-HEIGHT:CAPS"></a><h3>GST_VIDEO_INFO_COMP_HEIGHT()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_HEIGHT(i,c)  GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT((i)-&gt;finfo,(c),(i)-&gt;height)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-OFFSET:CAPS"></a><h3>GST_VIDEO_INFO_COMP_OFFSET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_OFFSET(i,c)  GST_VIDEO_FORMAT_INFO_OFFSET((i)-&gt;finfo,(i)-&gt;offset,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-PLANE:CAPS"></a><h3>GST_VIDEO_INFO_COMP_PLANE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_PLANE(i,c)   GST_VIDEO_FORMAT_INFO_PLANE((i)-&gt;finfo,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-POFFSET:CAPS"></a><h3>GST_VIDEO_INFO_COMP_POFFSET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_POFFSET(i,c) GST_VIDEO_FORMAT_INFO_POFFSET((i)-&gt;finfo,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-PSTRIDE:CAPS"></a><h3>GST_VIDEO_INFO_COMP_PSTRIDE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_PSTRIDE(i,c) GST_VIDEO_FORMAT_INFO_PSTRIDE((i)-&gt;finfo,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-STRIDE:CAPS"></a><h3>GST_VIDEO_INFO_COMP_STRIDE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_STRIDE(i,c)  GST_VIDEO_FORMAT_INFO_STRIDE((i)-&gt;finfo,(i)-&gt;stride,(c))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-COMP-WIDTH:CAPS"></a><h3>GST_VIDEO_INFO_COMP_WIDTH()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_COMP_WIDTH(i,c)   GST_VIDEO_FORMAT_INFO_SCALE_WIDTH((i)-&gt;finfo,(c),(i)-&gt;width)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FLAGS:CAPS"></a><h3>GST_VIDEO_INFO_FLAGS()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FLAGS(i)          ((i)-&gt;flags)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FLAG-IS-SET:CAPS"></a><h3>GST_VIDEO_INFO_FLAG_IS_SET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FLAG_IS_SET(i,flag) ((GST_VIDEO_INFO_FLAGS(i) &amp; (flag)) == (flag))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FLAG-SET:CAPS"></a><h3>GST_VIDEO_INFO_FLAG_SET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FLAG_SET(i,flag)    (GST_VIDEO_INFO_FLAGS(i) |= (flag))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FLAG-UNSET:CAPS"></a><h3>GST_VIDEO_INFO_FLAG_UNSET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FLAG_UNSET(i,flag)  (GST_VIDEO_INFO_FLAGS(i) &amp;= ~(flag))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FORMAT:CAPS"></a><h3>GST_VIDEO_INFO_FORMAT()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FORMAT(i)         (GST_VIDEO_FORMAT_INFO_FORMAT((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FPS-D:CAPS"></a><h3>GST_VIDEO_INFO_FPS_D()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FPS_D(i)          ((i)-&gt;fps_d)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-FPS-N:CAPS"></a><h3>GST_VIDEO_INFO_FPS_N()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_FPS_N(i)          ((i)-&gt;fps_n)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-HAS-ALPHA:CAPS"></a><h3>GST_VIDEO_INFO_HAS_ALPHA()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_HAS_ALPHA(i)      (GST_VIDEO_FORMAT_INFO_HAS_ALPHA((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-HEIGHT:CAPS"></a><h3>GST_VIDEO_INFO_HEIGHT()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_HEIGHT(i)         ((i)-&gt;height)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-INTERLACE-MODE:CAPS"></a><h3>GST_VIDEO_INFO_INTERLACE_MODE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_INTERLACE_MODE(i) ((i)-&gt;interlace_mode)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-IS-GRAY:CAPS"></a><h3>GST_VIDEO_INFO_IS_GRAY()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_IS_GRAY(i)        (GST_VIDEO_FORMAT_INFO_IS_GRAY((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-IS-INTERLACED:CAPS"></a><h3>GST_VIDEO_INFO_IS_INTERLACED()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_IS_INTERLACED(i)  ((i)-&gt;interlace_mode != GST_VIDEO_INTERLACE_MODE_PROGRESSIVE)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-IS-RGB:CAPS"></a><h3>GST_VIDEO_INFO_IS_RGB()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_IS_RGB(i)         (GST_VIDEO_FORMAT_INFO_IS_RGB((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-IS-YUV:CAPS"></a><h3>GST_VIDEO_INFO_IS_YUV()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_IS_YUV(i)         (GST_VIDEO_FORMAT_INFO_IS_YUV((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-NAME:CAPS"></a><h3>GST_VIDEO_INFO_NAME()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_NAME(i)           (GST_VIDEO_FORMAT_INFO_NAME((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-N-COMPONENTS:CAPS"></a><h3>GST_VIDEO_INFO_N_COMPONENTS()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_N_COMPONENTS(i)   GST_VIDEO_FORMAT_INFO_N_COMPONENTS((i)-&gt;finfo)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-N-PLANES:CAPS"></a><h3>GST_VIDEO_INFO_N_PLANES()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_N_PLANES(i)       (GST_VIDEO_FORMAT_INFO_N_PLANES((i)-&gt;finfo))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-PAR-D:CAPS"></a><h3>GST_VIDEO_INFO_PAR_D()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_PAR_D(i)          ((i)-&gt;par_d)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-PAR-N:CAPS"></a><h3>GST_VIDEO_INFO_PAR_N()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_PAR_N(i)          ((i)-&gt;par_n)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-PLANE-OFFSET:CAPS"></a><h3>GST_VIDEO_INFO_PLANE_OFFSET()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_PLANE_OFFSET(i,p) ((i)-&gt;offset[p])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-PLANE-STRIDE:CAPS"></a><h3>GST_VIDEO_INFO_PLANE_STRIDE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_PLANE_STRIDE(i,p) ((i)-&gt;stride[p])
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-SIZE:CAPS"></a><h3>GST_VIDEO_INFO_SIZE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_SIZE(i)           ((i)-&gt;size)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-WIDTH:CAPS"></a><h3>GST_VIDEO_INFO_WIDTH()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_WIDTH(i)          ((i)-&gt;width)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-MAX-COMPONENTS:CAPS"></a><h3>GST_VIDEO_MAX_COMPONENTS</h3>
+<pre class="programlisting">#define GST_VIDEO_MAX_COMPONENTS 4
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-MAX-PLANES:CAPS"></a><h3>GST_VIDEO_MAX_PLANES</h3>
+<pre class="programlisting">#define GST_VIDEO_MAX_PLANES 4
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-SUB-SCALE:CAPS"></a><h3>GST_VIDEO_SUB_SCALE()</h3>
+<pre class="programlisting">#define GST_VIDEO_SUB_SCALE(scale,val)   (-((-((gint)(val)))&gt;&gt;(scale)))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-convert"></a><h3>gst_video_info_convert ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_info_convert              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_format</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> src_value</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_format</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> *dest_value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-from-caps"></a><h3>gst_video_info_from_caps ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_info_from_caps            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
+<p>
+Parse <em class="parameter"><code>caps</code></em> and update <em class="parameter"><code>info</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>caps</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if <em class="parameter"><code>caps</code></em> could be parsed</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-init"></a><h3>gst_video_info_init ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_info_init                 (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);</pre>
+<p>
+Initialize <em class="parameter"><code>info</code></em> with default values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-set-format"></a><h3>gst_video_info_set_format ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_info_set_format           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>);</pre>
+<p>
+Set the default info for a video frame of <em class="parameter"><code>format</code></em> and <em class="parameter"><code>width</code></em> and <em class="parameter"><code>height</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>the format</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>a width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>a height</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-to-caps"></a><h3>gst_video_info_to_caps ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           gst_video_info_to_caps              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);</pre>
+<p>
+Convert the values of <em class="parameter"><code>info</code></em> into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> containing the info of <em class="parameter"><code>info</code></em>.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -532,14 +1872,14 @@ values, each containing ARGB colors in native endianness.
 <hr>
 <div class="refsect2">
 <a name="GstVideoConvertSampleCallback"></a><h3>GstVideoConvertSampleCallback ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoConvertSampleCallback)    (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GstVideoConvertSampleCallback)    (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-video-convert-sample"></a><h3>gst_video_convert_sample ()</h3>
-<pre class="programlisting"><span class="returnvalue">GstSample</span> *         gst_video_convert_sample            (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a> *         gst_video_convert_sample            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
@@ -557,7 +1897,7 @@ The width, height and pixel-aspect-ratio can also be specified in the output cap
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
-<td>a <span class="type">GstSample</span>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a>
 </td>
 </tr>
 <tr>
@@ -574,7 +1914,7 @@ The width, height and pixel-aspect-ratio can also be specified in the output cap
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The converted <span class="type">GstSample</span>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if an error happened (in which case <em class="parameter"><code>err</code></em>
+<td>The converted <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if an error happened (in which case <em class="parameter"><code>err</code></em>
 will point to the <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>).</td>
 </tr>
 </tbody>
@@ -584,7 +1924,7 @@ will point to the <a href="http://library.gnome.org/devel/glib/unstable/glib-Err
 <hr>
 <div class="refsect2">
 <a name="gst-video-convert-sample-async"></a><h3>gst_video_convert_sample_async ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_convert_sample_async      (<em class="parameter"><code><span class="type">GstSample</span> *sample</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_convert_sample_async      (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *sample</code></em>,
                                                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *to_caps</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><span class="type">GstVideoConvertSampleCallback</span></a> callback</code></em>,
@@ -614,7 +1954,7 @@ anymore.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
-<td>a <span class="type">GstSample</span>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a>
 </td>
 </tr>
 <tr>

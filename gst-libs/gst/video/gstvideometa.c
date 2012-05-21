@@ -164,7 +164,7 @@ default_unmap (GstVideoMeta * meta, guint plane, GstMapInfo * info)
 /**
  * gst_buffer_add_video_meta:
  * @buffer: a #GstBuffer
- * @flags: #GstVideoFlags
+ * @flags: #GstVideoFrameFlags
  * @format: a #GstVideoFormat
  * @width: the width
  * @height: the height
@@ -178,16 +178,17 @@ default_unmap (GstVideoMeta * meta, guint plane, GstMapInfo * info)
  * Returns: the #GstVideoMeta on @buffer.
  */
 GstVideoMeta *
-gst_buffer_add_video_meta (GstBuffer * buffer, GstVideoFlags flags,
-    GstVideoFormat format, guint width, guint height)
+gst_buffer_add_video_meta (GstBuffer * buffer,
+    GstVideoFrameFlags flags, GstVideoFormat format, guint width, guint height)
 {
   GstVideoMeta *meta;
   GstVideoInfo info;
 
   gst_video_info_set_format (&info, format, width, height);
 
-  meta = gst_buffer_add_video_meta_full (buffer, flags, format, width, height,
-      info.finfo->n_planes, info.offset, info.stride);
+  meta =
+      gst_buffer_add_video_meta_full (buffer, flags, format, width,
+      height, info.finfo->n_planes, info.offset, info.stride);
 
   return meta;
 }
@@ -195,7 +196,7 @@ gst_buffer_add_video_meta (GstBuffer * buffer, GstVideoFlags flags,
 /**
  * gst_buffer_add_video_meta_full:
  * @buffer: a #GstBuffer
- * @flags: #GstVideoFlags
+ * @flags: #GstVideoFrameFlags
  * @format: a #GstVideoFormat
  * @width: the width
  * @height: the height
@@ -208,9 +209,9 @@ gst_buffer_add_video_meta (GstBuffer * buffer, GstVideoFlags flags,
  * Returns: the #GstVideoMeta on @buffer.
  */
 GstVideoMeta *
-gst_buffer_add_video_meta_full (GstBuffer * buffer, GstVideoFlags flags,
-    GstVideoFormat format, guint width, guint height,
-    guint n_planes, gsize offset[GST_VIDEO_MAX_PLANES],
+gst_buffer_add_video_meta_full (GstBuffer * buffer,
+    GstVideoFrameFlags flags, GstVideoFormat format, guint width,
+    guint height, guint n_planes, gsize offset[GST_VIDEO_MAX_PLANES],
     gint stride[GST_VIDEO_MAX_PLANES])
 {
   GstVideoMeta *meta;

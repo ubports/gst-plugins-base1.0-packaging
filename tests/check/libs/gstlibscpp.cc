@@ -24,7 +24,6 @@
 #include <gst/gst.h>
 #include <gst/check/gstcheck.h>
 
-#include <gst/app/gstapp-marshal.h>
 #include <gst/app/gstappsink.h>
 #include <gst/app/gstappsrc.h>
 
@@ -38,10 +37,6 @@
 #include <gst/audio/gstaudiobasesink.h>
 #include <gst/audio/gstaudiobasesrc.h>
 #include <gst/audio/gstaudioringbuffer.h>
-#include <gst/audio/mixerutils.h>
-#include <gst/audio/mixer.h>
-#include <gst/audio/mixeroptions.h>
-#include <gst/audio/mixertrack.h>
 #include <gst/audio/streamvolume.h>
 
 #include <gst/fft/gstfftf32.h>
@@ -49,13 +44,6 @@
 #include <gst/fft/gstfft.h>
 #include <gst/fft/gstffts16.h>
 #include <gst/fft/gstffts32.h>
-
-#include <gst/interfaces/interfaces-enumtypes.h>
-#include <gst/interfaces/interfaces-marshal.h>
-#include <gst/interfaces/navigation.h>
-#include <gst/interfaces/tunerchannel.h>
-#include <gst/interfaces/tuner.h>
-#include <gst/interfaces/tunernorm.h>
 
 #include <gst/pbutils/codec-utils.h>
 #include <gst/pbutils/descriptions.h>
@@ -67,7 +55,6 @@
 #include <gst/pbutils/missing-plugins.h>
 #include <gst/pbutils/pbutils-enumtypes.h>
 #include <gst/pbutils/pbutils.h>
-#include <gst/pbutils/pbutils-marshal.h>
 
 #include <gst/riff/riff-ids.h>
 #include <gst/riff/riff-media.h>
@@ -85,7 +72,6 @@
 #include <gst/rtsp/gstrtsp-enumtypes.h>
 #include <gst/rtsp/gstrtspextension.h>
 #include <gst/rtsp/gstrtsp.h>
-#include <gst/rtsp/gstrtsp-marshal.h>
 #include <gst/rtsp/gstrtspmessage.h>
 #include <gst/rtsp/gstrtsprange.h>
 #include <gst/rtsp/gstrtsptransport.h>
@@ -100,12 +86,12 @@
 #include <gst/video/gstvideofilter.h>
 #include <gst/video/gstvideosink.h>
 #include <gst/video/video-enumtypes.h>
-#include <gst/video/video-marshal.h>
 #include <gst/video/video.h>
 #include <gst/video/colorbalancechannel.h>
 #include <gst/video/colorbalance.h>
 #include <gst/video/videoorientation.h>
 #include <gst/video/videooverlay.h>
+#include <gst/video/navigation.h>
 
 /* we mostly just want to make sure that our library headers don't
  * contain anything a C++ compiler might not like */

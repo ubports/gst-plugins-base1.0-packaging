@@ -70,7 +70,7 @@ GstEncodeBin implements
 <pre class="synopsis">
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--audio-jitter-tolerance" title='The "audio-jitter-tolerance" property'>audio-jitter-tolerance</a>"   <span class="type">guint64</span>               : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--avoid-reencoding" title='The "avoid-reencoding" property'>avoid-reencoding</a>"         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--profile" title='The "profile" property'>profile</a>"                  <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>*   : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--profile" title='The "profile" property'>profile</a>"                  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>*   : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-buffers-max" title='The "queue-buffers-max" property'>queue-buffers-max</a>"        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-bytes-max" title='The "queue-bytes-max" property'>queue-bytes-max</a>"          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-time-max" title='The "queue-time-max" property'>queue-time-max</a>"           <span class="type">guint64</span>               : Read / Write
@@ -87,7 +87,7 @@ GstEncodeBin implements
 <a name="gst-plugins-base-plugins-encodebin.description"></a><h2>Description</h2>
 <p>
 EncodeBin provides a bin for encoding/muxing various streams according to
-a specified <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>.
+a specified <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>.
 </p>
 <p>
 Based on the profile that was set (via the <a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--profile" title='The "profile" property'><span class="type">"profile"</span></a> property),
@@ -99,7 +99,7 @@ encoded/muxed/converted stream in output.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp6153584"></a><h3>Features</h3>
+<a name="idp9863536"></a><h3>Features</h3>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
 Automatic encoder and muxer selection based on elements available on the
@@ -118,7 +118,7 @@ signal.
 </li>
 <li class="listitem">
 Avoid reencoding (passthrough). If the input stream is already encoded and is
-compatible with what the <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> expects, then the stream won't
+compatible with what the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> expects, then the stream won't
 be re-encoded but just passed through downstream to the muxer or the output.
 </li>
 <li class="listitem">
@@ -128,9 +128,9 @@ to a pad. <a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncod
 segments and re-encoding the segments of media that need encoding.
 </li>
 <li class="listitem">
-Standard behaviour is to use a <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingContainerProfile"><span class="type">GstEncodingContainerProfile</span></a> to have both
+Standard behaviour is to use a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingContainerProfile"><span class="type">GstEncodingContainerProfile</span></a> to have both
 encoding and muxing performed. But you can also provide a single stream
-profile (like <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingAudioProfile"><span class="type">GstEncodingAudioProfile</span></a>) to only have the encoding done and
+profile (like <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingAudioProfile"><span class="type">GstEncodingAudioProfile</span></a>) to only have the encoding done and
 handle the encoded output yourself.
 </li>
 <li class="listitem">
@@ -140,7 +140,7 @@ will automatically fix those imperfections for you. See
 <a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--audio-jitter-tolerance" title='The "audio-jitter-tolerance" property'><span class="type">"audio-jitter-tolerance"</span></a> for more details.
 </li>
 <li class="listitem">
-Variable or Constant video framerate. If your <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingVideoProfile"><span class="type">GstEncodingVideoProfile</span></a> has
+Variable or Constant video framerate. If your <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingVideoProfile"><span class="type">GstEncodingVideoProfile</span></a> has
 the variableframerate property deactivated (default), then the incoming
 raw video stream will be retimestampped in order to produce a constant
 framerate.
@@ -164,7 +164,7 @@ user a way to install the missing element.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp10928496"></a><h3>Element Information</h3>
+<a name="idp11290832"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -187,7 +187,7 @@ user a way to install the missing element.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp10935904"></a><h3>Element Pads</h3>
+<a name="idp11298240"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -304,9 +304,9 @@ user a way to install the missing element.
 <hr>
 <div class="refsect2">
 <a name="GstEncodeBin--profile"></a><h3>The <code class="literal">"profile"</code> property</h3>
-<pre class="programlisting">  "profile"                  <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>*   : Read / Write</pre>
+<pre class="programlisting">  "profile"                  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>*   : Read / Write</pre>
 <p>
-The <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to use. This property must be set before going
+The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to use. This property must be set before going
 to <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-PAUSED:CAPS"><code class="literal">GST_STATE_PAUSED</code></a> or higher.
 </p>
 </div>

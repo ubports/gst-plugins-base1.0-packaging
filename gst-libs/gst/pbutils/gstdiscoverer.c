@@ -89,6 +89,9 @@ struct _GstDiscovererPrivate
   /* TRUE if discoverer has been started */
   gboolean running;
 
+  /* TRUE if ASYNC_DONE has been received (need to check for subtitle tags) */
+  gboolean async_done;
+
   /* current items */
   GstDiscovererInfo *current_info;
   GError *current_error;
@@ -96,6 +99,9 @@ struct _GstDiscovererPrivate
 
   /* List of private streams */
   GList *streams;
+
+  /* List of these sinks and their handler IDs (to remove the probe) */
+  guint pending_subtitle_pads;
 
   /* Global elements */
   GstBin *pipeline;
@@ -262,8 +268,11 @@ gst_discoverer_init (GstDiscoverer * dc)
 
   dc->priv->timeout = DEFAULT_PROP_TIMEOUT;
   dc->priv->async = FALSE;
+  dc->priv->async_done = FALSE;
 
   dc->priv->lock = g_mutex_new ();
+
+  dc->priv->pending_subtitle_pads = 0;
 
   GST_LOG ("Creating pipeline");
   dc->priv->pipeline = (GstBin *) gst_pipeline_new ("Discoverer");
@@ -461,6 +470,30 @@ is_subtitle_caps (const GstCaps * caps)
   return ret;
 }
 
+static GstPadProbeReturn
+got_subtitle_data (GstPad * pad, GstPadProbeInfo * info, GstDiscoverer * dc)
+{
+
+  if (!(GST_IS_BUFFER (info->data) || (GST_IS_EVENT (info->data)
+              && GST_EVENT_TYPE ((GstEvent *) info->data) == GST_EVENT_GAP)))
+    return GST_PAD_PROBE_OK;
+
+
+  DISCO_LOCK (dc);
+
+  dc->priv->pending_subtitle_pads--;
+
+  if (dc->priv->pending_subtitle_pads == 0) {
+    GstMessage *msg = gst_message_new_application (NULL,
+        gst_structure_new_empty ("DiscovererDone"));
+    gst_element_post_message ((GstElement *) dc->priv->pipeline, msg);
+  }
+  DISCO_UNLOCK (dc);
+
+  return GST_PAD_PROBE_REMOVE;
+
+}
+
 static void
 uridecodebin_pad_added_cb (GstElement * uridecodebin, GstPad * pad,
     GstDiscoverer * dc)
@@ -486,10 +519,19 @@ uridecodebin_pad_added_cb (GstElement * uridecodebin, GstPad * pad,
 
   caps = gst_pad_query_caps (pad, NULL);
 
+  sinkpad = gst_element_get_static_pad (ps->queue, "sink");
+  if (sinkpad == NULL)
+    goto error;
+
   if (is_subtitle_caps (caps)) {
     /* Subtitle streams are sparse and may not provide any information - don't
      * wait for data to preroll */
+    gst_pad_add_probe (sinkpad, GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM,
+        (GstPadProbeCallback) got_subtitle_data, dc, NULL);
     g_object_set (ps->sink, "async", FALSE, NULL);
+    DISCO_LOCK (dc);
+    dc->priv->pending_subtitle_pads++;
+    DISCO_UNLOCK (dc);
   }
 
   gst_caps_unref (caps);
@@ -504,9 +546,6 @@ uridecodebin_pad_added_cb (GstElement * uridecodebin, GstPad * pad,
   if (!gst_element_sync_state_with_parent (ps->queue))
     goto error;
 
-  sinkpad = gst_element_get_static_pad (ps->queue, "sink");
-  if (sinkpad == NULL)
-    goto error;
   if (gst_pad_link_full (pad, sinkpad,
           GST_PAD_LINK_CHECK_NOTHING) != GST_PAD_LINK_OK)
     goto error;
@@ -730,7 +769,8 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->framerate_num = vinfo.fps_n;
       info->framerate_denom = vinfo.fps_d;
 
-      info->interlaced = (vinfo.flags & GST_VIDEO_FLAG_INTERLACED) != 0;
+      info->interlaced =
+          vinfo.interlace_mode != GST_VIDEO_INTERLACE_MODE_PROGRESSIVE;
     }
 
     if (gst_structure_id_has_field (st, _TAGS_QUARK)) {
@@ -798,8 +838,8 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->caps = gst_caps_ref (caps);
     }
 
-    if (gst_structure_id_get (st, _TAGS_QUARK,
-            GST_TYPE_TAG_LIST, &tags_st, NULL)) {
+    if (gst_structure_id_get (st, _TAGS_QUARK, GST_TYPE_TAG_LIST, &tags_st,
+            NULL)) {
       gst_discoverer_merge_and_replace_tags (&info->tags, tags_st);
     }
 
@@ -1087,8 +1127,8 @@ discoverer_collect (GstDiscoverer * dc)
           gst_caps_get_structure (dc->priv->current_info->stream_info->caps, 0);
 
       if (g_str_has_prefix (gst_structure_get_name (st), "image/"))
-        ((GstDiscovererVideoInfo *) dc->priv->current_info->
-            stream_info)->is_image = TRUE;
+        ((GstDiscovererVideoInfo *) dc->priv->current_info->stream_info)->
+            is_image = TRUE;
     }
   }
 
@@ -1174,10 +1214,30 @@ handle_message (GstDiscoverer * dc, GstMessage * msg)
       done = TRUE;
       break;
 
+    case GST_MESSAGE_APPLICATION:{
+      const gchar *name;
+      gboolean async_done;
+      name = gst_structure_get_name (gst_message_get_structure (msg));
+      /* Maybe ASYNC_DONE is received & we're just waiting for subtitle tags */
+      DISCO_LOCK (dc);
+      async_done = dc->priv->async_done;
+      DISCO_UNLOCK (dc);
+      if (g_str_equal (name, "DiscovererDone") && async_done)
+        return TRUE;
+      break;
+    }
+
     case GST_MESSAGE_ASYNC_DONE:
       if (GST_MESSAGE_SRC (msg) == (GstObject *) dc->priv->pipeline) {
         GST_DEBUG ("Finished changing state asynchronously");
-        done = TRUE;
+        DISCO_LOCK (dc);
+        if (dc->priv->pending_subtitle_pads == 0) {
+          done = TRUE;
+        } else {
+          /* Remember that ASYNC_DONE has been received, wait for subtitles */
+          dc->priv->async_done = TRUE;
+        }
+        DISCO_UNLOCK (dc);
 
       }
       break;
@@ -1231,7 +1291,6 @@ handle_message (GstDiscoverer * dc, GstMessage * msg)
 
   return done;
 }
-
 
 static void
 handle_current_sync (GstDiscoverer * dc)
@@ -1318,6 +1377,9 @@ discoverer_cleanup (GstDiscoverer * dc)
   }
 
   dc->priv->current_info = NULL;
+
+  dc->priv->pending_subtitle_pads = 0;
+  dc->priv->async_done = FALSE;
 
   /* Try popping the next uri */
   if (dc->priv->async) {
