@@ -1,0 +1,26 @@
+From ce4f2c462caab80abae6c8a51b22e71e07a58b31 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian.droege@collabora.co.uk>
+Date: Fri, 8 Jun 2012 11:26:46 +0200
+Subject: [PATCH 1/2] videoconvert: Need $(LIBM) for pow()
+
+---
+ gst/videoconvert/Makefile.am |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/gst/videoconvert/Makefile.am b/gst/videoconvert/Makefile.am
+index 2939d85..b17b134 100644
+--- a/gst/videoconvert/Makefile.am
++++ b/gst/videoconvert/Makefile.am
+@@ -13,7 +13,8 @@ libgstvideoconvert_la_LIBADD = \
+ 	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
+ 	$(GST_BASE_LIBS) \
+ 	$(GST_LIBS) \
+-	$(ORC_LIBS)
++	$(ORC_LIBS) \
++	$(LIBM)
+ libgstvideoconvert_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
+ libgstvideoconvert_la_LIBTOOLFLAGS = --tag=disable-static
+ 
+-- 
+1.7.10
+

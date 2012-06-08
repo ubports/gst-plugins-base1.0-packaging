@@ -1,1 +1,2 @@
 99_ltmain_as-needed.patch
+0001-videoconvert-Need-LIBM-for-pow.patch
