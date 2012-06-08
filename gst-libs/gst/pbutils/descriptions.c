@@ -65,11 +65,9 @@ typedef struct
 
 static const FormatInfo formats[] = {
   /* container/tag formats with static descriptions */
-  {"audio/annodex", "Ogg", FLAG_CONTAINER},
   {"audio/ogg", "Ogg", FLAG_CONTAINER},
   {"audio/webm", "WebM", FLAG_CONTAINER},
   {"audio/x-matroska", "Matroska", FLAG_CONTAINER},
-  {"application/annodex", "Ogg", FLAG_CONTAINER},
   {"application/gxf", "General Exchange Format (GXF)", FLAG_CONTAINER},
   {"application/ogg", "Ogg", FLAG_CONTAINER},
   {"application/kate", "Ogg", FLAG_CONTAINER},
@@ -83,7 +81,6 @@ static const FormatInfo formats[] = {
   {"application/x-pn-realaudio", "RealAudio", FLAG_CONTAINER},
   {"application/x-yuv4mpeg", "Y4M", FLAG_CONTAINER},
   {"multipart/x-mixed-replace", "Multipart", FLAG_CONTAINER},
-  {"video/annodex", "Ogg", FLAG_CONTAINER},
   {"video/ogg", "Ogg", FLAG_CONTAINER},
   {"video/x-fli", "FLI/FLC/FLX Animation", FLAG_CONTAINER},
   {"video/x-flv", "Flash", FLAG_CONTAINER},
@@ -120,6 +117,7 @@ static const FormatInfo formats[] = {
   {"audio/x-dts", "DTS", 0},
   {"audio/x-private1-dts", "DTS", 0},
   {"audio/x-dv", "DV Audio", 0},
+  {"audio/x-eac3", "E-AC-3 (ATSC A/52B)", 0},
   {"audio/x-flac", N_("Free Lossless Audio Codec (FLAC)"), 0},
   {"audio/x-gsm", "GSM", 0},
   {"audio/x-iec958", "S/PDIF IEC958", 0},       /* TODO: check description */
@@ -256,6 +254,7 @@ static const FormatInfo formats[] = {
   {"application/x-kate", "Kate", 0},
   {"subtitle/x-kate", N_("Kate subtitle format"), 0},
   {"subpicture/x-dvb", "DVB subtitles", 0},
+  {"subpicture/x-pgs", "PGS subtitles", 0},
 
   /* non-audio/video/container formats */
   {"hdv/aux-v", "HDV AUX-V", 0},

@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT(GStreamer Base Plug-ins, 0.11.91,
+AC_INIT(GStreamer Base Plug-ins, 0.11.92,
     http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer,
     gst-plugins-base)
 
@@ -53,7 +53,7 @@ dnl sets GST_LT_LDFLAGS
 AS_LIBTOOL(GST, 0, 0, 0)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=0.11.90
+GST_REQ=0.11.91
 
 dnl *** autotools stuff ****
 
@@ -186,11 +186,11 @@ AM_CONDITIONAL(HAVE_LIBXML_HTML, test "x$HAVE_LIBXML_HTML" = "xyes")
 
 dnl used in gst/tcp
 AC_CHECK_HEADERS([sys/socket.h],
-  HAVE_SYS_SOCKET_H="yes", HAVE_SYS_SOCKET_H="no")
+  [HAVE_SYS_SOCKET_H="yes"], [HAVE_SYS_SOCKET_H="no"], [AC_INCLUDES_DEFAULT])
 AM_CONDITIONAL(HAVE_SYS_SOCKET_H, test "x$HAVE_SYS_SOCKET_H" = "xyes")
 
 dnl used in gst-libs/gst/pbutils and associated unit test
-AC_CHECK_HEADERS([process.h sys/types.h sys/wait.h sys/stat.h])
+AC_CHECK_HEADERS([process.h sys/types.h sys/wait.h sys/stat.h], [], [], [AC_INCLUDES_DEFAULT])
 
 dnl also, Windows does not have long long
 AX_CREATE_STDINT_H
@@ -256,11 +256,13 @@ if test "x$BUILD_EXAMPLES" = "xyes"; then
   PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQ, HAVE_GTK=yes, HAVE_GTK=no)
   dnl some examples need gtk+-x11
   PKG_CHECK_MODULES(GTK_X11, gtk+-x11-3.0 >= $GTK_REQ, HAVE_GTK_X11=yes, HAVE_GTK_X11=no)
+  PKG_CHECK_MODULES(GTK_QUARTZ, gtk+-quartz-3.0 >= $GTK_REQ, HAVE_GTK_QUARTZ=yes, HAVE_GTK_QUARTZ=no)
   AC_SUBST(GTK_LIBS)
   AC_SUBST(GTK_CFLAGS)
 fi
 AM_CONDITIONAL(HAVE_GTK, test "x$HAVE_GTK" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_X11, test "x$HAVE_GTK_X11" = "xyes")
+AM_CONDITIONAL(HAVE_GTK_QUARTZ, test "x$HAVE_GTK_QUARTZ" = "xyes")
 
 dnl QT is optional and only used in examples
 PKG_CHECK_MODULES(QT, QtGui >= 4.6, [
@@ -490,7 +492,7 @@ AG_GST_CHECK_FEATURE(X, [X libraries and plugins],
   CPPFLAGS="$CPPFLAGS $X_CFLAGS"
 
   dnl now try to find the HEADER
-  AC_CHECK_HEADER(X11/Xlib.h, HAVE_X="yes", HAVE_X="no")
+  AC_CHECK_HEADER([X11/Xlib.h], [HAVE_X="yes"], [HAVE_X="no"], [AC_INCLUDES_DEFAULT])
 
   if test "x$HAVE_X" = "xno"
   then

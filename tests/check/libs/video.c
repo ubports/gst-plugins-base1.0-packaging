@@ -358,7 +358,7 @@ video_format_is_packed (GstVideoFormat fmt)
     case GST_VIDEO_FORMAT_ABGR:
     case GST_VIDEO_FORMAT_RGB:
     case GST_VIDEO_FORMAT_BGR:
-    case GST_VIDEO_FORMAT_RGB8_PALETTED:
+    case GST_VIDEO_FORMAT_RGB8P:
       return TRUE;
     default:
       g_return_val_if_reached (FALSE);
@@ -396,7 +396,8 @@ GST_START_TEST (test_video_formats_all)
     fail_if (gst_video_format_from_string (fmt_str) ==
         GST_VIDEO_FORMAT_UNKNOWN);
   }
-  fail_unless_equals_int (num, num_formats);
+  /* Take into account GST_VIDEO_FORMAT_ENCODED */
+  fail_unless_equals_int (num, num_formats - 1);
 
   gst_caps_unref (caps);
 }

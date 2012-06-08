@@ -552,8 +552,7 @@ Removes next <em class="parameter"><code>n_bytes</code></em> of input data and a
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_bytes</code></em> :</span></p></td>
-<td>an encoded <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
-</td>
+<td>the number of bytes to add</td>
 </tr>
 </tbody>
 </table></div>
@@ -565,8 +564,7 @@ Removes next <em class="parameter"><code>n_bytes</code></em> of input data and a
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_decoder_alloc_output_buffer
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <p>
-Helper function that uses <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#gst-pad-alloc-buffer-and-set-caps"><code class="function">gst_pad_alloc_buffer_and_set_caps()</code></a></code></em>
-to allocate a buffer to hold a video frame for <em class="parameter"><code>decoder</code></em>'s
+Helper function that allocates a buffer to hold a video frame for <em class="parameter"><code>decoder</code></em>'s
 current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -593,10 +591,9 @@ current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoC
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);</pre>
 <p>
-Helper function that uses <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#gst-pad-alloc-buffer-and-set-caps"><code class="function">gst_pad_alloc_buffer_and_set_caps()</code></a></code></em>
-to allocate a buffer to hold a video frame for <em class="parameter"><code>decoder</code></em>'s
-current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>.  Subclass should already have configured video state
-and set src pad caps.
+Helper function that allocates a buffer to hold a video frame for <em class="parameter"><code>decoder</code></em>'s
+current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>.  Subclass should already have configured video
+state and set src pad caps.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -613,7 +610,8 @@ and set src pad caps.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>result from pad alloc call</td>
+<td>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><code class="literal">GST_FLOW_OK</code></a> if an output buffer could be allocated</td>
 </tr>
 </tbody>
 </table></div>
@@ -843,6 +841,10 @@ metadata and passes it along for further processing, i.e. <em class="parameter">
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_video_decoder_get_latency       (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *min_latency</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *max_latency</code></em>);</pre>
+<p>
+Query the configured decoder latency. Results will be returned via
+<em class="parameter"><code>min_latency</code></em> and <em class="parameter"><code>max_latency</code></em>.
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -853,17 +855,15 @@ metadata and passes it along for further processing, i.e. <em class="parameter">
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>min_latency</code></em> :</span></p></td>
-<td>the configured minimum latency. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>address of variable in which to store the
+configured minimum latency, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_latency</code></em> :</span></p></td>
-<td>the configured maximum latency. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>address of variable in which to store the
+configured mximum latency, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the configured encoding latency.</td>
 </tr>
 </tbody>
 </table></div>
@@ -876,7 +876,9 @@ metadata and passes it along for further processing, i.e. <em class="parameter">
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> min_latency</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> max_latency</code></em>);</pre>
 <p>
-Informs baseclass of encoding latency.
+Lets <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> sub-classes tell the baseclass what the decoder
+latency is. Will also post a LATENCY message on the bus so the pipeline
+can reconfigure its global latency.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

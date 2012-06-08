@@ -127,7 +127,7 @@ gst_video_convert_caps_remove_format_info (GstCaps * caps)
       continue;
 
     st = gst_structure_copy (st);
-    gst_structure_remove_fields (st, "format", "palette_data",
+    gst_structure_remove_fields (st, "format",
         "colorimetry", "chroma-site", NULL);
 
     gst_caps_append_structure (res, st);
@@ -217,37 +217,11 @@ gst_video_convert_set_info (GstVideoFilter * filter,
     GstVideoInfo * out_info)
 {
   GstVideoConvert *space;
-  ColorSpaceColorSpec in_spec, out_spec;
-  gboolean interlaced;
 
   space = GST_VIDEO_CONVERT_CAST (filter);
 
   if (space->convert) {
     videoconvert_convert_free (space->convert);
-  }
-
-  /* input caps */
-  if (GST_VIDEO_INFO_IS_RGB (in_info)) {
-    in_spec = COLOR_SPEC_RGB;
-  } else if (GST_VIDEO_INFO_IS_YUV (in_info)) {
-    if (in_info->colorimetry.matrix == GST_VIDEO_COLOR_MATRIX_BT709)
-      in_spec = COLOR_SPEC_YUV_BT709;
-    else
-      in_spec = COLOR_SPEC_YUV_BT470_6;
-  } else {
-    in_spec = COLOR_SPEC_GRAY;
-  }
-
-  /* output caps */
-  if (GST_VIDEO_INFO_IS_RGB (out_info)) {
-    out_spec = COLOR_SPEC_RGB;
-  } else if (GST_VIDEO_INFO_IS_YUV (out_info)) {
-    if (out_info->colorimetry.matrix == GST_VIDEO_COLOR_MATRIX_BT709)
-      out_spec = COLOR_SPEC_YUV_BT709;
-    else
-      out_spec = COLOR_SPEC_YUV_BT470_6;
-  } else {
-    out_spec = COLOR_SPEC_GRAY;
   }
 
   /* these must match */
@@ -263,53 +237,9 @@ gst_video_convert_set_info (GstVideoFilter * filter,
   if (in_info->interlace_mode != out_info->interlace_mode)
     goto format_mismatch;
 
-  space->from_spec = in_spec;
-  space->to_spec = out_spec;
-
-  interlaced = GST_VIDEO_INFO_IS_INTERLACED (in_info);
-
-  space->convert =
-      videoconvert_convert_new (GST_VIDEO_INFO_FORMAT (out_info), out_spec,
-      GST_VIDEO_INFO_FORMAT (in_info), in_spec, in_info->width,
-      in_info->height);
+  space->convert = videoconvert_convert_new (in_info, out_info);
   if (space->convert == NULL)
     goto no_convert;
-
-  videoconvert_convert_set_interlaced (space->convert, interlaced);
-
-  /* palette, only for from data */
-  if (GST_VIDEO_INFO_FORMAT (in_info) ==
-      GST_VIDEO_FORMAT_RGB8_PALETTED
-      && GST_VIDEO_INFO_FORMAT (out_info) == GST_VIDEO_FORMAT_RGB8_PALETTED) {
-    goto format_mismatch;
-  } else if (GST_VIDEO_INFO_FORMAT (in_info) == GST_VIDEO_FORMAT_RGB8_PALETTED) {
-    GstBuffer *palette;
-    GstMapInfo map;
-
-    palette = gst_video_parse_caps_palette (incaps);
-
-    if (!palette || gst_buffer_get_size (palette) < 256 * 4) {
-      if (palette)
-        gst_buffer_unref (palette);
-      goto invalid_palette;
-    }
-
-    gst_buffer_map (palette, &map, GST_MAP_READ);
-    videoconvert_convert_set_palette (space->convert, (guint32 *) map.data);
-    gst_buffer_unmap (palette, &map);
-
-    gst_buffer_unref (palette);
-  } else if (GST_VIDEO_INFO_FORMAT (out_info) == GST_VIDEO_FORMAT_RGB8_PALETTED) {
-    const guint32 *palette;
-    GstBuffer *p_buf;
-
-    palette = videoconvert_convert_get_palette (space->convert);
-
-    p_buf = gst_buffer_new_and_alloc (256 * 4);
-    gst_buffer_fill (p_buf, 0, palette, 256 * 4);
-    gst_caps_set_simple (outcaps, "palette_data", GST_TYPE_BUFFER, p_buf, NULL);
-    gst_buffer_unref (p_buf);
-  }
 
   GST_DEBUG ("reconfigured %d %d", GST_VIDEO_INFO_FORMAT (in_info),
       GST_VIDEO_INFO_FORMAT (out_info));
@@ -325,11 +255,6 @@ format_mismatch:
 no_convert:
   {
     GST_ERROR_OBJECT (space, "could not create converter");
-    return FALSE;
-  }
-invalid_palette:
-  {
-    GST_ERROR_OBJECT (space, "invalid palette");
     return FALSE;
   }
 }

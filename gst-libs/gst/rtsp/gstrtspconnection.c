@@ -322,10 +322,12 @@ gst_rtsp_connection_accept (GSocket * socket, GstRTSPConnection ** conn,
   ip = g_inet_address_to_string (g_inet_socket_address_get_address
       (G_INET_SOCKET_ADDRESS (addr)));
   port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr));
+  g_object_unref (addr);
 
   ret =
       gst_rtsp_connection_create_from_socket (client_sock, ip, port, NULL,
       conn);
+  g_object_unref (client_sock);
   g_free (ip);
 
   return ret;
@@ -426,6 +428,7 @@ do_connect (const gchar * ip, guint16 port, GSocket ** socket_out,
   if (!g_socket_connect (socket, saddr, cancellable, &err)) {
     if (!g_error_matches (err, G_IO_ERROR, G_IO_ERROR_PENDING))
       goto sys_error;
+    g_clear_error (&err);
   } else {
     goto done;
   }
@@ -2093,7 +2096,7 @@ gst_rtsp_connection_receive (GstRTSPConnection * conn, GstRTSPMessage * message,
             G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP, conn->cancellable,
             &err)) {
       g_socket_set_timeout (conn->read_socket, 0);
-      if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_BUSY)) {
+      if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
         g_clear_error (&err);
         goto stopped;
       } else if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_TIMED_OUT)) {
@@ -2155,6 +2158,17 @@ gst_rtsp_connection_close (GstRTSPConnection * conn)
 {
   g_return_val_if_fail (conn != NULL, GST_RTSP_EINVAL);
 
+  /* last unref closes the connection we don't want to explicitly close here
+   * because these sockets might have been provided at construction */
+  if (conn->socket0) {
+    g_object_unref (conn->socket0);
+    conn->socket0 = NULL;
+  }
+  if (conn->socket1) {
+    g_object_unref (conn->socket1);
+    conn->socket1 = NULL;
+  }
+
   g_free (conn->ip);
   conn->ip = NULL;
 
@@ -2197,10 +2211,6 @@ gst_rtsp_connection_free (GstRTSPConnection * conn)
   g_return_val_if_fail (conn != NULL, GST_RTSP_EINVAL);
 
   res = gst_rtsp_connection_close (conn);
-  if (conn->socket0)
-    g_object_unref (conn->socket0);
-  if (conn->socket1)
-    g_object_unref (conn->socket1);
 
   if (conn->cancellable)
     g_object_unref (conn->cancellable);

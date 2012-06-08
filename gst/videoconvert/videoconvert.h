@@ -21,18 +21,11 @@
 #define __COLORSPACE_H__
 
 #include <gst/video/video.h>
+#include "gstcms.h"
 
 G_BEGIN_DECLS
 
 typedef struct _VideoConvert VideoConvert;
-
-typedef enum {
-  COLOR_SPEC_NONE = 0,
-  COLOR_SPEC_RGB,
-  COLOR_SPEC_GRAY,
-  COLOR_SPEC_YUV_BT470_6,
-  COLOR_SPEC_YUV_BT709
-} ColorSpaceColorSpec;
 
 typedef enum {
   DITHER_NONE,
@@ -41,46 +34,35 @@ typedef enum {
 } ColorSpaceDitherMethod;
 
 struct _VideoConvert {
-  gint width, height;
-  gboolean interlaced;
-  gboolean use_16bit;
-  gboolean dither;
+  GstVideoInfo in_info;
+  GstVideoInfo out_info;
 
-  GstVideoFormat from_format;
-  ColorSpaceColorSpec from_spec;
-  GstVideoFormat to_format;
-  ColorSpaceColorSpec to_spec;
+  gint width;
+  gint height;
+
+  gint in_bits;
+  gint out_bits;
+  gint cmatrix[4][4];
+
   guint32 *palette;
+
+  ColorSpaceDitherMethod dither;
 
   guint8 *tmpline;
   guint16 *tmpline16;
   guint16 *errline;
 
   void (*convert) (VideoConvert *convert, GstVideoFrame *dest, const GstVideoFrame *src);
-  void (*getline) (VideoConvert *convert, guint8 *dest, const GstVideoFrame *src, int j);
-  void (*putline) (VideoConvert *convert, GstVideoFrame *dest, const guint8 *src, int j);
   void (*matrix) (VideoConvert *convert);
-
-  void (*getline16) (VideoConvert *convert, guint16 *dest, const GstVideoFrame *src, int j);
-  void (*putline16) (VideoConvert *convert, GstVideoFrame *dest, const guint16 *src, int j);
   void (*matrix16) (VideoConvert *convert);
   void (*dither16) (VideoConvert *convert, int j);
 };
 
-VideoConvert *   videoconvert_convert_new            (GstVideoFormat to_format,
-                                                      ColorSpaceColorSpec from_spec,
-                                                      GstVideoFormat from_format,
-                                                      ColorSpaceColorSpec to_spec,
-                                                      int width, int height);
+VideoConvert *   videoconvert_convert_new            (GstVideoInfo *in_info,
+                                                      GstVideoInfo *out_info);
 void             videoconvert_convert_free           (VideoConvert * convert);
 
 void             videoconvert_convert_set_dither     (VideoConvert * convert, int type);
-void             videoconvert_convert_set_interlaced (VideoConvert *convert,
-                                                      gboolean interlaced);
-
-void             videoconvert_convert_set_palette    (VideoConvert *convert,
-                                                      const guint32 *palette);
-const guint32 *  videoconvert_convert_get_palette    (VideoConvert *convert);
 
 void             videoconvert_convert_convert        (VideoConvert * convert,
                                                       GstVideoFrame *dest, const GstVideoFrame *src);

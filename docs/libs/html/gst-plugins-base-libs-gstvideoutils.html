@@ -59,9 +59,10 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideoutils.ht
 #define             <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GST-VIDEO-CODEC-FRAME-UNSET-SYNC-POINT:CAPS" title="GST_VIDEO_CODEC_FRAME_UNSET_SYNC_POINT()">GST_VIDEO_CODEC_FRAME_UNSET_SYNC_POINT</a>(frame)
 <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="returnvalue">GstVideoCodecFrame</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-ref" title="gst_video_codec_frame_ref ()">gst_video_codec_frame_ref</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-unref" title="gst_video_codec_frame_unref ()">gst_video_codec_frame_unref</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-set-hook" title="gst_video_codec_frame_set_hook ()">gst_video_codec_frame_set_hook</a>      (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *hook</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-set-user-data" title="gst_video_codec_frame_set_user_data ()">gst_video_codec_frame_set_user_data</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> notify</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="returnvalue">gpointer</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-get-user-data" title="gst_video_codec_frame_get_user_data ()">gst_video_codec_frame_get_user_data</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);
 struct              <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState">GstVideoCodecState</a>;
 <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="returnvalue">GstVideoCodecState</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-state-ref" title="gst_video_codec_state_ref ()">gst_video_codec_state_ref</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a> *state</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-state-unref" title="gst_video_codec_state_unref ()">gst_video_codec_state_unref</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a> *state</code></em>);
@@ -89,10 +90,6 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideoutils.ht
   GstBuffer *output_buffer; /* ED */
 
   GstClockTime deadline; /* D */
-
-  /* Events that should be pushed downstream *before*
-   * the next output_buffer */
-  GList *events;		/* ED */
 };
 </pre>
 <p>
@@ -147,10 +144,6 @@ directly, or by using the <em class="parameter"><code><a class="link" href="gst-
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> <em class="structfield"><code><a name="GstVideoCodecFrame.deadline"></a>deadline</code></em>;</span></p></td>
 <td>Running time when the frame will be used.</td>
-</tr>
-<tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> *<em class="structfield"><code><a name="GstVideoCodecFrame.events"></a>events</code></em>;</span></p></td>
-<td>Events that will be pushed downstream before this frame is pushed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -476,17 +469,17 @@ will be freed.
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-video-codec-frame-set-hook"></a><h3>gst_video_codec_frame_set_hook ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_codec_frame_set_hook      (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>,
-                                                         <em class="parameter"><code><span class="type">void</span> *hook</code></em>,
+<a name="gst-video-codec-frame-set-user-data"></a><h3>gst_video_codec_frame_set_user_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_codec_frame_set_user_data (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> notify</code></em>);</pre>
 <p>
-Sets the <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> that will be called (along with the <em class="parameter"><code>hook</code></em>) when
-the frame is freed.
+Sets <em class="parameter"><code>user_data</code></em> on the frame and the <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> that will be called when
+the frame is freed. Allows to attach private data by the subclass to frames.
 </p>
 <p>
-If a <em class="parameter"><code>hook</code></em> was previously set, then the previous set <em class="parameter"><code>notify</code></em> will be called
-before the <em class="parameter"><code>hook</code></em> is replaced.
+If a <em class="parameter"><code>user_data</code></em> was previously set, then the previous set <em class="parameter"><code>notify</code></em> will be called
+before the <em class="parameter"><code>user_data</code></em> is replaced.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -497,12 +490,36 @@ before the <em class="parameter"><code>hook</code></em> is replaced.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>hook</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>private data</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>notify</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a>. <span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym> hook]</span>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a>. <span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym> user_data]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-codec-frame-get-user-data"></a><h3>gst_video_codec_frame_get_user_data ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="returnvalue">gpointer</span></a>            gst_video_codec_frame_get_user_data (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);</pre>
+<p>
+Gets private data set on the frame by the subclass via
+<a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-set-user-data" title="gst_video_codec_frame_set_user_data ()"><code class="function">gst_video_codec_frame_set_user_data()</code></a> previously.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The previously set user_data. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>

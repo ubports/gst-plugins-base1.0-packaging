@@ -28,6 +28,7 @@
 
 static gboolean async = FALSE;
 static gboolean silent = FALSE;
+static gboolean show_toc = FALSE;
 static gboolean verbose = FALSE;
 
 typedef struct
@@ -102,7 +103,7 @@ gst_stream_audio_information_to_string (GstDiscovererStreamInfo * info,
   my_g_string_append_printf (s, depth, "Tags:\n");
   tags = gst_discoverer_stream_info_get_tags (info);
   if (tags) {
-    tmp = gst_structure_to_string ((GstStructure *) tags);
+    tmp = gst_tag_list_to_string (tags);
     my_g_string_append_printf (s, depth, "  %s\n", tmp);
     g_free (tmp);
   } else {
@@ -174,7 +175,7 @@ gst_stream_video_information_to_string (GstDiscovererStreamInfo * info,
   my_g_string_append_printf (s, depth, "Tags:\n");
   tags = gst_discoverer_stream_info_get_tags (info);
   if (tags) {
-    tmp = gst_structure_to_string ((GstStructure *) tags);
+    tmp = gst_tag_list_to_string (tags);
     my_g_string_append_printf (s, depth, "  %s\n", tmp);
     g_free (tmp);
   } else {
@@ -226,7 +227,7 @@ gst_stream_subtitle_information_to_string (GstDiscovererStreamInfo * info,
   my_g_string_append_printf (s, depth, "Tags:\n");
   tags = gst_discoverer_stream_info_get_tags (info);
   if (tags) {
-    tmp = gst_structure_to_string ((GstStructure *) tags);
+    tmp = gst_tag_list_to_string (tags);
     my_g_string_append_printf (s, depth, "  %s\n", tmp);
     g_free (tmp);
   } else {
@@ -310,10 +311,9 @@ print_topology (GstDiscovererStreamInfo * info, gint depth)
   }
 }
 
-static gboolean
-print_tag_each (GQuark field_id, const GValue * value, gpointer user_data)
+static void
+print_tag (const gchar * tag_name, const GValue * value, gint tab)
 {
-  gint tab = GPOINTER_TO_INT (user_data);
   gchar *ser;
 
   if (G_VALUE_HOLDS_STRING (value))
@@ -332,26 +332,90 @@ print_tag_each (GQuark field_id, const GValue * value, gpointer user_data)
   } else
     ser = gst_value_serialize (value);
 
-  g_print ("%*s%s: %s\n", tab, " ",
-      gst_tag_get_nick (g_quark_to_string (field_id)), ser);
+  g_print ("%*s%s: %s\n", tab, " ", gst_tag_get_nick (tag_name), ser);
   g_free (ser);
+}
 
-  return TRUE;
+/* FIXME: this function is almost identical to print_tag() */
+static void
+print_tag_foreach (const GstTagList * tags, const gchar * tag,
+    gpointer user_data)
+{
+  GValue val = { 0, };
+  gchar *str;
+  gint depth = GPOINTER_TO_INT (user_data);
+
+  gst_tag_list_copy_value (&val, tags, tag);
+
+  if (G_VALUE_HOLDS_STRING (&val))
+    str = g_value_dup_string (&val);
+  else
+    str = gst_value_serialize (&val);
+
+  g_print ("%*s%s: %s\n", 2 * depth, " ", gst_tag_get_nick (tag), str);
+  g_free (str);
+
+  g_value_unset (&val);
+}
+
+#define MAX_INDENT 40
+
+static void
+print_toc_entry (gpointer data, gpointer user_data)
+{
+  GstTocEntry *entry = (GstTocEntry *) data;
+  gint depth = GPOINTER_TO_INT (user_data);
+  guint indent = MIN (GPOINTER_TO_UINT (user_data), MAX_INDENT);
+  gint64 start, stop;
+
+  gst_toc_entry_get_start_stop (entry, &start, &stop);
+  g_print ("%*s%s: start: %" GST_TIME_FORMAT " stop: %" GST_TIME_FORMAT "\n",
+      depth, " ", gst_toc_entry_type_get_nick (entry->type),
+      GST_TIME_ARGS (start), GST_TIME_ARGS (stop));
+  indent += 2;
+
+  /* print tags */
+  if (entry->type == GST_TOC_ENTRY_TYPE_CHAPTER)
+    g_print ("%*sTags:\n", 2 * depth, " ");
+  gst_tag_list_foreach (entry->tags, print_tag_foreach,
+      GUINT_TO_POINTER (indent));
+
+  /* loop over sub-toc entries */
+  g_list_foreach (entry->subentries, print_toc_entry,
+      GUINT_TO_POINTER (indent));
 }
 
 static void
 print_properties (GstDiscovererInfo * info, gint tab)
 {
   const GstTagList *tags;
+  const GstToc *toc;
 
   g_print ("%*sDuration: %" GST_TIME_FORMAT "\n", tab + 1, " ",
       GST_TIME_ARGS (gst_discoverer_info_get_duration (info)));
   g_print ("%*sSeekable: %s\n", tab + 1, " ",
       (gst_discoverer_info_get_seekable (info) ? "yes" : "no"));
   if ((tags = gst_discoverer_info_get_tags (info))) {
+    guint num_tags, i;
+
     g_print ("%*sTags: \n", tab + 1, " ");
-    gst_structure_foreach ((const GstStructure *) tags, print_tag_each,
-        GINT_TO_POINTER (tab + 5));
+    num_tags = gst_tag_list_n_tags (tags);
+    for (i = 0; i < num_tags; ++i) {
+      const GValue *val;
+      const gchar *tag_name;
+      guint num_entries, j;
+
+      tag_name = gst_tag_list_nth_tag_name (tags, i);
+      num_entries = gst_tag_list_get_tag_size (tags, tag_name);
+      for (j = 0; j < num_entries; ++j) {
+        val = gst_tag_list_get_value_index (tags, tag_name, j);
+        print_tag (tag_name, val, tab + 5);
+      }
+    }
+  }
+  if (show_toc && (toc = gst_discoverer_info_get_toc (info))) {
+    g_print ("%*sTOC: \n", tab + 1, " ");
+    g_list_foreach (toc->entries, print_toc_entry, GUINT_TO_POINTER (tab + 5));
   }
 }
 
@@ -511,6 +575,8 @@ main (int argc, char **argv)
         "Specify timeout (in seconds, default 10)", "T"},
     /* {"elem", 'e', 0, G_OPTION_ARG_NONE, &elem_seek, */
     /*     "Seek on elements instead of pads", NULL}, */
+    {"toc", 'c', 0, G_OPTION_ARG_NONE, &show_toc,
+        "Output TOC (chapters and editions)", NULL},
     {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
         "Verbose properties", NULL},
     {NULL}
