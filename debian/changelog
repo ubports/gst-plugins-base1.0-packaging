@@ -1,9 +1,10 @@
-gst-plugins-base1.0 (0.11.91-2) UNRELEASED; urgency=low
+gst-plugins-base1.0 (0.11.92-1) experimental; urgency=low
 
   * debian/control.in:
     + Update automake, autoconf and libtool build dependencies.
+  * New upstream release, "Comfortably Numb".
 
- -- Sebastian Dröge <slomo@debian.org>  Mon, 21 May 2012 12:52:44 +0200
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 08 Jun 2012 11:10:03 +0200
 
 gst-plugins-base1.0 (0.11.91-1) experimental; urgency=low
 
