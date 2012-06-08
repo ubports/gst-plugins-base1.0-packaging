@@ -2,7 +2,9 @@ gst-plugins-base1.0 (0.11.92-1) experimental; urgency=low
 
   * debian/control.in:
     + Update automake, autoconf and libtool build dependencies.
-  * New upstream release, "Comfortably Numb".
+  * New upstream release, "Comfortably Numb":
+    + debian/rules:
+      - Build-depend on gstreamer core >= 0.11.92.
 
  -- Sebastian Dröge <slomo@debian.org>  Fri, 08 Jun 2012 11:10:03 +0200
 
