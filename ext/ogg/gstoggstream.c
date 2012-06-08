@@ -1717,6 +1717,7 @@ setup_cmml_mapper (GstOggStream * pad, ogg_packet * packet)
   pad->caps = gst_caps_new_empty_simple ("text/x-cmml");
   pad->always_flush_page = TRUE;
   pad->is_sparse = TRUE;
+  pad->is_cmml = TRUE;
 
   return TRUE;
 }
@@ -1872,6 +1873,8 @@ setup_opus_mapper (GstOggStream * pad, ogg_packet * packet)
   pad->granulerate_d = 1;
   pad->granuleshift = 0;
   pad->n_header_packets = 2;
+  pad->first_granpos = -1;
+  pad->forbid_start_clamping = TRUE;
 
   /* pre-skip is in samples at 48000 Hz, which matches granule one for one */
   pad->granule_offset = -GST_READ_UINT16_LE (packet->packet + 10);
@@ -1887,6 +1890,29 @@ static gboolean
 is_header_opus (GstOggStream * pad, ogg_packet * packet)
 {
   return packet->bytes >= 8 && !memcmp (packet->packet, "Opus", 4);
+}
+
+static gint64
+granulepos_to_granule_opus (GstOggStream * pad, gint64 granulepos)
+{
+  if (granulepos == -1)
+    return -1;
+
+  /* We must reject some particular cases for the first granpos */
+
+  if (pad->first_granpos < 0 || granulepos < pad->first_granpos)
+    pad->first_granpos = granulepos;
+
+  if (pad->first_granpos == granulepos) {
+    if (granulepos < -pad->granule_offset) {
+      GST_ERROR ("Invalid Opus stream: first granulepos (%" G_GINT64_FORMAT
+          ") less than preskip (%" G_GINT64_FORMAT ")", granulepos,
+          -pad->granule_offset);
+      return -1;
+    }
+  }
+
+  return granulepos;
 }
 
 static gint64
@@ -2146,7 +2172,7 @@ const GstOggMap mappers[] = {
     "OpusHead", 8, 0,
     "audio/x-opus",
     setup_opus_mapper,
-    granulepos_to_granule_default,
+    granulepos_to_granule_opus,
     granule_to_granulepos_default,
     NULL,
     NULL,

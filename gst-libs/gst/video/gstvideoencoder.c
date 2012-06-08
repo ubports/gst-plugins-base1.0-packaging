@@ -1116,7 +1116,7 @@ gst_video_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
     stop = start + GST_BUFFER_DURATION (buf);
 
   GST_LOG_OBJECT (encoder,
-      "received buffer of size %d with ts %" GST_TIME_FORMAT
+      "received buffer of size %" G_GSIZE_FORMAT " with ts %" GST_TIME_FORMAT
       ", duration %" GST_TIME_FORMAT, gst_buffer_get_size (buf),
       GST_TIME_ARGS (start), GST_TIME_ARGS (GST_BUFFER_DURATION (buf)));
 
@@ -1496,10 +1496,14 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
 
 done:
   /* handed out */
-  priv->frames = g_list_remove (priv->frames, frame);
-  /* Remove the reference from the list and the reference that
-   * was provided to us */
-  gst_video_codec_frame_unref (frame);
+
+  /* unref once from the list */
+  l = g_list_find (priv->frames, frame);
+  if (l) {
+    gst_video_codec_frame_unref (frame);
+    priv->frames = g_list_delete_link (priv->frames, l);
+  }
+  /* unref because this function takes ownership */
   gst_video_codec_frame_unref (frame);
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
@@ -1617,10 +1621,13 @@ gst_video_encoder_set_latency (GstVideoEncoder * encoder,
 /**
  * gst_video_encoder_get_latency:
  * @encoder: a #GstVideoEncoder
- * @min_latency: (out) (allow-none): the configured minimum latency
- * @max_latency: (out) (allow-none): the configured maximum latency
+ * @min_latency: (out) (allow-none): address of variable in which to store the
+ *     configured minimum latency, or %NULL
+ * @max_latency: (out) (allow-none): address of variable in which to store the
+ *     configured maximum latency, or %NULL
  *
- * Returns the configured encoding latency.
+ * Query the configured encoding latency. Results will be returned via
+ * @min_latency and @max_latency.
  *
  * Since: 0.10.36
  */

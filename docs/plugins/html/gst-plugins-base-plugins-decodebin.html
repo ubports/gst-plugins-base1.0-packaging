@@ -80,6 +80,7 @@ GstDecodeBin implements
   "<a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--post-stream-topology" title='The "post-stream-topology" property'>post-stream-topology</a>"     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--subtitle-encoding" title='The "subtitle-encoding" property'>subtitle-encoding</a>"        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--use-buffering" title='The "use-buffering" property'>use-buffering</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--connection-speed" title='The "connection-speed" property'>connection-speed</a>"         <span class="type">guint64</span>               : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -109,7 +110,7 @@ use, as it creates a suitable source element as well.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp10897904"></a><h3>Element Information</h3>
+<a name="idp10842048"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -132,7 +133,7 @@ use, as it creates a suitable source element as well.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp10905424"></a><h3>Element Pads</h3>
+<a name="idp10849568"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -289,6 +290,14 @@ Max amount of time in the queue (in ns, 0=automatic).
 <pre class="programlisting">  "use-buffering"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write</pre>
 <p>Emit GST_MESSAGE_BUFFERING based on low-/high-percent thresholds.</p>
 <p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstDecodeBin--connection-speed"></a><h3>The <code class="literal">"connection-speed"</code> property</h3>
+<pre class="programlisting">  "connection-speed"         <span class="type">guint64</span>               : Read / Write</pre>
+<p>Network connection speed in kbps (0 = unknown).</p>
+<p>Allowed values: &lt;= 18446744073709551</p>
+<p>Default value: 0</p>
 </div>
 </div>
 <div class="refsect1">

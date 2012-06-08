@@ -205,9 +205,6 @@ typedef enum
  * @output_buffer: the output #GstBuffer. Implementations should set this either
  *           directly, or by using the @gst_video_decoder_alloc_output_frame() or
  *           @gst_video_decoder_alloc_output_buffer() methods.
- * @field_index:
- * @n_fields: number of fields in the frame (default 2). Decoders can change
- *       this if the frame contains a different number of fields. 
  * @deadline: Running time when the frame will be used.
  * @events: Events that will be pushed downstream before this frame is pushed.
  *
@@ -237,14 +234,14 @@ struct _GstVideoCodecFrame
 
   GstClockTime deadline;	/* D */
 
+  /*< private >*/
+
   /* Events that should be pushed downstream *before*
    * the next output_buffer */
   GList *events;		/* ED */
 
-  /*< private >*/
-
-  void *coder_hook;
-  GDestroyNotify coder_hook_destroy_notify;
+  gpointer       user_data;
+  GDestroyNotify user_data_destroy_notify;
 
   void         *padding[GST_PADDING_LARGE];
 };
@@ -262,9 +259,10 @@ GType                gst_video_codec_frame_get_type (void);
 
 GstVideoCodecFrame  *gst_video_codec_frame_ref (GstVideoCodecFrame * frame);
 void                 gst_video_codec_frame_unref (GstVideoCodecFrame * frame);
-void                 gst_video_codec_frame_set_hook (GstVideoCodecFrame *frame,
-						     void *hook,
-						     GDestroyNotify notify);
+void                 gst_video_codec_frame_set_user_data (GstVideoCodecFrame *frame,
+						          gpointer user_data,
+				                          GDestroyNotify notify);
+gpointer             gst_video_codec_frame_get_user_data (GstVideoCodecFrame *frame);
 
 G_END_DECLS
 

@@ -226,6 +226,7 @@
 <ANCHOR id="GstDecodeBin--post-stream-topology" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin--post-stream-topology">
 <ANCHOR id="GstDecodeBin--subtitle-encoding" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin--subtitle-encoding">
 <ANCHOR id="GstDecodeBin--use-buffering" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin--use-buffering">
+<ANCHOR id="GstDecodeBin--connection-speed" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin--connection-speed">
 <ANCHOR id="gst-plugins-base-plugins-decodebin.signal-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#gst-plugins-base-plugins-decodebin.signal-details">
 <ANCHOR id="GstDecodeBin-new-decoded-pad" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin-new-decoded-pad">
 <ANCHOR id="GstDecodeBin-removed-decoded-pad" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-decodebin.html#GstDecodeBin-removed-decoded-pad">
@@ -511,6 +512,8 @@
 <ANCHOR id="GstPlayBin--suburi" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--suburi">
 <ANCHOR id="GstPlayBin--text-sink" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--text-sink">
 <ANCHOR id="GstPlayBin--uri" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--uri">
+<ANCHOR id="GstPlayBin--current-suburi" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--current-suburi">
+<ANCHOR id="GstPlayBin--current-uri" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--current-uri">
 <ANCHOR id="gst-plugins-base-plugins-playbin.signal-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#gst-plugins-base-plugins-playbin.signal-details">
 <ANCHOR id="GstPlayBin-about-to-finish" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish">
 <ANCHOR id="GstPlayBin-audio-changed" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed">

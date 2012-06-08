@@ -571,6 +571,10 @@ Set the codec headers to be sent downstream whenever requested.
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_video_encoder_get_latency       (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#GstVideoEncoder" title="struct GstVideoEncoder"><span class="type">GstVideoEncoder</span></a> *encoder</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *min_latency</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *max_latency</code></em>);</pre>
+<p>
+Query the configured encoding latency. Results will be returned via
+<em class="parameter"><code>min_latency</code></em> and <em class="parameter"><code>max_latency</code></em>.
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -581,17 +585,15 @@ Set the codec headers to be sent downstream whenever requested.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>min_latency</code></em> :</span></p></td>
-<td>the configured minimum latency. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>address of variable in which to store the
+configured minimum latency, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_latency</code></em> :</span></p></td>
-<td>the configured maximum latency. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>address of variable in which to store the
+configured maximum latency, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the configured encoding latency.</td>
 </tr>
 </tbody>
 </table></div>

@@ -952,7 +952,8 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
     if (gst_tag_list_is_empty (priv->taglist)) {
       gst_tag_list_free (priv->taglist);
     } else {
-      gst_audio_decoder_push_event (dec, gst_event_new_tag (priv->taglist));
+      gst_audio_decoder_push_event (dec, gst_event_new_tag ("GstDecoder",
+              priv->taglist));
     }
     priv->taglist = NULL;
   }
@@ -1622,9 +1623,8 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
       GstCaps *caps;
 
       gst_event_parse_caps (event, &caps);
-      gst_audio_decoder_sink_setcaps (dec, caps);
+      ret = gst_audio_decoder_sink_setcaps (dec, caps);
       gst_event_unref (event);
-      ret = TRUE;
       break;
     }
     default:

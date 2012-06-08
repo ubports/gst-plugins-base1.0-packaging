@@ -74,6 +74,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/common/orc.mak
 subdir = gst/videoconvert
@@ -156,7 +157,8 @@ libgstvideoconvert_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvi
 	$(am__DEPENDENCIES_1)
 am_libgstvideoconvert_la_OBJECTS =  \
 	libgstvideoconvert_la-gstvideoconvert.lo \
-	libgstvideoconvert_la-videoconvert.lo
+	libgstvideoconvert_la-videoconvert.lo \
+	libgstvideoconvert_la-gstcms.lo
 am__objects_1 = libgstvideoconvert_la-tmp-orc.lo
 nodist_libgstvideoconvert_la_OBJECTS = $(am__objects_1)
 libgstvideoconvert_la_OBJECTS = $(am_libgstvideoconvert_la_OBJECTS) \
@@ -307,8 +309,14 @@ GST_PREFIX = @GST_PREFIX@
 GST_REVISION = @GST_REVISION@
 GST_TOOLS_DIR = @GST_TOOLS_DIR@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
+GTKDOC_MKPDF = @GTKDOC_MKPDF@
+GTKDOC_REBASE = @GTKDOC_REBASE@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
+GTK_QUARTZ_CFLAGS = @GTK_QUARTZ_CFLAGS@
+GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
@@ -479,7 +487,11 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
@@ -494,7 +506,7 @@ orcc_v_gen_0 = @echo "  ORCC   $@";
 cp_v_gen = $(cp_v_gen_$(V))
 cp_v_gen_ = $(cp_v_gen_$(AM_DEFAULT_VERBOSITY))
 cp_v_gen_0 = @echo "  CP     $@";
-libgstvideoconvert_la_SOURCES = gstvideoconvert.c videoconvert.c
+libgstvideoconvert_la_SOURCES = gstvideoconvert.c videoconvert.c gstcms.c
 nodist_libgstvideoconvert_la_SOURCES = $(ORC_NODIST_SOURCES)
 libgstvideoconvert_la_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
@@ -509,7 +521,7 @@ libgstvideoconvert_la_LIBADD = \
 
 libgstvideoconvert_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstvideoconvert_la_LIBTOOLFLAGS = --tag=disable-static
-noinst_HEADERS = gstvideoconvert.h videoconvert.h
+noinst_HEADERS = gstvideoconvert.h videoconvert.h gstcms.h
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -587,6 +599,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoconvert_la-gstcms.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoconvert_la-gstvideoconvert.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoconvert_la-tmp-orc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoconvert_la-videoconvert.Plo@am__quote@
@@ -625,6 +638,13 @@ libgstvideoconvert_la-videoconvert.lo: videoconvert.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='videoconvert.c' object='libgstvideoconvert_la-videoconvert.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoconvert_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoconvert_la_CFLAGS) $(CFLAGS) -c -o libgstvideoconvert_la-videoconvert.lo `test -f 'videoconvert.c' || echo '$(srcdir)/'`videoconvert.c
+
+libgstvideoconvert_la-gstcms.lo: gstcms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoconvert_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoconvert_la_CFLAGS) $(CFLAGS) -MT libgstvideoconvert_la-gstcms.lo -MD -MP -MF $(DEPDIR)/libgstvideoconvert_la-gstcms.Tpo -c -o libgstvideoconvert_la-gstcms.lo `test -f 'gstcms.c' || echo '$(srcdir)/'`gstcms.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoconvert_la-gstcms.Tpo $(DEPDIR)/libgstvideoconvert_la-gstcms.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstcms.c' object='libgstvideoconvert_la-gstcms.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoconvert_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoconvert_la_CFLAGS) $(CFLAGS) -c -o libgstvideoconvert_la-gstcms.lo `test -f 'gstcms.c' || echo '$(srcdir)/'`gstcms.c
 
 libgstvideoconvert_la-tmp-orc.lo: tmp-orc.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoconvert_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoconvert_la_CFLAGS) $(CFLAGS) -MT libgstvideoconvert_la-tmp-orc.lo -MD -MP -MF $(DEPDIR)/libgstvideoconvert_la-tmp-orc.Tpo -c -o libgstvideoconvert_la-tmp-orc.lo `test -f 'tmp-orc.c' || echo '$(srcdir)/'`tmp-orc.c

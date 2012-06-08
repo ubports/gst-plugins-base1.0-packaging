@@ -550,7 +550,16 @@ _new_output_state (GstVideoFormat fmt, guint width, guint height,
     tgt->interlace_mode = ref->interlace_mode;
     tgt->flags = ref->flags;
     tgt->chroma_site = ref->chroma_site;
-    tgt->colorimetry = ref->colorimetry;
+    /* only copy values that are not unknown so that we don't override the
+     * defaults. subclasses should really fill these in when they know. */
+    if (ref->colorimetry.range)
+      tgt->colorimetry.range = ref->colorimetry.range;
+    if (ref->colorimetry.matrix)
+      tgt->colorimetry.matrix = ref->colorimetry.matrix;
+    if (ref->colorimetry.transfer)
+      tgt->colorimetry.transfer = ref->colorimetry.transfer;
+    if (ref->colorimetry.primaries)
+      tgt->colorimetry.primaries = ref->colorimetry.primaries;
     GST_DEBUG ("reference par %d/%d fps %d/%d",
         ref->par_n, ref->par_d, ref->fps_n, ref->fps_d);
     tgt->par_n = ref->par_n;
@@ -1771,7 +1780,7 @@ gst_video_decoder_prepare_finish_frame (GstVideoDecoder *
   GList *l, *events = NULL;
 
 #ifndef GST_DISABLE_GST_DEBUG
-  GST_LOG_OBJECT (decoder, "n %d in %d out %d",
+  GST_LOG_OBJECT (decoder, "n %d in %" G_GSIZE_FORMAT " out %" G_GSIZE_FORMAT,
       g_list_length (priv->frames),
       gst_adapter_available (priv->input_adapter),
       gst_adapter_available (priv->output_adapter));
@@ -1865,9 +1874,14 @@ static void
 gst_video_decoder_do_finish_frame (GstVideoDecoder * dec,
     GstVideoCodecFrame * frame)
 {
+  GList *link;
+
   /* unref once from the list */
-  dec->priv->frames = g_list_remove (dec->priv->frames, frame);
-  gst_video_codec_frame_unref (frame);
+  link = g_list_find (dec->priv->frames, frame);
+  if (link) {
+    gst_video_codec_frame_unref (frame);
+    dec->priv->frames = g_list_delete_link (dec->priv->frames, link);
+  }
 
   /* unref because this function takes ownership */
   gst_video_codec_frame_unref (frame);
@@ -2056,7 +2070,7 @@ done:
 /**
  * gst_video_decoder_add_to_frame:
  * @decoder: a #GstVideoDecoder
- * @n_bytes: an encoded #GstVideoCodecFrame
+ * @n_bytes: the number of bytes to add
  *
  * Removes next @n_bytes of input data and adds it to currently parsed frame.
  *
@@ -2541,8 +2555,7 @@ no_decide_allocation:
  * gst_video_decoder_alloc_output_buffer:
  * @decoder: a #GstVideoDecoder
  *
- * Helper function that uses @gst_pad_alloc_buffer_and_set_caps()
- * to allocate a buffer to hold a video frame for @decoder's
+ * Helper function that allocates a buffer to hold a video frame for @decoder's
  * current #GstVideoCodecState.
  *
  * Returns: (transfer full): allocated buffer
@@ -2574,12 +2587,11 @@ gst_video_decoder_alloc_output_buffer (GstVideoDecoder * decoder)
  * @decoder: a #GstVideoDecoder
  * @frame: a #GstVideoCodecFrame
  *
- * Helper function that uses @gst_pad_alloc_buffer_and_set_caps()
- * to allocate a buffer to hold a video frame for @decoder's
- * current #GstVideoCodecState.  Subclass should already have configured video state
- * and set src pad caps.
+ * Helper function that allocates a buffer to hold a video frame for @decoder's
+ * current #GstVideoCodecState.  Subclass should already have configured video
+ * state and set src pad caps.
  *
- * Returns: result from pad alloc call
+ * Returns: %GST_FLOW_OK if an output buffer could be allocated
  *
  * Since: 0.10.36
  */
@@ -2775,7 +2787,9 @@ gst_video_decoder_get_estimate_rate (GstVideoDecoder * dec)
  * @min_latency: minimum latency
  * @max_latency: maximum latency
  *
- * Informs baseclass of encoding latency.
+ * Lets #GstVideoDecoder sub-classes tell the baseclass what the decoder
+ * latency is. Will also post a LATENCY message on the bus so the pipeline
+ * can reconfigure its global latency.
  *
  * Since: 0.10.36
  */
@@ -2798,10 +2812,13 @@ gst_video_decoder_set_latency (GstVideoDecoder * decoder,
 /**
  * gst_video_decoder_get_latency:
  * @decoder: a #GstVideoDecoder
- * @min_latency: (out) (allow-none): the configured minimum latency
- * @max_latency: (out) (allow-none): the configured maximum latency
+ * @min_latency: (out) (allow-none): address of variable in which to store the
+ *     configured minimum latency, or %NULL
+ * @max_latency: (out) (allow-none): address of variable in which to store the
+ *     configured mximum latency, or %NULL
  *
- * Returns the configured encoding latency.
+ * Query the configured decoder latency. Results will be returned via
+ * @min_latency and @max_latency.
  *
  * Since: 0.10.36
  */

@@ -59,6 +59,11 @@ GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
 #define THEORA_DEF_TELEMETRY_QI 0
 #define THEORA_DEF_TELEMETRY_BITS 0
 
+/* This was removed from the base class, this is used as a
+   temporary return to signal the need to call _drop_frame,
+   and does not leave theoraenc. */
+#define GST_CUSTOM_FLOW_DROP GST_FLOW_CUSTOM_SUCCESS_1
+
 enum
 {
   PROP_0,
@@ -201,6 +206,7 @@ gst_theora_dec_init (GstTheoraDec * dec)
 
   /* input is packetized,
    * but is not marked that way so data gets parsed and keyframes marked */
+  gst_video_decoder_set_packetized (GST_VIDEO_DECODER (dec), FALSE);
 }
 
 static void
@@ -242,6 +248,10 @@ theora_dec_stop (GstVideoDecoder * decoder)
     gst_tag_list_free (dec->tags);
     dec->tags = NULL;
   }
+  if (dec->input_state)
+    gst_video_codec_state_unref (dec->input_state);
+  if (dec->output_state)
+    gst_video_codec_state_unref (dec->output_state);
 
   return TRUE;
 }
@@ -378,7 +388,7 @@ theora_handle_comment_packet (GstTheoraDec * dec, ogg_packet * packet)
 }
 
 static GstFlowReturn
-theora_handle_type_packet (GstTheoraDec * dec, ogg_packet * packet)
+theora_handle_type_packet (GstTheoraDec * dec)
 {
   gint par_num, par_den;
   GstFlowReturn ret = GST_FLOW_OK;
@@ -500,7 +510,7 @@ theora_handle_type_packet (GstTheoraDec * dec, ogg_packet * packet)
   /* FIXME :  */
   if (dec->tags) {
     gst_pad_push_event (GST_VIDEO_DECODER (dec)->srcpad,
-        gst_event_new_tag (dec->tags));
+        gst_event_new_tag ("GstDecoder", dec->tags));
     dec->tags = NULL;
   }
 
@@ -531,7 +541,7 @@ theora_handle_header_packet (GstTheoraDec * dec, ogg_packet * packet)
       res = theora_handle_comment_packet (dec, packet);
       break;
     case 0x82:
-      res = theora_handle_type_packet (dec, packet);
+      res = theora_handle_type_packet (dec);
       break;
     default:
       /* ignore */
@@ -710,8 +720,6 @@ theora_handle_data_packet (GstTheoraDec * dec, ogg_packet * packet,
     goto wrong_dimensions;
 
   result = theora_handle_image (dec, buf, frame);
-  if (result != GST_FLOW_OK)
-    return result;
 
   return result;
 
@@ -730,7 +738,7 @@ dropping:
 dropping_qos:
   {
     GST_WARNING_OBJECT (dec, "dropping frame because of QoS");
-    return GST_VIDEO_DECODER_FLOW_NEED_DATA;
+    return GST_CUSTOM_FLOW_DROP;
   }
 decode_error:
   {
@@ -806,8 +814,17 @@ theora_dec_handle_frame (GstVideoDecoder * bdec, GstVideoCodecFrame * frame)
   dec = GST_THEORA_DEC (bdec);
 
   res = theora_dec_decode_buffer (dec, frame->input_buffer, frame);
-  if (res == GST_FLOW_OK)
-    res = gst_video_decoder_finish_frame (bdec, frame);
+  switch (res) {
+    case GST_FLOW_OK:
+      res = gst_video_decoder_finish_frame (bdec, frame);
+      break;
+    case GST_CUSTOM_FLOW_DROP:
+      res = gst_video_decoder_drop_frame (bdec, frame);
+      break;
+    default:
+      gst_video_codec_frame_unref (frame);
+      break;
+  }
 
   return res;
 }

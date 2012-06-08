@@ -44,7 +44,7 @@
 #elif defined (GDK_WINDOWING_WIN32)
 #include <gdk/gdkwin32.h>
 #elif defined (GDK_WINDOWING_QUARTZ)
-#include <gdk/gdkquartzwindow.h>
+#include <gdk/gdkquartz.h>
 #endif
 
 #include <gst/video/videooverlay.h>
@@ -171,7 +171,7 @@ typedef struct
   gint64 buffering_left;
   GstState state;
   guint update_id;
-  guint seek_timeout_id;
+  guint seek_timeout_id;        /* Used for scrubbing in paused */
   gulong changed_id;
   guint fill_id;
 
@@ -539,11 +539,6 @@ static void
 seek_cb (GtkRange * range, PlaybackApp * app)
 {
   gint64 real;
-  /* If the timer hasn't expired yet, then the pipeline is running */
-  if (app->play_scrub && app->seek_timeout_id != 0) {
-    GST_DEBUG ("do scrub seek, PAUSED");
-    gst_element_set_state (app->pipeline, GST_STATE_PAUSED);
-  }
 
   real =
       gtk_range_get_value (GTK_RANGE (app->seek_scale)) * app->duration /
@@ -1086,7 +1081,7 @@ update_streams (PlaybackApp * app)
     for (i = 0; i < app->n_video; i++) {
       g_signal_emit_by_name (app->pipeline, "get-video-tags", i, &tags);
       if (tags) {
-        str = gst_structure_to_string ((GstStructure *) tags);
+        str = gst_tag_list_to_string (tags);
         g_print ("video %d: %s\n", i, str);
         g_free (str);
       }
@@ -1105,7 +1100,7 @@ update_streams (PlaybackApp * app)
     for (i = 0; i < app->n_audio; i++) {
       g_signal_emit_by_name (app->pipeline, "get-audio-tags", i, &tags);
       if (tags) {
-        str = gst_structure_to_string ((GstStructure *) tags);
+        str = gst_tag_list_to_string (tags);
         g_print ("audio %d: %s\n", i, str);
         g_free (str);
       }
@@ -1128,7 +1123,7 @@ update_streams (PlaybackApp * app)
       if (tags) {
         const GValue *value;
 
-        str = gst_structure_to_string ((GstStructure *) tags);
+        str = gst_tag_list_to_string (tags);
         g_print ("text %d: %s\n", i, str);
         g_free (str);
 
@@ -2112,7 +2107,7 @@ realize_cb (GtkWidget * widget, PlaybackApp * app)
   app->embed_xid = GDK_WINDOW_HWND (window);
   g_print ("Window realize: video window HWND = %lu\n", app->embed_xid);
 #elif defined (GDK_WINDOWING_QUARTZ)
-  app->embed_xid = gdk_quartz_window_get_nsview (window);
+  app->embed_xid = (guintptr) gdk_quartz_window_get_nsview (window);
   g_print ("Window realize: video window NSView = %p\n", app->embed_xid);
 #elif defined (GDK_WINDOWING_X11)
   app->embed_xid = GDK_WINDOW_XID (window);
