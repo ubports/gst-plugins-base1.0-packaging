@@ -151,6 +151,8 @@ typedef struct
   gboolean play_scrub;
   gboolean skip_seek;
   gdouble rate;
+  gboolean snap_before;
+  gboolean snap_after;
 
   /* From commandline parameters */
   gboolean stats;
@@ -387,8 +389,9 @@ update_fill (PlaybackApp * app)
   GstQuery *query;
 
   query = gst_query_new_buffering (GST_FORMAT_PERCENT);
+
   if (gst_element_query (app->pipeline, query)) {
-    gint64 start, stop, buffering_total;
+    gint64 start, stop, estimated_total;
     GstFormat format;
     gdouble fill;
     gboolean busy;
@@ -398,15 +401,15 @@ update_fill (PlaybackApp * app)
     gint64 buffering_left;
 
     gst_query_parse_buffering_percent (query, &busy, &percent);
-    gst_query_parse_buffering_range (query, &format, &start, &stop,
-        &buffering_total);
     gst_query_parse_buffering_stats (query, &mode, &avg_in, &avg_out,
         &buffering_left);
+    gst_query_parse_buffering_range (query, &format, &start, &stop,
+        &estimated_total);
 
     /* note that we could start the playback when buffering_left < remaining
      * playback time */
     GST_DEBUG ("buffering total %" G_GINT64_FORMAT " ms, left %"
-        G_GINT64_FORMAT " ms", buffering_total, buffering_left);
+        G_GINT64_FORMAT " ms", estimated_total, buffering_left);
     GST_DEBUG ("start %" G_GINT64_FORMAT ", stop %" G_GINT64_FORMAT,
         start, stop);
 
@@ -505,6 +508,10 @@ do_seek (PlaybackApp * app, GstFormat format, gint64 position)
     flags |= GST_SEEK_FLAG_SEGMENT;
   if (app->skip_seek)
     flags |= GST_SEEK_FLAG_SKIP;
+  if (app->snap_before)
+    flags |= GST_SEEK_FLAG_SNAP_BEFORE;
+  if (app->snap_after)
+    flags |= GST_SEEK_FLAG_SNAP_AFTER;
 
   if (app->rate >= 0) {
     s_event = gst_event_new_seek (app->rate,
@@ -803,6 +810,18 @@ failed:
     gtk_statusbar_push (GTK_STATUSBAR (app->statusbar), app->status_id,
         "Stop failed");
   }
+}
+
+static void
+snap_before_toggle_cb (GtkToggleButton * button, PlaybackApp * app)
+{
+  app->snap_before = gtk_toggle_button_get_active (button);
+}
+
+static void
+snap_after_toggle_cb (GtkToggleButton * button, PlaybackApp * app)
+{
+  app->snap_after = gtk_toggle_button_get_active (button);
 }
 
 static void
@@ -1451,7 +1470,7 @@ do_shuttle (PlaybackApp * app)
   if (app->shuttling)
     duration = 40 * GST_MSECOND;
   else
-    duration = -1;
+    duration = 0;
 
   gst_element_send_event (app->pipeline,
       gst_event_new_step (GST_FORMAT_TIME, duration, app->shuttle_rate, FALSE,
@@ -1592,7 +1611,7 @@ colorbalance_value_changed (GtkRange * range, PlaybackApp * app)
   else if (range == GTK_RANGE (app->saturation_scale))
     label = "SATURATION";
   else
-    g_assert_not_reached ();
+    g_return_if_reached ();
 
   val = gtk_range_get_value (range);
 
@@ -2052,11 +2071,6 @@ bus_sync_handler (GstBus * bus, GstMessage * message, PlaybackApp * app)
     g_print ("got prepare-xwindow-id, setting XID %" G_GUINTPTR_FORMAT "\n",
         app->embed_xid);
 
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (element),
-            "force-aspect-ratio")) {
-      g_object_set (element, "force-aspect-ratio", TRUE, NULL);
-    }
-
     /* Should have been initialised from main thread before (can't use
      * GDK_WINDOW_XID here with Gtk+ >= 2.18, because the sync handler will
      * be called from a streaming thread and GDK_WINDOW_XID maps to more than
@@ -2261,7 +2275,8 @@ connect_bus_signals (PlaybackApp * app)
 #if defined (GDK_WINDOWING_X11) || defined (GDK_WINDOWING_WIN32) || defined (GDK_WINDOWING_QUARTZ)
   if (app->pipeline_type != 0) {
     /* handle prepare-xwindow-id element message synchronously, but only for non-playbin */
-    gst_bus_set_sync_handler (bus, (GstBusSyncHandler) bus_sync_handler, app);
+    gst_bus_set_sync_handler (bus, (GstBusSyncHandler) bus_sync_handler, app,
+        NULL);
   }
 #endif
 
@@ -2545,7 +2560,7 @@ create_ui (PlaybackApp * app)
   /* seek expander */
   {
     GtkWidget *accurate_checkbox, *key_checkbox, *loop_checkbox,
-        *flush_checkbox;
+        *flush_checkbox, *snap_before_checkbox, *snap_after_checkbox;
     GtkWidget *scrub_checkbox, *play_scrub_checkbox, *rate_label;
     GtkWidget *skip_checkbox, *rate_spinbutton;
     GtkWidget *flagtable, *advanced_seek, *advanced_seek_grid;
@@ -2565,6 +2580,8 @@ create_ui (PlaybackApp * app)
     scrub_checkbox = gtk_check_button_new_with_label ("Scrub");
     play_scrub_checkbox = gtk_check_button_new_with_label ("Play Scrub");
     skip_checkbox = gtk_check_button_new_with_label ("Play Skip");
+    snap_before_checkbox = gtk_check_button_new_with_label ("Snap before");
+    snap_after_checkbox = gtk_check_button_new_with_label ("Snap after");
     rate_spinbutton = gtk_spin_button_new_with_range (-100, 100, 0.1);
     gtk_spin_button_set_digits (GTK_SPIN_BUTTON (rate_spinbutton), 3);
     rate_label = gtk_label_new ("Rate");
@@ -2583,6 +2600,10 @@ create_ui (PlaybackApp * app)
         "play video while seeking");
     gtk_widget_set_tooltip_text (skip_checkbox,
         "Skip frames while playing at high frame rates");
+    gtk_widget_set_tooltip_text (snap_before_checkbox,
+        "Favor snapping to the frame before the seek target");
+    gtk_widget_set_tooltip_text (snap_after_checkbox,
+        "Favor snapping to the frame after the seek target");
 
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (flush_checkbox), TRUE);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (scrub_checkbox), TRUE);
@@ -2605,6 +2626,10 @@ create_ui (PlaybackApp * app)
         G_CALLBACK (skip_toggle_cb), app);
     g_signal_connect (G_OBJECT (rate_spinbutton), "value-changed",
         G_CALLBACK (rate_spinbutton_changed_cb), app);
+    g_signal_connect (G_OBJECT (snap_before_checkbox), "toggled",
+        G_CALLBACK (snap_before_toggle_cb), app);
+    g_signal_connect (G_OBJECT (snap_after_checkbox), "toggled",
+        G_CALLBACK (snap_after_toggle_cb), app);
 
     gtk_grid_attach (GTK_GRID (flagtable), accurate_checkbox, 0, 0, 1, 1);
     gtk_grid_attach (GTK_GRID (flagtable), flush_checkbox, 1, 0, 1, 1);
@@ -2615,6 +2640,8 @@ create_ui (PlaybackApp * app)
     gtk_grid_attach (GTK_GRID (flagtable), skip_checkbox, 3, 0, 1, 1);
     gtk_grid_attach (GTK_GRID (flagtable), rate_label, 4, 0, 1, 1);
     gtk_grid_attach (GTK_GRID (flagtable), rate_spinbutton, 4, 1, 1, 1);
+    gtk_grid_attach (GTK_GRID (flagtable), snap_before_checkbox, 0, 2, 1, 1);
+    gtk_grid_attach (GTK_GRID (flagtable), snap_after_checkbox, 1, 2, 1, 1);
 
     advanced_seek = gtk_frame_new ("Advanced Seeking");
     advanced_seek_grid = gtk_grid_new ();
@@ -2652,7 +2679,7 @@ create_ui (PlaybackApp * app)
         1, 1, 1);
 
     gtk_container_add (GTK_CONTAINER (advanced_seek), advanced_seek_grid);
-    gtk_grid_attach (GTK_GRID (flagtable), advanced_seek, 0, 2, 3, 2);
+    gtk_grid_attach (GTK_GRID (flagtable), advanced_seek, 0, 3, 3, 2);
     gtk_container_add (GTK_CONTAINER (seek), flagtable);
   }
 
@@ -3188,6 +3215,9 @@ create_ui (PlaybackApp * app)
 
   g_signal_connect (G_OBJECT (app->window), "delete-event",
       G_CALLBACK (delete_event_cb), app);
+
+  gtk_widget_set_can_default (play_button, TRUE);
+  gtk_widget_grab_default (play_button);
 }
 
 static void

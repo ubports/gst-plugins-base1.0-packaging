@@ -257,40 +257,34 @@ gst_theora_enc_class_init (GstTheoraEncClass * klass)
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_SPEEDLEVEL,
       g_param_spec_int ("speed-level", "Speed level",
-          "Controls the amount of motion vector searching done while "
-          "encoding.  This property requires libtheora version >= 1.0",
+          "Controls the amount of motion vector searching done while encoding",
           0, 3, THEORA_DEF_SPEEDLEVEL,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_VP3_COMPATIBLE,
-      g_param_spec_boolean ("vp3-compatible", "VP3 Compatible",
-          "Disables non-VP3 compatible features."
-          "  This property requires libtheora version >= 1.1",
+      g_param_spec_boolean ("vp3-compatible", "VP3 compatible",
+          "Disables non-VP3 compatible features",
           THEORA_DEF_VP3_COMPATIBLE,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_DROP_FRAMES,
-      g_param_spec_boolean ("drop-frames", "VP3 Compatible",
-          "Allow or disallow frame dropping."
-          "  This property requires libtheora version >= 1.1",
+      g_param_spec_boolean ("drop-frames", "Drop frames",
+          "Allow or disallow frame dropping",
           THEORA_DEF_DROP_FRAMES,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_CAP_OVERFLOW,
-      g_param_spec_boolean ("cap-overflow", "VP3 Compatible",
-          "Enable capping of bit reservoir overflows."
-          "  This property requires libtheora version >= 1.1",
+      g_param_spec_boolean ("cap-overflow", "Cap overflow",
+          "Enable capping of bit reservoir overflows",
           THEORA_DEF_CAP_OVERFLOW,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_CAP_UNDERFLOW,
-      g_param_spec_boolean ("cap-underflow", "VP3 Compatible",
-          "Enable capping of bit reservoir underflows."
-          "  This property requires libtheora version >= 1.1",
+      g_param_spec_boolean ("cap-underflow", "Cap underflow",
+          "Enable capping of bit reservoir underflows",
           THEORA_DEF_CAP_UNDERFLOW,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_RATE_BUFFER,
       g_param_spec_int ("rate-buffer", "Rate Control Buffer",
           "Sets the size of the rate control buffer, in units of frames.  "
           "The default value of 0 instructs the encoder to automatically "
-          "select an appropriate value."
-          "  This property requires libtheora version >= 1.1",
+          "select an appropriate value",
           0, 1000, THEORA_DEF_RATE_BUFFER,
           (GParamFlags) G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_MULTIPASS_CACHE_FILE,
@@ -625,23 +619,21 @@ static GstFlowReturn
 theora_push_packet (GstTheoraEnc * enc, ogg_packet * packet)
 {
   GstVideoEncoder *benc;
-  GstBuffer *buf;
   GstFlowReturn ret;
   GstVideoCodecFrame *frame;
 
   benc = GST_VIDEO_ENCODER (enc);
 
-  buf = gst_buffer_new_allocate (NULL, packet->bytes, NULL);
-  if (!buf) {
+  frame = gst_video_encoder_get_oldest_frame (benc);
+  if (gst_video_encoder_allocate_output_frame (benc, frame,
+          packet->bytes) != GST_FLOW_OK) {
     GST_WARNING_OBJECT (enc, "Could not allocate buffer");
+    gst_video_codec_frame_unref (frame);
     ret = GST_FLOW_ERROR;
     goto done;
   }
 
-  gst_buffer_fill (buf, 0, packet->packet, packet->bytes);
-
-  frame = gst_video_encoder_get_oldest_frame (benc);
-  frame->output_buffer = buf;
+  gst_buffer_fill (frame->output_buffer, 0, packet->packet, packet->bytes);
 
   /* the second most significant bit of the first data byte is cleared
    * for keyframes */
@@ -844,7 +836,9 @@ theora_enc_buffer_from_header_packet (GstTheoraEnc * enc, ogg_packet * packet)
 {
   GstBuffer *outbuf;
 
-  outbuf = gst_buffer_new_allocate (NULL, packet->bytes, NULL);
+  outbuf =
+      gst_video_encoder_allocate_output_buffer (GST_VIDEO_ENCODER (enc),
+      packet->bytes);
   gst_buffer_fill (outbuf, 0, packet->packet, packet->bytes);
   GST_BUFFER_OFFSET (outbuf) = 0;
   GST_BUFFER_OFFSET_END (outbuf) = 0;
@@ -948,6 +942,8 @@ theora_enc_handle_frame (GstVideoEncoder * benc, GstVideoCodecFrame * frame)
 
     gst_video_codec_state_unref (state);
 
+    gst_video_encoder_negotiate (GST_VIDEO_ENCODER (enc));
+
     gst_video_encoder_set_headers (benc, buffers);
 
     theora_enc_reset_ts (enc, running_time, frame->presentation_frame_number);
@@ -1047,7 +1043,7 @@ theora_enc_finish (GstVideoEncoder * benc)
 static gboolean
 theora_enc_propose_allocation (GstVideoEncoder * encoder, GstQuery * query)
 {
-  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE);
+  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL);
 
   return GST_VIDEO_ENCODER_CLASS (parent_class)->propose_allocation (encoder,
       query);

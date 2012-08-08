@@ -75,122 +75,122 @@ gst_tag_register_tags_internal (gpointer unused)
 #endif
 
   /* musicbrainz tags */
-  gst_tag_register (GST_TAG_MUSICBRAINZ_TRACKID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_MUSICBRAINZ_TRACKID, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("track ID"), _("MusicBrainz track ID"), NULL);
-  gst_tag_register (GST_TAG_MUSICBRAINZ_ARTISTID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_MUSICBRAINZ_ARTISTID, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("artist ID"), _("MusicBrainz artist ID"), NULL);
-  gst_tag_register (GST_TAG_MUSICBRAINZ_ALBUMID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_MUSICBRAINZ_ALBUMID, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("album ID"), _("MusicBrainz album ID"), NULL);
-  gst_tag_register (GST_TAG_MUSICBRAINZ_ALBUMARTISTID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_MUSICBRAINZ_ALBUMARTISTID, GST_TAG_FLAG_META,
       G_TYPE_STRING,
       _("album artist ID"), _("MusicBrainz album artist ID"), NULL);
-  gst_tag_register (GST_TAG_MUSICBRAINZ_TRMID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_MUSICBRAINZ_TRMID, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("track TRM ID"), _("MusicBrainz TRM ID"), NULL);
 
   /* CDDA tags */
-  gst_tag_register (GST_TAG_CDDA_CDDB_DISCID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CDDA_CDDB_DISCID, GST_TAG_FLAG_META,
       G_TYPE_STRING, "discid", "CDDB discid for metadata retrieval",
       gst_tag_merge_use_first);
 
-  gst_tag_register (GST_TAG_CDDA_CDDB_DISCID_FULL, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CDDA_CDDB_DISCID_FULL, GST_TAG_FLAG_META,
       G_TYPE_STRING, "discid full",
       "CDDB discid for metadata retrieval (full)", gst_tag_merge_use_first);
 
-  gst_tag_register (GST_TAG_CDDA_MUSICBRAINZ_DISCID, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CDDA_MUSICBRAINZ_DISCID, GST_TAG_FLAG_META,
       G_TYPE_STRING, "musicbrainz-discid",
       "Musicbrainz discid for metadata retrieval", gst_tag_merge_use_first);
 
-  gst_tag_register (GST_TAG_CDDA_MUSICBRAINZ_DISCID_FULL, GST_TAG_FLAG_META,
-      G_TYPE_STRING, "musicbrainz-discid-full",
+  gst_tag_register_static (GST_TAG_CDDA_MUSICBRAINZ_DISCID_FULL,
+      GST_TAG_FLAG_META, G_TYPE_STRING, "musicbrainz-discid-full",
       "Musicbrainz discid for metadata retrieval (full)",
       gst_tag_merge_use_first);
 
   /* photography tags */
-  gst_tag_register (GST_TAG_CAPTURING_SHUTTER_SPEED, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_SHUTTER_SPEED, GST_TAG_FLAG_META,
       GST_TYPE_FRACTION, _("capturing shutter speed"),
       _("Shutter speed used when capturing an image, in seconds"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_FOCAL_RATIO, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_FOCAL_RATIO, GST_TAG_FLAG_META,
       G_TYPE_DOUBLE, _("capturing focal ratio"),
       _("Focal ratio (f-number) used when capturing the image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_FOCAL_LENGTH, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_FOCAL_LENGTH, GST_TAG_FLAG_META,
       G_TYPE_DOUBLE, _("capturing focal length"),
       _("Focal length of the lens used capturing the image, in mm"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_DIGITAL_ZOOM_RATIO, GST_TAG_FLAG_META,
-      G_TYPE_DOUBLE, _("capturing digital zoom ratio"),
+  gst_tag_register_static (GST_TAG_CAPTURING_DIGITAL_ZOOM_RATIO,
+      GST_TAG_FLAG_META, G_TYPE_DOUBLE, _("capturing digital zoom ratio"),
       _("Digital zoom ratio used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_ISO_SPEED, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_ISO_SPEED, GST_TAG_FLAG_META,
       G_TYPE_INT, _("capturing iso speed"),
       _("The ISO speed used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_EXPOSURE_PROGRAM, GST_TAG_FLAG_META,
-      G_TYPE_STRING, _("capturing exposure program"),
+  gst_tag_register_static (GST_TAG_CAPTURING_EXPOSURE_PROGRAM,
+      GST_TAG_FLAG_META, G_TYPE_STRING, _("capturing exposure program"),
       _("The exposure program used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_EXPOSURE_MODE, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_EXPOSURE_MODE, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing exposure mode"),
       _("The exposure mode used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_EXPOSURE_COMPENSATION, GST_TAG_FLAG_META,
-      G_TYPE_DOUBLE, _("capturing exposure compensation"),
+  gst_tag_register_static (GST_TAG_CAPTURING_EXPOSURE_COMPENSATION,
+      GST_TAG_FLAG_META, G_TYPE_DOUBLE, _("capturing exposure compensation"),
       _("The exposure compensation used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_SCENE_CAPTURE_TYPE, GST_TAG_FLAG_META,
-      G_TYPE_STRING, _("capturing scene capture type"),
+  gst_tag_register_static (GST_TAG_CAPTURING_SCENE_CAPTURE_TYPE,
+      GST_TAG_FLAG_META, G_TYPE_STRING, _("capturing scene capture type"),
       _("The scene capture mode used when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_GAIN_ADJUSTMENT, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_GAIN_ADJUSTMENT, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing gain adjustment"),
       _("The overall gain adjustment applied on an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_WHITE_BALANCE, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_WHITE_BALANCE, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing white balance"),
       _("The white balance mode set when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_CONTRAST, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_CONTRAST, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing contrast"),
       _("The direction of contrast processing applied "
           "when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_SATURATION, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_SATURATION, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing saturation"),
       _("The direction of saturation processing applied when "
           "capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_SHARPNESS, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_SHARPNESS, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing sharpness"),
       _("The direction of sharpness processing applied "
           "when capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_FLASH_FIRED, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_FLASH_FIRED, GST_TAG_FLAG_META,
       G_TYPE_BOOLEAN, _("capturing flash fired"),
       _("If the flash fired while capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_FLASH_MODE, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_FLASH_MODE, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing flash mode"),
       _("The selected flash mode while capturing an image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_METERING_MODE, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_METERING_MODE, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing metering mode"),
       _("The metering mode used while determining exposure for capturing an"
           " image"), NULL);
 
-  gst_tag_register (GST_TAG_CAPTURING_SOURCE, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_CAPTURING_SOURCE, GST_TAG_FLAG_META,
       G_TYPE_STRING, _("capturing source"),
       _("The source or type of device used for the capture"), NULL);
 
-  gst_tag_register (GST_TAG_IMAGE_HORIZONTAL_PPI, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_IMAGE_HORIZONTAL_PPI, GST_TAG_FLAG_META,
       G_TYPE_DOUBLE, _("image horizontal ppi"),
       _("Media (image/video) intended horizontal pixel density in ppi"), NULL);
 
-  gst_tag_register (GST_TAG_IMAGE_VERTICAL_PPI, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_IMAGE_VERTICAL_PPI, GST_TAG_FLAG_META,
       G_TYPE_DOUBLE, _("image vertical ppi"),
       _("Media (image/video) intended vertical pixel density in ppi"), NULL);
 
-  gst_tag_register (GST_TAG_ID3V2_FRAME, GST_TAG_FLAG_META,
+  gst_tag_register_static (GST_TAG_ID3V2_FRAME, GST_TAG_FLAG_META,
       GST_TYPE_BUFFER, _("ID3v2 frame"), _("unparsed id3v2 tag frame"),
       gst_tag_merge_use_first);
 
@@ -203,7 +203,7 @@ gst_tag_register_tags_internal (gpointer unused)
  * that the core can load+register tags automatically when needed. */
 
 /**
- * gst_tag_register_musicbrainz_tags
+ * gst_tag_register_musicbrainz_tags:
  *
  * Registers additional musicbrainz-specific tags with the GStreamer tag
  * system. Plugins and applications that use these tags should call this
@@ -307,8 +307,6 @@ gst_tag_image_type_is_valid (GstTagImageType type)
  * code in the extended comment string.
  *
  * Returns: TRUE if the string could be parsed, otherwise FALSE
- *
- * Since: 0.10.10
  */
 gboolean
 gst_tag_parse_extended_comment (const gchar * ext_comment, gchar ** key,
@@ -371,8 +369,6 @@ gst_tag_parse_extended_comment (const gchar * ext_comment, gchar ** key,
  * WINDOWS-1252/ISO-8859-1 is assumed (which will almost always succeed).
  *
  * Returns: a newly-allocated string in UTF-8 encoding, or NULL
- *
- * Since: 0.10.13
  */
 gchar *
 gst_tag_freeform_string_to_utf8 (const gchar * data, gint size,
@@ -559,8 +555,6 @@ beach:
  * data (we can't trust the declared mime type).
  *
  * Returns: a newly-allocated image sample for use in tag lists, or NULL
- *
- * Since: 0.10.20
  */
 GstSample *
 gst_tag_image_data_to_image_sample (const guint8 * image_data,

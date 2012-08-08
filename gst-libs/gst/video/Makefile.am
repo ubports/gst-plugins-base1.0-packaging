@@ -1,5 +1,5 @@
 # variables used for enum generation
-ORC_SOURCE=videoblendorc
+ORC_SOURCE=video-orc
 include $(top_srcdir)/common/orc.mak
 
 glib_enum_headers = video.h video-format.h video-color.h video-info.h \
@@ -35,7 +35,9 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	videooverlay.c          \
 	gstvideodecoder.c       \
 	gstvideoencoder.c       \
-	gstvideoutils.c
+	gstvideoutils.c		\
+	video-blend.c		\
+	video-overlay-composition.c
 
 nodist_libgstvideo_@GST_API_VERSION@_la_SOURCES = $(BUILT_SOURCES)
 
@@ -58,7 +60,10 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	videooverlay.h          \
 	gstvideodecoder.h       \
 	gstvideoencoder.h       \
-	gstvideoutils.h
+	gstvideoutils.h		\
+	video-blend.h		\
+	video-overlay-composition.h
+
 nodist_libgstvideo_@GST_API_VERSION@include_HEADERS = $(built_headers)
 
 libgstvideo_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) \
@@ -72,9 +77,9 @@ if HAVE_INTROSPECTION
 BUILT_GIRSOURCES = GstVideo-@GST_API_VERSION@.gir
 
 gir_headers=$(patsubst %,$(srcdir)/%, $(libgstvideo_@GST_API_VERSION@include_HEADERS))
-gir_headers+=$(patsubst %,$(builddir)/%, $(nodist_libgstvideo_@GST_API_VERSION@include_HEADERS))
+gir_headers+=$(patsubst %,$(builddir)/%, $(built_headers))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstvideo_@GST_API_VERSION@_la_SOURCES))
-gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstvideo_@GST_API_VERSION@_la_SOURCES))
+gir_sources+=$(patsubst %,$(builddir)/%, $(built_sources))
 gir_cincludes=$(patsubst %,--c-include='gst/video/%',$(libgstvideo_@GST_API_VERSION@include_HEADERS))
 gir_cincludes+=$(patsubst %,--c-include='gst/video/%',$(nodist_libgstvideo_@GST_API_VERSION@include_HEADERS))
 

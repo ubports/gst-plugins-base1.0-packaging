@@ -35,7 +35,6 @@ G_BEGIN_DECLS
   (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_APP_SINK))
 #define GST_IS_APP_SINK_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_APP_SINK))
-/* Since 0.10.23 */
 #define GST_APP_SINK_CAST(obj) \
   ((GstAppSink*)(obj))
 
@@ -60,13 +59,11 @@ typedef struct _GstAppSinkPrivate GstAppSinkPrivate;
  *
  * A set of callbacks that can be installed on the appsink with
  * gst_app_sink_set_callbacks().
- *
- * Since: 0.10.23
  */
 typedef struct {
-  void          (*eos)              (GstAppSink *sink, gpointer user_data);
-  GstFlowReturn (*new_preroll)      (GstAppSink *sink, gpointer user_data);
-  GstFlowReturn (*new_sample)       (GstAppSink *sink, gpointer user_data);
+  void          (*eos)              (GstAppSink *appsink, gpointer user_data);
+  GstFlowReturn (*new_preroll)      (GstAppSink *appsink, gpointer user_data);
+  GstFlowReturn (*new_sample)       (GstAppSink *appsink, gpointer user_data);
 
   /*< private >*/
   gpointer     _gst_reserved[GST_PADDING];
@@ -88,13 +85,13 @@ struct _GstAppSinkClass
   GstBaseSinkClass basesink_class;
 
   /* signals */
-  void        (*eos)              (GstAppSink *sink);
-  void        (*new_preroll)      (GstAppSink *sink);
-  void        (*new_sample)       (GstAppSink *sink);
+  void        (*eos)              (GstAppSink *appsink);
+  void        (*new_preroll)      (GstAppSink *appsink);
+  void        (*new_sample)       (GstAppSink *appsink);
 
   /* actions */
-  GstSample     * (*pull_preroll)      (GstAppSink *sink);
-  GstSample     * (*pull_sample)       (GstAppSink *sink);
+  GstSample     * (*pull_preroll)      (GstAppSink *appsink);
+  GstSample     * (*pull_sample)       (GstAppSink *appsink);
 
   /*< private >*/
   gpointer     _gst_reserved[GST_PADDING];

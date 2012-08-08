@@ -93,7 +93,7 @@ static const GstTagEntryMatch tag_matches[] = {
   {GST_TAG_COPYRIGHT_URI, "WCOP"},
   {GST_TAG_ENCODED_BY, "TENC"},
   {GST_TAG_GENRE, "TCON"},
-  {GST_TAG_DATE, "TDRC"},
+  {GST_TAG_DATE_TIME, "TDRC"},
   {GST_TAG_COMMENT, "COMM"},
   {GST_TAG_ALBUM_VOLUME_NUMBER, "TPOS"},
   {GST_TAG_DURATION, "TLEN"},
@@ -269,10 +269,10 @@ gst_tag_list_new_from_id3v1 (const guint8 * data)
   year = strtoul (ystr, NULL, 10);
   g_free (ystr);
   if (year > 0) {
-    GDate *date = g_date_new_dmy (1, 1, year);
+    GstDateTime *dt = gst_date_time_new_y (year);
 
-    gst_tag_list_add (list, GST_TAG_MERGE_REPLACE, GST_TAG_DATE, date, NULL);
-    g_date_free (date);
+    gst_tag_list_add (list, GST_TAG_MERGE_REPLACE, GST_TAG_DATE_TIME, dt, NULL);
+    gst_date_time_unref (dt);
   }
   if (data[125] == 0 && data[126] != 0) {
     gst_tag_extract_id3v1_string (list, GST_TAG_COMMENT, (gchar *) & data[97],
@@ -338,8 +338,6 @@ gst_tag_id3_genre_get (const guint id)
  * more information on image tags in GStreamer.
  *
  * Returns: %TRUE if the image was processed, otherwise %FALSE
- *
- * Since: 0.10.20
  */
 gboolean
 gst_tag_list_add_id3_image (GstTagList * tag_list, const guint8 * image_data,

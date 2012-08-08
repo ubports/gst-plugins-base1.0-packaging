@@ -23,7 +23,6 @@
  * SECTION:gstaudioencoder
  * @short_description: Base class for audio encoders
  * @see_also: #GstBaseTransform
- * @since: 0.10.36
  *
  * This base class is for audio encoders turning raw audio samples into
  * encoded audio data.
@@ -198,6 +197,9 @@ typedef struct _GstAudioEncoderContext
 
   GList *headers;
   gboolean new_headers;
+
+  GstAllocator *allocator;
+  GstAllocationParams params;
 } GstAudioEncoderContext;
 
 struct _GstAudioEncoderPrivate
@@ -229,6 +231,8 @@ struct _GstAudioEncoderPrivate
   gboolean drained;
   /* subclass currently being forcibly drained */
   gboolean force;
+  /* need to handle changed input caps */
+  gboolean do_caps;
 
   /* output bps estimatation */
   /* global in samples seen */
@@ -325,6 +329,11 @@ static gboolean gst_audio_encoder_sink_query (GstPad * pad, GstObject * parent,
 static GstStateChangeReturn gst_audio_encoder_change_state (GstElement *
     element, GstStateChange transition);
 
+static gboolean gst_audio_encoder_decide_allocation_default (GstAudioEncoder *
+    enc, GstQuery * query);
+static gboolean gst_audio_encoder_propose_allocation_default (GstAudioEncoder *
+    enc, GstQuery * query);
+
 static void
 gst_audio_encoder_class_init (GstAudioEncoderClass * klass)
 {
@@ -370,6 +379,8 @@ gst_audio_encoder_class_init (GstAudioEncoderClass * klass)
   klass->getcaps = gst_audio_encoder_getcaps_default;
   klass->sink_event = gst_audio_encoder_sink_event_default;
   klass->src_event = gst_audio_encoder_src_event_default;
+  klass->propose_allocation = gst_audio_encoder_propose_allocation_default;
+  klass->decide_allocation = gst_audio_encoder_decide_allocation_default;
 }
 
 static void
@@ -455,6 +466,10 @@ gst_audio_encoder_reset (GstAudioEncoder * enc, gboolean full)
     g_list_foreach (enc->priv->pending_events, (GFunc) gst_event_unref, NULL);
     g_list_free (enc->priv->pending_events);
     enc->priv->pending_events = NULL;
+
+    if (enc->priv->ctx.allocator)
+      gst_object_unref (enc->priv->ctx.allocator);
+    enc->priv->ctx.allocator = NULL;
   }
 
   gst_segment_init (&enc->input_segment, GST_FORMAT_TIME);
@@ -568,8 +583,6 @@ gst_audio_encoder_push_event (GstAudioEncoder * enc, GstEvent * event)
  * may be invalidated by a call to this function.
  *
  * Returns: a #GstFlowReturn that should be escalated to caller (of caller)
- *
- * Since: 0.10.36
  */
 GstFlowReturn
 gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
@@ -597,6 +610,15 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
   GST_LOG_OBJECT (enc,
       "accepting %" G_GSIZE_FORMAT " bytes encoded data as %d samples",
       buf ? gst_buffer_get_size (buf) : -1, samples);
+
+  if (G_UNLIKELY (gst_pad_check_reconfigure (enc->srcpad))) {
+    GstCaps *caps = gst_pad_get_current_caps (enc->srcpad);
+    if (!gst_audio_encoder_set_output_format (enc, caps)) {
+      ret = GST_FLOW_NOT_NEGOTIATED;
+      goto exit;
+    }
+    gst_caps_unref (caps);
+  }
 
   /* mark subclass still alive and providing */
   if (G_LIKELY (buf))
@@ -632,7 +654,7 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
         caps);
 #endif
     GST_DEBUG_OBJECT (enc, "sending tags %" GST_PTR_FORMAT, tags);
-    gst_audio_encoder_push_event (enc, gst_event_new_tag ("GstEncoder", tags));
+    gst_audio_encoder_push_event (enc, gst_event_new_tag (tags));
   }
 
   /* remove corresponding samples from input */
@@ -1009,6 +1031,17 @@ gst_audio_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 
   GST_AUDIO_ENCODER_STREAM_LOCK (enc);
 
+  if (G_UNLIKELY (priv->do_caps)) {
+    GstCaps *caps = gst_pad_get_current_caps (enc->sinkpad);
+    if (!caps)
+      goto not_negotiated;
+    if (!gst_audio_encoder_sink_setcaps (enc, caps)) {
+      gst_caps_unref (caps);
+      goto not_negotiated;
+    }
+    priv->do_caps = FALSE;
+  }
+
   /* should know what is coming by now */
   if (!ctx->info.bpf)
     goto not_negotiated;
@@ -1185,8 +1218,8 @@ audio_info_is_equal (GstAudioInfo * from, GstAudioInfo * to)
     return FALSE;
   if (GST_AUDIO_INFO_CHANNELS (from) > 64)
     return TRUE;
-  return memcmp (from->position, to->position,
-      GST_AUDIO_INFO_CHANNELS (from) * sizeof (to->position[0]));
+  return (memcmp (from->position, to->position,
+          GST_AUDIO_INFO_CHANNELS (from) * sizeof (to->position[0])) == 0);
 }
 
 static gboolean
@@ -1291,17 +1324,17 @@ refuse_caps:
  * gst_audio_encoder_proxy_getcaps:
  * @enc: a #GstAudioEncoder
  * @caps: initial caps
+ * @filter: filter caps
  *
  * Returns caps that express @caps (or sink template caps if @caps == NULL)
  * restricted to channel/rate combinations supported by downstream elements
  * (e.g. muxers).
  *
  * Returns: a #GstCaps owned by caller
- *
- * Since: 0.10.36
  */
 GstCaps *
-gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc, GstCaps * caps)
+gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc, GstCaps * caps,
+    GstCaps * filter)
 {
   GstCaps *templ_caps = NULL;
   GstCaps *allowed = NULL;
@@ -1353,6 +1386,14 @@ gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc, GstCaps * caps)
   gst_caps_unref (filter_caps);
   gst_caps_unref (templ_caps);
 
+  if (filter) {
+    GST_LOG_OBJECT (enc, "intersecting with %" GST_PTR_FORMAT, filter);
+    filter_caps = gst_caps_intersect_full (filter, fcaps,
+        GST_CAPS_INTERSECT_FIRST);
+    gst_caps_unref (fcaps);
+    fcaps = filter_caps;
+  }
+
 done:
   gst_caps_replace (&allowed, NULL);
 
@@ -1366,7 +1407,7 @@ gst_audio_encoder_getcaps_default (GstAudioEncoder * enc, GstCaps * filter)
 {
   GstCaps *caps;
 
-  caps = gst_audio_encoder_proxy_getcaps (enc, NULL);
+  caps = gst_audio_encoder_proxy_getcaps (enc, NULL, filter);
   GST_LOG_OBJECT (enc, "returning caps %" GST_PTR_FORMAT, caps);
 
   return caps;
@@ -1465,7 +1506,7 @@ gst_audio_encoder_sink_event_default (GstAudioEncoder * enc, GstEvent * event)
       gst_tag_list_remove_tag (tags, GST_TAG_MINIMUM_BITRATE);
       gst_tag_list_remove_tag (tags, GST_TAG_ENCODER);
       gst_tag_list_remove_tag (tags, GST_TAG_ENCODER_VERSION);
-      event = gst_event_new_tag ("GstEncoder", tags);
+      event = gst_event_new_tag (tags);
 
       GST_AUDIO_ENCODER_STREAM_LOCK (enc);
       enc->priv->pending_events =
@@ -1480,7 +1521,8 @@ gst_audio_encoder_sink_event_default (GstAudioEncoder * enc, GstEvent * event)
       GstCaps *caps;
 
       gst_event_parse_caps (event, &caps);
-      res = gst_audio_encoder_sink_setcaps (enc, caps);
+      enc->priv->do_caps = TRUE;
+      res = TRUE;
       gst_event_unref (event);
       break;
     }
@@ -1574,6 +1616,14 @@ gst_audio_encoder_sink_query (GstPad * pad, GstObject * parent,
       }
       break;
     }
+    case GST_QUERY_ALLOCATION:
+    {
+      GstAudioEncoderClass *klass = GST_AUDIO_ENCODER_GET_CLASS (enc);
+
+      if (klass->propose_allocation)
+        res = klass->propose_allocation (enc, query);
+      break;
+    }
     default:
       res = gst_pad_query_default (pad, parent, query);
       break;
@@ -1619,6 +1669,43 @@ gst_audio_encoder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
   return ret;
 }
 
+static gboolean
+gst_audio_encoder_decide_allocation_default (GstAudioEncoder * enc,
+    GstQuery * query)
+{
+  GstAllocator *allocator = NULL;
+  GstAllocationParams params;
+  gboolean update_allocator;
+
+  /* we got configuration from our peer or the decide_allocation method,
+   * parse them */
+  if (gst_query_get_n_allocation_params (query) > 0) {
+    /* try the allocator */
+    gst_query_parse_nth_allocation_param (query, 0, &allocator, &params);
+    update_allocator = TRUE;
+  } else {
+    allocator = NULL;
+    gst_allocation_params_init (&params);
+    update_allocator = FALSE;
+  }
+
+  if (update_allocator)
+    gst_query_set_nth_allocation_param (query, 0, allocator, &params);
+  else
+    gst_query_add_allocation_param (query, allocator, &params);
+  if (allocator)
+    gst_object_unref (allocator);
+
+  return TRUE;
+}
+
+static gboolean
+gst_audio_encoder_propose_allocation_default (GstAudioEncoder * enc,
+    GstQuery * query)
+{
+  return TRUE;
+}
+
 /*
  * gst_audio_encoded_audio_convert:
  * @fmt: audio format of the encoded audio
@@ -1633,8 +1720,6 @@ gst_audio_encoder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
  * @dest_format for encoded audio data.  Conversion is possible between
  * BYTE and TIME format by using estimated bitrate based on
  * @samples and @bytes (and @fmt).
- *
- * Since: 0.10.36
  */
 /* FIXME: make gst_audio_encoded_audio_convert() public? */
 static gboolean
@@ -1919,8 +2004,6 @@ gst_audio_encoder_sink_activate_mode (GstPad * pad, GstObject * parent,
  * @enc: a #GstAudioEncoder
  *
  * Returns: a #GstAudioInfo describing the input audio format
- *
- * Since: 0.10.36
  */
 GstAudioInfo *
 gst_audio_encoder_get_audio_info (GstAudioEncoder * enc)
@@ -1940,8 +2023,6 @@ gst_audio_encoder_get_audio_info (GstAudioEncoder * enc)
  *
  * If an exact number of samples is required, gst_audio_encoder_set_frame_samples_max()
  * must be called with the same number.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_frame_samples_min (GstAudioEncoder * enc, gint num)
@@ -1956,8 +2037,6 @@ gst_audio_encoder_set_frame_samples_min (GstAudioEncoder * enc, gint num)
  * @enc: a #GstAudioEncoder
  *
  * Returns: currently minimum requested samples per frame
- *
- * Since: 0.10.36
  */
 gint
 gst_audio_encoder_get_frame_samples_min (GstAudioEncoder * enc)
@@ -1977,8 +2056,6 @@ gst_audio_encoder_get_frame_samples_min (GstAudioEncoder * enc)
  *
  * If an exact number of samples is required, gst_audio_encoder_set_frame_samples_min()
  * must be called with the same number.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_frame_samples_max (GstAudioEncoder * enc, gint num)
@@ -1989,12 +2066,10 @@ gst_audio_encoder_set_frame_samples_max (GstAudioEncoder * enc, gint num)
 }
 
 /**
- * gst_audio_encoder_get_frame_samples_min:
+ * gst_audio_encoder_get_frame_samples_max:
  * @enc: a #GstAudioEncoder
  *
  * Returns: currently maximum requested samples per frame
- *
- * Since: 0.10.36
  */
 gint
 gst_audio_encoder_get_frame_samples_max (GstAudioEncoder * enc)
@@ -2011,8 +2086,6 @@ gst_audio_encoder_get_frame_samples_max (GstAudioEncoder * enc)
  *
  * Sets max number of frames accepted at once (assumed minimally 1).
  * Requires @frame_samples_min and @frame_samples_max to be the equal.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_frame_max (GstAudioEncoder * enc, gint num)
@@ -2027,8 +2100,6 @@ gst_audio_encoder_set_frame_max (GstAudioEncoder * enc, gint num)
  * @enc: a #GstAudioEncoder
  *
  * Returns: currently configured maximum handled frames
- *
- * Since: 0.10.36
  */
 gint
 gst_audio_encoder_get_frame_max (GstAudioEncoder * enc)
@@ -2044,8 +2115,6 @@ gst_audio_encoder_get_frame_max (GstAudioEncoder * enc)
  * @num: lookahead
  *
  * Sets encoder lookahead (in units of input rate samples)
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_lookahead (GstAudioEncoder * enc, gint num)
@@ -2076,8 +2145,6 @@ gst_audio_encoder_get_lookahead (GstAudioEncoder * enc)
  * @max: maximum latency
  *
  * Sets encoder latency.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_latency (GstAudioEncoder * enc,
@@ -2099,8 +2166,6 @@ gst_audio_encoder_set_latency (GstAudioEncoder * enc,
  *
  * Sets the variables pointed to by @min and @max to the currently configured
  * latency.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_get_latency (GstAudioEncoder * enc,
@@ -2118,8 +2183,9 @@ gst_audio_encoder_get_latency (GstAudioEncoder * enc,
 
 /**
  * gst_audio_encoder_set_headers:
- * @encoder: a #GstAudioEncoder
- * @headers: (transfer full): a list of #GstBuffer containing the codec header
+ * @enc: a #GstAudioEncoder
+ * @headers: (transfer full) (element-type Gst.Buffer): a list of
+ *   #GstBuffer containing the codec header
  *
  * Set the codec headers to be sent downstream whenever requested.
  */
@@ -2144,8 +2210,6 @@ gst_audio_encoder_set_headers (GstAudioEncoder * enc, GList * headers)
  * Enable or disable encoder granule handling.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_mark_granule (GstAudioEncoder * enc, gboolean enabled)
@@ -2168,8 +2232,6 @@ gst_audio_encoder_set_mark_granule (GstAudioEncoder * enc, gboolean enabled)
  * Returns: TRUE if granule marking is enabled.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gboolean
 gst_audio_encoder_get_mark_granule (GstAudioEncoder * enc)
@@ -2193,8 +2255,6 @@ gst_audio_encoder_get_mark_granule (GstAudioEncoder * enc)
  * Enable or disable encoder perfect output timestamp preference.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_perfect_timestamp (GstAudioEncoder * enc,
@@ -2218,8 +2278,6 @@ gst_audio_encoder_set_perfect_timestamp (GstAudioEncoder * enc,
  * Returns: TRUE if perfect timestamp setting enabled.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gboolean
 gst_audio_encoder_get_perfect_timestamp (GstAudioEncoder * enc)
@@ -2243,8 +2301,6 @@ gst_audio_encoder_get_perfect_timestamp (GstAudioEncoder * enc)
  * Sets encoder hard resync handling.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_hard_resync (GstAudioEncoder * enc, gboolean enabled)
@@ -2267,8 +2323,6 @@ gst_audio_encoder_set_hard_resync (GstAudioEncoder * enc, gboolean enabled)
  * Returns: TRUE if hard resync is enabled.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gboolean
 gst_audio_encoder_get_hard_resync (GstAudioEncoder * enc)
@@ -2292,8 +2346,6 @@ gst_audio_encoder_get_hard_resync (GstAudioEncoder * enc)
  * Configures encoder audio jitter tolerance threshold.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_tolerance (GstAudioEncoder * enc, gint64 tolerance)
@@ -2314,8 +2366,6 @@ gst_audio_encoder_set_tolerance (GstAudioEncoder * enc, gint64 tolerance)
  * Returns: encoder audio jitter tolerance threshold.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gint64
 gst_audio_encoder_get_tolerance (GstAudioEncoder * enc)
@@ -2342,8 +2392,6 @@ gst_audio_encoder_get_tolerance (GstAudioEncoder * enc)
  * will simply be discarded.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_hard_min (GstAudioEncoder * enc, gboolean enabled)
@@ -2364,8 +2412,6 @@ gst_audio_encoder_set_hard_min (GstAudioEncoder * enc, gboolean enabled)
  * Returns: TRUE if hard minimum handling is enabled.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gboolean
 gst_audio_encoder_get_hard_min (GstAudioEncoder * enc)
@@ -2392,8 +2438,6 @@ gst_audio_encoder_get_hard_min (GstAudioEncoder * enc)
  * real data.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_set_drainable (GstAudioEncoder * enc, gboolean enabled)
@@ -2414,8 +2458,6 @@ gst_audio_encoder_set_drainable (GstAudioEncoder * enc, gboolean enabled)
  * Returns: TRUE if drainable handling is enabled.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 gboolean
 gst_audio_encoder_get_drainable (GstAudioEncoder * enc)
@@ -2446,8 +2488,6 @@ gst_audio_encoder_get_drainable (GstAudioEncoder * enc)
  * of the usual CODEC/AUDIO_CODEC tags.
  *
  * MT safe.
- *
- * Since: 0.10.36
  */
 void
 gst_audio_encoder_merge_tags (GstAudioEncoder * enc,
@@ -2480,8 +2520,12 @@ gst_audio_encoder_merge_tags (GstAudioEncoder * enc,
 gboolean
 gst_audio_encoder_set_output_format (GstAudioEncoder * enc, GstCaps * caps)
 {
+  GstAudioEncoderClass *klass = GST_AUDIO_ENCODER_GET_CLASS (enc);
   gboolean res = FALSE;
   GstCaps *templ_caps;
+  GstQuery *query = NULL;
+  GstAllocator *allocator;
+  GstAllocationParams params;
 
   GST_DEBUG_OBJECT (enc, "Setting srcpad caps %" GST_PTR_FORMAT, caps);
 
@@ -2497,8 +2541,44 @@ gst_audio_encoder_set_output_format (GstAudioEncoder * enc, GstCaps * caps)
   gst_caps_unref (templ_caps);
 
   res = gst_pad_set_caps (enc->srcpad, caps);
+  if (!res)
+    goto done;
+
+  /* clear reconfigure so we don't set caps twice */
+  gst_pad_check_reconfigure (enc->srcpad);
+
+  query = gst_query_new_allocation (caps, TRUE);
+  if (!gst_pad_peer_query (enc->srcpad, query)) {
+    GST_DEBUG_OBJECT (enc, "didn't get downstream ALLOCATION hints");
+  }
+
+  g_assert (klass->decide_allocation != NULL);
+  res = klass->decide_allocation (enc, query);
+
+  GST_DEBUG_OBJECT (enc, "ALLOCATION (%d) params: %" GST_PTR_FORMAT, res,
+      query);
+
+  if (!res)
+    goto no_decide_allocation;
+
+  /* we got configuration from our peer or the decide_allocation method,
+   * parse them */
+  if (gst_query_get_n_allocation_params (query) > 0) {
+    gst_query_parse_nth_allocation_param (query, 0, &allocator, &params);
+  } else {
+    allocator = NULL;
+    gst_allocation_params_init (&params);
+  }
+
+  if (enc->priv->ctx.allocator)
+    gst_object_unref (enc->priv->ctx.allocator);
+  enc->priv->ctx.allocator = allocator;
+  enc->priv->ctx.params = params;
 
 done:
+  if (query)
+    gst_query_unref (query);
+
   return res;
 
   /* ERRORS */
@@ -2508,4 +2588,51 @@ refuse_caps:
     res = FALSE;
     goto done;
   }
+  /* Errors */
+no_decide_allocation:
+  {
+    GST_WARNING_OBJECT (enc, "Subclass failed to decide allocation");
+    goto done;
+  }
+}
+
+/**
+ * gst_audio_encoder_allocate_output_buffer:
+ * @enc: a #GstAudioEncoder
+ * @size: size of the buffer
+ *
+ * Helper function that allocates a buffer to hold an encoded audio frame
+ * for @enc's current output format.
+ *
+ * Returns: (transfer full): allocated buffer
+ */
+GstBuffer *
+gst_audio_encoder_allocate_output_buffer (GstAudioEncoder * enc, gsize size)
+{
+  GstBuffer *buffer = NULL;
+
+  g_return_val_if_fail (size > 0, NULL);
+
+  GST_DEBUG ("alloc src buffer");
+
+  GST_AUDIO_ENCODER_STREAM_LOCK (enc);
+
+  if (G_UNLIKELY (gst_pad_has_current_caps (enc->srcpad)
+          && gst_pad_check_reconfigure (enc->srcpad))) {
+    GstCaps *caps = gst_pad_get_current_caps (enc->srcpad);
+    if (!gst_audio_encoder_set_output_format (enc, caps)) {
+      gst_caps_unref (caps);
+      goto done;
+    }
+    gst_caps_unref (caps);
+  }
+
+  buffer =
+      gst_buffer_new_allocate (enc->priv->ctx.allocator, size,
+      &enc->priv->ctx.params);
+
+done:
+  GST_AUDIO_ENCODER_STREAM_UNLOCK (enc);
+
+  return buffer;
 }

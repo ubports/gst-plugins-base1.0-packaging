@@ -504,13 +504,15 @@ theora_handle_type_packet (GstTheoraDec * dec)
       break;
   }
 
+  gst_video_decoder_negotiate (GST_VIDEO_DECODER (dec));
+
   dec->have_header = TRUE;
 
   /* FIXME : Put this on the next outgoing frame */
   /* FIXME :  */
   if (dec->tags) {
     gst_pad_push_event (GST_VIDEO_DECODER (dec)->srcpad,
-        gst_event_new_tag ("GstDecoder", dec->tags));
+        gst_event_new_tag (dec->tags));
     dec->tags = NULL;
   }
 
@@ -576,7 +578,7 @@ theora_handle_image (GstTheoraDec * dec, th_ycbcr_buffer buf,
   gint pic_width, pic_height;
   gint offset_x, offset_y;
 
-  result = gst_video_decoder_alloc_output_frame (decoder, frame);
+  result = gst_video_decoder_allocate_output_frame (decoder, frame);
 
   if (G_UNLIKELY (result != GST_FLOW_OK)) {
     GST_DEBUG_OBJECT (dec, "could not get buffer, reason: %s",
@@ -733,7 +735,7 @@ not_initialized:
 dropping:
   {
     GST_WARNING_OBJECT (dec, "dropping frame because we need a keyframe");
-    return GST_VIDEO_DECODER_FLOW_NEED_DATA;
+    return GST_CUSTOM_FLOW_DROP;
   }
 dropping_qos:
   {
@@ -787,6 +789,7 @@ theora_dec_decode_buffer (GstTheoraDec * dec, GstBuffer * buf,
   if (packet.bytes && packet.packet[0] & 0x80) {
     if (dec->have_header) {
       GST_WARNING_OBJECT (GST_OBJECT (dec), "Ignoring header");
+      result = GST_CUSTOM_FLOW_DROP;
       goto done;
     }
     result = theora_handle_header_packet (dec, &packet);
@@ -848,11 +851,12 @@ theora_dec_decide_allocation (GstVideoDecoder * decoder, GstQuery * query)
 
   dec->can_crop = FALSE;
   config = gst_buffer_pool_get_config (pool);
-  if (gst_query_has_allocation_meta (query, GST_VIDEO_META_API_TYPE)) {
+  if (gst_query_find_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL)) {
     gst_buffer_pool_config_add_option (config,
         GST_BUFFER_POOL_OPTION_VIDEO_META);
     dec->can_crop =
-        gst_query_has_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE);
+        gst_query_find_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE,
+        NULL);
   }
 
   if (dec->can_crop) {

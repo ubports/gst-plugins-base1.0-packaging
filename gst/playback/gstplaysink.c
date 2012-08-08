@@ -242,6 +242,7 @@ struct _GstPlaySink
   gboolean mute_changed;        /* ... has been created yet */
   gint64 av_offset;
   GstPlaySinkSendEventMode send_event_mode;
+  gboolean force_aspect_ratio;
 
   /* videooverlay proxy interface */
   GstVideoOverlay *overlay_element;     /* protected with LOCK */
@@ -331,6 +332,7 @@ enum
   PROP_AUDIO_SINK,
   PROP_TEXT_SINK,
   PROP_SEND_EVENT_MODE,
+  PROP_FORCE_ASPECT_RATIO,
   PROP_LAST
 };
 
@@ -379,6 +381,8 @@ static void notify_mute_cb (GObject * object, GParamSpec * pspec,
     GstPlaySink * playsink);
 
 static void update_av_offset (GstPlaySink * playsink);
+
+static gboolean gst_play_sink_do_reconfigure (GstPlaySink * playsink);
 
 static GQuark _playsink_reset_segment_event_marker_id = 0;
 
@@ -556,6 +560,18 @@ gst_play_sink_class_init (GstPlaySinkClass * klass)
           GST_TYPE_PLAY_SINK_SEND_EVENT_MODE, MODE_DEFAULT,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GstPlaySink::force-aspect-ratio:
+   *
+   * Requests the video sink to enforce the video display aspect ratio.
+   *
+   * Since: 0.10.37
+   */
+  g_object_class_install_property (gobject_klass, PROP_FORCE_ASPECT_RATIO,
+      g_param_spec_boolean ("force-aspect-ratio", "Force Aspect Ratio",
+          "When enabled, scaling will respect original aspect ratio", TRUE,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   g_signal_new ("reconfigure", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, G_STRUCT_OFFSET (GstPlaySinkClass,
           reconfigure), NULL, NULL, g_cclosure_marshal_generic, G_TYPE_BOOLEAN,
@@ -628,6 +644,7 @@ gst_play_sink_init (GstPlaySink * playsink)
   playsink->subtitle_encoding = NULL;
   playsink->flags = DEFAULT_FLAGS;
   playsink->send_event_mode = MODE_DEFAULT;
+  playsink->force_aspect_ratio = TRUE;
 
   playsink->stream_synchronizer =
       g_object_new (GST_TYPE_STREAM_SYNCHRONIZER, NULL);
@@ -1266,7 +1283,9 @@ do_async_done (GstPlaySink * playsink)
 
   if (playsink->async_pending) {
     GST_INFO_OBJECT (playsink, "Sending async_done message");
-    message = gst_message_new_async_done (GST_OBJECT_CAST (playsink), FALSE);
+    message =
+        gst_message_new_async_done (GST_OBJECT_CAST (playsink),
+        GST_CLOCK_TIME_NONE);
     GST_BIN_CLASS (gst_play_sink_parent_class)->handle_message (GST_BIN_CAST
         (playsink), message);
 
@@ -1344,6 +1363,10 @@ gen_video_deinterlace_chain (GstPlaySink * playsink)
 
   GST_DEBUG_OBJECT (playsink, "creating deinterlace");
   chain->deinterlace = gst_element_factory_make ("deinterlace", "deinterlace");
+  if (chain->deinterlace == NULL) {
+    chain->deinterlace =
+        gst_element_factory_make ("avdeinterlace", "deinterlace");
+  }
   if (chain->deinterlace == NULL) {
     post_missing_element_message (playsink, "deinterlace");
     GST_ELEMENT_WARNING (playsink, CORE, MISSING_PLUGIN,
@@ -1608,7 +1631,8 @@ gen_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
       gst_play_sink_find_property_sinks (playsink, chain->sink,
       "force-aspect-ratio", G_TYPE_BOOLEAN);
   if (elem)
-    g_object_set (elem, "force-aspect-ratio", TRUE, NULL);
+    g_object_set (elem, "force-aspect-ratio", playsink->force_aspect_ratio,
+        NULL);
 
   /* find ts-offset element */
   gst_object_replace ((GstObject **) & chain->ts_offset, (GstObject *)
@@ -1676,6 +1700,10 @@ gen_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
     gst_object_unref (playsink->colorbalance_element);
   }
   playsink->colorbalance_element = find_color_balance_element (chain->sink);
+  if (playsink->colorbalance_element) {
+    g_signal_connect (playsink->colorbalance_element, "value-changed",
+        G_CALLBACK (colorbalance_value_changed_cb), playsink);
+  }
   GST_OBJECT_UNLOCK (playsink);
 
   if (!(playsink->flags & GST_PLAY_FLAG_NATIVE_VIDEO)
@@ -1852,7 +1880,8 @@ setup_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
       gst_play_sink_find_property_sinks (playsink, chain->sink,
       "force-aspect-ratio", G_TYPE_BOOLEAN);
   if (elem)
-    g_object_set (elem, "force-aspect-ratio", TRUE, NULL);
+    g_object_set (elem, "force-aspect-ratio", playsink->force_aspect_ratio,
+        NULL);
 
   GST_OBJECT_LOCK (playsink);
   if (playsink->colorbalance_element) {
@@ -1861,6 +1890,10 @@ setup_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
     gst_object_unref (playsink->colorbalance_element);
   }
   playsink->colorbalance_element = find_color_balance_element (chain->sink);
+  if (playsink->colorbalance_element) {
+    g_signal_connect (playsink->colorbalance_element, "value-changed",
+        G_CALLBACK (colorbalance_value_changed_cb), playsink);
+  }
   GST_OBJECT_UNLOCK (playsink);
 
   if (chain->conv) {
@@ -1942,7 +1975,7 @@ gst_play_sink_sink_event (GstPad * pad, GstObject * parent, GstEvent * event,
   }
 
   GST_DEBUG_OBJECT (pad, "Forwarding event %" GST_PTR_FORMAT, event);
-  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
+  ret = gst_pad_event_default (pad, parent, gst_event_ref (event));
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_SEGMENT) {
     const GstSegment *segment;
@@ -2181,7 +2214,7 @@ gst_play_sink_text_src_event (GstPad * pad, GstObject * parent,
     goto out;
   }
 
-  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
+  ret = gst_pad_event_default (pad, parent, gst_event_ref (event));
 
 out:
   gst_event_unref (event);
@@ -2903,8 +2936,8 @@ link_failed:
  * have to construct the final pipeline. Based on the flags we construct the
  * final output pipelines.
  */
-gboolean
-gst_play_sink_reconfigure (GstPlaySink * playsink)
+static gboolean
+gst_play_sink_do_reconfigure (GstPlaySink * playsink)
 {
   GstPlayFlags flags;
   gboolean need_audio, need_video, need_deinterlace, need_vis, need_text;
@@ -2925,19 +2958,6 @@ gst_play_sink_reconfigure (GstPlaySink * playsink)
     /* we have subtitles and we are requested to show it */
     need_text = TRUE;
   }
-
-  GST_OBJECT_LOCK (playsink);
-  if (playsink->overlay_element)
-    gst_object_unref (playsink->overlay_element);
-  playsink->overlay_element = NULL;
-
-  if (playsink->colorbalance_element) {
-    g_signal_handlers_disconnect_by_func (playsink->colorbalance_element,
-        G_CALLBACK (colorbalance_value_changed_cb), playsink);
-    gst_object_unref (playsink->colorbalance_element);
-  }
-  playsink->colorbalance_element = NULL;
-  GST_OBJECT_UNLOCK (playsink);
 
   if (((flags & GST_PLAY_FLAG_VIDEO)
           || (flags & GST_PLAY_FLAG_NATIVE_VIDEO)) && playsink->video_pad) {
@@ -3024,6 +3044,19 @@ gst_play_sink_reconfigure (GstPlaySink * playsink)
         activate_chain (GST_PLAY_CHAIN (playsink->videochain), FALSE);
         free_chain ((GstPlayChain *) playsink->videochain);
         playsink->videochain = NULL;
+
+        GST_OBJECT_LOCK (playsink);
+        if (playsink->overlay_element)
+          gst_object_unref (playsink->overlay_element);
+        playsink->overlay_element = NULL;
+
+        if (playsink->colorbalance_element) {
+          g_signal_handlers_disconnect_by_func (playsink->colorbalance_element,
+              G_CALLBACK (colorbalance_value_changed_cb), playsink);
+          gst_object_unref (playsink->colorbalance_element);
+        }
+        playsink->colorbalance_element = NULL;
+        GST_OBJECT_UNLOCK (playsink);
       }
     }
 
@@ -3067,6 +3100,8 @@ gst_play_sink_reconfigure (GstPlaySink * playsink)
       add_chain (GST_PLAY_CHAIN (playsink->videodeinterlacechain), TRUE);
       activate_chain (GST_PLAY_CHAIN (playsink->videodeinterlacechain), TRUE);
 
+      gst_pad_unlink (playsink->video_srcpad_stream_synchronizer,
+          playsink->videochain->sinkpad);
       gst_pad_link_full (playsink->video_srcpad_stream_synchronizer,
           playsink->videodeinterlacechain->sinkpad, GST_PAD_LINK_CHECK_NOTHING);
     } else {
@@ -3084,6 +3119,12 @@ gst_play_sink_reconfigure (GstPlaySink * playsink)
     if (!need_vis && !need_text && (!playsink->textchain
             || !playsink->text_pad)) {
       GST_DEBUG_OBJECT (playsink, "ghosting video sinkpad");
+      gst_pad_unlink (playsink->video_srcpad_stream_synchronizer,
+          playsink->videochain->sinkpad);
+      if (playsink->videodeinterlacechain
+          && playsink->videodeinterlacechain->srcpad)
+        gst_pad_unlink (playsink->videodeinterlacechain->srcpad,
+            playsink->videochain->sinkpad);
       if (need_deinterlace)
         gst_pad_link_full (playsink->videodeinterlacechain->srcpad,
             playsink->videochain->sinkpad, GST_PAD_LINK_CHECK_NOTHING);
@@ -3137,6 +3178,20 @@ gst_play_sink_reconfigure (GstPlaySink * playsink)
 
     if (playsink->video_pad)
       gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (playsink->video_pad), NULL);
+
+    GST_OBJECT_LOCK (playsink);
+    if (playsink->overlay_element)
+      gst_object_unref (playsink->overlay_element);
+    playsink->overlay_element = NULL;
+
+    if (playsink->colorbalance_element) {
+      g_signal_handlers_disconnect_by_func (playsink->colorbalance_element,
+          G_CALLBACK (colorbalance_value_changed_cb), playsink);
+      gst_object_unref (playsink->colorbalance_element);
+    }
+    playsink->colorbalance_element = NULL;
+    GST_OBJECT_UNLOCK (playsink);
+
   }
 
   if (need_audio) {
@@ -3549,8 +3604,10 @@ update_av_offset (GstPlaySink * playsink)
   vchain = (GstPlayVideoChain *) playsink->videochain;
 
   if (achain && vchain && achain->ts_offset && vchain->ts_offset) {
-    g_object_set (achain->ts_offset, "ts-offset", MAX (0, -av_offset), NULL);
-    g_object_set (vchain->ts_offset, "ts-offset", MAX (0, av_offset), NULL);
+    g_object_set (achain->ts_offset,
+        "ts-offset", MAX (G_GINT64_CONSTANT (0), -av_offset), NULL);
+    g_object_set (vchain->ts_offset,
+        "ts-offset", MAX (G_GINT64_CONSTANT (0), av_offset), NULL);
   } else {
     GST_LOG_OBJECT (playsink, "no ts_offset elements");
   }
@@ -3784,6 +3841,20 @@ text_set_blocked (GstPlaySink * playsink, gboolean blocked)
   }
 }
 
+gboolean
+gst_play_sink_reconfigure (GstPlaySink * playsink)
+{
+  GST_LOG_OBJECT (playsink, "Triggering reconfiguration");
+
+  GST_PLAY_SINK_LOCK (playsink);
+  video_set_blocked (playsink, TRUE);
+  audio_set_blocked (playsink, TRUE);
+  text_set_blocked (playsink, TRUE);
+  GST_PLAY_SINK_UNLOCK (playsink);
+
+  return TRUE;
+}
+
 static GstPadProbeReturn
 sinkpad_blocked_cb (GstPad * blockedpad, GstPadProbeInfo * info,
     gpointer user_data)
@@ -3830,7 +3901,7 @@ sinkpad_blocked_cb (GstPad * blockedpad, GstPadProbeInfo * info,
           playsink->audio_pad_raw);
     }
 
-    gst_play_sink_reconfigure (playsink);
+    gst_play_sink_do_reconfigure (playsink);
 
     video_set_blocked (playsink, FALSE);
     audio_set_blocked (playsink, FALSE);
@@ -3873,13 +3944,8 @@ caps_notify_cb (GstPad * pad, GParamSpec * unused, GstPlaySink * playsink)
 
   gst_caps_unref (caps);
 
-  if (reconfigure) {
-    GST_PLAY_SINK_LOCK (playsink);
-    video_set_blocked (playsink, TRUE);
-    audio_set_blocked (playsink, TRUE);
-    text_set_blocked (playsink, TRUE);
-    GST_PLAY_SINK_UNLOCK (playsink);
-  }
+  if (reconfigure)
+    gst_play_sink_reconfigure (playsink);
 }
 
 void
@@ -4337,40 +4403,8 @@ gst_play_sink_change_state (GstElement * element, GstStateChange transition)
       ret = GST_STATE_CHANGE_ASYNC;
 
       /* block all pads here */
-      GST_PLAY_SINK_LOCK (playsink);
-      if (playsink->video_pad && playsink->video_block_id == 0) {
-        GstPad *opad =
-            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
-                (playsink->video_pad)));
-        playsink->video_block_id =
-            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
-            sinkpad_blocked_cb, playsink, NULL);
-        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_VIDEO);
-        gst_object_unref (opad);
-      }
-
-      if (playsink->audio_pad && playsink->audio_block_id == 0) {
-        GstPad *opad =
-            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
-                (playsink->audio_pad)));
-        playsink->audio_block_id =
-            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
-            sinkpad_blocked_cb, playsink, NULL);
-        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_AUDIO);
-        gst_object_unref (opad);
-      }
-
-      if (playsink->text_pad && playsink->text_block_id == 0) {
-        GstPad *opad =
-            GST_PAD_CAST (gst_proxy_pad_get_internal (GST_PROXY_PAD
-                (playsink->text_pad)));
-        playsink->text_block_id =
-            gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
-            sinkpad_blocked_cb, playsink, NULL);
-        PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_TEXT);
-        gst_object_unref (opad);
-      }
-      GST_PLAY_SINK_UNLOCK (playsink);
+      if (!gst_play_sink_reconfigure (playsink))
+        ret = GST_STATE_CHANGE_FAILURE;
       break;
     case GST_STATE_CHANGE_PAUSED_TO_READY:
       /* unblock all pads here */
@@ -4597,6 +4631,29 @@ gst_play_sink_set_property (GObject * object, guint prop_id,
     case PROP_SEND_EVENT_MODE:
       playsink->send_event_mode = g_value_get_enum (value);
       break;
+    case PROP_FORCE_ASPECT_RATIO:{
+      GstPlayVideoChain *chain;
+      GstElement *elem;
+
+      playsink->force_aspect_ratio = g_value_get_boolean (value);
+
+      GST_PLAY_SINK_LOCK (playsink);
+      if (playsink->videochain) {
+        chain = (GstPlayVideoChain *) playsink->videochain;
+
+        if (chain->sink) {
+          elem =
+              gst_play_sink_find_property_sinks (playsink, chain->sink,
+              "force-aspect-ratio", G_TYPE_BOOLEAN);
+
+          if (elem)
+            g_object_set (elem, "force-aspect-ratio",
+                playsink->force_aspect_ratio, NULL);
+        }
+      }
+      GST_PLAY_SINK_UNLOCK (playsink);
+      break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, spec);
       break;
@@ -4648,6 +4705,9 @@ gst_play_sink_get_property (GObject * object, guint prop_id,
       break;
     case PROP_SEND_EVENT_MODE:
       g_value_set_enum (value, playsink->send_event_mode);
+      break;
+    case PROP_FORCE_ASPECT_RATIO:
+      g_value_set_boolean (value, playsink->force_aspect_ratio);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, spec);

@@ -37,6 +37,52 @@
 
 static int16_t vs_4tap_taps[256][4];
 
+
+static void vs_scanline_resample_4tap_Y (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_Y (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_RGBA (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_RGBA (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_RGB (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_RGB (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_YUYV (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_YUYV (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_UYVY (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_UYVY (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_RGB565 (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_RGB565 (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_RGB555 (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_RGB555 (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_Y16 (uint8_t * dest, uint8_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_Y16 (uint8_t * dest, uint8_t * src1,
+    uint8_t * src2, uint8_t * src3, uint8_t * src4, int n, int acc);
+
+static void vs_scanline_resample_4tap_AYUV64 (uint16_t * dest, uint16_t * src,
+    int n, int src_width, int *xacc, int increment);
+static void vs_scanline_merge_4tap_AYUV64 (uint16_t * dest, uint16_t * src1,
+    uint16_t * src2, uint16_t * src3, uint16_t * src4, int n, int acc);
+
 static double
 vs_4tap_func (double x)
 {
@@ -1403,6 +1449,8 @@ vs_image_scale_4tap_AYUV64 (const VSImage * dest, const VSImage * src,
   int xacc;
   int k;
   guint16 *tmpbuf = (guint16 *) tmpbuf8;
+  /* destination stride in pixels for easier use with tmpbuf variable */
+  int dest_pixstride = dest->stride / sizeof (guint16);
 
   if (dest->height == 1)
     y_increment = 0;
@@ -1417,7 +1465,7 @@ vs_image_scale_4tap_AYUV64 (const VSImage * dest, const VSImage * src,
   k = 0;
   for (i = 0; i < 4; i++) {
     xacc = 0;
-    vs_scanline_resample_4tap_AYUV64 ((guint16 *) (tmpbuf + i * dest->stride),
+    vs_scanline_resample_4tap_AYUV64 (tmpbuf + i * dest_pixstride,
         (guint16 *) (src->pixels + CLAMP (i, 0, src->height - 1) * src->stride),
         dest->width, src->width, &xacc, x_increment);
   }
@@ -1432,17 +1480,17 @@ vs_image_scale_4tap_AYUV64 (const VSImage * dest, const VSImage * src,
       k++;
       if (k + 3 < src->height) {
         xacc = 0;
-        vs_scanline_resample_4tap_AYUV64 ((guint16 *) (tmpbuf + ((k +
-                        3) & 3) * dest->stride),
+        vs_scanline_resample_4tap_AYUV64 (tmpbuf + ((k +
+                    3) & 3) * dest_pixstride,
             (guint16 *) (src->pixels + (k + 3) * src->stride), dest->width,
             src->width, &xacc, x_increment);
       }
     }
 
-    t0 = tmpbuf + (CLAMP (j - 1, 0, src->height - 1) & 3) * dest->stride;
-    t1 = tmpbuf + (CLAMP (j, 0, src->height - 1) & 3) * dest->stride;
-    t2 = tmpbuf + (CLAMP (j + 1, 0, src->height - 1) & 3) * dest->stride;
-    t3 = tmpbuf + (CLAMP (j + 2, 0, src->height - 1) & 3) * dest->stride;
+    t0 = tmpbuf + (CLAMP (j - 1, 0, src->height - 1) & 3) * dest_pixstride;
+    t1 = tmpbuf + (CLAMP (j, 0, src->height - 1) & 3) * dest_pixstride;
+    t2 = tmpbuf + (CLAMP (j + 1, 0, src->height - 1) & 3) * dest_pixstride;
+    t3 = tmpbuf + (CLAMP (j + 2, 0, src->height - 1) & 3) * dest_pixstride;
     vs_scanline_merge_4tap_AYUV64 ((guint16 *) (dest->pixels +
             i * dest->stride), t0, t1, t2, t3, dest->width, yacc & 0xffff);
 

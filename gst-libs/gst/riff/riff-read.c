@@ -40,8 +40,8 @@ GST_DEBUG_CATEGORY_EXTERN (riff_debug);
  * @tag: fourcc of the chunk (returned by this function).
  * @chunk_data: buffer (returned by this function).
  *
- * Reads a single chunk of data. Since 0.10.8 'JUNK' chunks
- * are skipped automatically.
+ * Reads a single chunk of data. 'JUNK' chunks are skipped
+ * automatically.
  *
  * Returns: flow status.
  */
@@ -490,7 +490,7 @@ gst_riff_parse_strf_auds (GstElement * element,
   strf->rate = GUINT32_FROM_LE (strf->rate);
   strf->av_bps = GUINT32_FROM_LE (strf->av_bps);
   strf->blockalign = GUINT16_FROM_LE (strf->blockalign);
-  strf->size = GUINT16_FROM_LE (strf->size);
+  strf->bits_per_sample = GUINT16_FROM_LE (strf->bits_per_sample);
 #endif
 
   /* size checking */
@@ -498,7 +498,7 @@ gst_riff_parse_strf_auds (GstElement * element,
   if (info.size > sizeof (gst_riff_strf_auds) + 2) {
     gint len;
 
-    len = GST_READ_UINT16_LE (&data[16]);
+    len = GST_READ_UINT16_LE (&info.data[16]);
     if (len + 2 + sizeof (gst_riff_strf_auds) > info.size) {
       GST_WARNING_OBJECT (element,
           "Extradata indicated %d bytes, but only %" G_GSSIZE_FORMAT
@@ -517,7 +517,7 @@ gst_riff_parse_strf_auds (GstElement * element,
   GST_INFO_OBJECT (element, " rate        %d", strf->rate);
   GST_INFO_OBJECT (element, " av_bps      %d", strf->av_bps);
   GST_INFO_OBJECT (element, " blockalign  %d", strf->blockalign);
-  GST_INFO_OBJECT (element, " size        %d", strf->size);
+  GST_INFO_OBJECT (element, " bits/sample %d", strf->bits_per_sample);
   if (*data)
     GST_INFO_OBJECT (element, " %" G_GSIZE_FORMAT " bytes extradata",
         gst_buffer_get_size (*data));
@@ -697,7 +697,7 @@ gst_riff_parse_info (GstElement * element,
         type = GST_TAG_COPYRIGHT;
         break;
       case GST_RIFF_INFO_ICRD:
-        type = GST_TAG_DATE;
+        type = GST_TAG_DATE_TIME;
         break;
       case GST_RIFF_INFO_ICRP:
         type = NULL;            /*"Cropped"; */

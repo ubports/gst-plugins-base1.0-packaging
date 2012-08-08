@@ -101,6 +101,9 @@
 
 #include "gst/glib-compat-private.h"
 
+/* Also used by gsturidecodebin.c */
+gint _decode_bin_compare_factories_func (gconstpointer p1, gconstpointer p2);
+
 /* generic templates */
 static GstStaticPadTemplate decoder_bin_sink_template =
 GST_STATIC_PAD_TEMPLATE ("sink",
@@ -712,8 +715,8 @@ gst_decode_bin_class_init (GstDecodeBinClass * klass)
       g_signal_new ("autoplug-sort", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstDecodeBinClass, autoplug_sort),
       _gst_array_hasvalue_accumulator, NULL,
-      g_cclosure_marshal_generic, G_TYPE_VALUE_ARRAY, 3,
-      GST_TYPE_PAD, GST_TYPE_CAPS, G_TYPE_VALUE_ARRAY);
+      g_cclosure_marshal_generic, G_TYPE_VALUE_ARRAY, 3, GST_TYPE_PAD,
+      GST_TYPE_CAPS, G_TYPE_VALUE_ARRAY | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * GstDecodeBin::autoplug-select:
@@ -930,6 +933,40 @@ gst_decode_bin_class_init (GstDecodeBinClass * klass)
       GST_DEBUG_FUNCPTR (gst_decode_bin_handle_message);
 }
 
+gint
+_decode_bin_compare_factories_func (gconstpointer p1, gconstpointer p2)
+{
+  GstPluginFeature *f1, *f2;
+  gint diff;
+  gboolean is_parser1, is_parser2;
+
+  f1 = (GstPluginFeature *) p1;
+  f2 = (GstPluginFeature *) p2;
+
+  is_parser1 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f1),
+      GST_ELEMENT_FACTORY_TYPE_PARSER);
+  is_parser2 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f2),
+      GST_ELEMENT_FACTORY_TYPE_PARSER);
+
+
+  /* We want all parsers first as we always want to plug parsers
+   * before decoders */
+  if (is_parser1 && !is_parser2)
+    return -1;
+  else if (!is_parser1 && is_parser2)
+    return 1;
+
+  /* And if it's a both a parser we first sort by rank
+   * and then by factory name */
+  diff = gst_plugin_feature_get_rank (f2) - gst_plugin_feature_get_rank (f1);
+  if (diff != 0)
+    return diff;
+
+  diff = strcmp (GST_OBJECT_NAME (f2), GST_OBJECT_NAME (f1));
+
+  return diff;
+}
+
 /* Must be called with factories lock! */
 static void
 gst_decode_bin_update_factories_list (GstDecodeBin * dbin)
@@ -943,6 +980,8 @@ gst_decode_bin_update_factories_list (GstDecodeBin * dbin)
     dbin->factories =
         gst_element_factory_list_get_elements
         (GST_ELEMENT_FACTORY_TYPE_DECODABLE, GST_RANK_MARGINAL);
+    dbin->factories =
+        g_list_sort (dbin->factories, _decode_bin_compare_factories_func);
     dbin->factories_cookie = cookie;
   }
 }
@@ -1703,8 +1742,7 @@ non_fixed:
   }
 any_caps:
   {
-    GST_WARNING_OBJECT (pad,
-        "pad has ANY caps, not able to autoplug to anything");
+    GST_DEBUG_OBJECT (pad, "pad has ANY caps, delaying auto-pluggin");
     goto setup_caps_delay;
   }
 setup_caps_delay:
@@ -1773,8 +1811,9 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
   g_return_val_if_fail (factories != NULL, FALSE);
   g_return_val_if_fail (factories->n_values > 0, FALSE);
 
-  GST_DEBUG_OBJECT (dbin, "pad %s:%s , chain:%p",
-      GST_DEBUG_PAD_NAME (pad), chain);
+  GST_DEBUG_OBJECT (dbin,
+      "pad %s:%s , chain:%p, %d factories, caps %" GST_PTR_FORMAT,
+      GST_DEBUG_PAD_NAME (pad), chain, factories->n_values, caps);
 
   /* 1. is element demuxer or parser */
   if (is_demuxer) {
@@ -1810,6 +1849,8 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
     /* Remove selected factory from the list. */
     g_value_array_remove (factories, 0);
 
+    GST_LOG_OBJECT (src, "trying factory %" GST_PTR_FORMAT, factory);
+
     /* Check if the caps are really supported by the factory. The
      * factory list is non-empty-subset filtered while caps
      * are only accepted by a pad if they are a subset of the
@@ -1837,6 +1878,9 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
           GstCaps *templcaps = gst_static_caps_get (&templ->static_caps);
 
           if (!gst_caps_is_subset (caps, templcaps)) {
+            GST_DEBUG_OBJECT (src,
+                "caps %" GST_PTR_FORMAT " not subset of %" GST_PTR_FORMAT, caps,
+                templcaps);
             gst_caps_unref (templcaps);
             skip = TRUE;
             break;
@@ -3821,14 +3865,18 @@ source_pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
   GstDecodeChain *chain;
   GstDecodeBin *dbin;
 
-  if ((GST_PAD_PROBE_INFO_TYPE (info) & GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM) &&
-      (GST_EVENT_IS_STICKY (GST_PAD_PROBE_INFO_EVENT (info))
-          || !GST_EVENT_IS_SERIALIZED (GST_PAD_PROBE_INFO_EVENT (info)))) {
-    /* do not block on sticky or out of band events otherwise the allocation query
-       from demuxer might block the loop thread */
-    return GST_PAD_PROBE_PASS;
+  if (GST_PAD_PROBE_INFO_TYPE (info) & GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM) {
+    GST_LOG_OBJECT (pad, "Seeing event '%s'",
+        GST_EVENT_TYPE_NAME (GST_PAD_PROBE_INFO_EVENT (info)));
+    if ((GST_EVENT_TYPE (GST_PAD_PROBE_INFO_EVENT (info)) != GST_EVENT_CAPS)
+        && (GST_EVENT_IS_STICKY (GST_PAD_PROBE_INFO_EVENT (info))
+            || !GST_EVENT_IS_SERIALIZED (GST_PAD_PROBE_INFO_EVENT (info)))) {
+      /* do not block on sticky or out of band events otherwise the allocation query
+         from demuxer might block the loop thread */
+      GST_LOG_OBJECT (pad, "Letting event through");
+      return GST_PAD_PROBE_PASS;
+    }
   }
-
   chain = dpad->chain;
   dbin = chain->dbin;
 
@@ -3842,6 +3890,11 @@ source_pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
       GST_WARNING_OBJECT (dbin, "Couldn't expose group");
   }
   EXPOSE_UNLOCK (dbin);
+
+  /* If we unblocked due to a caps event, let it go through */
+  if ((GST_PAD_PROBE_INFO_TYPE (info) & GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM) &&
+      (GST_EVENT_TYPE (GST_PAD_PROBE_INFO_EVENT (info)) == GST_EVENT_CAPS))
+    return GST_PAD_PROBE_PASS;
 
   return GST_PAD_PROBE_OK;
 }
@@ -4011,7 +4064,9 @@ do_async_done (GstDecodeBin * dbin)
   GstMessage *message;
 
   if (dbin->async_pending) {
-    message = gst_message_new_async_done (GST_OBJECT_CAST (dbin), FALSE);
+    message =
+        gst_message_new_async_done (GST_OBJECT_CAST (dbin),
+        GST_CLOCK_TIME_NONE);
     parent_class->handle_message (GST_BIN_CAST (dbin), message);
 
     dbin->async_pending = FALSE;

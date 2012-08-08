@@ -29,6 +29,122 @@
 /* kids, don't do this at home, skipping checks is *BAD* */
 #define LINK_CHECK_FLAGS GST_PAD_LINK_CHECK_NOTHING
 
+static guint
+get_num_formats (void)
+{
+  guint i = 2;
+
+  while (gst_video_format_to_string ((GstFormat) i) != NULL)
+    ++i;
+
+  return i;
+}
+
+static void
+check_pad_template (GstPadTemplate * tmpl)
+{
+  const GValue *list_val, *fmt_val;
+  GstStructure *s;
+  gboolean *formats_supported;
+  GstCaps *caps;
+  guint i, num_formats;
+
+  num_formats = get_num_formats ();
+  formats_supported = g_new0 (gboolean, num_formats);
+
+  caps = gst_pad_template_get_caps (tmpl);
+
+  /* If this fails, we need to update this unit test */
+  fail_unless_equals_int (gst_caps_get_size (caps), 1);
+  s = gst_caps_get_structure (caps, 0);
+
+  fail_unless (gst_structure_has_name (s, "video/x-raw"));
+
+  list_val = gst_structure_get_value (s, "format");
+  fail_unless (list_val != NULL);
+  /* If this fails, we need to update this unit test */
+  fail_unless (GST_VALUE_HOLDS_LIST (list_val));
+
+  for (i = 0; i < gst_value_list_get_size (list_val); ++i) {
+    GstVideoFormat fmt;
+    const gchar *fmt_str;
+
+    fmt_val = gst_value_list_get_value (list_val, i);
+    fail_unless (G_VALUE_HOLDS_STRING (fmt_val));
+    fmt_str = g_value_get_string (fmt_val);
+    GST_LOG ("format string: '%s'", fmt_str);
+    fmt = gst_video_format_from_string (fmt_str);
+    if (fmt == GST_VIDEO_FORMAT_UNKNOWN)
+      g_error ("Unknown raw format '%s' in pad template caps", fmt_str);
+    formats_supported[(guint) fmt] = TRUE;
+  }
+
+  gst_caps_unref (caps);
+
+  for (i = 2; i < num_formats; ++i) {
+    if (!formats_supported[i]) {
+      const gchar *fmt_str = gst_video_format_to_string ((GstVideoFormat) i);
+
+      switch (i) {
+        case GST_VIDEO_FORMAT_v210:
+        case GST_VIDEO_FORMAT_v216:
+        case GST_VIDEO_FORMAT_NV12:
+        case GST_VIDEO_FORMAT_NV21:
+        case GST_VIDEO_FORMAT_UYVP:
+        case GST_VIDEO_FORMAT_A420:
+        case GST_VIDEO_FORMAT_YUV9:
+        case GST_VIDEO_FORMAT_YVU9:
+        case GST_VIDEO_FORMAT_IYU1:
+        case GST_VIDEO_FORMAT_r210:{
+          static gboolean shown_fixme[100] = { FALSE, };
+
+          if (!shown_fixme[i]) {
+            GST_FIXME ("FIXME: add %s support to videoscale", fmt_str);
+            shown_fixme[i] = TRUE;
+          }
+          break;
+        }
+        case GST_VIDEO_FORMAT_BGR16:
+        case GST_VIDEO_FORMAT_BGR15:
+        case GST_VIDEO_FORMAT_RGB8P:
+        case GST_VIDEO_FORMAT_I420_10BE:
+        case GST_VIDEO_FORMAT_I420_10LE:
+          GST_LOG ("Ignoring lack of support for format %s", fmt_str);
+          break;
+        default:
+          g_error ("videoconvert doesn't support format '%s'", fmt_str);
+          break;
+      }
+    }
+  }
+
+  g_free (formats_supported);
+}
+
+GST_START_TEST (test_template_formats)
+{
+  GstElementFactory *f;
+  GstPadTemplate *t;
+  const GList *pad_templates;
+
+  f = gst_element_factory_find ("videoscale");
+  fail_unless (f != NULL);
+
+  pad_templates = gst_element_factory_get_static_pad_templates (f);
+  fail_unless_equals_int (g_list_length ((GList *) pad_templates), 2);
+
+  t = gst_static_pad_template_get (pad_templates->data);
+  check_pad_template (GST_PAD_TEMPLATE (t));
+  gst_object_unref (t);
+  t = gst_static_pad_template_get (pad_templates->next->data);
+  check_pad_template (GST_PAD_TEMPLATE (t));
+  gst_object_unref (t);
+
+  gst_object_unref (f);
+}
+
+GST_END_TEST;
+
 static GstCaps **
 videoscale_get_allowed_caps_for_method (int method)
 {
@@ -71,24 +187,10 @@ on_sink_handoff (GstElement * element, GstBuffer * buffer, GstPad * pad,
 }
 
 static gboolean
-caps_is_supported (const GstCaps * caps)
+videoconvert_supports_caps (const GstCaps * caps)
 {
-  GstVideoFormat fmt;
-  GstStructure *s;
-  const gchar *format;
-
   GST_DEBUG ("have caps %" GST_PTR_FORMAT, caps);
-
-  s = gst_caps_get_structure (caps, 0);
-  format = gst_structure_get_string (s, "format");
-  fail_if (format == NULL);
-
-  fmt = gst_video_format_from_string (format);
-  fail_if (fmt == GST_VIDEO_FORMAT_UNKNOWN);
-
-  return (fmt == GST_VIDEO_FORMAT_ARGB64 || fmt == GST_VIDEO_FORMAT_AYUV64
-      || fmt == GST_VIDEO_FORMAT_GRAY8 || fmt == GST_VIDEO_FORMAT_GRAY16_BE
-      || fmt == GST_VIDEO_FORMAT_GRAY16_LE);
+  return TRUE;
 }
 
 static void
@@ -106,7 +208,7 @@ run_test (const GstCaps * caps, gint src_width, gint src_height,
   guint n_buffers = 0;
 
   /* skip formats that videoconvert can't handle */
-  if (caps_is_supported (caps))
+  if (!videoconvert_supports_caps (caps))
     return;
 
   pipeline = gst_element_factory_make ("pipeline", "pipeline");
@@ -225,9 +327,8 @@ test_passthrough (int method)
     GstCaps *caps = *p;
 
     /* skip formats that videoconvert can't handle */
-    if (caps_is_supported (caps)) {
+    if (!videoconvert_supports_caps (caps))
       goto next;
-    }
 
     GST_DEBUG ("Running test for caps '%" GST_PTR_FORMAT "'"
         " from %dx%u to %dx%d with method %d", caps, src_width, src_height,
@@ -860,13 +961,6 @@ GST_START_TEST (test_basetransform_negotiation)
 
 GST_END_TEST;
 
-#ifndef tcase_skip_broken_test
-#define tcase_skip_broken_test(chain,test_func) \
-  if (0) { tcase_add_test(chain,test_func); } else { \
-    GST_ERROR ("FIXME: skipping test %s because it's broken.", G_STRINGIFY (test_func)); \
-  }
-#endif
-
 static Suite *
 videoscale_suite (void)
 {
@@ -875,6 +969,7 @@ videoscale_suite (void)
 
   suite_add_tcase (s, tc_chain);
   tcase_set_timeout (tc_chain, 180);
+  tcase_add_test (tc_chain, test_template_formats);
   tcase_add_test (tc_chain, test_passthrough_method_0);
   tcase_add_test (tc_chain, test_passthrough_method_1);
   tcase_add_test (tc_chain, test_passthrough_method_2);
@@ -933,7 +1028,6 @@ videoscale_suite (void)
 #endif
   tcase_add_test (tc_chain, test_basetransform_negotiation);
 
-  GST_ERROR ("FIXME: test 64-bpp formats as well");
   return s;
 }
 

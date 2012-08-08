@@ -36,8 +36,6 @@
  * asks for the discovery to begin (through gst_discoverer_start()).
  *
  * All the information is returned in a #GstDiscovererInfo structure.
- *
- * Since: 0.10.31
  */
 
 #ifdef HAVE_CONFIG_H
@@ -47,7 +45,6 @@
 #include <gst/video/video.h>
 
 #include "pbutils.h"
-#include "pbutils-marshal.h"
 #include "pbutils-private.h"
 
 #include "gst/glib-compat-private.h"
@@ -123,6 +120,7 @@ struct _GstDiscovererPrivate
   /* Handler ids for various callbacks */
   gulong pad_added_id;
   gulong pad_remove_id;
+  gulong source_chg_id;
   gulong element_added_id;
   gulong bus_cb_id;
 };
@@ -151,6 +149,7 @@ enum
   SIGNAL_FINISHED,
   SIGNAL_STARTING,
   SIGNAL_DISCOVERED,
+  SIGNAL_SOURCE_SETUP,
   LAST_SIGNAL
 };
 
@@ -174,6 +173,8 @@ static void uridecodebin_pad_added_cb (GstElement * uridecodebin, GstPad * pad,
     GstDiscoverer * dc);
 static void uridecodebin_pad_removed_cb (GstElement * uridecodebin,
     GstPad * pad, GstDiscoverer * dc);
+static void uridecodebin_source_changed_cb (GstElement * uridecodebin,
+    GParamSpec * pspec, GstDiscoverer * dc);
 
 static void gst_discoverer_dispose (GObject * dc);
 static void gst_discoverer_set_property (GObject * object, guint prop_id,
@@ -195,7 +196,7 @@ gst_discoverer_class_init (GstDiscovererClass * klass)
 
   /* properties */
   /**
-   * GstDiscoverer:timeout
+   * GstDiscoverer:timeout:
    *
    * The duration (in nanoseconds) after which the discovery of an individual
    * URI will timeout.
@@ -243,9 +244,28 @@ gst_discoverer_class_init (GstDiscovererClass * klass)
   gst_discoverer_signals[SIGNAL_DISCOVERED] =
       g_signal_new ("discovered", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
       G_STRUCT_OFFSET (GstDiscovererClass, discovered),
-      NULL, NULL, pbutils_marshal_VOID__POINTER_BOXED,
+      NULL, NULL, g_cclosure_marshal_generic,
       G_TYPE_NONE, 2, GST_TYPE_DISCOVERER_INFO,
       G_TYPE_ERROR | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * GstDiscoverer::source-setup:
+   * @discoverer: the #GstDiscoverer
+   * @source: source element
+   *
+   * This signal is emitted after the source element has been created for, so
+   * the URI being discovered, so it can be configured by setting additional
+   * properties (e.g. set a proxy server for an http source, or set the device
+   * and read speed for an audio cd source).
+   *
+   * This signal is usually emitted from the context of a GStreamer streaming
+   * thread.
+   */
+  gst_discoverer_signals[SIGNAL_SOURCE_SETUP] =
+      g_signal_new ("source-setup", G_TYPE_FROM_CLASS (klass),
+      G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstDiscovererClass, source_setup),
+      NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 1,
+      GST_TYPE_ELEMENT);
 }
 
 static void
@@ -295,6 +315,9 @@ gst_discoverer_init (GstDiscoverer * dc)
   dc->priv->pad_remove_id =
       g_signal_connect_object (dc->priv->uridecodebin, "pad-removed",
       G_CALLBACK (uridecodebin_pad_removed_cb), dc, 0);
+  dc->priv->source_chg_id =
+      g_signal_connect_object (dc->priv->uridecodebin, "notify::source",
+      G_CALLBACK (uridecodebin_source_changed_cb), dc, 0);
 
   GST_LOG_OBJECT (dc, "Getting pipeline bus");
   dc->priv->bus = gst_pipeline_get_bus ((GstPipeline *) dc->priv->pipeline);
@@ -353,6 +376,7 @@ gst_discoverer_dispose (GObject * obj)
     /* Workaround for bug #118536 */
     DISCONNECT_SIGNAL (dc->priv->uridecodebin, dc->priv->pad_added_id);
     DISCONNECT_SIGNAL (dc->priv->uridecodebin, dc->priv->pad_remove_id);
+    DISCONNECT_SIGNAL (dc->priv->uridecodebin, dc->priv->source_chg_id);
     DISCONNECT_SIGNAL (dc->priv->uridecodebin, dc->priv->element_added_id);
     DISCONNECT_SIGNAL (dc->priv->bus, dc->priv->bus_cb_id);
 
@@ -512,6 +536,20 @@ got_subtitle_data (GstPad * pad, GstPadProbeInfo * info, GstDiscoverer * dc)
 }
 
 static void
+uridecodebin_source_changed_cb (GstElement * uridecodebin,
+    GParamSpec * pspec, GstDiscoverer * dc)
+{
+  GstElement *src;
+  /* get a handle to the source */
+  g_object_get (uridecodebin, pspec->name, &src, NULL);
+
+  GST_DEBUG_OBJECT (dc, "got a new source %p", src);
+
+  g_signal_emit (dc, gst_discoverer_signals[SIGNAL_SOURCE_SETUP], 0, src);
+  gst_object_unref (src);
+}
+
+static void
 uridecodebin_pad_added_cb (GstElement * uridecodebin, GstPad * pad,
     GstDiscoverer * dc)
 {
@@ -634,7 +672,7 @@ uridecodebin_pad_removed_cb (GstElement * uridecodebin, GstPad * pad,
     gst_tag_list_free (ps->tags);
   }
   if (ps->toc) {
-    gst_toc_free (ps->toc);
+    gst_toc_unref (ps->toc);
   }
 
   g_slice_free (PrivateStream, ps);
@@ -1169,8 +1207,8 @@ discoverer_collect (GstDiscoverer * dc)
           gst_caps_get_structure (dc->priv->current_info->stream_info->caps, 0);
 
       if (g_str_has_prefix (gst_structure_get_name (st), "image/"))
-        ((GstDiscovererVideoInfo *) dc->priv->current_info->stream_info)->
-            is_image = TRUE;
+        ((GstDiscovererVideoInfo *) dc->priv->current_info->
+            stream_info)->is_image = TRUE;
     }
   }
 
@@ -1180,6 +1218,7 @@ discoverer_collect (GstDiscoverer * dc)
         dc->priv->current_info, dc->priv->current_error);
     /* Clients get a copy of current_info since it is a boxed type */
     gst_discoverer_info_unref (dc->priv->current_info);
+    dc->priv->current_info = NULL;
   }
 }
 
@@ -1534,8 +1573,6 @@ beach:
  * Allow asynchronous discovering of URIs to take place.
  * A #GMainLoop must be available for #GstDiscoverer to properly work in
  * asynchronous mode.
- *
- * Since: 0.10.31
  */
 void
 gst_discoverer_start (GstDiscoverer * discoverer)
@@ -1576,8 +1613,6 @@ gst_discoverer_start (GstDiscoverer * discoverer)
  *
  * Stop the discovery of any pending URIs and clears the list of
  * pending URIS (if any).
- *
- * Since: 0.10.31
  */
 void
 gst_discoverer_stop (GstDiscoverer * discoverer)
@@ -1640,8 +1675,6 @@ gst_discoverer_stop (GstDiscoverer * discoverer)
  *
  * Returns: %TRUE if the @uri was successfully appended to the list of pending
  * uris, else %FALSE
- *
- * Since: 0.10.31
  */
 gboolean
 gst_discoverer_discover_uri_async (GstDiscoverer * discoverer,
@@ -1678,8 +1711,6 @@ gst_discoverer_discover_uri_async (GstDiscoverer * discoverer,
  *
  * Returns: (transfer full): the result of the scanning. Can be %NULL if an
  * error occurred.
- *
- * Since: 0.10.31
  */
 GstDiscovererInfo *
 gst_discoverer_discover_uri (GstDiscoverer * discoverer, const gchar * uri,
@@ -1735,8 +1766,6 @@ gst_discoverer_discover_uri (GstDiscoverer * discoverer, const gchar * uri,
  * If an error occurred when creating the discoverer, @err will be set
  * accordingly and %NULL will be returned. If @err is set, the caller must
  * free it when no longer needed using g_error_free().
- *
- * Since: 0.10.31
  */
 GstDiscoverer *
 gst_discoverer_new (GstClockTime timeout, GError ** err)

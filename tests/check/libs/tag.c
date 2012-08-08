@@ -276,15 +276,16 @@ GST_START_TEST (test_vorbis_tags)
   ASSERT_TAG_LIST_HAS_UINT (list, GST_TAG_ALBUM_VOLUME_COUNT, 2);
 
   {
-    GDate *date = NULL;
+    GstDateTime *dt = NULL;
 
-    fail_unless (gst_tag_list_get_date (list, GST_TAG_DATE, &date));
-    fail_unless (date != NULL);
-    fail_unless (g_date_get_day (date) == 31);
-    fail_unless (g_date_get_month (date) == G_DATE_DECEMBER);
-    fail_unless (g_date_get_year (date) == 1954);
+    fail_unless (gst_tag_list_get_date_time (list, GST_TAG_DATE_TIME, &dt));
+    fail_unless (dt != NULL);
+    fail_unless (gst_date_time_get_day (dt) == 31);
+    fail_unless (gst_date_time_get_month (dt) == 12);
+    fail_unless (gst_date_time_get_year (dt) == 1954);
+    fail_unless (!gst_date_time_has_time (dt));
 
-    g_date_free (date);
+    gst_date_time_unref (dt);
   }
 
   /* unknown vorbis comments should go into a GST_TAG_EXTENDED_COMMENT */
@@ -510,49 +511,55 @@ GST_START_TEST (test_vorbis_tags)
 
   /* check date with time */
   {
-    GDate *date = NULL;
+    GstDateTime *dt = NULL;
 
     list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "2006-09-25 22:02:38");
 
-    fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
-    fail_unless (date != NULL);
-    fail_unless (g_date_get_day (date) == 25);
-    fail_unless (g_date_get_month (date) == G_DATE_SEPTEMBER);
-    fail_unless (g_date_get_year (date) == 2006);
+    fail_unless (gst_tag_list_get_date_time (list, GST_TAG_DATE_TIME, &dt));
+    fail_unless (dt != NULL);
+    fail_unless (gst_date_time_get_day (dt) == 25);
+    fail_unless (gst_date_time_get_month (dt) == 9);
+    fail_unless (gst_date_time_get_year (dt) == 2006);
+    fail_unless (gst_date_time_has_time (dt));
 
-    g_date_free (date);
+    gst_date_time_unref (dt);
     gst_tag_list_free (list);
   }
 
   /* check date with month/day of 00-00 */
   {
-    GDate *date = NULL;
+    GstDateTime *dt = NULL;
 
     list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "1992-00-00");
 
-    fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
-    fail_unless (date != NULL);
-    fail_unless (g_date_get_year (date) == 1992);
+    fail_unless (gst_tag_list_get_date_time (list, GST_TAG_DATE_TIME, &dt));
+    fail_unless (dt != NULL);
+    fail_unless (gst_date_time_get_year (dt) == 1992);
+    fail_unless (!gst_date_time_has_month (dt));
+    fail_unless (!gst_date_time_has_day (dt));
+    fail_unless (!gst_date_time_has_time (dt));
 
-    g_date_free (date);
+    gst_date_time_unref (dt);
     gst_tag_list_free (list);
   }
 
   /* check date with valid month, but day of 00 */
   {
-    GDate *date = NULL;
+    GstDateTime *dt = NULL;
 
     list = gst_tag_list_new_empty ();
     gst_vorbis_tag_add (list, "DATE", "1992-05-00");
 
-    fail_unless (gst_tag_list_get_date_index (list, GST_TAG_DATE, 0, &date));
-    fail_unless (date != NULL);
-    fail_unless (g_date_get_year (date) == 1992);
-    fail_unless (g_date_get_month (date) == G_DATE_MAY);
+    fail_unless (gst_tag_list_get_date_time (list, GST_TAG_DATE_TIME, &dt));
+    fail_unless (dt != NULL);
+    fail_unless (gst_date_time_get_year (dt) == 1992);
+    fail_unless (gst_date_time_get_month (dt) == 5);
+    fail_unless (!gst_date_time_has_day (dt));
+    fail_unless (!gst_date_time_has_time (dt));
 
-    g_date_free (date);
+    gst_date_time_unref (dt);
     gst_tag_list_free (list);
   }
 }
@@ -631,8 +638,8 @@ GST_START_TEST (test_id3v1_utf8_tag)
     /* genre */
     0x11
   };
+  GstDateTime *dt;
   GstTagList *tags;
-  GDate *d;
   gchar *s;
 
   /* set this, to make sure UTF-8 strings are really interpreted properly
@@ -662,12 +669,15 @@ GST_START_TEST (test_id3v1_utf8_tag)
   fail_unless_equals_string (s, "Best of (Prostě úžasný)");
   g_free (s);
 
-  d = NULL;
-  fail_unless (gst_tag_list_get_date (tags, GST_TAG_DATE, &d));
-  fail_unless (d != NULL);
-  fail_unless_equals_int (g_date_get_year (d), 2000);
-  g_date_free (d);
-  d = NULL;
+  dt = NULL;
+  fail_unless (gst_tag_list_get_date_time (tags, GST_TAG_DATE_TIME, &dt));
+  fail_unless (dt != NULL);
+  fail_unless_equals_int (gst_date_time_get_year (dt), 2000);
+  fail_if (gst_date_time_has_month (dt));
+  fail_if (gst_date_time_has_day (dt));
+  fail_if (gst_date_time_has_time (dt));
+  gst_date_time_unref (dt);
+  dt = NULL;
 
   gst_tag_list_free (tags);
 
@@ -1089,7 +1099,6 @@ do_simple_xmp_tag_serialization_deserialization (const gchar * gsttag,
 GST_START_TEST (test_xmp_tags_serialization_deserialization)
 {
   GValue value = { 0 };
-  GDate *date;
   GstDateTime *datetime;
 
   gst_tag_register_musicbrainz_tags ();
@@ -1216,11 +1225,10 @@ GST_START_TEST (test_xmp_tags_serialization_deserialization)
       (GST_TAG_CAPTURING_EXPOSURE_COMPENSATION, &value);
   g_value_unset (&value);
 
-  g_value_init (&value, G_TYPE_DATE);
-  date = g_date_new_dmy (22, 3, 2010);
-  g_value_set_boxed (&value, date);
-  g_date_free (date);
-  do_simple_xmp_tag_serialization_deserialization (GST_TAG_DATE, &value);
+  g_value_init (&value, GST_TYPE_DATE_TIME);
+  datetime = gst_date_time_new_ymd (2010, 3, 22);
+  g_value_take_boxed (&value, datetime);
+  do_simple_xmp_tag_serialization_deserialization (GST_TAG_DATE_TIME, &value);
   g_value_unset (&value);
 
   g_value_init (&value, G_TYPE_UINT);
@@ -1726,14 +1734,14 @@ GST_START_TEST (test_exif_tags_serialization_deserialization)
   do_simple_exif_tag_serialization_deserialization (GST_TAG_DATE_TIME, &value);
   g_value_unset (&value);
 
-  g_value_init (&value, GST_TYPE_BUFFER);
+  g_value_init (&value, GST_TYPE_SAMPLE);
   buf = gst_buffer_new_and_alloc (1024);
   gst_buffer_map (buf, &map, GST_MAP_WRITE);
   data = map.data;
   for (i = 0; i < 1024; i++)
     data[i] = i % 255;
   gst_buffer_unmap (buf, &map);
-  gst_value_set_buffer (&value, buf);
+  gst_value_take_sample (&value, gst_sample_new (buf, NULL, NULL, NULL));
   gst_buffer_unref (buf);
   do_simple_exif_tag_serialization_deserialization (GST_TAG_APPLICATION_DATA,
       &value);

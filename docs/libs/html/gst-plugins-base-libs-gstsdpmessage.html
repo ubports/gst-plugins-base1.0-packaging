@@ -209,7 +209,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="idp22412656"></a><p>
+<a name="idp22401248"></a><p>
 The GstSDPMessage helper functions makes it easy to parse and create SDP
 messages.
 </p>
@@ -376,7 +376,6 @@ The extension prefix bandwidth modifier.
 <p>
 RTCP bandwidth allocated to data receivers (RFC 3556).
 </p>
-<p class="since">Since 0.10.15</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -386,7 +385,6 @@ RTCP bandwidth allocated to data receivers (RFC 3556).
 <p>
 RTCP bandwidth allocated to active data senders (RFC 3556).
 </p>
-<p class="since">Since 0.10.15</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -396,7 +394,6 @@ RTCP bandwidth allocated to active data senders (RFC 3556).
 <p>
 Transport Independent Application Specific Maximum bandwidth (RFC 3890).
 </p>
-<p class="since">Since 0.10.30</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -697,7 +694,7 @@ Allocate a new GstSDPMessage and store the result in <em class="parameter"><code
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
-<td>pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a>
+<td>pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -877,7 +874,6 @@ The uri should be of the form:
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -911,7 +907,6 @@ Creates a uri from <em class="parameter"><code>msg</code></em> with the given <e
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -943,7 +938,6 @@ Check if the given <em class="parameter"><code>addr</code></em> is a multicast a
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1596,7 +1590,8 @@ Add time information <em class="parameter"><code>start</code></em> and <em class
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>repeat</code></em> :</span></p></td>
-<td>the repeat times</td>
+<td>the repeat times. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1993,7 +1988,7 @@ Allocate a new GstSDPMedia and store the result in <em class="parameter"><code>m
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>media</code></em> :</span></p></td>
-<td>pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a>
+<td>pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
 </td>
 </tr>
 <tr>

@@ -86,8 +86,6 @@
  * happened or the state of the appsrc has gone through READY.
  *
  * Last reviewed on 2008-12-17 (0.10.10)
- *
- * Since: 0.10.22
  */
 
 #ifdef HAVE_CONFIG_H
@@ -116,6 +114,8 @@ struct _GstAppSrcPrivate
   guint64 max_bytes;
   GstFormat format;
   gboolean block;
+  gchar *uri;
+  gboolean new_caps;
 
   gboolean flushing;
   gboolean started;
@@ -258,7 +258,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
   gobject_class->get_property = gst_app_src_get_property;
 
   /**
-   * GstAppSrc::caps
+   * GstAppSrc::caps:
    *
    * The GstCaps that will negotiated downstream and will be put
    * on outgoing buffers.
@@ -268,7 +268,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           "The allowed caps for the src pad", GST_TYPE_CAPS,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::format
+   * GstAppSrc::format:
    *
    * The format to use for segment events. When the source is producing
    * timestamped buffers this property should be set to GST_FORMAT_TIME.
@@ -278,7 +278,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           "The format of the segment events and seek", GST_TYPE_FORMAT,
           DEFAULT_PROP_FORMAT, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::size
+   * GstAppSrc::size:
    *
    * The total size in bytes of the data stream. If the total size is known, it
    * is recommended to configure it with this property.
@@ -289,7 +289,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           -1, G_MAXINT64, DEFAULT_PROP_SIZE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::stream-type
+   * GstAppSrc::stream-type:
    *
    * The type of stream that this source is producing.  For seekable streams the
    * application should connect to the seek-data signal.
@@ -300,7 +300,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           DEFAULT_PROP_STREAM_TYPE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::max-bytes
+   * GstAppSrc::max-bytes:
    *
    * The maximum amount of bytes that can be queued internally.
    * After the maximum amount of bytes are queued, appsrc will emit the
@@ -312,7 +312,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           0, G_MAXUINT64, DEFAULT_PROP_MAX_BYTES,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::block
+   * GstAppSrc::block:
    *
    * When max-bytes are queued and after the enough-data signal has been emitted,
    * block any further push-buffer calls until the amount of queued bytes drops
@@ -324,7 +324,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           DEFAULT_PROP_BLOCK, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GstAppSrc::is-live
+   * GstAppSrc::is-live:
    *
    * Instruct the source to behave like a live source. This includes that it
    * will only push out buffers in the PLAYING state.
@@ -334,7 +334,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           "Whether to act as a live source",
           DEFAULT_PROP_IS_LIVE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::min-latency
+   * GstAppSrc::min-latency:
    *
    * The minimum latency of the source. A value of -1 will use the default
    * latency calculations of #GstBaseSrc.
@@ -345,7 +345,7 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           -1, G_MAXINT64, DEFAULT_PROP_MIN_LATENCY,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
-   * GstAppSrc::max-latency
+   * GstAppSrc::max-latency:
    *
    * The maximum latency of the source. A value of -1 means an unlimited amout
    * of latency.
@@ -357,13 +357,11 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GstAppSrc::emit-signals
+   * GstAppSrc::emit-signals:
    *
    * Make appsrc emit the "need-data", "enough-data" and "seek-data" signals.
    * This option is by default enabled for backwards compatibility reasons but
    * can disabled when needed because signal emission is expensive.
-   *
-   * Since: 0.10.23
    */
   g_object_class_install_property (gobject_class, PROP_EMIT_SIGNALS,
       g_param_spec_boolean ("emit-signals", "Emit signals",
@@ -372,12 +370,10 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GstAppSrc::empty-percent
+   * GstAppSrc::empty-percent:
    *
    * Make appsrc emit the "need-data" signal when the amount of bytes in the
    * queue drops below this percentage of max-bytes.
-   *
-   * Since: 0.10.27
    */
   g_object_class_install_property (gobject_class, PROP_MIN_PERCENT,
       g_param_spec_uint ("min-percent", "Min Percent",
@@ -550,6 +546,8 @@ gst_app_src_finalize (GObject * obj)
   g_mutex_free (priv->mutex);
   g_cond_free (priv->cond);
   g_queue_free (priv->queue);
+
+  g_free (priv->uri);
 
   G_OBJECT_CLASS (parent_class)->finalize (obj);
 }
@@ -725,6 +723,7 @@ gst_app_src_start (GstBaseSrc * bsrc)
 
   g_mutex_lock (priv->mutex);
   GST_DEBUG_OBJECT (appsrc, "starting");
+  priv->new_caps = FALSE;
   priv->started = TRUE;
   /* set the offset to -1 so that we always do a first seek. This is only used
    * in random-access mode. */
@@ -925,17 +924,16 @@ gst_app_src_emit_need_data (GstAppSrc * appsrc, guint size)
 }
 
 static gboolean
-gst_app_src_negotiate (GstBaseSrc * basesrc)
+gst_app_src_do_negotiate (GstBaseSrc * basesrc)
 {
   GstAppSrc *appsrc = GST_APP_SRC_CAST (basesrc);
   GstAppSrcPrivate *priv = appsrc->priv;
-  GstCaps *caps;
   gboolean result;
+  GstCaps *caps;
 
-  GST_OBJECT_LOCK (appsrc);
-  if ((caps = priv->caps))
-    gst_caps_ref (caps);
-  GST_OBJECT_UNLOCK (appsrc);
+  GST_OBJECT_LOCK (basesrc);
+  caps = priv->caps ? gst_caps_ref (priv->caps) : NULL;
+  GST_OBJECT_UNLOCK (basesrc);
 
   if (caps) {
     result = gst_base_src_set_caps (basesrc, caps);
@@ -943,6 +941,21 @@ gst_app_src_negotiate (GstBaseSrc * basesrc)
   } else {
     result = GST_BASE_SRC_CLASS (parent_class)->negotiate (basesrc);
   }
+
+  return result;
+}
+
+static gboolean
+gst_app_src_negotiate (GstBaseSrc * basesrc)
+{
+  GstAppSrc *appsrc = GST_APP_SRC_CAST (basesrc);
+  GstAppSrcPrivate *priv = appsrc->priv;
+  gboolean result;
+
+  g_mutex_lock (priv->mutex);
+  result = gst_app_src_do_negotiate (basesrc);
+  priv->new_caps = FALSE;
+  g_mutex_unlock (priv->mutex);
   return result;
 }
 
@@ -1002,6 +1015,10 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
       buf_size = gst_buffer_get_size (*buf);
 
       GST_DEBUG_OBJECT (appsrc, "we have buffer %p of size %u", *buf, buf_size);
+      if (priv->new_caps) {
+        gst_app_src_do_negotiate (bsrc);
+        priv->new_caps = FALSE;
+      }
 
       priv->queued_bytes -= buf_size;
 
@@ -1082,8 +1099,6 @@ seek_error:
  * a copy of the caps structure. After calling this method, the source will
  * only produce caps that match @caps. @caps must be fixed and the caps on the
  * buffers must match the caps or left NULL.
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_set_caps (GstAppSrc * appsrc, const GstCaps * caps)
@@ -1104,6 +1119,9 @@ gst_app_src_set_caps (GstAppSrc * appsrc, const GstCaps * caps)
       priv->caps = NULL;
     if (old)
       gst_caps_unref (old);
+    g_mutex_lock (priv->mutex);
+    priv->new_caps = TRUE;
+    g_mutex_unlock (priv->mutex);
   }
   GST_OBJECT_UNLOCK (appsrc);
 }
@@ -1115,8 +1133,6 @@ gst_app_src_set_caps (GstAppSrc * appsrc, const GstCaps * caps)
  * Get the configured caps on @appsrc.
  *
  * Returns: the #GstCaps produced by the source. gst_caps_unref() after usage.
- *
- * Since: 0.10.22
  */
 GstCaps *
 gst_app_src_get_caps (GstAppSrc * appsrc)
@@ -1133,8 +1149,6 @@ gst_app_src_get_caps (GstAppSrc * appsrc)
  *
  * Set the size of the stream in bytes. A value of -1 means that the size is
  * not known.
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_set_size (GstAppSrc * appsrc, gint64 size)
@@ -1159,8 +1173,6 @@ gst_app_src_set_size (GstAppSrc * appsrc, gint64 size)
  * not known.
  *
  * Returns: the size of the stream previously set with gst_app_src_set_size();
- *
- * Since: 0.10.22
  */
 gint64
 gst_app_src_get_size (GstAppSrc * appsrc)
@@ -1189,8 +1201,6 @@ gst_app_src_get_size (GstAppSrc * appsrc)
  * be connected to.
  *
  * A stream_type stream
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_set_stream_type (GstAppSrc * appsrc, GstAppStreamType type)
@@ -1215,8 +1225,6 @@ gst_app_src_set_stream_type (GstAppSrc * appsrc, GstAppStreamType type)
  * with gst_app_src_set_stream_type().
  *
  * Returns: the stream type.
- *
- * Since: 0.10.22
  */
 GstAppStreamType
 gst_app_src_get_stream_type (GstAppSrc * appsrc)
@@ -1244,8 +1252,6 @@ gst_app_src_get_stream_type (GstAppSrc * appsrc)
  * Set the maximum amount of bytes that can be queued in @appsrc.
  * After the maximum amount of bytes are queued, @appsrc will emit the
  * "enough-data" signal.
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_set_max_bytes (GstAppSrc * appsrc, guint64 max)
@@ -1273,8 +1279,6 @@ gst_app_src_set_max_bytes (GstAppSrc * appsrc, guint64 max)
  * Get the maximum amount of bytes that can be queued in @appsrc.
  *
  * Returns: The maximum amount of bytes that can be queued.
- *
- * Since: 0.10.22
  */
 guint64
 gst_app_src_get_max_bytes (GstAppSrc * appsrc)
@@ -1327,8 +1331,6 @@ gst_app_src_set_latencies (GstAppSrc * appsrc, gboolean do_min, guint64 min,
  *
  * Configure the @min and @max latency in @src. If @min is set to -1, the
  * default latency calculations for pseudo-live sources will be used.
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_set_latency (GstAppSrc * appsrc, guint64 min, guint64 max)
@@ -1343,8 +1345,6 @@ gst_app_src_set_latency (GstAppSrc * appsrc, guint64 min, guint64 max)
  * @max: the min latency
  *
  * Retrieve the min and max latencies in @min and @max respectively.
- *
- * Since: 0.10.22
  */
 void
 gst_app_src_get_latency (GstAppSrc * appsrc, guint64 * min, guint64 * max)
@@ -1371,8 +1371,6 @@ gst_app_src_get_latency (GstAppSrc * appsrc, guint64 * min, guint64 * max)
  * Make appsrc emit the "new-preroll" and "new-buffer" signals. This option is
  * by default disabled because signal emission is expensive and unneeded when
  * the application prefers to operate in pull mode.
- *
- * Since: 0.10.23
  */
 void
 gst_app_src_set_emit_signals (GstAppSrc * appsrc, gboolean emit)
@@ -1396,8 +1394,6 @@ gst_app_src_set_emit_signals (GstAppSrc * appsrc, gboolean emit)
  *
  * Returns: %TRUE if @appsrc is emitting the "new-preroll" and "new-buffer"
  * signals.
- *
- * Since: 0.10.23
  */
 gboolean
 gst_app_src_get_emit_signals (GstAppSrc * appsrc)
@@ -1519,8 +1515,6 @@ eos:
  * Returns: #GST_FLOW_OK when the buffer was successfuly queued.
  * #GST_FLOW_FLUSHING when @appsrc is not PAUSED or PLAYING.
  * #GST_FLOW_EOS when EOS occured.
- *
- * Since: 0.10.22
  */
 GstFlowReturn
 gst_app_src_push_buffer (GstAppSrc * appsrc, GstBuffer * buffer)
@@ -1545,8 +1539,6 @@ gst_app_src_push_buffer_action (GstAppSrc * appsrc, GstBuffer * buffer)
  *
  * Returns: #GST_FLOW_OK when the EOS was successfuly queued.
  * #GST_FLOW_FLUSHING when @appsrc is not PAUSED or PLAYING.
- *
- * Since: 0.10.22
  */
 GstFlowReturn
 gst_app_src_end_of_stream (GstAppSrc * appsrc)
@@ -1593,8 +1585,6 @@ flushing:
  *
  * If callbacks are installed, no signals will be emitted for performance
  * reasons.
- *
- * Since: 0.10.23
  */
 void
 gst_app_src_set_callbacks (GstAppSrc * appsrc,
@@ -1649,14 +1639,20 @@ gst_app_src_uri_get_protocols (GType type)
 static gchar *
 gst_app_src_uri_get_uri (GstURIHandler * handler)
 {
-  return g_strdup ("appsrc");
+  GstAppSrc *appsrc = GST_APP_SRC (handler);
+
+  return appsrc->priv->uri ? g_strdup (appsrc->priv->uri) : NULL;
 }
 
 static gboolean
 gst_app_src_uri_set_uri (GstURIHandler * handler, const gchar * uri,
     GError ** error)
 {
-  /* GstURIHandler checks the protocol for us */
+  GstAppSrc *appsrc = GST_APP_SRC (handler);
+
+  g_free (appsrc->priv->uri);
+  appsrc->priv->uri = uri ? g_strdup (uri) : NULL;
+
   return TRUE;
 }
 

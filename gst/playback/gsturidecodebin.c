@@ -44,6 +44,9 @@
 
 #include "gst/glib-compat-private.h"
 
+/* From gstdecodebin2.c */
+gint _decode_bin_compare_factories_func (gconstpointer p1, gconstpointer p2);
+
 #define GST_TYPE_URI_DECODE_BIN \
   (gst_uri_decode_bin_get_type())
 #define GST_URI_DECODE_BIN(obj) \
@@ -292,6 +295,8 @@ gst_uri_decode_bin_update_factories_list (GstURIDecodeBin * dec)
     dec->factories =
         gst_element_factory_list_get_elements
         (GST_ELEMENT_FACTORY_TYPE_DECODABLE, GST_RANK_MARGINAL);
+    dec->factories =
+        g_list_sort (dec->factories, _decode_bin_compare_factories_func);
     dec->factories_cookie = cookie;
   }
 }
@@ -565,8 +570,8 @@ gst_uri_decode_bin_class_init (GstURIDecodeBinClass * klass)
       g_signal_new ("autoplug-sort", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstURIDecodeBinClass, autoplug_sort),
       _gst_array_hasvalue_accumulator, NULL,
-      g_cclosure_marshal_generic, G_TYPE_VALUE_ARRAY, 3,
-      GST_TYPE_PAD, GST_TYPE_CAPS, G_TYPE_VALUE_ARRAY);
+      g_cclosure_marshal_generic, G_TYPE_VALUE_ARRAY, 3, GST_TYPE_PAD,
+      GST_TYPE_CAPS, G_TYPE_VALUE_ARRAY | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * GstURIDecodeBin::autoplug-select:
@@ -853,7 +858,9 @@ do_async_done (GstURIDecodeBin * dbin)
 
   if (dbin->async_pending) {
     GST_DEBUG_OBJECT (dbin, "posting ASYNC_DONE");
-    message = gst_message_new_async_done (GST_OBJECT_CAST (dbin), FALSE);
+    message =
+        gst_message_new_async_done (GST_OBJECT_CAST (dbin),
+        GST_CLOCK_TIME_NONE);
     GST_BIN_CLASS (parent_class)->handle_message (GST_BIN_CAST (dbin), message);
 
     dbin->async_pending = FALSE;
@@ -1219,7 +1226,8 @@ gen_source_element (GstURIDecodeBin * decoder)
   if (IS_BLACKLISTED_URI (decoder->uri))
     goto uri_blacklisted;
 
-  source = gst_element_make_from_uri (GST_URI_SRC, decoder->uri, "source");
+  source =
+      gst_element_make_from_uri (GST_URI_SRC, decoder->uri, "source", NULL);
   if (!source)
     goto no_source;
 
@@ -1469,7 +1477,6 @@ analyse_source (GstURIDecodeBin * decoder, gboolean * is_raw,
             sinkpad = gst_element_get_static_pad (outelem, "sink");
             gst_pad_link (pad, sinkpad);
             gst_object_unref (sinkpad);
-            gst_object_unref (pad);
 
             /* save queue pointer so we can remove it later */
             decoder->queue = outelem;

@@ -57,6 +57,7 @@ G_BEGIN_DECLS
 #define GST_RIFF_TAG_BEXT GST_MAKE_FOURCC ('B','E','X','T')
 #define GST_RIFF_TAG_fact GST_MAKE_FOURCC ('f','a','c','t')
 #define GST_RIFF_TAG_acid GST_MAKE_FOURCC ('a','c','i','d')
+#define GST_RIFF_TAG_labl GST_MAKE_FOURCC ('l','a','b','l')
 
 /* LIST types */
 #define GST_RIFF_LIST_movi GST_MAKE_FOURCC ('m','o','v','i')
@@ -449,11 +450,11 @@ typedef struct _gst_riff_strf_auds {       /* == WaveHeader (?) */
   guint32 rate;
   guint32 av_bps;
   guint16 blockalign;
-#if 0
-  /* missing field: */
   guint16 bits_per_sample;
+#if 0
+  /* missing field */
+  guint16 extra_size;
 #endif
-  guint16 size;
 } gst_riff_strf_auds;
 
 typedef struct _gst_riff_strf_iavs {    

@@ -2140,7 +2140,7 @@ do_shuttle (GstElement * element)
   if (shuttling)
     duration = 40 * GST_MSECOND;
   else
-    duration = -1;
+    duration = 0;
 
   gst_element_send_event (element,
       gst_event_new_step (GST_FORMAT_TIME, duration, shuttle_rate, FALSE,
@@ -2443,11 +2443,6 @@ bus_sync_handler (GstBus * bus, GstMessage * message, GstPipeline * data)
 
   g_print ("got prepare-window-handle, setting XID %lu\n", embed_xid);
 
-  if (g_object_class_find_property (G_OBJECT_GET_CLASS (element),
-          "force-aspect-ratio")) {
-    g_object_set (element, "force-aspect-ratio", TRUE, NULL);
-  }
-
   /* Should have been initialised from main thread before (can't use
    * GDK_WINDOW_XID here with Gtk+ >= 2.18, because the sync handler will
    * be called from a streaming thread and GDK_WINDOW_XID maps to more than
@@ -2523,7 +2518,7 @@ connect_bus_signals (GstElement * pipeline)
 #ifdef HAVE_X
   /* handle prepare-window-handle element message synchronously */
   gst_bus_set_sync_handler (bus, (GstBusSyncHandler) bus_sync_handler,
-      pipeline);
+      pipeline, NULL);
 #endif
 
   gst_bus_add_signal_watch_full (bus, G_PRIORITY_HIGH);

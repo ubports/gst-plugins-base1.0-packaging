@@ -182,7 +182,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-L
 <p>
 </p>
 <div class="refsect2">
-<a name="idp25217920"></a><p>
+<a name="idp25239232"></a><p>
 Functions to create and handle encoding profiles.
 </p>
 <p>
@@ -212,7 +212,7 @@ to) file using the <a class="link" href="gst-plugins-base-libs-encoding-profile.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp25225488"></a><h3>Example: Creating a profile</h3>
+<a name="idp25246800"></a><h3>Example: Creating a profile</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -254,19 +254,19 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
  GstCaps <span class="gtkdoc opt">*</span>caps<span class="gtkdoc opt">;</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;application/ogg&quot;</span><span class="gtkdoc opt">);</span>
- prof <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-new">gst_encoding_container_profile_new</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;Ogg audio/video&quot;</span><span class="gtkdoc opt">,</span>
+ prof <span class="gtkdoc opt">=</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-new">gst_encoding_container_profile_new</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;Ogg audio/video&quot;</span><span class="gtkdoc opt">,</span>
     <span class="string">&quot;Standard OGG/THEORA/VORBIS&quot;</span><span class="gtkdoc opt">,</span>
     caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">);</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;video/x-theora&quot;</span><span class="gtkdoc opt">);</span>
- <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
-      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-video-profile-new">gst_encoding_video_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
+ <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
+      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-video-profile-new">gst_encoding_video_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  caps <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-from-string">gst_caps_from_string</a></span><span class="gtkdoc opt">(</span><span class="string">&quot;audio/x-vorbis&quot;</span><span class="gtkdoc opt">);</span>
- <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
-      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#gst-encoding-audio-profile-new">gst_encoding_audio_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
+ <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-container-profile-add-profile">gst_encoding_container_profile_add_profile</a></span><span class="gtkdoc opt">(</span>prof<span class="gtkdoc opt">,</span>
+      <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#gst-encoding-audio-profile-new">gst_encoding_audio_profile_new</a></span><span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">));</span>
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref">gst_caps_unref</a></span> <span class="gtkdoc opt">(</span>caps<span class="gtkdoc opt">);</span>
 
  <span class="keyword">return</span> <span class="gtkdoc opt">(</span>GstEncodingProfile<span class="gtkdoc opt">*)</span> prof<span class="gtkdoc opt">;</span>
@@ -283,7 +283,7 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp25228480"></a><h3>Example: Listing categories, targets and profiles</h3>
+<a name="idp25249792"></a><h3>Example: Listing categories, targets and profiles</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -364,7 +364,6 @@ categories <span class="gtkdoc opt">=</span> <span class="function">gst_encoding
 The opaque base class object for all encoding profiles. This contains generic
 information like name, description, format and preset.
 </p>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -382,7 +381,6 @@ Decreases the reference count of the <em class="parameter"><code>profile</code><
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -400,7 +398,6 @@ Increases the reference count of the <em class="parameter"><code>profile</code><
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -436,7 +433,6 @@ Find the <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEn
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -463,7 +459,6 @@ subtitles), are currently ignored.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -483,7 +478,6 @@ subtitles), are currently ignored.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -504,7 +498,6 @@ subtitles), are currently ignored.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -526,7 +519,6 @@ in the profile. Unref after usage. <span class="annotation">[<acronym title="Fre
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -546,7 +538,6 @@ in the profile. Unref after usage. <span class="annotation">[<acronym title="Fre
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -567,7 +558,6 @@ container profile. If 0, it is not a mandatory stream.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -594,7 +584,6 @@ Can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macro
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -619,7 +608,6 @@ internally.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -645,7 +633,6 @@ Set <em class="parameter"><code>description</code></em> as the given description
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -669,7 +656,6 @@ Sets the media format used in the profile.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -693,7 +679,6 @@ Sets the preset to use for the profile.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -720,7 +705,6 @@ for more about restrictions. Does not apply to <a class="link" href="gst-plugins
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -745,7 +729,6 @@ container profile. If 0, it is not a mandatory stream
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -775,7 +758,6 @@ Checks whether the two <a class="link" href="gst-plugins-base-libs-encoding-prof
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -800,7 +782,6 @@ Computes the full output caps that this <em class="parameter"><code>profile</cod
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -820,7 +801,6 @@ Computes the full output caps that this <em class="parameter"><code>profile</cod
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -829,7 +809,6 @@ Computes the full output caps that this <em class="parameter"><code>profile</cod
 <p>
 Encoding profiles for containers. Keeps track of a list of <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>
 </p>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -871,7 +850,6 @@ can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macro
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -895,7 +873,8 @@ method you should increment its reference count.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
-<td>the <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to add.</td>
+<td>the <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to add. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -904,7 +883,6 @@ method you should increment its reference count.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -937,7 +915,6 @@ to <em class="parameter"><code>profile</code></em>, else <a href="http://library
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -967,7 +944,6 @@ to <em class="parameter"><code>profile</code></em>, else <a href="http://library
 <p>
 Variant of <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> for audio streams.
 </p>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1014,7 +990,6 @@ times (including never)</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1023,7 +998,6 @@ times (including never)</td>
 <p>
 Variant of <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> for video streams, allows specifying the <em class="parameter"><code>pass</code></em>.
 </p>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1077,7 +1051,6 @@ times (including never)</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1101,7 +1074,6 @@ not a multi-pass profile</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1122,7 +1094,6 @@ not a multi-pass profile</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1148,7 +1119,6 @@ you may set it to 0 (the default value).
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1176,7 +1146,6 @@ constance framerate.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1186,7 +1155,7 @@ constance framerate.
 <p>
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for device-specific targets.
 The name of the target will usually be the constructor and model of the device,
-and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that device.
+and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that device.
 </p>
 </div>
 <hr>
@@ -1197,7 +1166,7 @@ and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/
 <p>
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for online-services.
 The name of the target will usually be the name of the online service
-and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that online
+and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for that online
 service.
 </p>
 </div>
@@ -1210,7 +1179,7 @@ service.
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingTarget"><span class="type">GstEncodingTarget</span></a> category for storage, archiving and editing targets.
 Those targets can be lossless and/or provide very fast random access content.
 The name of the target will usually be the container type or editing target,
-and that target will contain <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for editing or
+and that target will contain <a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfiles</span></a> suitable for editing or
 storage.
 </p>
 </div>
@@ -1235,7 +1204,6 @@ Collection of <a class="link" href="gst-plugins-base-libs-encoding-profile.html#
 When being stored/loaded, targets come from a specific category, like
 <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GST-ENCODING-CATEGORY-DEVICE:CAPS" title="GST_ENCODING_CATEGORY_DEVICE"><span class="type">GST_ENCODING_CATEGORY_DEVICE</span></a>.
 </p>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1252,7 +1220,6 @@ Decreases the reference count of the <em class="parameter"><code>target</code></
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1269,7 +1236,6 @@ Increases the reference count of the <em class="parameter"><code>target</code></
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1325,7 +1291,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1346,7 +1311,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1368,7 +1332,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1389,7 +1352,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1411,7 +1373,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1437,7 +1398,6 @@ there was an error. <span class="annotation">[<acronym title="Free data after th
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1472,7 +1432,6 @@ count.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1501,7 +1460,6 @@ Saves the <em class="parameter"><code>target</code></em> to a default user-local
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1535,7 +1493,6 @@ Saves the <em class="parameter"><code>target</code></em> to the provided file lo
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1575,7 +1532,6 @@ searched for.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1604,7 +1560,6 @@ Opens the provided file and returns the contained <a class="link" href="gst-plug
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1630,7 +1585,6 @@ Can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macro
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1649,7 +1603,6 @@ of <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncoding
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 </div>
 </div>

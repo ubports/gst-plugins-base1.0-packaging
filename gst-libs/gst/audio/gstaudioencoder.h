@@ -39,16 +39,12 @@ G_BEGIN_DECLS
  * GST_AUDIO_ENCODER_SINK_NAME:
  *
  * the name of the templates for the sink pad
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_SINK_NAME	"sink"
 /**
  * GST_AUDIO_ENCODER_SRC_NAME:
  *
  * the name of the templates for the source pad
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_SRC_NAME	        "src"
 
@@ -57,8 +53,6 @@ G_BEGIN_DECLS
  * @obj: audio encoder instance
  *
  * Gives the pointer to the source #GstPad object of the element.
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_SRC_PAD(obj)	(GST_AUDIO_ENCODER_CAST (obj)->srcpad)
 
@@ -67,8 +61,6 @@ G_BEGIN_DECLS
  * @obj: audio encoder instance
  *
  * Gives the pointer to the sink #GstPad object of the element.
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_SINK_PAD(obj)	(GST_AUDIO_ENCODER_CAST (obj)->sinkpad)
 
@@ -77,8 +69,6 @@ G_BEGIN_DECLS
  * @obj: base parse instance
  *
  * Gives the input segment of the element.
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_INPUT_SEGMENT(obj)     (GST_AUDIO_ENCODER_CAST (obj)->input_segment)
 
@@ -87,8 +77,6 @@ G_BEGIN_DECLS
  * @obj: base parse instance
  *
  * Gives the output segment of the element.
- *
- * Since: 0.10.36
  */
 #define GST_AUDIO_ENCODER_OUTPUT_SEGMENT(obj)     (GST_AUDIO_ENCODER_CAST (obj)->output_segment)
 
@@ -104,8 +92,6 @@ typedef struct _GstAudioEncoderPrivate GstAudioEncoderPrivate;
  * GstAudioEncoder:
  *
  * The opaque #GstAudioEncoder data structure.
- *
- * Since: 0.10.36
  */
 struct _GstAudioEncoder {
   GstElement     element;
@@ -167,15 +153,19 @@ struct _GstAudioEncoder {
  *                  applied to sink template caps.
  * @open:           Optional.
  *                  Called when the element changes to GST_STATE_READY.
- *                  Allows opening external resources. Since: 0.10.37.
+ *                  Allows opening external resources.
  * @close:          Optional.
  *                  Called when the element changes to GST_STATE_NULL.
- *                  Allows closing external resources. Since: 0.10.37.
+ *                  Allows closing external resources.
+ * @decide_allocation: Optional.
+ *                     Setup the allocation parameters for allocating output
+ *                     buffers. The passed in query contains the result of the
+ *                     downstream allocation query.
+ * @propose_allocation: Optional.
+ *                      Propose buffer allocation parameters for upstream elements.
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @set_format and @handle_frame needs to be overridden.
- *
- * Since: 0.10.36
  */
 struct _GstAudioEncoderClass {
   GstElementClass element_class;
@@ -210,6 +200,11 @@ struct _GstAudioEncoderClass {
 
   gboolean      (*close)              (GstAudioEncoder *enc);
 
+  gboolean      (*decide_allocation)  (GstAudioEncoder *enc, GstQuery *query);
+
+  gboolean      (*propose_allocation) (GstAudioEncoder * enc,
+                                       GstQuery * query);
+
   /*< private >*/
   gpointer       _gst_reserved[GST_PADDING_LARGE-2];
 };
@@ -221,11 +216,15 @@ GstFlowReturn   gst_audio_encoder_finish_frame (GstAudioEncoder * enc,
                                                 gint              samples);
 
 GstCaps *       gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc,
-                                                 GstCaps         * caps);
+                                                 GstCaps         * caps,
+                                                 GstCaps         * filter);
 
 gboolean        gst_audio_encoder_set_output_format  (GstAudioEncoder    * enc,
                                                       GstCaps            * caps);
 
+
+GstBuffer *     gst_audio_encoder_allocate_output_buffer (GstAudioEncoder * encoder,
+                                                          gsize             size);
 
 /* context parameters */
 GstAudioInfo  * gst_audio_encoder_get_audio_info (GstAudioEncoder * enc);
