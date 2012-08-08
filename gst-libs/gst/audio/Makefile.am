@@ -1,25 +1,32 @@
 # variables used for enum/marshal generation
+ORC_SOURCE=gstaudiopack
+include $(top_srcdir)/common/orc.mak
+
 glib_enum_headers= 		\
 	audio.h			\
+	audio-format.h			\
+	audio-channels.h			\
+	audio-info.h			\
 	gstaudioringbuffer.h
 
 glib_enum_define = GST_AUDIO
 glib_gen_prefix = gst_audio
 glib_gen_basename = audio
 
-built_sources = audio-enumtypes.c audio-marshal.c
-built_headers = audio-enumtypes.h audio-marshal.h
-BUILT_SOURCES = $(built_sources) $(built_headers)
+built_sources = audio-enumtypes.c
+built_headers = audio-enumtypes.h
+BUILT_SOURCES += $(built_sources) $(built_headers)
 
 lib_LTLIBRARIES = \
 	libgstaudio-@GST_API_VERSION@.la
-
-EXTRA_DIST = audio-marshal.list
 
 CLEANFILES = $(BUILT_SOURCES)
 
 libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	audio.c \
+	audio-format.c \
+	audio-channels.c \
+	audio-info.c \
 	gstaudioringbuffer.c \
 	gstaudioclock.c \
 	gstaudiocdsrc.c \
@@ -34,11 +41,14 @@ libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	streamvolume.c \
 	gstaudioiec61937.c
 
-nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES = $(built_sources) $(built_headers)
+nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES = $(BUILT_SOURCES)
 
 libgstaudio_@GST_API_VERSION@includedir = $(includedir)/gstreamer-@GST_API_VERSION@/gst/audio
 libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio.h \
+	audio-format.h \
+	audio-channels.h \
+	audio-info.h \
 	gstaudioringbuffer.h \
 	gstaudioclock.h \
 	gstaudiofilter.h \
@@ -56,10 +66,11 @@ libgstaudio_@GST_API_VERSION@include_HEADERS = \
 nodist_libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio-enumtypes.h
 
-libgstaudio_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
+libgstaudio_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) \
+		$(ORC_CFLAGS)
 libgstaudio_@GST_API_VERSION@_la_LIBADD = \
   $(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
-  $(GST_BASE_LIBS) $(GST_LIBS) $(LIBM)
+  $(GST_BASE_LIBS) $(GST_LIBS) $(LIBM) $(ORC_LIBS)
 libgstaudio_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 include $(top_srcdir)/common/gst-glib-gen.mak
@@ -68,9 +79,9 @@ if HAVE_INTROSPECTION
 BUILT_GIRSOURCES = GstAudio-@GST_API_VERSION@.gir
 
 gir_headers=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@include_HEADERS))
-gir_headers+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS))
+gir_headers+=$(patsubst %,$(builddir)/%, $(built_headers))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@_la_SOURCES))
-gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstaudio_@GST_API_VERSION@_la_SOURCES))
+gir_sources+=$(patsubst %,$(builddir)/%, $(built_sources))
 gir_cincludes=$(patsubst %,--c-include='gst/audio/%',$(libgstaudio_@GST_API_VERSION@include_HEADERS))
 gir_cincludes+=$(patsubst %,--c-include='gst/audio/%',$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS))
 

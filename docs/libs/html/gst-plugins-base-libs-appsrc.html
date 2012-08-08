@@ -215,7 +215,6 @@ buffers must match the caps or left NULL.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -238,7 +237,6 @@ Get the configured caps on <em class="parameter"><code>appsrc</code></em>.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -267,7 +265,6 @@ Retrieve the min and max latencies in <em class="parameter"><code>min</code></em
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -297,7 +294,6 @@ default latency calculations for pseudo-live sources will be used.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -322,7 +318,6 @@ not known.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -346,7 +341,6 @@ not known.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -374,7 +368,6 @@ A stream_type stream
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -398,7 +391,6 @@ with <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-str
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -424,7 +416,6 @@ After the maximum amount of bytes are queued, <em class="parameter"><code>appsrc
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -447,7 +438,6 @@ Get the maximum amount of bytes that can be queued in <em class="parameter"><cod
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -472,7 +462,6 @@ signals.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.23</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -498,7 +487,6 @@ the application prefers to operate in pull mode.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.23</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -536,7 +524,6 @@ This callback is only called for seekable stream types.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.23</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -577,7 +564,6 @@ reasons.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.23</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -608,12 +594,11 @@ space becomes available in the queue.
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the buffer was successfuly queued.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-FLUSHING:CAPS"><span class="type">GST_FLOW_FLUSHING</span></a> when <em class="parameter"><code>appsrc</code></em> is not PAUSED or PLAYING.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-EOS:CAPS"><span class="type">GST_FLOW_EOS</span></a> when EOS occured.</td>
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em> is not PAUSED or PLAYING.
+<span class="type">GST_FLOW_EOS</span> when EOS occured.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -635,11 +620,10 @@ element is the last buffer of the stream.
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the EOS was successfuly queued.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-FLUSHING:CAPS"><span class="type">GST_FLOW_FLUSHING</span></a> when <em class="parameter"><code>appsrc</code></em> is not PAUSED or PLAYING.</td>
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em> is not PAUSED or PLAYING.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.22</p>
 </div>
 </div>
 <div class="refsect1">

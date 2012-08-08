@@ -56,6 +56,10 @@
 /* stop duration checks within this much of EOS */
 #define EOS_AVOIDANCE_THRESHOLD 8192
 
+/* An Ogg page can not be larger than 255 segments of 255 bytes, plus
+   26 bytes of header */
+#define MAX_OGG_PAGE_SIZE (255 * 255 + 26)
+
 #define GST_FLOW_LIMIT GST_FLOW_CUSTOM_ERROR
 #define GST_FLOW_SKIP_PUSH GST_FLOW_CUSTOM_SUCCESS_1
 
@@ -636,9 +640,11 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
   if (delta_unit)
     GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_DELTA_UNIT);
 
-  /* copy packet in buffer */
-  gst_buffer_fill (buf, 0, packet->packet + offset,
-      packet->bytes - offset - trim);
+  if (packet->packet != NULL) {
+    /* copy packet in buffer */
+    gst_buffer_fill (buf, 0, packet->packet + offset,
+        packet->bytes - offset - trim);
+  }
 
   GST_BUFFER_TIMESTAMP (buf) = out_timestamp;
   GST_BUFFER_DURATION (buf) = out_duration;
@@ -817,9 +823,7 @@ gst_ogg_pad_submit_packet (GstOggPad * pad, ogg_packet * packet)
         ogg->total_time = MAX (ogg->total_time, pad->map.total_time);
       }
     }
-    if (pad->map.caps) {
-      gst_pad_set_caps (GST_PAD (pad), pad->map.caps);
-    } else {
+    if (!pad->map.caps) {
       GST_WARNING_OBJECT (ogg, "stream parser didn't create src pad caps");
     }
   }
@@ -2397,10 +2401,18 @@ gst_ogg_demux_get_prev_page (GstOggDemux * ogg, ogg_page * og, gint64 * offset)
      * start, we save it. It might not be the final page as there could be
      * another page after this one. */
     while (ogg->offset < end) {
-      gint64 new_offset;
+      gint64 new_offset, boundary;
 
-      ret =
-          gst_ogg_demux_get_next_page (ogg, og, end - ogg->offset, &new_offset);
+      /* An Ogg page cannot be more than a bit less than 64 KB, so we can
+         bound the boundary to that size when searching backwards if we
+         haven't found a page yet. So the most we have to look at is twice
+         the max page size, which is the worst case if we start scanning
+         just after a large page, after which also lies a large page. */
+      boundary = end - ogg->offset;
+      if (boundary > 2 * MAX_OGG_PAGE_SIZE)
+        boundary = 2 * MAX_OGG_PAGE_SIZE;
+
+      ret = gst_ogg_demux_get_next_page (ogg, og, boundary, &new_offset);
       /* we hit the upper limit, offset contains the last page start */
       if (ret == GST_FLOW_LIMIT) {
         GST_LOG_OBJECT (ogg, "hit limit");
@@ -2572,6 +2584,7 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
   /* first add the pads */
   for (i = 0; i < chain->streams->len; i++) {
     GstOggPad *pad;
+    gchar *stream_id;
 
     pad = g_array_index (chain->streams, GstOggPad *, i);
 
@@ -2585,13 +2598,24 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
     pad->last_ret = GST_FLOW_OK;
 
     if (pad->map.is_skeleton || pad->map.is_cmml || pad->added
-        || !gst_pad_has_current_caps (GST_PAD_CAST (pad)))
+        || !pad->map.caps)
       continue;
 
     GST_DEBUG_OBJECT (ogg, "adding pad %" GST_PTR_FORMAT, pad);
 
     /* activate first */
     gst_pad_set_active (GST_PAD_CAST (pad), TRUE);
+
+    stream_id =
+        gst_pad_create_stream_id_printf (GST_PAD (pad), GST_ELEMENT_CAST (ogg),
+        "%08x", pad->map.serialno);
+    gst_pad_push_event (GST_PAD (pad), gst_event_new_stream_start (stream_id));
+    g_free (stream_id);
+
+    /* Set headers on caps */
+    pad->map.caps =
+        gst_ogg_demux_set_header_on_caps (ogg, pad->map.caps, pad->map.headers);
+    gst_pad_set_caps (GST_PAD_CAST (pad), pad->map.caps);
 
     gst_element_add_pad (GST_ELEMENT (ogg), GST_PAD_CAST (pad));
     pad->added = TRUE;
@@ -2608,37 +2632,35 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
   /* we are finished now */
   gst_element_no_more_pads (GST_ELEMENT (ogg));
 
-  /* FIXME, must be sent from the streaming thread */
-  if (event) {
-    GstTagList *tags;
-
-    gst_ogg_demux_send_event (ogg, event);
-
-    tags = gst_tag_list_new (GST_TAG_CONTAINER_FORMAT, "Ogg", NULL);
-    gst_ogg_demux_send_event (ogg, gst_event_new_tag ("GstDemuxer", tags));
-  }
-
   GST_DEBUG_OBJECT (ogg, "starting chain");
 
   /* then send out any headers and queued packets */
   for (i = 0; i < chain->streams->len; i++) {
     GList *walk;
     GstOggPad *pad;
+    GstTagList *tags;
 
     pad = g_array_index (chain->streams, GstOggPad *, i);
+
+    /* Skip pads that were not added, e.g. Skeleton streams */
+    if (!pad->added)
+      continue;
+
+    /* FIXME, must be sent from the streaming thread */
+    if (event)
+      gst_pad_push_event (GST_PAD_CAST (pad), gst_event_ref (event));
 
     /* FIXME also streaming thread */
     if (pad->map.taglist) {
       GST_DEBUG_OBJECT (ogg, "pushing tags");
       gst_pad_push_event (GST_PAD_CAST (pad),
-          gst_event_new_tag ("GstDemuxer", pad->map.taglist));
+          gst_event_new_tag (pad->map.taglist));
       pad->map.taglist = NULL;
     }
 
-    /* Set headers on caps */
-    pad->map.caps =
-        gst_ogg_demux_set_header_on_caps (ogg, pad->map.caps, pad->map.headers);
-    gst_pad_set_caps (GST_PAD_CAST (pad), pad->map.caps);
+    tags = gst_tag_list_new (GST_TAG_CONTAINER_FORMAT, "Ogg", NULL);
+    gst_tag_list_set_scope (tags, GST_TAG_SCOPE_GLOBAL);
+    gst_pad_push_event (GST_PAD (pad), gst_event_new_tag (tags));
 
     GST_DEBUG_OBJECT (ogg, "pushing headers");
     /* push headers */
@@ -2651,6 +2673,10 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
     GST_DEBUG_OBJECT (ogg, "pushing queued buffers");
     gst_ogg_demux_push_queued_buffers (ogg, pad);
   }
+
+  if (event)
+    gst_event_unref (event);
+
   return TRUE;
 }
 
@@ -3035,8 +3061,8 @@ gst_ogg_demux_perform_seek_pull (GstOggDemux * ogg, GstEvent * event)
   GstFormat format;
   gdouble rate;
   GstSeekFlags flags;
-  GstSeekType cur_type, stop_type;
-  gint64 cur, stop;
+  GstSeekType start_type, stop_type;
+  gint64 start, stop;
   gboolean update;
   guint32 seqnum;
   GstEvent *tevent;
@@ -3045,7 +3071,7 @@ gst_ogg_demux_perform_seek_pull (GstOggDemux * ogg, GstEvent * event)
     GST_DEBUG_OBJECT (ogg, "seek with event");
 
     gst_event_parse_seek (event, &rate, &format, &flags,
-        &cur_type, &cur, &stop_type, &stop);
+        &start_type, &start, &stop_type, &stop);
 
     /* we can only seek on time */
     if (format != GST_FORMAT_TIME) {
@@ -3106,7 +3132,7 @@ gst_ogg_demux_perform_seek_pull (GstOggDemux * ogg, GstEvent * event)
 
   if (event) {
     gst_segment_do_seek (&ogg->segment, rate, format, flags,
-        cur_type, cur, stop_type, stop, &update);
+        start_type, start, stop_type, stop, &update);
   }
 
   GST_DEBUG_OBJECT (ogg, "segment positions set to %" GST_TIME_FORMAT "-%"
@@ -3234,7 +3260,7 @@ gst_ogg_demux_perform_seek_pull (GstOggDemux * ogg, GstEvent * event)
     /* restart our task since it might have been stopped when we did the 
      * flush. */
     gst_pad_start_task (ogg->sinkpad, (GstTaskFunction) gst_ogg_demux_loop,
-        ogg->sinkpad);
+        ogg->sinkpad, NULL);
   }
 
   /* streaming can continue now */
@@ -4473,6 +4499,11 @@ pause:
         gst_message_set_seqnum (message, ogg->seqnum);
 
         gst_element_post_message (GST_ELEMENT (ogg), message);
+
+        event = gst_event_new_segment_done (GST_FORMAT_TIME, stop);
+        gst_event_set_seqnum (event, ogg->seqnum);
+        gst_ogg_demux_send_event (ogg, event);
+        event = NULL;
       } else {
         /* normal playback, send EOS to all linked pads */
         GST_LOG_OBJECT (ogg, "Sending EOS, at end of stream");
@@ -4580,7 +4611,7 @@ gst_ogg_demux_sink_activate_mode (GstPad * sinkpad, GstObject * parent,
         ogg->pullmode = TRUE;
 
         res = gst_pad_start_task (sinkpad, (GstTaskFunction) gst_ogg_demux_loop,
-            sinkpad);
+            sinkpad, NULL);
       } else {
         res = gst_pad_stop_task (sinkpad);
       }

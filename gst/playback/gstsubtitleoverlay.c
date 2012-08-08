@@ -101,8 +101,8 @@ static void
 do_async_done (GstSubtitleOverlay * self)
 {
   if (self->do_async) {
-    GstMessage *msg =
-        gst_message_new_async_done (GST_OBJECT_CAST (self), FALSE);
+    GstMessage *msg = gst_message_new_async_done (GST_OBJECT_CAST (self),
+        GST_CLOCK_TIME_NONE);
 
     GST_DEBUG_OBJECT (self, "Posting async-done");
     GST_BIN_CLASS (parent_class)->handle_message (GST_BIN_CAST (self), msg);
@@ -879,8 +879,9 @@ _setup_renderer (GstSubtitleOverlay * self, GstElement * renderer)
 
   if (strcmp (name, "textoverlay") == 0) {
     /* Set some textoverlay specific properties */
-    g_object_set (G_OBJECT (renderer),
-        "halign", "center", "valign", "bottom", "wait-text", FALSE, NULL);
+    gst_util_set_object_arg (G_OBJECT (renderer), "halignment", "center");
+    gst_util_set_object_arg (G_OBJECT (renderer), "valignment", "bottom");
+    g_object_set (G_OBJECT (renderer), "wait-text", FALSE, NULL);
     if (self->font_desc)
       g_object_set (G_OBJECT (renderer), "font-desc", self->font_desc, NULL);
     self->silent_property = "silent";
@@ -1771,7 +1772,7 @@ gst_subtitle_overlay_src_proxy_event (GstPad * proxypad, GstObject * parent,
     event = NULL;
     ret = TRUE;
   } else {
-    ret = gst_proxy_pad_event_default (proxypad, parent, event);
+    ret = gst_pad_event_default (proxypad, parent, event);
     event = NULL;
   }
 
@@ -1858,7 +1859,7 @@ gst_subtitle_overlay_video_sink_event (GstPad * pad, GstObject * parent,
       break;
   }
 
-  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
+  ret = gst_pad_event_default (pad, parent, gst_event_ref (event));
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_SEGMENT) {
     GST_DEBUG_OBJECT (pad, "segment event: %" GST_PTR_FORMAT, event);
@@ -1998,7 +1999,6 @@ static GstPadLinkReturn
 gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstPad * peer)
 {
   GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (gst_pad_get_parent (pad));
-  GstPadLinkReturn ret;
   GstCaps *caps;
 
   GST_DEBUG_OBJECT (pad, "Linking pad to peer %" GST_PTR_FORMAT, peer);
@@ -2025,10 +2025,9 @@ gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstPad * peer)
     gst_caps_unref (caps);
   }
 
-  ret = gst_ghost_pad_link_default (pad, peer);
-
   gst_object_unref (self);
-  return ret;
+
+  return GST_PAD_LINK_OK;
 }
 
 static void
@@ -2043,8 +2042,6 @@ gst_subtitle_overlay_subtitle_sink_unlink (GstPad * pad)
 
   GST_DEBUG_OBJECT (pad, "Pad unlinking");
   gst_caps_replace (&self->subcaps, NULL);
-
-  gst_ghost_pad_unlink_default (pad);
 
   GST_SUBTITLE_OVERLAY_LOCK (self);
   self->subtitle_error = FALSE;
@@ -2116,7 +2113,7 @@ gst_subtitle_overlay_subtitle_sink_event (GstPad * pad, GstObject * parent,
       break;
   }
 
-  ret = gst_proxy_pad_event_default (pad, parent, gst_event_ref (event));
+  ret = gst_pad_event_default (pad, parent, gst_event_ref (event));
 
   if (GST_EVENT_TYPE (event) == GST_EVENT_SEGMENT) {
     const GstSegment *eventsegment;

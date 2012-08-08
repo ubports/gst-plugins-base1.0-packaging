@@ -78,7 +78,6 @@ payloaded.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -98,7 +97,8 @@ the frame is not checked for errors.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
-<td>a buffer containing the data to payload</td>
+<td>a buffer containing the data to payload. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=src_n]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src_n</code></em> :</span></p></td>
@@ -106,8 +106,8 @@ the frame is not checked for errors.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
-<td>the destination buffer to store the payloaded contents in. Should not
-overlap with <em class="parameter"><code>src</code></em>
+<td>the destination buffer to store the
+payloaded contents in. Should not overlap with <em class="parameter"><code>src</code></em>. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=dst_n]</span>
 </td>
 </tr>
 <tr>
@@ -126,7 +126,6 @@ otherwise.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 </div>
 </div>

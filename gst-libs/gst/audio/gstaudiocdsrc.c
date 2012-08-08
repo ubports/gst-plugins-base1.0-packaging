@@ -87,6 +87,7 @@
 
 #include <string.h>
 #include <stdlib.h>             /* for strtol */
+#include <stdio.h>
 
 #include <gst/tag/tag.h>
 #include <gst/audio/audio.h>
@@ -144,6 +145,9 @@ struct _GstAudioCdSrcPrivate
 
   gint toc_offset;
   gboolean toc_bias;
+
+  GstEvent *toc_event;          /* pending TOC event */
+  GstToc *toc;
 };
 
 static void gst_audio_cd_src_uri_handler_init (gpointer g_iface,
@@ -939,6 +943,17 @@ gst_audio_cd_src_handle_event (GstBaseSrc * basesrc, GstEvent * event)
       }
       break;
     }
+    case GST_EVENT_TOC_SELECT:{
+      guint track_num = 0;
+      gchar *uid = NULL;
+
+      gst_event_parse_toc_select (event, &uid);
+      if (uid != NULL && sscanf (uid, "audiocd-track-%03u", &track_num) == 1) {
+        ret = gst_audio_cd_src_handle_track_seek (src, 1.0, GST_SEEK_FLAG_FLUSH,
+            GST_SEEK_TYPE_SET, track_num, GST_SEEK_TYPE_NONE, -1);
+      }
+      break;
+    }
     default:{
       GST_LOG_OBJECT (src, "let base class handle event");
       ret = GST_BASE_SRC_CLASS (parent_class)->event (basesrc, event);
@@ -1375,6 +1390,62 @@ gst_audio_cd_src_add_tags (GstAudioCdSrc * src)
   GST_DEBUG ("src->tags = %" GST_PTR_FORMAT, src->tags);
 }
 
+static GstToc *
+gst_audio_cd_src_make_toc (GstAudioCdSrc * src, GstTocScope scope)
+{
+  GstToc *toc;
+  gint i;
+
+  toc = gst_toc_new (scope);
+
+  for (i = 0; i < src->priv->num_tracks; ++i) {
+    GstAudioCdSrcTrack *track;
+    gint64 start_time, stop_time;
+    GstTocEntry *entry;
+    gchar *uid;
+
+    track = &src->priv->tracks[i];
+
+    /* keep uid in sync with toc select event handler below */
+    uid = g_strdup_printf ("audiocd-track-%03u", track->num);
+    entry = gst_toc_entry_new (GST_TOC_ENTRY_TYPE_TRACK, uid);
+    gst_toc_entry_set_tags (entry, gst_tag_list_ref (track->tags));
+
+    gst_audio_cd_src_convert (src, sector_format, track->start,
+        GST_FORMAT_TIME, &start_time);
+    gst_audio_cd_src_convert (src, sector_format, track->end + 1,
+        GST_FORMAT_TIME, &stop_time);
+
+    GST_INFO ("Track %03u  %" GST_TIME_FORMAT " - %" GST_TIME_FORMAT,
+        track->num, GST_TIME_ARGS (start_time), GST_TIME_ARGS (stop_time));
+
+    gst_toc_entry_set_start_stop_times (entry, start_time, stop_time);
+    gst_toc_append_entry (toc, entry);
+    g_free (uid);
+  }
+
+  return toc;
+}
+
+static void
+gst_audio_cd_src_add_toc (GstAudioCdSrc * src)
+{
+  GstToc *toc;
+
+  /* FIXME: send two TOC events if needed, one global, one current */
+  toc = gst_audio_cd_src_make_toc (src, GST_TOC_SCOPE_GLOBAL);
+
+  src->priv->toc_event = gst_event_new_toc (toc, FALSE);
+
+  /* If we're in continuous mode (stream = whole disc), send a TOC event
+   * downstream, so matroskamux etc. can write a TOC to indicate where the
+   * various tracks are */
+  if (src->priv->mode == GST_AUDIO_CD_SRC_MODE_CONTINUOUS)
+    src->priv->toc_event = gst_event_new_toc (toc, FALSE);
+
+  src->priv->toc = toc;
+}
+
 #if 0
 static void
 gst_audio_cd_src_add_index_associations (GstAudioCdSrc * src)
@@ -1523,6 +1594,7 @@ gst_audio_cd_src_start (GstBaseSrc * basesrc)
     goto no_tracks;
 
   gst_audio_cd_src_add_tags (src);
+  gst_audio_cd_src_add_toc (src);
 
 #if 0
   if (src->priv->index && GST_INDEX_IS_WRITABLE (src->priv->index))
@@ -1599,6 +1671,13 @@ gst_audio_cd_src_stop (GstBaseSrc * basesrc)
     src->tags = NULL;
   }
 
+  gst_event_replace (&src->priv->toc_event, NULL);
+
+  if (src->priv->toc) {
+    gst_toc_unref (src->priv->toc);
+    src->priv->toc = NULL;
+  }
+
   src->priv->prev_track = -1;
   src->priv->cur_track = -1;
 
@@ -1644,6 +1723,11 @@ gst_audio_cd_src_create (GstPushSrc * pushsrc, GstBuffer ** buffer)
     return GST_FLOW_EOS;
   }
 
+  if (src->priv->toc_event != NULL) {
+    gst_pad_push_event (GST_BASE_SRC_PAD (src), src->priv->toc_event);
+    src->priv->toc_event = NULL;
+  }
+
   if (src->priv->prev_track != src->priv->cur_track) {
     GstTagList *tags;
 
@@ -1651,8 +1735,7 @@ gst_audio_cd_src_create (GstPushSrc * pushsrc, GstBuffer ** buffer)
         gst_tag_list_merge (src->tags,
         src->priv->tracks[src->priv->cur_track].tags, GST_TAG_MERGE_REPLACE);
     GST_LOG_OBJECT (src, "announcing tags: %" GST_PTR_FORMAT, tags);
-    gst_pad_push_event (GST_BASE_SRC_PAD (src), gst_event_new_tag ("GstSrc",
-            tags));
+    gst_pad_push_event (GST_BASE_SRC_PAD (src), gst_event_new_tag (tags));
     src->priv->prev_track = src->priv->cur_track;
 
     gst_audio_cd_src_update_duration (src);

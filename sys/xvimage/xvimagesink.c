@@ -333,10 +333,17 @@ gst_xvimagesink_xvimage_put (GstXvImageSink * xvimagesink, GstBuffer * xvimage)
   }
 
   if (xvimagesink->keep_aspect) {
+    GstVideoRectangle s;
+
+    /* We take the size of the source material as it was negotiated and
+     * corrected for DAR. This size can be different from the cropped size in
+     * which case the image will be scaled to fit the negotiated size. */
+    s.w = GST_VIDEO_SINK_WIDTH (xvimagesink);
+    s.h = GST_VIDEO_SINK_HEIGHT (xvimagesink);
     dst.w = xvimagesink->render_rect.w;
     dst.h = xvimagesink->render_rect.h;
 
-    gst_video_sink_center_rect (src, dst, &result, TRUE);
+    gst_video_sink_center_rect (s, dst, &result, TRUE);
     result.x += xvimagesink->render_rect.x;
     result.y += xvimagesink->render_rect.y;
   } else {
@@ -1970,11 +1977,11 @@ gst_xvimagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
   if (pool == NULL && need_pool) {
     GstVideoInfo info;
 
-    GST_DEBUG_OBJECT (xvimagesink, "create new pool");
-    pool = gst_xvimage_buffer_pool_new (xvimagesink);
-
     if (!gst_video_info_from_caps (&info, caps))
       goto invalid_caps;
+
+    GST_DEBUG_OBJECT (xvimagesink, "create new pool");
+    pool = gst_xvimage_buffer_pool_new (xvimagesink);
 
     /* the normal size of a frame */
     size = info.size;
@@ -1984,14 +1991,15 @@ gst_xvimagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
     if (!gst_buffer_pool_set_config (pool, config))
       goto config_failed;
   }
-  /* we need at least 2 buffer because we hold on to the last one */
-  gst_query_add_allocation_pool (query, pool, size, 2, 0);
+  if (pool) {
+    /* we need at least 2 buffer because we hold on to the last one */
+    gst_query_add_allocation_pool (query, pool, size, 2, 0);
+    gst_object_unref (pool);
+  }
 
   /* we also support various metadata */
-  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE);
-  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE);
-
-  gst_object_unref (pool);
+  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL);
+  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE, NULL);
 
   return TRUE;
 
@@ -2009,6 +2017,7 @@ invalid_caps:
 config_failed:
   {
     GST_DEBUG_OBJECT (bsink, "failed setting config");
+    gst_object_unref (pool);
     return FALSE;
   }
 }
@@ -2773,7 +2782,7 @@ gst_xvimagesink_init (GstXvImageSink * xvimagesink)
   xvimagesink->synchronous = FALSE;
   xvimagesink->double_buffer = TRUE;
   xvimagesink->running = FALSE;
-  xvimagesink->keep_aspect = FALSE;
+  xvimagesink->keep_aspect = TRUE;
   xvimagesink->handle_events = TRUE;
   xvimagesink->par = NULL;
   xvimagesink->handle_expose = TRUE;
@@ -2833,7 +2842,7 @@ gst_xvimagesink_class_init (GstXvImageSinkClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_FORCE_ASPECT_RATIO,
       g_param_spec_boolean ("force-aspect-ratio", "Force aspect ratio",
-          "When enabled, scaling will respect original aspect ratio", FALSE,
+          "When enabled, scaling will respect original aspect ratio", TRUE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_HANDLE_EVENTS,
       g_param_spec_boolean ("handle-events", "Handle XEvents",

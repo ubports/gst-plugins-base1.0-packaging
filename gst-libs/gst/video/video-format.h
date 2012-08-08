@@ -45,31 +45,31 @@ G_BEGIN_DECLS
  * @GST_VIDEO_FORMAT_ABGR: reverse rgb with alpha channel first
  * @GST_VIDEO_FORMAT_RGB: rgb
  * @GST_VIDEO_FORMAT_BGR: reverse rgb
- * @GST_VIDEO_FORMAT_Y41B: planar 4:1:1 YUV (Since: 0.10.18)
- * @GST_VIDEO_FORMAT_Y42B: planar 4:2:2 YUV (Since: 0.10.18)
- * @GST_VIDEO_FORMAT_YVYU: packed 4:2:2 YUV (Y0-V0-Y1-U0 Y2-V2-Y3-U2 Y4 ...) (Since: 0.10.23)
- * @GST_VIDEO_FORMAT_Y444: planar 4:4:4 YUV (Since: 0.10.24)
- * @GST_VIDEO_FORMAT_v210: packed 4:2:2 10-bit YUV, complex format (Since: 0.10.24)
- * @GST_VIDEO_FORMAT_v216: packed 4:2:2 16-bit YUV, Y0-U0-Y1-V1 order (Since: 0.10.24)
- * @GST_VIDEO_FORMAT_NV12: planar 4:2:0 YUV with interleaved UV plane (Since: 0.10.26)
- * @GST_VIDEO_FORMAT_NV21: planar 4:2:0 YUV with interleaved VU plane (Since: 0.10.26)
- * @GST_VIDEO_FORMAT_GRAY8: 8-bit grayscale (Since: 0.10.29)
- * @GST_VIDEO_FORMAT_GRAY16_BE: 16-bit grayscale, most significant byte first (Since: 0.10.29)
- * @GST_VIDEO_FORMAT_GRAY16_LE: 16-bit grayscale, least significant byte first (Since: 0.10.29)
- * @GST_VIDEO_FORMAT_v308: packed 4:4:4 YUV (Since: 0.10.29)
- * @GST_VIDEO_FORMAT_RGB16: rgb 5-6-5 bits per component (Since: 0.10.30)
- * @GST_VIDEO_FORMAT_BGR16: reverse rgb 5-6-5 bits per component (Since: 0.10.30)
- * @GST_VIDEO_FORMAT_RGB15: rgb 5-5-5 bits per component (Since: 0.10.30)
- * @GST_VIDEO_FORMAT_BGR15: reverse rgb 5-5-5 bits per component (Since: 0.10.30)
- * @GST_VIDEO_FORMAT_UYVP: packed 10-bit 4:2:2 YUV (U0-Y0-V0-Y1 U2-Y2-V2-Y3 U4 ...) (Since: 0.10.31)
- * @GST_VIDEO_FORMAT_A420: planar 4:4:2:0 AYUV (Since: 0.10.31)
- * @GST_VIDEO_FORMAT_RGB8P: 8-bit paletted RGB (Since: 0.10.32)
- * @GST_VIDEO_FORMAT_YUV9: planar 4:1:0 YUV (Since: 0.10.32)
- * @GST_VIDEO_FORMAT_YVU9: planar 4:1:0 YUV (like YUV9 but UV planes swapped) (Since: 0.10.32)
- * @GST_VIDEO_FORMAT_IYU1: packed 4:1:1 YUV (Cb-Y0-Y1-Cr-Y2-Y3 ...) (Since: 0.10.32)
- * @GST_VIDEO_FORMAT_ARGB64: rgb with alpha channel first, 16 bits per channel (Since: 0.10.33)
- * @GST_VIDEO_FORMAT_AYUV64: packed 4:4:4 YUV with alpha channel, 16 bits per channel (A0-Y0-U0-V0 ...) (Since: 0.10.33)
- * @GST_VIDEO_FORMAT_r210: packed 4:4:4 RGB, 10 bits per channel (Since: 0.10.33)
+ * @GST_VIDEO_FORMAT_Y41B: planar 4:1:1 YUV
+ * @GST_VIDEO_FORMAT_Y42B: planar 4:2:2 YUV
+ * @GST_VIDEO_FORMAT_YVYU: packed 4:2:2 YUV (Y0-V0-Y1-U0 Y2-V2-Y3-U2 Y4 ...)
+ * @GST_VIDEO_FORMAT_Y444: planar 4:4:4 YUV
+ * @GST_VIDEO_FORMAT_v210: packed 4:2:2 10-bit YUV, complex format
+ * @GST_VIDEO_FORMAT_v216: packed 4:2:2 16-bit YUV, Y0-U0-Y1-V1 order
+ * @GST_VIDEO_FORMAT_NV12: planar 4:2:0 YUV with interleaved UV plane
+ * @GST_VIDEO_FORMAT_NV21: planar 4:2:0 YUV with interleaved VU plane
+ * @GST_VIDEO_FORMAT_GRAY8: 8-bit grayscale
+ * @GST_VIDEO_FORMAT_GRAY16_BE: 16-bit grayscale, most significant byte first
+ * @GST_VIDEO_FORMAT_GRAY16_LE: 16-bit grayscale, least significant byte first
+ * @GST_VIDEO_FORMAT_v308: packed 4:4:4 YUV
+ * @GST_VIDEO_FORMAT_RGB16: rgb 5-6-5 bits per component
+ * @GST_VIDEO_FORMAT_BGR16: reverse rgb 5-6-5 bits per component
+ * @GST_VIDEO_FORMAT_RGB15: rgb 5-5-5 bits per component
+ * @GST_VIDEO_FORMAT_BGR15: reverse rgb 5-5-5 bits per component
+ * @GST_VIDEO_FORMAT_UYVP: packed 10-bit 4:2:2 YUV (U0-Y0-V0-Y1 U2-Y2-V2-Y3 U4 ...)
+ * @GST_VIDEO_FORMAT_A420: planar 4:4:2:0 AYUV
+ * @GST_VIDEO_FORMAT_RGB8P: 8-bit paletted RGB
+ * @GST_VIDEO_FORMAT_YUV9: planar 4:1:0 YUV
+ * @GST_VIDEO_FORMAT_YVU9: planar 4:1:0 YUV (like YUV9 but UV planes swapped)
+ * @GST_VIDEO_FORMAT_IYU1: packed 4:1:1 YUV (Cb-Y0-Y1-Cr-Y2-Y3 ...)
+ * @GST_VIDEO_FORMAT_ARGB64: rgb with alpha channel first, 16 bits per channel
+ * @GST_VIDEO_FORMAT_AYUV64: packed 4:4:4 YUV with alpha channel, 16 bits per channel (A0-Y0-U0-V0 ...)
+ * @GST_VIDEO_FORMAT_r210: packed 4:4:4 RGB, 10 bits per channel
  * @GST_VIDEO_FORMAT_I420_10BE: planar 4:2:0 YUV, 10 bits per channel
  * @GST_VIDEO_FORMAT_I420_10LE: planar 4:2:0 YUV, 10 bits per channel
  *
@@ -173,6 +173,8 @@ const gchar *         gst_video_chroma_to_string     (GstVideoChromaSite site);
  *   is stored in the second plane and indexes are stored in the first plane.
  * @GST_VIDEO_FORMAT_FLAG_COMPLEX: The video format has a complex layout that
  *   can't be described with the usual information in the #GstVideoFormatInfo.
+ * @GST_VIDEO_FORMAT_FLAG_UNPACK: This format can be used in a
+ *   #GstVideoFormatUnpack and #GstVideoFormatPack function.
  *
  * The different video flags that a format info can have.
  */
@@ -184,7 +186,8 @@ typedef enum
   GST_VIDEO_FORMAT_FLAG_ALPHA    = (1 << 3),
   GST_VIDEO_FORMAT_FLAG_LE       = (1 << 4),
   GST_VIDEO_FORMAT_FLAG_PALETTE  = (1 << 5),
-  GST_VIDEO_FORMAT_FLAG_COMPLEX  = (1 << 6)
+  GST_VIDEO_FORMAT_FLAG_COMPLEX  = (1 << 6),
+  GST_VIDEO_FORMAT_FLAG_UNPACK   = (1 << 7)
 } GstVideoFormatFlags;
 
 /* YUV components */
@@ -207,12 +210,18 @@ typedef enum
 /**
  * GstVideoPackFlags:
  * @GST_VIDEO_PACK_FLAG_NONE: No flag
+ * @GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE: When the source has a smaller depth
+ *   than the target format, set the least significant bits of the target
+ *   to 0. This is likely sightly faster but less accurate. When this flag
+ *   is not specified, the most significant bits of the source are duplicated
+ *   in the least significant bits of the destination.
  *
  * The different flags that can be used when packing and unpacking.
  */
 typedef enum
 {
-  GST_VIDEO_PACK_FLAG_NONE       = 0
+  GST_VIDEO_PACK_FLAG_NONE           = 0,
+  GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE = 1
 } GstVideoPackFlags;
 
 /**
@@ -290,7 +299,8 @@ typedef void (*GstVideoFormatPack)           (const GstVideoFormatInfo *info,
  *     GST_VIDEO_SUB_SCALE to scale a width.
  * @h_sub: subsampling factor of the height for the component. Use
  *     GST_VIDEO_SUB_SCALE to scale a height.
- * @unpack_format: the format of the unpacked pixels.
+ * @unpack_format: the format of the unpacked pixels. This format must have the
+ *     #GST_VIDEO_FORMAT_FLAG_UNPACK flag set.
  * @unpack_func: an unpack function for this format
  * @pack_lines: the amount of lines that will be packed
  * @pack_func: an pack function for this format

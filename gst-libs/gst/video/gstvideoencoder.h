@@ -47,16 +47,12 @@ G_BEGIN_DECLS
  * GST_VIDEO_ENCODER_SINK_NAME:
  *
  * The name of the templates for the sink pad.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_SINK_NAME    "sink"
 /**
  * GST_VIDEO_ENCODER_SRC_NAME:
  *
  * The name of the templates for the source pad.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_SRC_NAME     "src"
 
@@ -65,8 +61,6 @@ G_BEGIN_DECLS
  * @obj: a #GstVideoEncoder
  *
  * Gives the pointer to the source #GstPad object of the element.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_SRC_PAD(obj)         (((GstVideoEncoder *) (obj))->srcpad)
 
@@ -75,8 +69,6 @@ G_BEGIN_DECLS
  * @obj: a #GstVideoEncoder
  *
  * Gives the pointer to the sink #GstPad object of the element.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_SINK_PAD(obj)        (((GstVideoEncoder *) (obj))->sinkpad)
 
@@ -84,8 +76,6 @@ G_BEGIN_DECLS
  * GST_VIDEO_ENCODER_FLOW_NEED_DATA:
  *
  * Returned while parsing to indicate more data is needed.
- *
- * Since: 0.10.36
  **/
 #define GST_VIDEO_ENCODER_FLOW_NEED_DATA GST_FLOW_CUSTOM_SUCCESS
 
@@ -93,8 +83,6 @@ G_BEGIN_DECLS
  * GST_VIDEO_ENCODER_FLOW_DROPPED:
  *
  * Returned when the event/buffer should be dropped.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_FLOW_DROPPED GST_FLOW_CUSTOM_SUCCESS_1
 
@@ -103,8 +91,6 @@ G_BEGIN_DECLS
  * @obj: base parse instance
  *
  * Gives the segment of the element.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_INPUT_SEGMENT(obj)     (GST_VIDEO_ENCODER_CAST (obj)->input_segment)
 
@@ -113,8 +99,6 @@ G_BEGIN_DECLS
  * @obj: base parse instance
  *
  * Gives the segment of the element.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_OUTPUT_SEGMENT(obj)     (GST_VIDEO_ENCODER_CAST (obj)->output_segment)
 
@@ -123,8 +107,6 @@ G_BEGIN_DECLS
  * @encoder: video encoder instance
  *
  * Obtain a lock to protect the encoder function from concurrent access.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_STREAM_LOCK(encoder) g_rec_mutex_lock (&GST_VIDEO_ENCODER (encoder)->stream_lock)
 
@@ -133,8 +115,6 @@ G_BEGIN_DECLS
  * @encoder: video encoder instance
  *
  * Release the lock that protects the encoder function from concurrent access.
- *
- * Since: 0.10.36
  */
 #define GST_VIDEO_ENCODER_STREAM_UNLOCK(encoder) g_rec_mutex_unlock (&GST_VIDEO_ENCODER (encoder)->stream_lock)
 
@@ -146,8 +126,6 @@ typedef struct _GstVideoEncoderClass GstVideoEncoderClass;
  * GstVideoEncoder:
  *
  * The opaque #GstVideoEncoder data structure.
- *
- * Since: 0.10.36
  */
 struct _GstVideoEncoder
 {
@@ -176,10 +154,10 @@ struct _GstVideoEncoder
  * GstVideoEncoderClass:
  * @open:           Optional.
  *                  Called when the element changes to GST_STATE_READY.
- *                  Allows opening external resources. Since: 0.10.37.
+ *                  Allows opening external resources.
  * @close:          Optional.
  *                  Called when the element changes to GST_STATE_NULL.
- *                  Allows closing external resources. Since: 0.10.37.
+ *                  Allows closing external resources.
  * @start:          Optional.
  *                  Called when the element starts processing.
  *                  Allows opening external resources.
@@ -213,14 +191,16 @@ struct _GstVideoEncoder
  *                  Event handler on the source pad. This function should return
  *                  TRUE if the event was handled and should be discarded
  *                  (i.e. not unref'ed).
+ * @decide_allocation: Optional.
+ *                     Setup the allocation parameters for allocating output
+ *                     buffers. The passed in query contains the result of the
+ *                     downstream allocation query.
  * @propose_allocation: Optional.
  *                      Propose buffer allocation parameters for upstream elements.
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @handle_frame needs to be overridden, and @set_format
  * and @get_caps are likely needed as well.
- *
- * Since: 0.10.36
  */
 struct _GstVideoEncoderClass
 {
@@ -260,6 +240,8 @@ struct _GstVideoEncoderClass
   gboolean      (*src_event)    (GstVideoEncoder *encoder,
 				 GstEvent *event);
 
+  gboolean      (*decide_allocation)  (GstVideoEncoder *encoder, GstQuery *query);
+
   gboolean      (*propose_allocation) (GstVideoEncoder * encoder,
                                        GstQuery * query);
 
@@ -276,9 +258,18 @@ GstVideoCodecState*  gst_video_encoder_set_output_state (GstVideoEncoder * encod
 							 GstCaps * caps,
 							 GstVideoCodecState * reference);
 
+gboolean             gst_video_encoder_negotiate        (GstVideoEncoder * encoder);
+
 GstVideoCodecFrame*  gst_video_encoder_get_frame        (GstVideoEncoder *encoder,
 						         int frame_number);
 GstVideoCodecFrame*  gst_video_encoder_get_oldest_frame (GstVideoEncoder *encoder);
+
+GstBuffer *          gst_video_encoder_allocate_output_buffer (GstVideoEncoder * encoder,
+                                                               gsize size);
+
+GstFlowReturn        gst_video_encoder_allocate_output_frame  (GstVideoEncoder *encoder,
+						               GstVideoCodecFrame *frame,
+                                                               gsize size);
 
 GstFlowReturn        gst_video_encoder_finish_frame (GstVideoEncoder *encoder,
 						     GstVideoCodecFrame *frame);

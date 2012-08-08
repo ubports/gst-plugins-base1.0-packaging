@@ -521,19 +521,28 @@ static gboolean
 gst_ogg_mux_handle_src_event (GstPad * pad, GstObject * parent,
     GstEvent * event)
 {
-  GstEventType type;
-
-  type = event ? GST_EVENT_TYPE (event) : GST_EVENT_UNKNOWN;
+  gboolean res = FALSE;
+  GstOggMux *ogg_mux = GST_OGG_MUX (parent);
+  GstEventType type = event ? GST_EVENT_TYPE (event) : GST_EVENT_UNKNOWN;
 
   switch (type) {
-    case GST_EVENT_SEEK:
-      /* disable seeking for now */
-      return FALSE;
+    case GST_EVENT_SEEK:{
+      GstSeekFlags flags;
+
+      gst_event_parse_seek (event, NULL, NULL, &flags, NULL, NULL, NULL, NULL);
+      if (!ogg_mux->need_headers && (flags & GST_SEEK_FLAG_FLUSH) != 0) {
+        /* disable flushing seeks once we started */
+        goto eat;
+      }
+      break;
+    }
     default:
       break;
   }
 
-  return gst_pad_event_default (pad, parent, event);
+  res = gst_pad_event_default (pad, parent, event);
+eat:
+  return res;
 }
 
 static GstBuffer *
@@ -1200,7 +1209,8 @@ gst_ogg_mux_make_fishead (GstOggMux * mux, ogg_stream_state * os)
 static void
 gst_ogg_mux_byte_writer_put_string_utf8 (GstByteWriter * bw, const char *s)
 {
-  g_assert (gst_byte_writer_put_data (bw, (const guint8 *) s, strlen (s)));
+  if (!gst_byte_writer_put_data (bw, (const guint8 *) s, strlen (s)))
+    GST_ERROR ("put_data failed");
 }
 
 static void

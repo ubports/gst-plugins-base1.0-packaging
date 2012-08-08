@@ -312,32 +312,6 @@ print_topology (GstDiscovererStreamInfo * info, gint depth)
 }
 
 static void
-print_tag (const gchar * tag_name, const GValue * value, gint tab)
-{
-  gchar *ser;
-
-  if (G_VALUE_HOLDS_STRING (value))
-    ser = g_value_dup_string (value);
-  else if (GST_VALUE_HOLDS_SAMPLE (value)) {
-    GstSample *smpl = gst_value_get_sample (value);
-    GstBuffer *buf = gst_sample_get_buffer (smpl);
-    GstCaps *caps = gst_sample_get_caps (smpl);
-    gchar *caps_str;
-
-    caps_str = caps ? gst_caps_to_string (caps) : g_strdup ("unknown");
-    ser =
-        g_strdup_printf ("<GstSample [%" G_GSIZE_FORMAT " bytes, type %s]>",
-        gst_buffer_get_size (buf), caps_str);
-    g_free (caps_str);
-  } else
-    ser = gst_value_serialize (value);
-
-  g_print ("%*s%s: %s\n", tab, " ", gst_tag_get_nick (tag_name), ser);
-  g_free (ser);
-}
-
-/* FIXME: this function is almost identical to print_tag() */
-static void
 print_tag_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data)
 {
@@ -366,23 +340,27 @@ print_toc_entry (gpointer data, gpointer user_data)
   GstTocEntry *entry = (GstTocEntry *) data;
   gint depth = GPOINTER_TO_INT (user_data);
   guint indent = MIN (GPOINTER_TO_UINT (user_data), MAX_INDENT);
+  GstTagList *tags;
+  GList *subentries;
   gint64 start, stop;
 
-  gst_toc_entry_get_start_stop (entry, &start, &stop);
+  gst_toc_entry_get_start_stop_times (entry, &start, &stop);
   g_print ("%*s%s: start: %" GST_TIME_FORMAT " stop: %" GST_TIME_FORMAT "\n",
-      depth, " ", gst_toc_entry_type_get_nick (entry->type),
+      depth, " ",
+      gst_toc_entry_type_get_nick (gst_toc_entry_get_entry_type (entry)),
       GST_TIME_ARGS (start), GST_TIME_ARGS (stop));
   indent += 2;
 
   /* print tags */
-  if (entry->type == GST_TOC_ENTRY_TYPE_CHAPTER)
+  tags = gst_toc_entry_get_tags (entry);
+  if (tags) {
     g_print ("%*sTags:\n", 2 * depth, " ");
-  gst_tag_list_foreach (entry->tags, print_tag_foreach,
-      GUINT_TO_POINTER (indent));
+    gst_tag_list_foreach (tags, print_tag_foreach, GUINT_TO_POINTER (indent));
+  }
 
   /* loop over sub-toc entries */
-  g_list_foreach (entry->subentries, print_toc_entry,
-      GUINT_TO_POINTER (indent));
+  subentries = gst_toc_entry_get_sub_entries (entry);
+  g_list_foreach (subentries, print_toc_entry, GUINT_TO_POINTER (indent));
 }
 
 static void
@@ -396,26 +374,15 @@ print_properties (GstDiscovererInfo * info, gint tab)
   g_print ("%*sSeekable: %s\n", tab + 1, " ",
       (gst_discoverer_info_get_seekable (info) ? "yes" : "no"));
   if ((tags = gst_discoverer_info_get_tags (info))) {
-    guint num_tags, i;
-
     g_print ("%*sTags: \n", tab + 1, " ");
-    num_tags = gst_tag_list_n_tags (tags);
-    for (i = 0; i < num_tags; ++i) {
-      const GValue *val;
-      const gchar *tag_name;
-      guint num_entries, j;
-
-      tag_name = gst_tag_list_nth_tag_name (tags, i);
-      num_entries = gst_tag_list_get_tag_size (tags, tag_name);
-      for (j = 0; j < num_entries; ++j) {
-        val = gst_tag_list_get_value_index (tags, tag_name, j);
-        print_tag (tag_name, val, tab + 5);
-      }
-    }
+    gst_tag_list_foreach (tags, print_tag_foreach, GUINT_TO_POINTER (tab + 2));
   }
   if (show_toc && (toc = gst_discoverer_info_get_toc (info))) {
+    GList *entries;
+
     g_print ("%*sTOC: \n", tab + 1, " ");
-    g_list_foreach (toc->entries, print_toc_entry, GUINT_TO_POINTER (tab + 5));
+    entries = gst_toc_get_entries (toc);
+    g_list_foreach (entries, print_toc_entry, GUINT_TO_POINTER (tab + 5));
   }
 }
 

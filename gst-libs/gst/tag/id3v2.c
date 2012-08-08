@@ -89,8 +89,6 @@ id3v2_read_synch_uint (const guint8 * data, guint size)
  * i.e. at least #GST_TAG_ID3V2_HEADER_SIZE (10) bytes;
  *
  * Returns: Size of tag, or 0 if header is invalid or too small.
- *
- * Since: 0.10.36
  */
 guint
 gst_tag_get_id3v2_tag_size (GstBuffer * buffer)
@@ -186,8 +184,6 @@ id3v2_ununsync_data (const guint8 * unsync_data, guint32 * size)
  *
  * Returns: A new #GstTagList with all tags that could be extracted from the
  *          given vorbiscomment buffer or NULL on error.
- *
- * Since: 0.10.36
  */
 GstTagList *
 gst_tag_list_from_id3v2_tag (GstBuffer * buffer)
@@ -602,15 +598,20 @@ id3v2_frames_to_tag_list (ID3TagsWorking * work, guint size)
   }
 
   /* Set day/month now if they were in a separate (obsolete) TDAT frame */
+  /* FIXME: we could extract the time as well now */
   if (work->pending_day != 0 && work->pending_month != 0) {
-    GDate *date = NULL;
+    GstDateTime *dt = NULL;
 
-    if (gst_tag_list_get_date (work->tags, GST_TAG_DATE, &date)) {
-      g_date_set_day (date, work->pending_day);
-      g_date_set_month (date, work->pending_month);
-      gst_tag_list_add (work->tags, GST_TAG_MERGE_REPLACE, GST_TAG_DATE,
-          date, NULL);
-      g_date_free (date);
+    if (gst_tag_list_get_date_time (work->tags, GST_TAG_DATE_TIME, &dt)) {
+      GstDateTime *dt2;
+
+      /* GstDateTime is immutable, so create new one and replace old one */
+      dt2 = gst_date_time_new_ymd (gst_date_time_get_year (dt),
+          work->pending_month, work->pending_day);
+      gst_tag_list_add (work->tags, GST_TAG_MERGE_REPLACE, GST_TAG_DATE_TIME,
+          dt2, NULL);
+      gst_date_time_unref (dt2);
+      gst_date_time_unref (dt);
     }
   }
 

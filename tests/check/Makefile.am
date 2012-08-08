@@ -77,7 +77,7 @@ check_subparse =
 endif
 
 if HAVE_ORC
-check_orc = orc/adder orc/audioconvert orc/volume orc/videoscale orc/videotestsrc
+check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videoscale orc/videotestsrc
 else
 check_orc =
 endif
@@ -130,6 +130,7 @@ check_PROGRAMS = \
 	elements/playbin-compressed \
 	$(check_pango)              \
 	$(check_subparse)           \
+	elements/videoconvert       \
 	elements/videorate          \
 	elements/videoscale         \
 	elements/videotestsrc       \
@@ -337,6 +338,9 @@ elements_encodebin_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(AM_C
 elements_subparse_LDADD =  $(LDADD)
 elements_subparse_CFLAGS = $(CFLAGS) $(AM_CFLAGS)
 
+elements_adder_LDADD = $(GST_BASE_LIBS) $(LDADD)
+elements_adder_CFLAGS = $(GST_BASE_CFLAGS) $(AM_CFLAGS)
+
 elements_audioresample_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
 	$(GST_BASE_CFLAGS) \
@@ -384,6 +388,14 @@ elements_vorbistag_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(VORBIS_CFLAGS) \
 	$(CFLAGS)
+
+elements_videoconvert_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(GST_BASE_CFLAGS) \
+	$(AM_CFLAGS)
+elements_videoconvert_LDADD = \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(GST_BASE_LIBS) $(LDADD)
 
 elements_videoscale_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
@@ -439,6 +451,12 @@ pipelines_simple_launch_lines_LDADD = \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
 
+orc_video_CFLAGS = $(ORC_CFLAGS)
+orc_video_LDADD = $(ORC_LIBS) -lorc-test-0.4
+nodist_orc_video_SOURCES = orc/video.c
+orc_audio_CFLAGS = $(ORC_CFLAGS)
+orc_audio_LDADD = $(ORC_LIBS) -lorc-test-0.4
+nodist_orc_audio_SOURCES = orc/audio.c
 orc_adder_CFLAGS = $(ORC_CFLAGS)
 orc_adder_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_adder_SOURCES = orc/adder.c
@@ -454,6 +472,14 @@ nodist_orc_videoscale_SOURCES = orc/videoscale.c
 orc_videotestsrc_CFLAGS = $(ORC_CFLAGS)
 orc_videotestsrc_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_videotestsrc_SOURCES = orc/videotestsrc.c
+
+orc/video.c: $(top_srcdir)/gst-libs/gst/video/video-orc.orc
+	$(MKDIR_P) orc/
+	$(ORCC) --test -o $@ $<
+
+orc/audio.c: $(top_srcdir)/gst-libs/gst/audio/gstaudiopack.orc
+	$(MKDIR_P) orc/
+	$(ORCC) --test -o $@ $<
 
 orc/adder.c: $(top_srcdir)/gst/adder/gstadderorc.orc
 	$(MKDIR_P) orc/

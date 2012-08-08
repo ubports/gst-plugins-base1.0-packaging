@@ -112,10 +112,22 @@ enum
 #undef GST_VIDEO_SIZE_RANGE
 #define GST_VIDEO_SIZE_RANGE "(int) [ 1, 32767]"
 
+/* FIXME: add v210 support
+ * FIXME: add v216 support
+ * FIXME: add NV21 support
+ * FIXME: add UYVP support
+ * FIXME: add A420 support
+ * FIXME: add YUV9 support
+ * FIXME: add YVU9 support
+ * FIXME: add IYU1 support
+ * FIXME: add r210 support
+ */
+
+/* FIXME: if we can do NV12, NV21 shouldn't be so hard */
 #define GST_VIDEO_FORMATS "{ I420, YV12, YUY2, UYVY, AYUV, RGBx, " \
     "BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, " \
     "BGR, Y41B, Y42B, YVYU, Y444, GRAY8, GRAY16_BE, GRAY16_LE, " \
-    "v308, Y800, Y16, RGB16, RGB15, ARGB64, AYUV64, NV12 } "
+    "v308, RGB16, RGB15, ARGB64, AYUV64, NV12 } "
 
 
 static GstStaticCaps gst_video_scale_format_caps =
@@ -398,8 +410,8 @@ get_formats_filter (GstVideoScaleMethod method)
           GST_STATIC_CAPS ("video/x-raw,"
           "format = (string) { RGBx, xRGB, BGRx, xBGR, RGBA, "
           "ARGB, BGRA, ABGR, AYUV, ARGB64, AYUV64, "
-          "RGB, BGR, v308, YUY2, YVYU, UYVY, Y800, "
-          "GRAY8, GRAY16_LE, GRAY16_BE, Y16, I420, YV12, "
+          "RGB, BGR, v308, YUY2, YVYU, UYVY, "
+          "GRAY8, GRAY16_LE, GRAY16_BE, I420, YV12, "
           "Y444, Y42B, Y41B, RGB16, RGB15 }");
       return gst_static_caps_get (&fourtap_filter);
     }
@@ -531,7 +543,7 @@ gst_video_scale_set_info (GstVideoFilter * filter, GstCaps * in,
 
   if (videoscale->tmp_buf)
     g_free (videoscale->tmp_buf);
-  videoscale->tmp_buf = g_malloc (out_info->width * 8 * 4);
+  videoscale->tmp_buf = g_malloc (out_info->width * sizeof (guint64) * 4);
 
   if (in_info->width == out_info->width && in_info->height == out_info->height) {
     gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);

@@ -41,7 +41,6 @@
 #include &lt;gst/video/video-overlay-composition.h&gt;
 
                     <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition">GstVideoOverlayComposition</a>;
-                    <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionClass" title="GstVideoOverlayCompositionClass">GstVideoOverlayCompositionClass</a>;
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-new" title="gst_video_overlay_composition_new ()">gst_video_overlay_composition_new</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-ref" title="gst_video_overlay_composition_ref ()">gst_video_overlay_composition_ref</a>
@@ -62,22 +61,13 @@
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()">gst_video_overlay_composition_make_writable</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-blend" title="gst_video_overlay_composition_blend ()">gst_video_overlay_composition_blend</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *video_buf</code></em>);
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *video_buf</code></em>);
 
-<a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-buffer-get-overlay-composition" title="gst_video_buffer_get_overlay_composition ()">gst_video_buffer_get_overlay_composition</a>
-                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-buffer-set-overlay-composition" title="gst_video_buffer_set_overlay_composition ()">gst_video_buffer_set_overlay_composition</a>
-                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);
 
 enum                <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags">GstVideoOverlayFormatFlags</a>;
                     <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle">GstVideoOverlayRectangle</a>;
-                    <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangleClass" title="GstVideoOverlayRectangleClass">GstVideoOverlayRectangleClass</a>;
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="returnvalue">GstVideoOverlayRectangle</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-new-argb" title="gst_video_overlay_rectangle_new_argb ()">gst_video_overlay_rectangle_new_argb</a>
                                                         (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *pixels</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> stride</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> render_x</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> render_y</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> render_width</code></em>,
@@ -88,13 +78,9 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideooverlayc
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-unref" title="gst_video_overlay_rectangle_unref ()">gst_video_overlay_rectangle_unref</a>   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *comp</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-argb" title="gst_video_overlay_rectangle_get_pixels_argb ()">gst_video_overlay_rectangle_get_pixels_argb</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *stride</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-unscaled-argb" title="gst_video_overlay_rectangle_get_pixels_unscaled_argb ()">gst_video_overlay_rectangle_get_pixels_unscaled_argb</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *stride</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()">gst_video_overlay_rectangle_get_render_rectangle</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
@@ -121,7 +107,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideooverlayc
 <p>
 </p>
 <div class="refsect2">
-<a name="idp27926912"></a><p>
+<a name="idp25606864"></a><p>
 Functions to create and handle overlay compositions on video buffers.
 </p>
 <p>
@@ -161,12 +147,6 @@ one place.
 An opaque video overlay composition object. A composition contains
 multiple overlay rectangles.
 </p>
-<p class="since">Since 0.10.36</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstVideoOverlayCompositionClass"></a><h3>GstVideoOverlayCompositionClass</h3>
-<pre class="programlisting">typedef struct _GstVideoOverlayCompositionClass GstVideoOverlayCompositionClass;</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -194,7 +174,6 @@ composition. <span class="annotation">[<acronym title="Don't free data after the
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -224,7 +203,6 @@ a composition and its rectangles can be modified.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -242,7 +220,6 @@ composition will be freed.
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -270,7 +247,6 @@ composition. <span class="annotation">[<acronym title="Don't free data after the
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -294,7 +270,6 @@ Returns the number of <a class="link" href="gst-plugins-base-libs-gstvideooverla
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -327,7 +302,6 @@ if needed. <span class="annotation">[<acronym title="Don't free data after the c
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -355,7 +329,6 @@ a composition).
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -385,7 +358,6 @@ to <em class="parameter"><code>comp</code></em>. <span class="annotation">[<acro
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -415,19 +387,16 @@ equivalent to <em class="parameter"><code>comp</code></em>. <span class="annotat
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-video-overlay-composition-blend"></a><h3>gst_video_overlay_composition_blend ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_overlay_composition_blend (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *video_buf</code></em>);</pre>
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *video_buf</code></em>);</pre>
 <p>
 Blends the overlay rectangles in <em class="parameter"><code>comp</code></em> on top of the raw video data
-contained in <em class="parameter"><code>video_buf</code></em>. The data in <em class="parameter"><code>video_buf</code></em> must be writable. If
-needed, use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#gst-buffer-make-writable"><code class="function">gst_buffer_make_writable()</code></a> before calling this function to
-ensure a buffer is writable. <em class="parameter"><code>video_buf</code></em> must also have valid raw video
-caps set on it.
+contained in <em class="parameter"><code>video_buf</code></em>. The data in <em class="parameter"><code>video_buf</code></em> must be writable and
+mapped appropriately.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -439,70 +408,10 @@ caps set on it.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>video_buf</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> containing raw video data in a supported format</td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> containing raw video data in a supported format</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-video-buffer-get-overlay-composition"></a><h3>gst_video_buffer_get_overlay_composition ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * gst_video_buffer_get_overlay_composition
-                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>);</pre>
-<p>
-Get the overlay composition that has previously been attached to a buffer
-with <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-buffer-get-overlay-composition" title="gst_video_buffer_get_overlay_composition ()"><code class="function">gst_video_buffer_get_overlay_composition()</code></a>, usually by another element
-upstream.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> attached to
-this buffer, or NULL. Does not return a reference to the composition,
-caller must obtain her own ref via <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-ref" title="gst_video_overlay_composition_ref ()"><code class="function">gst_video_overlay_composition_ref()</code></a>
-if needed. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.36</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-video-buffer-set-overlay-composition"></a><h3>gst_video_buffer_set_overlay_composition ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_buffer_set_overlay_composition
-                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);</pre>
-<p>
-Sets an overlay composition on a buffer. The buffer will obtain its own
-reference to the composition, meaning this function does not take ownership
-of <em class="parameter"><code>comp</code></em>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a>, or NULL to clear a
-previously-set composition. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -526,17 +435,16 @@ Overlay format flags.
 </tr>
 <tr>
 <td><p><a name="GST-VIDEO-OVERLAY-FORMAT-FLAG-PREMULTIPLIED-ALPHA:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_OVERLAY_FORMAT_FLAG_PREMULTIPLIED_ALPHA</code></span></p></td>
-<td>RGB are premultiplied by A/255. Since: 0.10.37
+<td>RGB are premultiplied by A/255.
 </td>
 </tr>
 <tr>
 <td><p><a name="GST-VIDEO-OVERLAY-FORMAT-FLAG-GLOBAL-ALPHA:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_OVERLAY_FORMAT_FLAG_GLOBAL_ALPHA</code></span></p></td>
-<td>a global-alpha value != 1 is set. Since: 0.10.37
+<td>a global-alpha value != 1 is set.
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -546,21 +454,12 @@ Overlay format flags.
 An opaque video overlay rectangle object. A rectangle contains a single
 overlay rectangle which can be added to a composition.
 </p>
-<p class="since">Since 0.10.36</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstVideoOverlayRectangleClass"></a><h3>GstVideoOverlayRectangleClass</h3>
-<pre class="programlisting">typedef struct _GstVideoOverlayRectangleClass GstVideoOverlayRectangleClass;</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-video-overlay-rectangle-new-argb"></a><h3>gst_video_overlay_rectangle_new_argb ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="returnvalue">GstVideoOverlayRectangle</span></a> * gst_video_overlay_rectangle_new_argb
                                                         (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *pixels</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> stride</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> render_x</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> render_y</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> render_width</code></em>,
@@ -576,6 +475,7 @@ the blue component value and the highest 8 bits contain the alpha
 component value. Unless specified in the flags, the RGB values are
 non-premultiplied. This is the format that is used by most hardware,
 and also many rendering libraries such as Cairo, for example.
+The pixel data buffer must have <span class="type">GstVideoMeta</span> set.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -584,20 +484,6 @@ and also many rendering libraries such as Cairo, for example.
 <td><p><span class="term"><em class="parameter"><code>pixels</code></em> :</span></p></td>
 <td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> pointing to the pixel memory. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>the width of the rectangle in <em class="parameter"><code>pixels</code></em>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>the height of the rectangle in <em class="parameter"><code>pixels</code></em>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
-<td>the stride of the rectangle in <em class="parameter"><code>pixels</code></em> in bytes (&gt;= 4*width)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>render_x</code></em> :</span></p></td>
@@ -629,7 +515,6 @@ overlay rectangle should be rendered to</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -661,7 +546,6 @@ and not know that that's the case).
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -679,14 +563,12 @@ rectangle will be freed.
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-video-overlay-rectangle-get-pixels-argb"></a><h3>gst_video_overlay_rectangle_get_pixels_argb ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_overlay_rectangle_get_pixels_argb
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *stride</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -694,12 +576,6 @@ rectangle will be freed.
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
-<td>address of guint variable where to store the
-row stride of the ARGB pixel data in the buffer. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -713,7 +589,7 @@ global_alpha is applied internally before returning the pixel-data.</td>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> holding the ARGB pixel data with
-row stride <em class="parameter"><code>stride</code></em> and width and height of the render dimensions as per
+width and height of the render dimensions as per
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>. This function does
 not return a reference, the caller should obtain a reference of her own
 with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#gst-buffer-ref"><code class="function">gst_buffer_ref()</code></a> if needed. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
@@ -721,16 +597,12 @@ with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-video-overlay-rectangle-get-pixels-unscaled-argb"></a><h3>gst_video_overlay_rectangle_get_pixels_unscaled_argb ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_overlay_rectangle_get_pixels_unscaled_argb
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *width</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *height</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *stride</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
 <p>
 Retrieves the pixel data as it is. This is useful if the caller can
@@ -747,24 +619,6 @@ need to be scaled to the render dimensions, which can be retrieved using
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>address where to store the width of the unscaled
-rectangle in pixels. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>address where to store the height of the unscaled
-rectangle in pixels. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
-<td>address of guint variable where to store the row
-stride of the ARGB pixel data in the buffer. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
-</td>
-</tr>
-<tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
 <td>flags.
 If a global_alpha value != 1 is set for the rectangle, the caller
@@ -775,13 +629,12 @@ global_alpha is applied internally before returning the pixel-data.</td>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> holding the ARGB pixel data with
-row stride <em class="parameter"><code>stride</code></em>. This function does not return a reference, the caller
+<span class="type">GstVideoMeta</span> set. This function does not return a reference, the caller
 should obtain a reference of her own with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#gst-buffer-ref"><code class="function">gst_buffer_ref()</code></a> if needed. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -830,7 +683,6 @@ rectangle on the video.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -869,7 +721,6 @@ pixel-data.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -918,7 +769,6 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -947,7 +797,6 @@ to <em class="parameter"><code>rectangle</code></em>. <span class="annotation">[
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -975,7 +824,6 @@ it is stored in, to avoid unnecessary conversion.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.37</p>
 </div>
 </div>
 </div>

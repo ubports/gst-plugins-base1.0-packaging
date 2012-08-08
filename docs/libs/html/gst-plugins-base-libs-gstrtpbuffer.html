@@ -62,9 +62,6 @@
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-calc-payload-len" title="gst_rtp_buffer_calc_payload_len ()">gst_rtp_buffer_calc_payload_len</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> packet_len</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> pad_len</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> csrc_count</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-validate" title="gst_rtp_buffer_validate ()">gst_rtp_buffer_validate</a>             (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-validate-data" title="gst_rtp_buffer_validate_data ()">gst_rtp_buffer_validate_data</a>        (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-set-packet-len" title="gst_rtp_buffer_set_packet_len ()">gst_rtp_buffer_set_packet_len</a>       (<em class="parameter"><code><span class="type">GstRTPBuffer</span> *rtp</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-get-packet-len" title="gst_rtp_buffer_get_packet_len ()">gst_rtp_buffer_get_packet_len</a>       (<em class="parameter"><code><span class="type">GstRTPBuffer</span> *rtp</code></em>);
@@ -151,7 +148,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16433216"></a><p>
+<a name="idp16379968"></a><p>
 The GstRTPBuffer helper functions makes it easy to parse and create regular 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> objects that contain RTP payloads. These buffers are typically of
 'application/x-rtp' <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
@@ -224,7 +221,8 @@ function transfers ownership of <em class="parameter"><code>data</code></em> to 
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>data for the new buffer</td>
+<td>data for the new buffer. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=len][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
@@ -252,7 +250,9 @@ is freed.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>data for the new buffer</td>
+<td>data for the new
+buffer. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=len][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
@@ -415,59 +415,6 @@ a padding of <em class="parameter"><code>pad_len</code></em> and a <em class="pa
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The length of the payload of an RTP packet  with given parameters.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtp-buffer-validate"></a><h3>gst_rtp_buffer_validate ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtp_buffer_validate             (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
-<p>
-Check if the data pointed to by <em class="parameter"><code>buffer</code></em> is a valid RTP packet using
-<a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-validate-data" title="gst_rtp_buffer_validate_data ()"><code class="function">gst_rtp_buffer_validate_data()</code></a>.
-Use this function to validate a packet before using the other functions in
-this module.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>the buffer to validate</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>TRUE if <em class="parameter"><code>buffer</code></em> is a valid RTP packet.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtp-buffer-validate-data"></a><h3>gst_rtp_buffer_validate_data ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtp_buffer_validate_data        (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>);</pre>
-<p>
-Check if the <em class="parameter"><code>data</code></em> and <em class="parameter"><code>size</code></em> point to the data of a valid RTP packet.
-This function checks the length, version and padding of the packet data.
-Use this function to validate a packet before using the other functions in
-this module.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>the data to validate</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
-<td>the length of <em class="parameter"><code>data</code></em> to validate</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>TRUE if the data points to a valid RTP packet.</td>
 </tr>
 </tbody>
 </table></div>
@@ -718,15 +665,18 @@ with <em class="parameter"><code>bits</code></em>, <em class="parameter"><code>d
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bits</code></em> :</span></p></td>
-<td>location for result bits</td>
+<td>location for result bits. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>location for data</td>
+<td>location for data. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>wordlen</code></em> :</span></p></td>
-<td>location for length of <em class="parameter"><code>data</code></em> in 32 bits words</td>
+<td>location for length of <em class="parameter"><code>data</code></em> in 32 bits words. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -734,7 +684,6 @@ with <em class="parameter"><code>bits</code></em>, <em class="parameter"><code>d
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.15</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1082,7 +1031,6 @@ If <em class="parameter"><code>len</code></em> is -1 the total payload starting 
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.10</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1122,7 +1070,9 @@ as a reference to <em class="parameter"><code>buffer</code></em> is held.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A pointer to the payload data in <em class="parameter"><code>buffer</code></em>.</td>
+<td>A pointer
+to the payload data in <em class="parameter"><code>buffer</code></em>. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1148,7 +1098,6 @@ the clock-rate is undefined.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.13</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1177,7 +1126,6 @@ are equal or a positive value if <em class="parameter"><code>seqnum1</code></em>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.15</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1209,7 +1157,6 @@ value even in the case where there is a timestamp wraparound.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.15</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1244,7 +1191,6 @@ the extension, excluding the extension header ( therefore zero is a valid length
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.18</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1276,11 +1222,13 @@ return the nth extension with the requested id.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>location for data</td>
+<td>location for data. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
-<td>the size of the data in bytes</td>
+<td>the size of the data in bytes. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1288,7 +1236,6 @@ return the nth extension with the requested id.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1313,7 +1260,8 @@ return the nth extension with the requested id.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appbits</code></em> :</span></p></td>
-<td>Application specific bits</td>
+<td>Application specific bits. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
@@ -1325,11 +1273,13 @@ return the nth extension with the requested id.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>location for data</td>
+<td>location for data. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
-<td>the size of the data in bytes</td>
+<td>the size of the data in bytes. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1337,7 +1287,6 @@ return the nth extension with the requested id.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1369,7 +1318,8 @@ a two bytes header as described in RFC 5285. In that case, use
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>location for data</td>
+<td>location for data. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
@@ -1382,7 +1332,6 @@ a two bytes header as described in RFC 5285. In that case, use
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1419,7 +1368,8 @@ a one byte header as described in RFC 5285. In that case, use
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>location for data</td>
+<td>location for data. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
@@ -1432,7 +1382,6 @@ a one byte header as described in RFC 5285. In that case, use
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 </div>
 <div class="refsect1">

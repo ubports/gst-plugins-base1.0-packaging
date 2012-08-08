@@ -55,6 +55,9 @@ struct              <a class="link" href="gst-plugins-base-libs-gstaudioencoder.
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>       <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-finish-frame" title="gst_audio_encoder_finish_frame ()">gst_audio_encoder_finish_frame</a>      (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> samples</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-allocate-output-buffer" title="gst_audio_encoder_allocate_output_buffer ()">gst_audio_encoder_allocate_output_buffer</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *encoder</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> size</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="returnvalue">GstAudioInfo</span></a> *      <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-audio-info" title="gst_audio_encoder_get_audio_info ()">gst_audio_encoder_get_audio_info</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-drainable" title="gst_audio_encoder_get_drainable ()">gst_audio_encoder_get_drainable</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-frame-max" title="gst_audio_encoder_get_frame_max ()">gst_audio_encoder_get_frame_max</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);
@@ -73,7 +76,8 @@ struct              <a class="link" href="gst-plugins-base-libs-gstaudioencoder.
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);
 <span class="returnvalue">gint64</span>              <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-tolerance" title="gst_audio_encoder_get_tolerance ()">gst_audio_encoder_get_tolerance</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-proxy-getcaps" title="gst_audio_encoder_proxy_getcaps ()">gst_audio_encoder_proxy_getcaps</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *filter</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-drainable" title="gst_audio_encoder_set_drainable ()">gst_audio_encoder_set_drainable</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-frame-max" title="gst_audio_encoder_set_frame_max ()">gst_audio_encoder_set_frame_max</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>,
@@ -266,7 +270,6 @@ Things that subclass need to take care of:
 <p>
 The opaque <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> data structure.
 </p>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -302,6 +305,11 @@ The opaque <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstA
   gboolean      (*open)               (GstAudioEncoder *enc);
 
   gboolean      (*close)              (GstAudioEncoder *enc);
+
+  gboolean      (*decide_allocation)  (GstAudioEncoder *enc, GstQuery *query);
+
+  gboolean      (*propose_allocation) (GstAudioEncoder * enc,
+                                       GstQuery * query);
 };
 </pre>
 <p>
@@ -378,17 +386,28 @@ applied to sink template caps.</td>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.open"></a>open</code></em> ()</span></p></td>
 <td>Optional.
 Called when the element changes to GST_STATE_READY.
-Allows opening external resources. Since: 0.10.37.</td>
+Allows opening external resources.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.close"></a>close</code></em> ()</span></p></td>
 <td>Optional.
 Called when the element changes to GST_STATE_NULL.
-Allows closing external resources. Since: 0.10.37.</td>
+Allows closing external resources.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.decide-allocation"></a>decide_allocation</code></em> ()</span></p></td>
+<td>Optional.
+Setup the allocation parameters for allocating output
+buffers. The passed in query contains the result of the
+downstream allocation query.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.propose-allocation"></a>propose_allocation</code></em> ()</span></p></td>
+<td>Optional.
+Propose buffer allocation parameters for upstream elements.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -398,7 +417,6 @@ Allows closing external resources. Since: 0.10.37.</td>
 <p>
 the name of the templates for the sink pad
 </p>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -415,7 +433,6 @@ Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc
 <td>audio encoder instance</td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -425,7 +442,6 @@ Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc
 <p>
 the name of the templates for the source pad
 </p>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -442,7 +458,6 @@ Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/d
 <td>audio encoder instance</td>
 </tr></tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -486,7 +501,36 @@ may be invalidated by a call to this function.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-encoder-allocate-output-buffer"></a><h3>gst_audio_encoder_allocate_output_buffer ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_audio_encoder_allocate_output_buffer
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *encoder</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> size</code></em>);</pre>
+<p>
+Helper function that allocates a buffer to hold an encoded audio frame
+for <em class="parameter"><code>enc</code></em>'s current output format.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>size of the buffer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>allocated buffer. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -506,7 +550,6 @@ may be invalidated by a call to this function.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -530,7 +573,6 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -550,7 +592,6 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -567,17 +608,30 @@ MT safe.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>currently maximum requested samples per frame</td>
+<td>currently minimum requested samples per frame</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-encoder-get-frame-samples-max"></a><h3>gst_audio_encoder_get_frame_samples_max ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_encoder_get_frame_samples_max
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>currently maximum requested samples per frame</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -601,7 +655,6 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -638,7 +691,6 @@ latency.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -681,7 +733,6 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -706,7 +757,6 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -730,13 +780,13 @@ MT safe.</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-encoder-proxy-getcaps"></a><h3>gst_audio_encoder_proxy_getcaps ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           gst_audio_encoder_proxy_getcaps     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>,
-                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *filter</code></em>);</pre>
 <p>
 Returns caps that express <em class="parameter"><code>caps</code></em> (or sink template caps if <em class="parameter"><code>caps</code></em> == NULL)
 restricted to channel/rate combinations supported by downstream elements
@@ -755,12 +805,15 @@ restricted to channel/rate combinations supported by downstream elements
 <td>initial caps</td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>filter</code></em> :</span></p></td>
+<td>filter caps</td>
+</tr>
+<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> owned by caller</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -790,7 +843,6 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -815,7 +867,6 @@ Requires <em class="parameter"><code>frame_samples_min</code></em> and <em class
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -845,7 +896,6 @@ must be called with the same number.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -875,7 +925,6 @@ must be called with the same number.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -905,7 +954,6 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -925,13 +973,14 @@ Set the codec headers to be sent downstream whenever requested.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>headers</code></em> :</span></p></td>
-<td>a list of <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> containing the codec header. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>a list of
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> containing the codec header. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gst.Buffer]</span>
 </td>
 </tr>
 </tbody>
@@ -964,7 +1013,6 @@ Sets encoder latency.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -988,7 +1036,6 @@ Sets encoder lookahead (in units of input rate samples)
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1015,7 +1062,6 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1043,7 +1089,6 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1070,7 +1115,6 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.36</p>
 </div>
 </div>
 <div class="refsect1">

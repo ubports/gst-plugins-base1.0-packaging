@@ -28,7 +28,7 @@
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch -v videotestsrc ! video/x-raw,format=\(fourcc\)YUY2 ! videoconvert ! ximagesink
+ * gst-launch -v videotestsrc ! video/x-raw,format=\(string\)YUY2 ! videoconvert ! ximagesink
  * ]|
  * </refsect2>
  */
@@ -160,7 +160,7 @@ gst_video_convert_fixate_caps (GstBaseTransform * trans,
 
 static gboolean
 gst_video_convert_filter_meta (GstBaseTransform * trans, GstQuery * query,
-    GType api)
+    GType api, const GstStructure * params)
 {
   /* propose all metadata upstream */
   return TRUE;

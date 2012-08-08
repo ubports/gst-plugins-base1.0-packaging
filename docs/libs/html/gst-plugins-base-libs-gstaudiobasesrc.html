@@ -229,7 +229,8 @@ buffer (see <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gs
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The new ringbuffer of <em class="parameter"><code>src</code></em>.</td>
+<td>The new ringbuffer of <em class="parameter"><code>src</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -259,7 +260,6 @@ of <em class="parameter"><code>src</code></em>. If <em class="parameter"><code>p
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.16</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -285,7 +285,6 @@ gst_audio_base_src_set_provide_clock.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.16</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -309,7 +308,6 @@ Get the current slave method used by <em class="parameter"><code>src</code></em>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.20</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -333,7 +331,6 @@ Controls how clock slaving will be performed in <em class="parameter"><code>src<
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.20</p>
 </div>
 </div>
 <div class="refsect1">
@@ -346,7 +343,6 @@ Actual configured size of audio buffer in microseconds.
 </p>
 <p>Allowed values: &gt;= -1</p>
 <p>Default value: -1</p>
-<p class="since">Since 0.10.20</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -357,7 +353,6 @@ Actual configured audio latency in microseconds.
 </p>
 <p>Allowed values: &gt;= -1</p>
 <p>Default value: -1</p>
-<p class="since">Since 0.10.20</p>
 </div>
 <hr>
 <div class="refsect2">

@@ -75,7 +75,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlay.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp25488800"></a><p>
+<a name="idp25504400"></a><p>
 The <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface is used for 2 main purposes :
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -143,7 +143,8 @@ immediately. Here is an example on how to do that correctly:
 28
 29
 30
-31</pre></td>
+31
+32</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="gtkdoc kwb">static</span> GstBusSyncReply
 <span class="function">create_window</span> <span class="gtkdoc opt">(</span>GstBus <span class="gtkdoc opt">*</span> bus<span class="gtkdoc opt">,</span> GstMessage <span class="gtkdoc opt">*</span> message<span class="gtkdoc opt">,</span> GstPipeline <span class="gtkdoc opt">*</span> pipeline<span class="gtkdoc opt">)</span>
 <span class="gtkdoc opt">{</span>
@@ -159,7 +160,7 @@ immediately. Here is an example on how to do that correctly:
 
  <span class="function">XSync</span> <span class="gtkdoc opt">(</span>disp<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
 
- <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-SRC:CAPS">GST_MESSAGE_SRC</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">)),</span>
+ <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-SRC:CAPS">GST_MESSAGE_SRC</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">)),</span>
      win<span class="gtkdoc opt">);</span>
 
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-unref">gst_message_unref</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">);</span>
@@ -172,7 +173,8 @@ immediately. Here is an example on how to do that correctly:
 <span class="gtkdoc opt">{</span>
 <span class="gtkdoc opt">...</span>
  bus <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPipeline.html#gst-pipeline-get-bus">gst_pipeline_get_bus</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_PIPELINE</span> <span class="gtkdoc opt">(</span>pipeline<span class="gtkdoc opt">));</span>
- <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html#gst-bus-set-sync-handler">gst_bus_set_sync_handler</a></span> <span class="gtkdoc opt">(</span>bus<span class="gtkdoc opt">, (</span>GstBusSyncHandler<span class="gtkdoc opt">)</span> create_window<span class="gtkdoc opt">,</span> pipeline<span class="gtkdoc opt">);</span>
+ <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html#gst-bus-set-sync-handler">gst_bus_set_sync_handler</a></span> <span class="gtkdoc opt">(</span>bus<span class="gtkdoc opt">, (</span>GstBusSyncHandler<span class="gtkdoc opt">)</span> create_window<span class="gtkdoc opt">,</span> pipeline<span class="gtkdoc opt">,</span>
+        NULL<span class="gtkdoc opt">);</span>
 <span class="gtkdoc opt">...</span>
 <span class="gtkdoc opt">}</span></pre></td>
       </tr>
@@ -187,7 +189,7 @@ immediately. Here is an example on how to do that correctly:
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp24933824"></a><h3>Two basic usage scenarios</h3>
+<a name="idp25514512"></a><h3>Two basic usage scenarios</h3>
 <p>
 There are two basic usage scenarios: in the simplest case, the application
 knows exactly what particular element is used for video output, which is
@@ -221,10 +223,10 @@ prepare-window-handle message is handled, because most GUI toolkits and
 windowing systems are not thread-safe at all and a lot of care would be
 required to co-ordinate the toolkit and window system calls of the
 different threads (Gtk+ users please note: prior to Gtk+ 2.18
-<a href="http://library.gnome.org/devel/gdk3/gdk-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
+<a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
 within the bus sync handler; this macro was changed to a function call in
 Gtk+ 2.18 and later, which is likely to cause problems when called from a
-sync handler; see below for a better approach without <a href="http://library.gnome.org/devel/gdk3/gdk-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
+sync handler; see below for a better approach without <a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
 used in the callback).
 </p>
 </div>
@@ -232,7 +234,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp21545392"></a><h3>GstVideoOverlay and Gtk+</h3>
+<a name="idp30596336"></a><h3>GstVideoOverlay and Gtk+</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -333,7 +335,8 @@ used in the callback).
 92
 93
 94
-95</pre></td>
+95
+96</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc">#include &lt;gst/video/xoverlay.h&gt;</span>
 <span class="gtkdoc ppc">#include &lt;gtk/gtk.h&gt;</span>
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
@@ -374,13 +377,13 @@ used in the callback).
   <span class="gtkdoc slc">// drawing onto the parent widget.</span>
   <span class="gtkdoc slc">// This is here just for pedagogical purposes, GDK_WINDOW_XID will call</span>
   <span class="gtkdoc slc">// it as well in newer Gtk versions</span>
-  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
+  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://developer.gnome.org/devel/gdk/gdk3-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
     <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Message-Logging.html#g-error">g_error</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Couldn't create native window needed for GstVideoOverlay!&quot;</span><span class="gtkdoc opt">);</span>
 <span class="gtkdoc ppc">#endif</span>
 
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
   <span class="gtkdoc opt">{</span>
-    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">=</span> xid<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
@@ -423,7 +426,8 @@ used in the callback).
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// set up sync handler for setting the xid once the pipeline is started</span>
   bus <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPipeline.html#gst-pipeline-get-bus">gst_pipeline_get_bus</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_PIPELINE</span> <span class="gtkdoc opt">(</span>pipeline<span class="gtkdoc opt">));</span>
-  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html#gst-bus-set-sync-handler">gst_bus_set_sync_handler</a></span> <span class="gtkdoc opt">(</span>bus<span class="gtkdoc opt">, (</span>GstBusSyncHandler<span class="gtkdoc opt">)</span> bus_sync_handler<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html#gst-bus-set-sync-handler">gst_bus_set_sync_handler</a></span> <span class="gtkdoc opt">(</span>bus<span class="gtkdoc opt">, (</span>GstBusSyncHandler<span class="gtkdoc opt">)</span> bus_sync_handler<span class="gtkdoc opt">,</span> NULL<span class="gtkdoc opt">,</span>
+      NULL<span class="gtkdoc opt">);</span>
   <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html#gst-object-unref">gst_object_unref</a></span> <span class="gtkdoc opt">(</span>bus<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-set-state">gst_element_set_state</a></span> <span class="gtkdoc opt">(</span>pipeline<span class="gtkdoc opt">,</span> GST_STATE_PLAYING<span class="gtkdoc opt">);</span>
@@ -441,7 +445,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp27827456"></a><h3>GstVideoOverlay and Qt</h3>
+<a name="idp30601520"></a><h3>GstVideoOverlay and Qt</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -533,7 +537,7 @@ used in the callback).
   window<span class="gtkdoc opt">.</span><span class="function">show</span><span class="gtkdoc opt">();</span>
 
   WId xwinid <span class="gtkdoc opt">=</span> window<span class="gtkdoc opt">.</span><span class="function">winId</span><span class="gtkdoc opt">();</span>
-  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span>sink<span class="gtkdoc opt">),</span> xwinid<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="../gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span>sink<span class="gtkdoc opt">),</span> xwinid<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// run the pipeline</span>
 
@@ -670,7 +674,6 @@ tell the overlay to stop using that window and create an internal one.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -735,7 +738,6 @@ from the XOverlay.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.12</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -790,7 +792,6 @@ do not support subwindows.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.29</p>
 </div>
 </div>
 </div>

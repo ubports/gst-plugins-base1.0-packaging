@@ -91,7 +91,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gsttag.html#GstT
 <p>
 </p>
 <div class="refsect2">
-<a name="idp20414752"></a><p>
+<a name="idp15811872"></a><p>
 Contains additional standardized GStreamer tag definitions for plugins
 and applications, and functions to register them with the GStreamer
 tag system.
@@ -223,7 +223,6 @@ Annodex CMML stream element tag
 <p>
 Shutter speed used when capturing an image, in seconds. (fraction)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -237,7 +236,6 @@ Focal ratio (f-number) used when capturing an image. (double)
 The value stored is the denominator of the focal ratio (f-number).
 For example, if this tag value is 2, the focal ratio is f/2.
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -247,7 +245,6 @@ For example, if this tag value is 2, the focal ratio is f/2.
 <p>
 Focal length used when capturing an image, in mm. (double)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -257,7 +254,6 @@ Focal length used when capturing an image, in mm. (double)
 <p>
 Digital zoom ratio used when capturing an image. (double)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -267,7 +263,6 @@ Digital zoom ratio used when capturing an image. (double)
 <p>
 ISO speed used when capturing an image. (integer)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -289,7 +284,6 @@ The allowed values are:
   "portrait" - closeup, leaving background out of focus
   "landscape" - landscape photos, background in focus
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -305,7 +299,6 @@ The allowed values are:
   "manual-exposure"
   "auto-bracket"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -322,7 +315,6 @@ The allowed values are:
   "portrait"
   "night-scene"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -340,7 +332,6 @@ The allowed values are:
   "low-gain-down"
   "high-gain-down"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -361,7 +352,6 @@ The allowed values are:
   "fluorescent h" (newer daylight-calibrated fluorescents)
   "flash"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -377,7 +367,6 @@ The allowed values are:
  "soft"
  "hard"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -393,7 +382,6 @@ The allowed values are:
  "low-saturation"
  "high-saturation"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -409,7 +397,6 @@ The allowed values are:
  "soft"
  "hard"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -423,7 +410,6 @@ If flash was fired during the capture of an image. (boolean)
 Note that if this tag isn't present, it should not be assumed that
 the flash did not fire. It should be treated as unknown.
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -439,7 +425,6 @@ The allowed values are:
  "always"
  "never"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -460,7 +445,6 @@ The allowed values are:
   "partial"
   "other"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -478,7 +462,6 @@ Allowed values are:
   "reflex-scanner"
   "other"
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -488,7 +471,6 @@ Allowed values are:
 <p>
 Exposure compensation using when capturing an image in EV. (double)
 </p>
-<p class="since">Since 0.10.33</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -498,7 +480,6 @@ Exposure compensation using when capturing an image in EV. (double)
 <p>
 Media (image/video) intended horizontal pixel density in ppi. (double)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -508,7 +489,6 @@ Media (image/video) intended horizontal pixel density in ppi. (double)
 <p>
 Media (image/video) intended vertical pixel density in ppi. (double)
 </p>
-<p class="since">Since 0.10.31</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -519,7 +499,6 @@ Media (image/video) intended vertical pixel density in ppi. (double)
 ID3V2 header size considered minimum input for some functions such as
 <a class="link" href="gst-plugins-base-libs-gsttagid3.html#gst-tag-list-from-id3v2-tag" title="gst_tag_list_from_id3v2_tag ()"><code class="function">gst_tag_list_from_id3v2_tag()</code></a> and <a class="link" href="gst-plugins-base-libs-gsttagid3.html#gst-tag-get-id3v2-tag-size" title="gst_tag_get_id3v2_tag_size ()"><code class="function">gst_tag_get_id3v2_tag_size()</code></a> for example.
 </p>
-<p class="since">Since 0.10.36</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -569,7 +548,6 @@ or NULL</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.13</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -619,7 +597,6 @@ code in the extended comment string.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.10</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -658,7 +635,7 @@ the image buffer's caps structure)
 <td><p><a name="GST-TAG-IMAGE-TYPE-NONE:CAPS"></a><span class="term"><code class="literal">GST_TAG_IMAGE_TYPE_NONE</code></span></p></td>
 <td>No image type. Can be used to
      tell functions such as <code class="function">gst_tag_image_data_to_image_sample()</code> that no
-     image type should be set. (Since: 0.10.20)
+     image type should be set.
 </td>
 </tr>
 <tr>
@@ -758,7 +735,6 @@ the image buffer's caps structure)
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.9</p>
 </div>
 </div>
 <div class="refsect1">

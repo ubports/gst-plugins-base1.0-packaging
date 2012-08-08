@@ -1459,11 +1459,11 @@ gst_ximagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
   if (pool == NULL && need_pool) {
     GstVideoInfo info;
 
-    GST_DEBUG_OBJECT (ximagesink, "create new pool");
-    pool = gst_ximage_buffer_pool_new (ximagesink);
-
     if (!gst_video_info_from_caps (&info, caps))
       goto invalid_caps;
+
+    GST_DEBUG_OBJECT (ximagesink, "create new pool");
+    pool = gst_ximage_buffer_pool_new (ximagesink);
 
     /* the normal size of a frame */
     size = info.size;
@@ -1473,14 +1473,15 @@ gst_ximagesink_propose_allocation (GstBaseSink * bsink, GstQuery * query)
     if (!gst_buffer_pool_set_config (pool, config))
       goto config_failed;
   }
-  /* we need at least 2 buffer because we hold on to the last one */
-  gst_query_add_allocation_pool (query, pool, size, 2, 0);
+  if (pool) {
+    /* we need at least 2 buffer because we hold on to the last one */
+    gst_query_add_allocation_pool (query, pool, size, 2, 0);
+    gst_object_unref (pool);
+  }
 
   /* we also support various metadata */
-  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE);
-  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE);
-
-  gst_object_unref (pool);
+  gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL);
+  gst_query_add_allocation_meta (query, GST_VIDEO_CROP_META_API_TYPE, NULL);
 
   return TRUE;
 
@@ -1498,6 +1499,7 @@ invalid_caps:
 config_failed:
   {
     GST_DEBUG_OBJECT (bsink, "failed setting config");
+    gst_object_unref (pool);
     return FALSE;
   }
 }
@@ -1888,7 +1890,7 @@ gst_ximagesink_init (GstXImageSink * ximagesink)
   ximagesink->pool = NULL;
 
   ximagesink->synchronous = FALSE;
-  ximagesink->keep_aspect = FALSE;
+  ximagesink->keep_aspect = TRUE;
   ximagesink->handle_events = TRUE;
   ximagesink->handle_expose = TRUE;
 }
@@ -1921,7 +1923,7 @@ gst_ximagesink_class_init (GstXImageSinkClass * klass)
   g_object_class_install_property (gobject_class, PROP_FORCE_ASPECT_RATIO,
       g_param_spec_boolean ("force-aspect-ratio", "Force aspect ratio",
           "When enabled, reverse caps negotiation (scaling) will respect "
-          "original aspect ratio", FALSE,
+          "original aspect ratio", TRUE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_PIXEL_ASPECT_RATIO,
       g_param_spec_string ("pixel-aspect-ratio", "Pixel Aspect Ratio",

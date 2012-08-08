@@ -128,6 +128,7 @@ Extra audio flags
 <a name="GstAudioFormat"></a><h3>enum GstAudioFormat</h3>
 <pre class="programlisting">typedef enum {
   GST_AUDIO_FORMAT_UNKNOWN,
+  GST_AUDIO_FORMAT_ENCODED,
   /* 8 bit */
   GST_AUDIO_FORMAT_S8,
   GST_AUDIO_FORMAT_U8,
@@ -191,7 +192,12 @@ Enum value describing the most common audio formats.
 <tbody>
 <tr>
 <td><p><a name="GST-AUDIO-FORMAT-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FORMAT_UNKNOWN</code></span></p></td>
-<td>unknown audio format
+<td>unknown or unset audio format
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-AUDIO-FORMAT-ENCODED:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FORMAT_ENCODED</code></span></p></td>
+<td>encoded audio format
 </td>
 </tr>
 <tr>
@@ -424,7 +430,8 @@ Enum value describing the most common audio formats.
   GST_AUDIO_FORMAT_FLAG_INTEGER  = (1 &lt;&lt; 0),
   GST_AUDIO_FORMAT_FLAG_FLOAT    = (1 &lt;&lt; 1),
   GST_AUDIO_FORMAT_FLAG_SIGNED   = (1 &lt;&lt; 2),
-  GST_AUDIO_FORMAT_FLAG_COMPLEX  = (1 &lt;&lt; 4)
+  GST_AUDIO_FORMAT_FLAG_COMPLEX  = (1 &lt;&lt; 4),
+  GST_AUDIO_FORMAT_FLAG_UNPACK   = (1 &lt;&lt; 5)
 } GstAudioFormatFlags;
 </pre>
 <p>
@@ -451,6 +458,12 @@ The different audio flags that a format info can have.
 <tr>
 <td><p><a name="GST-AUDIO-FORMAT-FLAG-COMPLEX:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FORMAT_FLAG_COMPLEX</code></span></p></td>
 <td>complex layout
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-AUDIO-FORMAT-FLAG-UNPACK:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_FORMAT_FLAG_UNPACK</code></span></p></td>
+<td>the format can be used in
+<span class="type">GstAudioFormatUnpack</span> and <span class="type">GstAudioFormatPack</span> functions
 </td>
 </tr>
 </tbody>
@@ -661,6 +674,46 @@ info of <em class="parameter"><code>info</code></em>. <span class="annotation">[
                                                          <em class="parameter"><code><span class="type">gint64</span> src_val</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_fmt</code></em>,
                                                          <em class="parameter"><code><span class="type">gint64</span> *dest_val</code></em>);</pre>
+<p>
+Converts among various <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> types.  This function handles
+GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
+raw audio, GST_FORMAT_DEFAULT corresponds to audio frames.  This
+function can be used to handle pad queries of the type GST_QUERY_CONVERT.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src_fmt</code></em> :</span></p></td>
+<td>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> of the <em class="parameter"><code>src_val</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src_val</code></em> :</span></p></td>
+<td>value to convert</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest_fmt</code></em> :</span></p></td>
+<td>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> of the <em class="parameter"><code>dest_val</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest_val</code></em> :</span></p></td>
+<td>pointer to destination value</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the conversion was successful.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -906,7 +959,6 @@ is not clipped</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.14</p>
 </div>
 </div>
 </div>

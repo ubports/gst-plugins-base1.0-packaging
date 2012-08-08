@@ -76,9 +76,9 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideoutils.ht
 <div class="refsect2">
 <a name="GstVideoCodecFrame"></a><h3>struct GstVideoCodecFrame</h3>
 <pre class="programlisting">struct GstVideoCodecFrame {
-  gint system_frame_number; /* ED */
-  gint decode_frame_number; /* ED */
-  gint presentation_frame_number; /* ED */
+  guint32 system_frame_number; /* ED */
+  guint32 decode_frame_number; /* ED */
+  guint32 presentation_frame_number; /* ED */
 
   GstClockTime dts;       /* ED */
   GstClockTime pts;       /* ED */
@@ -100,7 +100,7 @@ encoded form.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoCodecFrame.system-frame-number"></a>system_frame_number</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">guint32</span> <em class="structfield"><code><a name="GstVideoCodecFrame.system-frame-number"></a>system_frame_number</code></em>;</span></p></td>
 <td>Unique identifier for the frame. Use this if you need
 to get hold of the frame later (like when data is being decoded).
 Typical usage in decoders is to set this on the opaque value provided
@@ -108,11 +108,11 @@ to the library and get back the frame using <a class="link" href="gst-plugins-ba
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoCodecFrame.decode-frame-number"></a>decode_frame_number</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">guint32</span> <em class="structfield"><code><a name="GstVideoCodecFrame.decode-frame-number"></a>decode_frame_number</code></em>;</span></p></td>
 <td></td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoCodecFrame.presentation-frame-number"></a>presentation_frame_number</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">guint32</span> <em class="structfield"><code><a name="GstVideoCodecFrame.presentation-frame-number"></a>presentation_frame_number</code></em>;</span></p></td>
 <td></td>
 </tr>
 <tr>
@@ -133,13 +133,16 @@ to the library and get back the frame using <a class="link" href="gst-plugins-ba
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *<em class="structfield"><code><a name="GstVideoCodecFrame.input-buffer"></a>input_buffer</code></em>;</span></p></td>
-<td>the input <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> that created this frame.</td>
+<td>the input <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> that created this frame. The buffer is owned
+by the frame and references to the frame instead of the buffer should</td>
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *<em class="structfield"><code><a name="GstVideoCodecFrame.output-buffer"></a>output_buffer</code></em>;</span></p></td>
 <td>the output <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>. Implementations should set this either
-directly, or by using the <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-alloc-output-frame" title="gst_video_decoder_alloc_output_frame ()"><code class="function">gst_video_decoder_alloc_output_frame()</code></a></code></em> or
-<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-alloc-output-buffer" title="gst_video_decoder_alloc_output_buffer ()"><code class="function">gst_video_decoder_alloc_output_buffer()</code></a></code></em> methods.</td>
+directly, or by using the <em class="parameter"><code><code class="function">gst_video_decoder_alloc_output_frame()</code></code></em> or
+<em class="parameter"><code><code class="function">gst_video_decoder_alloc_output_buffer()</code></code></em> methods. The buffer is owned
+by the frame and references to the frame instead of the buffer should
+be kept.</td>
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> <em class="structfield"><code><a name="GstVideoCodecFrame.deadline"></a>deadline</code></em>;</span></p></td>

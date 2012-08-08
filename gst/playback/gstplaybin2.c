@@ -268,8 +268,6 @@ struct _GstSourceSelect
   GstPad *sinkpad;              /* the sinkpad of the sink when the selector
                                  * is linked
                                  */
-  GstEvent *sinkpad_delayed_event;
-  gulong sinkpad_data_probe;
   gulong block_id;
 };
 
@@ -390,6 +388,7 @@ struct _GstPlayBin
 
   guint64 buffer_duration;      /* When buffering, the max buffer duration (ns) */
   guint buffer_size;            /* When buffering, the max buffer size (bytes) */
+  gboolean force_aspect_ratio;
 
   /* our play sink */
   GstPlaySink *playsink;
@@ -521,6 +520,7 @@ enum
   PROP_BUFFER_DURATION,
   PROP_AV_OFFSET,
   PROP_RING_BUFFER_MAX_SIZE,
+  PROP_FORCE_ASPECT_RATIO,
   PROP_LAST
 };
 
@@ -872,7 +872,7 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GstQueue2:ring-buffer-max-size
+   * GstPlayBin:ring-buffer-max-size
    *
    * The maximum size of the ring buffer in bytes. If set to 0, the ring
    * buffer is disabled. Default 0.
@@ -884,6 +884,18 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
           "Max. ring buffer size (bytes)",
           "Max. amount of data in the ring buffer (bytes, 0 = ring buffer disabled)",
           0, G_MAXUINT, DEFAULT_RING_BUFFER_MAX_SIZE,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GstPlayBin::force-aspect-ratio:
+   *
+   * Requests the video sink to enforce the video display aspect ratio.
+   *
+   * Since: 0.10.37
+   */
+  g_object_class_install_property (gobject_klass, PROP_FORCE_ASPECT_RATIO,
+      g_param_spec_boolean ("force-aspect-ratio", "Force Aspect Ratio",
+          "When enabled, scaling will respect original aspect ratio", TRUE,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1184,8 +1196,6 @@ gst_play_bin_class_init (GstPlayBinClass * klass)
 static void
 init_group (GstPlayBin * playbin, GstSourceGroup * group)
 {
-  int n;
-
   /* store the array for the different channels */
   group->video_channels = g_ptr_array_new ();
   group->audio_channels = g_ptr_array_new ();
@@ -1214,27 +1224,11 @@ init_group (GstPlayBin * playbin, GstSourceGroup * group)
       gst_subtitle_overlay_create_factory_caps;
   group->selector[PLAYBIN_STREAM_TEXT].type = GST_PLAY_SINK_TYPE_TEXT;
   group->selector[PLAYBIN_STREAM_TEXT].channels = group->text_channels;
-
-  for (n = 0; n < PLAYBIN_STREAM_LAST; n++) {
-    GstSourceSelect *select = &group->selector[n];
-    select->sinkpad_delayed_event = NULL;
-    select->sinkpad_data_probe = 0;
-  }
 }
 
 static void
 free_group (GstPlayBin * playbin, GstSourceGroup * group)
 {
-  int n;
-
-  for (n = 0; n < PLAYBIN_STREAM_LAST; n++) {
-    GstSourceSelect *select = &group->selector[n];
-    if (select->sinkpad && select->sinkpad_data_probe)
-      gst_pad_remove_probe (select->sinkpad, select->sinkpad_data_probe);
-    if (select->sinkpad_delayed_event)
-      gst_event_unref (select->sinkpad_delayed_event);
-  }
-
   g_free (group->uri);
   g_free (group->suburi);
   g_ptr_array_free (group->video_channels, TRUE);
@@ -1294,21 +1288,37 @@ compare_factories_func (gconstpointer p1, gconstpointer p2)
 {
   GstPluginFeature *f1, *f2;
   gint diff;
-  gboolean s1, s2;
+  gboolean is_sink1, is_sink2;
+  gboolean is_parser1, is_parser2;
 
   f1 = (GstPluginFeature *) p1;
   f2 = (GstPluginFeature *) p2;
 
-  s1 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f1),
+  is_sink1 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f1),
       GST_ELEMENT_FACTORY_TYPE_SINK);
-  s2 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f2),
+  is_sink2 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f2),
       GST_ELEMENT_FACTORY_TYPE_SINK);
+  is_parser1 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f1),
+      GST_ELEMENT_FACTORY_TYPE_PARSER);
+  is_parser2 = gst_element_factory_list_is_type (GST_ELEMENT_FACTORY_CAST (f2),
+      GST_ELEMENT_FACTORY_TYPE_PARSER);
 
-  if (s1 && !s2)
+  /* First we want all sinks as we prefer a sink if it directly
+   * supports the current caps */
+  if (is_sink1 && !is_sink2)
     return -1;
-  else if (!s1 && s2)
+  else if (!is_sink1 && is_sink2)
     return 1;
 
+  /* Then we want all parsers as we always want to plug parsers
+   * before decoders */
+  if (is_parser1 && !is_parser2)
+    return -1;
+  else if (!is_parser1 && is_parser2)
+    return 1;
+
+  /* And if it's a both a parser or sink we first sort by rank
+   * and then by factory name */
   diff = gst_plugin_feature_get_rank (f2) - gst_plugin_feature_get_rank (f1);
   if (diff != 0)
     return diff;
@@ -1380,6 +1390,8 @@ gst_play_bin_init (GstPlayBin * playbin)
   playbin->buffer_duration = DEFAULT_BUFFER_DURATION;
   playbin->buffer_size = DEFAULT_BUFFER_SIZE;
   playbin->ring_buffer_max_size = DEFAULT_RING_BUFFER_MAX_SIZE;
+
+  playbin->force_aspect_ratio = TRUE;
 }
 
 static void
@@ -2122,6 +2134,10 @@ gst_play_bin_set_property (GObject * object, guint prop_id,
     case PROP_RING_BUFFER_MAX_SIZE:
       playbin->ring_buffer_max_size = g_value_get_uint64 (value);
       break;
+    case PROP_FORCE_ASPECT_RATIO:
+      g_object_set (playbin->playsink, "force-aspect-ratio",
+          g_value_get_boolean (value), NULL);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -2318,6 +2334,13 @@ gst_play_bin_get_property (GObject * object, guint prop_id, GValue * value,
     case PROP_RING_BUFFER_MAX_SIZE:
       g_value_set_uint64 (value, playbin->ring_buffer_max_size);
       break;
+    case PROP_FORCE_ASPECT_RATIO:{
+      gboolean v;
+
+      g_object_get (playbin->playsink, "force-aspect-ratio", &v, NULL);
+      g_value_set_boolean (value, v);
+      break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -2456,35 +2479,6 @@ gst_play_bin_handle_message (GstBin * bin, GstMessage * msg)
       }
     }
     g_free (detail);
-  } else if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ELEMENT) {
-    const GstStructure *s = gst_message_get_structure (msg);
-
-    /* Drop all stream-changed messages except the last one */
-    if (strcmp ("playbin-stream-changed", gst_structure_get_name (s)) == 0) {
-      guint32 seqnum = gst_message_get_seqnum (msg);
-      GList *l, *l_prev;
-
-      group = playbin->curr_group;
-      g_mutex_lock (&group->stream_changed_pending_lock);
-      for (l = group->stream_changed_pending; l;) {
-        guint32 l_seqnum = GPOINTER_TO_UINT (l->data);
-
-        if (l_seqnum == seqnum) {
-          l_prev = l;
-          l = l->next;
-          group->stream_changed_pending =
-              g_list_delete_link (group->stream_changed_pending, l_prev);
-          if (group->stream_changed_pending) {
-            gst_message_unref (msg);
-            msg = NULL;
-            break;
-          }
-        } else {
-          l = l->next;
-        }
-      }
-      g_mutex_unlock (&group->stream_changed_pending_lock);
-    }
   } else if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ASYNC_START ||
       GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ASYNC_DONE) {
     GstObject *src = GST_OBJECT_CAST (msg->src);
@@ -2648,40 +2642,6 @@ selector_active_pad_changed (GObject * selector, GParamSpec * pspec,
 notify:
   if (property)
     g_object_notify (G_OBJECT (playbin), property);
-}
-
-/* this callback sends a delayed event once the pad becomes unblocked */
-static GstPadProbeReturn
-stream_changed_data_probe (GstPad * pad, GstPadProbeInfo * info, gpointer data)
-{
-  GstMiniObject *object = GST_PAD_PROBE_INFO_DATA (info);
-  GstSourceSelect *select = (GstSourceSelect *) data;
-  GstEvent *e;
-
-  /* we need do this just once, so cleanup first */
-  gst_pad_remove_probe (pad, select->sinkpad_data_probe);
-  select->sinkpad_data_probe = 0;
-  e = select->sinkpad_delayed_event;
-  select->sinkpad_delayed_event = NULL;
-
-  /* really, this should not happen */
-  if (!e) {
-    GST_WARNING ("Data probed called, but no delayed event");
-    return GST_PAD_PROBE_OK;
-  }
-
-  if (GST_IS_EVENT (object)
-      && GST_EVENT_TYPE (GST_EVENT_CAST (object)) == GST_EVENT_SEGMENT) {
-    /* push the event first, then send the delayed one */
-    gst_event_ref (GST_EVENT_CAST (object));
-    gst_pad_send_event (pad, GST_EVENT_CAST (object));
-    gst_pad_send_event (pad, e);
-    return GST_PAD_PROBE_DROP;
-  } else {
-    /* send delayed event, then allow the caller to go on */
-    gst_pad_send_event (pad, e);
-    return GST_PAD_PROBE_OK;
-  }
 }
 
 static GstPadProbeReturn
@@ -3180,47 +3140,6 @@ no_more_pads_cb (GstElement * decodebin, GstSourceGroup * group)
     /* unblock all selectors */
     for (i = 0; i < PLAYBIN_STREAM_LAST; i++) {
       GstSourceSelect *select = &group->selector[i];
-
-      /* All streamsynchronizer streams should see stream-changed message,
-       * to arrange for blocking unblocking. */
-      if (select->sinkpad) {
-        GstStructure *s;
-        GstMessage *msg;
-        GstEvent *event;
-        guint32 seqnum;
-
-        s = gst_structure_new ("playbin-stream-changed", "uri", G_TYPE_STRING,
-            group->uri, NULL);
-        if (group->suburi)
-          gst_structure_set (s, "suburi", G_TYPE_STRING, group->suburi, NULL);
-        msg = gst_message_new_element (GST_OBJECT_CAST (playbin), s);
-        seqnum = gst_message_get_seqnum (msg);
-        event = gst_event_new_sink_message ("GstPlaybin", msg);
-        g_mutex_lock (&group->stream_changed_pending_lock);
-        group->stream_changed_pending =
-            g_list_prepend (group->stream_changed_pending,
-            GUINT_TO_POINTER (seqnum));
-
-        /* remove any data probe we might have, and replace */
-        if (select->sinkpad_delayed_event)
-          gst_event_unref (select->sinkpad_delayed_event);
-        select->sinkpad_delayed_event = event;
-        if (select->sinkpad_data_probe)
-          gst_pad_remove_probe (select->sinkpad, select->sinkpad_data_probe);
-
-        /* we go to the trouble of setting a probe on the pad to send
-           the playbin-stream-changed event as sending it here might
-           find that the pad is blocked, so we'd block here, and the
-           pad might not be linked yet. Additionally, sending it here
-           apparently would be on the wrong thread */
-        select->sinkpad_data_probe =
-            gst_pad_add_probe (select->sinkpad,
-            GST_PAD_PROBE_TYPE_DATA_DOWNSTREAM,
-            stream_changed_data_probe, (gpointer) select, NULL);
-
-        g_mutex_unlock (&group->stream_changed_pending_lock);
-        gst_message_unref (msg);
-      }
 
       if (select->srcpad) {
         GST_DEBUG_OBJECT (playbin, "unblocking %" GST_PTR_FORMAT,
@@ -3970,6 +3889,8 @@ uridecodebin_failure:
       gst_object_unref (group->video_sink);
     }
     group->video_sink = NULL;
+
+    gst_bin_remove (GST_BIN_CAST (playbin), uridecodebin);
 
     GST_DEBUG_OBJECT (playbin, "failed state change of uridecodebin");
     return FALSE;

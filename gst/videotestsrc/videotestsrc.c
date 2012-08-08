@@ -1109,7 +1109,7 @@ paint_tmpline_ARGB (paintinfo * p, int x, int w)
 #endif
 
   offset = (x * 4);
-  gst_orc_splat_u32 (p->tmpline + offset, value, w);
+  video_test_src_orc_splat_u32 (p->tmpline + offset, value, w);
 }
 
 static void
@@ -1127,17 +1127,20 @@ paint_tmpline_AYUV (paintinfo * p, int x, int w)
 #endif
 
   offset = (x * 4);
-  gst_orc_splat_u32 (p->tmpline + offset, value, w);
+  video_test_src_orc_splat_u32 (p->tmpline + offset, value, w);
 }
 
 static void
 convert_hline_generic (paintinfo * p, GstVideoFrame * frame, int y)
 {
-  const GstVideoFormatInfo *finfo = frame->info.finfo;
+  const GstVideoFormatInfo *finfo, *uinfo;
   gint i, width = GST_VIDEO_FRAME_WIDTH (frame);
   gpointer src;
 
-  if (GST_VIDEO_FORMAT_INFO_DEPTH (finfo, 0) == 16) {
+  finfo = frame->info.finfo;
+  uinfo = gst_video_format_get_info (finfo->unpack_format);
+
+  if (GST_VIDEO_FORMAT_INFO_DEPTH (uinfo, 0) == 16) {
     /* 16 bits */
     for (i = 0; i < width; i++) {
       p->tmpline_u16[i * 4 + 0] = TO_16 (p->tmpline[i * 4 + 0]);

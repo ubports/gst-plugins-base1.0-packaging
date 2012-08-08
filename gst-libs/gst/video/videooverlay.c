@@ -88,7 +88,8 @@
  * {
  * ...
  *  bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
- *  gst_bus_set_sync_handler (bus, (GstBusSyncHandler) create_window, pipeline);
+ *  gst_bus_set_sync_handler (bus, (GstBusSyncHandler) create_window, pipeline,
+        NULL);
  * ...
  * }
  * ]|
@@ -229,7 +230,8 @@
  *   ...
  *   // set up sync handler for setting the xid once the pipeline is started
  *   bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
- *   gst_bus_set_sync_handler (bus, (GstBusSyncHandler) bus_sync_handler, NULL);
+ *   gst_bus_set_sync_handler (bus, (GstBusSyncHandler) bus_sync_handler, NULL,
+ *       NULL);
  *   gst_object_unref (bus);
  *   ...
  *   gst_element_set_state (pipeline, GST_STATE_PLAYING);
@@ -340,8 +342,6 @@ gst_video_overlay_get_type (void)
  * should use this method to tell to a XOverlay to display video output to a
  * specific window (e.g. an XWindow on X11). Passing 0 as the  @handle will
  * tell the overlay to stop using that window and create an internal one.
- *
- * Since: 0.10.31
  */
 void
 gst_video_overlay_set_window_handle (GstVideoOverlay * overlay, guintptr handle)
@@ -442,8 +442,6 @@ gst_video_overlay_expose (GstVideoOverlay * overlay)
  * events are not propagated in the window hierarchy if a client is listening
  * for them. This method allows you to disable events handling completely
  * from the XOverlay.
- *
- * Since: 0.10.12
  */
 void
 gst_video_overlay_handle_events (GstVideoOverlay * overlay,
@@ -481,8 +479,6 @@ gst_video_overlay_handle_events (GstVideoOverlay * overlay,
  * do not support subwindows.
  *
  * Returns: %FALSE if not supported by the sink.
- *
- * Since: 0.10.29
  */
 gboolean
 gst_video_overlay_set_render_rectangle (GstVideoOverlay * overlay,
@@ -510,8 +506,6 @@ gst_video_overlay_set_render_rectangle (GstVideoOverlay * overlay,
  *
  * Convenience function to check if the given message is a
  * "prepare-window-handle" message from a #GstVideoOverlay.
- *
- * Since: 0.11.2
  *
  * Returns: whether @msg is a "prepare-window-handle" message
  */

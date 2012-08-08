@@ -2,6 +2,7 @@ EXPORTS
 	_gst_video_decoder_error
 	gst_buffer_add_video_meta
 	gst_buffer_add_video_meta_full
+	gst_buffer_add_video_overlay_composition_meta
 	gst_buffer_get_video_meta_id
 	gst_buffer_pool_config_get_video_alignment
 	gst_buffer_pool_config_set_video_alignment
@@ -44,6 +45,8 @@ EXPORTS
 	gst_navigation_send_key_event
 	gst_navigation_send_mouse_event
 	gst_video_alignment_reset
+	gst_video_blend
+	gst_video_blend_scale_linear_RGBA
 	gst_video_buffer_pool_get_type
 	gst_video_buffer_pool_new
 	gst_video_calculate_display_ratio
@@ -61,6 +64,7 @@ EXPORTS
 	gst_video_color_matrix_get_type
 	gst_video_color_primaries_get_type
 	gst_video_color_range_get_type
+	gst_video_color_range_offsets
 	gst_video_colorimetry_from_string
 	gst_video_colorimetry_matches
 	gst_video_colorimetry_to_string
@@ -69,8 +73,8 @@ EXPORTS
 	gst_video_crop_meta_api_get_type
 	gst_video_crop_meta_get_info
 	gst_video_decoder_add_to_frame
-	gst_video_decoder_alloc_output_buffer
-	gst_video_decoder_alloc_output_frame
+	gst_video_decoder_allocate_output_buffer
+	gst_video_decoder_allocate_output_frame
 	gst_video_decoder_drop_frame
 	gst_video_decoder_finish_frame
 	gst_video_decoder_get_estimate_rate
@@ -83,17 +87,21 @@ EXPORTS
 	gst_video_decoder_get_packetized
 	gst_video_decoder_get_type
 	gst_video_decoder_have_frame
+	gst_video_decoder_negotiate
 	gst_video_decoder_set_estimate_rate
 	gst_video_decoder_set_latency
 	gst_video_decoder_set_max_errors
 	gst_video_decoder_set_output_state
 	gst_video_decoder_set_packetized
+	gst_video_encoder_allocate_output_buffer
+	gst_video_encoder_allocate_output_frame
 	gst_video_encoder_finish_frame
 	gst_video_encoder_get_frame
 	gst_video_encoder_get_latency
 	gst_video_encoder_get_oldest_frame
 	gst_video_encoder_get_output_state
 	gst_video_encoder_get_type
+	gst_video_encoder_negotiate
 	gst_video_encoder_proxy_getcaps
 	gst_video_encoder_set_headers
 	gst_video_encoder_set_latency
@@ -141,11 +149,33 @@ EXPORTS
 	gst_video_orientation_set_hflip
 	gst_video_orientation_set_vcenter
 	gst_video_orientation_set_vflip
+	gst_video_overlay_composition_add_rectangle
+	gst_video_overlay_composition_blend
+	gst_video_overlay_composition_copy
+	gst_video_overlay_composition_get_rectangle
+	gst_video_overlay_composition_get_seqnum
+	gst_video_overlay_composition_get_type
+	gst_video_overlay_composition_make_writable
+	gst_video_overlay_composition_meta_api_get_type
+	gst_video_overlay_composition_meta_get_info
+	gst_video_overlay_composition_n_rectangles
+	gst_video_overlay_composition_new
 	gst_video_overlay_expose
 	gst_video_overlay_get_type
 	gst_video_overlay_got_window_handle
 	gst_video_overlay_handle_events
 	gst_video_overlay_prepare_window_handle
+	gst_video_overlay_rectangle_copy
+	gst_video_overlay_rectangle_get_flags
+	gst_video_overlay_rectangle_get_global_alpha
+	gst_video_overlay_rectangle_get_pixels_argb
+	gst_video_overlay_rectangle_get_pixels_unscaled_argb
+	gst_video_overlay_rectangle_get_render_rectangle
+	gst_video_overlay_rectangle_get_seqnum
+	gst_video_overlay_rectangle_get_type
+	gst_video_overlay_rectangle_new_argb
+	gst_video_overlay_rectangle_set_global_alpha
+	gst_video_overlay_rectangle_set_render_rectangle
 	gst_video_overlay_set_render_rectangle
 	gst_video_overlay_set_window_handle
 	gst_video_pack_flags_get_type

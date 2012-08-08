@@ -110,7 +110,7 @@ RTP packets always contain full frames.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp15202640"></a><h3>Usage</h3>
+<a name="idp15192736"></a><h3>Usage</h3>
 <p>
 To use this base class, your child element needs to call either
 <a class="link" href="gst-plugins-base-libs-gstrtpbaseaudiopayload.html#gst-rtp-base-audio-payload-set-frame-based" title="gst_rtp_base_audio_payload_set_frame_based ()"><code class="function">gst_rtp_base_audio_payload_set_frame_based()</code></a> or
@@ -255,11 +255,11 @@ Gets the internal adapter used by the depayloader.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstAdapter.html"><span class="type">GstAdapter</span></a>.</td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstAdapter.html"><span class="type">GstAdapter</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.13</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -301,7 +301,6 @@ the buffer downstream.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.13</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -342,7 +341,6 @@ If <em class="parameter"><code>payload_len</code></em> is -1, all pending bytes 
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.25</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -366,7 +364,6 @@ Sets the options for sample based audio codecs.
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.18</p>
 </div>
 </div>
 <div class="refsect1">

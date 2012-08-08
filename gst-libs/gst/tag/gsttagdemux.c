@@ -344,12 +344,17 @@ gst_tag_demux_set_src_caps (GstTagDemux * tagdemux, GstCaps * new_caps)
   GstCaps *old_caps = tagdemux->priv->src_caps;
 
   if (old_caps == NULL || !gst_caps_is_equal (new_caps, old_caps)) {
+    gchar *stream_id = gst_pad_create_stream_id (tagdemux->priv->srcpad,
+        GST_ELEMENT_CAST (tagdemux), NULL);
 
     gst_caps_replace (&tagdemux->priv->src_caps, new_caps);
 
     GST_DEBUG_OBJECT (tagdemux, "Changing src pad caps to %" GST_PTR_FORMAT,
         tagdemux->priv->src_caps);
 
+    gst_pad_push_event (tagdemux->priv->srcpad,
+        gst_event_new_stream_start (stream_id));
+    g_free (stream_id);
     gst_pad_set_caps (tagdemux->priv->srcpad, tagdemux->priv->src_caps);
   } else {
     /* Caps never changed */
@@ -765,30 +770,30 @@ gst_tag_demux_srcpad_event (GstPad * pad, GstObject * parent, GstEvent * event)
     {
       gdouble rate;
       GstFormat format;
-      GstSeekType cur_type, stop_type;
+      GstSeekType start_type, stop_type;
       GstSeekFlags flags;
-      gint64 cur, stop;
+      gint64 start, stop;
 
       gst_event_parse_seek (event, &rate, &format, &flags,
-          &cur_type, &cur, &stop_type, &stop);
+          &start_type, &start, &stop_type, &stop);
 
       if (format == GST_FORMAT_BYTES &&
           tagdemux->priv->state == GST_TAG_DEMUX_STREAMING &&
           gst_pad_is_linked (tagdemux->priv->sinkpad)) {
         GstEvent *upstream;
 
-        switch (cur_type) {
+        switch (start_type) {
           case GST_SEEK_TYPE_SET:
-            if (cur == -1)
-              cur = 0;
-            cur += tagdemux->priv->strip_start;
+            if (start == -1)
+              start = 0;
+            start += tagdemux->priv->strip_start;
             break;
           case GST_SEEK_TYPE_END:
             /* Adjust the seek to be relative to the start of any end tag
              * (note: 10 bytes before end is represented by stop=-10) */
-            if (cur > 0)
-              cur = 0;
-            cur -= tagdemux->priv->strip_end;
+            if (start > 0)
+              start = 0;
+            start -= tagdemux->priv->strip_end;
             break;
           case GST_SEEK_TYPE_NONE:
           default:
@@ -813,7 +818,7 @@ gst_tag_demux_srcpad_event (GstPad * pad, GstObject * parent, GstEvent * event)
             break;
         }
         upstream = gst_event_new_seek (rate, format, flags,
-            cur_type, cur, stop_type, stop);
+            start_type, start, stop_type, stop);
         res = gst_pad_push_event (tagdemux->priv->sinkpad, upstream);
       }
       break;
@@ -1252,6 +1257,8 @@ pause:
         gst_element_post_message (GST_ELEMENT_CAST (demux),
             gst_message_new_segment_done (GST_OBJECT_CAST (demux),
                 GST_FORMAT_BYTES, stop));
+        gst_pad_push_event (demux->priv->srcpad,
+            gst_event_new_segment_done (GST_FORMAT_BYTES, stop));
       } else {
         push_eos = TRUE;
       }
@@ -1323,7 +1330,7 @@ gst_tag_demux_sink_activate (GstPad * sinkpad, GstObject * parent)
 
   /* only start our task if we ourselves decide to start in pull mode */
   return gst_pad_start_task (sinkpad,
-      (GstTaskFunction) gst_tag_demux_element_loop, demux);
+      (GstTaskFunction) gst_tag_demux_element_loop, demux, NULL);
 
 activate_push:
   {
@@ -1516,13 +1523,8 @@ gst_tag_demux_send_tag_event (GstTagDemux * demux)
   GstTagList *merged = gst_tag_list_merge (demux->priv->event_tags,
       demux->priv->parsed_tags, GST_TAG_MERGE_KEEP);
 
-  if (demux->priv->parsed_tags)
-    gst_element_post_message (GST_ELEMENT (demux),
-        gst_message_new_tag (GST_OBJECT (demux),
-            gst_tag_list_copy (demux->priv->parsed_tags)));
-
   if (merged) {
-    GstEvent *event = gst_event_new_tag ("GstTagDemuxer", merged);
+    GstEvent *event = gst_event_new_tag (merged);
 
     GST_EVENT_TIMESTAMP (event) = 0;
     GST_DEBUG_OBJECT (demux, "Sending tag event on src pad");

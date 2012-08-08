@@ -196,7 +196,7 @@ gst_sdp_attribute_init (GstSDPAttribute * attr)
 
 /**
  * gst_sdp_message_new:
- * @msg: pointer to new #GstSDPMessage
+ * @msg: (out) (transfer full): pointer to new #GstSDPMessage
  *
  * Allocate a new GstSDPMessage and store the result in @msg.
  *
@@ -310,8 +310,6 @@ gst_sdp_message_free (GstSDPMessage * msg)
  * Check if the given @addr is a multicast address.
  *
  * Returns: TRUE when @addr is multicast.
- *
- * Since: 0.10.32
  */
 gboolean
 gst_sdp_address_is_multicast (const gchar * nettype, const gchar * addrtype,
@@ -487,8 +485,6 @@ hex_to_int (gchar c)
  *  http://tools.ietf.org/html/draft-fujikawa-sdp-url-01
  *
  * Returns: #GST_SDP_OK on success.
- *
- * Since: 0.10.31
  */
 GstSDPResult
 gst_sdp_message_parse_uri (const gchar * uri, GstSDPMessage * msg)
@@ -589,8 +585,6 @@ static const gchar hex[16] = "0123456789ABCDEF";
  *  Where each value is url encoded.
  *
  * Returns: a uri for @msg.
- *
- * Since: 0.10.31
  */
 gchar *
 gst_sdp_message_as_uri (const gchar * scheme, const GstSDPMessage * msg)
@@ -935,7 +929,7 @@ DEFINE_ARRAY_GETTER (time, times, const GstSDPTime);
  * @msg: a #GstSDPMessage
  * @start: the start time
  * @stop: the stop time
- * @repeat: the repeat times
+ * @repeat: (array): the repeat times
  *
  * Add time information @start and @stop to @msg.
  *
@@ -1182,7 +1176,7 @@ gst_sdp_message_add_media (GstSDPMessage * msg, GstSDPMedia * media)
 
 /**
  * gst_sdp_media_new:
- * @media: pointer to new #GstSDPMedia
+ * @media: (out): pointer to new #GstSDPMedia
  *
  * Allocate a new GstSDPMedia and store the result in @media.
  *

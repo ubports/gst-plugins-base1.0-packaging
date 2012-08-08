@@ -96,8 +96,7 @@ Provides a base class for RTP depayloaders
   gboolean (*packet_lost) (GstRTPBaseDepayload *filter, GstEvent *event);
 
   /* the default implementation does the default actions for events but
-   * implementation can override.
-   * Since: 0.10.32   */
+   * implementation can override. */
   gboolean (*handle_event) (GstRTPBaseDepayload * filter, GstEvent * event);
 };
 </pre>
@@ -203,7 +202,6 @@ Push <em class="parameter"><code>out_list</code></em> to the peer of <em class="
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10.32</p>
 </div>
 </div>
 </div>
