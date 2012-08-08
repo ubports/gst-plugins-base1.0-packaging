@@ -1,3 +1,15 @@
+gst-plugins-base1.0 (0.11.93-1) experimental; urgency=low
+
+  * New upstream release:
+    + debian/rules:
+      - Build-depend on gstreamer core >= 0.11.93.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for API changes.
+    + debian/patches/0001-videoconvert-Need-LIBM-for-pow.patch:
+      - Dropped, merged upstream.
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 08 Aug 2012 18:38:24 +0200
+
 gst-plugins-base1.0 (0.11.92-1) experimental; urgency=low
 
   * debian/control.in:
