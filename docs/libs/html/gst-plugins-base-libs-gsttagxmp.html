@@ -43,8 +43,6 @@
 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="returnvalue">GstTagList</span></a> *        <a class="link" href="gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-from-xmp-buffer" title="gst_tag_list_from_xmp_buffer ()">gst_tag_list_from_xmp_buffer</a>        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-to-xmp-buffer" title="gst_tag_list_to_xmp_buffer ()">gst_tag_list_to_xmp_buffer</a>          (<em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> *list</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> read_only</code></em>);
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-to-xmp-buffer-full" title="gst_tag_list_to_xmp_buffer_full ()">gst_tag_list_to_xmp_buffer_full</a>     (<em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> *list</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> read_only</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **schemas</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      <a class="link" href="gst-plugins-base-libs-gsttagxmp.html#gst-tag-xmp-list-schemas" title="gst_tag_xmp_list_schemas ()">gst_tag_xmp_list_schemas</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -86,32 +84,6 @@ Parse a xmp packet into a taglist.
 <div class="refsect2">
 <a name="gst-tag-list-to-xmp-buffer"></a><h3>gst_tag_list_to_xmp_buffer ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_tag_list_to_xmp_buffer          (<em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> *list</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> read_only</code></em>);</pre>
-<p>
-Formats a taglist as a xmp packet.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>list</code></em> :</span></p></td>
-<td>tags</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>read_only</code></em> :</span></p></td>
-<td>does the container forbid inplace editing</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>new buffer or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, unref the buffer when done</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-tag-list-to-xmp-buffer-full"></a><h3>gst_tag_list_to_xmp_buffer_full ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_tag_list_to_xmp_buffer_full     (<em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> *list</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> read_only</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **schemas</code></em>);</pre>
 <p>

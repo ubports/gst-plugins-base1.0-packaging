@@ -183,7 +183,10 @@
 <ANCHOR id="GST-AUDIO-DECODER-SRC-NAME:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#GST-AUDIO-DECODER-SRC-NAME:CAPS">
 <ANCHOR id="GST-AUDIO-DECODER-SRC-PAD:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#GST-AUDIO-DECODER-SRC-PAD:CAPS">
 <ANCHOR id="gst-audio-decoder-finish-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-finish-frame">
+<ANCHOR id="gst-audio-decoder-set-output-format" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-set-output-format">
+<ANCHOR id="gst-audio-decoder-negotiate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-negotiate">
 <ANCHOR id="gst-audio-decoder-allocate-output-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-allocate-output-buffer">
+<ANCHOR id="gst-audio-decoder-get-allocator" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-allocator">
 <ANCHOR id="gst-audio-decoder-get-audio-info" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-audio-info">
 <ANCHOR id="gst-audio-decoder-get-estimate-rate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-estimate-rate">
 <ANCHOR id="gst-audio-decoder-get-delay" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-delay">
@@ -205,6 +208,7 @@
 <ANCHOR id="gst-audio-decoder-set-plc" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-set-plc">
 <ANCHOR id="gst-audio-decoder-set-plc-aware" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-set-plc-aware">
 <ANCHOR id="gst-audio-decoder-set-tolerance" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-set-tolerance">
+<ANCHOR id="gst-audio-decoder-merge-tags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-merge-tags">
 <ANCHOR id="gst-plugins-base-libs-gstaudiodecoder.property-details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#gst-plugins-base-libs-gstaudiodecoder.property-details">
 <ANCHOR id="GstAudioDecoder--min-latency" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder--min-latency">
 <ANCHOR id="GstAudioDecoder--plc" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder--plc">
@@ -226,6 +230,9 @@
 <ANCHOR id="GST-AUDIO-ENCODER-SRC-PAD:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#GST-AUDIO-ENCODER-SRC-PAD:CAPS">
 <ANCHOR id="gst-audio-encoder-finish-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-finish-frame">
 <ANCHOR id="gst-audio-encoder-allocate-output-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-allocate-output-buffer">
+<ANCHOR id="gst-audio-encoder-get-allocator" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-allocator">
+<ANCHOR id="gst-audio-encoder-set-output-format" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-output-format">
+<ANCHOR id="gst-audio-encoder-negotiate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-negotiate">
 <ANCHOR id="gst-audio-encoder-get-audio-info" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-audio-info">
 <ANCHOR id="gst-audio-encoder-get-drainable" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-drainable">
 <ANCHOR id="gst-audio-encoder-get-frame-max" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-get-frame-max">
@@ -251,6 +258,7 @@
 <ANCHOR id="gst-audio-encoder-set-mark-granule" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-mark-granule">
 <ANCHOR id="gst-audio-encoder-set-perfect-timestamp" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-perfect-timestamp">
 <ANCHOR id="gst-audio-encoder-set-tolerance" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-tolerance">
+<ANCHOR id="gst-audio-encoder-merge-tags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-merge-tags">
 <ANCHOR id="gst-plugins-base-libs-gstaudioencoder.property-details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#gst-plugins-base-libs-gstaudioencoder.property-details">
 <ANCHOR id="GstAudioEncoder--hard-resync" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder--hard-resync">
 <ANCHOR id="GstAudioEncoder--mark-granule" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder--mark-granule">
@@ -1208,7 +1216,6 @@
 <ANCHOR id="gst-plugins-base-libs-gsttagxmp.details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-plugins-base-libs-gsttagxmp.details">
 <ANCHOR id="gst-tag-list-from-xmp-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-from-xmp-buffer">
 <ANCHOR id="gst-tag-list-to-xmp-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-to-xmp-buffer">
-<ANCHOR id="gst-tag-list-to-xmp-buffer-full" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-tag-list-to-xmp-buffer-full">
 <ANCHOR id="gst-tag-xmp-list-schemas" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-tag-xmp-list-schemas">
 <ANCHOR id="gst-plugins-base-libs-gsttagxmp.see-also" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmp.html#gst-plugins-base-libs-gsttagxmp.see-also">
 <ANCHOR id="gst-plugins-base-libs-gsttagxmpwriter" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gsttagxmpwriter.html">
@@ -1566,6 +1573,8 @@
 <ANCHOR id="GST-VIDEO-FORMAT-r210" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-r210">
 <ANCHOR id="GST-VIDEO-FORMAT-I420-10BE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-I420-10BE:CAPS">
 <ANCHOR id="GST-VIDEO-FORMAT-I420-10LE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-I420-10LE:CAPS">
+<ANCHOR id="GST-VIDEO-FORMAT-I422-10BE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-I422-10BE:CAPS">
+<ANCHOR id="GST-VIDEO-FORMAT-I422-10LE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-I422-10LE:CAPS">
 <ANCHOR id="GST-VIDEO-MAX-PLANES:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-PLANES:CAPS">
 <ANCHOR id="GST-VIDEO-MAX-COMPONENTS:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-COMPONENTS:CAPS">
 <ANCHOR id="GstVideoFormatInfo" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo">
@@ -1778,11 +1787,15 @@
 <ANCHOR id="GST-VIDEO-OVERLAY-FORMAT-FLAG-PREMULTIPLIED-ALPHA:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#GST-VIDEO-OVERLAY-FORMAT-FLAG-PREMULTIPLIED-ALPHA:CAPS">
 <ANCHOR id="GST-VIDEO-OVERLAY-FORMAT-FLAG-GLOBAL-ALPHA:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#GST-VIDEO-OVERLAY-FORMAT-FLAG-GLOBAL-ALPHA:CAPS">
 <ANCHOR id="GstVideoOverlayRectangle" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle">
-<ANCHOR id="gst-video-overlay-rectangle-new-argb" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-new-argb">
+<ANCHOR id="gst-video-overlay-rectangle-new-raw" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-new-raw">
 <ANCHOR id="gst-video-overlay-rectangle-ref" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-ref">
 <ANCHOR id="gst-video-overlay-rectangle-unref" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-unref">
+<ANCHOR id="gst-video-overlay-rectangle-get-pixels-raw" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-raw">
 <ANCHOR id="gst-video-overlay-rectangle-get-pixels-argb" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-argb">
+<ANCHOR id="gst-video-overlay-rectangle-get-pixels-ayuv" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-ayuv">
+<ANCHOR id="gst-video-overlay-rectangle-get-pixels-unscaled-raw" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-unscaled-raw">
 <ANCHOR id="gst-video-overlay-rectangle-get-pixels-unscaled-argb" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-unscaled-argb">
+<ANCHOR id="gst-video-overlay-rectangle-get-pixels-unscaled-ayuv" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-pixels-unscaled-ayuv">
 <ANCHOR id="gst-video-overlay-rectangle-get-render-rectangle" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle">
 <ANCHOR id="gst-video-overlay-rectangle-get-seqnum" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-seqnum">
 <ANCHOR id="gst-video-overlay-rectangle-set-render-rectangle" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-set-render-rectangle">
@@ -1892,10 +1905,13 @@
 <ANCHOR id="gst-video-decoder-add-to-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-add-to-frame">
 <ANCHOR id="gst-video-decoder-allocate-output-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-allocate-output-buffer">
 <ANCHOR id="gst-video-decoder-allocate-output-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-allocate-output-frame">
+<ANCHOR id="gst-video-decoder-get-allocator" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-allocator">
+<ANCHOR id="gst-video-decoder-get-buffer-pool" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-buffer-pool">
 <ANCHOR id="gst-video-decoder-drop-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-drop-frame">
 <ANCHOR id="gst-video-decoder-finish-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-finish-frame">
 <ANCHOR id="gst-video-decoder-negotiate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-negotiate">
 <ANCHOR id="gst-video-decoder-get-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-frame">
+<ANCHOR id="gst-video-decoder-get-frames" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-frames">
 <ANCHOR id="gst-video-decoder-get-max-decode-time" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-max-decode-time">
 <ANCHOR id="gst-video-decoder-get-max-errors" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-max-errors">
 <ANCHOR id="gst-video-decoder-get-oldest-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-oldest-frame">
@@ -1909,6 +1925,7 @@
 <ANCHOR id="gst-video-decoder-set-output-state" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-set-output-state">
 <ANCHOR id="gst-video-decoder-set-max-errors" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-set-max-errors">
 <ANCHOR id="gst-video-decoder-set-packetized" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-set-packetized">
+<ANCHOR id="gst-video-decoder-merge-tags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-merge-tags">
 <ANCHOR id="gst-plugins-base-libs-GstVideoEncoder" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html">
 <ANCHOR id="gst-plugins-base-libs-GstVideoEncoder.synopsis" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-plugins-base-libs-GstVideoEncoder.synopsis">
 <ANCHOR id="gst-plugins-base-libs-GstVideoEncoder.description" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-plugins-base-libs-GstVideoEncoder.description">
@@ -1928,9 +1945,11 @@
 <ANCHOR id="GstVideoEncoderClass" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#GstVideoEncoderClass">
 <ANCHOR id="gst-video-encoder-allocate-output-buffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-allocate-output-buffer">
 <ANCHOR id="gst-video-encoder-allocate-output-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-allocate-output-frame">
+<ANCHOR id="gst-video-encoder-get-allocator" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-allocator">
 <ANCHOR id="gst-video-encoder-finish-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-finish-frame">
 <ANCHOR id="gst-video-encoder-negotiate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-negotiate">
 <ANCHOR id="gst-video-encoder-get-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-frame">
+<ANCHOR id="gst-video-encoder-get-frames" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-frames">
 <ANCHOR id="gst-video-encoder-get-oldest-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-oldest-frame">
 <ANCHOR id="gst-video-encoder-set-headers" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-set-headers">
 <ANCHOR id="gst-video-encoder-get-latency" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-latency">
@@ -1940,6 +1959,7 @@
 <ANCHOR id="gst-video-encoder-set-output-state" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-set-output-state">
 <ANCHOR id="gst-video-encoder-get-output-state" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-output-state">
 <ANCHOR id="gst-video-encoder-proxy-getcaps" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-proxy-getcaps">
+<ANCHOR id="gst-video-encoder-merge-tags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-merge-tags">
 <ANCHOR id="gst-plugins-base-libs-gstvideoutils" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html">
 <ANCHOR id="gst-plugins-base-libs-gstvideoutils.synopsis" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html#gst-plugins-base-libs-gstvideoutils.synopsis">
 <ANCHOR id="gst-plugins-base-libs-gstvideoutils.description" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html#gst-plugins-base-libs-gstvideoutils.description">

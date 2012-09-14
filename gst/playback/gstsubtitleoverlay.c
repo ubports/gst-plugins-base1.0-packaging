@@ -29,7 +29,7 @@
  * <refsect2>
  * <title>Examples</title>
  * |[
- * gst-launch -v filesrc location=test.mkv ! matroskademux name=demux ! "video/x-h264" ! queue2 ! decodebin ! subtitleoverlay name=overlay ! videoconvert ! autovideosink  demux. ! "video/x-dvd-subpicture" ! queue2 ! overlay.
+ * gst-launch -v filesrc location=test.mkv ! matroskademux name=demux ! "video/x-h264" ! queue2 ! decodebin ! subtitleoverlay name=overlay ! videoconvert ! autovideosink  demux. ! "subpicture/x-dvd" ! queue2 ! overlay.
  * ]| This will play back the given Matroska file with h264 video and subpicture subtitles.
  * </refsect2>
  */
@@ -43,8 +43,6 @@
 #include <gst/pbutils/missing-plugins.h>
 #include <gst/video/video.h>
 #include <string.h>
-
-#include "gst/glib-compat-private.h"
 
 GST_DEBUG_CATEGORY_STATIC (subtitle_overlay_debug);
 #define GST_CAT_DEFAULT subtitle_overlay_debug
@@ -164,15 +162,8 @@ gst_subtitle_overlay_finalize (GObject * object)
 {
   GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (object);
 
-  if (self->lock) {
-    g_mutex_free (self->lock);
-    self->lock = NULL;
-  }
-
-  if (self->factories_lock) {
-    g_mutex_free (self->factories_lock);
-    self->factories_lock = NULL;
-  }
+  g_mutex_clear (&self->lock);
+  g_mutex_clear (&self->factories_lock);
 
   if (self->factories)
     gst_plugin_feature_list_free (self->factories);
@@ -1183,7 +1174,7 @@ _pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
   self->subtitle_flush = FALSE;
 
   /* Find our factories */
-  g_mutex_lock (self->factories_lock);
+  g_mutex_lock (&self->factories_lock);
   gst_subtitle_overlay_update_factory_list (self);
   if (subcaps) {
     factories =
@@ -1199,7 +1190,7 @@ _pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
       self->subtitle_error = TRUE;
     }
   }
-  g_mutex_unlock (self->factories_lock);
+  g_mutex_unlock (&self->factories_lock);
 
   if (!subcaps) {
     _setup_passthrough (self);
@@ -1256,14 +1247,14 @@ _pad_blocked_cb (GstPad * pad, GstPadProbeInfo * info, gpointer user_data)
 
       g_assert (parser_caps != NULL);
 
-      g_mutex_lock (self->factories_lock);
+      g_mutex_lock (&self->factories_lock);
       gst_subtitle_overlay_update_factory_list (self);
       GST_DEBUG_OBJECT (self,
           "Searching overlay factories for caps %" GST_PTR_FORMAT, parser_caps);
       overlay_factories =
           gst_subtitle_overlay_get_factories_for_caps (self->factories,
           parser_caps);
-      g_mutex_unlock (self->factories_lock);
+      g_mutex_unlock (&self->factories_lock);
 
       if (!overlay_factories) {
         GST_WARNING_OBJECT (self,
@@ -1429,12 +1420,12 @@ gst_subtitle_overlay_change_state (GstElement * element,
   switch (transition) {
     case GST_STATE_CHANGE_NULL_TO_READY:
       GST_DEBUG_OBJECT (self, "State change NULL->READY");
-      g_mutex_lock (self->factories_lock);
+      g_mutex_lock (&self->factories_lock);
       if (G_UNLIKELY (!gst_subtitle_overlay_update_factory_list (self))) {
-        g_mutex_unlock (self->factories_lock);
+        g_mutex_unlock (&self->factories_lock);
         return GST_STATE_CHANGE_FAILURE;
       }
-      g_mutex_unlock (self->factories_lock);
+      g_mutex_unlock (&self->factories_lock);
 
       GST_SUBTITLE_OVERLAY_LOCK (self);
       /* Set the internal pads to blocking */
@@ -1942,7 +1933,7 @@ gst_subtitle_overlay_subtitle_sink_getcaps (GstPad * pad, GstCaps * filter)
   GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (gst_pad_get_parent (pad));
   GstCaps *ret;
 
-  g_mutex_lock (self->factories_lock);
+  g_mutex_lock (&self->factories_lock);
   if (G_UNLIKELY (!gst_subtitle_overlay_update_factory_list (self)))
     ret = gst_caps_new_empty ();
   else if (filter)
@@ -1951,7 +1942,7 @@ gst_subtitle_overlay_subtitle_sink_getcaps (GstPad * pad, GstCaps * filter)
         GST_CAPS_INTERSECT_FIRST);
   else
     ret = gst_caps_ref (self->factory_caps);
-  g_mutex_unlock (self->factories_lock);
+  g_mutex_unlock (&self->factories_lock);
 
   GST_DEBUG_OBJECT (pad, "Returning subtitle caps %" GST_PTR_FORMAT, ret);
 
@@ -2231,8 +2222,8 @@ gst_subtitle_overlay_init (GstSubtitleOverlay * self)
   GstPadTemplate *templ;
   GstPad *proxypad = NULL;
 
-  self->lock = g_mutex_new ();
-  self->factories_lock = g_mutex_new ();
+  g_mutex_init (&self->lock);
+  g_mutex_init (&self->factories_lock);
 
   templ = gst_static_pad_template_get (&srctemplate);
   self->srcpad = gst_ghost_pad_new_no_target_from_template ("src", templ);

@@ -143,7 +143,7 @@ gst_video_scale_method_get_type (void)
     {GST_VIDEO_SCALE_NEAREST, "Nearest Neighbour", "nearest-neighbour"},
     {GST_VIDEO_SCALE_BILINEAR, "Bilinear", "bilinear"},
     {GST_VIDEO_SCALE_4TAP, "4-tap", "4-tap"},
-    {GST_VIDEO_SCALE_LANCZOS, "Lanczos", "lanczos"},
+    {GST_VIDEO_SCALE_LANCZOS, "Lanczos (experimental/unstable)", "lanczos"},
     {0, NULL, NULL},
   };
 
@@ -1412,17 +1412,20 @@ gst_video_scale_src_event (GstBaseTransform * trans, GstEvent * event)
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_NAVIGATION:
-      event =
-          GST_EVENT (gst_mini_object_make_writable (GST_MINI_OBJECT (event)));
+      if (filter->in_info.width != filter->out_info.width ||
+          filter->in_info.height != filter->out_info.height) {
+        event =
+            GST_EVENT (gst_mini_object_make_writable (GST_MINI_OBJECT (event)));
 
-      structure = (GstStructure *) gst_event_get_structure (event);
-      if (gst_structure_get_double (structure, "pointer_x", &a)) {
-        gst_structure_set (structure, "pointer_x", G_TYPE_DOUBLE,
-            a * filter->in_info.width / filter->out_info.width, NULL);
-      }
-      if (gst_structure_get_double (structure, "pointer_y", &a)) {
-        gst_structure_set (structure, "pointer_y", G_TYPE_DOUBLE,
-            a * filter->in_info.height / filter->out_info.height, NULL);
+        structure = (GstStructure *) gst_event_get_structure (event);
+        if (gst_structure_get_double (structure, "pointer_x", &a)) {
+          gst_structure_set (structure, "pointer_x", G_TYPE_DOUBLE,
+              a * filter->in_info.width / filter->out_info.width, NULL);
+        }
+        if (gst_structure_get_double (structure, "pointer_y", &a)) {
+          gst_structure_set (structure, "pointer_y", G_TYPE_DOUBLE,
+              a * filter->in_info.height / filter->out_info.height, NULL);
+        }
       }
       break;
     default:

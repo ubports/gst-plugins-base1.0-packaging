@@ -21,27 +21,6 @@
 #include "gst/video/gstvideopool.h"
 
 /**
- * gst_video_alignment_reset:
- * @align: a #GstVideoAlignment
- *
- * Set @align to its default values with no padding and no alignment.
- */
-void
-gst_video_alignment_reset (GstVideoAlignment * align)
-{
-  gint i;
-
-  g_return_if_fail (align != NULL);
-
-  align->padding_top = 0;
-  align->padding_bottom = 0;
-  align->padding_left = 0;
-  align->padding_right = 0;
-  for (i = 0; i < GST_VIDEO_MAX_PLANES; i++)
-    align->stride_align[i] = 0;
-}
-
-/**
  * gst_buffer_pool_config_set_video_alignment:
  * @config: a #GstStructure
  * @align: a #GstVideoAlignment
@@ -93,51 +72,6 @@ gst_buffer_pool_config_get_video_alignment (GstStructure * config,
       "stride-align1", G_TYPE_UINT, &align->stride_align[1],
       "stride-align2", G_TYPE_UINT, &align->stride_align[2],
       "stride-align3", G_TYPE_UINT, &align->stride_align[3], NULL);
-}
-
-static void
-gst_video_info_align (GstVideoInfo * info, GstVideoAlignment * align)
-{
-  const GstVideoFormatInfo *vinfo = info->finfo;
-  gint width, height;
-  gint padded_width, padded_height;
-  gint i, n_comp;
-
-  width = GST_VIDEO_INFO_WIDTH (info);
-  height = GST_VIDEO_INFO_HEIGHT (info);
-
-  GST_LOG ("padding %u-%ux%u-%u", align->padding_top,
-      align->padding_left, align->padding_right, align->padding_bottom);
-
-  /* add the padding */
-  padded_width = width + align->padding_left + align->padding_right;
-  padded_height = height + align->padding_top + align->padding_bottom;
-
-  gst_video_info_set_format (info, GST_VIDEO_INFO_FORMAT (info),
-      padded_width, padded_height);
-
-  info->width = width;
-  info->height = height;
-
-  n_comp = GST_VIDEO_INFO_N_COMPONENTS (info);
-  if (GST_VIDEO_FORMAT_INFO_HAS_PALETTE (vinfo))
-    n_comp--;
-
-  /* FIXME, not quite correct, NV12 would apply the vedge twice on the second
-   * plane */
-  for (i = 0; i < n_comp; i++) {
-    gint vedge, hedge, plane;
-
-    hedge = GST_VIDEO_FORMAT_INFO_SCALE_WIDTH (vinfo, i, align->padding_left);
-    vedge = GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT (vinfo, i, align->padding_top);
-    plane = GST_VIDEO_FORMAT_INFO_PLANE (vinfo, i);
-
-    GST_DEBUG ("plane %d: hedge %d vedge %d align %d stride %d", plane, hedge,
-        vedge, align->stride_align[i], info->stride[plane]);
-
-    info->offset[plane] += (vedge * info->stride[plane]) +
-        (hedge * GST_VIDEO_FORMAT_INFO_PSTRIDE (vinfo, i));
-  }
 }
 
 /* bufferpool */

@@ -213,6 +213,8 @@ struct _GstAudioDecoder
  * @close:          Optional.
  *                  Called when the element changes to GST_STATE_NULL.
  *                  Allows closing external resources.
+ * @negotiate:      Optional.
+ *                  Negotiate with downstream and configure buffer pools, etc.
  * @decide_allocation: Optional.
  *                     Setup the allocation parameters for allocating output
  *                     buffers. The passed in query contains the result of the
@@ -259,13 +261,15 @@ struct _GstAudioDecoderClass
   
   gboolean      (*close)              (GstAudioDecoder *dec);
 
+  gboolean      (*negotiate)          (GstAudioDecoder *dec);
+
   gboolean      (*decide_allocation)  (GstAudioDecoder *dec, GstQuery *query);
 
   gboolean      (*propose_allocation) (GstAudioDecoder *dec,
                                        GstQuery * query);
 
   /*< private >*/
-  gpointer       _gst_reserved[GST_PADDING_LARGE-2];
+  gpointer       _gst_reserved[GST_PADDING_LARGE];
 };
 
 GType             gst_audio_decoder_get_type (void);
@@ -273,10 +277,12 @@ GType             gst_audio_decoder_get_type (void);
 gboolean          gst_audio_decoder_set_output_format  (GstAudioDecoder    * dec,
                                                         const GstAudioInfo * info);
 
+gboolean          gst_audio_decoder_negotiate (GstAudioDecoder * dec);
+
 GstFlowReturn     gst_audio_decoder_finish_frame (GstAudioDecoder * dec,
                                                   GstBuffer * buf, gint frames);
 
-GstBuffer *       gst_audio_decoder_allocate_output_buffer (GstAudioDecoder * decoder,
+GstBuffer *       gst_audio_decoder_allocate_output_buffer (GstAudioDecoder * dec,
                                                             gsize              size);
 
 /* context parameters */
@@ -319,14 +325,14 @@ void              gst_audio_decoder_set_plc (GstAudioDecoder * dec,
 gboolean          gst_audio_decoder_get_plc (GstAudioDecoder * dec);
 
 void              gst_audio_decoder_set_min_latency (GstAudioDecoder * dec,
-                                                     gint64            num);
+                                                     GstClockTime      num);
 
-gint64            gst_audio_decoder_get_min_latency (GstAudioDecoder * dec);
+GstClockTime      gst_audio_decoder_get_min_latency (GstAudioDecoder * dec);
 
 void              gst_audio_decoder_set_tolerance   (GstAudioDecoder * dec,
-                                                     gint64            tolerance);
+                                                     GstClockTime      tolerance);
 
-gint64            gst_audio_decoder_get_tolerance   (GstAudioDecoder * dec);
+GstClockTime      gst_audio_decoder_get_tolerance   (GstAudioDecoder * dec);
 
 void              gst_audio_decoder_set_drainable (GstAudioDecoder * dec,
                                                    gboolean enabled);
@@ -337,6 +343,10 @@ void              gst_audio_decoder_set_needs_format (GstAudioDecoder * dec,
                                                       gboolean enabled);
 
 gboolean          gst_audio_decoder_get_needs_format (GstAudioDecoder * dec);
+
+void              gst_audio_decoder_get_allocator (GstAudioDecoder * dec,
+                                                   GstAllocator ** allocator,
+                                                   GstAllocationParams * params);
 
 void              gst_audio_decoder_merge_tags (GstAudioDecoder * dec,
                                                 const GstTagList * tags, GstTagMergeMode mode);

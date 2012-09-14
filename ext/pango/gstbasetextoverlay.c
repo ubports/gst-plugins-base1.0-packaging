@@ -629,7 +629,6 @@ gst_base_text_overlay_init (GstBaseTextOverlay * overlay,
   if (template) {
     /* text sink */
     overlay->text_sinkpad = gst_pad_new_from_template (template, "text_sink");
-    gst_object_unref (template);
 
     gst_pad_set_event_function (overlay->text_sinkpad,
         GST_DEBUG_FUNCPTR (gst_base_text_overlay_text_event));
@@ -745,10 +744,11 @@ static gboolean
 gst_base_text_overlay_setcaps_txt (GstBaseTextOverlay * overlay, GstCaps * caps)
 {
   GstStructure *structure;
+  const gchar *format;
 
   structure = gst_caps_get_structure (caps, 0);
-  overlay->have_pango_markup =
-      gst_structure_has_name (structure, "text/x-pango-markup");
+  format = gst_structure_get_string (structure, "format");
+  overlay->have_pango_markup = (strcmp (format, "pango-markup") == 0);
 
   return TRUE;
 }
@@ -1236,7 +1236,7 @@ gst_base_text_overlay_set_composition (GstBaseTextOverlay * overlay)
     gst_buffer_add_video_meta (overlay->text_image, GST_VIDEO_FRAME_FLAG_NONE,
         GST_VIDEO_OVERLAY_COMPOSITION_FORMAT_RGB,
         overlay->image_width, overlay->image_height);
-    rectangle = gst_video_overlay_rectangle_new_argb (overlay->text_image,
+    rectangle = gst_video_overlay_rectangle_new_raw (overlay->text_image,
         xpos, ypos, overlay->image_width, overlay->image_height,
         GST_VIDEO_OVERLAY_FORMAT_FLAG_PREMULTIPLIED_ALPHA);
 
@@ -1754,6 +1754,24 @@ gst_base_text_overlay_text_event (GstPad * pad, GstObject * parent,
 
       gst_event_unref (event);
       ret = TRUE;
+
+      /* wake up the video chain, it might be waiting for a text buffer or
+       * a text segment update */
+      GST_BASE_TEXT_OVERLAY_LOCK (overlay);
+      GST_BASE_TEXT_OVERLAY_BROADCAST (overlay);
+      GST_BASE_TEXT_OVERLAY_UNLOCK (overlay);
+      break;
+    }
+    case GST_EVENT_GAP:
+    {
+      GstClockTime start, duration;
+
+      gst_event_parse_gap (event, &start, &duration);
+      if (GST_CLOCK_TIME_IS_VALID (duration))
+        start += duration;
+      /* we do not expect another buffer until after gap,
+       * so that is our position now */
+      overlay->text_segment.position = start;
 
       /* wake up the video chain, it might be waiting for a text buffer or
        * a text segment update */

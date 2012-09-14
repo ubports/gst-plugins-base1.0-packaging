@@ -205,20 +205,6 @@ gst_ogg_mux_class_init (GstOggMuxClass * klass)
 
 }
 
-#if 0
-static const GstEventMask *
-gst_ogg_mux_get_sink_event_masks (GstPad * pad)
-{
-  static const GstEventMask gst_ogg_mux_sink_event_masks[] = {
-    {GST_EVENT_EOS, 0},
-    {GST_EVENT_DISCONTINUOUS, 0},
-    {0,}
-  };
-
-  return gst_ogg_mux_sink_event_masks;
-}
-#endif
-
 static void
 gst_ogg_mux_clear (GstOggMux * ogg_mux)
 {
@@ -452,7 +438,7 @@ gst_ogg_mux_request_new_pad (GstElement * element,
       GstOggPadData *oggpad;
 
       oggpad = (GstOggPadData *)
-          gst_collect_pads_add_pad_full (ogg_mux->collect, newpad,
+          gst_collect_pads_add_pad (ogg_mux->collect, newpad,
           sizeof (GstOggPadData), gst_ogg_mux_ogg_pad_destroy_notify, FALSE);
       ogg_mux->active_pads++;
 
@@ -523,16 +509,16 @@ gst_ogg_mux_handle_src_event (GstPad * pad, GstObject * parent,
 {
   gboolean res = FALSE;
   GstOggMux *ogg_mux = GST_OGG_MUX (parent);
-  GstEventType type = event ? GST_EVENT_TYPE (event) : GST_EVENT_UNKNOWN;
 
-  switch (type) {
+  switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_SEEK:{
       GstSeekFlags flags;
 
       gst_event_parse_seek (event, NULL, NULL, &flags, NULL, NULL, NULL, NULL);
       if (!ogg_mux->need_headers && (flags & GST_SEEK_FLAG_FLUSH) != 0) {
-        /* disable flushing seeks once we started */
-        goto eat;
+        /* don't allow flushing seeks once we started */
+        gst_event_unref (event);
+        event = NULL;
       }
       break;
     }
@@ -540,8 +526,9 @@ gst_ogg_mux_handle_src_event (GstPad * pad, GstObject * parent,
       break;
   }
 
-  res = gst_pad_event_default (pad, parent, event);
-eat:
+  if (event != NULL)
+    res = gst_pad_event_default (pad, parent, event);
+
   return res;
 }
 
@@ -990,6 +977,11 @@ gst_ogg_mux_queue_pads (GstOggMux * ogg_mux, gboolean * popped)
                 GST_DEBUG_OBJECT (pad, "Pad is sparse, marking as such");
                 gst_collect_pads_set_waiting (ogg_mux->collect,
                     (GstCollectData *) pad, FALSE);
+              }
+
+              if (pad->map.is_video && ogg_mux->delta_pad == NULL) {
+                ogg_mux->delta_pad = pad;
+                GST_INFO_OBJECT (pad, "selected delta pad");
               }
             }
             if (caps)

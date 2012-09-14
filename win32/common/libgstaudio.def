@@ -38,6 +38,7 @@ EXPORTS
 	gst_audio_clock_reset
 	gst_audio_decoder_allocate_output_buffer
 	gst_audio_decoder_finish_frame
+	gst_audio_decoder_get_allocator
 	gst_audio_decoder_get_audio_info
 	gst_audio_decoder_get_delay
 	gst_audio_decoder_get_drainable
@@ -52,6 +53,7 @@ EXPORTS
 	gst_audio_decoder_get_tolerance
 	gst_audio_decoder_get_type
 	gst_audio_decoder_merge_tags
+	gst_audio_decoder_negotiate
 	gst_audio_decoder_set_drainable
 	gst_audio_decoder_set_estimate_rate
 	gst_audio_decoder_set_latency
@@ -66,6 +68,7 @@ EXPORTS
 	gst_audio_downmix_meta_get_info
 	gst_audio_encoder_allocate_output_buffer
 	gst_audio_encoder_finish_frame
+	gst_audio_encoder_get_allocator
 	gst_audio_encoder_get_audio_info
 	gst_audio_encoder_get_drainable
 	gst_audio_encoder_get_frame_max
@@ -80,6 +83,7 @@ EXPORTS
 	gst_audio_encoder_get_tolerance
 	gst_audio_encoder_get_type
 	gst_audio_encoder_merge_tags
+	gst_audio_encoder_negotiate
 	gst_audio_encoder_proxy_getcaps
 	gst_audio_encoder_set_drainable
 	gst_audio_encoder_set_frame_max
@@ -136,6 +140,7 @@ EXPORTS
 	gst_audio_ring_buffer_get_type
 	gst_audio_ring_buffer_is_acquired
 	gst_audio_ring_buffer_is_active
+	gst_audio_ring_buffer_is_flushing
 	gst_audio_ring_buffer_may_start
 	gst_audio_ring_buffer_open_device
 	gst_audio_ring_buffer_parse_caps
@@ -148,6 +153,7 @@ EXPORTS
 	gst_audio_ring_buffer_set_channel_positions
 	gst_audio_ring_buffer_set_flushing
 	gst_audio_ring_buffer_set_sample
+	gst_audio_ring_buffer_set_timestamp
 	gst_audio_ring_buffer_start
 	gst_audio_ring_buffer_state_get_type
 	gst_audio_ring_buffer_stop

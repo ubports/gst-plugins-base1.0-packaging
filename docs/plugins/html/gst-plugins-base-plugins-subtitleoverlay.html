@@ -84,13 +84,13 @@ DVD subpicture subtitles.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp10597088"></a><h3>Examples</h3>
+<a name="idp5457952"></a><h3>Examples</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> <span class="string">&quot;video/x-h264&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> <span class="string">&quot;video/x-dvd-subpicture&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> <span class="string">&quot;video/x-h264&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> <span class="string">&quot;subpicture/x-dvd&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -102,7 +102,7 @@ DVD subpicture subtitles.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp5675440"></a><h3>Element Information</h3>
+<a name="idp6670224"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -125,7 +125,7 @@ DVD subpicture subtitles.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp12248080"></a><h3>Element Pads</h3>
+<a name="idp11498336"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>

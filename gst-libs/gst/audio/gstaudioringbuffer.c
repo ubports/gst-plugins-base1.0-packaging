@@ -43,8 +43,6 @@
 
 #include "gstaudioringbuffer.h"
 
-#include "gst/glib-compat-private.h"
-
 GST_DEBUG_CATEGORY_STATIC (gst_audio_ring_buffer_debug);
 #define GST_CAT_DEFAULT gst_audio_ring_buffer_debug
 
@@ -85,7 +83,7 @@ gst_audio_ring_buffer_init (GstAudioRingBuffer * ringbuffer)
   ringbuffer->open = FALSE;
   ringbuffer->acquired = FALSE;
   ringbuffer->state = GST_AUDIO_RING_BUFFER_STATE_STOPPED;
-  ringbuffer->cond = g_cond_new ();
+  g_cond_init (&ringbuffer->cond);
   ringbuffer->waiting = 0;
   ringbuffer->empty_seg = NULL;
   ringbuffer->flushing = TRUE;
@@ -107,7 +105,7 @@ gst_audio_ring_buffer_finalize (GObject * object)
 {
   GstAudioRingBuffer *ringbuffer = GST_AUDIO_RING_BUFFER (object);
 
-  g_cond_free (ringbuffer->cond);
+  g_cond_clear (&ringbuffer->cond);
   g_free (ringbuffer->empty_seg);
 
   G_OBJECT_CLASS (gst_audio_ring_buffer_parent_class)->finalize (G_OBJECT
@@ -331,7 +329,7 @@ gst_audio_ring_buffer_convert (GstAudioRingBuffer * buf,
 /**
  * gst_audio_ring_buffer_set_callback:
  * @buf: the #GstAudioRingBuffer to set the callback on
- * @cb: the callback to set
+ * @cb: (scope async): the callback to set
  * @user_data: user data passed to the callback
  *
  * Sets the given callback function on the buffer. This function
@@ -523,7 +521,7 @@ gst_audio_ring_buffer_acquire (GstAudioRingBuffer * buf,
 {
   gboolean res = FALSE;
   GstAudioRingBufferClass *rclass;
-  gint segsize, bpf;
+  gint segsize, bpf, i;
 
   g_return_val_if_fail (GST_IS_AUDIO_RING_BUFFER (buf), FALSE);
 
@@ -549,6 +547,14 @@ gst_audio_ring_buffer_acquire (GstAudioRingBuffer * buf,
 
   if (G_UNLIKELY (!res))
     goto acquire_failed;
+
+  GST_INFO_OBJECT (buf, "Allocating an array for %d timestamps",
+      spec->segtotal);
+  buf->timestamps = g_slice_alloc0 (sizeof (GstClockTime) * spec->segtotal);
+  /* initialize array with invalid timestamps */
+  for (i = 0; i < spec->segtotal; i++) {
+    buf->timestamps[i] = GST_CLOCK_TIME_NONE;
+  }
 
   if (G_UNLIKELY ((bpf = buf->spec.info.bpf) == 0))
     goto invalid_bpf;
@@ -634,6 +640,14 @@ gst_audio_ring_buffer_release (GstAudioRingBuffer * buf)
   gst_audio_ring_buffer_stop (buf);
 
   GST_OBJECT_LOCK (buf);
+
+  if (G_LIKELY (buf->timestamps)) {
+    GST_INFO_OBJECT (buf, "Freeing timestamp buffer, %d entries",
+        buf->spec.segtotal);
+    g_slice_free1 (sizeof (GstClockTime) * buf->spec.segtotal, buf->timestamps);
+    buf->timestamps = NULL;
+  }
+
   if (G_UNLIKELY (!buf->acquired))
     goto was_released;
 
@@ -817,6 +831,30 @@ gst_audio_ring_buffer_set_flushing (GstAudioRingBuffer * buf, gboolean flushing)
     gst_audio_ring_buffer_clear_all (buf);
   }
   GST_OBJECT_UNLOCK (buf);
+}
+
+/**
+ * gst_audio_ring_buffer_is_flushing:
+ * @buf: the #GstAudioRingBuffer
+ *
+ * Check if @buf is flushing.
+ *
+ * MT safe.
+ *
+ * Returns: TRUE if the device is flushing.
+ */
+gboolean
+gst_audio_ring_buffer_is_flushing (GstAudioRingBuffer * buf)
+{
+  gboolean res;
+
+  g_return_val_if_fail (GST_IS_AUDIO_RING_BUFFER (buf), TRUE);
+
+  GST_OBJECT_LOCK (buf);
+  res = buf->flushing;
+  GST_OBJECT_UNLOCK (buf);
+
+  return res;
 }
 
 /**
@@ -1599,6 +1637,7 @@ gst_audio_ring_buffer_commit (GstAudioRingBuffer * buf, guint64 * sample,
  * @sample: the sample position of the data
  * @data: where the data should be read
  * @len: the number of samples in data to read
+ * @timestamp: where the timestamp is returned
  *
  * Read @len samples from the ringbuffer into the memory pointed 
  * to by @data.
@@ -1608,6 +1647,8 @@ gst_audio_ring_buffer_commit (GstAudioRingBuffer * buf, guint64 * sample,
  * @len should not be a multiple of the segment size of the ringbuffer
  * although it is recommended.
  *
+ * @timestamp will return the timestamp associated with the data returned.
+ *
  * Returns: The number of samples read from the ringbuffer or -1 on
  * error.
  *
@@ -1615,10 +1656,10 @@ gst_audio_ring_buffer_commit (GstAudioRingBuffer * buf, guint64 * sample,
  */
 guint
 gst_audio_ring_buffer_read (GstAudioRingBuffer * buf, guint64 sample,
-    guint8 * data, guint len)
+    guint8 * data, guint len, GstClockTime * timestamp)
 {
   gint segdone;
-  gint segsize, segtotal, channels, bps, bpf, sps;
+  gint segsize, segtotal, channels, bps, bpf, sps, readseg = 0;
   guint8 *dest;
   guint to_read;
   gboolean need_reorder;
@@ -1640,7 +1681,7 @@ gst_audio_ring_buffer_read (GstAudioRingBuffer * buf, guint64 sample,
   /* read enough samples */
   while (to_read > 0) {
     gint sampleslen;
-    gint readseg, sampleoff;
+    gint sampleoff;
 
     /* figure out the segment and the offset inside the segment where
      * the sample should be read from. */
@@ -1710,6 +1751,12 @@ gst_audio_ring_buffer_read (GstAudioRingBuffer * buf, guint64 sample,
     to_read -= sampleslen;
     sample += sampleslen;
     data += sampleslen * bpf;
+  }
+
+  if (buf->timestamps && timestamp) {
+    *timestamp = buf->timestamps[readseg % segtotal];
+    GST_INFO_OBJECT (buf, "Retrieved timestamp %" GST_TIME_FORMAT
+        " @ %d", GST_TIME_ARGS (*timestamp), readseg % segtotal);
   }
 
   return len - to_read;
@@ -1894,5 +1941,32 @@ gst_audio_ring_buffer_set_channel_positions (GstAudioRingBuffer * buf,
       buf->need_reorder = TRUE;
       break;
     }
+  }
+}
+
+/**
+ * gst_ring_buffer_set_timestamp:
+ * @buf: the #GstRingBuffer
+ * @readseg: the current data segment
+ * @timestamp: The new timestamp of the buffer.
+ *
+ * Set a new timestamp on the buffer.
+ *
+ * MT safe.
+ *
+ * Since:
+ */
+void
+gst_audio_ring_buffer_set_timestamp (GstAudioRingBuffer * buf, gint readseg,
+    GstClockTime timestamp)
+{
+  g_return_if_fail (GST_IS_AUDIO_RING_BUFFER (buf));
+
+  GST_INFO_OBJECT (buf, "Storing timestamp %" GST_TIME_FORMAT
+      " @ %d", GST_TIME_ARGS (timestamp), readseg);
+  if (buf->timestamps) {
+    buf->timestamps[readseg] = timestamp;
+  } else {
+    GST_ERROR_OBJECT (buf, "Could not store timestamp, no timestamps buffer");
   }
 }

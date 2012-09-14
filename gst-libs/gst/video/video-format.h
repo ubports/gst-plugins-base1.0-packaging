@@ -72,6 +72,8 @@ G_BEGIN_DECLS
  * @GST_VIDEO_FORMAT_r210: packed 4:4:4 RGB, 10 bits per channel
  * @GST_VIDEO_FORMAT_I420_10BE: planar 4:2:0 YUV, 10 bits per channel
  * @GST_VIDEO_FORMAT_I420_10LE: planar 4:2:0 YUV, 10 bits per channel
+ * @GST_VIDEO_FORMAT_I422_10BE: planar 4:2:2 YUV, 10 bits per channel
+ * @GST_VIDEO_FORMAT_I422_10LE: planar 4:2:2 YUV, 10 bits per channel
  *
  * Enum value describing the most common video formats.
  */
@@ -119,7 +121,9 @@ typedef enum {
   GST_VIDEO_FORMAT_AYUV64,
   GST_VIDEO_FORMAT_r210,
   GST_VIDEO_FORMAT_I420_10BE,
-  GST_VIDEO_FORMAT_I420_10LE
+  GST_VIDEO_FORMAT_I420_10LE,
+  GST_VIDEO_FORMAT_I422_10BE,
+  GST_VIDEO_FORMAT_I422_10LE,
 } GstVideoFormat;
 
 #define GST_VIDEO_MAX_PLANES 4
@@ -288,13 +292,14 @@ typedef void (*GstVideoFormatPack)           (const GstVideoFormatInfo *info,
  * @depth: the depth in bits for each component
  * @pixel_stride: the pixel stride of each component. This is the amount of
  *    bytes to the pixel immediately to the right. When bits < 8, the stride is
- *    expressed in bits.
+ *    expressed in bits. For 24-bit RGB, this would be 3 bytes, for example,
+ *    while it would be 4 bytes for RGBx or ARGB.
  * @n_planes: the number of planes for this format. The number of planes can be
  *    less than the amount of components when multiple components are packed into
  *    one plane.
  * @plane: the plane number where a component can be found
  * @poffset: the offset in the plane where the first pixel of the components
- *    can be found. If bits < 8 the amount is specified in bits.
+ *    can be found.
  * @w_sub: subsampling factor of the width for the component. Use
  *     GST_VIDEO_SUB_SCALE to scale a width.
  * @h_sub: subsampling factor of the height for the component. Use
@@ -347,8 +352,37 @@ struct _GstVideoFormatInfo {
 #define GST_VIDEO_FORMAT_INFO_N_COMPONENTS(info) ((info)->n_components)
 #define GST_VIDEO_FORMAT_INFO_SHIFT(info,c)      ((info)->shift[c])
 #define GST_VIDEO_FORMAT_INFO_DEPTH(info,c)      ((info)->depth[c])
+/**
+ * GST_VIDEO_FORMAT_INFO_PSTRIDE:
+ *
+ * pixel stride for the given component. This is the amount of bytes to the
+ * pixel immediately to the right, so basically bytes from one pixel to the
+ * next. When bits < 8, the stride is expressed in bits.
+ *
+ * Examples: for 24-bit RGB, the pixel stride would be 3 bytes, while it
+ * would be 4 bytes for RGBx or ARGB, and 8 bytes for ARGB64 or AYUV64.
+ * For planar formats such as I420 the pixel stride is usually 1. For
+ * YUY2 it would be 2 bytes.
+ */
 #define GST_VIDEO_FORMAT_INFO_PSTRIDE(info,c)    ((info)->pixel_stride[c])
+/**
+ * GST_VIDEO_FORMAT_INFO_N_PLANES:
+ *
+ * Number of planes. This is the number of planes the pixel layout is
+ * organized in in memory. The number of planes can be less than the
+ * number of components (e.g. Y,U,V,A or R, G, B, A) when multiple
+ * components are packed into one plane.
+ *
+ * Examples: RGB/RGBx/RGBA: 1 plane, 3/3/4 components;
+ * I420: 3 planes, 3 components; NV21/NV12: 2 planes, 3 components.
+ */
 #define GST_VIDEO_FORMAT_INFO_N_PLANES(info)     ((info)->n_planes)
+/**
+ * GST_VIDEO_FORMAT_INFO_PLANE:
+ *
+ * Plane number where the given component can be found. A plane may
+ * contain data for multiple components.
+ */
 #define GST_VIDEO_FORMAT_INFO_PLANE(info,c)      ((info)->plane[c])
 #define GST_VIDEO_FORMAT_INFO_POFFSET(info,c)    ((info)->poffset[c])
 #define GST_VIDEO_FORMAT_INFO_W_SUB(info,c)      ((info)->w_sub[c])
@@ -362,6 +396,14 @@ struct _GstVideoFormatInfo {
 
 #define GST_VIDEO_FORMAT_INFO_DATA(info,planes,comp) \
   (((guint8*)(planes)[(info)->plane[comp]]) + (info)->poffset[comp])
+/**
+ * GST_VIDEO_FORMAT_INFO_STRIDE:
+ *
+ * Row stride in bytes, that is number of bytes from the first pixel component
+ * of a row to the first pixel component in the next row. This might include
+ * some row padding (memory not actually used for anything, to make sure the
+ * beginning of the next row is aligned in a particular way).
+ */
 #define GST_VIDEO_FORMAT_INFO_STRIDE(info,strides,comp) ((strides)[(info)->plane[comp]])
 #define GST_VIDEO_FORMAT_INFO_OFFSET(info,offsets,comp) \
   (((offsets)[(info)->plane[comp]]) + (info)->poffset[comp])
@@ -395,7 +437,7 @@ const GstVideoFormatInfo *
     "BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, "  \
     "YVYU, Y444, v210, v216, NV12, NV21, GRAY8, GRAY16_BE, GRAY16_LE, " \
     "v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, " \
-    "IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE }"
+    "IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE }"
 
 /**
  * GST_VIDEO_CAPS_MAKE:

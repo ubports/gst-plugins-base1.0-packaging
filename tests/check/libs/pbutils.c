@@ -264,9 +264,9 @@ static const gchar *caps_strings[] = {
   "audio/x-vnd.sony.atrac3", "audio/x-vorbis", "audio/x-voc", "audio/x-w64",
   "audio/x-wav", "audio/x-wavpack", "audio/x-wavpack-correction",
   "audio/x-wms", "audio/x-voxware", "video/sp5x", "video/vivo",
-  "video/x-3ivx", "video/x-4xm", "video/x-apple-video", "video/x-camtasia",
+  "video/x-4xm", "video/x-apple-video", "video/x-camtasia",
   "video/x-cdxa", "video/x-cinepak", "video/x-cirrus-logic-accupak",
-  "video/x-compressed-yuv", "video/x-dirac", "video/x-dvd-subpicture",
+  "video/x-compressed-yuv", "video/x-dirac", "subpicture/x-dvd",
   "video/x-ffv", "video/x-flash-screen", "video/x-flash-video",
   "video/x-h261", "video/x-huffyuv", "video/x-intel-h263", "video/x-jpeg",
   "video/x-mjpeg", "video/x-mjpeg-b", "video/mpegts", "video/x-mng",
@@ -275,7 +275,7 @@ static const gchar *caps_strings[] = {
   "video/x-smoke", "video/x-tarkin", "video/x-theora", "video/x-rle",
   "video/x-ultimotion", "video/x-vcd", "video/x-vmnc", "video/x-vp3",
   "video/x-vp5", "video/x-vp6", "video/x-vp6-flash", "video/x-vp7",
-  "video/x-xvid", "video/x-zlib", "image/bmp", "image/x-bmp",
+  "video/x-zlib", "image/bmp", "image/x-bmp",
   "image/x-MS-bmp", "image/gif", "image/jpeg", "image/jng", "image/png",
   "image/pbm", "image/ppm", "image/svg+xml", "image/tiff",
   "image/x-cmu-raster", "image/x-icon", "image/x-xcf", "image/x-pixmap",
@@ -480,7 +480,7 @@ result_cb (GstInstallPluginsReturn result, gpointer user_data)
 
 /* make sure our script gets called with the right parameters */
 static void
-test_pb_utils_install_plugins_do_callout (gchar ** details,
+test_pb_utils_install_plugins_do_callout (const gchar * const *details,
     GstInstallPluginsContext * ctx, const gchar * script,
     GstInstallPluginsReturn expected_result)
 {
@@ -548,9 +548,8 @@ GST_START_TEST (test_pb_utils_install_plugins)
 {
   GstInstallPluginsContext *ctx;
   GstInstallPluginsReturn ret;
-  gchar *details[] = { (char *) "detail1", (char *) "detail2", NULL };
-  gchar *details_multi[] =
-      { (char *) "detail1", (char *) "detail1", (char *) "detail2", NULL };
+  const gchar *details[] = { "detail1", "detail2", NULL };
+  const gchar *details_multi[] = { "detail1", "detail1", "detail2", NULL };
 
   ctx = gst_install_plugins_context_new ();
 

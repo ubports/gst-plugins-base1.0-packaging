@@ -53,7 +53,6 @@
 
 #include <gst/audio/gstaudioiec61937.h>
 #include <gst/gst-i18n-plugin.h>
-#include "gst/glib-compat-private.h"
 
 #define DEFAULT_DEVICE		"default"
 #define DEFAULT_DEVICE_NAME	""
@@ -118,7 +117,7 @@ gst_alsasink_finalise (GObject * object)
   GstAlsaSink *sink = GST_ALSA_SINK (object);
 
   g_free (sink->device);
-  g_mutex_free (sink->alsa_lock);
+  g_mutex_clear (&sink->alsa_lock);
 
   g_mutex_lock (&output_mutex);
   --output_ref;
@@ -255,7 +254,7 @@ gst_alsasink_init (GstAlsaSink * alsasink)
   alsasink->device = g_strdup (DEFAULT_DEVICE);
   alsasink->handle = NULL;
   alsasink->cached_caps = NULL;
-  alsasink->alsa_lock = g_mutex_new ();
+  g_mutex_init (&alsasink->alsa_lock);
 
   g_mutex_lock (&output_mutex);
   if (output_ref == 0) {

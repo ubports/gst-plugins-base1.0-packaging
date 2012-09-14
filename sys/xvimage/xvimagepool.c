@@ -103,7 +103,7 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
   gboolean success = FALSE;
   GstXContext *xcontext;
   GstXvImageMeta *meta;
-  gint width, height, im_format;
+  gint width, height, im_format, align = 15, offset;
   GstXvImageBufferPoolPrivate *priv;
 
   priv = xvpool->priv;
@@ -131,7 +131,7 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
   GST_DEBUG_OBJECT (xvimagesink, "creating image %p (%dx%d)", buffer,
       width, height);
 
-  g_mutex_lock (xvimagesink->x_lock);
+  g_mutex_lock (&xvimagesink->x_lock);
 
   /* Setting an error handler to catch failure */
   error_caught = FALSE;
@@ -144,7 +144,7 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
     meta->xvimage = XvShmCreateImage (xcontext->disp,
         xcontext->xv_port_id, im_format, NULL, width, height, &meta->SHMInfo);
     if (!meta->xvimage || error_caught) {
-      g_mutex_unlock (xvimagesink->x_lock);
+      g_mutex_unlock (&xvimagesink->x_lock);
 
       /* Reset error flag */
       error_caught = FALSE;
@@ -159,7 +159,7 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
       xvimagesink->xcontext->use_xshm = FALSE;
 
       /* Hold X mutex again to try without XShm */
-      g_mutex_lock (xvimagesink->x_lock);
+      g_mutex_lock (&xvimagesink->x_lock);
       goto no_xshm;
     }
 
@@ -220,7 +220,8 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
     }
 
     /* get shared memory */
-    meta->SHMInfo.shmid = shmget (IPC_PRIVATE, meta->size, IPC_CREAT | 0777);
+    meta->SHMInfo.shmid =
+        shmget (IPC_PRIVATE, meta->size + align, IPC_CREAT | 0777);
     if (meta->SHMInfo.shmid == -1)
       goto shmget_failed;
 
@@ -256,10 +257,16 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
 
     /* we have to use the returned data_size for our image size */
     meta->size = meta->xvimage->data_size;
-    meta->xvimage->data = g_malloc (meta->size);
+    meta->xvimage->data = g_malloc (meta->size + align);
 
     XSync (xcontext->disp, FALSE);
   }
+
+  if ((offset = ((guintptr) meta->xvimage->data & align)))
+    offset = (align + 1) - offset;
+
+  GST_DEBUG_OBJECT (xvimagesink, "memory %p, align %d, offset %d",
+      meta->xvimage->data, align, offset);
 
   /* Reset error handler */
   error_caught = FALSE;
@@ -267,9 +274,9 @@ gst_buffer_add_xvimage_meta (GstBuffer * buffer, GstXvImageBufferPool * xvpool)
 
   gst_buffer_append_memory (buffer,
       gst_memory_new_wrapped (GST_MEMORY_FLAG_NO_SHARE, meta->xvimage->data,
-          meta->size, 0, meta->size, NULL, NULL));
+          meta->size + align, offset, meta->size, NULL, NULL));
 
-  g_mutex_unlock (xvimagesink->x_lock);
+  g_mutex_unlock (&xvimagesink->x_lock);
 
   success = TRUE;
 
@@ -282,7 +289,7 @@ beach:
   /* ERRORS */
 create_failed:
   {
-    g_mutex_unlock (xvimagesink->x_lock);
+    g_mutex_unlock (&xvimagesink->x_lock);
     /* Reset error handler */
     error_caught = FALSE;
     XSetErrorHandler (handler);
@@ -296,7 +303,7 @@ create_failed:
 #ifdef HAVE_XSHM
 shmget_failed:
   {
-    g_mutex_unlock (xvimagesink->x_lock);
+    g_mutex_unlock (&xvimagesink->x_lock);
     GST_ELEMENT_ERROR (xvimagesink, RESOURCE, WRITE,
         ("Failed to create output image buffer of %dx%d pixels",
             width, height),
@@ -306,7 +313,7 @@ shmget_failed:
   }
 shmat_failed:
   {
-    g_mutex_unlock (xvimagesink->x_lock);
+    g_mutex_unlock (&xvimagesink->x_lock);
     GST_ELEMENT_ERROR (xvimagesink, RESOURCE, WRITE,
         ("Failed to create output image buffer of %dx%d pixels",
             width, height), ("Failed to shmat: %s", g_strerror (errno)));
@@ -318,7 +325,7 @@ xattach_failed:
   {
     /* Clean up the shared memory segment */
     shmctl (meta->SHMInfo.shmid, IPC_RMID, NULL);
-    g_mutex_unlock (xvimagesink->x_lock);
+    g_mutex_unlock (&xvimagesink->x_lock);
 
     GST_ELEMENT_ERROR (xvimagesink, RESOURCE, WRITE,
         ("Failed to create output image buffer of %dx%d pixels",
@@ -354,7 +361,7 @@ gst_xvimage_meta_free (GstXvImageMeta * meta, GstBuffer * buffer)
     goto beach;
   }
 
-  g_mutex_lock (xvimagesink->x_lock);
+  g_mutex_lock (&xvimagesink->x_lock);
 
 #ifdef HAVE_XSHM
   if (xvimagesink->xcontext->use_xshm) {
@@ -379,7 +386,7 @@ gst_xvimage_meta_free (GstXvImageMeta * meta, GstBuffer * buffer)
 
   XSync (xvimagesink->xcontext->disp, FALSE);
 
-  g_mutex_unlock (xvimagesink->x_lock);
+  g_mutex_unlock (&xvimagesink->x_lock);
 
 beach:
   GST_OBJECT_UNLOCK (xvimagesink);
@@ -541,7 +548,6 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
   if (priv->caps)
     gst_caps_unref (priv->caps);
   priv->caps = gst_caps_ref (caps);
-  priv->info = info;
 
   /* enable metadata based on config of the pool */
   priv->add_metavideo =
@@ -559,6 +565,9 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
         priv->align.padding_left, priv->align.padding_left,
         priv->align.padding_bottom);
 
+    /* do padding and alignment */
+    gst_video_info_align (&info, &priv->align);
+
     /* we need the video metadata too now */
     priv->add_metavideo = TRUE;
   } else {
@@ -572,6 +581,8 @@ xvimage_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
   priv->padded_height =
       GST_VIDEO_INFO_HEIGHT (&info) + priv->align.padding_top +
       priv->align.padding_bottom;
+
+  priv->info = info;
 
   return GST_BUFFER_POOL_CLASS (parent_class)->set_config (pool, config);
 
@@ -625,38 +636,11 @@ xvimage_buffer_pool_alloc (GstBufferPool * pool, GstBuffer ** buffer,
   }
 
   if (priv->add_metavideo) {
-    GstVideoMeta *meta;
-    const GstVideoFormatInfo *vinfo = info->finfo;
-    gint i;
-
     GST_DEBUG_OBJECT (pool, "adding GstVideoMeta");
-    /* these are just the defaults for now */
-    meta = gst_buffer_add_video_meta (xvimage, GST_VIDEO_FRAME_FLAG_NONE,
-        GST_VIDEO_INFO_FORMAT (info), priv->padded_width, priv->padded_height);
-
-    if (priv->need_alignment) {
-      meta->width = GST_VIDEO_INFO_WIDTH (&priv->info);
-      meta->height = GST_VIDEO_INFO_HEIGHT (&priv->info);
-
-      /* FIXME, not quite correct, NV12 would apply the vedge twice on the second
-       * plane */
-      for (i = 0; i < GST_VIDEO_INFO_N_COMPONENTS (info); i++) {
-        gint vedge, hedge, plane;
-
-        hedge =
-            GST_VIDEO_FORMAT_INFO_SCALE_WIDTH (vinfo, i,
-            priv->align.padding_left);
-        vedge =
-            GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT (vinfo, i,
-            priv->align.padding_top);
-        plane = GST_VIDEO_FORMAT_INFO_PLANE (vinfo, i);
-
-        GST_LOG_OBJECT (pool, "comp %d, plane %d: hedge %d, vedge %d", i,
-            plane, hedge, vedge);
-
-        meta->offset[plane] += (vedge * meta->stride[plane]) + hedge;
-      }
-    }
+    gst_buffer_add_video_meta_full (xvimage, GST_VIDEO_FRAME_FLAG_NONE,
+        GST_VIDEO_INFO_FORMAT (info), GST_VIDEO_INFO_WIDTH (info),
+        GST_VIDEO_INFO_HEIGHT (info), GST_VIDEO_INFO_N_PLANES (info),
+        info->offset, info->stride);
   }
 
   *buffer = xvimage;

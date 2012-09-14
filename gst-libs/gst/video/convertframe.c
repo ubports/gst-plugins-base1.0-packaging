@@ -22,8 +22,6 @@
 #include <string.h>
 #include "video.h"
 
-#include "gst/glib-compat-private.h"
-
 static gboolean
 caps_are_raw (const GstCaps * caps)
 {
@@ -369,7 +367,7 @@ no_pipeline:
 
 typedef struct
 {
-  GMutex *mutex;
+  GMutex mutex;
   GstElement *pipeline;
   GstVideoConvertSampleCallback callback;
   gpointer user_data;
@@ -397,9 +395,9 @@ static void
 gst_video_convert_frame_context_free (GstVideoConvertSampleContext * ctx)
 {
   /* Wait until all users of the mutex are done */
-  g_mutex_lock (ctx->mutex);
-  g_mutex_unlock (ctx->mutex);
-  g_mutex_free (ctx->mutex);
+  g_mutex_lock (&ctx->mutex);
+  g_mutex_unlock (&ctx->mutex);
+  g_mutex_clear (&ctx->mutex);
   if (ctx->timeout_id)
     g_source_remove (ctx->timeout_id);
   //if (ctx->buffer)
@@ -469,7 +467,7 @@ convert_frame_timeout_callback (GstVideoConvertSampleContext * context)
 {
   GError *error;
 
-  g_mutex_lock (context->mutex);
+  g_mutex_lock (&context->mutex);
 
   if (context->finished)
     goto done;
@@ -482,7 +480,7 @@ convert_frame_timeout_callback (GstVideoConvertSampleContext * context)
   convert_frame_finish (context, NULL, error);
 
 done:
-  g_mutex_unlock (context->mutex);
+  g_mutex_unlock (&context->mutex);
   return FALSE;
 }
 
@@ -490,7 +488,7 @@ static gboolean
 convert_frame_bus_callback (GstBus * bus, GstMessage * message,
     GstVideoConvertSampleContext * context)
 {
-  g_mutex_lock (context->mutex);
+  g_mutex_lock (&context->mutex);
 
   if (context->finished)
     goto done;
@@ -515,7 +513,7 @@ convert_frame_bus_callback (GstBus * bus, GstMessage * message,
   }
 
 done:
-  g_mutex_unlock (context->mutex);
+  g_mutex_unlock (&context->mutex);
 
   return FALSE;
 }
@@ -528,7 +526,7 @@ convert_frame_need_data_callback (GstElement * src, guint size,
   GError *error;
   GstBuffer *buffer;
 
-  g_mutex_lock (context->mutex);
+  g_mutex_lock (&context->mutex);
 
   if (context->finished)
     goto done;
@@ -551,7 +549,7 @@ convert_frame_need_data_callback (GstElement * src, guint size,
       context);
 
 done:
-  g_mutex_unlock (context->mutex);
+  g_mutex_unlock (&context->mutex);
 }
 
 static void
@@ -561,7 +559,7 @@ convert_frame_new_preroll_callback (GstElement * sink,
   GstSample *sample = NULL;
   GError *error = NULL;
 
-  g_mutex_lock (context->mutex);
+  g_mutex_lock (&context->mutex);
 
   if (context->finished)
     goto done;
@@ -578,7 +576,7 @@ convert_frame_new_preroll_callback (GstElement * sink,
       context);
 
 done:
-  g_mutex_unlock (context->mutex);
+  g_mutex_unlock (&context->mutex);
 }
 
 /**
@@ -654,7 +652,7 @@ gst_video_convert_sample_async (GstSample * sample,
   bus = gst_element_get_bus (pipeline);
 
   ctx = g_slice_new0 (GstVideoConvertSampleContext);
-  ctx->mutex = g_mutex_new ();
+  g_mutex_init (&ctx->mutex);
   //ctx->buffer = gst_buffer_ref (buf);
   ctx->sample = gst_sample_ref (sample);
   ctx->callback = callback;

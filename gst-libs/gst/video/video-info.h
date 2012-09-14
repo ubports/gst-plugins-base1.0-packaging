@@ -116,6 +116,9 @@ struct _GstVideoInfo {
 
   gsize                     offset[GST_VIDEO_MAX_PLANES];
   gint                      stride[GST_VIDEO_MAX_PLANES];
+
+  /*< private >*/
+  gpointer _gst_reserved[GST_PADDING];
 };
 
 /* general info */
@@ -176,6 +179,11 @@ gboolean     gst_video_info_convert     (GstVideoInfo *info,
                                          gint64       *dest_value);
 gboolean     gst_video_info_is_equal    (const GstVideoInfo *info,
 					 const GstVideoInfo *other);
+
+#include <gst/video/video.h>
+
+void         gst_video_info_align       (GstVideoInfo * info, GstVideoAlignment * align);
+
 
 G_END_DECLS
 

@@ -43,11 +43,10 @@
 #endif
 
 #include <gst/video/video.h>
+#include <gst/audio/audio.h>
 
 #include "pbutils.h"
 #include "pbutils-private.h"
-
-#include "gst/glib-compat-private.h"
 
 GST_DEBUG_CATEGORY_STATIC (discoverer_debug);
 #define GST_CAT_DEFAULT discoverer_debug
@@ -80,7 +79,7 @@ struct _GstDiscovererPrivate
   /* list of pending URI to process (current excluded) */
   GList *pending_uris;
 
-  GMutex *lock;
+  GMutex lock;
 
   /* TRUE if processing a URI */
   gboolean processing;
@@ -125,8 +124,8 @@ struct _GstDiscovererPrivate
   gulong bus_cb_id;
 };
 
-#define DISCO_LOCK(dc) g_mutex_lock (dc->priv->lock);
-#define DISCO_UNLOCK(dc) g_mutex_unlock (dc->priv->lock);
+#define DISCO_LOCK(dc) g_mutex_lock (&dc->priv->lock);
+#define DISCO_UNLOCK(dc) g_mutex_unlock (&dc->priv->lock);
 
 static void
 _do_init (void)
@@ -177,6 +176,7 @@ static void uridecodebin_source_changed_cb (GstElement * uridecodebin,
     GParamSpec * pspec, GstDiscoverer * dc);
 
 static void gst_discoverer_dispose (GObject * dc);
+static void gst_discoverer_finalize (GObject * dc);
 static void gst_discoverer_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
 static void gst_discoverer_get_property (GObject * object, guint prop_id,
@@ -188,6 +188,7 @@ gst_discoverer_class_init (GstDiscovererClass * klass)
   GObjectClass *gobject_class = (GObjectClass *) klass;
 
   gobject_class->dispose = gst_discoverer_dispose;
+  gobject_class->finalize = gst_discoverer_finalize;
 
   gobject_class->set_property = gst_discoverer_set_property;
   gobject_class->get_property = gst_discoverer_get_property;
@@ -237,9 +238,15 @@ gst_discoverer_class_init (GstDiscovererClass * klass)
    * @discoverer: the #GstDiscoverer
    * @info: the results #GstDiscovererInfo
    * @error: (type GLib.Error): #GError, which will be non-NULL if an error
-   *                            occurred during discovery
+   *                            occurred during discovery. You must not
+   *                            free this #GError, it will be freed by
+   *                            the discoverer.
    *
-   * Will be emitted when all information on a URI could be discovered.
+   * Will be emitted when all information on a URI could be discovered, or
+   * an error ocurred.
+   *
+   * When an error occurs, @info might still contain some partial information,
+   * depending on the circumstances of the error.
    */
   gst_discoverer_signals[SIGNAL_DISCOVERED] =
       g_signal_new ("discovered", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
@@ -264,8 +271,7 @@ gst_discoverer_class_init (GstDiscovererClass * klass)
   gst_discoverer_signals[SIGNAL_SOURCE_SETUP] =
       g_signal_new ("source-setup", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstDiscovererClass, source_setup),
-      NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 1,
-      GST_TYPE_ELEMENT);
+      NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 1, GST_TYPE_ELEMENT);
 }
 
 static void
@@ -293,7 +299,7 @@ gst_discoverer_init (GstDiscoverer * dc)
   dc->priv->async = FALSE;
   dc->priv->async_done = FALSE;
 
-  dc->priv->lock = g_mutex_new ();
+  g_mutex_init (&dc->priv->lock);
 
   dc->priv->pending_subtitle_pads = 0;
 
@@ -391,17 +397,22 @@ gst_discoverer_dispose (GObject * obj)
 
   gst_discoverer_stop (dc);
 
-  if (dc->priv->lock) {
-    g_mutex_free (dc->priv->lock);
-    dc->priv->lock = NULL;
-  }
-
   if (dc->priv->seeking_query) {
     gst_query_unref (dc->priv->seeking_query);
     dc->priv->seeking_query = NULL;
   }
 
   G_OBJECT_CLASS (gst_discoverer_parent_class)->dispose (obj);
+}
+
+static void
+gst_discoverer_finalize (GObject * obj)
+{
+  GstDiscoverer *dc = (GstDiscoverer *) obj;
+
+  g_mutex_clear (&dc->priv->lock);
+
+  G_OBJECT_CLASS (gst_discoverer_parent_class)->finalize (obj);
 }
 
 static void
@@ -493,10 +504,10 @@ _event_probe (GstPad * pad, GstPadProbeInfo * info, PrivateStream * ps)
   return GST_PAD_PROBE_OK;
 }
 
-static GstStaticCaps subtitle_caps = GST_STATIC_CAPS ("text/plain; "
-    "text/x-pango-markup; subpicture/x-pgs; subpicture/x-dvb; "
+static GstStaticCaps subtitle_caps = GST_STATIC_CAPS ("text/x-raw; "
+    "subpicture/x-pgs; subpicture/x-dvb; subpicture/x-dvd; "
     "application/x-subtitle-unknown; application/x-ssa; application/x-ass; "
-    "subtitle/x-kate; application/x-kate; video/x-dvd-subpicture");
+    "subtitle/x-kate; application/x-kate");
 
 static gboolean
 is_subtitle_caps (const GstCaps * caps)
@@ -759,6 +770,7 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
 
   if (g_str_has_prefix (name, "audio/")) {
     GstDiscovererAudioInfo *info;
+    const gchar *format_str;
 
     if (parent)
       info = (GstDiscovererAudioInfo *) gst_discoverer_stream_info_ref (parent);
@@ -774,8 +786,17 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
     if (gst_structure_get_int (caps_st, "channels", &tmp))
       info->channels = (guint) tmp;
 
-    if (gst_structure_get_int (caps_st, "depth", &tmp))
-      info->depth = (guint) tmp;
+    /* FIXME: we only want to extract depth if raw audio is what's in the
+     * container (i.e. not if there is a decoder involved) */
+    format_str = gst_structure_get_string (caps_st, "format");
+    if (format_str != NULL) {
+      const GstAudioFormatInfo *finfo;
+      GstAudioFormat format;
+
+      format = gst_audio_format_from_string (format_str);
+      finfo = gst_audio_format_get_info (format);
+      info->depth = GST_AUDIO_FORMAT_INFO_DEPTH (finfo);
+    }
 
     if (gst_structure_id_has_field (st, _TAGS_QUARK)) {
       gst_structure_id_get (st, _TAGS_QUARK, GST_TYPE_TAG_LIST, &tags_st, NULL);
@@ -819,11 +840,7 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->parent.caps = gst_caps_ref (caps);
     }
 
-    /* FIXME : gst_video_info_from_caps only works with raw caps,
-     * wouldn't we want to get all the info below for non-raw caps ? 
-     */
-    if (g_str_has_prefix (name, "video/x-raw") &&
-        gst_video_info_from_caps (&vinfo, caps)) {
+    if (gst_video_info_from_caps (&vinfo, caps)) {
       info->width = (guint) vinfo.width;
       info->height = (guint) vinfo.height;
 
@@ -940,7 +957,7 @@ find_stream_for_node (GstDiscoverer * dc, const GstStructure * topology)
   GList *tmp;
 
   if (!gst_structure_id_has_field (topology, _TOPOLOGY_PAD_QUARK)) {
-    GST_DEBUG ("Could not find pad for node %" GST_PTR_FORMAT "\n", topology);
+    GST_DEBUG ("Could not find pad for node %" GST_PTR_FORMAT, topology);
     return NULL;
   }
 
@@ -1203,12 +1220,14 @@ discoverer_collect (GstDiscoverer * dc)
     if (dc->priv->current_info->duration == 0 &&
         dc->priv->current_info->stream_info != NULL &&
         dc->priv->current_info->stream_info->next == NULL) {
-      GstStructure *st =
-          gst_caps_get_structure (dc->priv->current_info->stream_info->caps, 0);
+      GstDiscovererStreamInfo *stream_info;
+      GstStructure *st;
+
+      stream_info = dc->priv->current_info->stream_info;
+      st = gst_caps_get_structure (stream_info->caps, 0);
 
       if (g_str_has_prefix (gst_structure_get_name (st), "image/"))
-        ((GstDiscovererVideoInfo *) dc->priv->current_info->
-            stream_info)->is_image = TRUE;
+        ((GstDiscovererVideoInfo *) stream_info)->is_image = TRUE;
     }
   }
 

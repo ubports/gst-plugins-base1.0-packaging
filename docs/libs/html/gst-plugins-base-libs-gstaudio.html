@@ -933,7 +933,8 @@ After calling this function the caller does not own a reference to
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>The buffer to clip.</td>
+<td>The buffer to clip. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>segment</code></em> :</span></p></td>
@@ -955,7 +956,8 @@ the buffer should be clipped.</td>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the buffer is completely outside the configured segment,
 otherwise the clipped buffer is returned.
 If the buffer has no timestamp, it is assumed to be inside the segment and
-is not clipped</td>
+is not clipped. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>

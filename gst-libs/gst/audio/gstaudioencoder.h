@@ -157,6 +157,8 @@ struct _GstAudioEncoder {
  * @close:          Optional.
  *                  Called when the element changes to GST_STATE_NULL.
  *                  Allows closing external resources.
+ * @negotiate:      Optional.
+ *                  Negotiate with downstream and configure buffer pools, etc.
  * @decide_allocation: Optional.
  *                     Setup the allocation parameters for allocating output
  *                     buffers. The passed in query contains the result of the
@@ -200,13 +202,15 @@ struct _GstAudioEncoderClass {
 
   gboolean      (*close)              (GstAudioEncoder *enc);
 
+  gboolean      (*negotiate)          (GstAudioEncoder *enc);
+
   gboolean      (*decide_allocation)  (GstAudioEncoder *enc, GstQuery *query);
 
   gboolean      (*propose_allocation) (GstAudioEncoder * enc,
                                        GstQuery * query);
 
   /*< private >*/
-  gpointer       _gst_reserved[GST_PADDING_LARGE-2];
+  gpointer       _gst_reserved[GST_PADDING_LARGE];
 };
 
 GType           gst_audio_encoder_get_type         (void);
@@ -222,8 +226,9 @@ GstCaps *       gst_audio_encoder_proxy_getcaps (GstAudioEncoder * enc,
 gboolean        gst_audio_encoder_set_output_format  (GstAudioEncoder    * enc,
                                                       GstCaps            * caps);
 
+gboolean        gst_audio_encoder_negotiate          (GstAudioEncoder * enc);
 
-GstBuffer *     gst_audio_encoder_allocate_output_buffer (GstAudioEncoder * encoder,
+GstBuffer *     gst_audio_encoder_allocate_output_buffer (GstAudioEncoder * enc,
                                                           gsize             size);
 
 /* context parameters */
@@ -274,9 +279,9 @@ void            gst_audio_encoder_set_hard_resync (GstAudioEncoder * enc,
 gboolean        gst_audio_encoder_get_hard_resync (GstAudioEncoder * enc);
 
 void            gst_audio_encoder_set_tolerance (GstAudioEncoder * enc,
-                                                 gint64            tolerance);
+                                                 GstClockTime      tolerance);
 
-gint64          gst_audio_encoder_get_tolerance (GstAudioEncoder * enc);
+GstClockTime    gst_audio_encoder_get_tolerance (GstAudioEncoder * enc);
 
 void            gst_audio_encoder_set_hard_min (GstAudioEncoder * enc,
                                                 gboolean enabled);
@@ -287,6 +292,10 @@ void            gst_audio_encoder_set_drainable (GstAudioEncoder * enc,
                                                  gboolean enabled);
 
 gboolean        gst_audio_encoder_get_drainable (GstAudioEncoder * enc);
+
+void            gst_audio_encoder_get_allocator (GstAudioEncoder * enc,
+                                                 GstAllocator ** allocator,
+                                                 GstAllocationParams * params);
 
 void            gst_audio_encoder_merge_tags (GstAudioEncoder * enc,
                                               const GstTagList * tags, GstTagMergeMode mode);

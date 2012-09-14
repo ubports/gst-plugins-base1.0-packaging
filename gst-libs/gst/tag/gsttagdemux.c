@@ -125,6 +125,8 @@ struct _GstTagDemuxPrivate
 #define TYPE_FIND_MIN_SIZE 8192
 #define TYPE_FIND_MAX_SIZE 65536
 
+#define DEFAULT_PULL_BLOCKSIZE 4096
+
 GST_DEBUG_CATEGORY_STATIC (tagdemux_debug);
 #define GST_CAT_DEFAULT (tagdemux_debug)
 
@@ -1151,14 +1153,17 @@ gst_tag_demux_element_find (GstTagDemux * demux)
       demux->priv->strip_start + demux->priv->strip_end)
     goto no_data;
 
-  /* 2 - Do typefinding on data */
+  /* 2 - Do typefinding on data, but not if downstream is in charge */
+  if (GST_PAD_MODE (demux->priv->srcpad) == GST_PAD_MODE_PULL)
+    goto skip_typefinding;
+
   caps = gst_type_find_helper_get_range (GST_OBJECT (demux), NULL,
       (GstTypeFindHelperGetRangeFunction) gst_tag_demux_read_range,
       demux->priv->upstream_size
       - (demux->priv->strip_start + demux->priv->strip_end), NULL,
       &probability);
 
-  GST_DEBUG_OBJECT (demux, "Found type %" GST_PTR_FORMAT " with a "
+  GST_INFO_OBJECT (demux, "Found type %" GST_PTR_FORMAT " with a "
       "probability of %u", caps, probability);
 
   /* 3 - If we didn't find the caps, fail */
@@ -1172,6 +1177,11 @@ gst_tag_demux_element_find (GstTagDemux * demux)
   /* 6 Set the srcpad caps now that we know them */
   gst_tag_demux_set_src_caps (demux, caps);
   gst_caps_unref (caps);
+
+skip_typefinding:
+
+  /* set it again, in case we skipped typefinding */
+  demux->priv->state = GST_TAG_DEMUX_STREAMING;
 
   return ret;
 
@@ -1222,8 +1232,33 @@ gst_tag_demux_element_loop (GstTagDemux * demux)
       ret = gst_tag_demux_element_find (demux);
       break;
     case GST_TAG_DEMUX_STREAMING:
-      ret = GST_FLOW_ERROR;
+    {
+      GstBuffer *outbuf = NULL;
+
+      if (demux->priv->need_newseg) {
+        demux->priv->need_newseg = FALSE;
+        /* FIXME: check segment, should be 0-N for downstream */
+        gst_tag_demux_send_new_segment (demux);
+      }
+
+      /* Send our own pending tag event */
+      if (demux->priv->send_tag_event) {
+        gst_tag_demux_send_tag_event (demux);
+        demux->priv->send_tag_event = FALSE;
+      }
+
+      /* Pull data and push it downstream */
+      ret = gst_pad_pull_range (demux->priv->sinkpad, demux->priv->offset,
+          DEFAULT_PULL_BLOCKSIZE, &outbuf);
+
+      if (ret != GST_FLOW_OK)
+        break;
+
+      demux->priv->offset += gst_buffer_get_size (outbuf);
+
+      ret = gst_pad_push (demux->priv->srcpad, outbuf);
       break;
+    }
     default:
       ret = GST_FLOW_ERROR;
       break;
@@ -1294,6 +1329,10 @@ gst_tag_demux_sink_activate_mode (GstPad * pad, GstObject * parent,
       res = TRUE;
       break;
   }
+
+  if (active)
+    GST_TAG_DEMUX (parent)->priv->state = GST_TAG_DEMUX_READ_START_TAG;
+
   return res;
 }
 
@@ -1319,7 +1358,8 @@ gst_tag_demux_sink_activate (GstPad * sinkpad, GstObject * parent)
     goto activate_push;
   }
 
-  pull_mode = gst_query_has_scheduling_mode (query, GST_PAD_MODE_PULL);
+  pull_mode = gst_query_has_scheduling_mode_with_flags (query,
+      GST_PAD_MODE_PULL, GST_SCHEDULING_FLAG_SEEKABLE);
   gst_query_unref (query);
 
   if (!pull_mode)
@@ -1336,7 +1376,6 @@ activate_push:
   {
     GST_DEBUG_OBJECT (demux, "No pull mode. Changing to push, but won't be "
         "able to read end tags");
-    demux->priv->state = GST_TAG_DEMUX_READ_START_TAG;
     return gst_pad_activate_mode (sinkpad, GST_PAD_MODE_PUSH, TRUE);
   }
 }
@@ -1461,6 +1500,7 @@ gst_tag_demux_pad_query (GstPad * pad, GstObject * parent, GstQuery * query)
   gint64 result;
   gboolean res = TRUE;
 
+  /* FIXME: locking ? */
   switch (GST_QUERY_TYPE (query)) {
     case GST_QUERY_SCHEDULING:
       res = gst_pad_peer_query (demux->priv->sinkpad, query);
@@ -1484,7 +1524,20 @@ gst_tag_demux_pad_query (GstPad * pad, GstObject * parent, GstQuery * query)
 
       gst_query_parse_duration (query, &format, &result);
       if (format == GST_FORMAT_BYTES) {
+        /* if downstream activated us in pull mode right away, e.g. in case of
+         * filesrc ! id3demux ! xyzparse ! .., read tags here, since we don't
+         * have a streaming thread of our own to do that. We do it here and
+         * not in get_range(), so we can return the right size in bytes.. */
+        if (demux->priv->state == GST_TAG_DEMUX_READ_START_TAG &&
+            GST_PAD_MODE (demux->priv->srcpad) == GST_PAD_MODE_PULL) {
+          GstFlowReturn flow G_GNUC_UNUSED;
+
+          flow = gst_tag_demux_element_find (demux);
+          GST_INFO_OBJECT (demux, "pulled tags: %s", gst_flow_get_name (flow));
+        }
         result -= demux->priv->strip_start + demux->priv->strip_end;
+        if (result < 0)
+          result = 0;
         gst_query_set_duration (query, format, result);
       }
       break;

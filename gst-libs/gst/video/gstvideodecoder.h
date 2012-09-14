@@ -187,7 +187,7 @@ struct _GstVideoDecoder
 
   GstVideoDecoderPrivate *priv;
 
-  /* FIXME before moving to base */
+  /*< private >*/
   void             *padding[GST_PADDING_LARGE];
 };
 
@@ -223,6 +223,8 @@ struct _GstVideoDecoder
  *                  Event handler on the source pad. This function should return
  *                  TRUE if the event was handled and should be discarded
  *                  (i.e. not unref'ed).
+ * @negotiate:      Optional.
+ *                  Negotiate with downstream and configure buffer pools, etc.
  * @decide_allocation: Optional.
  *                     Setup the allocation parameters for allocating output
  *                     buffers. The passed in query contains the result of the
@@ -271,12 +273,13 @@ struct _GstVideoDecoderClass
   gboolean      (*src_event)      (GstVideoDecoder *decoder,
 				   GstEvent *event);
 
+  gboolean      (*negotiate)      (GstVideoDecoder *decoder);
+
   gboolean      (*decide_allocation)  (GstVideoDecoder *decoder, GstQuery *query);
 
   gboolean      (*propose_allocation) (GstVideoDecoder *decoder, GstQuery * query);
 
   /*< private >*/
-  /* FIXME before moving to base */
   void         *padding[GST_PADDING_LARGE];
 };
 
@@ -305,13 +308,19 @@ void     gst_video_decoder_get_latency (GstVideoDecoder *decoder,
 					GstClockTime *min_latency,
 					GstClockTime *max_latency);
 
+void     gst_video_decoder_get_allocator (GstVideoDecoder *decoder,
+                                          GstAllocator **allocator,
+                                          GstAllocationParams *params);
+GstBufferPool *gst_video_decoder_get_buffer_pool (GstVideoDecoder *decoder);
 
 /* Object methods */
 
-GstVideoCodecFrame *gst_video_decoder_get_frame       (GstVideoDecoder *decoder,
-						       int frame_number);
+GstVideoCodecFrame *gst_video_decoder_get_frame        (GstVideoDecoder *decoder,
+						        int frame_number);
 
 GstVideoCodecFrame *gst_video_decoder_get_oldest_frame (GstVideoDecoder *decoder);
+
+GList *             gst_video_decoder_get_frames       (GstVideoDecoder *decoder);
 
 /* Parsing related methods */
 void           gst_video_decoder_add_to_frame     (GstVideoDecoder *decoder,
@@ -339,6 +348,10 @@ GstFlowReturn    gst_video_decoder_finish_frame (GstVideoDecoder *decoder,
 
 GstFlowReturn    gst_video_decoder_drop_frame (GstVideoDecoder *dec,
 					       GstVideoCodecFrame *frame);
+
+void             gst_video_decoder_merge_tags (GstVideoDecoder *dec,
+                                               const GstTagList *tags,
+                                               GstTagMergeMode mode);
 
 G_END_DECLS
 
