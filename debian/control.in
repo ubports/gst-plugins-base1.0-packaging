@@ -7,7 +7,6 @@ Uploaders: Loïc Minier <lool@debian.org>,
            Sebastian Dröge <slomo@debian.org>,
            Sjoerd Simons <sjoerd@debian.org>
 Build-Depends: BUILDDEPS
-Build-Depends-Indep: gtk-doc-tools
 Standards-Version: 3.9.3
 Homepage: http://gstreamer.freedesktop.org
 

@@ -1,3 +1,17 @@
+gst-plugins-base1.0 (0.11.94-1) experimental; urgency=low
+
+  * New upstream release:
+    + debian/rules:
+      - Build-depend on gstreamer core >= 0.11.94.
+    + debian/build-deps.in:
+      - Build-depend on gtk-doc >= 1.12.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for API changes.
+    + debian/gstreamer-plugins-base-apps.install:
+      - Drop gst-visualize tool.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 14 Sep 2012 09:37:04 +0200
+
 gst-plugins-base1.0 (0.11.93-1) experimental; urgency=low
 
   * New upstream release:

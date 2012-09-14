@@ -7,7 +7,6 @@ debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstaudiotestsrc.so
 @cdparanoia@
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstencodebin.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstvideoconvert.so
-debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstgdp.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstgio.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstlibvisual.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstogg.so
