@@ -145,8 +145,9 @@ struct _GstVideoEncoder
   GstSegment      input_segment;
   GstSegment      output_segment;
 
+  /*< private >*/
   GstVideoEncoderPrivate *priv;
-  /* FIXME before moving to base */
+
   void         *padding[GST_PADDING_LARGE];
 };
 
@@ -191,6 +192,8 @@ struct _GstVideoEncoder
  *                  Event handler on the source pad. This function should return
  *                  TRUE if the event was handled and should be discarded
  *                  (i.e. not unref'ed).
+ * @negotiate:      Optional.
+ *                  Negotiate with downstream and configure buffer pools, etc.
  * @decide_allocation: Optional.
  *                     Setup the allocation parameters for allocating output
  *                     buffers. The passed in query contains the result of the
@@ -240,13 +243,14 @@ struct _GstVideoEncoderClass
   gboolean      (*src_event)    (GstVideoEncoder *encoder,
 				 GstEvent *event);
 
+  gboolean      (*negotiate)    (GstVideoEncoder *encoder);
+
   gboolean      (*decide_allocation)  (GstVideoEncoder *encoder, GstQuery *query);
 
   gboolean      (*propose_allocation) (GstVideoEncoder * encoder,
                                        GstQuery * query);
 
   /*< private >*/
-  /* FIXME before moving to base */
   gpointer       _gst_reserved[GST_PADDING_LARGE];
 };
 
@@ -263,6 +267,8 @@ gboolean             gst_video_encoder_negotiate        (GstVideoEncoder * encod
 GstVideoCodecFrame*  gst_video_encoder_get_frame        (GstVideoEncoder *encoder,
 						         int frame_number);
 GstVideoCodecFrame*  gst_video_encoder_get_oldest_frame (GstVideoEncoder *encoder);
+
+GList *              gst_video_encoder_get_frames       (GstVideoEncoder *encoder);
 
 GstBuffer *          gst_video_encoder_allocate_output_buffer (GstVideoEncoder * encoder,
                                                                gsize size);
@@ -289,6 +295,15 @@ void		     gst_video_encoder_get_latency (GstVideoEncoder *encoder,
 
 void                 gst_video_encoder_set_headers (GstVideoEncoder *encoder,
 						    GList *headers);
+
+void                 gst_video_encoder_merge_tags  (GstVideoEncoder *encoder,
+                                                    const GstTagList *tags,
+                                                    GstTagMergeMode mode);
+
+void                 gst_video_encoder_get_allocator (GstVideoEncoder *encoder,
+                                                      GstAllocator **allocator,
+                                                      GstAllocationParams *params);
+
 G_END_DECLS
 
 #endif

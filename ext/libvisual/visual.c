@@ -48,7 +48,6 @@ static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE ("sink",
     GST_STATIC_CAPS ("audio/x-raw, "
         "format = (string) " GST_AUDIO_NE (S16) ", "
         "layout = (string) interleaved, " "channels = (int) { 1, 2 }, "
-        "channel-mask = (bitmask) 0x3, "
 #if defined(VISUAL_API_VERSION) && VISUAL_API_VERSION >= 4000 && VISUAL_API_VERSION < 5000
         "rate = (int) { 8000, 11250, 22500, 32000, 44100, 48000, 96000 }"
 #else
@@ -63,7 +62,7 @@ static void gst_visual_finalize (GObject * object);
 
 static gboolean gst_visual_setup (GstAudioVisualizer * bscope);
 static gboolean gst_visual_render (GstAudioVisualizer * bscope,
-    GstBuffer * audio, GstBuffer * video);
+    GstBuffer * audio, GstVideoFrame * video);
 
 static GstElementClass *parent_class = NULL;
 
@@ -164,10 +163,11 @@ static gboolean
 gst_visual_setup (GstAudioVisualizer * bscope)
 {
   GstVisual *visual = GST_VISUAL (bscope);
-  gint pitch, depth;
+  gint depth;
 
   gst_visual_clear_actors (visual);
 
+  /* FIXME: we need to know how many bits we actually have in memory */
   depth = bscope->vinfo.finfo->pixel_stride[0];
   if (bscope->vinfo.finfo->bits >= 8) {
     depth *= 8;
@@ -188,13 +188,14 @@ gst_visual_setup (GstAudioVisualizer * bscope)
 
   visual_video_set_depth (visual->video,
       visual_video_depth_enum_from_value (depth));
-  visual_video_set_dimension (visual->video, bscope->width, bscope->height);
-  pitch = GST_ROUND_UP_4 (bscope->width * visual->video->bpp);
-  visual_video_set_pitch (visual->video, pitch);
+  visual_video_set_dimension (visual->video,
+      GST_VIDEO_INFO_WIDTH (&bscope->vinfo),
+      GST_VIDEO_INFO_HEIGHT (&bscope->vinfo));
   visual_actor_video_negotiate (visual->actor, 0, FALSE, FALSE);
 
-  GST_DEBUG_OBJECT (visual, "WxH: %dx%d, bpp: %d, pitch: %d, depth: %d",
-      bscope->width, bscope->height, visual->video->bpp, pitch, depth);
+  GST_DEBUG_OBJECT (visual, "WxH: %dx%d, bpp: %d, depth: %d",
+      GST_VIDEO_INFO_WIDTH (&bscope->vinfo),
+      GST_VIDEO_INFO_HEIGHT (&bscope->vinfo), visual->video->bpp, depth);
 
   return TRUE;
   /* ERRORS */
@@ -216,20 +217,22 @@ no_realize:
 
 static gboolean
 gst_visual_render (GstAudioVisualizer * bscope, GstBuffer * audio,
-    GstBuffer * video)
+    GstVideoFrame * video)
 {
   GstVisual *visual = GST_VISUAL (bscope);
-  GstMapInfo amap, vmap;
+  GstMapInfo amap;
   const guint16 *adata;
   gint i, channels;
   gboolean res = TRUE;
 
-  gst_buffer_map (audio, &amap, GST_MAP_READ);
-  gst_buffer_map (video, &vmap, GST_MAP_WRITE);
-
-  visual_video_set_buffer (visual->video, vmap.data);
+  visual_video_set_buffer (visual->video, GST_VIDEO_FRAME_PLANE_DATA (video,
+          0));
+  visual_video_set_pitch (visual->video, GST_VIDEO_FRAME_PLANE_STRIDE (video,
+          0));
 
   channels = GST_AUDIO_INFO_CHANNELS (&bscope->ainfo);
+
+  gst_buffer_map (audio, &amap, GST_MAP_READ);
   adata = (const guint16 *) amap.data;
 
 #if defined(VISUAL_API_VERSION) && VISUAL_API_VERSION >= 4000 && VISUAL_API_VERSION < 5000
@@ -318,7 +321,7 @@ gst_visual_render (GstAudioVisualizer * bscope, GstBuffer * audio,
 
   GST_DEBUG_OBJECT (visual, "rendered one frame");
 done:
-  gst_buffer_unmap (video, &vmap);
   gst_buffer_unmap (audio, &amap);
+
   return res;
 }

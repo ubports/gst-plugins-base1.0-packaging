@@ -323,7 +323,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp29023104"></a><p>
+<a name="idp28937552"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -832,7 +832,9 @@ and downstream force key unit events.
   GST_VIDEO_FORMAT_AYUV64,
   GST_VIDEO_FORMAT_r210,
   GST_VIDEO_FORMAT_I420_10BE,
-  GST_VIDEO_FORMAT_I420_10LE
+  GST_VIDEO_FORMAT_I420_10LE,
+  GST_VIDEO_FORMAT_I422_10BE,
+  GST_VIDEO_FORMAT_I422_10LE,
 } GstVideoFormat;
 </pre>
 <p>
@@ -1061,6 +1063,16 @@ Enum value describing the most common video formats.
 <td>planar 4:2:0 YUV, 10 bits per channel
 </td>
 </tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-I422-10BE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_I422_10BE</code></span></p></td>
+<td>planar 4:2:2 YUV, 10 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-I422-10LE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_I422_10LE</code></span></p></td>
+<td>planar 4:2:2 YUV, 10 bits per channel
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1148,7 +1160,8 @@ and mask.</td>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.pixel-stride"></a>pixel_stride</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
 <td>the pixel stride of each component. This is the amount of
 bytes to the pixel immediately to the right. When bits &lt; 8, the stride is
-expressed in bits.</td>
+expressed in bits. For 24-bit RGB, this would be 3 bytes, for example,
+while it would be 4 bytes for RGBx or ARGB.</td>
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.n-planes"></a>n_planes</code></em>;</span></p></td>
@@ -1163,7 +1176,7 @@ one plane.</td>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.poffset"></a>poffset</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
 <td>the offset in the plane where the first pixel of the components
-can be found. If bits &lt; 8 the amount is specified in bits.</td>
+can be found.</td>
 </tr>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.w-sub"></a>w_sub</code></em>[GST_VIDEO_MAX_COMPONENTS];</span></p></td>
@@ -1625,18 +1638,43 @@ should be a multiple of pack_lines.
 <a name="GST-VIDEO-FORMAT-INFO-PSTRIDE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_PSTRIDE()</h3>
 <pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_PSTRIDE(info,c)    ((info)-&gt;pixel_stride[c])
 </pre>
+<p>
+pixel stride for the given component. This is the amount of bytes to the
+pixel immediately to the right, so basically bytes from one pixel to the
+next. When bits &lt; 8, the stride is expressed in bits.
+</p>
+<p>
+Examples: for 24-bit RGB, the pixel stride would be 3 bytes, while it
+would be 4 bytes for RGBx or ARGB, and 8 bytes for ARGB64 or AYUV64.
+For planar formats such as I420 the pixel stride is usually 1. For
+YUY2 it would be 2 bytes.
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GST-VIDEO-FORMAT-INFO-N-PLANES:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_N_PLANES()</h3>
 <pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_N_PLANES(info)     ((info)-&gt;n_planes)
 </pre>
+<p>
+Number of planes. This is the number of planes the pixel layout is
+organized in in memory. The number of planes can be less than the
+number of components (e.g. Y,U,V,A or R, G, B, A) when multiple
+components are packed into one plane.
+</p>
+<p>
+Examples: RGB/RGBx/RGBA: 1 plane, 3/3/4 components;
+I420: 3 planes, 3 components; NV21/NV12: 2 planes, 3 components.
+</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GST-VIDEO-FORMAT-INFO-PLANE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_PLANE()</h3>
 <pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_PLANE(info,c)      ((info)-&gt;plane[c])
 </pre>
+<p>
+Plane number where the given component can be found. A plane may
+contain data for multiple components.
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1684,6 +1722,12 @@ should be a multiple of pack_lines.
 <a name="GST-VIDEO-FORMAT-INFO-STRIDE:CAPS"></a><h3>GST_VIDEO_FORMAT_INFO_STRIDE()</h3>
 <pre class="programlisting">#define GST_VIDEO_FORMAT_INFO_STRIDE(info,strides,comp) ((strides)[(info)-&gt;plane[comp]])
 </pre>
+<p>
+Row stride in bytes, that is number of bytes from the first pixel component
+of a row to the first pixel component in the next row. This might include
+some row padding (memory not actually used for anything, to make sure the
+beginning of the next row is aligned in a particular way).
+</p>
 </div>
 <hr>
 <div class="refsect2">

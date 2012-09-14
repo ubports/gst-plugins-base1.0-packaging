@@ -160,7 +160,6 @@ static const FormatInfo formats[] = {
   /* video formats with static descriptions */
   {"video/sp5x", "Sunplus JPEG 5.x", 0},
   {"video/vivo", "Vivo", 0},
-  {"video/x-3ivx", "3ivx", 0},
   {"video/x-4xm", "4X Technologies Video", 0},
   {"video/x-apple-video", "Apple video", 0},
   {"video/x-aasc", "Autodesk Animator", 0},
@@ -171,8 +170,7 @@ static const FormatInfo formats[] = {
   {"video/x-compressed-yuv", N_("CYUV Lossless"), 0},
   {"video/x-dirac", "Dirac", 0},
   {"video/x-dnxhd", "Digital Nonlinear Extensible High Definition (DNxHD)", 0},
-  /* FIXME 0.11: rename to subpicture/x-dvd or so */
-  {"video/x-dvd-subpicture", "DVD subpicture", 0},
+  {"subpicture/x-dvd", "DVD subpicture", 0},
   {"video/x-ffv", N_("FFMpeg v1"), 0},
   {"video/x-flash-screen", "Flash Screen Video", 0},
   {"video/x-flash-video", "Sorenson Spark Video", 0},
@@ -208,7 +206,6 @@ static const FormatInfo formats[] = {
   {"video/x-vp6-alpha", "On2 VP6 with alpha", 0},
   {"video/x-vp7", "On2 VP7", 0},
   {"video/x-vp8", "VP8", 0},
-  {"video/x-xvid", "XVID MPEG-4", 0},
   {"video/x-zlib", "Lossless zlib video", 0},
   {"video/x-zmbv", "Zip Motion Block video", 0},
 

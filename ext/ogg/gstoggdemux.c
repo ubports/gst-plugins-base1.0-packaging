@@ -46,8 +46,6 @@
 
 #include "gstoggdemux.h"
 
-#include "gst/glib-compat-private.h"
-
 #define CHUNKSIZE (8500)        /* this is out of vorbisfile */
 
 /* we hope we get a granpos within this many bytes off the end */
@@ -63,19 +61,19 @@
 #define GST_FLOW_LIMIT GST_FLOW_CUSTOM_ERROR
 #define GST_FLOW_SKIP_PUSH GST_FLOW_CUSTOM_SUCCESS_1
 
-#define GST_CHAIN_LOCK(ogg)     g_mutex_lock((ogg)->chain_lock)
-#define GST_CHAIN_UNLOCK(ogg)   g_mutex_unlock((ogg)->chain_lock)
+#define GST_CHAIN_LOCK(ogg)     g_mutex_lock(&(ogg)->chain_lock)
+#define GST_CHAIN_UNLOCK(ogg)   g_mutex_unlock(&(ogg)->chain_lock)
 
 #define GST_PUSH_LOCK(ogg)                  \
   do {                                      \
     GST_TRACE_OBJECT(ogg, "Push lock");     \
-    g_mutex_lock((ogg)->push_lock);         \
+    g_mutex_lock(&(ogg)->push_lock);        \
   } while(0)
 
 #define GST_PUSH_UNLOCK(ogg)                \
   do {                                      \
     GST_TRACE_OBJECT(ogg, "Push unlock");   \
-    g_mutex_unlock((ogg)->push_lock);       \
+    g_mutex_unlock(&(ogg)->push_lock);      \
   } while(0)
 
 GST_DEBUG_CATEGORY (gst_ogg_demux_debug);
@@ -478,6 +476,7 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
   GstClockTime out_timestamp, out_duration;
   guint64 out_offset, out_offset_end;
   gboolean delta_unit = FALSE;
+  gboolean is_header;
 
   cret = GST_FLOW_OK;
 
@@ -545,7 +544,8 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
   }
 
   /* get timing info for the packet */
-  if (gst_ogg_stream_packet_is_header (&pad->map, packet)) {
+  is_header = gst_ogg_stream_packet_is_header (&pad->map, packet);
+  if (is_header) {
     duration = 0;
     GST_DEBUG_OBJECT (ogg, "packet is header");
   } else {
@@ -565,7 +565,7 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
       if (granule < 0) {
         GST_ERROR_OBJECT (ogg,
             "granulepos %" G_GINT64_FORMAT " yielded granule %" G_GINT64_FORMAT,
-            packet->granulepos, granule);
+            (gint64) packet->granulepos, (gint64) granule);
         return GST_FLOW_ERROR;
       }
       pad->current_granule = granule;
@@ -639,6 +639,10 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
   /* set delta flag for OGM content */
   if (delta_unit)
     GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_DELTA_UNIT);
+
+  /* set header flag for buffers that are also in the streamheaders */
+  if (is_header)
+    GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_HEADER);
 
   if (packet->packet != NULL) {
     /* copy packet in buffer */
@@ -880,7 +884,7 @@ gst_ogg_pad_submit_packet (GstOggPad * pad, ogg_packet * packet)
   } else if (granule != -1) {
     GST_ERROR_OBJECT (ogg,
         "granulepos %" G_GINT64_FORMAT " yielded granule %" G_GINT64_FORMAT,
-        packet->granulepos, granule);
+        (gint64) packet->granulepos, (gint64) granule);
     return GST_FLOW_ERROR;
   }
 
@@ -922,7 +926,7 @@ gst_ogg_pad_submit_packet (GstOggPad * pad, ogg_packet * packet)
         if (granule < 0) {
           GST_ERROR_OBJECT (ogg,
               "granulepos %" G_GINT64_FORMAT " yielded granule %"
-              G_GINT64_FORMAT, packet->granulepos, granule);
+              G_GINT64_FORMAT, (gint64) packet->granulepos, (gint64) granule);
           return GST_FLOW_ERROR;
         }
 
@@ -1442,9 +1446,7 @@ gst_ogg_pad_handle_push_mode_state (GstOggPad * pad, ogg_page * page)
         ogg->push_time_length = ogg->total_time;
         GST_INFO_OBJECT (ogg, "New duration found: %" GST_TIME_FORMAT,
             GST_TIME_ARGS (ogg->total_time));
-        message =
-            gst_message_new_duration (GST_OBJECT (ogg), GST_FORMAT_TIME,
-            ogg->total_time);
+        message = gst_message_new_duration_changed (GST_OBJECT (ogg));
         gst_element_post_message (GST_ELEMENT (ogg), message);
 
         GST_DEBUG_OBJECT (ogg,
@@ -2017,8 +2019,8 @@ gst_ogg_demux_init (GstOggDemux * ogg)
       gst_ogg_demux_sink_activate_mode);
   gst_element_add_pad (GST_ELEMENT (ogg), ogg->sinkpad);
 
-  ogg->chain_lock = g_mutex_new ();
-  ogg->push_lock = g_mutex_new ();
+  g_mutex_init (&ogg->chain_lock);
+  g_mutex_init (&ogg->push_lock);
   ogg->chains = g_array_new (FALSE, TRUE, sizeof (GstOggChain *));
 
   ogg->stats_nbisections = 0;
@@ -2038,8 +2040,8 @@ gst_ogg_demux_finalize (GObject * object)
   ogg = GST_OGG_DEMUX (object);
 
   g_array_free (ogg->chains, TRUE);
-  g_mutex_free (ogg->chain_lock);
-  g_mutex_free (ogg->push_lock);
+  g_mutex_clear (&ogg->chain_lock);
+  g_mutex_clear (&ogg->push_lock);
   ogg_sync_clear (&ogg->sync);
 
   if (ogg->newsegment)
@@ -4394,14 +4396,8 @@ gst_ogg_demux_sync_streams (GstOggDemux * ogg)
 
         stream->position = cur;
 
-#if 0
-        ogg->segment.base += cur - stream->position;
-        /* advance stream time (FIXME: is this right, esp. time_pos?) */
         gst_pad_push_event (GST_PAD_CAST (stream),
-            gst_event_new_new_segment (TRUE, ogg->segment.rate,
-                ogg->segment.applied_rate,
-                GST_FORMAT_TIME, stream->position, -1, stream->position));
-#endif
+            gst_event_new_gap (stream->position, cur - stream->position));
       }
     }
   }
@@ -4574,7 +4570,8 @@ gst_ogg_demux_sink_activate (GstPad * sinkpad, GstObject * parent)
     goto activate_push;
   }
 
-  pull_mode = gst_query_has_scheduling_mode (query, GST_PAD_MODE_PULL);
+  pull_mode = gst_query_has_scheduling_mode_with_flags (query,
+      GST_PAD_MODE_PULL, GST_SCHEDULING_FLAG_SEEKABLE);
   gst_query_unref (query);
 
   if (!pull_mode)

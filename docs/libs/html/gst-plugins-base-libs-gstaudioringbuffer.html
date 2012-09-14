@@ -90,7 +90,8 @@ enum                <a class="link" href="gst-plugins-base-libs-gstaudioringbuff
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-read" title="gst_audio_ring_buffer_read ()">gst_audio_ring_buffer_read</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><span class="type">guint64</span> sample</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-clear" title="gst_audio_ring_buffer_clear ()">gst_audio_ring_buffer_clear</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> segment</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-clear-all" title="gst_audio_ring_buffer_clear_all ()">gst_audio_ring_buffer_clear_all</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);
@@ -122,7 +123,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstaudioringbuff
 <p>
 </p>
 <div class="refsect2">
-<a name="idp13055056"></a><p>
+<a name="idp13510832"></a><p>
 This object is the base class for audio ringbuffers used by the base
 audio source and sink classes.
 </p>
@@ -145,11 +146,12 @@ Last reviewed on 2006-02-02 (0.10.4)
 <div class="refsect2">
 <a name="GstAudioRingBuffer-struct"></a><h3>struct GstAudioRingBuffer</h3>
 <pre class="programlisting">struct GstAudioRingBuffer {
-  GCond                      *cond;
+  GCond                      cond;
   gboolean                    open;
   gboolean                    acquired;
   guint8                     *memory;
   gsize                       size;
+  GstClockTime               *timestamps;
   GstAudioRingBufferSpec      spec;
   gint                        samples_per_seg;
   guint8                     *empty_seg;
@@ -167,7 +169,7 @@ The ringbuffer base class structure.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Threads.html#GCond"><span class="type">GCond</span></a> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.cond"></a>cond</code></em>;</span></p></td>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Threads.html#GCond"><span class="type">GCond</span></a> <em class="structfield"><code><a name="GstAudioRingBuffer-struct.cond"></a>cond</code></em>;</span></p></td>
 <td>used to signal start/stop/pause/resume actions</td>
 </tr>
 <tr>
@@ -185,6 +187,10 @@ The ringbuffer base class structure.
 <tr>
 <td><p><span class="term"><span class="type">gsize</span> <em class="structfield"><code><a name="GstAudioRingBuffer-struct.size"></a>size</code></em>;</span></p></td>
 <td>size of data in the ringbuffer</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.timestamps"></a>timestamps</code></em>;</span></p></td>
+<td></td>
 </tr>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> <em class="structfield"><code><a name="GstAudioRingBuffer-struct.spec"></a>spec</code></em>;</span></p></td>
@@ -544,7 +550,7 @@ The format of the samples in the ringbuffer.
 <hr>
 <div class="refsect2">
 <a name="GST-AUDIO-RING-BUFFER-GET-COND:CAPS"></a><h3>GST_AUDIO_RING_BUFFER_GET_COND()</h3>
-<pre class="programlisting">#define GST_AUDIO_RING_BUFFER_GET_COND(buf) (((GstAudioRingBuffer *)buf)-&gt;cond)
+<pre class="programlisting">#define GST_AUDIO_RING_BUFFER_GET_COND(buf) (&amp;(((GstAudioRingBuffer *)buf)-&gt;cond))
 </pre>
 </div>
 <hr>
@@ -581,7 +587,8 @@ MT safe.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cb</code></em> :</span></p></td>
-<td>the callback to set</td>
+<td>the callback to set. <span class="annotation">[<acronym title="The callback is valid until first called."><span class="acronym">scope async</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -1030,7 +1037,8 @@ MT safe.</td>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_audio_ring_buffer_read          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><span class="type">guint64</span> sample</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>);</pre>
 <p>
 Read <em class="parameter"><code>len</code></em> samples from the ringbuffer into the memory pointed 
 to by <em class="parameter"><code>data</code></em>.
@@ -1040,6 +1048,9 @@ the ringbuffer.
 <p>
 <em class="parameter"><code>len</code></em> should not be a multiple of the segment size of the ringbuffer
 although it is recommended.
+</p>
+<p>
+<em class="parameter"><code>timestamp</code></em> will return the timestamp associated with the data returned.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1059,6 +1070,10 @@ although it is recommended.
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
 <td>the number of samples in data to read</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
+<td>where the timestamp is returned</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

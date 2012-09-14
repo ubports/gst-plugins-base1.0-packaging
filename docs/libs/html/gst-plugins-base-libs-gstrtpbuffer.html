@@ -148,7 +148,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16379968"></a><p>
+<a name="idp16192848"></a><p>
 The GstRTPBuffer helper functions makes it easy to parse and create regular 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> objects that contain RTP payloads. These buffers are typically of
 'application/x-rtp' <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
@@ -181,7 +181,8 @@ The supported RTP version 2.
 Allocate enough data in <em class="parameter"><code>buffer</code></em> to hold an RTP packet with <em class="parameter"><code>csrc_count</code></em> CSRCs,
 a payload length of <em class="parameter"><code>payload_len</code></em> and padding of <em class="parameter"><code>pad_len</code></em>.
 <em class="parameter"><code>buffer</code></em> must be writable and all previous memory in <em class="parameter"><code>buffer</code></em> will be freed.
-All other RTP header fields will be set to 0/FALSE.
+If <em class="parameter"><code>pad_len</code></em> is &gt;0, the padding bit will be set. All other RTP header fields
+will be set to 0/FALSE.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1166,8 +1167,8 @@ value even in the case where there is a timestamp wraparound.
                                                          <em class="parameter"><code><span class="type">guint16</span> length</code></em>);</pre>
 <p>
 Set the extension bit of the rtp buffer and fill in the <em class="parameter"><code>bits</code></em> and <em class="parameter"><code>length</code></em> of the
-extension header. It will refuse to set the extension data if the buffer is not
-large enough.
+extension header. If the existing extension data is not large enough, it will
+be made larger.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

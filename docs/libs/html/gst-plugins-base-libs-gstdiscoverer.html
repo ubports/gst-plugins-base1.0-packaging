@@ -1438,7 +1438,12 @@ set on the result flags.
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>            *error,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Will be emitted when all information on a URI could be discovered.
+Will be emitted when all information on a URI could be discovered, or
+an error ocurred.
+</p>
+<p>
+When an error occurs, <em class="parameter"><code>info</code></em> might still contain some partial information,
+depending on the circumstances of the error.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1457,7 +1462,9 @@ Will be emitted when all information on a URI could be discovered.
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, which will be non-NULL if an error
-occurred during discovery. <span class="annotation">[<acronym title="Override the parsed C type with given type"><span class="acronym">type</span></acronym> GLib.Error]</span>
+occurred during discovery. You must not
+free this <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, it will be freed by
+the discoverer. <span class="annotation">[<acronym title="Override the parsed C type with given type"><span class="acronym">type</span></acronym> GLib.Error]</span>
 </td>
 </tr>
 <tr>

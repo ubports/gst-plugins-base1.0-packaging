@@ -57,7 +57,8 @@ DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/common/check.mak
 check_PROGRAMS = $(am__EXEEXT_1) $(am__EXEEXT_2) \
 	elements/audioconvert$(EXEEXT) elements/audiotestsrc$(EXEEXT) \
-	elements/decodebin$(EXEEXT) $(am__EXEEXT_3) \
+	elements/decodebin$(EXEEXT) \
+	elements/streamsynchronizer$(EXEEXT) $(am__EXEEXT_3) \
 	generic/clock-selection$(EXEEXT) generic/states$(EXEEXT) \
 	gst/typefindfunctions$(EXEEXT) libs/libsabi$(EXEEXT) \
 	libs/audio$(EXEEXT) libs/audiocdsrc$(EXEEXT) \
@@ -67,12 +68,11 @@ check_PROGRAMS = $(am__EXEEXT_1) $(am__EXEEXT_2) \
 	libs/tag$(EXEEXT) libs/video$(EXEEXT) libs/xmpwriter$(EXEEXT) \
 	$(am__EXEEXT_4) $(am__EXEEXT_5) \
 	pipelines/simple-launch-lines$(EXEEXT) \
-	pipelines/streamheader$(EXEEXT) pipelines/basetime$(EXEEXT) \
+	pipelines/basetime$(EXEEXT) \
 	pipelines/capsfilter-renegotiation$(EXEEXT) \
 	pipelines/gio$(EXEEXT) elements/appsink$(EXEEXT) \
 	elements/appsrc$(EXEEXT) elements/audiorate$(EXEEXT) \
-	elements/audioresample$(EXEEXT) elements/gdpdepay$(EXEEXT) \
-	elements/gdppay$(EXEEXT) elements/multifdsink$(EXEEXT) \
+	elements/audioresample$(EXEEXT) elements/multifdsink$(EXEEXT) \
 	elements/multisocketsink$(EXEEXT) elements/playbin$(EXEEXT) \
 	elements/playbin-compressed$(EXEEXT) $(am__EXEEXT_6) \
 	$(am__EXEEXT_7) elements/videoconvert$(EXEEXT) \
@@ -220,12 +220,6 @@ elements_encodebin_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(elements_encodebin_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-elements_gdpdepay_SOURCES = elements/gdpdepay.c
-elements_gdpdepay_OBJECTS = gdpdepay.$(OBJEXT)
-elements_gdpdepay_DEPENDENCIES = $(am__DEPENDENCIES_2)
-elements_gdppay_SOURCES = elements/gdppay.c
-elements_gdppay_OBJECTS = gdppay.$(OBJEXT)
-elements_gdppay_DEPENDENCIES = $(am__DEPENDENCIES_2)
 elements_libvisual_SOURCES = elements/libvisual.c
 elements_libvisual_OBJECTS = elements_libvisual-libvisual.$(OBJEXT)
 elements_libvisual_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -264,6 +258,11 @@ elements_playbin_compressed_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(elements_playbin_compressed_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+elements_streamsynchronizer_SOURCES = elements/streamsynchronizer.c
+elements_streamsynchronizer_OBJECTS = streamsynchronizer.$(OBJEXT)
+elements_streamsynchronizer_LDADD = $(LDADD)
+elements_streamsynchronizer_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 elements_subparse_SOURCES = elements/subparse.c
 elements_subparse_OBJECTS = elements_subparse-subparse.$(OBJEXT)
 elements_subparse_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -545,15 +544,6 @@ pipelines_simple_launch_lines_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(pipelines_simple_launch_lines_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-pipelines_streamheader_SOURCES = pipelines/streamheader.c
-pipelines_streamheader_OBJECTS =  \
-	pipelines_streamheader-streamheader.$(OBJEXT)
-pipelines_streamheader_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
-pipelines_streamheader_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(pipelines_streamheader_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
 pipelines_theoraenc_SOURCES = pipelines/theoraenc.c
 pipelines_theoraenc_OBJECTS = pipelines_theoraenc-theoraenc.$(OBJEXT)
 pipelines_theoraenc_DEPENDENCIES = $(am__DEPENDENCIES_2) \
@@ -625,10 +615,10 @@ am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/audioconvert.c elements/audiorate.c \
 	elements/audioresample.c elements/audiotestsrc.c \
-	elements/decodebin.c elements/encodebin.c elements/gdpdepay.c \
-	elements/gdppay.c elements/libvisual.c elements/multifdsink.c \
-	elements/multisocketsink.c elements/playbin.c \
-	elements/playbin-compressed.c elements/subparse.c \
+	elements/decodebin.c elements/encodebin.c elements/libvisual.c \
+	elements/multifdsink.c elements/multisocketsink.c \
+	elements/playbin.c elements/playbin-compressed.c \
+	elements/streamsynchronizer.c elements/subparse.c \
 	elements/textoverlay.c elements/videoconvert.c \
 	elements/videorate.c elements/videoscale.c \
 	elements/videotestsrc.c elements/volume.c elements/vorbisdec.c \
@@ -645,15 +635,15 @@ SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	$(nodist_orc_volume_SOURCES) pipelines/basetime.c \
 	pipelines/capsfilter-renegotiation.c pipelines/gio.c \
 	pipelines/oggmux.c pipelines/simple-launch-lines.c \
-	pipelines/streamheader.c pipelines/theoraenc.c \
-	pipelines/vorbisdec.c pipelines/vorbisenc.c
+	pipelines/theoraenc.c pipelines/vorbisdec.c \
+	pipelines/vorbisenc.c
 DIST_SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/audioconvert.c elements/audiorate.c \
 	elements/audioresample.c elements/audiotestsrc.c \
-	elements/decodebin.c elements/encodebin.c elements/gdpdepay.c \
-	elements/gdppay.c elements/libvisual.c elements/multifdsink.c \
-	elements/multisocketsink.c elements/playbin.c \
-	elements/playbin-compressed.c elements/subparse.c \
+	elements/decodebin.c elements/encodebin.c elements/libvisual.c \
+	elements/multifdsink.c elements/multisocketsink.c \
+	elements/playbin.c elements/playbin-compressed.c \
+	elements/streamsynchronizer.c elements/subparse.c \
 	elements/textoverlay.c elements/videoconvert.c \
 	elements/videorate.c elements/videoscale.c \
 	elements/videotestsrc.c elements/volume.c elements/vorbisdec.c \
@@ -665,8 +655,8 @@ DIST_SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	libs/tag.c libs/video.c libs/xmpwriter.c pipelines/basetime.c \
 	pipelines/capsfilter-renegotiation.c pipelines/gio.c \
 	pipelines/oggmux.c pipelines/simple-launch-lines.c \
-	pipelines/streamheader.c pipelines/theoraenc.c \
-	pipelines/vorbisdec.c pipelines/vorbisenc.c
+	pipelines/theoraenc.c pipelines/vorbisdec.c \
+	pipelines/vorbisenc.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -1196,8 +1186,6 @@ elements_audiorate_LDADD = \
 elements_audiorate_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(CFLAGS) $(AM_CFLAGS)
 elements_libvisual_LDADD = $(LDADD)
 elements_libvisual_CFLAGS = $(CFLAGS) $(AM_CFLAGS)
-elements_gdpdepay_LDADD = $(LDADD)
-elements_gdppay_LDADD = $(LDADD)
 elements_playbin_LDADD = $(GST_BASE_LIBS) $(LDADD)
 elements_playbin_CFLAGS = $(GST_BASE_CFLAGS) $(AM_CFLAGS)
 elements_playbin_compressed_LDADD = $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la $(GST_BASE_LIBS) $(LDADD)
@@ -1291,8 +1279,6 @@ elements_multisocketsink_CFLAGS = $(GIO_CFLAGS) $(AM_CFLAGS)
 elements_multisocketsink_LDADD = $(GIO_LIBS) $(LDADD)
 pipelines_gio_CFLAGS = $(GIO_CFLAGS) $(AM_CFLAGS)
 pipelines_gio_LDADD = $(GIO_LIBS) $(LDADD)
-pipelines_streamheader_CFLAGS = $(GIO_CFLAGS) $(AM_CFLAGS)
-pipelines_streamheader_LDADD = $(GIO_LIBS) $(LDADD)
 pipelines_vorbisenc_CFLAGS = \
         $(GST_PLUGINS_BASE_CFLAGS) \
         $(AM_CFLAGS)
@@ -1420,12 +1406,6 @@ elements/decodebin$(EXEEXT): $(elements_decodebin_OBJECTS) $(elements_decodebin_
 elements/encodebin$(EXEEXT): $(elements_encodebin_OBJECTS) $(elements_encodebin_DEPENDENCIES) $(EXTRA_elements_encodebin_DEPENDENCIES) elements/$(am__dirstamp)
 	@rm -f elements/encodebin$(EXEEXT)
 	$(AM_V_CCLD)$(elements_encodebin_LINK) $(elements_encodebin_OBJECTS) $(elements_encodebin_LDADD) $(LIBS)
-elements/gdpdepay$(EXEEXT): $(elements_gdpdepay_OBJECTS) $(elements_gdpdepay_DEPENDENCIES) $(EXTRA_elements_gdpdepay_DEPENDENCIES) elements/$(am__dirstamp)
-	@rm -f elements/gdpdepay$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(elements_gdpdepay_OBJECTS) $(elements_gdpdepay_LDADD) $(LIBS)
-elements/gdppay$(EXEEXT): $(elements_gdppay_OBJECTS) $(elements_gdppay_DEPENDENCIES) $(EXTRA_elements_gdppay_DEPENDENCIES) elements/$(am__dirstamp)
-	@rm -f elements/gdppay$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(elements_gdppay_OBJECTS) $(elements_gdppay_LDADD) $(LIBS)
 elements/libvisual$(EXEEXT): $(elements_libvisual_OBJECTS) $(elements_libvisual_DEPENDENCIES) $(EXTRA_elements_libvisual_DEPENDENCIES) elements/$(am__dirstamp)
 	@rm -f elements/libvisual$(EXEEXT)
 	$(AM_V_CCLD)$(elements_libvisual_LINK) $(elements_libvisual_OBJECTS) $(elements_libvisual_LDADD) $(LIBS)
@@ -1441,6 +1421,9 @@ elements/playbin$(EXEEXT): $(elements_playbin_OBJECTS) $(elements_playbin_DEPEND
 elements/playbin-compressed$(EXEEXT): $(elements_playbin_compressed_OBJECTS) $(elements_playbin_compressed_DEPENDENCIES) $(EXTRA_elements_playbin_compressed_DEPENDENCIES) elements/$(am__dirstamp)
 	@rm -f elements/playbin-compressed$(EXEEXT)
 	$(AM_V_CCLD)$(elements_playbin_compressed_LINK) $(elements_playbin_compressed_OBJECTS) $(elements_playbin_compressed_LDADD) $(LIBS)
+elements/streamsynchronizer$(EXEEXT): $(elements_streamsynchronizer_OBJECTS) $(elements_streamsynchronizer_DEPENDENCIES) $(EXTRA_elements_streamsynchronizer_DEPENDENCIES) elements/$(am__dirstamp)
+	@rm -f elements/streamsynchronizer$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(elements_streamsynchronizer_OBJECTS) $(elements_streamsynchronizer_LDADD) $(LIBS)
 elements/subparse$(EXEEXT): $(elements_subparse_OBJECTS) $(elements_subparse_DEPENDENCIES) $(EXTRA_elements_subparse_DEPENDENCIES) elements/$(am__dirstamp)
 	@rm -f elements/subparse$(EXEEXT)
 	$(AM_V_CCLD)$(elements_subparse_LINK) $(elements_subparse_OBJECTS) $(elements_subparse_LDADD) $(LIBS)
@@ -1570,9 +1553,6 @@ pipelines/oggmux$(EXEEXT): $(pipelines_oggmux_OBJECTS) $(pipelines_oggmux_DEPEND
 pipelines/simple-launch-lines$(EXEEXT): $(pipelines_simple_launch_lines_OBJECTS) $(pipelines_simple_launch_lines_DEPENDENCIES) $(EXTRA_pipelines_simple_launch_lines_DEPENDENCIES) pipelines/$(am__dirstamp)
 	@rm -f pipelines/simple-launch-lines$(EXEEXT)
 	$(AM_V_CCLD)$(pipelines_simple_launch_lines_LINK) $(pipelines_simple_launch_lines_OBJECTS) $(pipelines_simple_launch_lines_LDADD) $(LIBS)
-pipelines/streamheader$(EXEEXT): $(pipelines_streamheader_OBJECTS) $(pipelines_streamheader_DEPENDENCIES) $(EXTRA_pipelines_streamheader_DEPENDENCIES) pipelines/$(am__dirstamp)
-	@rm -f pipelines/streamheader$(EXEEXT)
-	$(AM_V_CCLD)$(pipelines_streamheader_LINK) $(pipelines_streamheader_OBJECTS) $(pipelines_streamheader_LDADD) $(LIBS)
 pipelines/theoraenc$(EXEEXT): $(pipelines_theoraenc_OBJECTS) $(pipelines_theoraenc_DEPENDENCIES) $(EXTRA_pipelines_theoraenc_DEPENDENCIES) pipelines/$(am__dirstamp)
 	@rm -f pipelines/theoraenc$(EXEEXT)
 	$(AM_V_CCLD)$(pipelines_theoraenc_LINK) $(pipelines_theoraenc_OBJECTS) $(pipelines_theoraenc_LDADD) $(LIBS)
@@ -1612,8 +1592,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/elements_volume-volume.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/elements_vorbisdec-vorbisdec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/elements_vorbistag-vorbistag.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdpdepay.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdppay.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst_typefindfunctions-typefindfunctions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gstlibscpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libs_audio-audio.Po@am__quote@
@@ -1640,11 +1618,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_gio-gio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_oggmux-oggmux.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_simple_launch_lines-simple-launch-lines.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_streamheader-streamheader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_theoraenc-theoraenc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_vorbisdec-vorbisdec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pipelines_vorbisenc-vorbisenc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/states.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/streamsynchronizer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/videorate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/videotestsrc.Po@am__quote@
 
@@ -1795,34 +1773,6 @@ elements_encodebin-encodebin.obj: elements/encodebin.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(elements_encodebin_CFLAGS) $(CFLAGS) -c -o elements_encodebin-encodebin.obj `if test -f 'elements/encodebin.c'; then $(CYGPATH_W) 'elements/encodebin.c'; else $(CYGPATH_W) '$(srcdir)/elements/encodebin.c'; fi`
 
-gdpdepay.o: elements/gdpdepay.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gdpdepay.o -MD -MP -MF $(DEPDIR)/gdpdepay.Tpo -c -o gdpdepay.o `test -f 'elements/gdpdepay.c' || echo '$(srcdir)/'`elements/gdpdepay.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gdpdepay.Tpo $(DEPDIR)/gdpdepay.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/gdpdepay.c' object='gdpdepay.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gdpdepay.o `test -f 'elements/gdpdepay.c' || echo '$(srcdir)/'`elements/gdpdepay.c
-
-gdpdepay.obj: elements/gdpdepay.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gdpdepay.obj -MD -MP -MF $(DEPDIR)/gdpdepay.Tpo -c -o gdpdepay.obj `if test -f 'elements/gdpdepay.c'; then $(CYGPATH_W) 'elements/gdpdepay.c'; else $(CYGPATH_W) '$(srcdir)/elements/gdpdepay.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gdpdepay.Tpo $(DEPDIR)/gdpdepay.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/gdpdepay.c' object='gdpdepay.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gdpdepay.obj `if test -f 'elements/gdpdepay.c'; then $(CYGPATH_W) 'elements/gdpdepay.c'; else $(CYGPATH_W) '$(srcdir)/elements/gdpdepay.c'; fi`
-
-gdppay.o: elements/gdppay.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gdppay.o -MD -MP -MF $(DEPDIR)/gdppay.Tpo -c -o gdppay.o `test -f 'elements/gdppay.c' || echo '$(srcdir)/'`elements/gdppay.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gdppay.Tpo $(DEPDIR)/gdppay.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/gdppay.c' object='gdppay.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gdppay.o `test -f 'elements/gdppay.c' || echo '$(srcdir)/'`elements/gdppay.c
-
-gdppay.obj: elements/gdppay.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gdppay.obj -MD -MP -MF $(DEPDIR)/gdppay.Tpo -c -o gdppay.obj `if test -f 'elements/gdppay.c'; then $(CYGPATH_W) 'elements/gdppay.c'; else $(CYGPATH_W) '$(srcdir)/elements/gdppay.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gdppay.Tpo $(DEPDIR)/gdppay.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/gdppay.c' object='gdppay.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gdppay.obj `if test -f 'elements/gdppay.c'; then $(CYGPATH_W) 'elements/gdppay.c'; else $(CYGPATH_W) '$(srcdir)/elements/gdppay.c'; fi`
-
 elements_libvisual-libvisual.o: elements/libvisual.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(elements_libvisual_CFLAGS) $(CFLAGS) -MT elements_libvisual-libvisual.o -MD -MP -MF $(DEPDIR)/elements_libvisual-libvisual.Tpo -c -o elements_libvisual-libvisual.o `test -f 'elements/libvisual.c' || echo '$(srcdir)/'`elements/libvisual.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/elements_libvisual-libvisual.Tpo $(DEPDIR)/elements_libvisual-libvisual.Po
@@ -1892,6 +1842,20 @@ elements_playbin_compressed-playbin-compressed.obj: elements/playbin-compressed.
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/playbin-compressed.c' object='elements_playbin_compressed-playbin-compressed.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(elements_playbin_compressed_CFLAGS) $(CFLAGS) -c -o elements_playbin_compressed-playbin-compressed.obj `if test -f 'elements/playbin-compressed.c'; then $(CYGPATH_W) 'elements/playbin-compressed.c'; else $(CYGPATH_W) '$(srcdir)/elements/playbin-compressed.c'; fi`
+
+streamsynchronizer.o: elements/streamsynchronizer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT streamsynchronizer.o -MD -MP -MF $(DEPDIR)/streamsynchronizer.Tpo -c -o streamsynchronizer.o `test -f 'elements/streamsynchronizer.c' || echo '$(srcdir)/'`elements/streamsynchronizer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/streamsynchronizer.Tpo $(DEPDIR)/streamsynchronizer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/streamsynchronizer.c' object='streamsynchronizer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o streamsynchronizer.o `test -f 'elements/streamsynchronizer.c' || echo '$(srcdir)/'`elements/streamsynchronizer.c
+
+streamsynchronizer.obj: elements/streamsynchronizer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT streamsynchronizer.obj -MD -MP -MF $(DEPDIR)/streamsynchronizer.Tpo -c -o streamsynchronizer.obj `if test -f 'elements/streamsynchronizer.c'; then $(CYGPATH_W) 'elements/streamsynchronizer.c'; else $(CYGPATH_W) '$(srcdir)/elements/streamsynchronizer.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/streamsynchronizer.Tpo $(DEPDIR)/streamsynchronizer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='elements/streamsynchronizer.c' object='streamsynchronizer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o streamsynchronizer.obj `if test -f 'elements/streamsynchronizer.c'; then $(CYGPATH_W) 'elements/streamsynchronizer.c'; else $(CYGPATH_W) '$(srcdir)/elements/streamsynchronizer.c'; fi`
 
 elements_subparse-subparse.o: elements/subparse.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(elements_subparse_CFLAGS) $(CFLAGS) -MT elements_subparse-subparse.o -MD -MP -MF $(DEPDIR)/elements_subparse-subparse.Tpo -c -o elements_subparse-subparse.o `test -f 'elements/subparse.c' || echo '$(srcdir)/'`elements/subparse.c
@@ -2410,20 +2374,6 @@ pipelines_simple_launch_lines-simple-launch-lines.obj: pipelines/simple-launch-l
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pipelines/simple-launch-lines.c' object='pipelines_simple_launch_lines-simple-launch-lines.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_simple_launch_lines_CFLAGS) $(CFLAGS) -c -o pipelines_simple_launch_lines-simple-launch-lines.obj `if test -f 'pipelines/simple-launch-lines.c'; then $(CYGPATH_W) 'pipelines/simple-launch-lines.c'; else $(CYGPATH_W) '$(srcdir)/pipelines/simple-launch-lines.c'; fi`
-
-pipelines_streamheader-streamheader.o: pipelines/streamheader.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_streamheader_CFLAGS) $(CFLAGS) -MT pipelines_streamheader-streamheader.o -MD -MP -MF $(DEPDIR)/pipelines_streamheader-streamheader.Tpo -c -o pipelines_streamheader-streamheader.o `test -f 'pipelines/streamheader.c' || echo '$(srcdir)/'`pipelines/streamheader.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pipelines_streamheader-streamheader.Tpo $(DEPDIR)/pipelines_streamheader-streamheader.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pipelines/streamheader.c' object='pipelines_streamheader-streamheader.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_streamheader_CFLAGS) $(CFLAGS) -c -o pipelines_streamheader-streamheader.o `test -f 'pipelines/streamheader.c' || echo '$(srcdir)/'`pipelines/streamheader.c
-
-pipelines_streamheader-streamheader.obj: pipelines/streamheader.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_streamheader_CFLAGS) $(CFLAGS) -MT pipelines_streamheader-streamheader.obj -MD -MP -MF $(DEPDIR)/pipelines_streamheader-streamheader.Tpo -c -o pipelines_streamheader-streamheader.obj `if test -f 'pipelines/streamheader.c'; then $(CYGPATH_W) 'pipelines/streamheader.c'; else $(CYGPATH_W) '$(srcdir)/pipelines/streamheader.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pipelines_streamheader-streamheader.Tpo $(DEPDIR)/pipelines_streamheader-streamheader.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pipelines/streamheader.c' object='pipelines_streamheader-streamheader.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_streamheader_CFLAGS) $(CFLAGS) -c -o pipelines_streamheader-streamheader.obj `if test -f 'pipelines/streamheader.c'; then $(CYGPATH_W) 'pipelines/streamheader.c'; else $(CYGPATH_W) '$(srcdir)/pipelines/streamheader.c'; fi`
 
 pipelines_theoraenc-theoraenc.o: pipelines/theoraenc.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pipelines_theoraenc_CFLAGS) $(CFLAGS) -MT pipelines_theoraenc-theoraenc.o -MD -MP -MF $(DEPDIR)/pipelines_theoraenc-theoraenc.Tpo -c -o pipelines_theoraenc-theoraenc.o `test -f 'pipelines/theoraenc.c' || echo '$(srcdir)/'`pipelines/theoraenc.c

@@ -115,14 +115,11 @@
  *   and if it exceeds the recorded one, save it and emit a GST_MESSAGE_LATENCY
  */
 
-/* FIXME 0.11: suppress warnings for deprecated API such as GStaticRecMutex
- * with newer GLib versions (>= 2.31.0) */
-#define GLIB_DISABLE_DEPRECATION_WARNINGS
-
 #include "gstvideoencoder.h"
 #include "gstvideoutils.h"
 
 #include <gst/video/gstvideometa.h>
+#include <gst/video/gstvideopool.h>
 
 #include <string.h>
 
@@ -165,6 +162,9 @@ struct _GstVideoEncoderPrivate
 
   GstAllocator *allocator;
   GstAllocationParams params;
+
+  GstTagList *tags;
+  gboolean tags_changed;
 };
 
 typedef struct _ForcedKeyUnitEvent ForcedKeyUnitEvent;
@@ -230,6 +230,7 @@ static gboolean gst_video_encoder_decide_allocation_default (GstVideoEncoder *
     encoder, GstQuery * query);
 static gboolean gst_video_encoder_propose_allocation_default (GstVideoEncoder *
     encoder, GstQuery * query);
+static gboolean gst_video_encoder_negotiate_default (GstVideoEncoder * encoder);
 
 /* we can't use G_DEFINE_ABSTRACT_TYPE because we need the klass in the _init
  * method to get to the padtemplates */
@@ -291,6 +292,7 @@ gst_video_encoder_class_init (GstVideoEncoderClass * klass)
   klass->src_event = gst_video_encoder_src_event_default;
   klass->propose_allocation = gst_video_encoder_propose_allocation_default;
   klass->decide_allocation = gst_video_encoder_decide_allocation_default;
+  klass->negotiate = gst_video_encoder_negotiate_default;
 }
 
 static void
@@ -337,6 +339,11 @@ gst_video_encoder_reset (GstVideoEncoder * encoder)
   if (priv->output_state)
     gst_video_codec_state_unref (priv->output_state);
   priv->output_state = NULL;
+
+  if (priv->tags)
+    gst_tag_list_unref (priv->tags);
+  priv->tags = NULL;
+  priv->tags_changed = FALSE;
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 }
@@ -746,7 +753,57 @@ static gboolean
 gst_video_encoder_propose_allocation_default (GstVideoEncoder * encoder,
     GstQuery * query)
 {
+  GstCaps *caps;
+  GstVideoInfo info;
+  GstBufferPool *pool;
+  guint size;
+
+  gst_query_parse_allocation (query, &caps, NULL);
+
+  if (caps == NULL)
+    return FALSE;
+
+  if (!gst_video_info_from_caps (&info, caps))
+    return FALSE;
+
+  size = GST_VIDEO_INFO_SIZE (&info);
+
+  if (gst_query_get_n_allocation_pools (query) == 0) {
+    GstStructure *structure;
+    GstAllocator *allocator = NULL;
+    GstAllocationParams params = { 0, 15, 0, 0 };
+
+    if (gst_query_get_n_allocation_params (query) > 0)
+      gst_query_parse_nth_allocation_param (query, 0, &allocator, &params);
+    else
+      gst_query_add_allocation_param (query, allocator, &params);
+
+    pool = gst_video_buffer_pool_new ();
+
+    structure = gst_buffer_pool_get_config (pool);
+    gst_buffer_pool_config_set_params (structure, caps, size, 0, 0);
+    gst_buffer_pool_config_set_allocator (structure, allocator, &params);
+
+    if (allocator)
+      gst_object_unref (allocator);
+
+    if (!gst_buffer_pool_set_config (pool, structure))
+      goto config_failed;
+
+    gst_query_add_allocation_pool (query, pool, size, 0, 0);
+    gst_object_unref (pool);
+    gst_query_add_allocation_meta (query, GST_VIDEO_META_API_TYPE, NULL);
+  }
+
   return TRUE;
+
+  /* ERRORS */
+config_failed:
+  {
+    GST_ERROR_OBJECT (encoder, "failed to set config");
+    gst_object_unref (pool);
+    return FALSE;
+  }
 }
 
 static gboolean
@@ -921,6 +978,36 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
               ", all_headers %d, count %u",
               GST_TIME_ARGS (running_time), all_headers, count);
         }
+        gst_event_unref (event);
+        event = NULL;
+        ret = TRUE;
+      }
+      break;
+    }
+    case GST_EVENT_TAG:
+    {
+      GstTagList *tags;
+
+      gst_event_parse_tag (event, &tags);
+
+      if (gst_tag_list_get_scope (tags) == GST_TAG_SCOPE_STREAM) {
+        tags = gst_tag_list_copy (tags);
+
+        /* FIXME: make generic based on GST_TAG_FLAG_ENCODED */
+        gst_tag_list_remove_tag (tags, GST_TAG_CODEC);
+        gst_tag_list_remove_tag (tags, GST_TAG_AUDIO_CODEC);
+        gst_tag_list_remove_tag (tags, GST_TAG_VIDEO_CODEC);
+        gst_tag_list_remove_tag (tags, GST_TAG_SUBTITLE_CODEC);
+        gst_tag_list_remove_tag (tags, GST_TAG_CONTAINER_FORMAT);
+        gst_tag_list_remove_tag (tags, GST_TAG_BITRATE);
+        gst_tag_list_remove_tag (tags, GST_TAG_NOMINAL_BITRATE);
+        gst_tag_list_remove_tag (tags, GST_TAG_MAXIMUM_BITRATE);
+        gst_tag_list_remove_tag (tags, GST_TAG_MINIMUM_BITRATE);
+        gst_tag_list_remove_tag (tags, GST_TAG_ENCODER);
+        gst_tag_list_remove_tag (tags, GST_TAG_ENCODER_VERSION);
+
+        gst_video_encoder_merge_tags (encoder, tags, GST_TAG_MERGE_REPLACE);
+        gst_tag_list_unref (tags);
         gst_event_unref (event);
         event = NULL;
         ret = TRUE;
@@ -1160,6 +1247,7 @@ gst_video_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
       gst_caps_unref (caps);
       goto not_negotiated;
     }
+    gst_caps_unref (caps);
     encoder->priv->do_caps = FALSE;
   }
 
@@ -1340,16 +1428,8 @@ close_failed:
   }
 }
 
-/**
- * gst_video_encoder_negotiate:
- * @encoder: a #GstVideoEncoder
- *
- * Negotiate with downstream elements to currently configured #GstVideoCodecState.
- *
- * Returns: #TRUE if the negotiation succeeded, else #FALSE.
- */
-gboolean
-gst_video_encoder_negotiate (GstVideoEncoder * encoder)
+static gboolean
+gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
 {
   GstVideoEncoderClass *klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
   GstAllocator *allocator;
@@ -1431,6 +1511,32 @@ no_decide_allocation:
 }
 
 /**
+ * gst_video_encoder_negotiate:
+ * @encoder: a #GstVideoEncoder
+ *
+ * Negotiate with downstream elements to currently configured #GstVideoCodecState.
+ *
+ * Returns: #TRUE if the negotiation succeeded, else #FALSE.
+ */
+gboolean
+gst_video_encoder_negotiate (GstVideoEncoder * encoder)
+{
+  GstVideoEncoderClass *klass;
+  gboolean ret = TRUE;
+
+  g_return_val_if_fail (GST_IS_VIDEO_ENCODER (encoder), FALSE);
+
+  klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
+
+  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+  if (klass->negotiate)
+    ret = klass->negotiate (encoder);
+  GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+
+  return ret;
+}
+
+/**
  * gst_video_encoder_allocate_output_buffer:
  * @encoder: a #GstVideoEncoder
  * @size: size of the buffer
@@ -1484,7 +1590,6 @@ gst_video_encoder_allocate_output_frame (GstVideoEncoder *
     encoder, GstVideoCodecFrame * frame, gsize size)
 {
   g_return_val_if_fail (frame->output_buffer == NULL, GST_FLOW_ERROR);
-  g_return_val_if_fail (size > 0, GST_FLOW_ERROR);
 
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
   if (G_UNLIKELY (encoder->priv->output_state_changed
@@ -1492,7 +1597,7 @@ gst_video_encoder_allocate_output_frame (GstVideoEncoder *
               && gst_pad_check_reconfigure (encoder->srcpad))))
     gst_video_encoder_negotiate (encoder);
 
-  GST_LOG_OBJECT (encoder, "alloc buffer size %d", size);
+  GST_LOG_OBJECT (encoder, "alloc buffer size %" G_GSIZE_FORMAT, size);
 
   frame->output_buffer =
       gst_buffer_new_allocate (encoder->priv->allocator, size,
@@ -1536,6 +1641,10 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   GST_LOG_OBJECT (encoder,
       "finish frame fpn %d", frame->presentation_frame_number);
 
+  GST_LOG_OBJECT (encoder, "frame PTS %" GST_TIME_FORMAT
+      ", DTS %" GST_TIME_FORMAT, GST_TIME_ARGS (frame->pts),
+      GST_TIME_ARGS (frame->dts));
+
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
 
   if (G_UNLIKELY (priv->output_state_changed || (priv->output_state
@@ -1561,6 +1670,12 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
 
     if (tmp == frame)
       break;
+  }
+
+  if (priv->tags && priv->tags_changed) {
+    gst_video_encoder_push_event (encoder,
+        gst_event_new_tag (gst_tag_list_ref (priv->tags)));
+    priv->tags_changed = FALSE;
   }
 
   /* no buffer data means this frame is skipped/dropped */
@@ -1632,7 +1747,11 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
     priv->distance_from_sync = 0;
     GST_BUFFER_FLAG_UNSET (frame->output_buffer, GST_BUFFER_FLAG_DELTA_UNIT);
     /* For keyframes, DTS = PTS */
-    frame->dts = frame->pts;
+    if (!GST_CLOCK_TIME_IS_VALID (frame->dts)) {
+      frame->dts = frame->pts;
+    } else if (GST_CLOCK_TIME_IS_VALID (frame->pts) && frame->pts != frame->dts) {
+      GST_WARNING_OBJECT (encoder, "keyframe PTS != DTS");
+    }
   } else {
     GST_BUFFER_FLAG_SET (frame->output_buffer, GST_BUFFER_FLAG_DELTA_UNIT);
   }
@@ -1890,4 +2009,86 @@ gst_video_encoder_get_frame (GstVideoEncoder * encoder, int frame_number)
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 
   return frame;
+}
+
+/**
+ * gst_video_encoder_get_frames:
+ * @encoder: a #GstVideoEncoder
+ *
+ * Get all pending unfinished #GstVideoCodecFrame
+ * 
+ * Returns: (transfer full) (element-type GstVideoCodecFrame): pending unfinished #GstVideoCodecFrame.
+ */
+GList *
+gst_video_encoder_get_frames (GstVideoEncoder * encoder)
+{
+  GList *frames;
+
+  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+  frames = g_list_copy (encoder->priv->frames);
+  g_list_foreach (frames, (GFunc) gst_video_codec_frame_ref, NULL);
+  GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+
+  return frames;
+}
+
+/**
+ * gst_video_encoder_merge_tags:
+ * @encoder: a #GstVideoEncoder
+ * @tags: a #GstTagList to merge
+ * @mode: the #GstTagMergeMode to use
+ *
+ * Adds tags to so-called pending tags, which will be processed
+ * before pushing out data downstream.
+ *
+ * Note that this is provided for convenience, and the subclass is
+ * not required to use this and can still do tag handling on its own.
+ *
+ * MT safe.
+ */
+void
+gst_video_encoder_merge_tags (GstVideoEncoder * encoder,
+    const GstTagList * tags, GstTagMergeMode mode)
+{
+  GstTagList *otags;
+
+  g_return_if_fail (GST_IS_VIDEO_ENCODER (encoder));
+  g_return_if_fail (tags == NULL || GST_IS_TAG_LIST (tags));
+
+  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+  if (tags)
+    GST_DEBUG_OBJECT (encoder, "merging tags %" GST_PTR_FORMAT, tags);
+  otags = encoder->priv->tags;
+  encoder->priv->tags = gst_tag_list_merge (encoder->priv->tags, tags, mode);
+  if (otags)
+    gst_tag_list_unref (otags);
+  encoder->priv->tags_changed = TRUE;
+  GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+}
+
+/**
+ * gst_video_encoder_get_allocator:
+ * @encoder: a #GstVideoEncoder
+ * @allocator: (out) (allow-none) (transfer full): the #GstAllocator
+ * used
+ * @params: (out) (allow-none) (transfer full): the
+ * #GstAllocatorParams of @allocator
+ *
+ * Lets #GstVideoEncoder sub-classes to know the memory @allocator
+ * used by the base class and its @params.
+ *
+ * Unref the @allocator after use it.
+ */
+void
+gst_video_encoder_get_allocator (GstVideoEncoder * encoder,
+    GstAllocator ** allocator, GstAllocationParams * params)
+{
+  g_return_if_fail (GST_IS_VIDEO_ENCODER (encoder));
+
+  if (allocator)
+    *allocator = encoder->priv->allocator ?
+        gst_object_ref (encoder->priv->allocator) : NULL;
+
+  if (params)
+    *params = encoder->priv->params;
 }

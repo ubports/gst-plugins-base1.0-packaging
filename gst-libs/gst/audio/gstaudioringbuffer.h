@@ -145,7 +145,7 @@ struct _GstAudioRingBufferSpec
   gpointer _gst_reserved[GST_PADDING];
 };
 
-#define GST_AUDIO_RING_BUFFER_GET_COND(buf) (((GstAudioRingBuffer *)buf)->cond)
+#define GST_AUDIO_RING_BUFFER_GET_COND(buf) (&(((GstAudioRingBuffer *)buf)->cond))
 #define GST_AUDIO_RING_BUFFER_WAIT(buf)     (g_cond_wait (GST_AUDIO_RING_BUFFER_GET_COND (buf), GST_OBJECT_GET_LOCK (buf)))
 #define GST_AUDIO_RING_BUFFER_SIGNAL(buf)   (g_cond_signal (GST_AUDIO_RING_BUFFER_GET_COND (buf)))
 #define GST_AUDIO_RING_BUFFER_BROADCAST(buf)(g_cond_broadcast (GST_AUDIO_RING_BUFFER_GET_COND (buf)))
@@ -171,11 +171,12 @@ struct _GstAudioRingBuffer {
   GstObject                   object;
 
   /*< public >*/ /* with LOCK */
-  GCond                      *cond;
+  GCond                      cond;
   gboolean                    open;
   gboolean                    acquired;
   guint8                     *memory;
   gsize                       size;
+  GstClockTime               *timestamps;
   GstAudioRingBufferSpec      spec;
   gint                        samples_per_seg;
   guint8                     *empty_seg;
@@ -287,6 +288,7 @@ gboolean        gst_audio_ring_buffer_is_active       (GstAudioRingBuffer *buf);
 
 /* flushing */
 void            gst_audio_ring_buffer_set_flushing    (GstAudioRingBuffer *buf, gboolean flushing);
+gboolean        gst_audio_ring_buffer_is_flushing     (GstAudioRingBuffer *buf);
 
 /* playback/pause */
 gboolean        gst_audio_ring_buffer_start           (GstAudioRingBuffer *buf);
@@ -309,7 +311,11 @@ guint           gst_audio_ring_buffer_commit          (GstAudioRingBuffer * buf,
 
 /* read samples */
 guint           gst_audio_ring_buffer_read            (GstAudioRingBuffer *buf, guint64 sample,
-                                                       guint8 *data, guint len);
+                                                       guint8 *data, guint len, GstClockTime *timestamp);
+
+/* Set timestamp on buffer */
+void            gst_audio_ring_buffer_set_timestamp   (GstAudioRingBuffer * buf, gint readseg, GstClockTime 
+                                                       timestamp);
 
 /* mostly protected */
 /* not yet implemented

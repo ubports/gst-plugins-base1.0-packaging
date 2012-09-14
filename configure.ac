@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT(GStreamer Base Plug-ins, 0.11.93,
+AC_INIT(GStreamer Base Plug-ins, 0.11.94,
     http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer,
     gst-plugins-base)
 
@@ -53,7 +53,7 @@ dnl sets GST_LT_LDFLAGS
 AS_LIBTOOL(GST, 0, 0, 0)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=0.11.93
+GST_REQ=0.11.94
 
 dnl *** autotools stuff ****
 
@@ -152,7 +152,7 @@ dnl check for gobject-introspection
 GOBJECT_INTROSPECTION_CHECK([1.31.1])
 
 dnl check for documentation tools
-GTK_DOC_CHECK([1.3])
+GTK_DOC_CHECK([1.12])
 AS_PATH_PYTHON([2.1])
 AG_GST_PLUGIN_DOCS([1.3],[2.1])
 
@@ -390,7 +390,6 @@ AG_GST_CHECK_PLUGIN(audiorate)
 AG_GST_CHECK_PLUGIN(audiotestsrc)
 AG_GST_CHECK_PLUGIN(encoding)
 AG_GST_CHECK_PLUGIN(videoconvert)
-AG_GST_CHECK_PLUGIN(gdp)
 AG_GST_CHECK_PLUGIN(gio)
 AG_GST_CHECK_PLUGIN(playback)
 AG_GST_CHECK_PLUGIN(audioresample)
@@ -818,7 +817,6 @@ gst/audiorate/Makefile
 gst/audiotestsrc/Makefile
 gst/encoding/Makefile
 gst/videoconvert/Makefile
-gst/gdp/Makefile
 gst/gio/Makefile
 gst/playback/Makefile
 gst/audioresample/Makefile
