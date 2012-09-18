@@ -475,7 +475,7 @@ gst_audio_decoder_reset (GstAudioDecoder * dec, gboolean full)
     dec->priv->ctx.max_errors = GST_AUDIO_DECODER_MAX_ERRORS;
 
     if (dec->priv->taglist) {
-      gst_tag_list_free (dec->priv->taglist);
+      gst_tag_list_unref (dec->priv->taglist);
       dec->priv->taglist = NULL;
     }
     dec->priv->taglist_changed = FALSE;
@@ -1108,8 +1108,9 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
   if (G_UNLIKELY (dec->priv->error_count))
     dec->priv->error_count--;
 
-exit:
   ret = gst_audio_decoder_output (dec, buf);
+
+exit:
 
   GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
 

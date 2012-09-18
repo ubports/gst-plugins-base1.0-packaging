@@ -983,7 +983,6 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		$(gir_cincludes) \
-@HAVE_INTROSPECTION_TRUE@		-DGST_USE_UNSTABLE_API \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_srcdir)/gst-libs \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_builddir)/gst-libs \
 @HAVE_INTROSPECTION_TRUE@		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \

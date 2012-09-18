@@ -358,7 +358,7 @@ Actual configured audio latency in microseconds.
 <div class="refsect2">
 <a name="GstAudioBaseSrc--buffer-time"></a><h3>The <code class="literal">"buffer-time"</code> property</h3>
 <pre class="programlisting">  "buffer-time"              <span class="type">gint64</span>                : Read / Write</pre>
-<p>Size of audio buffer in microseconds.</p>
+<p>Size of audio buffer in microseconds, this is the maximum amount of data that is buffered in the device and the maximum latency that the source reports.</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 200000</p>
 </div>
@@ -366,7 +366,7 @@ Actual configured audio latency in microseconds.
 <div class="refsect2">
 <a name="GstAudioBaseSrc--latency-time"></a><h3>The <code class="literal">"latency-time"</code> property</h3>
 <pre class="programlisting">  "latency-time"             <span class="type">gint64</span>                : Read / Write</pre>
-<p>Audio latency in microseconds.</p>
+<p>The minimum amount of data to read in each iteration in microseconds, this is the minimum latency that the source reports.</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 10000</p>
 </div>

@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT(GStreamer Base Plug-ins, 0.11.94,
+AC_INIT(GStreamer Base Plug-ins, 0.11.99,
     http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer,
     gst-plugins-base)
 
@@ -53,7 +53,7 @@ dnl sets GST_LT_LDFLAGS
 AS_LIBTOOL(GST, 0, 0, 0)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=0.11.94
+GST_REQ=0.11.99
 
 dnl *** autotools stuff ****
 
@@ -775,7 +775,7 @@ AC_SUBST(GST_PLUGINS_BASE_CFLAGS)
 
 dnl FIXME: do we want to rename to GST_ALL_* ?
 dnl add GST_OPTION_CFLAGS, but overridable
-GST_CFLAGS="$GST_CFLAGS -DGST_USE_UNSTABLE_API"
+GST_CFLAGS="$GST_CFLAGS"
 GST_CXXFLAGS="$GLIB_CFLAGS $GST_CFLAGS \$(GLIB_EXTRA_CFLAGS) \$(GST_OPTION_CXXFLAGS)"
 GST_CFLAGS="$GLIB_CFLAGS $GST_CFLAGS \$(GLIB_EXTRA_CFLAGS) \$(GST_OPTION_CFLAGS)"
 AC_SUBST(GST_CFLAGS)

@@ -188,14 +188,17 @@ _is_renderer (GstElementFactory * factory)
 {
   const gchar *klass, *name;
 
-  klass = gst_element_factory_get_klass (factory);
+  klass =
+      gst_element_factory_get_metadata (factory, GST_ELEMENT_METADATA_KLASS);
   name = gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST (factory));
 
-  if (strstr (klass, "Overlay/Subtitle") != NULL ||
-      strstr (klass, "Overlay/SubPicture") != NULL)
-    return TRUE;
-  if (strcmp (name, "textoverlay") == 0)
-    return TRUE;
+  if (klass != NULL) {
+    if (strstr (klass, "Overlay/Subtitle") != NULL ||
+        strstr (klass, "Overlay/SubPicture") != NULL)
+      return TRUE;
+    if (strcmp (name, "textoverlay") == 0)
+      return TRUE;
+  }
   return FALSE;
 }
 
@@ -204,9 +207,10 @@ _is_parser (GstElementFactory * factory)
 {
   const gchar *klass;
 
-  klass = gst_element_factory_get_klass (factory);
+  klass =
+      gst_element_factory_get_metadata (factory, GST_ELEMENT_METADATA_KLASS);
 
-  if (strstr (klass, "Parser/Subtitle") != NULL)
+  if (klass != NULL && strstr (klass, "Parser/Subtitle") != NULL)
     return TRUE;
   return FALSE;
 }
@@ -353,13 +357,15 @@ _factory_filter (GstPluginFeature * feature, GstCaps ** subcaps)
 
   if (is_renderer && have_video_sink && templ_caps) {
     GST_DEBUG ("Found renderer element %s (%s) with caps %" GST_PTR_FORMAT,
-        gst_element_factory_get_longname (factory),
+        gst_element_factory_get_metadata (factory,
+            GST_ELEMENT_METADATA_LONGNAME),
         gst_plugin_feature_get_name (feature), templ_caps);
     *subcaps = gst_caps_merge (*subcaps, templ_caps);
     return TRUE;
   } else if (!is_renderer && !have_video_sink && templ_caps) {
     GST_DEBUG ("Found parser element %s (%s) with caps %" GST_PTR_FORMAT,
-        gst_element_factory_get_longname (factory),
+        gst_element_factory_get_metadata (factory,
+            GST_ELEMENT_METADATA_LONGNAME),
         gst_plugin_feature_get_name (feature), templ_caps);
     *subcaps = gst_caps_merge (*subcaps, templ_caps);
     return TRUE;
@@ -1987,9 +1993,10 @@ out:
 }
 
 static GstPadLinkReturn
-gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstPad * peer)
+gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstObject * parent,
+    GstPad * peer)
 {
-  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (gst_pad_get_parent (pad));
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
   GstCaps *caps;
 
   GST_DEBUG_OBJECT (pad, "Linking pad to peer %" GST_PTR_FORMAT, peer);
@@ -2016,16 +2023,13 @@ gst_subtitle_overlay_subtitle_sink_link (GstPad * pad, GstPad * peer)
     gst_caps_unref (caps);
   }
 
-  gst_object_unref (self);
-
   return GST_PAD_LINK_OK;
 }
 
 static void
-gst_subtitle_overlay_subtitle_sink_unlink (GstPad * pad)
+gst_subtitle_overlay_subtitle_sink_unlink (GstPad * pad, GstObject * parent)
 {
-  GstSubtitleOverlay *self =
-      GST_SUBTITLE_OVERLAY (gst_object_ref (GST_PAD_PARENT (pad)));
+  GstSubtitleOverlay *self = GST_SUBTITLE_OVERLAY (parent);
 
   /* FIXME: Can't use gst_pad_get_parent() here because this is called with
    * the object lock from state changes
@@ -2040,8 +2044,6 @@ gst_subtitle_overlay_subtitle_sink_unlink (GstPad * pad)
   block_subtitle (self);
   block_video (self);
   GST_SUBTITLE_OVERLAY_UNLOCK (self);
-
-  gst_object_unref (self);
 }
 
 static gboolean

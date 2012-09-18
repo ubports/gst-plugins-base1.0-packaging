@@ -1,10 +1,10 @@
 %define majorminor  1.0
-%define gstreamer   gstreamer011
+%define gstreamer   gstreamer1
 
 %define gst_minver  0.11.0
 
 Name: 		%{gstreamer}-plugins-base
-Version: 	0.11.94
+Version: 	0.11.99
 Release: 	1.gst
 Summary: 	GStreamer streaming media framework plug-ins
 
@@ -79,9 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING README REQUIREMENTS gst-plugins-base.doap
 
 # helper programs
-%{_bindir}/gst-visualise-%{majorminor}
 %{_bindir}/gst-discoverer-%{majorminor}
-%{_mandir}/man1/gst-visualise-%{majorminor}*
+%{_mandir}/man1/gst-discoverer-%{majorminor}*
 
 # libraries
 %{_libdir}/libgstaudio-%{majorminor}.so.*
@@ -109,7 +108,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/gstreamer-%{majorminor}/libgsttcp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudioresample.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiotestsrc.so
-%{_libdir}/gstreamer-%{majorminor}/libgstgdp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstapp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstencodebin.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsubparse.so

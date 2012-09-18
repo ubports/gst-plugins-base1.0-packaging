@@ -405,7 +405,7 @@ Controls the sink's drift tolerance.
 <div class="refsect2">
 <a name="GstAudioBaseSink--buffer-time"></a><h3>The <code class="literal">"buffer-time"</code> property</h3>
 <pre class="programlisting">  "buffer-time"              <span class="type">gint64</span>                : Read / Write</pre>
-<p>Size of audio buffer in microseconds.</p>
+<p>Size of audio buffer in microseconds, this is the minimum latency that the sink reports.</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 200000</p>
 </div>
@@ -442,7 +442,7 @@ to drift before resynchronisation happens.
 <div class="refsect2">
 <a name="GstAudioBaseSink--latency-time"></a><h3>The <code class="literal">"latency-time"</code> property</h3>
 <pre class="programlisting">  "latency-time"             <span class="type">gint64</span>                : Read / Write</pre>
-<p>Audio latency in microseconds.</p>
+<p>The minimum amount of data to write in each iteration in microseconds.</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 10000</p>
 </div>

@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 0.11.94\n"
+"Project-Id-Version: gst-plugins-base 0.11.99\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2012-09-14 00:45+0100\n"
+"POT-Creation-Date: 2012-09-17 16:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,16 +78,16 @@ msgstr ""
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1721
+#: gst/playback/gstdecodebin2.c:1723
 #, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1728
+#: gst/playback/gstdecodebin2.c:1730
 msgid "Could not determine type of stream"
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:2375
+#: gst/playback/gstdecodebin2.c:2378
 msgid "This appears to be a text file"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "This CD has no audio tracks"
 msgstr ""
 
-#: gst-libs/gst/audio/gstaudiobasesrc.c:844
+#: gst-libs/gst/audio/gstaudiobasesrc.c:846
 msgid "Can't record audio fast enough"
 msgstr ""
 

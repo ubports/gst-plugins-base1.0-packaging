@@ -201,7 +201,7 @@ gst_cd_foo_src_class_init (GstCdFooSrcClass * klass)
   GstAudioCdSrcClass *audiocdsrc_class = GST_AUDIO_CD_SRC_CLASS (klass);
   GstElementClass *element_class = GST_ELEMENT_CLASS (klass);
 
-  gst_element_class_set_details_simple (element_class,
+  gst_element_class_set_metadata (element_class,
       "CD Audio (cdda) Source, FooBar", "Source/File",
       "Read audio from CD", "Foo Bar <foo@bar.com>");
 
@@ -345,7 +345,7 @@ GST_START_TEST (test_discid_calculations)
     fail_unless (tag_list_has_tag (tags, "musicbrainz-discid", G_TYPE_STRING));
     fail_unless (tag_list_has_tag (tags, "musicbrainz-discid-full",
             G_TYPE_STRING));
-    gst_tag_list_free (tags);
+    gst_tag_list_unref (tags);
     gst_message_unref (msg);
 
     msg =
