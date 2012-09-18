@@ -1918,7 +1918,8 @@ filter_features (GstPluginFeature * feature, gpointer data)
   if (!GST_IS_ELEMENT_FACTORY (feature))
     return FALSE;
   f = GST_ELEMENT_FACTORY (feature);
-  if (!g_strrstr (gst_element_factory_get_klass (f), "Visualization"))
+  if (!g_strrstr (gst_element_factory_get_metadata (f,
+              GST_ELEMENT_METADATA_KLASS), "Visualization"))
     return FALSE;
 
   return TRUE;
@@ -1939,7 +1940,8 @@ init_visualization_features (void)
     const gchar *name;
 
     entry.factory = GST_ELEMENT_FACTORY (walk->data);
-    name = gst_element_factory_get_longname (entry.factory);
+    name = gst_element_factory_get_metadata (entry.factory,
+        GST_ELEMENT_METADATA_LONGNAME);
 
     g_array_append_val (vis_entries, entry);
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (vis_combo), name);
@@ -2002,16 +2004,11 @@ shot_cb (GtkButton * button, gpointer data)
   GstCaps *caps;
 
   /* convert to our desired format (RGB24) */
-  caps = gst_caps_new_simple ("video/x-raw-rgb",
-      "bpp", G_TYPE_INT, 24, "depth", G_TYPE_INT, 24,
+  caps = gst_caps_new_simple ("video/x-raw", "format", G_TYPE_STRING, "RGB24",
       /* Note: we don't ask for a specific width/height here, so that
        * videoscale can adjust dimensions from a non-1/1 pixel aspect
        * ratio to a 1/1 pixel-aspect-ratio */
-      "pixel-aspect-ratio", GST_TYPE_FRACTION, 1, 1,
-      "endianness", G_TYPE_INT, G_BIG_ENDIAN,
-      "red_mask", G_TYPE_INT, 0xff0000,
-      "green_mask", G_TYPE_INT, 0x00ff00,
-      "blue_mask", G_TYPE_INT, 0x0000ff, NULL);
+      "pixel-aspect-ratio", GST_TYPE_FRACTION, 1, 1, NULL);
 
   /* convert the latest frame to the requested format */
   g_signal_emit_by_name (pipeline, "convert-frame", caps, &buffer);

@@ -22,14 +22,14 @@
 
 #include <stdlib.h>
 
-#define CAPS "video/x-raw-rgb,width=160,pixel-aspect-ratio=1/1,bpp=(int)24,depth=(int)24,endianness=(int)4321,red_mask=(int)0xff0000, green_mask=(int)0x00ff00, blue_mask=(int)0x0000ff"
+#define CAPS "video/x-raw,format=RGB,width=160,pixel-aspect-ratio=1/1"
 
 int
 main (int argc, char *argv[])
 {
   GstElement *pipeline, *sink;
   gint width, height;
-  GstBuffer *buffer;
+  GstSample *sample;
   gchar *descr;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
@@ -103,11 +103,12 @@ main (int argc, char *argv[])
 
   /* get the preroll buffer from appsink, this block untils appsink really
    * prerolls */
-  g_signal_emit_by_name (sink, "pull-preroll", &buffer, NULL);
+  g_signal_emit_by_name (sink, "pull-preroll", &sample, NULL);
 
   /* if we have a buffer now, convert it to a pixbuf. It's possible that we
    * don't have a buffer because we went EOS right away or had an error. */
-  if (buffer) {
+  if (sample) {
+    GstBuffer *buffer;
     GstCaps *caps;
     GstStructure *s;
 
@@ -115,11 +116,7 @@ main (int argc, char *argv[])
      * that it can only be an rgb buffer. The only thing we have not specified
      * on the caps is the height, which is dependant on the pixel-aspect-ratio
      * of the source material */
-#if 0
-    caps = GST_BUFFER_CAPS (buffer);
-#endif
-    /* FIXME, get buffer caps somehow */
-    caps = NULL;
+    caps = gst_sample_get_caps (sample);
     if (!caps) {
       g_print ("could not get snapshot format\n");
       exit (-1);
@@ -136,6 +133,7 @@ main (int argc, char *argv[])
 
     /* create pixmap from buffer and save, gstreamer video buffers have a stride
      * that is rounded up to the nearest multiple of 4 */
+    buffer = gst_sample_get_buffer (sample);
     gst_buffer_map (buffer, &map, GST_MAP_READ);
     pixbuf = gdk_pixbuf_new_from_data (map.data,
         GDK_COLORSPACE_RGB, FALSE, 8, width, height,
@@ -144,9 +142,6 @@ main (int argc, char *argv[])
     /* save the pixbuf */
     gdk_pixbuf_save (pixbuf, "snapshot.png", "png", &error, NULL);
     gst_buffer_unmap (buffer, &map);
-
-    /* save the pixbuf */
-    gdk_pixbuf_save (pixbuf, "snapshot.png", "png", &error, NULL);
   } else {
     g_print ("could not make snapshot\n");
   }

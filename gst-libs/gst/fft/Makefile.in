@@ -1035,7 +1035,6 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 @HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		$(gir_cincludes) \
-@HAVE_INTROSPECTION_TRUE@		-DGST_USE_UNSTABLE_API \
 @HAVE_INTROSPECTION_TRUE@		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 @HAVE_INTROSPECTION_TRUE@		--library=libgstfft-@GST_API_VERSION@.la \
 @HAVE_INTROSPECTION_TRUE@		--include=Gst-@GST_API_VERSION@ \
