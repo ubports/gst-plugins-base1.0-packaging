@@ -1,3 +1,13 @@
+gst-plugins-base1.0 (1.0.0-1) unstable; urgency=low
+
+  * New upstream release:
+    + debian/rules:
+      - Build-depend on gstreamer core >= 1.0.0.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update symbol versions.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 25 Sep 2012 00:11:30 +0200
+
 gst-plugins-base1.0 (0.11.99-1) experimental; urgency=low
 
   * New upstream release:
