@@ -45,7 +45,8 @@
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> src_n</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> *dst</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> dst_n</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> endianness</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -86,7 +87,8 @@ payloaded.</td>
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> src_n</code></em>,
                                                          <em class="parameter"><code><span class="type">guint8</span> *dst</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> dst_n</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBufferSpec" title="struct GstAudioRingBufferSpec"><span class="type">GstAudioRingBufferSpec</span></a> *spec</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> endianness</code></em>);</pre>
 <p>
 Payloads <em class="parameter"><code>src</code></em> in the form specified by IEC 61937 for the type from <em class="parameter"><code>spec</code></em> and
 stores the result in <em class="parameter"><code>dst</code></em>. <em class="parameter"><code>src</code></em> must contain exactly one frame of data and
@@ -118,6 +120,10 @@ payloaded contents in. Should not overlap with <em class="parameter"><code>src</
 <td><p><span class="term"><em class="parameter"><code>spec</code></em> :</span></p></td>
 <td>the ringbufer spec for <em class="parameter"><code>src</code></em>
 </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>endianness</code></em> :</span></p></td>
+<td>the expected byte order of the payloaded data</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
