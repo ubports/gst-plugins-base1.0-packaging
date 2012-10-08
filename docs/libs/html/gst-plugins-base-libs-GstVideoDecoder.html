@@ -64,9 +64,9 @@ struct              <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-allocator" title="gst_video_decoder_get_allocator ()">gst_video_decoder_get_allocator</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocator</span> **allocator</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocationParams</span> *params</code></em>);
-<span class="returnvalue">GstBufferPool</span> *     <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-buffer-pool" title="gst_video_decoder_get_buffer_pool ()">gst_video_decoder_get_buffer_pool</a>   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a> **allocator</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html#GstAllocationParams"><span class="type">GstAllocationParams</span></a> *params</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferPool.html#GstBufferPool"><span class="returnvalue">GstBufferPool</span></a> *     <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-buffer-pool" title="gst_video_decoder_get_buffer_pool ()">gst_video_decoder_get_buffer_pool</a>   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>       <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-drop-frame" title="gst_video_decoder_drop_frame ()">gst_video_decoder_drop_frame</a>        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *dec</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>       <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-finish-frame" title="gst_video_decoder_finish_frame ()">gst_video_decoder_finish_frame</a>      (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
@@ -660,8 +660,8 @@ keep references to the frame, not the buffer.
 <div class="refsect2">
 <a name="gst-video-decoder-get-allocator"></a><h3>gst_video_decoder_get_allocator ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_video_decoder_get_allocator     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocator</span> **allocator</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocationParams</span> *params</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a> **allocator</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html#GstAllocationParams"><span class="type">GstAllocationParams</span></a> *params</code></em>);</pre>
 <p>
 Lets <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> sub-classes to know the memory <em class="parameter"><code>allocator</code></em>
 used by the base class and its <em class="parameter"><code>params</code></em>.
@@ -679,7 +679,7 @@ Unref the <em class="parameter"><code>allocator</code></em> after use it.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>allocator</code></em> :</span></p></td>
-<td>the <span class="type">GstAllocator</span>
+<td>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a>
 used. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
@@ -695,7 +695,7 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <hr>
 <div class="refsect2">
 <a name="gst-video-decoder-get-buffer-pool"></a><h3>gst_video_decoder_get_buffer_pool ()</h3>
-<pre class="programlisting"><span class="returnvalue">GstBufferPool</span> *     gst_video_decoder_get_buffer_pool   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferPool.html#GstBufferPool"><span class="returnvalue">GstBufferPool</span></a> *     gst_video_decoder_get_buffer_pool   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -706,7 +706,7 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the instance of the <span class="type">GstBufferPool</span> used
+<td>the instance of the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBufferPool.html#GstBufferPool"><span class="type">GstBufferPool</span></a> used
 by the decoder; free it after use it. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>

@@ -67,8 +67,8 @@ struct              <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>,
                                                          <em class="parameter"><code><span class="type">gsize</span> size</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-allocator" title="gst_audio_decoder_get_allocator ()">gst_audio_decoder_get_allocator</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocator</span> **allocator</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocationParams</span> *params</code></em>);
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a> **allocator</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html#GstAllocationParams"><span class="type">GstAllocationParams</span></a> *params</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="returnvalue">GstAudioInfo</span></a> *      <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-audio-info" title="gst_audio_decoder_get_audio_info ()">gst_audio_decoder_get_audio_info</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-estimate-rate" title="gst_audio_decoder_get_estimate_rate ()">gst_audio_decoder_get_estimate_rate</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-get-delay" title="gst_audio_decoder_get_delay ()">gst_audio_decoder_get_delay</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);
@@ -638,8 +638,8 @@ for <em class="parameter"><code>dec</code></em>'s current output format.
 <div class="refsect2">
 <a name="gst-audio-decoder-get-allocator"></a><h3>gst_audio_decoder_get_allocator ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_decoder_get_allocator     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocator</span> **allocator</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstAllocationParams</span> *params</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a> **allocator</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html#GstAllocationParams"><span class="type">GstAllocationParams</span></a> *params</code></em>);</pre>
 <p>
 Lets <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> sub-classes to know the memory <em class="parameter"><code>allocator</code></em>
 used by the base class and its <em class="parameter"><code>params</code></em>.
@@ -657,7 +657,7 @@ Unref the <em class="parameter"><code>allocator</code></em> after use it.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>allocator</code></em> :</span></p></td>
-<td>the <span class="type">GstAllocator</span>
+<td>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstAllocator.html"><span class="type">GstAllocator</span></a>
 used. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
