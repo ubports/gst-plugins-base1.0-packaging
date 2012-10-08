@@ -64,7 +64,7 @@ enum                <a class="link" href="gst-plugins-base-plugins-videotestsrc.
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--timestamp-offset" title='The "timestamp-offset" property'>timestamp-offset</a>"         <span class="type">gint64</span>                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--is-live" title='The "is-live" property'>is-live</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--peer-alloc" title='The "peer-alloc" property'>peer-alloc</a>"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--colorspec" title='The "colorspec" property'>colorspec</a>"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrcColorSpec"><span class="type">GstVideoTestSrcColorSpec</span></a>  : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--colorspec" title='The "colorspec" property'>colorspec</a>"                <span class="type">GstVideoTestSrcColorSpec</span>  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--k0" title='The "k0" property'>k0</a>"                       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--kt" title='The "kt" property'>kt</a>"                       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--kt2" title='The "kt2" property'>kt2</a>"                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
@@ -92,7 +92,7 @@ property.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp14579472"></a><h3>Example launch line</h3>
+<a name="idp15518688"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -110,7 +110,7 @@ property.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp14582128"></a><h3>Element Information</h3>
+<a name="idp15521344"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -133,7 +133,7 @@ property.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp14589584"></a><h3>Element Pads</h3>
+<a name="idp15528800"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -366,7 +366,7 @@ interesting.
 <hr>
 <div class="refsect2">
 <a name="GstVideoTestSrc--colorspec"></a><h3>The <code class="literal">"colorspec"</code> property</h3>
-<pre class="programlisting">  "colorspec"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrcColorSpec"><span class="type">GstVideoTestSrcColorSpec</span></a>  : Read / Write</pre>
+<pre class="programlisting">  "colorspec"                <span class="type">GstVideoTestSrcColorSpec</span>  : Read / Write</pre>
 <p>Generate video in the given color specification (Deprecated: use a caps filter with video/x-raw-yuv,color-matrix="sdtv" or "hdtv" instead).</p>
 <p>Default value: ITU-R Rec. BT.601</p>
 </div>

@@ -70,17 +70,17 @@ enum                <a class="link" href="gst-plugins-base-plugins-multifdsink.h
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--bytes-served" title='The "bytes-served" property'>bytes-served</a>"             <span class="type">guint64</span>               : Read
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--bytes-to-serve" title='The "bytes-to-serve" property'>bytes-to-serve</a>"           <span class="type">guint64</span>               : Read
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--mode" title='The "mode" property'>mode</a>"                     <span class="type">GstFDSetMode</span>          : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--protocol" title='The "protocol" property'>protocol</a>"                 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPProtocol"><span class="type">GstTCPProtocol</span></a>        : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--protocol" title='The "protocol" property'>protocol</a>"                 <span class="type">GstTCPProtocol</span>        : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--recover-policy" title='The "recover-policy" property'>recover-policy</a>"           <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstRecoverPolicy" title="enum GstRecoverPolicy"><span class="type">GstRecoverPolicy</span></a>      : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--sync-clients" title='The "sync-clients" property'>sync-clients</a>"             <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--sync-method" title='The "sync-method" property'>sync-method</a>"              <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstSyncMethod" title="enum GstSyncMethod"><span class="type">GstSyncMethod</span></a>         : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--timeout" title='The "timeout" property'>timeout</a>"                  <span class="type">guint64</span>               : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--buffers-min" title='The "buffers-min" property'>buffers-min</a>"              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--burst-unit" title='The "burst-unit" property'>burst-unit</a>"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPUnitType"><span class="type">GstTCPUnitType</span></a>        : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--burst-unit" title='The "burst-unit" property'>burst-unit</a>"               <span class="type">GstTCPUnitType</span>        : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--burst-value" title='The "burst-value" property'>burst-value</a>"              <span class="type">guint64</span>               : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--bytes-min" title='The "bytes-min" property'>bytes-min</a>"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--time-min" title='The "time-min" property'>time-min</a>"                 <span class="type">gint64</span>                : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--unit-type" title='The "unit-type" property'>unit-type</a>"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPUnitType"><span class="type">GstTCPUnitType</span></a>        : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--unit-type" title='The "unit-type" property'>unit-type</a>"                <span class="type">GstTCPUnitType</span>        : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--units-max" title='The "units-max" property'>units-max</a>"                <span class="type">gint64</span>                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--units-soft-max" title='The "units-soft-max" property'>units-soft-max</a>"           <span class="type">gint64</span>                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--qos-dscp" title='The "qos-dscp" property'>qos-dscp</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
@@ -194,7 +194,7 @@ Last reviewed on 2006-09-12 (0.10.10)
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp11733728"></a><h3>Element Information</h3>
+<a name="idp12142000"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -217,7 +217,7 @@ Last reviewed on 2006-09-12 (0.10.10)
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp11741136"></a><h3>Element Pads</h3>
+<a name="idp12149408"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -455,7 +455,7 @@ multisocketsink and is received in the "client-removed" signal.
 <hr>
 <div class="refsect2">
 <a name="GstMultiFdSink--protocol"></a><h3>The <code class="literal">"protocol"</code> property</h3>
-<pre class="programlisting">  "protocol"                 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPProtocol"><span class="type">GstTCPProtocol</span></a>        : Read / Write</pre>
+<pre class="programlisting">  "protocol"                 <span class="type">GstTCPProtocol</span>        : Read / Write</pre>
 <p>The protocol to wrap data in. GDP protocol here is deprecated. Please use gdppay element.</p>
 <p>Default value: GST_TCP_PROTOCOL_NONE</p>
 </div>
@@ -498,7 +498,7 @@ multisocketsink and is received in the "client-removed" signal.
 <hr>
 <div class="refsect2">
 <a name="GstMultiFdSink--burst-unit"></a><h3>The <code class="literal">"burst-unit"</code> property</h3>
-<pre class="programlisting">  "burst-unit"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPUnitType"><span class="type">GstTCPUnitType</span></a>        : Read / Write</pre>
+<pre class="programlisting">  "burst-unit"               <span class="type">GstTCPUnitType</span>        : Read / Write</pre>
 <p>The format of the burst units (when sync-method is burst[[-with]-keyframe]).</p>
 <p>Default value: Undefined</p>
 </div>
@@ -528,7 +528,7 @@ multisocketsink and is received in the "client-removed" signal.
 <hr>
 <div class="refsect2">
 <a name="GstMultiFdSink--unit-type"></a><h3>The <code class="literal">"unit-type"</code> property</h3>
-<pre class="programlisting">  "unit-type"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPUnitType"><span class="type">GstTCPUnitType</span></a>        : Read / Write</pre>
+<pre class="programlisting">  "unit-type"                <span class="type">GstTCPUnitType</span>        : Read / Write</pre>
 <p>The unit to measure the max/soft-max/queued properties.</p>
 <p>Default value: Buffers</p>
 </div>

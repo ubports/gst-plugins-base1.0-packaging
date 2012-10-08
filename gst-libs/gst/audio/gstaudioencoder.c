@@ -1956,7 +1956,7 @@ static gboolean
 gst_audio_encoder_activate (GstAudioEncoder * enc, gboolean active)
 {
   GstAudioEncoderClass *klass;
-  gboolean result = FALSE;
+  gboolean result = TRUE;
 
   klass = GST_AUDIO_ENCODER_GET_CLASS (enc);
 
