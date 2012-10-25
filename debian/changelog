@@ -1,3 +1,9 @@
+gst-plugins-base1.0 (1.0.2-1) unstable; urgency=low
+
+  * New upstreal bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 25 Oct 2012 13:30:04 +0200
+
 gst-plugins-base1.0 (1.0.1-1) unstable; urgency=low
 
   * New upstream bugfix release.
