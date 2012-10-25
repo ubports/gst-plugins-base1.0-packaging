@@ -440,6 +440,9 @@ videoconvert_convert_generic (VideoConvert * convert, GstVideoFrame * dest,
       PACK_FRAME (dest, convert->tmpline, j, width);
     }
   }
+  if (GST_VIDEO_FRAME_FORMAT (dest) == GST_VIDEO_FORMAT_RGB8P) {
+    memcpy (GST_VIDEO_FRAME_PLANE_DATA (dest, 1), convert->palette, 256 * 4);
+  }
 }
 
 #define FRAME_GET_PLANE_STRIDE(frame, plane) \
@@ -1205,6 +1208,7 @@ videoconvert_convert_lookup_fastpath (VideoConvert * convert)
         (transforms[i].keeps_color_matrix ||
             (transforms[i].in_matrix == in_matrix &&
                 transforms[i].out_matrix == out_matrix))) {
+      GST_DEBUG ("using fastpath");
       convert->convert = transforms[i].convert;
       return TRUE;
     }

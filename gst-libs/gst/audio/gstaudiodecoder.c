@@ -534,7 +534,7 @@ gst_audio_decoder_negotiate_default (GstAudioDecoder * dec)
 {
   GstAudioDecoderClass *klass;
   gboolean res = TRUE;
-  GstCaps *caps = NULL;
+  GstCaps *caps;
   GstQuery *query = NULL;
   GstAllocator *allocator;
   GstAllocationParams params;
@@ -544,11 +544,12 @@ gst_audio_decoder_negotiate_default (GstAudioDecoder * dec)
 
   klass = GST_AUDIO_DECODER_GET_CLASS (dec);
 
-  GST_DEBUG_OBJECT (dec, "setting src caps %" GST_PTR_FORMAT, caps);
-
   caps = gst_audio_info_to_caps (&dec->priv->ctx.info);
 
+  GST_DEBUG_OBJECT (dec, "setting src caps %" GST_PTR_FORMAT, caps);
+
   res = gst_pad_set_caps (dec->srcpad, caps);
+
   if (!res)
     goto done;
   dec->priv->ctx.output_format_changed = FALSE;
@@ -659,7 +660,6 @@ gst_audio_decoder_set_output_format (GstAudioDecoder * dec,
   if (!gst_caps_is_subset (caps, templ_caps)) {
     GST_WARNING_OBJECT (dec, "Requested output format %" GST_PTR_FORMAT
         " do not match template %" GST_PTR_FORMAT, caps, templ_caps);
-    gst_caps_unref (caps);
     gst_caps_unref (templ_caps);
     goto refuse_caps;
   }
@@ -1241,6 +1241,7 @@ gst_audio_decoder_push_buffers (GstAudioDecoder * dec, gboolean force)
       buffer = gst_buffer_make_writable (buffer);
       GST_BUFFER_TIMESTAMP (buffer) = ts;
       flush += len;
+      priv->force = FALSE;
     } else {
       if (!force)
         break;
@@ -1249,6 +1250,7 @@ gst_audio_decoder_push_buffers (GstAudioDecoder * dec, gboolean force)
         break;
       }
       buffer = NULL;
+      priv->force = TRUE;
     }
 
     ret = gst_audio_decoder_handle_frame (dec, klass, buffer);
@@ -1651,11 +1653,13 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
     case GST_EVENT_SEGMENT:
     {
       GstSegment seg;
+      GstFormat format;
 
       GST_AUDIO_DECODER_STREAM_LOCK (dec);
       gst_event_copy_segment (event, &seg);
 
-      if (seg.format == GST_FORMAT_TIME) {
+      format = seg.format;
+      if (format == GST_FORMAT_TIME) {
         GST_DEBUG_OBJECT (dec, "received TIME SEGMENT %" GST_SEGMENT_FORMAT,
             &seg);
       } else {
@@ -1697,7 +1701,7 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
         /* and that's where we time from,
          * in case upstream does not come up with anything better
          * (e.g. upstream BYTE) */
-        if (seg.format != GST_FORMAT_TIME) {
+        if (format != GST_FORMAT_TIME) {
           dec->priv->base_ts = seg.start;
           dec->priv->samples = 0;
         }
@@ -2457,6 +2461,8 @@ _gst_audio_decoder_error (GstAudioDecoder * dec, gint weight,
         domain, code, txt, dbg, file, function, line);
     return GST_FLOW_ERROR;
   } else {
+    g_free (txt);
+    g_free (dbg);
     return GST_FLOW_OK;
   }
 }

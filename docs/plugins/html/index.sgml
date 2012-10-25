@@ -557,6 +557,7 @@
 <ANCHOR id="GstTCPServerSrc--host" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--host">
 <ANCHOR id="GstTCPServerSrc--port" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--port">
 <ANCHOR id="GstTCPServerSrc--protocol" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--protocol">
+<ANCHOR id="GstTCPServerSrc--current-port" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--current-port">
 <ANCHOR id="gst-plugins-base-plugins-tcpserversrc.see-also" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversrc.html#gst-plugins-base-plugins-tcpserversrc.see-also">
 <ANCHOR id="gst-plugins-base-plugins-tcpserversink" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html">
 <ANCHOR id="gst-plugins-base-plugins-tcpserversink.synopsis" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#gst-plugins-base-plugins-tcpserversink.synopsis">
@@ -569,6 +570,7 @@
 <ANCHOR id="gst-plugins-base-plugins-tcpserversink.property-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#gst-plugins-base-plugins-tcpserversink.property-details">
 <ANCHOR id="GstTCPServerSink--host" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--host">
 <ANCHOR id="GstTCPServerSink--port" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--port">
+<ANCHOR id="GstTCPServerSink--current-port" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--current-port">
 <ANCHOR id="gst-plugins-base-plugins-tcpserversink.see-also" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpserversink.html#gst-plugins-base-plugins-tcpserversink.see-also">
 <ANCHOR id="gst-plugins-base-plugins-textoverlay" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-textoverlay.html">
 <ANCHOR id="gst-plugins-base-plugins-textoverlay.synopsis" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-textoverlay.html#gst-plugins-base-plugins-textoverlay.synopsis">
