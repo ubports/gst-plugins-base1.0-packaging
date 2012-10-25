@@ -444,31 +444,41 @@ applied to sink template caps.</td>
 <td>Optional.
 Event handler on the sink pad. This function should return
 TRUE if the event was handled and should be discarded
-(i.e. not unref'ed).</td>
+(i.e. not unref'ed).
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoEncoderClass.src-event"></a>src_event</code></em> ()</span></p></td>
 <td>Optional.
 Event handler on the source pad. This function should return
 TRUE if the event was handled and should be discarded
-(i.e. not unref'ed).</td>
+(i.e. not unref'ed).
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoEncoderClass.negotiate"></a>negotiate</code></em> ()</span></p></td>
 <td>Optional.
-Negotiate with downstream and configure buffer pools, etc.</td>
+Negotiate with downstream and configure buffer pools, etc.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoEncoderClass.decide-allocation"></a>decide_allocation</code></em> ()</span></p></td>
 <td>Optional.
 Setup the allocation parameters for allocating output
 buffers. The passed in query contains the result of the
-downstream allocation query.</td>
+downstream allocation query.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoEncoderClass.propose-allocation"></a>propose_allocation</code></em> ()</span></p></td>
 <td>Optional.
-Propose buffer allocation parameters for upstream elements.</td>
+Propose buffer allocation parameters for upstream elements.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 </tbody>
 </table></div>

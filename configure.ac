@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT(GStreamer Base Plug-ins, 1.0.1,
+AC_INIT(GStreamer Base Plug-ins, 1.0.2,
     http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer,
     gst-plugins-base)
 
@@ -50,7 +50,7 @@ dnl - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
 dnl - interfaces added -> increment AGE
 dnl - interfaces removed -> AGE = 0
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 1, 0, 1)
+AS_LIBTOOL(GST, 2, 0, 2)
 
 dnl *** required versions of GStreamer stuff ***
 GST_REQ=1.0.0
@@ -166,6 +166,10 @@ dnl *** checks for header files ***
 
 dnl check if we have ANSI C header files
 AC_HEADER_STDC
+
+dnl check for GCC specific SSE headers
+dnl these are used by the speex resampler code
+AC_CHECK_HEADERS([xmmintrin.h emmintrin.h])
 
 ac_cppflags_save="$CPPFLAGS"
 CPPFLAGS="`$PKG_CONFIG --cflags libxml-2.0`"

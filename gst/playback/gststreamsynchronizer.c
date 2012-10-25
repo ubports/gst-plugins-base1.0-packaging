@@ -402,6 +402,7 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
       gboolean seen_data;
       GSList *pads = NULL;
       GstPad *srcpad;
+      GstClockTime timestamp;
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
       stream = gst_pad_get_element_private (pad);
@@ -416,6 +417,13 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
 
       seen_data = stream->seen_data;
       srcpad = gst_object_ref (stream->srcpad);
+
+      if (seen_data && stream->segment.position != -1)
+        timestamp = stream->segment.position;
+      else if (stream->segment.rate < 0.0 || stream->segment.stop == -1)
+        timestamp = stream->segment.start;
+      else
+        timestamp = stream->segment.stop;
 
       for (l = self->streams; l; l = l->next) {
         GstStream *ostream = l->data;
@@ -456,8 +464,15 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
         if (!seen_data) {
           GstEvent *gap_event;
 
-          gap_event = gst_event_new_gap (0, 0);
-          gst_pad_push_event (srcpad, gap_event);
+          gap_event = gst_event_new_gap (timestamp, GST_CLOCK_TIME_NONE);
+          ret = gst_pad_push_event (srcpad, gap_event);
+        } else {
+          GstEvent *gap_event;
+
+          /* FIXME: Also send a GAP event to let audio sinks start their
+           * clock in case they did not have enough data yet */
+          gap_event = gst_event_new_gap (timestamp, GST_CLOCK_TIME_NONE);
+          ret = gst_pad_push_event (srcpad, gap_event);
         }
       }
       gst_object_unref (srcpad);
@@ -564,26 +579,19 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
 
       /* Is there a 1 second lag? */
       if (position != -1 && position + GST_SECOND < timestamp_end) {
-        gint64 new_start, new_stop;
+        gint64 new_start;
 
         new_start = timestamp_end - GST_SECOND;
-        if (ostream->segment.stop == -1)
-          new_stop = -1;
-        else
-          new_stop = MAX (new_start, ostream->segment.stop);
 
         GST_DEBUG_OBJECT (ostream->sinkpad,
             "Advancing stream %u from %" GST_TIME_FORMAT " to %"
             GST_TIME_FORMAT, ostream->stream_number, GST_TIME_ARGS (position),
             GST_TIME_ARGS (new_start));
 
-        ostream->segment.start = new_start;
-        ostream->segment.stop = new_stop;
-        ostream->segment.time = new_start;
         ostream->segment.position = new_start;
 
         gst_pad_push_event (ostream->srcpad,
-            gst_event_new_segment (&ostream->segment));
+            gst_event_new_gap (position, new_start - position));
       }
     }
     GST_STREAM_SYNCHRONIZER_UNLOCK (self);

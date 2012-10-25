@@ -126,7 +126,7 @@ GstFlowReturn _gst_video_decoder_error (GstVideoDecoder *dec, gint weight,
 /**
  * GST_VIDEO_DECODER_ERROR:
  * @el:     the base video decoder element that generates the error
- * @weight: element defined weight of the error, added to error count
+ * @w:      element defined weight of the error, added to error count
  * @domain: like CORE, LIBRARY, RESOURCE or STREAM (see #gstreamer-GstGError)
  * @code:   error code defined for that domain (see #gstreamer-GstGError)
  * @text:   the message to display (format string and args enclosed in
@@ -219,18 +219,28 @@ struct _GstVideoDecoder
  *                  Event handler on the sink pad. This function should return
  *                  TRUE if the event was handled and should be discarded
  *                  (i.e. not unref'ed).
+ *                  Subclasses should chain up to the parent implementation to
+ *                  invoke the default handler.
  * @src_event:      Optional.
  *                  Event handler on the source pad. This function should return
  *                  TRUE if the event was handled and should be discarded
  *                  (i.e. not unref'ed).
+ *                  Subclasses should chain up to the parent implementation to
+ *                  invoke the default handler.
  * @negotiate:      Optional.
  *                  Negotiate with downstream and configure buffer pools, etc.
+ *                  Subclasses should chain up to the parent implementation to
+ *                  invoke the default handler.
  * @decide_allocation: Optional.
  *                     Setup the allocation parameters for allocating output
  *                     buffers. The passed in query contains the result of the
  *                     downstream allocation query.
+ *                     Subclasses should chain up to the parent implementation to
+ *                     invoke the default handler.
  * @propose_allocation: Optional.
  *                      Propose buffer allocation parameters for upstream elements.
+ *                      Subclasses should chain up to the parent implementation to
+ *                      invoke the default handler.
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @handle_frame needs to be overridden, and @set_format

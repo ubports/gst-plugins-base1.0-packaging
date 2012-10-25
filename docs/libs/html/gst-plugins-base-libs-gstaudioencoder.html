@@ -408,19 +408,25 @@ Allows closing external resources.</td>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.negotiate"></a>negotiate</code></em> ()</span></p></td>
 <td>Optional.
-Negotiate with downstream and configure buffer pools, etc.</td>
+Negotiate with downstream and configure buffer pools, etc.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.decide-allocation"></a>decide_allocation</code></em> ()</span></p></td>
 <td>Optional.
 Setup the allocation parameters for allocating output
 buffers. The passed in query contains the result of the
-downstream allocation query.</td>
+downstream allocation query.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAudioEncoderClass.propose-allocation"></a>propose_allocation</code></em> ()</span></p></td>
 <td>Optional.
-Propose buffer allocation parameters for upstream elements.</td>
+Propose buffer allocation parameters for upstream elements.
+Subclasses should chain up to the parent implementation to
+invoke the default handler.</td>
 </tr>
 </tbody>
 </table></div>
