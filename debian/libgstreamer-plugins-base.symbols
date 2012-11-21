@@ -831,6 +831,7 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_decoder_get_oldest_frame@Base 1.0.0
  gst_video_decoder_get_output_state@Base 1.0.0
  gst_video_decoder_get_packetized@Base 1.0.0
+ gst_video_decoder_get_qos_proportion@Base 1.0.3
  gst_video_decoder_get_type@Base 1.0.0
  gst_video_decoder_have_frame@Base 1.0.0
  gst_video_decoder_merge_tags@Base 1.0.0
