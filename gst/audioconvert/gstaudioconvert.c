@@ -442,6 +442,7 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
   const gchar *in_format;
   const GValue *format;
   const GstAudioFormatInfo *in_info, *out_info = NULL;
+  GstAudioFormatFlags in_flags, out_flags;
 
   in_format = gst_structure_get_string (ins, "format");
   if (!in_format)
@@ -457,6 +458,10 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
   if (!in_info)
     return;
 
+  in_flags = GST_AUDIO_FORMAT_INFO_FLAGS (in_info);
+  in_flags &= ~(GST_AUDIO_FORMAT_FLAG_UNPACK);
+  in_flags &= ~(GST_AUDIO_FORMAT_FLAG_SIGNED);
+
   if (GST_VALUE_HOLDS_LIST (format)) {
     gint i, len;
 
@@ -467,22 +472,47 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
 
       val = gst_value_list_get_value (format, i);
       if (G_VALUE_HOLDS_STRING (val)) {
+        const GstAudioFormatInfo *t_info;
         fname = g_value_get_string (val);
-        out_info =
+        t_info =
             gst_audio_format_get_info (gst_audio_format_from_string (fname));
-        if (!out_info)
+        if (!t_info)
           continue;
-        /* accept input format */
-        if (strcmp (fname, in_format) == 0)
+        /* accept input format immediately */
+        if (strcmp (fname, in_format) == 0) {
+          out_info = t_info;
           break;
+        }
+
+        out_flags = GST_AUDIO_FORMAT_INFO_FLAGS (t_info);
+        out_flags &= ~(GST_AUDIO_FORMAT_FLAG_UNPACK);
+        out_flags &= ~(GST_AUDIO_FORMAT_FLAG_SIGNED);
         /* or another format without losing precision */
-        if ((GST_AUDIO_FORMAT_INFO_FLAGS (out_info) ==
-                GST_AUDIO_FORMAT_INFO_FLAGS (in_info)) &&
-            (GST_AUDIO_FORMAT_INFO_DEPTH (out_info) >=
-                GST_AUDIO_FORMAT_INFO_DEPTH (in_info)))
-          break;
+        if (in_flags == out_flags) {
+          if (GST_AUDIO_FORMAT_INFO_DEPTH (t_info) ==
+              GST_AUDIO_FORMAT_INFO_DEPTH (in_info) &&
+              (!out_info
+                  || GST_AUDIO_FORMAT_INFO_DEPTH (out_info) >=
+                  GST_AUDIO_FORMAT_INFO_DEPTH (in_info))) {
+            /* exact match of depth, we still continue
+             * to iterate to see if we can get exactly
+             * the same format.
+             * Only go here if we don't have another
+             * format with the same depth already. We
+             * always take the first to prefer caps
+             * order. */
+            out_info = t_info;
+          } else if ((GST_AUDIO_FORMAT_INFO_DEPTH (t_info) >=
+                  GST_AUDIO_FORMAT_INFO_DEPTH (in_info)) && !out_info) {
+            /* match where we do not lose precision. This could
+             * be ok, but keep searching for an exact match.
+             * Only go here if we don't have another format with
+             * a bigger/equal depth already. We always take the
+             * first to prefer caps order. */
+            out_info = t_info;
+          }
+        }
       }
-      out_info = NULL;
     }
     if (out_info)
       gst_structure_set (outs, "format", G_TYPE_STRING,
