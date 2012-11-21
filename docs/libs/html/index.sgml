@@ -1915,6 +1915,7 @@
 <ANCHOR id="gst-video-decoder-get-max-errors" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-max-errors">
 <ANCHOR id="gst-video-decoder-get-oldest-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-oldest-frame">
 <ANCHOR id="gst-video-decoder-get-packetized" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-packetized">
+<ANCHOR id="gst-video-decoder-get-qos-proportion" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-qos-proportion">
 <ANCHOR id="gst-video-decoder-have-frame" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-have-frame">
 <ANCHOR id="gst-video-decoder-get-latency" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-latency">
 <ANCHOR id="gst-video-decoder-set-latency" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-set-latency">

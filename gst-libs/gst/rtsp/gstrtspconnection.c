@@ -185,7 +185,7 @@ build_reset (GstRTSPBuilder * builder)
 /**
  * gst_rtsp_connection_create:
  * @url: a #GstRTSPUrl 
- * @conn: storage for a #GstRTSPConnection
+ * @conn: (out) (transfer full): storage for a #GstRTSPConnection
  *
  * Create a newly allocated #GstRTSPConnection from @url and store it in @conn.
  * The connection will not yet attempt to connect to @url, use
@@ -227,11 +227,11 @@ gst_rtsp_connection_create (const GstRTSPUrl * url, GstRTSPConnection ** conn)
  * @ip: the IP address of the other end
  * @port: the port used by the other end
  * @initial_buffer: data already read from @fd
- * @conn: storage for a #GstRTSPConnection
+ * @conn: (out) (transfer full): storage for a #GstRTSPConnection
  *
  * Create a new #GstRTSPConnection for handling communication on the existing
- * socket @socket. The @initial_buffer contains any data already read from
- * @socket which should be used before starting to read new data.
+ * socket @socket. The @initial_buffer contains zero terminated data already
+ * read from @socket which should be used before starting to read new data.
  *
  * Returns: #GST_RTSP_OK when @conn contains a valid connection.
  */
@@ -283,7 +283,7 @@ newconn_failed:
 /**
  * gst_rtsp_connection_accept:
  * @socket: a socket
- * @conn: storage for a #GstRTSPConnection
+ * @conn: (out) (transfer full): storage for a #GstRTSPConnection
  * @cancellable: a #GCancellable to cancel the operation
  *
  * Accept a new connection on @socket and create a new #GstRTSPConnection for
@@ -1086,7 +1086,6 @@ read_line (GstRTSPConnection * conn, guint8 * buffer, guint * idx, guint size)
           /* remember the original character we read and try again next time */
           if (conn->read_ahead == 0)
             conn->read_ahead = c;
-          return GST_RTSP_EINTR;
           g_clear_error (&err);
           return GST_RTSP_EINTR;
         }
@@ -2971,8 +2970,13 @@ gst_rtsp_source_dispatch (GSource * source, GSourceFunc callback G_GNUC_UNUSED,
 
             /* in the callback the connection should be tunneled with the
              * GET connection */
-            if (watch->funcs.tunnel_complete)
+            if (watch->funcs.tunnel_complete) {
               watch->funcs.tunnel_complete (watch, watch->user_data);
+              keep_running = !(watch->conn->read_socket == NULL &&
+                  watch->conn->write_socket == NULL);
+              if (!keep_running)
+                goto done;
+            }
             goto read_done;
           }
         }
@@ -3056,6 +3060,7 @@ gst_rtsp_source_dispatch (GSource * source, GSourceFunc callback G_GNUC_UNUSED,
     g_mutex_unlock (&watch->mutex);
   }
 
+done:
 write_blocked:
   return keep_running;
 
@@ -3262,7 +3267,7 @@ gst_rtsp_watch_unref (GstRTSPWatch * watch)
  * @watch: a #GstRTSPWatch
  * @data: the data to queue
  * @size: the size of @data
- * @id: location for a message ID or %NULL
+ * @id: (out) (allow-none): location for a message ID or %NULL
  *
  * Write @data using the connection of the @watch. If it cannot be sent
  * immediately, it will be queued for transmission in @watch. The contents of
@@ -3346,7 +3351,7 @@ done:
  * gst_rtsp_watch_send_message:
  * @watch: a #GstRTSPWatch
  * @message: a #GstRTSPMessage
- * @id: location for a message ID or %NULL
+ * @id: (out) (allow-none): location for a message ID or %NULL
  *
  * Send a @message using the connection of the @watch. If it cannot be sent
  * immediately, it will be queued for transmission in @watch. The contents of

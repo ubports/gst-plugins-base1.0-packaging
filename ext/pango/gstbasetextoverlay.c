@@ -189,9 +189,12 @@ enum
   PROP_LAST
 };
 
+/* FIXME: video-blend.c doesn't support formats with more than 8 bit per
+ * component (which get unpacked into ARGB64 or AYUV64) yet, such as:
+ *  v210, v216, UYVP, GRAY16_LE, GRAY16_BE */
 #define VIDEO_FORMATS "{ BGRx, RGBx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, \
-    I420, YV12, AYUV, YUY2, UYVY, v308, v210, v216, Y41B, Y42B, Y444, \
-    Y800, Y16, NV12, NV21, UYVP, A420, YUV9, IYU1 }"
+    I420, YV12, AYUV, YUY2, UYVY, v308, Y41B, Y42B, Y444, \
+    NV12, NV21, A420, YUV9, YVU9, IYU1, GRAY8 }"
 
 static GstStaticPadTemplate src_template_factory =
 GST_STATIC_PAD_TEMPLATE ("src",
@@ -622,6 +625,7 @@ gst_base_text_overlay_init (GstBaseTextOverlay * overlay,
       GST_DEBUG_FUNCPTR (gst_base_text_overlay_video_chain));
   gst_pad_set_query_function (overlay->video_sinkpad,
       GST_DEBUG_FUNCPTR (gst_base_text_overlay_video_query));
+  GST_PAD_SET_PROXY_ALLOCATION (overlay->video_sinkpad);
   gst_element_add_pad (GST_ELEMENT (overlay), overlay->video_sinkpad);
 
   template =
@@ -1252,6 +1256,16 @@ gst_base_text_overlay_set_composition (GstBaseTextOverlay * overlay)
   }
 }
 
+static gboolean
+gst_text_overlay_filter_foreground_attr (PangoAttribute * attr, gpointer data)
+{
+  if (attr->klass->type == PANGO_ATTR_FOREGROUND) {
+    return FALSE;
+  } else {
+    return TRUE;
+  }
+}
+
 static void
 gst_base_text_overlay_render_pangocairo (GstBaseTextOverlay * overlay,
     const gchar * string, gint textlen)
@@ -1366,11 +1380,25 @@ gst_base_text_overlay_render_pangocairo (GstBaseTextOverlay * overlay,
    */
 
   /* draw shadow text */
-  cairo_save (cr);
-  cairo_translate (cr, overlay->shadow_offset, overlay->shadow_offset);
-  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
-  pango_cairo_show_layout (cr, overlay->layout);
-  cairo_restore (cr);
+  {
+    PangoAttrList *origin_attr, *filtered_attr;
+
+    origin_attr =
+        pango_attr_list_ref (pango_layout_get_attributes (overlay->layout));
+    filtered_attr =
+        pango_attr_list_filter (pango_attr_list_copy (origin_attr),
+        gst_text_overlay_filter_foreground_attr, NULL);
+
+    cairo_save (cr);
+    cairo_translate (cr, overlay->shadow_offset, overlay->shadow_offset);
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.5);
+    pango_layout_set_attributes (overlay->layout, filtered_attr);
+    pango_cairo_show_layout (cr, overlay->layout);
+    pango_layout_set_attributes (overlay->layout, origin_attr);
+    pango_attr_list_unref (filtered_attr);
+    pango_attr_list_unref (origin_attr);
+    cairo_restore (cr);
+  }
 
   a = (overlay->outline_color >> 24) & 0xff;
   r = (overlay->outline_color >> 16) & 0xff;
@@ -1407,9 +1435,6 @@ gst_base_text_overlay_render_pangocairo (GstBaseTextOverlay * overlay,
   gst_base_text_overlay_set_composition (overlay);
 }
 
-#define BOX_XPAD         6
-#define BOX_YPAD         6
-
 static inline void
 gst_base_text_overlay_shade_planar_Y (GstBaseTextOverlay * overlay,
     GstVideoFrame * dest, gint x0, gint x1, gint y0, gint y1)
@@ -1419,12 +1444,6 @@ gst_base_text_overlay_shade_planar_Y (GstBaseTextOverlay * overlay,
 
   dest_stride = dest->info.stride[0];
   dest_ptr = dest->data[0];
-
-  x0 = CLAMP (x0 - BOX_XPAD, 0, overlay->width);
-  x1 = CLAMP (x1 + BOX_XPAD, 0, overlay->width);
-
-  y0 = CLAMP (y0 - BOX_YPAD, 0, overlay->height);
-  y1 = CLAMP (y1 + BOX_YPAD, 0, overlay->height);
 
   for (i = y0; i < y1; ++i) {
     for (j = x0; j < x1; ++j) {
@@ -1446,12 +1465,6 @@ gst_base_text_overlay_shade_packed_Y (GstBaseTextOverlay * overlay,
   dest_stride = GST_VIDEO_FRAME_COMP_STRIDE (dest, 0);
   dest_ptr = GST_VIDEO_FRAME_COMP_DATA (dest, 0);
   pixel_stride = GST_VIDEO_FRAME_COMP_PSTRIDE (dest, 0);
-
-  x0 = CLAMP (x0 - BOX_XPAD, 0, overlay->width);
-  x1 = CLAMP (x1 + BOX_XPAD, 0, overlay->width);
-
-  y0 = CLAMP (y0 - BOX_YPAD, 0, overlay->height);
-  y1 = CLAMP (y1 + BOX_YPAD, 0, overlay->height);
 
   if (x0 != 0)
     x0 = GST_VIDEO_FORMAT_INFO_SCALE_WIDTH (dest->info.finfo, 0, x0);
@@ -1488,12 +1501,6 @@ gst_base_text_overlay_shade_xRGB (GstBaseTextOverlay * overlay,
 
   dest_ptr = dest->data[0];
 
-  x0 = CLAMP (x0 - BOX_XPAD, 0, overlay->width);
-  x1 = CLAMP (x1 + BOX_XPAD, 0, overlay->width);
-
-  y0 = CLAMP (y0 - BOX_YPAD, 0, overlay->height);
-  y1 = CLAMP (y1 + BOX_YPAD, 0, overlay->height);
-
   for (i = y0; i < y1; i++) {
     for (j = x0; j < x1; j++) {
       gint y, y_pos, k;
@@ -1507,6 +1514,32 @@ gst_base_text_overlay_shade_xRGB (GstBaseTextOverlay * overlay,
   }
 }
 
+/* FIXME: orcify */
+static void
+gst_base_text_overlay_shade_rgb24 (GstBaseTextOverlay * overlay,
+    GstVideoFrame * frame, gint x0, gint x1, gint y0, gint y1)
+{
+  const int pstride = 3;
+  gint y, x, stride, shading_val, tmp;
+  guint8 *p;
+
+  shading_val = overlay->shading_value;
+  stride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, 0);
+
+  for (y = y0; y < y1; ++y) {
+    p = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
+    p += (y * stride) + (x0 * pstride);
+    for (x = x0; x < x1; ++x) {
+      tmp = *p + shading_val;
+      *p++ = CLAMP (tmp, 0, 255);
+      tmp = *p + shading_val;
+      *p++ = CLAMP (tmp, 0, 255);
+      tmp = *p + shading_val;
+      *p++ = CLAMP (tmp, 0, 255);
+    }
+  }
+}
+
 #define ARGB_SHADE_FUNCTION(name, OFFSET)	\
 static inline void \
 gst_base_text_overlay_shade_##name (GstBaseTextOverlay * overlay, GstVideoFrame * dest, \
@@ -1516,12 +1549,6 @@ gint x0, gint x1, gint y0, gint y1) \
   guint8 *dest_ptr;\
   \
   dest_ptr = dest->data[0];\
-  \
-  x0 = CLAMP (x0 - BOX_XPAD, 0, overlay->width);\
-  x1 = CLAMP (x1 + BOX_XPAD, 0, overlay->width);\
-  \
-  y0 = CLAMP (y0 - BOX_YPAD, 0, overlay->height);\
-  y1 = CLAMP (y1 + BOX_YPAD, 0, overlay->height);\
   \
   for (i = y0; i < y1; i++) {\
     for (j = x0; j < x1; j++) {\
@@ -1573,11 +1600,78 @@ gst_base_text_overlay_render_text (GstBaseTextOverlay * overlay,
   overlay->need_render = FALSE;
 }
 
+/* FIXME: should probably be relative to width/height (adjusted for PAR) */
+#define BOX_XPAD  6
+#define BOX_YPAD  6
+
+static void
+gst_base_text_overlay_shade_background (GstBaseTextOverlay * overlay,
+    GstVideoFrame * frame, gint x0, gint x1, gint y0, gint y1)
+{
+  x0 = CLAMP (x0 - BOX_XPAD, 0, overlay->width);
+  x1 = CLAMP (x1 + BOX_XPAD, 0, overlay->width);
+
+  y0 = CLAMP (y0 - BOX_YPAD, 0, overlay->height);
+  y1 = CLAMP (y1 + BOX_YPAD, 0, overlay->height);
+
+  switch (overlay->format) {
+    case GST_VIDEO_FORMAT_I420:
+    case GST_VIDEO_FORMAT_YV12:
+    case GST_VIDEO_FORMAT_NV12:
+    case GST_VIDEO_FORMAT_NV21:
+    case GST_VIDEO_FORMAT_Y41B:
+    case GST_VIDEO_FORMAT_Y42B:
+    case GST_VIDEO_FORMAT_Y444:
+    case GST_VIDEO_FORMAT_YUV9:
+    case GST_VIDEO_FORMAT_YVU9:
+    case GST_VIDEO_FORMAT_GRAY8:
+      gst_base_text_overlay_shade_planar_Y (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_AYUV:
+    case GST_VIDEO_FORMAT_UYVY:
+    case GST_VIDEO_FORMAT_YUY2:
+    case GST_VIDEO_FORMAT_v308:
+      gst_base_text_overlay_shade_packed_Y (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_xRGB:
+      gst_base_text_overlay_shade_xRGB (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_xBGR:
+      gst_base_text_overlay_shade_xBGR (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_BGRx:
+      gst_base_text_overlay_shade_BGRx (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_RGBx:
+      gst_base_text_overlay_shade_RGBx (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_ARGB:
+      gst_base_text_overlay_shade_ARGB (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_ABGR:
+      gst_base_text_overlay_shade_ABGR (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_RGBA:
+      gst_base_text_overlay_shade_RGBA (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_BGRA:
+      gst_base_text_overlay_shade_BGRA (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_BGR:
+    case GST_VIDEO_FORMAT_RGB:
+      gst_base_text_overlay_shade_rgb24 (overlay, frame, x0, x1, y0, y1);
+      break;
+    default:
+      GST_FIXME_OBJECT (overlay, "implement background shading for format %s",
+          gst_video_format_to_string (GST_VIDEO_FRAME_FORMAT (frame)));
+      break;
+  }
+}
+
 static GstFlowReturn
 gst_base_text_overlay_push_frame (GstBaseTextOverlay * overlay,
     GstBuffer * video_frame)
 {
-  gint xpos, ypos;
   GstVideoFrame frame;
 
   if (overlay->composition == NULL)
@@ -1600,67 +1694,14 @@ gst_base_text_overlay_push_frame (GstBaseTextOverlay * overlay,
           GST_MAP_READWRITE))
     goto invalid_frame;
 
-  gst_base_text_overlay_get_pos (overlay, &xpos, &ypos);
-
   /* shaded background box */
   if (overlay->want_shading) {
-    switch (overlay->format) {
-      case GST_VIDEO_FORMAT_I420:
-      case GST_VIDEO_FORMAT_NV12:
-      case GST_VIDEO_FORMAT_NV21:
-        gst_base_text_overlay_shade_planar_Y (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_AYUV:
-      case GST_VIDEO_FORMAT_UYVY:
-        gst_base_text_overlay_shade_packed_Y (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_xRGB:
-        gst_base_text_overlay_shade_xRGB (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_xBGR:
-        gst_base_text_overlay_shade_xBGR (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_BGRx:
-        gst_base_text_overlay_shade_BGRx (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_RGBx:
-        gst_base_text_overlay_shade_RGBx (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_ARGB:
-        gst_base_text_overlay_shade_ARGB (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_ABGR:
-        gst_base_text_overlay_shade_ABGR (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_RGBA:
-        gst_base_text_overlay_shade_RGBA (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      case GST_VIDEO_FORMAT_BGRA:
-        gst_base_text_overlay_shade_BGRA (overlay, &frame,
-            xpos, xpos + overlay->image_width,
-            ypos, ypos + overlay->image_height);
-        break;
-      default:
-        g_assert_not_reached ();
-    }
+    gint xpos, ypos;
+
+    gst_base_text_overlay_get_pos (overlay, &xpos, &ypos);
+
+    gst_base_text_overlay_shade_background (overlay, &frame,
+        xpos, xpos + overlay->image_width, ypos, ypos + overlay->image_height);
   }
 
   gst_video_overlay_composition_blend (overlay->composition, &frame);

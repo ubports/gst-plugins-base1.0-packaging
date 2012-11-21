@@ -81,6 +81,8 @@ struct              <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-max-errors" title="gst_video_decoder_get_max_errors ()">gst_video_decoder_get_max_errors</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *dec</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="returnvalue">GstVideoCodecFrame</span></a> * <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-oldest-frame" title="gst_video_decoder_get_oldest_frame ()">gst_video_decoder_get_oldest_frame</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-packetized" title="gst_video_decoder_get_packetized ()">gst_video_decoder_get_packetized</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-qos-proportion" title="gst_video_decoder_get_qos_proportion ()">gst_video_decoder_get_qos_proportion</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>       <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-have-frame" title="gst_video_decoder_have_frame ()">gst_video_decoder_have_frame</a>        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-latency" title="gst_video_decoder_get_latency ()">gst_video_decoder_get_latency</a>       (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *min_latency</code></em>,
@@ -964,6 +966,28 @@ base class.
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-decoder-get-qos-proportion"></a><h3>gst_video_decoder_get_qos_proportion ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             gst_video_decoder_get_qos_proportion
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>decoder</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a>
+current QoS proportion, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The current QoS proportion.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0.3</p>
 </div>
 <hr>
 <div class="refsect2">

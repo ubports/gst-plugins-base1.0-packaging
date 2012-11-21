@@ -2490,7 +2490,7 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
   /* we got data, so note things are looking up again, reduce
    * the error count, if there is one */
   if (G_UNLIKELY (priv->error_count))
-    priv->error_count--;
+    priv->error_count = 0;
 
   ret = gst_pad_push (decoder->srcpad, buf);
 
@@ -3156,6 +3156,29 @@ gst_video_decoder_get_max_decode_time (GstVideoDecoder *
   GST_OBJECT_UNLOCK (decoder);
 
   return deadline;
+}
+
+/**
+ * gst_video_decoder_get_qos_proportion:
+ * @decoder: a #GstVideoDecoder
+ *     current QoS proportion, or %NULL
+ *
+ * Returns: The current QoS proportion.
+ *
+ * Since: 1.0.3
+ */
+gdouble
+gst_video_decoder_get_qos_proportion (GstVideoDecoder * decoder)
+{
+  gdouble proportion;
+
+  g_return_val_if_fail (GST_IS_VIDEO_DECODER (decoder), 1.0);
+
+  GST_OBJECT_LOCK (decoder);
+  proportion = decoder->priv->proportion;
+  GST_OBJECT_UNLOCK (decoder);
+
+  return proportion;
 }
 
 GstFlowReturn
