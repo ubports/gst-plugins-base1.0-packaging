@@ -26,18 +26,18 @@
 GST_DEBUG_CATEGORY_STATIC (stream_synchronizer_debug);
 #define GST_CAT_DEFAULT stream_synchronizer_debug
 
-#define GST_STREAM_SYNCHRONIZER_LOCK(obj) G_STMT_START {                   \
-    GST_LOG_OBJECT (obj,                                                \
+#define GST_STREAM_SYNCHRONIZER_LOCK(obj) G_STMT_START {                \
+    GST_TRACE_OBJECT (obj,                                              \
                     "locking from thread %p",                           \
                     g_thread_self ());                                  \
-    g_mutex_lock (&GST_STREAM_SYNCHRONIZER_CAST(obj)->lock);                \
-    GST_LOG_OBJECT (obj,                                                \
+    g_mutex_lock (&GST_STREAM_SYNCHRONIZER_CAST(obj)->lock);            \
+    GST_TRACE_OBJECT (obj,                                              \
                     "locked from thread %p",                            \
                     g_thread_self ());                                  \
 } G_STMT_END
 
-#define GST_STREAM_SYNCHRONIZER_UNLOCK(obj) G_STMT_START {                 \
-    GST_LOG_OBJECT (obj,                                                \
+#define GST_STREAM_SYNCHRONIZER_UNLOCK(obj) G_STMT_START {              \
+    GST_TRACE_OBJECT (obj,                                              \
                     "unlocking from thread %p",                         \
                     g_thread_self ());                                  \
     g_mutex_unlock (&GST_STREAM_SYNCHRONIZER_CAST(obj)->lock);              \
@@ -565,6 +565,11 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
 
     /* Advance EOS streams if necessary. For non-EOS
      * streams the demuxers should already do this! */
+    if (!GST_CLOCK_TIME_IS_VALID (timestamp_end) &&
+        GST_CLOCK_TIME_IS_VALID (timestamp)) {
+      timestamp_end = timestamp + GST_SECOND;
+    }
+
     for (l = self->streams; l; l = l->next) {
       GstStream *ostream = l->data;
       gint64 position;
@@ -578,7 +583,8 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
         position = ostream->segment.start;
 
       /* Is there a 1 second lag? */
-      if (position != -1 && position + GST_SECOND < timestamp_end) {
+      if (position != -1 && GST_CLOCK_TIME_IS_VALID (timestamp_end) &&
+          position + GST_SECOND < timestamp_end) {
         gint64 new_start;
 
         new_start = timestamp_end - GST_SECOND;
