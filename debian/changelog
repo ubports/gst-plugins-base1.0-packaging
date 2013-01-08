@@ -1,3 +1,11 @@
+gst-plugins-base1.0 (1.0.5-1) unstable; urgency=low
+
+  * New upstream bugfix release:
+    + debian/rules:
+      - Build-depend on GStreamer >= 1.0.5.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 08 Jan 2013 13:40:26 +0100
+
 gst-plugins-base1.0 (1.0.4-1) unstable; urgency=low
 
   * New upstream bugfix release.
