@@ -61,6 +61,8 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlay.
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#gst-is-video-overlay-prepare-window-handle-message" title="gst_is_video_overlay_prepare_window_handle_message ()">gst_is_video_overlay_prepare_window_handle_message</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GstMessage"><span class="type">GstMessage</span></a> *msg</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -75,7 +77,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlay.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp28482624"></a><p>
+<a name="idp27703680"></a><p>
 The <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface is used for 2 main purposes :
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -149,7 +151,7 @@ immediately. Here is an example on how to do that correctly:
 <span class="function">create_window</span> <span class="gtkdoc opt">(</span>GstBus <span class="gtkdoc opt">*</span> bus<span class="gtkdoc opt">,</span> GstMessage <span class="gtkdoc opt">*</span> message<span class="gtkdoc opt">,</span> GstPipeline <span class="gtkdoc opt">*</span> pipeline<span class="gtkdoc opt">)</span>
 <span class="gtkdoc opt">{</span>
  <span class="gtkdoc slc">// ignore anything but 'prepare-window-handle' element messages</span>
- <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function">gst_is_video_overlay_prepare_window_handle_message</span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">))</span>
+ <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-is-video-overlay-prepare-window-handle-message">gst_is_video_overlay_prepare_window_handle_message</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">))</span>
    <span class="keyword">return</span> GST_BUS_PASS<span class="gtkdoc opt">;</span>
 
  win <span class="gtkdoc opt">=</span> <span class="function">XCreateSimpleWindow</span> <span class="gtkdoc opt">(</span>disp<span class="gtkdoc opt">,</span> root<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">,</span> <span class="number">320</span><span class="gtkdoc opt">,</span> <span class="number">240</span><span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
@@ -189,7 +191,7 @@ immediately. Here is an example on how to do that correctly:
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp28492736"></a><h3>Two basic usage scenarios</h3>
+<a name="idp29094384"></a><h3>Two basic usage scenarios</h3>
 <p>
 There are two basic usage scenarios: in the simplest case, the application
 knows exactly what particular element is used for video output, which is
@@ -234,7 +236,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp28180000"></a><h3>GstVideoOverlay and Gtk+</h3>
+<a name="idp29106544"></a><h3>GstVideoOverlay and Gtk+</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -352,7 +354,7 @@ used in the callback).
 <span class="function">bus_sync_handler</span> <span class="gtkdoc opt">(</span>GstBus <span class="gtkdoc opt">*</span> bus<span class="gtkdoc opt">,</span> GstMessage <span class="gtkdoc opt">*</span> message<span class="gtkdoc opt">,</span> gpointer user_data<span class="gtkdoc opt">)</span>
 <span class="gtkdoc opt">{</span>
  <span class="gtkdoc slc">// ignore anything but 'prepare-window-handle' element messages</span>
- <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function">gst_is_video_overlay_prepare_window_handle_message</span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">))</span>
+ <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-is-video-overlay-prepare-window-handle-message">gst_is_video_overlay_prepare_window_handle_message</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">))</span>
    <span class="keyword">return</span> GST_BUS_PASS<span class="gtkdoc opt">;</span>
 
  <span class="keyword">if</span> <span class="gtkdoc opt">(</span>video_window_handle <span class="gtkdoc opt">!=</span> <span class="number">0</span><span class="gtkdoc opt">) {</span>
@@ -445,7 +447,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp28185200"></a><h3>GstVideoOverlay and Qt</h3>
+<a name="idp27713008"></a><h3>GstVideoOverlay and Qt</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -789,6 +791,30 @@ do not support subwindows.
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not supported by the sink.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-is-video-overlay-prepare-window-handle-message"></a><h3>gst_is_video_overlay_prepare_window_handle_message ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_is_video_overlay_prepare_window_handle_message
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GstMessage"><span class="type">GstMessage</span></a> *msg</code></em>);</pre>
+<p>
+Convenience function to check if the given message is a
+"prepare-window-handle" message from a <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GstMessage"><span class="type">GstMessage</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>whether <em class="parameter"><code>msg</code></em> is a "prepare-window-handle" message</td>
 </tr>
 </tbody>
 </table></div>

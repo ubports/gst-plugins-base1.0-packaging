@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gstreamer-video.html" title="Video Library">
-<link rel="next" href="gst-plugins-base-libs-gstvideooverlaycomposition.html" title="gstvideooverlaycomposition">
+<link rel="next" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstvideooverlaycomposition.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-libs-gstvideometa.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#gst-plugins-base-libs-gstvideo.synopsis" class="shortcut">Top</a>
@@ -61,6 +61,8 @@
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback" title="GstVideoConvertSampleCallback ()"><span class="type">GstVideoConvertSampleCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy_notify</code></em>);
+struct              <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment">GstVideoAlignment</a>;
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-alignment-reset" title="gst_video_alignment_reset ()">gst_video_alignment_reset</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a> *align</code></em>);
 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-still-frame" title="gst_video_event_new_still_frame ()">gst_video_event_new_still_frame</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> in_still</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-still-frame" title="gst_video_event_parse_still_frame ()">gst_video_event_parse_still_frame</a>   (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
@@ -259,6 +261,8 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
                                                          <em class="parameter"><code><span class="type">gint64</span> *dest_value</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-is-equal" title="gst_video_info_is_equal ()">gst_video_info_is_equal</a>             (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *other</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-align" title="gst_video_info_align ()">gst_video_info_align</a>                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a> *align</code></em>);
 
 
 struct              <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame">GstVideoFrame</a>;
@@ -323,7 +327,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp29065648"></a><p>
+<a name="idp29634672"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -503,6 +507,64 @@ anymore.
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><code class="literal">GDestroyNotify</code></a> to be called after <em class="parameter"><code>user_data</code></em> is not needed anymore</td>
 </tr>
 </tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoAlignment"></a><h3>struct GstVideoAlignment</h3>
+<pre class="programlisting">struct GstVideoAlignment {
+  guint padding_top;
+  guint padding_bottom;
+  guint padding_left;
+  guint padding_right;
+  guint stride_align[GST_VIDEO_MAX_PLANES];
+};
+</pre>
+<p>
+Extra alignment paramters for the memory of video buffers. This
+structure is usually used to configure the bufferpool if it supports the
+<span class="type">GST_BUFFER_POOL_OPTION_VIDEO_ALIGNMENT</span>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.padding-top"></a>padding_top</code></em>;</span></p></td>
+<td>extra pixels on the top</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.padding-bottom"></a>padding_bottom</code></em>;</span></p></td>
+<td>extra pixels on the bottom</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.padding-left"></a>padding_left</code></em>;</span></p></td>
+<td>extra pixels on the left side</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.padding-right"></a>padding_right</code></em>;</span></p></td>
+<td>extra pixels on the right side</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.stride-align"></a>stride_align</code></em>[GST_VIDEO_MAX_PLANES];</span></p></td>
+<td>array with extra alignment requirements for the strides</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-alignment-reset"></a><h3>gst_video_alignment_reset ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_alignment_reset           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a> *align</code></em>);</pre>
+<p>
+Set <em class="parameter"><code>align</code></em> to its default values with no padding and no alignment.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>align</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a>
+</td>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
@@ -2864,6 +2926,34 @@ Compares two <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoI
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>info</code></em> and <em class="parameter"><code>other</code></em> are equal, else <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-align"></a><h3>gst_video_info_align ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_video_info_align                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a> *align</code></em>);</pre>
+<p>
+Adjust the offset and stride fields in <em class="parameter"><code>info</code></em> so that the padding and
+stride alignment in <em class="parameter"><code>align</code></em> is respected.
+</p>
+<p>
+Extra padding will be added to the right side when stride alignment padding
+is required and <em class="parameter"><code>align</code></em> will be updated with the new padding values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>align</code></em> :</span></p></td>
+<td>alignment parameters</td>
 </tr>
 </tbody>
 </table></div>

@@ -107,6 +107,13 @@ enum                <a class="link" href="gst-plugins-base-libs-gstaudioringbuff
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-set-flushing" title="gst_audio_ring_buffer_set_flushing ()">gst_audio_ring_buffer_set_flushing</a>  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> flushing</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-is-flushing" title="gst_audio_ring_buffer_is_flushing ()">gst_audio_ring_buffer_is_flushing</a>   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-set-channel-positions" title="gst_audio_ring_buffer_set_channel_positions ()">gst_audio_ring_buffer_set_channel_positions</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstmultichannel.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *position</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-set-timestamp" title="gst_audio_ring_buffer_set_timestamp ()">gst_audio_ring_buffer_set_timestamp</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> readseg</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timestamp</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -123,7 +130,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstaudioringbuff
 <p>
 </p>
 <div class="refsect2">
-<a name="idp13633200"></a><p>
+<a name="idp13808928"></a><p>
 This object is the base class for audio ringbuffers used by the base
 audio source and sink classes.
 </p>
@@ -1305,6 +1312,63 @@ MT safe.
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-ring-buffer-is-flushing"></a><h3>gst_audio_ring_buffer_is_flushing ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_audio_ring_buffer_is_flushing   (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
+<p>
+Check if <em class="parameter"><code>buf</code></em> is flushing.
+</p>
+<p>
+MT safe.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>the <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the device is flushing.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-ring-buffer-set-channel-positions"></a><h3>gst_audio_ring_buffer_set_channel_positions ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_ring_buffer_set_channel_positions
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstmultichannel.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *position</code></em>);</pre>
+<p>
+Tell the ringbuffer about the device's channel positions. This must
+be called in when the ringbuffer is acquired.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>the <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>position</code></em> :</span></p></td>
+<td>the device channel positions</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-ring-buffer-set-timestamp"></a><h3>gst_audio_ring_buffer_set_timestamp ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_ring_buffer_set_timestamp (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> readseg</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> timestamp</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">

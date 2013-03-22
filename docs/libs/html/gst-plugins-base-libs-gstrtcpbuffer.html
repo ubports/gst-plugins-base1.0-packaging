@@ -58,16 +58,18 @@ enum                <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.ht
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-data" title="gst_rtcp_buffer_validate_data ()">gst_rtcp_buffer_validate_data</a>       (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate" title="gst_rtcp_buffer_validate ()">gst_rtcp_buffer_validate</a>            (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>);
+struct              <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer">GstRTCPBuffer</a>;
+#define             <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GST-RTCP-BUFFER-INIT:CAPS" title="GST_RTCP_BUFFER_INIT">GST_RTCP_BUFFER_INIT</a>
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-new" title="gst_rtcp_buffer_new ()">gst_rtcp_buffer_new</a>                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> mtu</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-map" title="gst_rtcp_buffer_map ()">gst_rtcp_buffer_map</a>                 (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-unmap" title="gst_rtcp_buffer_unmap ()">gst_rtcp_buffer_unmap</a>               (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-packet-count" title="gst_rtcp_buffer_get_packet_count ()">gst_rtcp_buffer_get_packet_count</a>    (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-first-packet" title="gst_rtcp_buffer_get_first_packet ()">gst_rtcp_buffer_get_first_packet</a>    (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-unmap" title="gst_rtcp_buffer_unmap ()">gst_rtcp_buffer_unmap</a>               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-packet-count" title="gst_rtcp_buffer_get_packet_count ()">gst_rtcp_buffer_get_packet_count</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-first-packet" title="gst_rtcp_buffer_get_first_packet ()">gst_rtcp_buffer_get_first_packet</a>    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-move-to-next" title="gst_rtcp_packet_move_to_next ()">gst_rtcp_packet_move_to_next</a>        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-add-packet" title="gst_rtcp_buffer_add_packet ()">gst_rtcp_buffer_add_packet</a>          (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-add-packet" title="gst_rtcp_buffer_add_packet ()">gst_rtcp_buffer_add_packet</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPType" title="enum GstRTCPType"><span class="type">GstRTCPType</span></a> type</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-remove" title="gst_rtcp_packet_remove ()">gst_rtcp_packet_remove</a>              (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);
@@ -176,7 +178,7 @@ Note: The API in this module is not yet declared stable.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16941264"></a><p>
+<a name="idp17295056"></a><p>
 The GstRTPCBuffer helper functions makes it easy to parse and create regular 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> objects that contain compound RTCP packets. These buffers are typically
 of 'application/x-rtcp' <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
@@ -338,7 +340,7 @@ The size of the structure is made public to allow stack allocations.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><span class="type">GstRTCPBuffer</span> *<em class="structfield"><code><a name="GstRTCPPacket.rtcp"></a>rtcp</code></em>;</span></p></td>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *<em class="structfield"><code><a name="GstRTCPPacket.rtcp"></a>rtcp</code></em>;</span></p></td>
 <td>pointer to RTCP buffer</td>
 </tr>
 <tr>
@@ -628,6 +630,21 @@ Check if the data pointed to by <em class="parameter"><code>buffer</code></em> i
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstRTCPBuffer"></a><h3>struct GstRTCPBuffer</h3>
+<pre class="programlisting">struct GstRTCPBuffer {
+  GstBuffer   *buffer;
+  GstMapInfo   map;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-RTCP-BUFFER-INIT:CAPS"></a><h3>GST_RTCP_BUFFER_INIT</h3>
+<pre class="programlisting">#define GST_RTCP_BUFFER_INIT { NULL, GST_MAP_INFO_INIT }
+</pre>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-rtcp-buffer-new"></a><h3>gst_rtcp_buffer_new ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_rtcp_buffer_new                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> mtu</code></em>);</pre>
 <p>
@@ -653,7 +670,7 @@ maximum size of <em class="parameter"><code>mtu</code></em>.
 <a name="gst-rtcp-buffer-map"></a><h3>gst_rtcp_buffer_map ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_map                 (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);</pre>
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);</pre>
 <p>
 Open <em class="parameter"><code>buffer</code></em> for reading or writing, depending on <em class="parameter"><code>flags</code></em>. The resulting RTCP
 buffer state is stored in <em class="parameter"><code>rtcp</code></em>.
@@ -671,7 +688,7 @@ buffer state is stored in <em class="parameter"><code>rtcp</code></em>.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtcp</code></em> :</span></p></td>
-<td>resulting <span class="type">GstRTCPBuffer</span>
+<td>resulting <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a>
 </td>
 </tr>
 </tbody>
@@ -680,7 +697,7 @@ buffer state is stored in <em class="parameter"><code>rtcp</code></em>.
 <hr>
 <div class="refsect2">
 <a name="gst-rtcp-buffer-unmap"></a><h3>gst_rtcp_buffer_unmap ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_unmap               (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_unmap               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);</pre>
 <p>
 Finish <em class="parameter"><code>rtcp</code></em> after being constructured. This function is usually called
 after <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-map" title="gst_rtcp_buffer_map ()"><code class="function">gst_rtcp_buffer_map()</code></a> and after adding the RTCP items to the new buffer.
@@ -700,7 +717,7 @@ added packets.
 <hr>
 <div class="refsect2">
 <a name="gst-rtcp-buffer-get-packet-count"></a><h3>gst_rtcp_buffer_get_packet_count ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_rtcp_buffer_get_packet_count    (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_rtcp_buffer_get_packet_count    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);</pre>
 <p>
 Get the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>.
 </p>
@@ -721,7 +738,7 @@ Get the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>.
 <hr>
 <div class="refsect2">
 <a name="gst-rtcp-buffer-get-first-packet"></a><h3>gst_rtcp_buffer_get_first_packet ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_get_first_packet    (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_get_first_packet    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
 <p>
 Initialize a new <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> pointer that points to the first packet in
@@ -773,7 +790,7 @@ function.</td>
 <hr>
 <div class="refsect2">
 <a name="gst-rtcp-buffer-add-packet"></a><h3>gst_rtcp_buffer_add_packet ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_add_packet          (<em class="parameter"><code><span class="type">GstRTCPBuffer</span> *rtcp</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtcp_buffer_add_packet          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPType" title="enum GstRTCPType"><span class="type">GstRTCPType</span></a> type</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
 <p>
