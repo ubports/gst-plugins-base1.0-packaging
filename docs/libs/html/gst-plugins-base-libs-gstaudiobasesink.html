@@ -61,11 +61,21 @@ enum                <a class="link" href="gst-plugins-base-libs-gstaudiobasesink
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkSlaveMethod" title="enum GstAudioBaseSinkSlaveMethod"><span class="type">GstAudioBaseSinkSlaveMethod</span></a> method</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkSlaveMethod" title="enum GstAudioBaseSinkSlaveMethod"><span class="returnvalue">GstAudioBaseSinkSlaveMethod</span></a> <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-slave-method" title="gst_audio_base_sink_get_slave_method ()">gst_audio_base_sink_get_slave_method</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);
-<span class="returnvalue">gint64</span>              <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-drift-tolerance" title="gst_audio_base_sink_get_drift_tolerance ()">gst_audio_base_sink_get_drift_tolerance</a>
-                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-drift-tolerance" title="gst_audio_base_sink_set_drift_tolerance ()">gst_audio_base_sink_set_drift_tolerance</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
                                                          <em class="parameter"><code><span class="type">gint64</span> drift_tolerance</code></em>);
+<span class="returnvalue">gint64</span>              <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-drift-tolerance" title="gst_audio_base_sink_get_drift_tolerance ()">gst_audio_base_sink_get_drift_tolerance</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-alignment-threshold" title="gst_audio_base_sink_set_alignment_threshold ()">gst_audio_base_sink_set_alignment_threshold</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> alignment_threshold</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="returnvalue">GstClockTime</span></a>        <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-alignment-threshold" title="gst_audio_base_sink_get_alignment_threshold ()">gst_audio_base_sink_get_alignment_threshold</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-discont-wait" title="gst_audio_base_sink_set_discont_wait ()">gst_audio_base_sink_set_discont_wait</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> discont_wait</code></em>);
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="returnvalue">GstClockTime</span></a>        <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-discont-wait" title="gst_audio_base_sink_get_discont_wait ()">gst_audio_base_sink_get_discont_wait</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -346,6 +356,30 @@ Get the current slave method used by <em class="parameter"><code>sink</code></em
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-audio-base-sink-set-drift-tolerance"></a><h3>gst_audio_base_sink_set_drift_tolerance ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_base_sink_set_drift_tolerance
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> drift_tolerance</code></em>);</pre>
+<p>
+Controls the sink's drift tolerance.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>drift_tolerance</code></em> :</span></p></td>
+<td>the new drift tolerance in microseconds</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-audio-base-sink-get-drift-tolerance"></a><h3>gst_audio_base_sink_get_drift_tolerance ()</h3>
 <pre class="programlisting"><span class="returnvalue">gint64</span>              gst_audio_base_sink_get_drift_tolerance
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);</pre>
@@ -369,12 +403,12 @@ Get the current drift tolerance, in microseconds, used by <em class="parameter">
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-audio-base-sink-set-drift-tolerance"></a><h3>gst_audio_base_sink_set_drift_tolerance ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_base_sink_set_drift_tolerance
+<a name="gst-audio-base-sink-set-alignment-threshold"></a><h3>gst_audio_base_sink_set_alignment_threshold ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_base_sink_set_alignment_threshold
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
-                                                         <em class="parameter"><code><span class="type">gint64</span> drift_tolerance</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> alignment_threshold</code></em>);</pre>
 <p>
-Controls the sink's drift tolerance.
+Controls the sink's alignment threshold.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -385,8 +419,78 @@ Controls the sink's drift tolerance.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drift_tolerance</code></em> :</span></p></td>
-<td>the new drift tolerance in microseconds</td>
+<td><p><span class="term"><em class="parameter"><code>alignment_threshold</code></em> :</span></p></td>
+<td>the new alignment threshold in nanoseconds</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-base-sink-get-alignment-threshold"></a><h3>gst_audio_base_sink_get_alignment_threshold ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="returnvalue">GstClockTime</span></a>        gst_audio_base_sink_get_alignment_threshold
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);</pre>
+<p>
+Get the current alignment threshold, in nanoseconds, used by <em class="parameter"><code>sink</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The current alignment threshold used by <em class="parameter"><code>sink</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-base-sink-set-discont-wait"></a><h3>gst_audio_base_sink_set_discont_wait ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_audio_base_sink_set_discont_wait
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>,
+                                                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> discont_wait</code></em>);</pre>
+<p>
+Controls how long the sink will wait before creating a discontinuity.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>discont_wait</code></em> :</span></p></td>
+<td>the new discont wait in nanoseconds</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-base-sink-get-discont-wait"></a><h3>gst_audio_base_sink_get_discont_wait ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="returnvalue">GstClockTime</span></a>        gst_audio_base_sink_get_discont_wait
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> *sink</code></em>);</pre>
+<p>
+Get the current discont wait, in nanoseconds, used by <em class="parameter"><code>sink</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The current discont wait used by <em class="parameter"><code>sink</code></em>.</td>
 </tr>
 </tbody>
 </table></div>
