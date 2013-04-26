@@ -566,7 +566,6 @@ gst_video_encoder_setcaps (GstVideoEncoder * encoder, GstCaps * caps)
   GstVideoEncoderClass *encoder_class;
   GstVideoCodecState *state;
   gboolean ret;
-  gboolean samecaps = FALSE;
 
   encoder_class = GST_VIDEO_ENCODER_GET_CLASS (encoder);
 
@@ -575,35 +574,38 @@ gst_video_encoder_setcaps (GstVideoEncoder * encoder, GstCaps * caps)
 
   GST_DEBUG_OBJECT (encoder, "setcaps %" GST_PTR_FORMAT, caps);
 
+  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+
+  if (encoder->priv->input_state) {
+    GST_DEBUG_OBJECT (encoder,
+        "Checking if caps changed old %" GST_PTR_FORMAT " new %" GST_PTR_FORMAT,
+        encoder->priv->input_state->caps, caps);
+    if (gst_caps_is_equal (encoder->priv->input_state->caps, caps))
+      goto caps_not_changed;
+  }
+
   state = _new_input_state (caps);
   if (G_UNLIKELY (!state))
     goto parse_fail;
 
-  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
-
-  if (encoder->priv->input_state)
-    samecaps =
-        gst_video_info_is_equal (&state->info,
-        &encoder->priv->input_state->info);
-
-  if (!samecaps) {
-    /* arrange draining pending frames */
-    gst_video_encoder_drain (encoder);
-
-    /* and subclass should be ready to configure format at any time around */
-    ret = encoder_class->set_format (encoder, state);
-    if (ret) {
-      if (encoder->priv->input_state)
-        gst_video_codec_state_unref (encoder->priv->input_state);
-      encoder->priv->input_state = state;
-    } else
-      gst_video_codec_state_unref (state);
-  } else {
-    /* no need to stir things up */
-    GST_DEBUG_OBJECT (encoder,
-        "new video format identical to configured format");
+  if (encoder->priv->input_state
+      && gst_video_info_is_equal (&state->info,
+          &encoder->priv->input_state->info)) {
     gst_video_codec_state_unref (state);
-    ret = TRUE;
+    goto caps_not_changed;
+  }
+
+  /* arrange draining pending frames */
+  gst_video_encoder_drain (encoder);
+
+  /* and subclass should be ready to configure format at any time around */
+  ret = encoder_class->set_format (encoder, state);
+  if (ret) {
+    if (encoder->priv->input_state)
+      gst_video_codec_state_unref (encoder->priv->input_state);
+    encoder->priv->input_state = state;
+  } else {
+    gst_video_codec_state_unref (state);
   }
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
@@ -613,9 +615,18 @@ gst_video_encoder_setcaps (GstVideoEncoder * encoder, GstCaps * caps)
 
   return ret;
 
+caps_not_changed:
+  {
+    GST_DEBUG_OBJECT (encoder, "Caps did not change - ignore");
+    GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+    return TRUE;
+  }
+
+  /* ERRORS */
 parse_fail:
   {
     GST_WARNING_OBJECT (encoder, "Failed to parse caps");
+    GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
     return FALSE;
   }
 }
@@ -1610,6 +1621,22 @@ gst_video_encoder_allocate_output_frame (GstVideoEncoder *
   return frame->output_buffer ? GST_FLOW_OK : GST_FLOW_ERROR;
 }
 
+static void
+gst_video_encoder_release_frame (GstVideoEncoder * enc,
+    GstVideoCodecFrame * frame)
+{
+  GList *link;
+
+  /* unref once from the list */
+  link = g_list_find (enc->priv->frames, frame);
+  if (link) {
+    gst_video_codec_frame_unref (frame);
+    enc->priv->frames = g_list_delete_link (enc->priv->frames, link);
+  }
+  /* unref because this function takes ownership */
+  gst_video_codec_frame_unref (frame);
+}
+
 /**
  * gst_video_encoder_finish_frame:
  * @encoder: a #GstVideoEncoder
@@ -1637,6 +1664,7 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   GList *l;
   gboolean send_headers = FALSE;
   gboolean discont = (frame->presentation_frame_number == 0);
+  GstBuffer *buffer;
 
   encoder_class = GST_VIDEO_ENCODER_GET_CLASS (encoder);
 
@@ -1826,7 +1854,6 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
     for (tmp = priv->headers; tmp; tmp = tmp->next) {
       GstBuffer *tmpbuf = GST_BUFFER (tmp->data);
 
-      gst_buffer_ref (tmpbuf);
       priv->bytes += gst_buffer_get_size (tmpbuf);
       if (G_UNLIKELY (discont)) {
         GST_LOG_OBJECT (encoder, "marking discont");
@@ -1834,7 +1861,7 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
         discont = FALSE;
       }
 
-      gst_pad_push (encoder->srcpad, tmpbuf);
+      gst_pad_push (encoder->srcpad, gst_buffer_ref (tmpbuf));
     }
     priv->new_headers = FALSE;
   }
@@ -1847,25 +1874,24 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   if (encoder_class->pre_push)
     ret = encoder_class->pre_push (encoder, frame);
 
-  /* A reference always needs to be owned by the frame on the buffer.
-   * For that reason, we use a complete sub-buffer (zero-cost) to push
-   * downstream.
-   * The original buffer will be free-ed only when downstream AND the
-   * current implementation are done with the frame. */
+  /* Get an additional ref to the buffer, which is going to be pushed
+   * downstream, the original ref is owned by the frame */
+  buffer = gst_buffer_ref (frame->output_buffer);
+
+  /* Release frame so the buffer is writable when we push it downstream
+   * if possible, i.e. if the subclass does not hold additional references
+   * to the frame
+   */
+  gst_video_encoder_release_frame (encoder, frame);
+  frame = NULL;
+
   if (ret == GST_FLOW_OK)
-    ret = gst_pad_push (encoder->srcpad, gst_buffer_ref (frame->output_buffer));
+    ret = gst_pad_push (encoder->srcpad, buffer);
 
 done:
   /* handed out */
-
-  /* unref once from the list */
-  l = g_list_find (priv->frames, frame);
-  if (l) {
-    gst_video_codec_frame_unref (frame);
-    priv->frames = g_list_delete_link (priv->frames, l);
-  }
-  /* unref because this function takes ownership */
-  gst_video_codec_frame_unref (frame);
+  if (frame)
+    gst_video_encoder_release_frame (encoder, frame);
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 

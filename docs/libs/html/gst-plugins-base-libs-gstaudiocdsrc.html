@@ -92,7 +92,7 @@ timestamping.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp2515696"></a><h3>Using GstAudioCdSrc-based elements in applications</h3>
+<a name="idp8902832"></a><h3>Using GstAudioCdSrc-based elements in applications</h3>
 <p>
 GstAudioCdSrc registers two <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a>s of its own, namely
 the "track" format and the "sector" format. Applications will usually
@@ -118,7 +118,7 @@ issue a seek command in track format to change between tracks, rather than
 setting a new cdda://n+1 URI on playbin (as setting a new URI on playbin
 involves closing and re-opening the CD device, which is much much slower).
 </p>
-<div class="refsect2"><a name="idp6846992"></a></div>
+<div class="refsect2"><a name="idp2901936"></a></div>
 <p>
 CDDA sources will automatically emit a number of tags, details about which
 can be found in the libgsttag documentation. Those tags are:
@@ -131,7 +131,7 @@ among others.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp6852112"></a><h3>Tracks and Table of Contents (TOC)</h3>
+<a name="idp9257536"></a><h3>Tracks and Table of Contents (TOC)</h3>
 <p>
 Applications will be informed of the available tracks via a TOC message
 on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a>. The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="type">GstToc</span></a> will contain a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstTocEntry"><span class="type">GstTocEntry</span></a> for

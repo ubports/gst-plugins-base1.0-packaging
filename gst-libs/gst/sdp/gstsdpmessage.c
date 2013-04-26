@@ -377,10 +377,6 @@ gst_sdp_message_as_text (const GstSDPMessage * msg)
     g_string_append_printf (lines, "p=%s\r\n",
         gst_sdp_message_get_phone (msg, i));
 
-  if (gst_sdp_message_emails_len (msg) == 0 &&
-      gst_sdp_message_phones_len (msg) == 0)
-    g_string_append_printf (lines, "e=NONE\r\n");
-
   if (msg->connection.nettype && msg->connection.addrtype &&
       msg->connection.address) {
     g_string_append_printf (lines, "c=%s %s %s", msg->connection.nettype,
@@ -403,20 +399,24 @@ gst_sdp_message_as_text (const GstSDPMessage * msg)
         bandwidth->bandwidth);
   }
 
-  for (i = 0; i < gst_sdp_message_times_len (msg); i++) {
-    const GstSDPTime *times = gst_sdp_message_get_time (msg, i);
+  if (gst_sdp_message_times_len (msg) == 0) {
+    g_string_append_printf (lines, "t=0 0\r\n");
+  } else {
+    for (i = 0; i < gst_sdp_message_times_len (msg); i++) {
+      const GstSDPTime *times = gst_sdp_message_get_time (msg, i);
 
-    g_string_append_printf (lines, "t=%s %s\r\n", times->start, times->stop);
+      g_string_append_printf (lines, "t=%s %s\r\n", times->start, times->stop);
 
-    if (times->repeat != NULL) {
-      guint j;
+      if (times->repeat != NULL) {
+        guint j;
 
-      g_string_append_printf (lines, "r=%s",
-          g_array_index (times->repeat, gchar *, 0));
-      for (j = 1; j < times->repeat->len; j++)
-        g_string_append_printf (lines, " %s",
-            g_array_index (times->repeat, gchar *, j));
-      g_string_append_printf (lines, "\r\n");
+        g_string_append_printf (lines, "r=%s",
+            g_array_index (times->repeat, gchar *, 0));
+        for (j = 1; j < times->repeat->len; j++)
+          g_string_append_printf (lines, " %s",
+              g_array_index (times->repeat, gchar *, j));
+        g_string_append_printf (lines, "\r\n");
+      }
     }
   }
 
@@ -1345,7 +1345,7 @@ gst_sdp_media_as_text (const GstSDPMedia * media)
 
     if (attr->key) {
       g_string_append_printf (lines, "a=%s", attr->key);
-      if (attr->value)
+      if (attr->value && attr->value[0] != '\0')
         g_string_append_printf (lines, ":%s", attr->value);
       g_string_append_printf (lines, "\r\n");
     }
@@ -1963,7 +1963,7 @@ gst_sdp_parse_line (SDPContext * c, gchar type, gchar * buffer)
         nmedia.num_ports = atoi (slash + 1);
       } else {
         nmedia.port = atoi (str);
-        nmedia.num_ports = -1;
+        nmedia.num_ports = 0;
       }
       READ_STRING (nmedia.proto);
       do {
