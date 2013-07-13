@@ -350,14 +350,16 @@ gst_riff_create_video_caps (guint32 codec_fcc,
 
     case GST_MAKE_FOURCC ('S', 'E', 'D', 'G'):
       caps = gst_caps_new_simple ("video/mpeg",
-          "mpegversion", G_TYPE_INT, 4, NULL);
+          "mpegversion", G_TYPE_INT, 4,
+          "systemstream", G_TYPE_BOOLEAN, FALSE, NULL);
       if (codec_name)
         *codec_name = g_strdup ("Samsung MPEG-4");
       break;
 
     case GST_MAKE_FOURCC ('M', '4', 'C', 'C'):
       caps = gst_caps_new_simple ("video/mpeg",
-          "mpegversion", G_TYPE_INT, 4, NULL);
+          "mpegversion", G_TYPE_INT, 4,
+          "systemstream", G_TYPE_BOOLEAN, FALSE, NULL);
       if (codec_name)
         *codec_name = g_strdup ("Divio MPEG-4");
       break;
@@ -435,7 +437,8 @@ gst_riff_create_video_caps (guint32 codec_fcc,
     case GST_MAKE_FOURCC ('M', 'P', '4', 'S'):
     case GST_MAKE_FOURCC ('M', '4', 'S', '2'):
       caps = gst_caps_new_simple ("video/mpeg",
-          "mpegversion", G_TYPE_INT, 4, NULL);
+          "mpegversion", G_TYPE_INT, 4,
+          "systemstream", G_TYPE_BOOLEAN, FALSE, NULL);
       if (codec_name)
         *codec_name = g_strdup ("Microsoft ISO MPEG-4 1.1");
       break;
@@ -444,7 +447,8 @@ gst_riff_create_video_caps (guint32 codec_fcc,
     case GST_MAKE_FOURCC ('U', 'M', 'P', '4'):
     case GST_MAKE_FOURCC ('F', 'F', 'D', 'S'):
       caps = gst_caps_new_simple ("video/mpeg",
-          "mpegversion", G_TYPE_INT, 4, NULL);
+          "mpegversion", G_TYPE_INT, 4,
+          "systemstream", G_TYPE_BOOLEAN, FALSE, NULL);
       if (codec_name)
         *codec_name = g_strdup ("FFmpeg MPEG-4");
       break;
@@ -471,7 +475,8 @@ gst_riff_create_video_caps (guint32 codec_fcc,
     case GST_MAKE_FOURCC ('m', 'p', '4', 'v'):
     case GST_MAKE_FOURCC ('R', 'M', 'P', '4'):
       caps = gst_caps_new_simple ("video/mpeg",
-          "mpegversion", G_TYPE_INT, 4, NULL);
+          "mpegversion", G_TYPE_INT, 4,
+          "systemstream", G_TYPE_BOOLEAN, FALSE, NULL);
       if (codec_name)
         *codec_name = g_strdup ("MPEG-4");
       break;
@@ -1212,6 +1217,19 @@ gst_riff_create_audio_caps (guint16 codec_id,
       break;
 
     case GST_RIFF_WAVE_FORMAT_ADPCM:
+      if (strf != NULL) {
+        /* Many encoding tools create a wrong bitrate information in the header,
+         * so either we calculate the bitrate or mark it as invalid as this
+         * would probably confuse timing */
+        strf->av_bps = 0;
+        if (strf->channels != 0 && strf->rate != 0 && strf->blockalign != 0) {
+          int spb = ((strf->blockalign - strf->channels * 7) / 2) * 2;
+          strf->av_bps =
+              gst_util_uint64_scale_int (strf->rate, strf->blockalign, spb);
+          GST_DEBUG ("fixing av_bps to calculated value %d of MS ADPCM",
+              strf->av_bps);
+        }
+      }
       caps = gst_caps_new_simple ("audio/x-adpcm",
           "layout", G_TYPE_STRING, "microsoft", NULL);
       if (codec_name)
@@ -1320,7 +1338,19 @@ gst_riff_create_audio_caps (guint16 codec_id,
       goto unknown;
 
     case GST_RIFF_WAVE_FORMAT_DVI_ADPCM:
-      rate_max = 48000;
+      if (strf != NULL) {
+        /* Many encoding tools create a wrong bitrate information in the
+         * header, so either we calculate the bitrate or mark it as invalid
+         * as this would probably confuse timing */
+        strf->av_bps = 0;
+        if (strf->channels != 0 && strf->rate != 0 && strf->blockalign != 0) {
+          int spb = ((strf->blockalign - strf->channels * 4) / 2) * 2;
+          strf->av_bps =
+              gst_util_uint64_scale_int (strf->rate, strf->blockalign, spb);
+          GST_DEBUG ("fixing av_bps to calculated value %d of IMA DVI ADPCM",
+              strf->av_bps);
+        }
+      }
       caps = gst_caps_new_simple ("audio/x-adpcm",
           "layout", G_TYPE_STRING, "dvi", NULL);
       if (codec_name)
@@ -1424,7 +1454,7 @@ gst_riff_create_audio_caps (guint16 codec_id,
     {
       gint version = (codec_id - GST_RIFF_WAVE_FORMAT_WMAV1) + 1;
 
-      channels_max = 6;
+      channels_max = 8;
       block_align = TRUE;
 
       caps = gst_caps_new_simple ("audio/x-wma",

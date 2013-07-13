@@ -110,7 +110,7 @@ use, as it creates a suitable source element as well.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp10814816"></a><h3>Element Information</h3>
+<a name="idp10863120"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -133,7 +133,7 @@ use, as it creates a suitable source element as well.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp10822336"></a><h3>Element Pads</h3>
+<a name="idp10870640"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -310,9 +310,20 @@ Max amount of time in the queue (in ns, 0=automatic).
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)         : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
 </p>
-@:
-@:
-@:</div>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>gstdecodebin</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 <hr>
 <div class="refsect2">
 <a name="GstDecodeBin-removed-decoded-pad"></a><h3>The <code class="literal">"removed-decoded-pad"</code> signal</h3>
@@ -321,8 +332,20 @@ Max amount of time in the queue (in ns, 0=automatic).
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)         : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
 </p>
-@:
-@:</div>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>gstdecodebin</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 <hr>
 <div class="refsect2">
 <a name="GstDecodeBin-unknown-type"></a><h3>The <code class="literal">"unknown-type"</code> signal</h3>
@@ -334,11 +357,7 @@ Max amount of time in the queue (in ns, 0=automatic).
 This signal is emitted when a pad for which there is no further possible
 decoding is added to the decodebin.
 </p>
-<p>
-</p>
-@:
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -382,11 +401,7 @@ returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macr
 </div>
 <p>
 </p>
-<p>
-</p>
-@:
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -445,11 +460,7 @@ having an unhandled type media type.
 </div>
 <p>
 </p>
-<p>
-</p>
-@:
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -516,12 +527,7 @@ next factory.
 </div>
 <p>
 </p>
-<p>
-</p>
-@:
-@:
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -583,12 +589,7 @@ order should not change.
 </div>
 <p>
 </p>
-<p>
-</p>
-@:
-@:
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -626,9 +627,7 @@ order should not change.
 <p>
 This signal is emitted once decodebin has finished decoding all the data.
 </p>
-<p>
-</p>
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
