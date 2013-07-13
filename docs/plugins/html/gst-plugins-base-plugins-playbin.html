@@ -65,7 +65,7 @@ enum                <a class="link" href="gst-plugins-base-plugins-playbin.html#
 <a name="gst-plugins-base-plugins-playbin.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GstPlayBin implements
- <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstChildProxy.html">GstChildProxy</a>,  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume">GstStreamVolume</a>,  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay">GstVideoOverlay</a>,  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstnavigation.html#GstNavigation">GstNavigation</a> and  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance">GstColorBalance</a>.</p>
+ <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstChildProxy.html">GstChildProxy</a>,  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume">GstStreamVolume</a>,  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay">GstVideoOverlay</a>,  GstNavigation and  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance">GstColorBalance</a>.</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.properties"></a><h2>Properties</h2>
@@ -162,7 +162,7 @@ volume control with mute option
 <p>
 </p>
 <div class="refsect2">
-<a name="idp12840720"></a><h3>Usage</h3>
+<a name="idp13190160"></a><h3>Usage</h3>
 <p>
 A playbin element can be created just like any other element using
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElementFactory.html#gst-element-factory-make"><code class="function">gst_element_factory_make()</code></a>. The file/URI to play should be set via the <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--uri" title='The "uri" property'><span class="type">"uri"</span></a>
@@ -210,7 +210,7 @@ the duration or position will have been returned in units of nanoseconds.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12856832"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
+<a name="idp13206272"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
 <p>
 By default, if no audio sink or video sink has been specified via the
 <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink" title='The "audio-sink" property'><span class="type">"audio-sink"</span></a> or <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-sink" title='The "video-sink" property'><span class="type">"video-sink"</span></a> property, playbin will use the autoaudiosink
@@ -251,7 +251,7 @@ It is also possible to 'suppress' audio and/or video output by using
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12867392"></a><h3>Retrieving Tags and Other Meta Data</h3>
+<a name="idp13216832"></a><h3>Retrieving Tags and Other Meta Data</h3>
 <p>
 Most of the common meta data (artist, title, etc.) can be retrieved by
 watching for TAG messages on the pipeline's bus (see above).
@@ -266,7 +266,7 @@ from the negotiated caps on the sink pads of the sinks.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12869504"></a><h3>Buffering</h3>
+<a name="idp13218944"></a><h3>Buffering</h3>
 Playbin handles buffering automatically for the most part, but applications
 need to handle parts of the buffering process as well. Whenever playbin is
 buffering, it will post BUFFERING messages on the bus with a percentage
@@ -311,7 +311,7 @@ of 100 percent is received (if PLAYING is the desired state, that is).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12872272"></a><h3>Embedding the video window in your application</h3>
+<a name="idp13221712"></a><h3>Embedding the video window in your application</h3>
 By default, playbin (or rather the video sinks used) will create their own
 window. Applications will usually want to force output to a window of their
 own, however. This can be done using the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface, which most
@@ -321,7 +321,7 @@ video sinks implement. See the documentation there for more details.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12874240"></a><h3>Specifying which CD/DVD device to use</h3>
+<a name="idp13223680"></a><h3>Specifying which CD/DVD device to use</h3>
 The device to use for CDs/DVDs needs to be set on the source element
 playbin creates before it is opened. The most generic way of doing this
 is to connect to playbin's "source-setup" (or "notify::source") signal,
@@ -337,7 +337,7 @@ dvd://[/path/to/device]
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12875808"></a><h3>Handling redirects</h3>
+<a name="idp13225248"></a><h3>Handling redirects</h3>
 <p>
 Some elements may post 'redirect' messages on the bus to tell the
 application to open another location. These are element messages containing
@@ -350,7 +350,7 @@ for such redirects can be found in many quicktime movie trailers.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp12877488"></a><h3>Examples</h3>
+<a name="idp13226928"></a><h3>Examples</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -396,7 +396,7 @@ the drive is detected automatically by the plugin).
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp12882384"></a><h3>Element Information</h3>
+<a name="idp13231904"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -419,7 +419,7 @@ the drive is detected automatically by the plugin).
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp12889840"></a><h3>Element Pads</h3>
+<a name="idp13239360"></a><h3>Element Pads</h3>
 </div>
 </div>
 <p>
@@ -777,9 +777,7 @@ set the uri and suburi to make sure that playback continues.
 <p>
 This signal is emitted from the context of a GStreamer streaming thread.
 </p>
-<p>
-</p>
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -809,9 +807,7 @@ This signal may be emitted from the context of a GStreamer streaming thread.
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.
 </p>
-<p>
-</p>
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -841,10 +837,7 @@ This signal may be emitted from the context of a GStreamer streaming thread.
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -876,10 +869,7 @@ specified by <em class="parameter"><code>caps</code></em>.
 If <em class="parameter"><code>caps</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, no conversion will be performed and this function is
 equivalent to the <span class="type">"frame"</span> property.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -917,10 +907,7 @@ audio stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -953,10 +940,7 @@ queries, etc.
 Action signal to retrieve the tags of a specific audio stream number.
 This information can be used to select a stream.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -992,10 +976,7 @@ text stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1028,10 +1009,7 @@ queries, etc.
 Action signal to retrieve the tags of a specific text stream number.
 This information can be used to select a stream.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1067,10 +1045,7 @@ video stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1103,10 +1078,7 @@ queries, etc.
 Action signal to retrieve the tags of a specific video stream number.
 This information can be used to select a stream.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1147,10 +1119,7 @@ the notify::source signal, but more convenient.
 This signal is usually emitted from the context of a GStreamer streaming
 thread.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1185,9 +1154,7 @@ This signal may be emitted from the context of a GStreamer streaming thread.
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.
 </p>
-<p>
-</p>
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1217,10 +1184,7 @@ This signal may be emitted from the context of a GStreamer streaming thread.
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1255,9 +1219,7 @@ This signal is usually emitted from the context of a GStreamer streaming
 thread. You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a> to notify your application's main thread.
 </p>
-<p>
-</p>
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
@@ -1287,10 +1249,7 @@ This signal may be emitted from the context of a GStreamer streaming thread.
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.
 </p>
-<p>
-</p>
-@:
-@:<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>

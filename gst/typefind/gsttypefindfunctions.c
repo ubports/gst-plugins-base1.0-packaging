@@ -452,7 +452,8 @@ hls_type_find (GstTypeFind * tf, gpointer unused)
 
     /* Search for # comment lines */
     if (c.data[0] == '#' && (memcmp (c.data, "#EXT-X-TARGETDURATION", 21) == 0
-            || memcmp (c.data, "#EXT-X-STREAM-INF", 17) == 0)) {
+            || memcmp (c.data, "#EXT-X-STREAM-INF", 17) == 0
+            || memcmp (c.data, "#EXT-X-MEDIA", 12) == 0)) {
       gst_type_find_suggest (tf, GST_TYPE_FIND_MAXIMUM, HLS_CAPS);
       return;
     }
@@ -905,7 +906,7 @@ aac_type_find_scan_loas_frames (GstTypeFind * tf, DataScanCtx * scan_ctx,
     /* add size of sync stream header */
     len += 3;
 
-    if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len)) {
+    if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len + 2)) {
       GST_DEBUG ("Wrong sync or next frame not within reach, len=%u", len);
       break;
     }
@@ -1420,7 +1421,8 @@ suggest:
     g_return_if_fail (layer >= 1 && layer <= 3);
 
     gst_type_find_suggest_simple (tf, prob, "audio/mpeg",
-        "mpegversion", G_TYPE_INT, 1, "layer", G_TYPE_INT, layer, NULL);
+        "mpegversion", G_TYPE_INT, 1, "layer", G_TYPE_INT, layer,
+        "parsed", G_TYPE_BOOLEAN, FALSE, NULL);
   }
 }
 
@@ -2673,7 +2675,7 @@ mpeg_video_stream_type_find (GstTypeFind * tf, gpointer unused)
 
     gst_type_find_suggest_simple (tf, probability, "video/mpeg",
         "systemstream", G_TYPE_BOOLEAN, FALSE,
-        "mpegversion", G_TYPE_INT, 1, NULL);
+        "mpegversion", G_TYPE_INT, 1, "parsed", G_TYPE_BOOLEAN, FALSE, NULL);
   }
 }
 

@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.0.7\n"
+"Project-Id-Version: gst-plugins-base 1.0.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-04-26 12:33+0200\n"
+"POT-Creation-Date: 2013-07-11 19:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,30 +16,30 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ext/alsa/gstalsasink.c:563
+#: ext/alsa/gstalsasink.c:565
 msgid "Could not open device for playback in mono mode."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:565
+#: ext/alsa/gstalsasink.c:567
 msgid "Could not open device for playback in stereo mode."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:569
+#: ext/alsa/gstalsasink.c:571
 #, c-format
 msgid "Could not open device for playback in %d-channel mode."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:842
+#: ext/alsa/gstalsasink.c:844
 msgid ""
 "Could not open audio device for playback. Device is being used by another "
 "application."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:847
+#: ext/alsa/gstalsasink.c:849
 msgid "Could not open audio device for playback."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:1049
+#: ext/alsa/gstalsasink.c:1051
 msgid "Error outputting to audio device. The device has been disconnected."
 msgstr ""
 
@@ -86,16 +86,16 @@ msgstr ""
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1728
+#: gst/playback/gstdecodebin2.c:1726
 #, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1735
+#: gst/playback/gstdecodebin2.c:1733
 msgid "Could not determine type of stream"
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:2383
+#: gst/playback/gstdecodebin2.c:2388
 msgid "This appears to be a text file"
 msgstr ""
 
@@ -192,7 +192,7 @@ msgstr ""
 msgid "No URI handler implemented for \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:2162
+#: gst/playback/gsturidecodebin.c:2163
 msgid "Source element is invalid."
 msgstr ""
 
