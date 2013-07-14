@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:gstappsink
@@ -196,7 +196,7 @@ gst_app_sink_class_init (GstAppSinkClass * klass)
 
   g_object_class_install_property (gobject_class, PROP_EMIT_SIGNALS,
       g_param_spec_boolean ("emit-signals", "Emit signals",
-          "Emit new-preroll, new-buffer and new-buffer-list signals",
+          "Emit new-preroll and new-sample signals",
           DEFAULT_PROP_EMIT_SIGNALS,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 

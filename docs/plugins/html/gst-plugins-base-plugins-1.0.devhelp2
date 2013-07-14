@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="GStreamer Base Plugins 1.0 Plugins Reference Manual" link="index.html" author="" name="gst-plugins-base-plugins" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="GStreamer Base Plugins 1.0 Plugins Reference Manual" link="index.html" author="" name="gst-plugins-base-plugins-1.0" version="2" language="c">
   <chapters>
     <sub name="gst-plugins-base Elements" link="ch01.html">
       <sub name="adder" link="gst-plugins-base-plugins-adder.html"/>
@@ -79,13 +79,13 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-adder.html#idp8195552"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-adder.html#idp8338416"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-adder.html#idm33616"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-adder.html#idp7801184"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-adder.html#idp7846608"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-adder.html#idm28800"/>
     <keyword type="struct" name="struct GstAdder" link="gst-plugins-base-plugins-adder.html#GstAdder-struct"/>
     <keyword type="property" name="The &quot;caps&quot; property" link="gst-plugins-base-plugins-adder.html#GstAdder--caps"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-appsrc.html#idp5972480"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-appsrc.html#idp5979888"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-appsrc.html#idp7349808"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-appsrc.html#idp7357216"/>
     <keyword type="struct" name="struct GstAppSrc" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-struct"/>
     <keyword type="property" name="The &quot;block&quot; property" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc--block"/>
     <keyword type="property" name="The &quot;caps&quot; property" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc--caps"/>
@@ -103,8 +103,8 @@
     <keyword type="signal" name="The &quot;need-data&quot; signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-need-data"/>
     <keyword type="signal" name="The &quot;push-buffer&quot; signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-buffer"/>
     <keyword type="signal" name="The &quot;seek-data&quot; signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-appsink.html#idp9939552"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-appsink.html#idp9946960"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-appsink.html#idp9818032"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-appsink.html#idp9825440"/>
     <keyword type="struct" name="struct GstAppSink" link="gst-plugins-base-plugins-appsink.html#GstAppSink-struct"/>
     <keyword type="property" name="The &quot;caps&quot; property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--caps"/>
     <keyword type="property" name="The &quot;drop&quot; property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--drop"/>
@@ -120,29 +120,29 @@
     <keyword type="signal" name="The &quot;pull-buffer-list&quot; signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-buffer-list"/>
     <keyword type="signal" name="The &quot;new-sample&quot; signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-sample"/>
     <keyword type="signal" name="The &quot;pull-sample&quot; signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-sample"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-alsasink.html#idp5873968"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-alsasink.html#idp5881424"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-alsasink.html#idp2878016"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-alsasink.html#idp7880096"/>
     <keyword type="struct" name="struct GstAlsaSink" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink-struct"/>
     <keyword type="property" name="The &quot;device&quot; property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device"/>
     <keyword type="property" name="The &quot;device-name&quot; property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device-name"/>
     <keyword type="property" name="The &quot;card-name&quot; property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--card-name"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-alsasrc.html#idp9836576"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-alsasrc.html#idp9844032"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-alsasrc.html#idp9242800"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-alsasrc.html#idp7726080"/>
     <keyword type="struct" name="struct GstAlsaSrc" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc-struct"/>
     <keyword type="property" name="The &quot;device&quot; property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device"/>
     <keyword type="property" name="The &quot;device-name&quot; property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device-name"/>
     <keyword type="property" name="The &quot;card-name&quot; property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--card-name"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audioconvert.html#idp8673792"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audioconvert.html#idp7867536"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audioconvert.html#idp6608080"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audioconvert.html#idp7648304"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audioconvert.html#idp7960336"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audioconvert.html#idp7768080"/>
     <keyword type="struct" name="struct GstAudioConvert" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert-struct"/>
     <keyword type="enum" name="enum GstAudioConvertDithering" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering"/>
     <keyword type="enum" name="enum GstAudioConvertNoiseShaping" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping"/>
     <keyword type="property" name="The &quot;dithering&quot; property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--dithering"/>
     <keyword type="property" name="The &quot;noise-shaping&quot; property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--noise-shaping"/>
-    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-audiorate.html#idp8832128"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audiorate.html#idp10421840"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audiorate.html#idp10429296"/>
+    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-audiorate.html#idp5250128"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audiorate.html#idp10216224"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audiorate.html#idp10223568"/>
     <keyword type="struct" name="struct GstAudioRate" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate-struct"/>
     <keyword type="property" name="The &quot;add&quot; property" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate--add"/>
     <keyword type="property" name="The &quot;drop&quot; property" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate--drop"/>
@@ -151,15 +151,17 @@
     <keyword type="property" name="The &quot;silent&quot; property" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate--silent"/>
     <keyword type="property" name="The &quot;tolerance&quot; property" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate--tolerance"/>
     <keyword type="property" name="The &quot;skip-to-first&quot; property" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate--skip-to-first"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audioresample.html#idp6172800"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audioresample.html#idp9881200"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audioresample.html#idp5710912"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audioresample.html#idp6328192"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audioresample.html#idp8103808"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audioresample.html#idp8111216"/>
     <keyword type="struct" name="struct GstAudioResample" link="gst-plugins-base-plugins-audioresample.html#GstAudioResample-struct"/>
     <keyword type="property" name="The &quot;filter-length&quot; property" link="gst-plugins-base-plugins-audioresample.html#GstAudioResample--filter-length"/>
     <keyword type="property" name="The &quot;quality&quot; property" link="gst-plugins-base-plugins-audioresample.html#GstAudioResample--quality"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audiotestsrc.html#idp5602576"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audiotestsrc.html#idp10496560"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audiotestsrc.html#idp10504016"/>
+    <keyword type="property" name="The &quot;sinc-filter-auto-threshold&quot; property" link="gst-plugins-base-plugins-audioresample.html#GstAudioResample--sinc-filter-auto-threshold"/>
+    <keyword type="property" name="The &quot;sinc-filter-mode&quot; property" link="gst-plugins-base-plugins-audioresample.html#GstAudioResample--sinc-filter-mode"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-audiotestsrc.html#idp5968320"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-audiotestsrc.html#idp5971904"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-audiotestsrc.html#idp10301776"/>
     <keyword type="struct" name="struct GstAudioTestSrc" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrc-struct"/>
     <keyword type="enum" name="enum GstAudioTestSrcWave" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrcWave"/>
     <keyword type="property" name="The &quot;freq&quot; property" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrc--freq"/>
@@ -170,8 +172,8 @@
     <keyword type="property" name="The &quot;wave&quot; property" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrc--wave"/>
     <keyword type="property" name="The &quot;can-activate-pull&quot; property" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrc--can-activate-pull"/>
     <keyword type="property" name="The &quot;can-activate-push&quot; property" link="gst-plugins-base-plugins-audiotestsrc.html#GstAudioTestSrc--can-activate-push"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-cdparanoiasrc.html#idp5836512"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-cdparanoiasrc.html#idp5929056"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-cdparanoiasrc.html#idp5621568"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-cdparanoiasrc.html#idp10407536"/>
     <keyword type="struct" name="struct GstCdParanoiaSrc" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc-struct"/>
     <keyword type="property" name="The &quot;generic-device&quot; property" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc--generic-device"/>
     <keyword type="property" name="The &quot;paranoia-mode&quot; property" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc--paranoia-mode"/>
@@ -180,12 +182,12 @@
     <keyword type="property" name="The &quot;cache-size&quot; property" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc--cache-size"/>
     <keyword type="signal" name="The &quot;transport-error&quot; signal" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc-transport-error"/>
     <keyword type="signal" name="The &quot;uncorrected-error&quot; signal" link="gst-plugins-base-plugins-cdparanoiasrc.html#GstCdParanoiaSrc-uncorrected-error"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-clockoverlay.html#idp8974016"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-clockoverlay.html#idp5779760"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-clockoverlay.html#idp7607776"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-clockoverlay.html#idp5742224"/>
     <keyword type="struct" name="struct GstClockOverlay" link="gst-plugins-base-plugins-clockoverlay.html#GstClockOverlay-struct"/>
     <keyword type="property" name="The &quot;time-format&quot; property" link="gst-plugins-base-plugins-clockoverlay.html#GstClockOverlay--time-format"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-decodebin.html#idp10863120"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-decodebin.html#idp10870640"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-decodebin.html#idp10766176"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-decodebin.html#idp10773696"/>
     <keyword type="struct" name="struct GstDecodeBin" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin-struct"/>
     <keyword type="property" name="The &quot;threaded&quot; property" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--threaded"/>
     <keyword type="property" name="The &quot;sink-caps&quot; property" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--sink-caps"/>
@@ -208,9 +210,10 @@
     <keyword type="signal" name="The &quot;autoplug-select&quot; signal" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin-autoplug-select"/>
     <keyword type="signal" name="The &quot;autoplug-sort&quot; signal" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin-autoplug-sort"/>
     <keyword type="signal" name="The &quot;drained&quot; signal" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin-drained"/>
-    <keyword type="" name="Features" link="gst-plugins-base-plugins-encodebin.html#idp9272320"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-encodebin.html#idp8632128"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-encodebin.html#idp8639536"/>
+    <keyword type="signal" name="The &quot;autoplug-query&quot; signal" link="gst-plugins-base-plugins-decodebin.html#GstDecodeBin-autoplug-query"/>
+    <keyword type="" name="Features" link="gst-plugins-base-plugins-encodebin.html#idp8826560"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-encodebin.html#idp9039232"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-encodebin.html#idp8701792"/>
     <keyword type="struct" name="GstEncodeBin" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-struct"/>
     <keyword type="property" name="The &quot;audio-jitter-tolerance&quot; property" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--audio-jitter-tolerance"/>
     <keyword type="property" name="The &quot;avoid-reencoding&quot; property" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--avoid-reencoding"/>
@@ -220,35 +223,36 @@
     <keyword type="property" name="The &quot;queue-time-max&quot; property" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-time-max"/>
     <keyword type="property" name="The &quot;flags&quot; property" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--flags"/>
     <keyword type="signal" name="The &quot;request-pad&quot; signal" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-pad"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-videoconvert.html#idp6822704"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videoconvert.html#idp7233328"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videoconvert.html#idp5807552"/>
+    <keyword type="signal" name="The &quot;request-profile-pad&quot; signal" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-profile-pad"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-videoconvert.html#idp7520288"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videoconvert.html#idp7807632"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videoconvert.html#idp5980992"/>
     <keyword type="struct" name="struct GstVideoConvert" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert-struct"/>
     <keyword type="property" name="The &quot;dither&quot; property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither"/>
-    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-giosink.html#idp6234176"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giosink.html#idp6856704"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giosink.html#idp6864224"/>
+    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-giosink.html#idp8734832"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giosink.html#idp8739392"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giosink.html#idp5842064"/>
     <keyword type="struct" name="struct GstGioSink" link="gst-plugins-base-plugins-giosink.html#GstGioSink-struct"/>
     <keyword type="property" name="The &quot;location&quot; property" link="gst-plugins-base-plugins-giosink.html#GstGioSink--location"/>
     <keyword type="property" name="The &quot;file&quot; property" link="gst-plugins-base-plugins-giosink.html#GstGioSink--file"/>
-    <keyword type="" name="Example launch lines" link="gst-plugins-base-plugins-giosrc.html#idp10672192"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giosrc.html#idp10677040"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giosrc.html#idp11554128"/>
+    <keyword type="" name="Example launch lines" link="gst-plugins-base-plugins-giosrc.html#idp11099136"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giosrc.html#idp11103696"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giosrc.html#idp5509536"/>
     <keyword type="struct" name="struct GstGioSrc" link="gst-plugins-base-plugins-giosrc.html#GstGioSrc-struct"/>
     <keyword type="property" name="The &quot;location&quot; property" link="gst-plugins-base-plugins-giosrc.html#GstGioSrc--location"/>
     <keyword type="property" name="The &quot;file&quot; property" link="gst-plugins-base-plugins-giosrc.html#GstGioSrc--file"/>
-    <keyword type="" name="Example code" link="gst-plugins-base-plugins-giostreamsink.html#idp8306864"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giostreamsink.html#idp7571904"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giostreamsink.html#idp8030800"/>
+    <keyword type="" name="Example code" link="gst-plugins-base-plugins-giostreamsink.html#idp11110736"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giostreamsink.html#idp11114880"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giostreamsink.html#idp6626096"/>
     <keyword type="struct" name="struct GstGioStreamSink" link="gst-plugins-base-plugins-giostreamsink.html#GstGioStreamSink-struct"/>
     <keyword type="property" name="The &quot;stream&quot; property" link="gst-plugins-base-plugins-giostreamsink.html#GstGioStreamSink--stream"/>
-    <keyword type="" name="Example code" link="gst-plugins-base-plugins-giostreamsrc.html#idp7982192"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giostreamsrc.html#idp8710576"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giostreamsrc.html#idp7949408"/>
+    <keyword type="" name="Example code" link="gst-plugins-base-plugins-giostreamsrc.html#idp9799504"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-giostreamsrc.html#idp9803616"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-giostreamsrc.html#idp6704976"/>
     <keyword type="struct" name="struct GstGioStreamSrc" link="gst-plugins-base-plugins-giostreamsrc.html#GstGioStreamSrc-struct"/>
     <keyword type="property" name="The &quot;stream&quot; property" link="gst-plugins-base-plugins-giostreamsrc.html#GstGioStreamSrc--stream"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-multifdsink.html#idp11965024"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-multifdsink.html#idp11972432"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-multifdsink.html#idp11432720"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-multifdsink.html#idp11440128"/>
     <keyword type="struct" name="struct GstMultiFdSink" link="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-struct"/>
     <keyword type="enum" name="enum GstRecoverPolicy" link="gst-plugins-base-plugins-multifdsink.html#GstRecoverPolicy"/>
     <keyword type="enum" name="enum GstSyncMethod" link="gst-plugins-base-plugins-multifdsink.html#GstSyncMethod"/>
@@ -286,8 +290,8 @@
     <keyword type="signal" name="The &quot;add-full&quot; signal" link="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-add-full"/>
     <keyword type="signal" name="The &quot;remove-flush&quot; signal" link="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-remove-flush"/>
     <keyword type="signal" name="The &quot;client-handle-removed&quot; signal" link="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-client-handle-removed"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-multisocketsink.html#idp11357696"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-multisocketsink.html#idp11365264"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-multisocketsink.html#idp11997392"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-multisocketsink.html#idp12004960"/>
     <keyword type="struct" name="struct GstMultiSocketSink" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-struct"/>
     <keyword type="enum" name="enum GstRecoverPolicy" link="gst-plugins-base-plugins-multisocketsink.html#GstRecoverPolicy"/>
     <keyword type="enum" name="enum GstSyncMethod" link="gst-plugins-base-plugins-multisocketsink.html#GstSyncMethod"/>
@@ -322,26 +326,26 @@
     <keyword type="signal" name="The &quot;remove&quot; signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-remove"/>
     <keyword type="signal" name="The &quot;remove-flush&quot; signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-remove-flush"/>
     <keyword type="signal" name="The &quot;client-handle-removed&quot; signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-client-handle-removed"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-oggdemux.html#idp8004800"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-oggdemux.html#idp8164000"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-oggdemux.html#idp11870304"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-oggdemux.html#idp7632320"/>
     <keyword type="struct" name="struct GstOggDemux" link="gst-plugins-base-plugins-oggdemux.html#GstOggDemux-struct"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-oggmux.html#idp12446752"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-oggmux.html#idp12440272"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-oggmux.html#idp12796224"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-oggmux.html#idp12789856"/>
     <keyword type="struct" name="struct GstOggMux" link="gst-plugins-base-plugins-oggmux.html#GstOggMux-struct"/>
     <keyword type="property" name="The &quot;max-delay&quot; property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-delay"/>
     <keyword type="property" name="The &quot;max-page-delay&quot; property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-page-delay"/>
     <keyword type="property" name="The &quot;max-tolerance&quot; property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-tolerance"/>
     <keyword type="property" name="The &quot;skeleton&quot; property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--skeleton"/>
-    <keyword type="" name="Usage" link="gst-plugins-base-plugins-playbin.html#idp13190160"/>
-    <keyword type="" name="Advanced Usage: specifying the audio and video sink" link="gst-plugins-base-plugins-playbin.html#idp13206272"/>
-    <keyword type="" name="Retrieving Tags and Other Meta Data" link="gst-plugins-base-plugins-playbin.html#idp13216832"/>
-    <keyword type="" name="Buffering" link="gst-plugins-base-plugins-playbin.html#idp13218944"/>
-    <keyword type="" name="Embedding the video window in your application" link="gst-plugins-base-plugins-playbin.html#idp13221712"/>
-    <keyword type="" name="Specifying which CD/DVD device to use" link="gst-plugins-base-plugins-playbin.html#idp13223680"/>
-    <keyword type="" name="Handling redirects" link="gst-plugins-base-plugins-playbin.html#idp13225248"/>
-    <keyword type="" name="Examples" link="gst-plugins-base-plugins-playbin.html#idp13226928"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-playbin.html#idp13231904"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-playbin.html#idp13239360"/>
+    <keyword type="" name="Usage" link="gst-plugins-base-plugins-playbin.html#idp12892944"/>
+    <keyword type="" name="Advanced Usage: specifying the audio and video sink" link="gst-plugins-base-plugins-playbin.html#idp12909056"/>
+    <keyword type="" name="Retrieving Tags and Other Meta Data" link="gst-plugins-base-plugins-playbin.html#idp12919616"/>
+    <keyword type="" name="Buffering" link="gst-plugins-base-plugins-playbin.html#idp12921728"/>
+    <keyword type="" name="Embedding the video window in your application" link="gst-plugins-base-plugins-playbin.html#idp12924496"/>
+    <keyword type="" name="Specifying which CD/DVD device to use" link="gst-plugins-base-plugins-playbin.html#idp12926464"/>
+    <keyword type="" name="Handling redirects" link="gst-plugins-base-plugins-playbin.html#idp12928032"/>
+    <keyword type="" name="Examples" link="gst-plugins-base-plugins-playbin.html#idp12929712"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-playbin.html#idp12934320"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-playbin.html#idp12941776"/>
     <keyword type="struct" name="struct GstPlayBin" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-struct"/>
     <keyword type="enum" name="enum GstPlayFlags" link="gst-plugins-base-plugins-playbin.html#GstPlayFlags"/>
     <keyword type="property" name="The &quot;audio-sink&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink"/>
@@ -372,6 +376,9 @@
     <keyword type="property" name="The &quot;current-suburi&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--current-suburi"/>
     <keyword type="property" name="The &quot;current-uri&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--current-uri"/>
     <keyword type="property" name="The &quot;force-aspect-ratio&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--force-aspect-ratio"/>
+    <keyword type="property" name="The &quot;audio-stream-combiner&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-stream-combiner"/>
+    <keyword type="property" name="The &quot;text-stream-combiner&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--text-stream-combiner"/>
+    <keyword type="property" name="The &quot;video-stream-combiner&quot; property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-stream-combiner"/>
     <keyword type="signal" name="The &quot;about-to-finish&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish"/>
     <keyword type="signal" name="The &quot;audio-changed&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed"/>
     <keyword type="signal" name="The &quot;audio-tags-changed&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-tags-changed"/>
@@ -387,44 +394,44 @@
     <keyword type="signal" name="The &quot;text-tags-changed&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-text-tags-changed"/>
     <keyword type="signal" name="The &quot;video-changed&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-changed"/>
     <keyword type="signal" name="The &quot;video-tags-changed&quot; signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-tags-changed"/>
-    <keyword type="" name="Examples" link="gst-plugins-base-plugins-subtitleoverlay.html#idp8738640"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-subtitleoverlay.html#idp6392816"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-subtitleoverlay.html#idp13761456"/>
+    <keyword type="" name="Examples" link="gst-plugins-base-plugins-subtitleoverlay.html#idp8654688"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-subtitleoverlay.html#idp9123136"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-subtitleoverlay.html#idp13509520"/>
     <keyword type="struct" name="struct GstSubtitleOverlay" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay-struct"/>
     <keyword type="property" name="The &quot;font-desc&quot; property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--font-desc"/>
     <keyword type="property" name="The &quot;silent&quot; property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--silent"/>
     <keyword type="property" name="The &quot;subtitle-encoding&quot; property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--subtitle-encoding"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpclientsrc.html#idp13714160"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpclientsrc.html#idp13716768"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpclientsrc.html#idp13560624"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpclientsrc.html#idp8489104"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpclientsrc.html#idp11323856"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpclientsrc.html#idp11331264"/>
     <keyword type="struct" name="struct GstTCPClientSrc" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc-struct"/>
     <keyword type="property" name="The &quot;host&quot; property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--host"/>
     <keyword type="property" name="The &quot;port&quot; property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--port"/>
     <keyword type="property" name="The &quot;protocol&quot; property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--protocol"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpclientsink.html#idp12404384"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpclientsink.html#idp12336400"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpclientsink.html#idp13745056"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpclientsink.html#idp11316288"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpclientsink.html#idp11318608"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpclientsink.html#idp11771680"/>
     <keyword type="struct" name="struct GstTCPClientSink" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink-struct"/>
     <keyword type="property" name="The &quot;host&quot; property" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--host"/>
     <keyword type="property" name="The &quot;port&quot; property" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--port"/>
     <keyword type="property" name="The &quot;protocol&quot; property" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--protocol"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpserversrc.html#idp13382192"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpserversrc.html#idp13384960"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpserversrc.html#idp13392368"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpserversrc.html#idp5468256"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpserversrc.html#idp5470736"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpserversrc.html#idp8248064"/>
     <keyword type="struct" name="struct GstTCPServerSrc" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc-struct"/>
     <keyword type="property" name="The &quot;host&quot; property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--host"/>
     <keyword type="property" name="The &quot;port&quot; property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--port"/>
     <keyword type="property" name="The &quot;protocol&quot; property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--protocol"/>
     <keyword type="property" name="The &quot;current-port&quot; property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--current-port"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpserversink.html#idp13546896"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpserversink.html#idp13549664"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpserversink.html#idp13650400"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-tcpserversink.html#idp11055072"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-tcpserversink.html#idp11057552"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-tcpserversink.html#idp11064960"/>
     <keyword type="struct" name="struct GstTCPServerSink" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink-struct"/>
     <keyword type="property" name="The &quot;host&quot; property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--host"/>
     <keyword type="property" name="The &quot;port&quot; property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--port"/>
     <keyword type="property" name="The &quot;current-port&quot; property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--current-port"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-textoverlay.html#idp13103136"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-textoverlay.html#idp13110544"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-textoverlay.html#idp13899520"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-textoverlay.html#idp13905904"/>
     <keyword type="struct" name="struct GstTextOverlay" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay-struct"/>
     <keyword type="property" name="The &quot;deltax&quot; property" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--deltax"/>
     <keyword type="property" name="The &quot;deltay&quot; property" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--deltay"/>
@@ -446,8 +453,8 @@
     <keyword type="property" name="The &quot;color&quot; property" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--color"/>
     <keyword type="property" name="The &quot;xpos&quot; property" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--xpos"/>
     <keyword type="property" name="The &quot;ypos&quot; property" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--ypos"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-textrender.html#idp7708336"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-textrender.html#idp12171200"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-textrender.html#idp8226320"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-textrender.html#idp13148784"/>
     <keyword type="struct" name="struct GstTextRender" link="gst-plugins-base-plugins-textrender.html#GstTextRender-struct"/>
     <keyword type="property" name="The &quot;font-desc&quot; property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--font-desc"/>
     <keyword type="property" name="The &quot;halignment&quot; property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--halignment"/>
@@ -455,12 +462,12 @@
     <keyword type="property" name="The &quot;valignment&quot; property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--valignment"/>
     <keyword type="property" name="The &quot;xpad&quot; property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--xpad"/>
     <keyword type="property" name="The &quot;ypad&quot; property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--ypad"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoradec.html#idp7502656"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoradec.html#idp13488176"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoradec.html#idp8796848"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoradec.html#idp13084176"/>
     <keyword type="struct" name="struct GstTheoraDec" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec-struct"/>
     <keyword type="property" name="The &quot;crop&quot; property" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--crop"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoraenc.html#idp12936752"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoraenc.html#idp12944096"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoraenc.html#idp14229360"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoraenc.html#idp14236816"/>
     <keyword type="struct" name="struct GstTheoraEnc" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc-struct"/>
     <keyword type="property" name="The &quot;bitrate&quot; property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--bitrate"/>
     <keyword type="property" name="The &quot;border&quot; property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--border"/>
@@ -483,15 +490,15 @@
     <keyword type="property" name="The &quot;multipass-cache-file&quot; property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--multipass-cache-file"/>
     <keyword type="property" name="The &quot;multipass-mode&quot; property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--multipass-mode"/>
     <keyword type="property" name="The &quot;dup-on-gap&quot; property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--dup-on-gap"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoraparse.html#idp9560288"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoraparse.html#idp14591664"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-theoraparse.html#idp6488032"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-theoraparse.html#idp9325808"/>
     <keyword type="struct" name="struct GstTheoraParse" link="gst-plugins-base-plugins-theoraparse.html#GstTheoraParse-struct"/>
     <keyword type="property" name="The &quot;synchronization-points&quot; property" link="gst-plugins-base-plugins-theoraparse.html#GstTheoraParse--synchronization-points"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-timeoverlay.html#idp6893504"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-timeoverlay.html#idp7107264"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-timeoverlay.html#idp7579232"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-timeoverlay.html#idp11762016"/>
     <keyword type="struct" name="struct GstTimeOverlay" link="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlay-struct"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-uridecodebin.html#idp14722272"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-uridecodebin.html#idp14729728"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-uridecodebin.html#idp14598736"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-uridecodebin.html#idp14606192"/>
     <keyword type="struct" name="struct GstURIDecodeBin" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-struct"/>
     <keyword type="enum" name="enum GstAutoplugSelectResult" link="gst-plugins-base-plugins-uridecodebin.html#GstAutoplugSelectResult"/>
     <keyword type="property" name="The &quot;uri&quot; property" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin--uri"/>
@@ -512,9 +519,10 @@
     <keyword type="signal" name="The &quot;drained&quot; signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-drained"/>
     <keyword type="signal" name="The &quot;autoplug-sort&quot; signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-autoplug-sort"/>
     <keyword type="signal" name="The &quot;source-setup&quot; signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-source-setup"/>
-    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-videorate.html#idp14418320"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videorate.html#idp14422736"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videorate.html#idp14430192"/>
+    <keyword type="signal" name="The &quot;autoplug-query&quot; signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-autoplug-query"/>
+    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-videorate.html#idp14907152"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videorate.html#idp14911280"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videorate.html#idp14918736"/>
     <keyword type="struct" name="struct GstVideoRate" link="gst-plugins-base-plugins-videorate.html#GstVideoRate-struct"/>
     <keyword type="property" name="The &quot;drop&quot; property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop"/>
     <keyword type="property" name="The &quot;duplicate&quot; property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--duplicate"/>
@@ -526,9 +534,9 @@
     <keyword type="property" name="The &quot;average-period&quot; property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--average-period"/>
     <keyword type="property" name="The &quot;drop-only&quot; property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop-only"/>
     <keyword type="property" name="The &quot;max-rate&quot; property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--max-rate"/>
-    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-videoscale.html#idp14564544"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videoscale.html#idp14568944"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videoscale.html#idp14345920"/>
+    <keyword type="" name="Example pipelines" link="gst-plugins-base-plugins-videoscale.html#idp8570032"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videoscale.html#idp11738816"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videoscale.html#idp13368784"/>
     <keyword type="struct" name="struct GstVideoScale" link="gst-plugins-base-plugins-videoscale.html#GstVideoScale-struct"/>
     <keyword type="enum" name="enum GstVideoScaleMethod" link="gst-plugins-base-plugins-videoscale.html#GstVideoScaleMethod"/>
     <keyword type="property" name="The &quot;method&quot; property" link="gst-plugins-base-plugins-videoscale.html#GstVideoScale--method"/>
@@ -537,9 +545,9 @@
     <keyword type="property" name="The &quot;envelope&quot; property" link="gst-plugins-base-plugins-videoscale.html#GstVideoScale--envelope"/>
     <keyword type="property" name="The &quot;sharpen&quot; property" link="gst-plugins-base-plugins-videoscale.html#GstVideoScale--sharpen"/>
     <keyword type="property" name="The &quot;sharpness&quot; property" link="gst-plugins-base-plugins-videoscale.html#GstVideoScale--sharpness"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-videotestsrc.html#idp15527008"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videotestsrc.html#idp15529664"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videotestsrc.html#idp15537120"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-videotestsrc.html#idp14075232"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-videotestsrc.html#idp14077600"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-videotestsrc.html#idp14085056"/>
     <keyword type="struct" name="struct GstVideoTestSrc" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc-struct"/>
     <keyword type="enum" name="enum GstVideoTestSrcPattern" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrcPattern"/>
     <keyword type="property" name="The &quot;pattern&quot; property" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--pattern"/>
@@ -562,17 +570,17 @@
     <keyword type="property" name="The &quot;background-color&quot; property" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--background-color"/>
     <keyword type="property" name="The &quot;foreground-color&quot; property" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--foreground-color"/>
     <keyword type="property" name="The &quot;horizontal-speed&quot; property" link="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--horizontal-speed"/>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-volume.html#idp11852016"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-volume.html#idp15499712"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-volume.html#idp15507168"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-volume.html#idp5191648"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-volume.html#idp9559168"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-volume.html#idp14852496"/>
     <keyword type="struct" name="struct GstVolume" link="gst-plugins-base-plugins-volume.html#GstVolume-struct"/>
     <keyword type="property" name="The &quot;mute&quot; property" link="gst-plugins-base-plugins-volume.html#GstVolume--mute"/>
     <keyword type="property" name="The &quot;volume&quot; property" link="gst-plugins-base-plugins-volume.html#GstVolume--volume"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisdec.html#idp10205664"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisdec.html#idp11840080"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisdec.html#idp8788672"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisdec.html#idp9337440"/>
     <keyword type="struct" name="struct GstVorbisDec" link="gst-plugins-base-plugins-vorbisdec.html#GstVorbisDec-struct"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisenc.html#idp14613008"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisenc.html#idp14620416"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisenc.html#idp9304416"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisenc.html#idp8059360"/>
     <keyword type="struct" name="struct GstVorbisEnc" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc-struct"/>
     <keyword type="property" name="The &quot;bitrate&quot; property" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc--bitrate"/>
     <keyword type="property" name="The &quot;last-message&quot; property" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc--last-message"/>
@@ -580,14 +588,14 @@
     <keyword type="property" name="The &quot;max-bitrate&quot; property" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc--max-bitrate"/>
     <keyword type="property" name="The &quot;min-bitrate&quot; property" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc--min-bitrate"/>
     <keyword type="property" name="The &quot;quality&quot; property" link="gst-plugins-base-plugins-vorbisenc.html#GstVorbisEnc--quality"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisparse.html#idp7541760"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisparse.html#idp14688992"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbisparse.html#idp5478112"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbisparse.html#idp9630064"/>
     <keyword type="struct" name="struct GstVorbisParse" link="gst-plugins-base-plugins-vorbisparse.html#GstVorbisParse-struct"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbistag.html#idp14690912"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbistag.html#idp8308928"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-vorbistag.html#idp10106256"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-vorbistag.html#idp6567808"/>
     <keyword type="struct" name="struct GstVorbisTag" link="gst-plugins-base-plugins-vorbistag.html#GstVorbisTag-struct"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-ximagesink.html#idp15182528"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-ximagesink.html#idp15010352"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-ximagesink.html#idp14432368"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-ximagesink.html#idp15979600"/>
     <keyword type="struct" name="struct GstXImageSink" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink-struct"/>
     <keyword type="property" name="The &quot;display&quot; property" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink--display"/>
     <keyword type="property" name="The &quot;pixel-aspect-ratio&quot; property" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink--pixel-aspect-ratio"/>
@@ -597,8 +605,8 @@
     <keyword type="property" name="The &quot;handle-expose&quot; property" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink--handle-expose"/>
     <keyword type="property" name="The &quot;window-height&quot; property" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink--window-height"/>
     <keyword type="property" name="The &quot;window-width&quot; property" link="gst-plugins-base-plugins-ximagesink.html#GstXImageSink--window-width"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-xvimagesink.html#idp16618768"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-xvimagesink.html#idp16626224"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-xvimagesink.html#idp16153248"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-xvimagesink.html#idp16160704"/>
     <keyword type="struct" name="struct GstXvImageSink" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink-struct"/>
     <keyword type="property" name="The &quot;brightness&quot; property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--brightness"/>
     <keyword type="property" name="The &quot;contrast&quot; property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--contrast"/>

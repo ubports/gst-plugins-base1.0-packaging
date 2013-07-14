@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -88,6 +88,23 @@ create_vorbis_only_profile (void)
   gst_caps_unref (vorbis);
 
   return prof;
+}
+
+static void
+_caps_match (GstPad * sinkpad, const gchar * capsname)
+{
+  GstCaps *caps, *sinkcaps;
+  gchar *name;
+
+  caps = gst_caps_from_string (capsname);
+  sinkcaps = gst_pad_query_caps (sinkpad, NULL);
+  fail_unless (sinkcaps != NULL);
+  name = gst_caps_to_string (sinkcaps);
+  fail_unless (gst_caps_is_subset (sinkcaps, caps),
+      "caps ('%s') are not a subset of ('%s')", name, capsname);
+  g_free (name);
+  gst_caps_unref (sinkcaps);
+  gst_caps_unref (caps);
 }
 
 GST_START_TEST (test_encodebin_states)
@@ -188,11 +205,61 @@ GST_START_TEST (test_encodebin_sink_pads_static)
   /* Check if the audio sink pad was properly created */
   sinkpad = gst_element_get_static_pad (ebin, "audio_0");
   fail_unless (sinkpad != NULL);
+  /* Check caps match */
+  _caps_match (sinkpad, "audio/x-raw;audio/x-vorbis");
   gst_object_unref (sinkpad);
 
   /* Set back to NULL */
   fail_unless_equals_int (gst_element_set_state (ebin, GST_STATE_NULL),
       GST_STATE_CHANGE_SUCCESS);
+
+  gst_object_unref (ebin);
+};
+
+GST_END_TEST;
+
+GST_START_TEST (test_encodebin_preset)
+{
+  GstElement *ebin;
+  guint64 max_delay = 0;
+  GstPreset *oggmuxpreset;
+  GstEncodingProfile *prof;
+
+  /* Create an encodebin with a bogus preset and check it fails switching states */
+
+  ebin = gst_element_factory_make ("encodebin", NULL);
+  oggmuxpreset = GST_PRESET (gst_element_factory_make ("oggmux", NULL));
+
+  /* streamprofile that has a forced presence of 1 */
+  prof = create_ogg_vorbis_profile (1, NULL);
+  /* We also set the name as the load_preset call will reset the element name to
+   * what is described in the preset... which might not be very smart tbh */
+  g_object_set (oggmuxpreset, "max-delay", (guint64) 12, "name",
+      "testingoggmux", NULL);
+
+  /* Give a name someone should never use outside of that test */
+  gst_preset_save_preset (oggmuxpreset, "test_encodebin_preset");
+
+  gst_encoding_profile_set_preset (prof, "test_encodebin_preset");
+  gst_encoding_profile_set_preset_name (prof, "oggmux");
+
+  g_object_set (ebin, "profile", prof, NULL);
+
+  gst_encoding_profile_unref (prof);
+
+  /* It will go to READY... */
+  fail_unless_equals_int (gst_element_set_state (ebin, GST_STATE_READY),
+      GST_STATE_CHANGE_SUCCESS);
+  /* ... and to PAUSED */
+  fail_unless (gst_element_set_state (ebin, GST_STATE_PAUSED) !=
+      GST_STATE_CHANGE_FAILURE);
+
+  gst_child_proxy_get (GST_CHILD_PROXY (ebin), "testingoggmux::max-delay",
+      &max_delay, NULL);
+  fail_unless_equals_uint64 (max_delay, 12);
+
+  gst_element_set_state (ebin, GST_STATE_NULL);
+  gst_preset_delete_preset (oggmuxpreset, "test_encodebin_preset");
 
   gst_object_unref (ebin);
 };
@@ -256,6 +323,7 @@ GST_START_TEST (test_encodebin_sink_pads_dynamic)
   /* Check if the audio sink pad can be requested */
   sinkpad = gst_element_get_request_pad (ebin, "audio_0");
   fail_unless (sinkpad != NULL);
+  _caps_match (sinkpad, "audio/x-raw;audio/x-vorbis");
   gst_element_release_request_pad (ebin, sinkpad);
   gst_object_unref (sinkpad);
   sinkpad = NULL;
@@ -265,6 +333,7 @@ GST_START_TEST (test_encodebin_sink_pads_dynamic)
   g_signal_emit_by_name (ebin, "request-pad", sinkcaps, &sinkpad);
   gst_caps_unref (sinkcaps);
   fail_unless (sinkpad != NULL);
+  _caps_match (sinkpad, "audio/x-raw;audio/x-vorbis");
   gst_element_release_request_pad (ebin, sinkpad);
   gst_object_unref (sinkpad);
   sinkpad = NULL;
@@ -309,11 +378,13 @@ GST_START_TEST (test_encodebin_sink_pads_multiple_static)
   /* Check if the audio sink pad was properly created */
   sinkpadvorbis = gst_element_get_static_pad (ebin, "audio_0");
   fail_unless (sinkpadvorbis != NULL);
+  _caps_match (sinkpadvorbis, "audio/x-raw;audio/x-vorbis");
   gst_object_unref (sinkpadvorbis);
 
   /* Check if the video sink pad was properly created */
   sinkpadtheora = gst_element_get_static_pad (ebin, "video_1");
   fail_unless (sinkpadtheora != NULL);
+  _caps_match (sinkpadtheora, "video/x-raw;video/x-theora");
   gst_object_unref (sinkpadtheora);
 
   /* Set back to NULL */
@@ -350,10 +421,12 @@ GST_START_TEST (test_encodebin_sink_pads_multiple_dynamic)
 
   /* Check if the audio sink pad was properly created */
   sinkpadvorbis = gst_element_get_request_pad (ebin, "audio_0");
+  _caps_match (sinkpadvorbis, "audio/x-raw;audio/x-vorbis");
   fail_unless (sinkpadvorbis != NULL);
 
   /* Check if the video sink pad was properly created */
   sinkpadtheora = gst_element_get_request_pad (ebin, "video_1");
+  _caps_match (sinkpadtheora, "video/x-raw;video/x-theora");
   fail_unless (sinkpadtheora != NULL);
 
   fail_unless_equals_int (gst_element_set_state (ebin, GST_STATE_PAUSED),
@@ -402,6 +475,7 @@ GST_START_TEST (test_encodebin_sink_pads_dynamic_encoder)
   g_signal_emit_by_name (ebin, "request-pad", vorbiscaps, &sinkpad);
   gst_caps_unref (vorbiscaps);
   fail_unless (sinkpad != NULL);
+  _caps_match (sinkpad, "audio/x-raw;audio/x-vorbis");
   gst_element_release_request_pad (ebin, sinkpad);
   gst_object_unref (sinkpad);
 
@@ -574,6 +648,7 @@ GST_START_TEST (test_encodebin_render_audio_dynamic)
 
   sinkpad = gst_element_get_request_pad (ebin, "audio_0");
   fail_unless (sinkpad != NULL);
+  _caps_match (sinkpad, "audio/x-raw;audio/x-vorbis");
 
   fail_unless_equals_int (gst_pad_link (srcpad, sinkpad), GST_PAD_LINK_OK);
 
@@ -714,11 +789,13 @@ GST_START_TEST (test_encodebin_render_audio_video_dynamic)
   sinkpad1 = gst_element_get_request_pad (ebin, "audio_0");
   fail_unless (srcpad != NULL);
   fail_unless (sinkpad1 != NULL);
+  _caps_match (sinkpad1, "audio/x-raw;audio/x-vorbis");
   fail_unless_equals_int (gst_pad_link (srcpad, sinkpad1), GST_PAD_LINK_OK);
   gst_object_unref (srcpad);
 
   srcpad = gst_element_get_static_pad (videotestsrc, "src");
   sinkpad2 = gst_element_get_request_pad (ebin, "video_1");
+  _caps_match (sinkpad2, "video/x-raw;video/x-theora");
   fail_unless_equals_int (gst_pad_link (srcpad, sinkpad2), GST_PAD_LINK_OK);
   gst_object_unref (srcpad);
 
@@ -873,6 +950,75 @@ GST_START_TEST (test_encodebin_reuse)
 
 GST_END_TEST;
 
+GST_START_TEST (test_encodebin_named_requests)
+{
+  GstElement *ebin;
+  GstEncodingContainerProfile *cprof;
+  GstCaps *ogg, *vorbis, *theora;
+  GstEncodingProfile *vorbisprof, *theoraprof;
+  GstPad *srcpad, *sinkpadvorbis, *sinkpadtheora;
+
+  /* Create a profile with vorbis/theora named profile */
+  ogg = gst_caps_new_empty_simple ("application/ogg");
+  cprof =
+      gst_encoding_container_profile_new ((gchar *) "myprofile", NULL, ogg,
+      NULL);
+  gst_caps_unref (ogg);
+
+  vorbis = gst_caps_new_empty_simple ("audio/x-vorbis");
+  vorbisprof =
+      (GstEncodingProfile *) gst_encoding_audio_profile_new (vorbis, NULL, NULL,
+      0);
+  gst_encoding_profile_set_name (vorbisprof, "vorbisprofile");
+  fail_unless (gst_encoding_container_profile_add_profile (cprof, vorbisprof));
+  gst_caps_unref (vorbis);
+
+  theora = gst_caps_new_empty_simple ("video/x-theora");
+  theoraprof =
+      (GstEncodingProfile *) gst_encoding_video_profile_new (theora, NULL, NULL,
+      0);
+  gst_encoding_profile_set_name (theoraprof, "theoraprofile");
+  fail_unless (gst_encoding_container_profile_add_profile (cprof, theoraprof));
+  gst_caps_unref (theora);
+
+  ebin = gst_element_factory_make ("encodebin", NULL);
+
+  /* First try is with a streamprofile that has a forced presence of 1 */
+  g_object_set (ebin, "profile", cprof, NULL);
+
+  gst_encoding_profile_unref (cprof);
+
+  /* Check if the source pad was properly created */
+  srcpad = gst_element_get_static_pad (ebin, "src");
+  fail_unless (srcpad != NULL);
+  gst_object_unref (srcpad);
+
+  /* Request a vorbis profile pad */
+  g_signal_emit_by_name (ebin, "request-profile-pad", "vorbisprofile",
+      &sinkpadvorbis);
+  fail_unless (sinkpadvorbis != NULL);
+  _caps_match (sinkpadvorbis, "audio/x-raw;audio/x-vorbis");
+  gst_object_unref (sinkpadvorbis);
+
+  /* Request a theora profile pad */
+  g_signal_emit_by_name (ebin, "request-profile-pad", "theoraprofile",
+      &sinkpadtheora);
+  fail_unless (sinkpadtheora != NULL);
+  _caps_match (sinkpadtheora, "video/x-raw;video/x-theora");
+  gst_object_unref (sinkpadtheora);
+
+  fail_unless_equals_int (gst_element_set_state (ebin, GST_STATE_PAUSED),
+      GST_STATE_CHANGE_SUCCESS);
+
+  /* Set back to NULL */
+  fail_unless_equals_int (gst_element_set_state (ebin, GST_STATE_NULL),
+      GST_STATE_CHANGE_SUCCESS);
+
+  gst_object_unref (ebin);
+
+}
+
+GST_END_TEST;
 
 static Suite *
 encodebin_suite (void)
@@ -884,6 +1030,7 @@ encodebin_suite (void)
   tcase_add_test (tc_chain, test_encodebin_states);
   tcase_add_test (tc_chain, test_encodebin_sink_pads_static);
   tcase_add_test (tc_chain, test_encodebin_sink_pads_nopreset_static);
+  tcase_add_test (tc_chain, test_encodebin_preset);
   tcase_add_test (tc_chain, test_encodebin_sink_pads_dynamic);
   tcase_add_test (tc_chain, test_encodebin_sink_pads_multiple_static);
   tcase_add_test (tc_chain, test_encodebin_sink_pads_multiple_dynamic);
@@ -895,6 +1042,7 @@ encodebin_suite (void)
   tcase_add_test (tc_chain, test_encodebin_render_audio_video_dynamic);
   tcase_add_test (tc_chain, test_encodebin_impossible_element_combination);
   tcase_add_test (tc_chain, test_encodebin_reuse);
+  tcase_add_test (tc_chain, test_encodebin_named_requests);
 
   return s;
 }

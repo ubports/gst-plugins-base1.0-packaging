@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtsptransport</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtsprange.html" title="gstrtsprange">
@@ -79,8 +79,11 @@ Last reviewed on 2007-07-25 (0.10.14)
 <p>
 The transfer mode to use.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-TRANS-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_RTSP_TRANS_UNKNOWN</code></span></p></td>
@@ -112,8 +115,11 @@ The transfer mode to use.
 <p>
 The transfer profile to use.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-PROFILE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_RTSP_PROFILE_UNKNOWN</code></span></p></td>
@@ -144,8 +150,11 @@ The transfer profile to use.
 <p>
 A type to specify a range.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstRTSPRange.min"></a>min</code></em>;</span></p></td>
@@ -166,14 +175,18 @@ A type to specify a range.
   GST_RTSP_LOWER_TRANS_UDP       = (1 &lt;&lt; 0),
   GST_RTSP_LOWER_TRANS_UDP_MCAST = (1 &lt;&lt; 1),
   GST_RTSP_LOWER_TRANS_TCP       = (1 &lt;&lt; 2),
-  GST_RTSP_LOWER_TRANS_HTTP      = (1 &lt;&lt; 4)
+  GST_RTSP_LOWER_TRANS_HTTP      = (1 &lt;&lt; 4),
+  GST_RTSP_LOWER_TRANS_TLS       = (1 &lt;&lt; 5)
 } GstRTSPLowerTrans;
 </pre>
 <p>
 The different transport methods.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-LOWER-TRANS-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_RTSP_LOWER_TRANS_UNKNOWN</code></span></p></td>
@@ -198,6 +211,11 @@ The different transport methods.
 <tr>
 <td><p><a name="GST-RTSP-LOWER-TRANS-HTTP:CAPS"></a><span class="term"><code class="literal">GST_RTSP_LOWER_TRANS_HTTP</code></span></p></td>
 <td>stream data tunneled over HTTP.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-LOWER-TRANS-TLS:CAPS"></a><span class="term"><code class="literal">GST_RTSP_LOWER_TRANS_TLS</code></span></p></td>
+<td>encrypt TCP and HTTP with TLS
 </td>
 </tr>
 </tbody>
@@ -233,8 +251,11 @@ The different transport methods.
 <p>
 A structure holding the RTSP transport values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransMode" title="enum GstRTSPTransMode"><span class="type">GstRTSPTransMode</span></a> <em class="structfield"><code><a name="GstRTSPTransport.trans"></a>trans</code></em>;</span></p></td>
@@ -307,8 +328,11 @@ A structure holding the RTSP transport values.
 Allocate a new initialized <a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransport" title="struct GstRTSPTransport"><span class="type">GstRTSPTransport</span></a>. Use <a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#gst-rtsp-transport-free" title="gst_rtsp_transport_free ()"><code class="function">gst_rtsp_transport_free()</code></a>
 after usage.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>transport</code></em> :</span></p></td>
@@ -329,8 +353,11 @@ after usage.
 <p>
 Initialize <em class="parameter"><code>transport</code></em> so that it can be used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>transport</code></em> :</span></p></td>
@@ -353,8 +380,11 @@ Initialize <em class="parameter"><code>transport</code></em> so that it can be u
 <p>
 Parse the RTSP transport string <em class="parameter"><code>str</code></em> into <em class="parameter"><code>transport</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
@@ -380,8 +410,11 @@ Parse the RTSP transport string <em class="parameter"><code>str</code></em> into
 Convert <em class="parameter"><code>transport</code></em> into a string that can be used to signal the transport in
 an RTSP SETUP response.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>transport</code></em> :</span></p></td>
@@ -405,8 +438,11 @@ is invalid.</td>
 Get the mime type of the transport mode <em class="parameter"><code>trans</code></em>. This mime type is typically
 used to generate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> on buffers.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>trans</code></em> :</span></p></td>
@@ -442,8 +478,11 @@ selected one.
 <em class="parameter"><code>manager</code></em> will contain an element name or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> when no manager is
 needed/available for <em class="parameter"><code>trans</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>trans</code></em> :</span></p></td>
@@ -473,8 +512,11 @@ needed/available for <em class="parameter"><code>trans</code></em>.
 <p>
 Free the memory used by <em class="parameter"><code>transport</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>transport</code></em> :</span></p></td>

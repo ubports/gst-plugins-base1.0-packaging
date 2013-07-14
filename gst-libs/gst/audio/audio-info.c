@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:gstaudio
@@ -119,6 +119,7 @@ gst_audio_info_set_format (GstAudioInfo * info, GstAudioFormat format,
 
   g_return_if_fail (info != NULL);
   g_return_if_fail (format != GST_AUDIO_FORMAT_UNKNOWN);
+  g_return_if_fail (channels <= 64 || position == NULL);
 
   finfo = gst_audio_format_get_info (format);
 
@@ -233,7 +234,8 @@ gst_audio_info_from_caps (GstAudioInfo * info, const GstCaps * caps)
       goto invalid_channel_mask;
   }
 
-  gst_audio_info_set_format (info, format, rate, channels, position);
+  gst_audio_info_set_format (info, format, rate, channels,
+      (channels > 64) ? NULL : position);
 
   return TRUE;
 
@@ -454,7 +456,47 @@ gst_audio_info_convert (const GstAudioInfo * info,
       break;
   }
 done:
-  GST_DEBUG ("ret=%d result %" G_GINT64_FORMAT, res, *dest_val);
+
+  GST_DEBUG ("ret=%d result %" G_GINT64_FORMAT, res, res ? *dest_val : -1);
 
   return res;
+}
+
+/**
+ * gst_audio_info_is_equal:
+ * @info: a #GstAudioInfo
+ * @other: a #GstAudioInfo
+ *
+ * Compares two #GstAudioInfo and returns whether they are equal or not
+ *
+ * Returns: %TRUE if @info and @other are equal, else %FALSE.
+ *
+ * Since: 1.2
+ *
+ */
+gboolean
+gst_audio_info_is_equal (const GstAudioInfo * info, const GstAudioInfo * other)
+{
+  if (info == other)
+    return TRUE;
+  if (info->finfo == NULL || other->finfo == NULL)
+    return FALSE;
+  if (GST_AUDIO_INFO_FORMAT (info) != GST_AUDIO_INFO_FORMAT (other))
+    return FALSE;
+  if (GST_AUDIO_INFO_FLAGS (info) != GST_AUDIO_INFO_FLAGS (other))
+    return FALSE;
+  if (GST_AUDIO_INFO_LAYOUT (info) != GST_AUDIO_INFO_LAYOUT (other))
+    return FALSE;
+  if (GST_AUDIO_INFO_RATE (info) != GST_AUDIO_INFO_RATE (other))
+    return FALSE;
+  if (GST_AUDIO_INFO_CHANNELS (info) != GST_AUDIO_INFO_CHANNELS (other))
+    return FALSE;
+  if (GST_AUDIO_INFO_CHANNELS (info) > 64)
+    return TRUE;
+  if (memcmp (info->position, other->position,
+          GST_AUDIO_INFO_CHANNELS (info) * sizeof (GstAudioChannelPosition)) !=
+      0)
+    return FALSE;
+
+  return TRUE;
 }

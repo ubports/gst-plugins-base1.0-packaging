@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>appsrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-app.html" title="App Library">
 <link rel="prev" href="gstreamer-app.html" title="App Library">
@@ -166,8 +166,11 @@ Last reviewed on 2008-12-17 (0.10.10)
 <p>
 The stream type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-APP-STREAM-TYPE-STREAM:CAPS"></a><span class="term"><code class="literal">GST_APP_STREAM_TYPE_STREAM</code></span></p></td>
@@ -201,8 +204,11 @@ a copy of the caps structure. After calling this method, the source will
 only produce caps that match <em class="parameter"><code>caps</code></em>. <em class="parameter"><code>caps</code></em> must be fixed and the caps on the
 buffers must match the caps or left NULL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -223,8 +229,11 @@ buffers must match the caps or left NULL.
 <p>
 Get the configured caps on <em class="parameter"><code>appsrc</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -247,8 +256,11 @@ Get the configured caps on <em class="parameter"><code>appsrc</code></em>.
 <p>
 Retrieve the min and max latencies in <em class="parameter"><code>min</code></em> and <em class="parameter"><code>max</code></em> respectively.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -276,8 +288,11 @@ Retrieve the min and max latencies in <em class="parameter"><code>min</code></em
 Configure the <em class="parameter"><code>min</code></em> and <em class="parameter"><code>max</code></em> latency in <em class="parameter"><code>src</code></em>. If <em class="parameter"><code>min</code></em> is set to -1, the
 default latency calculations for pseudo-live sources will be used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -304,8 +319,11 @@ default latency calculations for pseudo-live sources will be used.
 Set the size of the stream in bytes. A value of -1 means that the size is
 not known.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -327,8 +345,11 @@ not known.
 Get the size of the stream in bytes. A value of -1 means that the size is
 not known.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -354,8 +375,11 @@ be connected to.
 <p>
 A stream_type stream
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -377,8 +401,11 @@ A stream_type stream
 Get the stream type. Control the stream type of <em class="parameter"><code>appsrc</code></em>
 with <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-stream-type" title="gst_app_src_set_stream_type ()"><code class="function">gst_app_src_set_stream_type()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -402,8 +429,11 @@ Set the maximum amount of bytes that can be queued in <em class="parameter"><cod
 After the maximum amount of bytes are queued, <em class="parameter"><code>appsrc</code></em> will emit the
 "enough-data" signal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -424,8 +454,11 @@ After the maximum amount of bytes are queued, <em class="parameter"><code>appsrc
 <p>
 Get the maximum amount of bytes that can be queued in <em class="parameter"><code>appsrc</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -446,8 +479,11 @@ Get the maximum amount of bytes that can be queued in <em class="parameter"><cod
 <p>
 Check if appsrc will emit the "new-preroll" and "new-buffer" signals.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -473,8 +509,11 @@ Make appsrc emit the "new-preroll" and "new-buffer" signals. This option is
 by default disabled because signal emission is expensive and unneeded when
 the application prefers to operate in pull mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -501,8 +540,11 @@ the application prefers to operate in pull mode.
 A set of callbacks that can be installed on the appsrc with
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-callbacks" title="gst_app_src_set_callbacks ()"><code class="function">gst_app_src_set_callbacks()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAppSrcCallbacks.need-data"></a>need_data</code></em> ()</span></p></td>
@@ -542,8 +584,11 @@ less expensive, but also less flexible.
 If callbacks are installed, no signals will be emitted for performance
 reasons.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -578,8 +623,11 @@ push to its source pad.  This function takes ownership of the buffer.
 When the block property is TRUE, this function can block until free
 space becomes available in the queue.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>
@@ -609,8 +657,11 @@ space becomes available in the queue.
 Indicates to the appsrc element that the last buffer queued in the
 element is the last buffer of the stream.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsrc</code></em> :</span></p></td>

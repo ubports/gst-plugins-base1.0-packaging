@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudioclock</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiocdsrc.html" title="gstaudiocdsrc">
@@ -100,8 +100,11 @@ This function will be called whenever the current clock time needs to be
 calculated. If this function returns <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GST-CLOCK-TIME-NONE:CAPS"><span class="type">GST_CLOCK_TIME_NONE</span></a>, the last reported
 time will be returned by the clock.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>clock</code></em> :</span></p></td>
@@ -132,8 +135,11 @@ Create a new <a class="link" href="gst-plugins-base-libs-gstaudioclock.html#GstA
 calculated it will call <em class="parameter"><code>func</code></em> with <em class="parameter"><code>user_data</code></em>. When <em class="parameter"><code>func</code></em> returns
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GST-CLOCK-TIME-NONE:CAPS"><span class="type">GST_CLOCK_TIME_NONE</span></a>, the clock will return the last reported time.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -168,8 +174,11 @@ calculated it will call <em class="parameter"><code>func</code></em> with <em cl
 <p>
 Adjust <em class="parameter"><code>time</code></em> with the internal offset of the audio clock.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>clock</code></em> :</span></p></td>
@@ -197,8 +206,11 @@ Adjust <em class="parameter"><code>time</code></em> with the internal offset of 
 Report the time as returned by the <a class="link" href="gst-plugins-base-libs-gstaudioclock.html#GstAudioClockGetTimeFunc" title="GstAudioClockGetTimeFunc ()"><span class="type">GstAudioClockGetTimeFunc</span></a> without applying
 any offsets.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>clock</code></em> :</span></p></td>
@@ -223,8 +235,11 @@ starting from <em class="parameter"><code>time</code></em>. The clock will updat
 future calls to internal_time will return an increasing result as required by
 the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html"><span class="type">GstClock</span></a> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>clock</code></em> :</span></p></td>
@@ -252,8 +267,11 @@ user_data becomes invalid.
 After calling this function, <em class="parameter"><code>clock</code></em> will return the last returned time for
 the rest of its lifetime.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>clock</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstaudioclock.html#GstAudioClock"><span class="type">GstAudioClock</span></a>

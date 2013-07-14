@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudioencoder</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiodecoder.html" title="gstaudiodecoder">
@@ -154,7 +154,7 @@ GstAudioEncoder and subclass should cooperate as follows.
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Configuration</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     Initially, GstAudioEncoder calls <em class="parameter"><code>start</code></em> when the encoder element
     is activated, which allows subclass to perform any global setup.
@@ -174,16 +174,17 @@ GstAudioEncoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Data processing</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       Base class gathers input sample data (as directed by the context's
       frame_samples and frame_max) and provides this to subclass' <em class="parameter"><code>handle_frame</code></em>.
     </p></li>
 <li class="listitem"><p>
       If codec processing results in encoded data, subclass should call
-      <em class="parameter"><code>gst_audio_encoder_finish_frame</code></em> to have encoded data pushed
-      downstream.  Alternatively, it might also call to indicate dropped
-      (non-encoded) samples.
+      <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-finish-frame" title="gst_audio_encoder_finish_frame ()"><code class="function">gst_audio_encoder_finish_frame()</code></a> to have encoded data pushed
+      downstream. Alternatively, it might also call
+      <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-finish-frame" title="gst_audio_encoder_finish_frame ()"><code class="function">gst_audio_encoder_finish_frame()</code></a> (with a NULL buffer and some number of
+      dropped samples) to indicate dropped (non-encoded) samples.
     </p></li>
 <li class="listitem"><p>
       Just prior to actually pushing a buffer downstream,
@@ -198,7 +199,7 @@ GstAudioEncoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Shutdown phase</b></p>
-<ul class="itemizedlist" type="disc"><li class="listitem"><p>
+<ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
     GstAudioEncoder class calls <em class="parameter"><code>stop</code></em> to inform the subclass that data
     parsing will be stopped.
   </p></li></ul>
@@ -249,7 +250,7 @@ by same sample count and sample rate).
 <p>
 Things that subclass need to take care of:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Provide pad templates</p></li>
 <li class="listitem"><p>
      Set source pad caps when appropriate
@@ -265,7 +266,7 @@ Things that subclass need to take care of:
   </p></li>
 <li class="listitem"><p>
      Accept data in <em class="parameter"><code>handle_frame</code></em> and provide encoded results to
-     <em class="parameter"><code>gst_audio_encoder_finish_frame</code></em>.
+     <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-finish-frame" title="gst_audio_encoder_finish_frame ()"><code class="function">gst_audio_encoder_finish_frame()</code></a>.
   </p></li>
 </ul></div>
 <p>
@@ -327,8 +328,11 @@ The opaque <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstA
 Subclasses can override any of the available virtual methods or not, as
 needed. At minimum <em class="parameter"><code>set_format</code></em> and <em class="parameter"><code>handle_frame</code></em> needs to be overridden.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GstElementClass"><span class="type">GstElementClass</span></a> <em class="structfield"><code><a name="GstAudioEncoderClass.element-class"></a>element_class</code></em>;</span></p></td>
@@ -448,8 +452,11 @@ the name of the templates for the sink pad
 <p>
 Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>audio encoder instance</td>
@@ -473,8 +480,11 @@ the name of the templates for the source pad
 <p>
 Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>audio encoder instance</td>
@@ -501,8 +511,11 @@ and a discontinuity is marked.
 Note that samples received in <code class="function">gst_audio_encoder_handle_frame()</code>
 may be invalidated by a call to this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -534,8 +547,11 @@ may be invalidated by a call to this function.
 Helper function that allocates a buffer to hold an encoded audio frame
 for <em class="parameter"><code>enc</code></em>'s current output format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -567,8 +583,11 @@ used by the base class and its <em class="parameter"><code>params</code></em>.
 <p>
 Unref the <em class="parameter"><code>allocator</code></em> after use it.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -603,8 +622,11 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <p>
 Negotiate with downstreame elements to currently configured <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -623,8 +645,11 @@ Negotiate with downstreame elements to currently configured <a href="http://gstr
 <div class="refsect2">
 <a name="gst-audio-encoder-get-audio-info"></a><h3>gst_audio_encoder_get_audio_info ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="returnvalue">GstAudioInfo</span></a> *      gst_audio_encoder_get_audio_info    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -645,8 +670,11 @@ Negotiate with downstreame elements to currently configured <a href="http://gstr
 <p>
 Queries encoder drain handling.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -665,8 +693,11 @@ MT safe.</td>
 <div class="refsect2">
 <a name="gst-audio-encoder-get-frame-max"></a><h3>gst_audio_encoder_get_frame_max ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_encoder_get_frame_max     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -685,8 +716,11 @@ MT safe.</td>
 <a name="gst-audio-encoder-get-frame-samples-min"></a><h3>gst_audio_encoder_get_frame_samples_min ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_encoder_get_frame_samples_min
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -705,8 +739,11 @@ MT safe.</td>
 <a name="gst-audio-encoder-get-frame-samples-max"></a><h3>gst_audio_encoder_get_frame_samples_max ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_encoder_get_frame_samples_max
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -727,8 +764,11 @@ MT safe.</td>
 <p>
 Queries encoder hard minimum handling.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -758,8 +798,11 @@ MT safe.</td>
 Sets the variables pointed to by <em class="parameter"><code>min</code></em> and <em class="parameter"><code>max</code></em> to the currently configured
 latency.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -783,8 +826,11 @@ latency.
 <div class="refsect2">
 <a name="gst-audio-encoder-get-lookahead"></a><h3>gst_audio_encoder_get_lookahead ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_encoder_get_lookahead     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#GstAudioEncoder"><span class="type">GstAudioEncoder</span></a> *enc</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -805,8 +851,11 @@ latency.
 <p>
 Queries if the encoder will handle granule marking.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -829,8 +878,11 @@ MT safe.</td>
 <p>
 Queries encoder perfect timestamp behaviour.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -852,8 +904,11 @@ MT safe.</td>
 <p>
 Queries current audio jitter tolerance threshold.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -879,8 +934,11 @@ Returns caps that express <em class="parameter"><code>caps</code></em> (or sink 
 restricted to channel/rate combinations supported by downstream elements
 (e.g. muxers).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -916,8 +974,11 @@ real data.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -940,8 +1001,11 @@ MT safe.
 Sets max number of frames accepted at once (assumed minimally 1).
 Requires <em class="parameter"><code>frame_samples_min</code></em> and <em class="parameter"><code>frame_samples_max</code></em> to be the equal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -969,8 +1033,11 @@ at least or will be handed all available if 0.
 If an exact number of samples is required, <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-frame-samples-max" title="gst_audio_encoder_set_frame_samples_max ()"><code class="function">gst_audio_encoder_set_frame_samples_max()</code></a>
 must be called with the same number.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -998,8 +1065,11 @@ at most or will be handed all available if 0.
 If an exact number of samples is required, <a class="link" href="gst-plugins-base-libs-gstaudioencoder.html#gst-audio-encoder-set-frame-samples-min" title="gst_audio_encoder_set_frame_samples_min ()"><code class="function">gst_audio_encoder_set_frame_samples_min()</code></a>
 must be called with the same number.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1027,8 +1097,11 @@ will simply be discarded.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1056,8 +1129,11 @@ MT safe.
 <p>
 Set the codec headers to be sent downstream whenever requested.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1082,8 +1158,11 @@ Set the codec headers to be sent downstream whenever requested.
 <p>
 Sets encoder latency.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1109,8 +1188,11 @@ Sets encoder latency.
 <p>
 Sets encoder lookahead (in units of input rate samples)
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1135,8 +1217,11 @@ Enable or disable encoder granule handling.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1162,8 +1247,11 @@ Enable or disable encoder perfect output timestamp preference.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1188,8 +1276,11 @@ Configures encoder audio jitter tolerance threshold.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -1222,8 +1313,11 @@ of the usual CODEC/AUDIO_CODEC tags.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>

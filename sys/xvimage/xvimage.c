@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -23,6 +23,7 @@
 
 #include "xvimagesink.h"
 
+GST_DEBUG_CATEGORY (gst_debug_xvcontext);
 GST_DEBUG_CATEGORY (gst_debug_xvimagepool);
 GST_DEBUG_CATEGORY (gst_debug_xvimagesink);
 GST_DEBUG_CATEGORY_STATIC (GST_CAT_PERFORMANCE);
@@ -34,6 +35,8 @@ plugin_init (GstPlugin * plugin)
           GST_RANK_PRIMARY, GST_TYPE_XVIMAGESINK))
     return FALSE;
 
+  GST_DEBUG_CATEGORY_INIT (gst_debug_xvcontext, "xcontext", 0,
+      "xcontext miniobject");
   GST_DEBUG_CATEGORY_INIT (gst_debug_xvimagesink, "xvimagesink", 0,
       "xvimagesink element");
   GST_DEBUG_CATEGORY_INIT (gst_debug_xvimagepool, "xvimagepool", 0,

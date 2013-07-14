@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstpbutilsinstallplugins</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html" title="gstpbutilsmissingplugins">
@@ -67,7 +67,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="idp25527792"></a><h3>Overview</h3>
+<a name="idp22449248"></a><h3>Overview</h3>
 <p>
 Using this API, applications can request the installation of missing
 GStreamer plugins. These may be missing decoders/demuxers or encoders/muxers
@@ -85,7 +85,7 @@ plugin installation to work. See below for more detailed information.
 From the application perspective, plugin installation is usually triggered
 either
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
 when the application itself has found that it wants or needs to install a
 certain element
@@ -205,7 +205,7 @@ GStreamer will pass the following arguments to the install helper (this is
 in addition to the path of the executable itself, which is by convention
 argv[0]):
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
    none to many optional arguments in the form of
    <code class="literal">--foo-bar=val</code>. Example:
@@ -230,7 +230,7 @@ The string is in UTF-8 encoding and is made up of several fields, separated
 by '|' characters (but neither the first nor the last character is a '|').
 The fields are:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
 <p>
    plugin system identifier, ie. "gstreamer"
@@ -271,7 +271,7 @@ The fields are:
    identifier string for the required component (see below for details about
    how to map this to the package/plugin that needs installing), e.g.
    </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
 <li class="listitem"><p>
       urisource-$(PROTOCOL_REQUIRED), e.g. urisource-http or urisource-mms
     </p></li>
@@ -282,7 +282,7 @@ The fields are:
 <p>
       decoder-$(CAPS_REQUIRED), e.g. (do read below for more details!):
       </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="square">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: square; ">
 <li class="listitem"><p>decoder-audio/x-vorbis</p></li>
 <li class="listitem"><p>decoder-application/ogg</p></li>
 <li class="listitem"><p>decoder-audio/mpeg, mpegversion=(int)4</p></li>
@@ -319,7 +319,7 @@ out when encountering them.
 Those unfamiliar with the GStreamer 'caps' system should note a few things
 about the caps string used in the above decoder/encoder case:
   </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       the first part ("video/mpeg") of the caps string is a GStreamer media
       type and <span class="emphasis"><em>not</em></span> a MIME type. Wherever possible, the
@@ -336,7 +336,7 @@ about the caps string used in the above decoder/encoder case:
       fields with fixed values, whereas an introspected string (see below)
       may have fields with non-fixed values. Compare for example:
       </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
 <li class="listitem"><p>
           <code class="literal">audio/mpeg, mpegversion=(int)4</code> vs.
           <code class="literal">audio/mpeg, mpegversion=(int){2, 4}</code>
@@ -358,7 +358,7 @@ about the caps string used in the above decoder/encoder case:
 <p>
 The installer should return one of the following exit codes when it exits:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     0 if all of the requested plugins could be installed
     (<a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GST-INSTALL-PLUGINS-SUCCESS:CAPS"><span class="type">GST_INSTALL_PLUGINS_SUCCESS</span></a>)
@@ -462,8 +462,11 @@ Result codes returned by <a class="link" href="gst-plugins-base-libs-gstpbutilsi
 These codes indicate success or failure of starting an external installer
 program and to what extent the requested plugins could be installed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-INSTALL-PLUGINS-SUCCESS:CAPS"></a><span class="term"><code class="literal">GST_INSTALL_PLUGINS_SUCCESS</code></span></p></td>
@@ -546,8 +549,11 @@ The prototype of the callback function that will be called once the
 external plugin installer program has returned. You only need to provide
 a callback function if you are using the asynchronous interface.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -589,8 +595,11 @@ It is possible to request the installation of multiple missing plugins in
 one go (as might be required if there is a demuxer for a certain format
 installed but no suitable video decoder and no suitable audio decoder).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>details</code></em> :</span></p></td>
@@ -636,8 +645,11 @@ thread and marshal the result back asynchronously into the main thread
 using the other non-GLib main loop. You should almost always use
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-async" title="gst_install_plugins_async ()"><code class="function">gst_install_plugins_async()</code></a> instead of this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>details</code></em> :</span></p></td>
@@ -667,8 +679,11 @@ with a status code.  This function returns English strings and
 should not be used for user messages. It is here only to assist
 in debugging.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
@@ -691,8 +706,11 @@ in debugging.
 Checks whether plugin installation (initiated by this application only)
 is currently in progress.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE if plugin installation is in progress, otherwise FALSE</td>
@@ -709,8 +727,11 @@ current environment. This currently only checks whether the helper script
 that is to be provided by the distribution or operating system vendor
 exists.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>TRUE if plugin installation is likely to be supported.</td>
@@ -734,8 +755,11 @@ API to set details on it.
 <p>
 Creates a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>. Free with
@@ -750,8 +774,11 @@ Creates a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugi
 <p>
 Frees a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>
@@ -792,8 +819,11 @@ window like this:
 </pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>

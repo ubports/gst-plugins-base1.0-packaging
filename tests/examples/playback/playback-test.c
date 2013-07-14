@@ -19,8 +19,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -558,8 +558,12 @@ seek_cb (GtkRange * range, PlaybackApp * app)
   do_seek (app, GST_FORMAT_TIME, real);
 
   if (app->play_scrub) {
-    GST_DEBUG ("do scrub seek, PLAYING");
-    gst_element_set_state (app->pipeline, GST_STATE_PLAYING);
+    if (app->buffering) {
+      GST_DEBUG ("do scrub seek, waiting for buffering");
+    } else {
+      GST_DEBUG ("do scrub seek, PLAYING");
+      gst_element_set_state (app->pipeline, GST_STATE_PLAYING);
+    }
 
     if (app->seek_timeout_id == 0) {
       app->seek_timeout_id =
@@ -673,8 +677,12 @@ stop_seek (GtkRange * range, GdkEventButton * event, PlaybackApp * app)
     }
   } else {
     if (app->state == GST_STATE_PLAYING) {
-      GST_DEBUG ("stop scrub seek, PLAYING");
-      gst_element_set_state (app->pipeline, GST_STATE_PLAYING);
+      if (app->buffering) {
+        GST_DEBUG ("stop scrub seek, waiting for buffering");
+      } else {
+        GST_DEBUG ("stop scrub seek, PLAYING");
+        gst_element_set_state (app->pipeline, GST_STATE_PLAYING);
+      }
     }
   }
 
@@ -1206,11 +1214,13 @@ static gboolean
 filter_vis_features (GstPluginFeature * feature, gpointer data)
 {
   GstElementFactory *f;
+  const gchar *klass;
 
   if (!GST_IS_ELEMENT_FACTORY (feature))
     return FALSE;
   f = GST_ELEMENT_FACTORY (feature);
-  if (!g_strrstr (gst_element_factory_get_klass (f), "Visualization"))
+  klass = gst_element_factory_get_metadata (f, GST_ELEMENT_METADATA_KLASS);
+  if (!g_strrstr (klass, "Visualization"))
     return FALSE;
 
   return TRUE;
@@ -1231,7 +1241,8 @@ init_visualization_features (PlaybackApp * app)
     const gchar *name;
 
     entry.factory = GST_ELEMENT_FACTORY (walk->data);
-    name = gst_element_factory_get_longname (entry.factory);
+    name = gst_element_factory_get_metadata (entry.factory,
+        GST_ELEMENT_METADATA_LONGNAME);
 
     g_array_append_val (app->vis_entries, entry);
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (app->vis_combo), name);

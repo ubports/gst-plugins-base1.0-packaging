@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -643,7 +643,7 @@ static gboolean
 gst_rtp_base_depayload_packet_lost (GstRTPBaseDepayload * filter,
     GstEvent * event)
 {
-  GstClockTime timestamp, duration, position;
+  GstClockTime timestamp, duration;
   GstEvent *sevent;
   const GstStructure *s;
 
@@ -655,10 +655,6 @@ gst_rtp_base_depayload_packet_lost (GstRTPBaseDepayload * filter,
 
   gst_structure_get_clock_time (s, "timestamp", &timestamp);
   gst_structure_get_clock_time (s, "duration", &duration);
-
-  position = timestamp;
-  if (duration != -1)
-    position += duration;
 
   /* send GAP event */
   sevent = gst_event_new_gap (timestamp, duration);

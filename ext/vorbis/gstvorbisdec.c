@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -200,7 +200,7 @@ vorbis_handle_identification_packet (GstVorbisDec * vd)
   vd->info = info;
   /* select a copy_samples function, this way we can have specialized versions
    * for mono/stereo and avoid the depth switch in tremor case */
-  vd->copy_samples = get_copy_sample_func (info.channels);
+  vd->copy_samples = gst_vorbis_get_copy_sample_func (info.channels);
 
   return GST_FLOW_OK;
 }

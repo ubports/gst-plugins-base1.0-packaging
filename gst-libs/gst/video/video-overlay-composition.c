@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -437,6 +437,10 @@ gst_video_overlay_rectangle_needs_scaling (GstVideoOverlayRectangle * r)
  * Blends the overlay rectangles in @comp on top of the raw video data
  * contained in @video_buf. The data in @video_buf must be writable and
  * mapped appropriately.
+ */
+/* FIXME: formats with more than 8 bit per component which get unpacked into
+ * ARGB64 or AYUV64 (such as v210, v216, UYVP, GRAY16_LE and GRAY16_BE)
+ * are not supported yet by the code in video-blend.c.
  */
 gboolean
 gst_video_overlay_composition_blend (GstVideoOverlayComposition * comp,
@@ -1056,7 +1060,7 @@ gst_video_overlay_rectangle_convert (GstVideoInfo * src, GstBuffer * src_buffer,
         b = CLAMP (b, 0, 255);
 
         /* native endian ARGB */
-        *ddata = ((a << 24) | (r << 16) | (g << 8) | b);
+        *(guint32 *) ddata = ((a << 24) | (r << 16) | (g << 8) | b);
 
         sdata += 4;
         ddata += 4;
@@ -1071,7 +1075,7 @@ gst_video_overlay_rectangle_convert (GstVideoInfo * src, GstBuffer * src_buffer,
     for (k = 0; k < height; k++) {
       for (l = 0; l < width; l++) {
         /* native endian ARGB */
-        argb = *sdata;
+        argb = *(guint32 *) sdata;
         a = argb >> 24;
         r = (argb >> 16) & 0xff;
         g = (argb >> 8) & 0xff;

@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __VIDEO_TEST_SRC_H__
@@ -39,6 +39,7 @@ struct paintinfo_struct
   void (*paint_tmpline) (paintinfo * p, int x, int w);
   void (*convert_tmpline) (paintinfo * p, GstVideoFrame *frame, int y);
   void (*convert_hline) (paintinfo * p, GstVideoFrame *frame, int y);
+  GstVideoChromaResample *subsample;
   int x_offset;
 
   int x_invert;
@@ -48,6 +49,10 @@ struct paintinfo_struct
   guint8 *tmpline2;
   guint8 *tmpline_u8;
   guint16 *tmpline_u16;
+
+  guint n_lines;
+  gint offset;
+  gpointer *lines;
 
   struct vts_color_struct foreground_color;
   struct vts_color_struct background_color;

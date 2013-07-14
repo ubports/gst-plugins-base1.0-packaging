@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -264,8 +264,7 @@ GST_START_TEST (test_basic)
   pushinfo.pad = mysrcpad;
   pushinfo.to_push = to_push;
   g_mutex_lock (&push_mutex);
-  thread =
-      g_thread_create ((GThreadFunc) my_push_thread, &pushinfo, FALSE, NULL);
+  thread = g_thread_new ("pushthread", (GThreadFunc) my_push_thread, &pushinfo);
   fail_unless (thread != NULL);
 
   g_cond_wait (&push_cond, &push_mutex);

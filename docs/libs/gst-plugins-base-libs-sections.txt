@@ -1,3 +1,17 @@
+# allocators
+
+<SECTION>
+<FILE>gstdmabuf</FILE>
+<TITLE>dmabuf</TITLE>
+<INCLUDE>gst/allocators/gstdmabuf.h</INCLUDE>
+gst_dmabuf_allocator_alloc
+gst_dmabuf_allocator_obtain
+gst_dmabuf_memory_get_fd
+gst_is_dmabuf_memory
+<SUBSECTION Standard>
+<SUBSECTION Private>
+</SECTION>
+
 # app
 <SECTION>
 <FILE>gstappsrc</FILE>
@@ -101,6 +115,7 @@ gst_audio_info_copy
 gst_audio_info_free
 gst_audio_info_new
 gst_audio_info_set_format
+gst_audio_info_is_equal
 
 gst_audio_format_build_integer
 gst_audio_format_fill_silence
@@ -141,7 +156,15 @@ GST_AUDIO_INFO_LAYOUT
 
 GST_FRAMES_TO_CLOCK_TIME
 GST_CLOCK_TIME_TO_FRAMES
+GST_AUDIO_NE
+GST_AUDIO_OE
+GST_AUDIO_RATE_RANGE
+GST_AUDIO_CHANNELS_RANGE
+GST_AUDIO_FORMATS_ALL
+GST_AUDIO_CAPS_MAKE
 GST_AUDIO_DEF_RATE
+GST_AUDIO_DEF_CHANNELS
+GST_AUDIO_DEF_FORMAT
 gst_audio_buffer_clip
 <SUBSECTION Standard>
 GST_TYPE_BUFFER_FORMAT
@@ -162,6 +185,20 @@ gst_audio_layout_get_type
 gst_audio_pack_flags_get_type
 <SUBSECTION Private>
 _GST_AUDIO_FORMAT_NE
+</SECTION>
+
+<SECTION>
+<FILE>gstaudiometa</FILE>
+<INCLUDE>gst/audio/gstaudiometa.h</INCLUDE>
+GstAudioDownmixMeta
+gst_buffer_add_audio_downmix_meta
+gst_buffer_get_audio_downmix_meta
+gst_buffer_get_audio_downmix_meta_for_channels
+<SUBSECTION Standard>
+GST_AUDIO_DOWNMIX_META_API_TYPE
+GST_AUDIO_DOWNMIX_META_INFO
+gst_audio_downmix_meta_api_get_type
+gst_audio_downmix_meta_get_info
 </SECTION>
 
 <SECTION>
@@ -430,15 +467,17 @@ GST_TYPE_AUDIO_BASE_SRC_SLAVE_METHOD
 </SECTION>
 
 <SECTION>
-<FILE>gstmultichannel</FILE>
-<INCLUDE>gst/audio/multichannel.h</INCLUDE>
+<FILE>gstaudiochannels</FILE>
+<INCLUDE>gst/audio/audio-channels.h</INCLUDE>
 GstAudioChannelPosition
-gst_audio_fixate_channel_positions
-gst_audio_get_channel_positions
-gst_audio_set_caps_channel_positions_list
-gst_audio_set_channel_positions
-gst_audio_set_structure_channel_positions_list
-gst_audio_check_channel_positions
+GST_AUDIO_CHANNEL_POSITION_MASK
+gst_audio_channel_positions_to_mask
+gst_audio_channel_positions_from_mask
+gst_audio_channel_positions_to_valid_order
+gst_audio_check_valid_channel_positions
+gst_audio_buffer_reorder_channels
+gst_audio_reorder_channels
+gst_audio_get_channel_reorder_map
 <SUBSECTION Standard>
 GST_TYPE_AUDIO_CHANNEL_POSITION
 gst_audio_channel_position_get_type
@@ -942,6 +981,7 @@ GST_RIFF_TAG_dmlh
 GST_RIFF_TAG_fact
 GST_RIFF_TAG_fmt
 GST_RIFF_TAG_idx1
+GST_RIFF_TAG_note
 GST_RIFF_TAG_plst
 GST_RIFF_TAG_strd
 GST_RIFF_TAG_strf
@@ -1346,6 +1386,7 @@ gst_rtsp_header_as_text
 gst_rtsp_header_allow_multiple
 gst_rtsp_status_as_text
 gst_rtsp_options_as_text
+gst_rtsp_options_from_text
 gst_rtsp_find_header_field
 gst_rtsp_find_method
 <SUBSECTION Standard>
@@ -1523,14 +1564,16 @@ gst_rtsp_url_get_type
 
 <SECTION>
 <FILE>gstrtsprange</FILE>
-<INCLUDE>gst/rtsp/gstrtsrange.h</INCLUDE>
+<INCLUDE>gst/rtsp/gstrtsprange.h</INCLUDE>
 GstRTSPRangeUnit
 GstRTSPTimeRange
 GstRTSPTime
+GstRTSPTime2
 GstRTSPTimeType
 gst_rtsp_range_parse
 gst_rtsp_range_get_times
 gst_rtsp_range_to_string
+gst_rtsp_range_convert_units
 gst_rtsp_range_free
 </SECTION>
 
@@ -1539,8 +1582,13 @@ gst_rtsp_range_free
 <FILE>gstsdpmessage</FILE>
 <INCLUDE>gst/sdp/gstsdpmessage.h</INCLUDE>
 GstSDPResult
+
 GstSDPOrigin
+
 GstSDPConnection
+gst_sdp_connection_set
+gst_sdp_connection_clear
+
 GST_SDP_BWTYPE_CT
 GST_SDP_BWTYPE_AS
 GST_SDP_BWTYPE_EXT_PREFIX
@@ -1548,12 +1596,25 @@ GST_SDP_BWTYPE_RR
 GST_SDP_BWTYPE_RS
 GST_SDP_BWTYPE_TIAS
 GstSDPBandwidth
+gst_sdp_bandwidth_set
+gst_sdp_bandwidth_clear
+
 GstSDPTime
+gst_sdp_time_set
+gst_sdp_time_clear
+
 GstSDPZone
+gst_sdp_zone_set
+gst_sdp_zone_clear
+
 GstSDPKey
 GstSDPAttribute
+gst_sdp_attribute_set
+gst_sdp_attribute_clear
+
 GstSDPMedia
 GstSDPMessage
+
 gst_sdp_message_new
 gst_sdp_message_init
 gst_sdp_message_uninit
@@ -1579,20 +1640,35 @@ gst_sdp_message_get_uri
 gst_sdp_message_set_uri
 gst_sdp_message_emails_len
 gst_sdp_message_get_email
+gst_sdp_message_insert_email
+gst_sdp_message_replace_email
+gst_sdp_message_remove_email
 gst_sdp_message_add_email
 gst_sdp_message_phones_len
 gst_sdp_message_get_phone
+gst_sdp_message_insert_phone
+gst_sdp_message_replace_phone
+gst_sdp_message_remove_phone
 gst_sdp_message_add_phone
 gst_sdp_message_get_connection
 gst_sdp_message_set_connection
 gst_sdp_message_bandwidths_len
 gst_sdp_message_get_bandwidth
+gst_sdp_message_insert_bandwidth
+gst_sdp_message_replace_bandwidth
+gst_sdp_message_remove_bandwidth
 gst_sdp_message_add_bandwidth
 gst_sdp_message_times_len
 gst_sdp_message_get_time
+gst_sdp_message_insert_time
+gst_sdp_message_replace_time
+gst_sdp_message_remove_time
 gst_sdp_message_add_time
 gst_sdp_message_zones_len
 gst_sdp_message_get_zone
+gst_sdp_message_insert_zone
+gst_sdp_message_replace_zone
+gst_sdp_message_remove_zone
 gst_sdp_message_add_zone
 gst_sdp_message_get_key
 gst_sdp_message_set_key
@@ -1600,6 +1676,9 @@ gst_sdp_message_attributes_len
 gst_sdp_message_get_attribute
 gst_sdp_message_get_attribute_val
 gst_sdp_message_get_attribute_val_n
+gst_sdp_message_insert_attribute
+gst_sdp_message_replace_attribute
+gst_sdp_message_remove_attribute
 gst_sdp_message_add_attribute
 gst_sdp_message_medias_len
 gst_sdp_message_get_media
@@ -1610,6 +1689,7 @@ gst_sdp_media_new
 gst_sdp_media_init
 gst_sdp_media_uninit
 gst_sdp_media_free
+gst_sdp_media_as_text
 gst_sdp_media_get_media
 gst_sdp_media_set_media
 gst_sdp_media_get_port
@@ -1619,14 +1699,23 @@ gst_sdp_media_get_proto
 gst_sdp_media_set_proto
 gst_sdp_media_formats_len
 gst_sdp_media_get_format
+gst_sdp_media_insert_format
+gst_sdp_media_replace_format
+gst_sdp_media_remove_format
 gst_sdp_media_add_format
 gst_sdp_media_get_information
 gst_sdp_media_set_information
 gst_sdp_media_connections_len
 gst_sdp_media_get_connection
+gst_sdp_media_insert_connection
+gst_sdp_media_replace_connection
+gst_sdp_media_remove_connection
 gst_sdp_media_add_connection
 gst_sdp_media_bandwidths_len
 gst_sdp_media_get_bandwidth
+gst_sdp_media_insert_bandwidth
+gst_sdp_media_replace_bandwidth
+gst_sdp_media_remove_bandwidth
 gst_sdp_media_add_bandwidth
 gst_sdp_media_get_key
 gst_sdp_media_set_key
@@ -1634,8 +1723,10 @@ gst_sdp_media_attributes_len
 gst_sdp_media_get_attribute
 gst_sdp_media_get_attribute_val
 gst_sdp_media_get_attribute_val_n
+gst_sdp_media_insert_attribute
+gst_sdp_media_replace_attribute
+gst_sdp_media_remove_attribute
 gst_sdp_media_add_attribute
-gst_sdp_media_as_text
 </SECTION>
 
 # tag
@@ -1929,6 +2020,7 @@ gst_encoding_profile_get_name
 gst_encoding_profile_get_description
 gst_encoding_profile_get_format
 gst_encoding_profile_get_preset
+gst_encoding_profile_get_preset_name
 gst_encoding_profile_get_presence
 gst_encoding_profile_get_restriction
 gst_encoding_profile_get_file_extension
@@ -1936,6 +2028,7 @@ gst_encoding_profile_set_name
 gst_encoding_profile_set_description
 gst_encoding_profile_set_format
 gst_encoding_profile_set_preset
+gst_encoding_profile_set_preset_name
 gst_encoding_profile_set_restriction
 gst_encoding_profile_set_presence
 gst_encoding_profile_is_equal
@@ -2223,6 +2316,8 @@ GstVideoBufferPoolClass
 gst_video_buffer_pool_new
 gst_buffer_pool_config_get_video_alignment
 gst_buffer_pool_config_set_video_alignment
+GST_BUFFER_POOL_OPTION_VIDEO_ALIGNMENT
+GST_BUFFER_POOL_OPTION_VIDEO_META
 <SUBSECTION Standard>
 GST_TYPE_VIDEO_BUFFER_POOL
 GST_VIDEO_BUFFER_POOL
@@ -2232,11 +2327,11 @@ GstVideoBufferPoolPrivate
 gst_video_buffer_pool_get_type
 </SECTION>
 
-
 <SECTION>
 <FILE>gstvideometa</FILE>
-<INCLUDE>>gst/video/gstvideometa.h</INCLUDE>
+<INCLUDE>gst/video/gstvideometa.h</INCLUDE>
 GstVideoMeta
+GstVideoMetaTransform
 gst_video_meta_map
 gst_video_meta_unmap
 gst_video_meta_get_info
@@ -2247,6 +2342,11 @@ gst_buffer_get_video_meta_id
 GstVideoCropMeta
 gst_buffer_add_video_crop_meta
 gst_buffer_get_video_crop_meta
+GstVideoGLTextureUpload
+GstVideoGLTextureUploadMeta
+gst_buffer_add_video_gl_texture_upload_meta
+gst_buffer_get_video_gl_texture_upload_meta
+gst_video_gl_texture_upload_meta_upload
 <SUBSECTION Standard>
 gst_video_crop_meta_api_get_type
 gst_video_meta_api_get_type
@@ -2257,6 +2357,10 @@ GST_VIDEO_META_INFO
 GST_VIDEO_META_TRANSFORM_IS_SCALE
 gst_video_meta_transform_scale_get_quark
 gst_video_crop_meta_get_info
+GST_VIDEO_GL_TEXTURE_UPLOAD_META_API_TYPE
+GST_VIDEO_GL_TEXTURE_UPLOAD_META_INFO
+gst_video_gl_texture_upload_meta_api_get_type
+gst_video_gl_texture_upload_meta_get_info
 </SECTION>
 
 <SECTION>
@@ -2274,10 +2378,12 @@ gst_video_overlay_composition_get_rectangle
 gst_video_overlay_composition_get_seqnum
 gst_video_overlay_composition_copy
 gst_video_overlay_composition_make_writable
+
+GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS
 gst_video_overlay_composition_blend
 
 <SUBSECTION composition-set-get>
-GstVideoOverlayCompositionMeta:
+GstVideoOverlayCompositionMeta
 gst_video_overlay_composition_meta_get_info
 gst_buffer_add_video_overlay_composition_meta
 gst_buffer_get_video_overlay_composition_meta
@@ -2311,6 +2417,8 @@ GST_VIDEO_OVERLAY_COMPOSITION_GET_CLASS
 GST_IS_VIDEO_OVERLAY_COMPOSITION
 GST_IS_VIDEO_VIDEO_OVERLAY_COMPOSITION_CLASS
 GST_VIDEO_OVERLAY_COMPOSITION_CAST
+GST_VIDEO_OVERLAY_COMPOSITION_META_API_TYPE
+GST_VIDEO_OVERLAY_COMPOSITION_META_INFO
 gst_video_overlay_composition_get_type
 gst_video_overlay_composition_meta_api_get_type
 
@@ -2527,6 +2635,7 @@ gst_discoverer_stream_info_get_next
 gst_discoverer_stream_info_get_previous
 gst_discoverer_stream_info_get_tags
 gst_discoverer_stream_info_get_toc
+gst_discoverer_stream_info_get_stream_id
 gst_discoverer_stream_info_ref
 gst_discoverer_stream_info_unref
 gst_discoverer_stream_info_list_free

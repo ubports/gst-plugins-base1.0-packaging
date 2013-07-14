@@ -11,6 +11,8 @@ EXPORTS
 	gst_rtsp_connection_free
 	gst_rtsp_connection_get_ip
 	gst_rtsp_connection_get_read_socket
+	gst_rtsp_connection_get_remember_session_id
+	gst_rtsp_connection_get_tls
 	gst_rtsp_connection_get_tunnelid
 	gst_rtsp_connection_get_url
 	gst_rtsp_connection_get_write_socket
@@ -27,6 +29,7 @@ EXPORTS
 	gst_rtsp_connection_set_ip
 	gst_rtsp_connection_set_proxy
 	gst_rtsp_connection_set_qos_dscp
+	gst_rtsp_connection_set_remember_session_id
 	gst_rtsp_connection_set_tunneled
 	gst_rtsp_connection_write
 	gst_rtsp_event_get_type
@@ -75,7 +78,10 @@ EXPORTS
 	gst_rtsp_method_as_text
 	gst_rtsp_method_get_type
 	gst_rtsp_options_as_text
+	gst_rtsp_options_from_text
+	gst_rtsp_range_convert_units
 	gst_rtsp_range_free
+	gst_rtsp_range_get_times
 	gst_rtsp_range_parse
 	gst_rtsp_range_to_string
 	gst_rtsp_result_get_type
@@ -101,8 +107,10 @@ EXPORTS
 	gst_rtsp_version_as_text
 	gst_rtsp_version_get_type
 	gst_rtsp_watch_attach
+	gst_rtsp_watch_get_send_backlog
 	gst_rtsp_watch_new
 	gst_rtsp_watch_reset
 	gst_rtsp_watch_send_message
+	gst_rtsp_watch_set_send_backlog
 	gst_rtsp_watch_unref
 	gst_rtsp_watch_write_data

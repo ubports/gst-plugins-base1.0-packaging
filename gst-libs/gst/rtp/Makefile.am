@@ -1,8 +1,11 @@
 libgstrtpincludedir = $(includedir)/gstreamer-@GST_API_VERSION@/gst/rtp
 
-libgstrtpinclude_HEADERS = gstrtpbuffer.h \
+libgstrtpinclude_HEADERS = \
+			   rtp.h \
+			   gstrtpbuffer.h \
 			   gstrtcpbuffer.h \
 			   gstrtppayloads.h \
+			   gstrtphdrext.h \
 			gstrtpbaseaudiopayload.h \
 			gstrtpbasepayload.h \
 			gstrtpbasedepayload.h
@@ -12,6 +15,7 @@ lib_LTLIBRARIES = libgstrtp-@GST_API_VERSION@.la
 libgstrtp_@GST_API_VERSION@_la_SOURCES = gstrtpbuffer.c \
 			        gstrtcpbuffer.c \
 			        gstrtppayloads.c \
+			   	gstrtphdrext.c \
 			        gstrtpbaseaudiopayload.c \
 				gstrtpbasepayload.c \
 				gstrtpbasedepayload.c
@@ -25,16 +29,15 @@ BUILT_GIRSOURCES = GstRtp-@GST_API_VERSION@.gir
 
 gir_headers=$(patsubst %,$(srcdir)/%, $(libgstrtpinclude_HEADERS))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstrtp_@GST_API_VERSION@_la_SOURCES))
-gir_cincludes=$(patsubst %,--c-include='gst/rtp/%',$(libgstrtpinclude_HEADERS))
 
 GstRtp-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstrtp-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
-		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstRtp \
 		--nsversion=@GST_API_VERSION@ \
 		--strip-prefix=Gst \
 		--warn-all \
-		$(gir_cincludes) \
+		--c-include "gst/rtp/rtp.h" \
 		-I$(top_srcdir)/gst-libs \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \

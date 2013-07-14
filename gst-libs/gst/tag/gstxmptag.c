@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -43,6 +43,24 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+
+#define GST_CAT_DEFAULT gst_tag_ensure_debug_category()
+
+static GstDebugCategory *
+gst_tag_ensure_debug_category (void)
+{
+  static gsize cat_gonce = 0;
+
+  if (g_once_init_enter (&cat_gonce)) {
+    GstDebugCategory *cat = NULL;
+
+    GST_DEBUG_CATEGORY_INIT (cat, "xmp-tags", 0, "XMP GstTag helper functions");
+
+    g_once_init_leave (&cat_gonce, (gsize) cat);
+  }
+
+  return (GstDebugCategory *) cat_gonce;
+}
 
 static const gchar *schema_list[] = {
   "dc",

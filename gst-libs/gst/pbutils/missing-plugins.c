@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -154,6 +154,25 @@ copy_and_clean_caps (const GstCaps * caps)
   gst_structure_remove_field (s, "dynamic_range");
 
   return ret;
+}
+
+gboolean
+has_single_media_type (const GstCaps * caps)
+{
+  guint n, ns;
+  const char *name0, *namen;
+
+  g_return_val_if_fail (GST_IS_CAPS (caps), FALSE);
+
+  name0 = gst_structure_get_name (gst_caps_get_structure (caps, 0));
+  ns = gst_caps_get_size (caps);
+  for (n = 1; n < ns; ++n) {
+    namen = gst_structure_get_name (gst_caps_get_structure (caps, n));
+    if (strcmp (name0, namen)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
 }
 
 /**
@@ -319,7 +338,7 @@ gst_missing_encoder_message_new (GstElement * element,
   g_return_val_if_fail (GST_IS_CAPS (encode_caps), NULL);
   g_return_val_if_fail (!gst_caps_is_any (encode_caps), NULL);
   g_return_val_if_fail (!gst_caps_is_empty (encode_caps), NULL);
-  g_return_val_if_fail (gst_caps_is_fixed (encode_caps), NULL);
+  g_return_val_if_fail (has_single_media_type (encode_caps), NULL);
 
   description = gst_pb_utils_get_encoder_description (encode_caps);
   caps = copy_and_clean_caps (encode_caps);
@@ -424,7 +443,7 @@ gst_missing_plugin_message_get_installer_detail (GstMessage * msg)
 
   /* FIXME: use gst_installer_detail_new() here too */
   str = g_string_new (GST_DETAIL_STRING_MARKER "|");
-  g_string_append_printf (str, "%u.%u|", GST_VERSION_MAJOR, GST_VERSION_MINOR);
+  g_string_append_printf (str, "%s|", GST_API_VERSION);
 
   progname = (const gchar *) g_get_prgname ();
   if (progname) {
@@ -616,7 +635,7 @@ gst_installer_detail_new (gchar * description, const gchar * type,
   GString *s;
 
   s = g_string_new (GST_DETAIL_STRING_MARKER "|");
-  g_string_append_printf (s, "%u.%u|", GST_VERSION_MAJOR, GST_VERSION_MINOR);
+  g_string_append_printf (s, "%s|", GST_API_VERSION);
 
   progname = (const gchar *) g_get_prgname ();
   if (progname) {

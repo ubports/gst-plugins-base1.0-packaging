@@ -3,13 +3,13 @@
 # Copyright (C) 2004, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 #
 # Laszlo Dvornik <dvornik@invitel.hu>, 2004.
-# Gabor Kelemen <kelemeng@gnome.hu>, 2006, 2007, 2008, 2009, 2012.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2006, 2007, 2008, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.0.3\n"
+"Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-07-11 19:48+0100\n"
-"PO-Revision-Date: 2012-11-29 14:05+0100\n"
+"POT-Creation-Date: 2013-07-11 15:27+0200\n"
+"PO-Revision-Date: 2010-11-03 02:48+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "Language: hu\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Rosetta-Export-Date: 2007-03-10 00:18+0000\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 msgid "Could not open device for playback in mono mode."
@@ -79,6 +79,10 @@ msgid "Internal data stream error."
 msgstr "Belső adatfolyam-hiba."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "A(z) „%s” elem hiányzik - ellenőrizze a Gstreamer telepítését."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Az adatfolyam lejátszásához egy %s bővítmény szükséges, de az nincs "
@@ -90,9 +94,9 @@ msgstr "Nem határozható meg az adatfolyam típusa"
 msgid "This appears to be a text file"
 msgstr "Ez egy szövegfájlnak tűnik"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "A(z) „%s” elem hiányzik - ellenőrizze a Gstreamer telepítését."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Nem hozható létre „decodebin” elem"
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -164,171 +168,11 @@ msgstr "A forráselem érvénytelen."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Hiba adatok küldése során a következőnek: „%s:%d”."
 
-msgid "This CD has no audio tracks"
-msgstr "Ez a CD nem rendelkezik hangsávokkal"
-
 msgid "Can't record audio fast enough"
 msgstr "Nem lehet elég gyorsan rögzíteni a hangot"
 
-msgid "Failed to read tag: not enough data"
-msgstr "A címke nem olvasható: nincs elég adat"
-
-msgid "track ID"
-msgstr "számazonosító"
-
-msgid "MusicBrainz track ID"
-msgstr "MusicBrainz számazonosító"
-
-msgid "artist ID"
-msgstr "előadó-azonosító"
-
-msgid "MusicBrainz artist ID"
-msgstr "MusicBrainz előadó-azonosító"
-
-msgid "album ID"
-msgstr "Albumazonosító"
-
-msgid "MusicBrainz album ID"
-msgstr "MusicBrainz albumazonosító"
-
-msgid "album artist ID"
-msgstr "Albumelőadó azonosítója"
-
-msgid "MusicBrainz album artist ID"
-msgstr "MusicBrainz albumelőadó azonosítója"
-
-msgid "track TRM ID"
-msgstr "szám TRM azonosítója"
-
-msgid "MusicBrainz TRM ID"
-msgstr "MusicBrainz szám TRM azonosítója"
-
-msgid "capturing shutter speed"
-msgstr "felvétel zársebessége"
-
-msgid "Shutter speed used when capturing an image, in seconds"
-msgstr "Kép felvételéhez használt zársebesség másodpercben"
-
-msgid "capturing focal ratio"
-msgstr "felvétel fókuszaránya"
-
-msgid "Focal ratio (f-number) used when capturing the image"
-msgstr "A kép felvételéhez használt fókuszarány (f-szám)"
-
-msgid "capturing focal length"
-msgstr "felvétel fókusztávolsága"
-
-msgid "Focal length of the lens used capturing the image, in mm"
-msgstr "A kép felvételéhez használt lencse fókusztávolsága mm-ben"
-
-msgid "capturing digital zoom ratio"
-msgstr "felvétel digitális nagyítási aránya"
-
-msgid "Digital zoom ratio used when capturing an image"
-msgstr "A kép felvételéhez használt digitális nagyítási arány"
-
-msgid "capturing iso speed"
-msgstr "felvétel ISO sebessége"
-
-msgid "The ISO speed used when capturing an image"
-msgstr "A kép felvételéhez használt ISO sebesség"
-
-msgid "capturing exposure program"
-msgstr "felvétel expozíciós programja"
-
-msgid "The exposure program used when capturing an image"
-msgstr "A kép felvételéhez használt expozíciós program"
-
-msgid "capturing exposure mode"
-msgstr "felvétel expozíciós módja"
-
-msgid "The exposure mode used when capturing an image"
-msgstr "A kép felvételéhez használt expozíciós mód"
-
-msgid "capturing exposure compensation"
-msgstr "felvétel expozíciós kompenzációja"
-
-msgid "The exposure compensation used when capturing an image"
-msgstr "A kép felvételéhez használt expozíciós kompenzáció"
-
-msgid "capturing scene capture type"
-msgstr "felvétel helyszínfelvételi módja"
-
-msgid "The scene capture mode used when capturing an image"
-msgstr "A kép felvételéhez használt helyszínfelvételi mód"
-
-msgid "capturing gain adjustment"
-msgstr "felvétel erősítésmódosítása"
-
-msgid "The overall gain adjustment applied on an image"
-msgstr "A képre alkalmazott általános erősítésmódosítás"
-
-msgid "capturing white balance"
-msgstr "felvétel fehéregyensúlya"
-
-msgid "The white balance mode set when capturing an image"
-msgstr "A kép felvételéhez használt fehéregyensúlymód"
-
-msgid "capturing contrast"
-msgstr "felvétel kontrasztja"
-
-msgid "The direction of contrast processing applied when capturing an image"
-msgstr "A kép felvételekor használt kontrasztfeldolgozás iránya"
-
-msgid "capturing saturation"
-msgstr "felvétel telítettsége"
-
-msgid "The direction of saturation processing applied when capturing an image"
-msgstr "A kép felvételekor alkalmazott telítettségfeldolgozás iránya"
-
-msgid "capturing sharpness"
-msgstr "felvétel élessége"
-
-msgid "The direction of sharpness processing applied when capturing an image"
-msgstr "A kép felvételekor alkalmazott élességfeldolgozás iránya"
-
-msgid "capturing flash fired"
-msgstr "felvétel vakuja"
-
-msgid "If the flash fired while capturing an image"
-msgstr "A kép felvételéhez használt vaku"
-
-msgid "capturing flash mode"
-msgstr "felvétel vakumódja"
-
-msgid "The selected flash mode while capturing an image"
-msgstr "A kép felvételéhez használt kijelölt vakumód"
-
-msgid "capturing metering mode"
-msgstr "felvétel mérési módja"
-
-msgid ""
-"The metering mode used while determining exposure for capturing an image"
-msgstr "A kép felvételekor az expozíció meghatározásához használt mérési mód"
-
-msgid "capturing source"
-msgstr "felvétel forrása"
-
-msgid "The source or type of device used for the capture"
-msgstr "A felvételhez használt forrás vagy eszköz típusa"
-
-msgid "image horizontal ppi"
-msgstr "kép vízszintes ppi"
-
-msgid "Media (image/video) intended horizontal pixel density in ppi"
-msgstr "A média (kép/videó) tervezett vízszintes képpontsűrűsége ppi-ben"
-
-msgid "image vertical ppi"
-msgstr "kép függőleges ppi"
-
-msgid "Media (image/video) intended vertical pixel density in ppi"
-msgstr "A média (kép/videó) tervezett függőleges képpontsűrűsége ppi-ben"
-
-msgid "ID3v2 frame"
-msgstr "ID3v2 keret"
-
-msgid "unparsed id3v2 tag frame"
-msgstr "feldolgozatlan id3v2 címke keret"
+msgid "This CD has no audio tracks"
+msgstr "Ez a CD nem rendelkezik hangsávokkal"
 
 msgid "ID3 tag"
 msgstr "ID3 címke"
@@ -364,16 +208,19 @@ msgid "Run-length encoding"
 msgstr "Műsorhossz-kódolás"
 
 msgid "Subtitle"
-msgstr "Felirat"
+msgstr ""
 
+#, fuzzy
 msgid "MPL2 subtitle format"
-msgstr "MPL2 feliratformátum"
+msgstr "TMPlayer feliratformátum"
 
+#, fuzzy
 msgid "DKS subtitle format"
-msgstr "DKS feliratformátum"
+msgstr "Sami feliratformátum"
 
+#, fuzzy
 msgid "QTtext subtitle format"
-msgstr "QTtext feliratformátum"
+msgstr "Kate feliratformátum"
 
 msgid "Sami subtitle format"
 msgstr "Sami feliratformátum"
@@ -384,30 +231,33 @@ msgstr "TMPlayer feliratformátum"
 msgid "Kate subtitle format"
 msgstr "Kate feliratformátum"
 
+#, fuzzy
 msgid "Uncompressed video"
-msgstr "Tömörítetlen videó"
+msgstr "Tömörítetlen YUV"
 
+#, fuzzy
 msgid "Uncompressed gray"
-msgstr "Tömörítetlen szürke"
+msgstr "Tömörítetlen szürke kép"
 
-#, c-format
+#, fuzzy, c-format
 msgid "Uncompressed %s YUV %s"
-msgstr "Tömörítetlen %s YUV %s"
+msgstr "Tömörítetlen YUV"
 
-#, c-format
+#, fuzzy, c-format
 msgid "Uncompressed %s%d-bit %s"
-msgstr "Tömörítetlen, %s%d bites %s"
+msgstr "Tömörítetlen, palettás %d bites %s"
 
 #, c-format
 msgid "DivX MPEG-4 Version %d"
 msgstr "DivX MPEG-4 %d. verzió"
 
+#, fuzzy
 msgid "Uncompressed audio"
-msgstr "Tömörítetlen hang"
+msgstr "Tömörítetlen YUV"
 
-#, c-format
+#, fuzzy, c-format
 msgid "Raw %d-bit %s audio"
-msgstr "Nyers %d bites %s hang"
+msgstr "Nyers %d bites PCM hang"
 
 msgid "Audio CD source"
 msgstr "Hang CD forrás"
@@ -487,6 +337,168 @@ msgstr "Ismeretlen kódolóelem"
 msgid "Plugin or element of unknown type"
 msgstr "Ismeretlen típusú bővítmény vagy elem"
 
+msgid "Failed to read tag: not enough data"
+msgstr "A címke nem olvasható: nincs elég adat"
+
+msgid "track ID"
+msgstr "számazonosító"
+
+msgid "MusicBrainz track ID"
+msgstr "MusicBrainz számazonosító"
+
+msgid "artist ID"
+msgstr "előadó-azonosító"
+
+msgid "MusicBrainz artist ID"
+msgstr "MusicBrainz előadó-azonosító"
+
+msgid "album ID"
+msgstr "Albumazonosító"
+
+msgid "MusicBrainz album ID"
+msgstr "MusicBrainz albumazonosító"
+
+msgid "album artist ID"
+msgstr "Albumelőadó azonosítója"
+
+msgid "MusicBrainz album artist ID"
+msgstr "MusicBrainz albumelőadó azonosítója"
+
+msgid "track TRM ID"
+msgstr "szám TRM azonosítója"
+
+msgid "MusicBrainz TRM ID"
+msgstr "MusicBrainz szám TRM azonosítója"
+
+msgid "capturing shutter speed"
+msgstr "felvétel zársebessége"
+
+msgid "Shutter speed used when capturing an image, in seconds"
+msgstr "Kép felvételéhez használt zársebesség másodpercben"
+
+msgid "capturing focal ratio"
+msgstr "felvétel fókuszaránya"
+
+msgid "Focal ratio (f-number) used when capturing the image"
+msgstr "A kép felvételéhez használt fókuszarány (f-szám)"
+
+msgid "capturing focal length"
+msgstr "felvétel fókusztávolsága"
+
+msgid "Focal length of the lens used capturing the image, in mm"
+msgstr "A kép felvételéhez használt lencse fókusztávolsága mm-ben"
+
+msgid "capturing digital zoom ratio"
+msgstr "felvétel digitális nagyítási aránya"
+
+msgid "Digital zoom ratio used when capturing an image"
+msgstr "A kép felvételéhez használt digitális nagyítási arány"
+
+msgid "capturing iso speed"
+msgstr "felvétel ISO sebessége"
+
+msgid "The ISO speed used when capturing an image"
+msgstr "A kép felvételéhez használt ISO sebesség"
+
+msgid "capturing exposure program"
+msgstr "felvétel expozíciós programja"
+
+msgid "The exposure program used when capturing an image"
+msgstr "A kép felvételéhez használt expozíciós program"
+
+msgid "capturing exposure mode"
+msgstr "felvétel expozíciós módja"
+
+msgid "The exposure mode used when capturing an image"
+msgstr "A kép felvételéhez használt expozíciós mód"
+
+#, fuzzy
+msgid "capturing exposure compensation"
+msgstr "felvétel expozíciós módja"
+
+#, fuzzy
+msgid "The exposure compensation used when capturing an image"
+msgstr "A kép felvételéhez használt expozíciós mód"
+
+msgid "capturing scene capture type"
+msgstr "felvétel helyszínfelvételi módja"
+
+msgid "The scene capture mode used when capturing an image"
+msgstr "A kép felvételéhez használt helyszínfelvételi mód"
+
+msgid "capturing gain adjustment"
+msgstr "felvétel erősítésmódosítása"
+
+msgid "The overall gain adjustment applied on an image"
+msgstr "A képre alkalmazott általános erősítésmódosítás"
+
+msgid "capturing white balance"
+msgstr "felvétel fehéregyensúlya"
+
+msgid "The white balance mode set when capturing an image"
+msgstr "A kép felvételéhez használt fehéregyensúlymód"
+
+msgid "capturing contrast"
+msgstr "felvétel kontrasztja"
+
+msgid "The direction of contrast processing applied when capturing an image"
+msgstr "A kép felvételekor használt kontrasztfeldolgozás iránya"
+
+msgid "capturing saturation"
+msgstr "felvétel telítettsége"
+
+msgid "The direction of saturation processing applied when capturing an image"
+msgstr "A kép felvételekor alkalmazott telítettségfeldolgozás iránya"
+
+msgid "capturing sharpness"
+msgstr "felvétel élessége"
+
+msgid "The direction of sharpness processing applied when capturing an image"
+msgstr "A kép felvételekor alkalmazott élességfeldolgozás iránya"
+
+msgid "capturing flash fired"
+msgstr "felvétel vakuja"
+
+msgid "If the flash fired while capturing an image"
+msgstr "A kép felvételéhez használt vaku"
+
+msgid "capturing flash mode"
+msgstr "felvétel vakumódja"
+
+msgid "The selected flash mode while capturing an image"
+msgstr "A kép felvételéhez használt kijelölt vakumód"
+
+msgid "capturing metering mode"
+msgstr "felvétel mérési módja"
+
+msgid ""
+"The metering mode used while determining exposure for capturing an image"
+msgstr "A kép felvételekor az expozíció meghatározásához használt mérési mód"
+
+msgid "capturing source"
+msgstr "felvétel forrása"
+
+msgid "The source or type of device used for the capture"
+msgstr "A felvételhez használt forrás vagy eszköz típusa"
+
+msgid "image horizontal ppi"
+msgstr "kép vízszintes ppi"
+
+msgid "Media (image/video) intended horizontal pixel density in ppi"
+msgstr "A média (kép/videó) tervezett vízszintes képpontsűrűsége ppi-ben"
+
+msgid "image vertical ppi"
+msgstr "kép függőleges ppi"
+
+msgid "Media (image/video) intended vertical pixel density in ppi"
+msgstr "A média (kép/videó) tervezett függőleges képpontsűrűsége ppi-ben"
+
+msgid "ID3v2 frame"
+msgstr ""
+
+msgid "unparsed id3v2 tag frame"
+msgstr ""
+
 #~ msgid "Master"
 #~ msgstr "Fő hangerő"
 
@@ -519,60 +531,6 @@ msgstr "Ismeretlen típusú bővítmény vagy elem"
 
 #~ msgid "Capture"
 #~ msgstr "Felvétel"
-
-#~ msgid "Could not open vfs file \"%s\" for writing: %s."
-#~ msgstr "Nem lehet írásra megnyitni a(z) „%s” vfs-fájlt: %s."
-
-#~ msgid "No filename given"
-#~ msgstr "Nincs fájlnév megadva"
-
-#~ msgid "Could not close vfs file \"%s\"."
-#~ msgstr "Nem lehet bezárni a(z) „%s” vfs-fájlt."
-
-#~ msgid "Error while writing to file \"%s\"."
-#~ msgstr "Hiba a(z) „%s” fájl írása közben."
-
-#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
-#~ msgstr "Érvénytelen felirat URI: „%s”, a feliratok letiltva."
-
-#~ msgid "RTSP streams cannot be played yet."
-#~ msgstr "Az RTSP adatfolyamok még nem játszhatók le."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Nem hozható létre „decodebin” elem"
-
-#~ msgid ""
-#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
-#~ "file or some other type of text file, or the media file was not "
-#~ "recognized."
-#~ msgstr ""
-#~ "Csak egy feliratfolyam észlelhető. Vagy egy feliratfájlt vagy más "
-#~ "szövegfájlt tölt be, vagy a médiafájl nem ismerhető fel."
-
-#~ msgid ""
-#~ "You do not have a decoder installed to handle this file. You might need "
-#~ "to install the necessary plugins."
-#~ msgstr ""
-#~ "Nincs telepítve a fájl kezeléséhez szükséges dekódoló. Lehetséges, hogy "
-#~ "telepítenie kell a szükséges bővítményeket."
-
-#~ msgid "This is not a media file"
-#~ msgstr "Ez nem egy médiafájl"
-
-#~ msgid "A subtitle stream was detected, but no video stream."
-#~ msgstr "Egy feliratfolyam felismerve, de nincs videofolyam."
-
-#~ msgid "Both autovideosink and xvimagesink elements are missing."
-#~ msgstr "Mind az autovideosink, mind az xvimagesink elemek hiányoznak."
-
-#~ msgid "Both autoaudiosink and alsasink elements are missing."
-#~ msgstr "Az autoaudiosink és az alsasink elem is hiányzik."
-
-#~ msgid "Error while sending gdp header data to \"%s:%d\"."
-#~ msgstr "Hiba a gdp fejlécadatok küldésekor a következőnek: „%s:%d”."
-
-#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
-#~ msgstr "Hiba a gdp küldeményadatok elküldésekor a következőnek: „%s:%d”."
 
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "A kapcsolat visszautasítva a következőhöz: %s:%d."
@@ -616,6 +574,51 @@ msgstr "Ismeretlen típusú bővítmény vagy elem"
 #~ msgid "Raw floating-point audio"
 #~ msgstr "Nyers lebegőpontos hang"
 
+#~ msgid "Could not open vfs file \"%s\" for writing: %s."
+#~ msgstr "Nem lehet írásra megnyitni a(z) „%s” vfs-fájlt: %s."
+
+#~ msgid "No filename given"
+#~ msgstr "Nincs fájlnév megadva"
+
+#~ msgid "Could not close vfs file \"%s\"."
+#~ msgstr "Nem lehet bezárni a(z) „%s” vfs-fájlt."
+
+#~ msgid "Error while writing to file \"%s\"."
+#~ msgstr "Hiba a(z) „%s” fájl írása közben."
+
+#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
+#~ msgstr "Érvénytelen felirat URI: „%s”, a feliratok letiltva."
+
+#~ msgid "RTSP streams cannot be played yet."
+#~ msgstr "Az RTSP adatfolyamok még nem játszhatók le."
+
+#~ msgid ""
+#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
+#~ "file or some other type of text file, or the media file was not "
+#~ "recognized."
+#~ msgstr ""
+#~ "Csak egy feliratfolyam észlelhető. Vagy egy feliratfájlt vagy más "
+#~ "szövegfájlt tölt be, vagy a médiafájl nem ismerhető fel."
+
+#~ msgid ""
+#~ "You do not have a decoder installed to handle this file. You might need "
+#~ "to install the necessary plugins."
+#~ msgstr ""
+#~ "Nincs telepítve a fájl kezeléséhez szükséges dekódoló. Lehetséges, hogy "
+#~ "telepítenie kell a szükséges bővítményeket."
+
+#~ msgid "This is not a media file"
+#~ msgstr "Ez nem egy médiafájl"
+
+#~ msgid "A subtitle stream was detected, but no video stream."
+#~ msgstr "Egy feliratfolyam felismerve, de nincs videofolyam."
+
+#~ msgid "Both autovideosink and xvimagesink elements are missing."
+#~ msgstr "Mind az autovideosink, mind az xvimagesink elemek hiányoznak."
+
+#~ msgid "Both autoaudiosink and alsasink elements are missing."
+#~ msgstr "Az autoaudiosink és az alsasink elem is hiányzik."
+
 #~ msgid "No device specified."
 #~ msgstr "Nincs megadva eszköz."
 
@@ -627,3 +630,9 @@ msgstr "Ismeretlen típusú bővítmény vagy elem"
 
 #~ msgid "Could not open device \"%s\" for reading and writing."
 #~ msgstr "Nem lehet olvasásra és írásra megnyitni az eszközt („%s”)."
+
+#~ msgid "Error while sending gdp header data to \"%s:%d\"."
+#~ msgstr "Hiba a gdp fejlécadatok küldésekor a következőnek: „%s:%d”."
+
+#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
+#~ msgstr "Hiba a gdp küldeményadatok elküldésekor a következőnek: „%s:%d”."

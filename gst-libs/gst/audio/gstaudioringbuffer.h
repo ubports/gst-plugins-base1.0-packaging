@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_AUDIO_RING_BUFFER_H__
@@ -57,13 +57,17 @@ typedef void (*GstAudioRingBufferCallback) (GstAudioRingBuffer *rbuf, guint8* da
  * @GST_AUDIO_RING_BUFFER_STATE_STOPPED: The ringbuffer is stopped
  * @GST_AUDIO_RING_BUFFER_STATE_PAUSED: The ringbuffer is paused
  * @GST_AUDIO_RING_BUFFER_STATE_STARTED: The ringbuffer is started
+ * @GST_AUDIO_RING_BUFFER_STATE_ERROR: The ringbuffer has encountered an
+ *     error after it has been started, e.g. because the device was
+ *     disconnected (Since 1.2)
  *
  * The state of the ringbuffer.
  */
 typedef enum {
   GST_AUDIO_RING_BUFFER_STATE_STOPPED,
   GST_AUDIO_RING_BUFFER_STATE_PAUSED,
-  GST_AUDIO_RING_BUFFER_STATE_STARTED
+  GST_AUDIO_RING_BUFFER_STATE_STARTED,
+  GST_AUDIO_RING_BUFFER_STATE_ERROR
 } GstAudioRingBufferState;
 
 /**

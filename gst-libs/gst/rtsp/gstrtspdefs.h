@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /*
  * Unless otherwise indicated, Source Code is licensed under MIT license.
@@ -399,6 +399,7 @@ const gchar*       gst_rtsp_header_as_text     (GstRTSPHeaderField field);
 const gchar*       gst_rtsp_status_as_text     (GstRTSPStatusCode code);
 
 gchar*             gst_rtsp_options_as_text    (GstRTSPMethod options);
+GstRTSPMethod      gst_rtsp_options_from_text  (const gchar *options);
 
 GstRTSPHeaderField gst_rtsp_find_header_field  (const gchar *header);
 GstRTSPMethod      gst_rtsp_find_method        (const gchar *method);

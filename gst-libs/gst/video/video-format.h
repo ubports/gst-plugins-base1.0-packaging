@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_FORMAT_H__
@@ -74,6 +74,12 @@ G_BEGIN_DECLS
  * @GST_VIDEO_FORMAT_I420_10LE: planar 4:2:0 YUV, 10 bits per channel
  * @GST_VIDEO_FORMAT_I422_10BE: planar 4:2:2 YUV, 10 bits per channel
  * @GST_VIDEO_FORMAT_I422_10LE: planar 4:2:2 YUV, 10 bits per channel
+ * @GST_VIDEO_FORMAT_Y444_10BE: planar 4:4:4 YUV, 10 bits per channel
+ * @GST_VIDEO_FORMAT_Y444_10LE: planar 4:4:4 YUV, 10 bits per channel
+ * @GST_VIDEO_FORMAT_GBR: planar 4:4:4 RGB, 8 bits per channel
+ * @GST_VIDEO_FORMAT_GBR_10BE: planar 4:4:4 RGB, 10 bits per channel
+ * @GST_VIDEO_FORMAT_GBR_10LE: planar 4:4:4 RGB, 10 bits per channel
+ * @GST_VIDEO_FORMAT_NV16: planar 4:2:2 YUV with interleaved UV plane
  *
  * Enum value describing the most common video formats.
  */
@@ -124,42 +130,18 @@ typedef enum {
   GST_VIDEO_FORMAT_I420_10LE,
   GST_VIDEO_FORMAT_I422_10BE,
   GST_VIDEO_FORMAT_I422_10LE,
+  GST_VIDEO_FORMAT_Y444_10BE,
+  GST_VIDEO_FORMAT_Y444_10LE,
+  GST_VIDEO_FORMAT_GBR,
+  GST_VIDEO_FORMAT_GBR_10BE,
+  GST_VIDEO_FORMAT_GBR_10LE,
+  GST_VIDEO_FORMAT_NV16,
 } GstVideoFormat;
 
 #define GST_VIDEO_MAX_PLANES 4
 #define GST_VIDEO_MAX_COMPONENTS 4
 
 typedef struct _GstVideoFormatInfo GstVideoFormatInfo;
-
-/**
- * GstVideoChromaSite:
- * @GST_VIDEO_CHROMA_SITE_UNKNOWN: unknown cositing
- * @GST_VIDEO_CHROMA_SITE_NONE: no cositing
- * @GST_VIDEO_CHROMA_SITE_H_COSITED: chroma is horizontally cosited
- * @GST_VIDEO_CHROMA_SITE_V_COSITED: chroma is vertically cosited
- * @GST_VIDEO_CHROMA_SITE_ALT_LINE: choma samples are sited on alternate lines
- * @GST_VIDEO_CHROMA_SITE_COSITED: chroma samples cosited with luma samples
- * @GST_VIDEO_CHROMA_SITE_JPEG: jpeg style cositing, also for mpeg1 and mjpeg
- * @GST_VIDEO_CHROMA_SITE_MPEG2: mpeg2 style cositing
- * @GST_VIDEO_CHROMA_SITE_DV: DV style cositing
- *
- * Various Chroma sitings.
- */
-typedef enum {
-  GST_VIDEO_CHROMA_SITE_UNKNOWN   =  0,
-  GST_VIDEO_CHROMA_SITE_NONE      = (1 << 0),
-  GST_VIDEO_CHROMA_SITE_H_COSITED = (1 << 1),
-  GST_VIDEO_CHROMA_SITE_V_COSITED = (1 << 2),
-  GST_VIDEO_CHROMA_SITE_ALT_LINE  = (1 << 3),
-  /* some common chroma cositing */
-  GST_VIDEO_CHROMA_SITE_COSITED   = (GST_VIDEO_CHROMA_SITE_H_COSITED | GST_VIDEO_CHROMA_SITE_V_COSITED),
-  GST_VIDEO_CHROMA_SITE_JPEG      = (GST_VIDEO_CHROMA_SITE_NONE),
-  GST_VIDEO_CHROMA_SITE_MPEG2     = (GST_VIDEO_CHROMA_SITE_H_COSITED),
-  GST_VIDEO_CHROMA_SITE_DV        = (GST_VIDEO_CHROMA_SITE_COSITED | GST_VIDEO_CHROMA_SITE_ALT_LINE),
-} GstVideoChromaSite;
-
-GstVideoChromaSite    gst_video_chroma_from_string   (const gchar * s);
-const gchar *         gst_video_chroma_to_string     (GstVideoChromaSite site);
 
 /**
  * GstVideoFormatFlags:
@@ -211,6 +193,8 @@ typedef enum
 #define GST_VIDEO_COMP_INDEX    0
 #define GST_VIDEO_COMP_PALETTE  1
 
+#include <gst/video/video-chroma.h>
+
 /**
  * GstVideoPackFlags:
  * @GST_VIDEO_PACK_FLAG_NONE: No flag
@@ -219,13 +203,17 @@ typedef enum
  *   to 0. This is likely sightly faster but less accurate. When this flag
  *   is not specified, the most significant bits of the source are duplicated
  *   in the least significant bits of the destination.
+ * @GST_VIDEO_PACK_FLAG_INTERLACED: The source is interlaced. The unpacked
+ *   format will be interlaced as well with each line containing
+ *   information from alternating fields. (Since 1.2)
  *
  * The different flags that can be used when packing and unpacking.
  */
 typedef enum
 {
   GST_VIDEO_PACK_FLAG_NONE           = 0,
-  GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE = 1
+  GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE = (1 << 0),
+  GST_VIDEO_PACK_FLAG_INTERLACED     = (1 << 1)
 } GstVideoPackFlags;
 
 /**
@@ -243,6 +231,10 @@ typedef enum
  * format @info. The pixels will be unpacked into @dest which each component
  * interleaved. @dest should at least be big enough to hold @width *
  * n_components * size(unpack_format) bytes.
+ *
+ * For subsampled formats, the components will be duplicated in the destination
+ * array. Reconstruction of the missing components can be performed in a
+ * separate step after unpacking.
  */
 typedef void (*GstVideoFormatUnpack)         (const GstVideoFormatInfo *info,
                                               GstVideoPackFlags flags, gpointer dest,
@@ -257,7 +249,7 @@ typedef void (*GstVideoFormatUnpack)         (const GstVideoFormatInfo *info,
  * @sstride: the source array stride
  * @data: pointers to the destination data planes
  * @stride: strides of the destination planes
- * @chroma_site: the chroma siting of the target when subsampled
+ * @chroma_site: the chroma siting of the target when subsampled (not used)
  * @y: the y position in the image to pack to
  * @width: the amount of pixels to pack.
  *
@@ -268,6 +260,9 @@ typedef void (*GstVideoFormatUnpack)         (const GstVideoFormatInfo *info,
  * This function operates on pack_lines lines, meaning that @src should
  * contain at least pack_lines lines with a stride of @sstride and @y
  * should be a multiple of pack_lines.
+ *
+ * Subsampled formats will use the horizontally cosited component in the
+ * destination. Subsampling should be performed before packing.
  */
 typedef void (*GstVideoFormatPack)           (const GstVideoFormatInfo *info,
                                               GstVideoPackFlags flags,
@@ -410,8 +405,8 @@ struct _GstVideoFormatInfo {
 
 /* format properties */
 GstVideoFormat gst_video_format_from_masks           (gint depth, gint bpp, gint endianness,
-                                                      gint red_mask, gint green_mask,
-                                                      gint blue_mask, gint alpha_mask) G_GNUC_CONST;
+                                                      guint red_mask, guint green_mask,
+                                                      guint blue_mask, guint alpha_mask) G_GNUC_CONST;
 
 GstVideoFormat gst_video_format_from_fourcc          (guint32 fourcc) G_GNUC_CONST;
 GstVideoFormat gst_video_format_from_string          (const gchar *format) G_GNUC_CONST;
@@ -421,6 +416,8 @@ const gchar *  gst_video_format_to_string            (GstVideoFormat format) G_G
 
 const GstVideoFormatInfo *
                gst_video_format_get_info             (GstVideoFormat format) G_GNUC_CONST;
+
+gconstpointer  gst_video_format_get_palette          (GstVideoFormat format, gsize *size);
 
 #define GST_VIDEO_SIZE_RANGE "(int) [ 1, max ]"
 #define GST_VIDEO_FPS_RANGE "(fraction) [ 0, max ]"
@@ -435,9 +432,10 @@ const GstVideoFormatInfo *
 
 #define GST_VIDEO_FORMATS_ALL "{ I420, YV12, YUY2, UYVY, AYUV, RGBx, "  \
     "BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, "  \
-    "YVYU, Y444, v210, v216, NV12, NV21, GRAY8, GRAY16_BE, GRAY16_LE, " \
+    "YVYU, Y444, v210, v216, NV12, NV21, NV16, GRAY8, GRAY16_BE, GRAY16_LE, " \
     "v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, " \
-    "IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE }"
+    "IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, " \
+    " Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE }"
 
 /**
  * GST_VIDEO_CAPS_MAKE:
@@ -448,6 +446,24 @@ const GstVideoFormatInfo *
  */
 #define GST_VIDEO_CAPS_MAKE(format)                                     \
     "video/x-raw, "                                                     \
+    "format = (string) " format ", "                                    \
+    "width = " GST_VIDEO_SIZE_RANGE ", "                                \
+    "height = " GST_VIDEO_SIZE_RANGE ", "                               \
+    "framerate = " GST_VIDEO_FPS_RANGE
+
+/**
+ * GST_VIDEO_CAPS_MAKE_WITH_FEATURES:
+ * @format: string format that describes the pixel layout, as string
+ *     (e.g. "I420", "RGB", "YV12", "YUY2", "AYUV", etc.)
+ * @features: Requires caps features as a string, e.g.
+ *     "memory:SystemMemory".
+ *
+ * Generic caps string for video, for use in pad templates.
+ *
+ * Since: 1.2
+ */
+#define GST_VIDEO_CAPS_MAKE_WITH_FEATURES(features,format)              \
+    "video/x-raw(" features "), "                                       \
     "format = (string) " format ", "                                    \
     "width = " GST_VIDEO_SIZE_RANGE ", "                                \
     "height = " GST_VIDEO_SIZE_RANGE ", "                               \

@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -375,14 +375,10 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
           gst_event_unref (event);
           event = tmpev;
         }
-
       } else if (stream) {
         GST_WARNING_OBJECT (pad, "Non-TIME segment: %s",
             gst_format_get_name (segment.format));
         gst_segment_init (&stream->segment, GST_FORMAT_UNDEFINED);
-        /* Since this stream is not time-based, we mark it so that
-         * other streams don't wait forever on it */
-        stream->wait = TRUE;
       }
       GST_STREAM_SYNCHRONIZER_UNLOCK (self);
       break;

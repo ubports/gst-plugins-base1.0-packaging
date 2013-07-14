@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -69,6 +69,7 @@
 
 #include <string.h>
 
+#include <gst/audio/audio.h>
 #include "gstaudiosink.h"
 
 GST_DEBUG_CATEGORY_STATIC (gst_audio_sink_debug);
@@ -230,11 +231,12 @@ audioringbuffer_thread_func (GstAudioRingBuffer * buf)
   if (writefunc == NULL)
     goto no_function;
 
-  g_value_init (&val, G_TYPE_POINTER);
-  g_value_set_pointer (&val, sink->thread);
   message = gst_message_new_stream_status (GST_OBJECT_CAST (buf),
       GST_STREAM_STATUS_TYPE_ENTER, GST_ELEMENT_CAST (sink));
+  g_value_init (&val, GST_TYPE_G_THREAD);
+  g_value_set_boxed (&val, sink->thread);
   gst_message_set_stream_status_object (message, &val);
+  g_value_unset (&val);
   GST_DEBUG_OBJECT (sink, "posting ENTER stream status");
   gst_element_post_message (GST_ELEMENT_CAST (sink), message);
 
@@ -306,7 +308,10 @@ stop_running:
     GST_DEBUG_OBJECT (sink, "stop running, exit thread");
     message = gst_message_new_stream_status (GST_OBJECT_CAST (buf),
         GST_STREAM_STATUS_TYPE_LEAVE, GST_ELEMENT_CAST (sink));
+    g_value_init (&val, GST_TYPE_G_THREAD);
+    g_value_set_boxed (&val, sink->thread);
     gst_message_set_stream_status_object (message, &val);
+    g_value_unset (&val);
     GST_DEBUG_OBJECT (sink, "posting LEAVE stream status");
     gst_element_post_message (GST_ELEMENT_CAST (sink), message);
     return;

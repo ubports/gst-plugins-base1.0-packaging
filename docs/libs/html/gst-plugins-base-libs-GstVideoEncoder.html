@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GstVideoEncoder</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-GstVideoDecoder.html" title="GstVideoDecoder">
@@ -101,7 +101,7 @@ GstVideoEncoder and subclass should cooperate as follows.
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Configuration</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     Initially, GstVideoEncoder calls <em class="parameter"><code>start</code></em> when the encoder element
     is activated, which allows subclass to perform any global setup.
@@ -121,7 +121,7 @@ GstVideoEncoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Data processing</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       Base class collects input data and metadata into a frame and hands
       this to subclass' <em class="parameter"><code>handle_frame</code></em>.
@@ -145,7 +145,7 @@ GstVideoEncoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Shutdown phase</b></p>
-<ul class="itemizedlist" type="disc"><li class="listitem"><p>
+<ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
     GstVideoEncoder class calls <em class="parameter"><code>stop</code></em> to inform the subclass that data
     parsing will be stopped.
   </p></li></ul>
@@ -162,7 +162,7 @@ also be able to provide fixed src pad caps in <em class="parameter"><code>getcap
 <p>
 Things that subclass need to take care of:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Provide pad templates</p></li>
 <li class="listitem"><p>
      Provide source pad caps before pushing the first buffer
@@ -217,8 +217,11 @@ The name of the templates for the sink pad.
 <p>
 Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#GstVideoEncoder" title="struct GstVideoEncoder"><span class="type">GstVideoEncoder</span></a>
@@ -243,8 +246,11 @@ The name of the templates for the source pad.
 <p>
 Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#GstVideoEncoder" title="struct GstVideoEncoder"><span class="type">GstVideoEncoder</span></a>
@@ -260,8 +266,11 @@ Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/d
 <p>
 Gives the segment of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>base parse instance</td>
@@ -276,8 +285,11 @@ Gives the segment of the element.
 <p>
 Gives the segment of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>base parse instance</td>
@@ -292,8 +304,11 @@ Gives the segment of the element.
 <p>
 Obtain a lock to protect the encoder function from concurrent access.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
 <td>video encoder instance</td>
@@ -308,8 +323,11 @@ Obtain a lock to protect the encoder function from concurrent access.
 <p>
 Release the lock that protects the encoder function from concurrent access.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
 <td>video encoder instance</td>
@@ -375,8 +393,11 @@ Subclasses can override any of the available virtual methods or not, as
 needed. At minimum <em class="parameter"><code>handle_frame</code></em> needs to be overridden, and <em class="parameter"><code>set_format</code></em>
 and <em class="parameter"><code>get_caps</code></em> are likely needed as well.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoEncoderClass.open"></a>open</code></em> ()</span></p></td>
@@ -493,8 +514,11 @@ invoke the default handler.</td>
 Helper function that allocates a buffer to hold an encoded video frame
 for <em class="parameter"><code>encoder</code></em>'s current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -529,8 +553,11 @@ state and set src pad caps.
 The buffer allocated here is owned by the frame and you should only
 keep references to the frame, not the buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -567,8 +594,11 @@ used by the base class and its <em class="parameter"><code>params</code></em>.
 <p>
 Unref the <em class="parameter"><code>allocator</code></em> after use it.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -607,8 +637,11 @@ After calling this function the output buffer of the frame is to be
 considered read-only. This function will also change the metadata
 of the buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -634,8 +667,11 @@ of the buffer.
 <p>
 Negotiate with downstream elements to currently configured <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -658,8 +694,11 @@ Negotiate with downstream elements to currently configured <a class="link" href=
 <p>
 Get a pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -685,8 +724,11 @@ Get a pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideouti
 <p>
 Get all pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -708,8 +750,11 @@ Get all pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideou
 <p>
 Get the oldest unfinished pending <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -732,8 +777,11 @@ Get the oldest unfinished pending <a class="link" href="gst-plugins-base-libs-gs
 <p>
 Set the codec headers to be sent downstream whenever requested.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -758,8 +806,11 @@ Set the codec headers to be sent downstream whenever requested.
 Query the configured encoding latency. Results will be returned via
 <em class="parameter"><code>min_latency</code></em> and <em class="parameter"><code>max_latency</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -790,8 +841,11 @@ configured maximum latency, or <a href="http://library.gnome.org/devel/glib/unst
 <p>
 Informs baseclass of encoding latency.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -849,8 +903,11 @@ pixel-aspect-ratio or framerate) it can do so on the returned <a class="link" hr
 The new output state will only take effect (set on pads and buffers) starting
 from the next call to #<a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-finish-frame" title="gst_video_encoder_finish_frame ()"><code class="function">gst_video_encoder_finish_frame()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -882,8 +939,11 @@ from the next call to #<a class="link" href="gst-plugins-base-libs-GstVideoEncod
 <p>
 Get the current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>
@@ -910,8 +970,11 @@ Returns caps that express <em class="parameter"><code>caps</code></em> (or sink 
 restricted to resolution/format/... combinations supported by downstream
 elements (e.g. muxers).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enc</code></em> :</span></p></td>
@@ -950,8 +1013,11 @@ not required to use this and can still do tag handling on its own.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encoder</code></em> :</span></p></td>

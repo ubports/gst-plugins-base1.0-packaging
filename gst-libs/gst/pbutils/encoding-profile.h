@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_PROFILE_H__
@@ -126,11 +126,14 @@ GstCaps *       gst_encoding_profile_get_format         (GstEncodingProfile *pro
 void            gst_encoding_profile_set_format         (GstEncodingProfile *profile,
                                                          GstCaps *format);
 const gchar *   gst_encoding_profile_get_preset         (GstEncodingProfile *profile);
+const gchar *   gst_encoding_profile_get_preset_name    (GstEncodingProfile *profile);
 void            gst_encoding_profile_set_preset         (GstEncodingProfile *profile,
                                                          const gchar *preset);
 guint           gst_encoding_profile_get_presence       (GstEncodingProfile *profile);
 void            gst_encoding_profile_set_presence       (GstEncodingProfile *profile,
                                                          guint presence);
+void            gst_encoding_profile_set_preset_name    (GstEncodingProfile * profile,
+                                                         const gchar * preset_name);
 GstCaps *       gst_encoding_profile_get_restriction    (GstEncodingProfile *profile);
 void            gst_encoding_profile_set_restriction    (GstEncodingProfile *profile,
                                                          GstCaps *restriction);
@@ -139,6 +142,8 @@ gboolean        gst_encoding_profile_is_equal           (GstEncodingProfile *a,
                                                          GstEncodingProfile *b);
 GstCaps *       gst_encoding_profile_get_input_caps     (GstEncodingProfile *profile);
 const gchar *   gst_encoding_profile_get_type_nick      (GstEncodingProfile *profile);
+
+const gchar *   gst_encoding_profile_get_file_extension (GstEncodingProfile * profile);
 
 GstEncodingProfile * gst_encoding_profile_find (const gchar *targetname,
                                                 const gchar *profilename,

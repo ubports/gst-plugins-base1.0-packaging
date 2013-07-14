@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -25,6 +25,7 @@
 #include <gst/check/gstcheck.h>
 
 #include <gst/rtp/gstrtpbuffer.h>
+#include <gst/rtp/gstrtphdrext.h>
 #include <gst/rtp/gstrtcpbuffer.h>
 #include <string.h>
 
@@ -758,6 +759,202 @@ GST_START_TEST (test_rtcp_buffer)
 
 GST_END_TEST;
 
+GST_START_TEST (test_rtp_ntp64_extension)
+{
+  GstBuffer *buf;
+  gpointer data;
+  guint size;
+  GstRTPBuffer rtp = { NULL, };
+  guint8 bytes[] = { 0x01, 0x23, 0x45, 0x67, 0x89, 0x01, 0x23, 0x45 };
+  guint64 ntptime;
+  guint8 hdrext_ntp64[GST_RTP_HDREXT_NTP_64_SIZE];
+
+  buf = gst_rtp_buffer_new_allocate (0, 0, 0);
+
+  gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp);
+
+  /* format extension data */
+  gst_rtp_hdrext_set_ntp_64 (hdrext_ntp64, GST_RTP_HDREXT_NTP_64_SIZE,
+      0x0123456789012345LL);
+  fail_unless (memcmp (bytes, hdrext_ntp64, sizeof (bytes)) == 0);
+
+  /* add as 1byte header */
+  gst_rtp_buffer_add_extension_onebyte_header (&rtp, 1, hdrext_ntp64,
+      GST_RTP_HDREXT_NTP_64_SIZE);
+
+  /* get extension again */
+  gst_rtp_buffer_get_extension_onebyte_header (&rtp, 1, 0, &data, &size);
+
+  /* and check */
+  fail_unless (size == GST_RTP_HDREXT_NTP_64_SIZE);
+  fail_unless (memcmp (data, hdrext_ntp64, size) == 0);
+
+  gst_rtp_hdrext_get_ntp_64 (data, size, &ntptime);
+  fail_unless (ntptime == 0x0123456789012345LL);
+
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unref (buf);
+}
+
+GST_END_TEST;
+
+GST_START_TEST (test_rtp_ntp56_extension)
+{
+  GstBuffer *buf;
+  gpointer data;
+  guint size;
+  GstRTPBuffer rtp = { NULL, };
+  guint8 bytes[] = { 0x23, 0x45, 0x67, 0x89, 0x01, 0x23, 0x45 };
+  guint64 ntptime;
+  guint8 hdrext_ntp56[GST_RTP_HDREXT_NTP_56_SIZE];
+
+  buf = gst_rtp_buffer_new_allocate (0, 0, 0);
+
+  gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp);
+
+  /* format extension data */
+  gst_rtp_hdrext_set_ntp_56 (hdrext_ntp56, GST_RTP_HDREXT_NTP_56_SIZE,
+      0x0123456789012345LL);
+  /* truncates top bits */
+  fail_unless (memcmp (bytes, hdrext_ntp56, sizeof (bytes)) == 0);
+
+  /* add as 1byte header */
+  gst_rtp_buffer_add_extension_onebyte_header (&rtp, 1, hdrext_ntp56,
+      GST_RTP_HDREXT_NTP_56_SIZE);
+
+  /* get extension again */
+  gst_rtp_buffer_get_extension_onebyte_header (&rtp, 1, 0, &data, &size);
+
+  /* and check */
+  fail_unless (size == GST_RTP_HDREXT_NTP_56_SIZE);
+  fail_unless (memcmp (data, hdrext_ntp56, size) == 0);
+
+  gst_rtp_hdrext_get_ntp_56 (data, size, &ntptime);
+  fail_unless (ntptime == 0x23456789012345LL);
+
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unref (buf);
+}
+
+GST_END_TEST;
+
+GST_START_TEST (test_rtp_buffer_get_extension_bytes)
+{
+  GstBuffer *buf;
+  guint16 bits;
+  guint size;
+  guint8 misc_data[4] = { 1, 2, 3, 4 };
+  gpointer pointer;
+  GstRTPBuffer rtp = { NULL, };
+  GBytes *gb;
+  gsize gb_size;
+
+  /* create RTP buffer without extension header */
+  buf = gst_rtp_buffer_new_allocate (4, 0, 0);
+  gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp);
+  fail_if (gst_rtp_buffer_get_extension (&rtp));
+
+  /* verify that obtaining extension data returns NULL and bits are unchanged */
+  bits = 0xabcd;
+  gb = gst_rtp_buffer_get_extension_bytes (&rtp, &bits);
+  fail_unless (gb == NULL);
+  fail_unless (bits == 0xabcd);
+
+  g_bytes_unref (gb);
+
+  /* add extension header without data and verify that
+   * an empty GBytes is returned */
+  fail_unless (gst_rtp_buffer_set_extension_data (&rtp, 270, 0));
+  fail_unless (gst_rtp_buffer_get_extension (&rtp));
+  gb = gst_rtp_buffer_get_extension_bytes (&rtp, &bits);
+  fail_unless (gb != NULL);
+  fail_unless_equals_int (g_bytes_get_size (gb), 0);
+
+  g_bytes_unref (gb);
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unref (buf);
+
+  /* create RTP buffer with extension header and extension data */
+  buf = gst_rtp_buffer_new_allocate (4, 0, 0);
+  gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp);
+  fail_unless (gst_rtp_buffer_add_extension_onebyte_header (&rtp, 5,
+          misc_data, 2));
+  fail_unless (gst_rtp_buffer_get_extension (&rtp));
+
+  /* verify that gst_rtp_buffer_get_extension_bytes returns the same
+   * header bits and data as does gst_rtp_buffer_get_extension_data */
+  fail_unless (gst_rtp_buffer_get_extension_data (&rtp, &bits, &pointer,
+          &size));
+  fail_unless (bits == 0xBEDE);
+  fail_unless (size == 1);
+  gb = gst_rtp_buffer_get_extension_bytes (&rtp, &bits);
+  fail_unless (gb != NULL);
+  fail_unless (bits == 0xBEDE);
+  fail_unless_equals_int (g_bytes_get_size (gb), size * 4);
+  fail_unless (memcmp (pointer, g_bytes_get_data (gb, &gb_size),
+          size * 4) == 0);
+  fail_unless_equals_int (gb_size, size * 4);
+
+  g_bytes_unref (gb);
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unref (buf);
+}
+
+GST_END_TEST;
+
+GST_START_TEST (test_rtp_buffer_get_payload_bytes)
+{
+  guint8 rtppacket[] = {
+    0x80, 0xe0, 0xdf, 0xd7, 0xef, 0x84, 0xbe, 0xed, 0x9b, 0xc5, 0x29, 0x14,
+    'H', 'e', 'l', 'l', 'o', '\0'
+  };
+
+  GstBuffer *buf;
+  GstMapInfo map;
+  gconstpointer data;
+  gsize size;
+  GstRTPBuffer rtp = { NULL, };
+  GBytes *gb;
+
+  /* create empty RTP buffer, i.e. no payload */
+  buf = gst_rtp_buffer_new_allocate (0, 4, 0);
+  fail_unless (buf != NULL);
+  gst_buffer_map (buf, &map, GST_MAP_READWRITE);
+  fail_unless_equals_int (map.size, RTP_HEADER_LEN + 4);
+  fail_unless (gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp));
+
+  /* verify that requesting payload data returns an empty GBytes */
+  gb = gst_rtp_buffer_get_payload_bytes (&rtp);
+  fail_unless (gb != NULL);
+  fail_unless_equals_int (g_bytes_get_size (gb), 0);
+
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unmap (buf, &map);
+  gst_buffer_unref (buf);
+
+  /* create RTP buffer containing RTP packet */
+  buf = gst_buffer_new_and_alloc (sizeof (rtppacket));
+  fail_unless (buf != NULL);
+  gst_buffer_fill (buf, 0, rtppacket, sizeof (rtppacket));
+  gst_buffer_map (buf, &map, GST_MAP_READWRITE);
+  fail_unless_equals_int (map.size, sizeof (rtppacket));
+  fail_unless (gst_rtp_buffer_map (buf, GST_MAP_READWRITE, &rtp));
+
+  /* verify that the returned GBytes contains the correct payload data */
+  gb = gst_rtp_buffer_get_payload_bytes (&rtp);
+  fail_unless (gb != NULL);
+  data = g_bytes_get_data (gb, &size);
+  fail_unless (data != NULL);
+  fail_unless (size == (sizeof (rtppacket) - RTP_HEADER_LEN));
+  fail_unless_equals_string ("Hello", data);
+
+  gst_rtp_buffer_unmap (&rtp);
+  gst_buffer_unmap (buf, &map);
+  gst_buffer_unref (buf);
+}
+
+GST_END_TEST;
+
 static Suite *
 rtp_suite (void)
 {
@@ -772,6 +969,11 @@ rtp_suite (void)
   tcase_add_test (tc_chain, test_rtp_seqnum_compare);
 
   tcase_add_test (tc_chain, test_rtcp_buffer);
+  tcase_add_test (tc_chain, test_rtp_ntp64_extension);
+  tcase_add_test (tc_chain, test_rtp_ntp56_extension);
+
+  tcase_add_test (tc_chain, test_rtp_buffer_get_payload_bytes);
+  tcase_add_test (tc_chain, test_rtp_buffer_get_extension_bytes);
 
   //tcase_add_test (tc_chain, test_rtp_buffer_list);
 

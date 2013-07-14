@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -273,11 +273,13 @@ theora_dec_parse (GstVideoDecoder * decoder,
 
   av = gst_adapter_available (adapter);
 
-  data = gst_adapter_map (adapter, 1);
-  /* check for keyframe; must not be header packet */
-  if (!(data[0] & 0x80) && (data[0] & 0x40) == 0)
-    GST_VIDEO_CODEC_FRAME_SET_SYNC_POINT (frame);
-  gst_adapter_unmap (adapter);
+  if (av > 0) {
+    data = gst_adapter_map (adapter, 1);
+    /* check for keyframe; must not be header packet */
+    if (!(data[0] & 0x80) && (data[0] & 0x40) == 0)
+      GST_VIDEO_CODEC_FRAME_SET_SYNC_POINT (frame);
+    gst_adapter_unmap (adapter);
+  }
 
   /* and pass along all */
   gst_video_decoder_add_to_frame (decoder, av);
@@ -395,7 +397,12 @@ theora_handle_type_packet (GstTheoraDec * dec)
   GstFlowReturn ret = GST_FLOW_OK;
   GstVideoCodecState *state;
   GstVideoFormat fmt;
-  GstVideoInfo *info = &dec->input_state->info;
+  GstVideoInfo *info;
+
+  if (!dec->input_state)
+    return GST_FLOW_NOT_NEGOTIATED;
+
+  info = &dec->input_state->info;
 
   GST_DEBUG_OBJECT (dec, "fps %d/%d, PAR %d/%d",
       dec->info.fps_numerator, dec->info.fps_denominator,
@@ -782,6 +789,8 @@ theora_dec_decode_buffer (GstTheoraDec * dec, GstBuffer * buf,
   if (packet.bytes && packet.packet[0] & 0x80) {
     if (dec->have_header) {
       GST_WARNING_OBJECT (GST_OBJECT (dec), "Ignoring header");
+      GST_VIDEO_CODEC_FRAME_FLAG_SET (frame,
+          GST_VIDEO_CODEC_FRAME_FLAG_DECODE_ONLY);
       result = GST_CUSTOM_FLOW_DROP;
       goto done;
     }

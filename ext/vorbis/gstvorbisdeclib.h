@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VORBIS_DEC_LIB_H__
@@ -61,6 +61,8 @@
 /* we need a different type name here */
 #define GstVorbisDec GstIVorbisDec
 #define GstVorbisDecClass GstIVorbisDecClass
+#define gst_vorbis_dec_get_type gst_ivorbis_dec_get_type
+#define gst_vorbis_get_copy_sample_func gst_ivorbis_get_copy_sample_func
 
 #endif /* TREMOR */
 
@@ -186,6 +188,6 @@ gst_ogg_packet_from_wrapper (ogg_packet_wrapper * packet)
 typedef void (*CopySampleFunc)(vorbis_sample_t *out, vorbis_sample_t **in,
                            guint samples, gint channels);
 
-CopySampleFunc get_copy_sample_func (gint channels);
+CopySampleFunc gst_vorbis_get_copy_sample_func (gint channels);
 
 #endif /* __GST_VORBIS_DEC_LIB_H__ */

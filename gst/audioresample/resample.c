@@ -88,6 +88,12 @@
 #endif
 #endif
 
+#ifdef _USE_NEON
+#ifndef HAVE_ARM_NEON
+#undef _USE_NEON
+#endif
+#endif
+
 static inline void *
 speex_alloc (int size)
 {
@@ -134,6 +140,10 @@ speex_free (void *ptr)
 #include "resample_sse.h"
 #endif
 
+#ifdef _USE_NEON
+#include "resample_neon.h"
+#endif
+
 /* Numer of elements to allocate on the stack */
 #ifdef VAR_ARRAYS
 #define FIXED_STACK_ALLOC 8192
@@ -162,6 +172,16 @@ speex_free (void *ptr)
 #define SSE2_FALLBACK(macro)
 #endif
 
+#ifdef _USE_NEON
+#define NEON_FALLBACK(macro) \
+  if (st->use_neon) goto neon_##macro##_neon; {
+#define NEON_IMPLEMENTATION(macro) \
+  goto neon_##macro##_end; } neon_##macro##_neon: {
+#define NEON_END(macro) neon_##macro##_end:; }
+#else
+#define NEON_FALLBACK(macro)
+#endif
+
 
 typedef int (*resampler_basic_func) (SpeexResamplerState *, spx_uint32_t,
     const spx_word16_t *, spx_uint32_t *, spx_word16_t *, spx_uint32_t *);
@@ -184,6 +204,7 @@ struct SpeexResamplerState_
   spx_uint32_t oversample;
   int initialised;
   int started;
+  int use_full_sinc_table;
 
   /* These are per-channel */
   spx_int32_t *last_sample;
@@ -200,6 +221,7 @@ struct SpeexResamplerState_
 
   int use_sse:1;
   int use_sse2:1;
+  int use_neon:1;
 };
 
 static double kaiser12_table[68] = {
@@ -456,6 +478,7 @@ resampler_basic_direct_single (SpeexResamplerState * st,
     const spx_word16_t *iptr = &in[last_sample];
 
     SSE_FALLBACK (INNER_PRODUCT_SINGLE)
+    NEON_FALLBACK (INNER_PRODUCT_SINGLE)
         sum = 0;
     for (j = 0; j < N; j++)
       sum += MULT16_16 (sinc[j], iptr[j]);
@@ -472,12 +495,16 @@ resampler_basic_direct_single (SpeexResamplerState * st,
       }
       sum = accum[0] + accum[1] + accum[2] + accum[3];
 */
-#ifdef OVERRIDE_INNER_PRODUCT_SINGLE
+#if defined(OVERRIDE_INNER_PRODUCT_SINGLE) && defined(_USE_NEON)
+    NEON_IMPLEMENTATION (INNER_PRODUCT_SINGLE)
+    sum = inner_product_single (sinc, iptr, N);
+    NEON_END(INNER_PRODUCT_SINGLE)
+#elif defined(OVERRIDE_INNER_PRODUCT_SINGLE) && defined(_USE_SSE)
     SSE_IMPLEMENTATION (INNER_PRODUCT_SINGLE)
         sum = inner_product_single (sinc, iptr, N);
     SSE_END (INNER_PRODUCT_SINGLE)
 #endif
-        out[out_stride * out_sample++] = SATURATE32 (PSHR32 (sum, 15), 32767);
+    out[out_stride * out_sample++] = SATURATE32PSHR(sum, 15, 32767);
     last_sample += int_advance;
     samp_frac_num += frac_advance;
     if (samp_frac_num >= den_rate) {
@@ -527,7 +554,7 @@ resampler_basic_direct_double (SpeexResamplerState * st,
       accum[3] += sinc[j + 3] * iptr[j + 3];
     }
     sum = accum[0] + accum[1] + accum[2] + accum[3];
-#ifdef OVERRIDE_INNER_PRODUCT_DOUBLE
+#if defined(OVERRIDE_INNER_PRODUCT_DOUBLE) && defined(_USE_SSE2)
     SSE2_IMPLEMENTATION (INNER_PRODUCT_DOUBLE)
         sum = inner_product_double (sinc, iptr, N);
     SSE2_END (INNER_PRODUCT_DOUBLE)
@@ -606,7 +633,7 @@ resampler_basic_interpolate_single (SpeexResamplerState * st,
             1)) + MULT16_32_Q15 (interp[1], SHR32 (accum[1],
             1)) + MULT16_32_Q15 (interp[2], SHR32 (accum[2],
             1)) + MULT16_32_Q15 (interp[3], SHR32 (accum[3], 1));
-#ifdef OVERRIDE_INTERPOLATE_PRODUCT_SINGLE
+#if defined(OVERRIDE_INTERPOLATE_PRODUCT_SINGLE) && defined(_USE_SSE)
     SSE_IMPLEMENTATION (INTERPOLATE_PRODUCT_SINGLE)
         cubic_coef (frac, interp);
     sum =
@@ -615,7 +642,7 @@ resampler_basic_interpolate_single (SpeexResamplerState * st,
         interp);
     SSE_END (INTERPOLATE_PRODUCT_SINGLE)
 #endif
-        out[out_stride * out_sample++] = SATURATE32 (PSHR32 (sum, 14), 32767);
+    out[out_stride * out_sample++] = SATURATE32PSHR(sum, 14, 32767);
     last_sample += int_advance;
     samp_frac_num += frac_advance;
     if (samp_frac_num >= den_rate) {
@@ -696,7 +723,7 @@ resampler_basic_interpolate_double (SpeexResamplerState * st,
         MULT16_32_Q15 (interp[0], accum[0]) + MULT16_32_Q15 (interp[1],
         accum[1]) + MULT16_32_Q15 (interp[2],
         accum[2]) + MULT16_32_Q15 (interp[3], accum[3]);
-#ifdef OVERRIDE_INTERPOLATE_PRODUCT_DOUBLE
+#if defined(OVERRIDE_INTERPOLATE_PRODUCT_DOUBLE) && defined(_USE_SSE2)
     SSE2_IMPLEMENTATION (INTERPOLATE_PRODUCT_DOUBLE)
         cubic_coef (frac, interp);
     sum =
@@ -754,7 +781,8 @@ update_filter (SpeexResamplerState * st)
   }
 
   /* Choose the resampling type that requires the least amount of memory */
-  if (st->den_rate <= st->oversample) {
+  /* Or if the full sinc table is explicitely requested, use that */
+  if (st->use_full_sinc_table || (st->den_rate <= st->oversample)) {
     spx_uint32_t i;
     if (!st->sinc_table)
       st->sinc_table =
@@ -918,10 +946,11 @@ update_filter (SpeexResamplerState * st)
 
 EXPORT SpeexResamplerState *
 speex_resampler_init (spx_uint32_t nb_channels, spx_uint32_t in_rate,
-    spx_uint32_t out_rate, int quality, int *err)
+    spx_uint32_t out_rate, int quality, SpeexResamplerSincFilterMode sinc_filter_mode,
+    spx_uint32_t sinc_filter_auto_threshold, int *err)
 {
   return speex_resampler_init_frac (nb_channels, in_rate, out_rate, in_rate,
-      out_rate, quality, err);
+      out_rate, quality, sinc_filter_mode, sinc_filter_auto_threshold, err);
 }
 
 #if defined HAVE_ORC && !defined DISABLE_ORC
@@ -930,25 +959,51 @@ check_insn_set (SpeexResamplerState * st, const char *name)
 {
   if (!name)
     return;
+#ifdef _USE_SSE
   if (!strcmp (name, "sse"))
     st->use_sse = 1;
+#endif
+#ifdef _USE_SSE2
   if (!strcmp (name, "sse2"))
     st->use_sse = st->use_sse2 = 1;
+#endif
+#ifdef _USE_NEON
+  if (!strcmp (name, "neon"))
+    st->use_neon = 1;
+#endif
 }
 #endif
 
 EXPORT SpeexResamplerState *
 speex_resampler_init_frac (spx_uint32_t nb_channels, spx_uint32_t ratio_num,
     spx_uint32_t ratio_den, spx_uint32_t in_rate, spx_uint32_t out_rate,
-    int quality, int *err)
+    int quality, SpeexResamplerSincFilterMode sinc_filter_mode,
+    spx_uint32_t sinc_filter_auto_threshold, int *err)
 {
   spx_uint32_t i;
   SpeexResamplerState *st;
+  int use_full_sinc_table = 0;
   if (quality > 10 || quality < 0) {
     if (err)
       *err = RESAMPLER_ERR_INVALID_ARG;
     return NULL;
   }
+  switch (sinc_filter_mode) {
+    case RESAMPLER_SINC_FILTER_INTERPOLATED:
+      use_full_sinc_table = 0;
+      break;
+    case RESAMPLER_SINC_FILTER_FULL:
+      use_full_sinc_table = 1;
+      break;
+    case RESAMPLER_SINC_FILTER_AUTO:
+      /* Handled below */
+      break;
+    default:
+      if (err)
+        *err = RESAMPLER_ERR_INVALID_ARG;
+      return NULL;
+  }
+
   st = (SpeexResamplerState *) speex_alloc (sizeof (SpeexResamplerState));
   st->initialised = 0;
   st->started = 0;
@@ -962,6 +1017,7 @@ speex_resampler_init_frac (spx_uint32_t nb_channels, spx_uint32_t ratio_num,
   st->filt_len = 0;
   st->mem = 0;
   st->resampler_ptr = 0;
+  st->use_full_sinc_table = use_full_sinc_table;
 
   st->cutoff = 1.f;
   st->nb_channels = nb_channels;
@@ -975,6 +1031,7 @@ speex_resampler_init_frac (spx_uint32_t nb_channels, spx_uint32_t ratio_num,
 #endif
 
   st->use_sse = st->use_sse2 = 0;
+  st->use_neon = 0;
 #if defined HAVE_ORC && !defined DISABLE_ORC
   orc_init ();
   {
@@ -1004,6 +1061,16 @@ speex_resampler_init_frac (spx_uint32_t nb_channels, spx_uint32_t ratio_num,
   speex_resampler_set_quality (st, quality);
   speex_resampler_set_rate_frac (st, ratio_num, ratio_den, in_rate, out_rate);
 
+  if (sinc_filter_mode == RESAMPLER_SINC_FILTER_AUTO) {
+    /*
+    Estimate how big the filter table would become if the full mode were to be used
+    calculations used correspond to the ones in update_filter()
+    if the size is bigger than the threshold, use interpolated sinc instead
+    */
+    spx_uint32_t base_filter_length = st->filt_len = quality_map[st->quality].base_length;
+    spx_uint32_t filter_table_size = base_filter_length * st->den_rate * sizeof(spx_uint16_t);
+    st->use_full_sinc_table = (filter_table_size > sinc_filter_auto_threshold) ? 0 : 1;
+  }
 
   update_filter (st);
 
@@ -1389,6 +1456,12 @@ EXPORT int
 speex_resampler_get_filt_len (SpeexResamplerState * st)
 {
   return st->filt_len;
+}
+
+EXPORT int
+speex_resampler_get_sinc_filter_mode (SpeexResamplerState * st)
+{
+  return st->use_full_sinc_table;
 }
 
 EXPORT int

@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -478,6 +478,7 @@ fill_planes (GstVideoInfo * info)
       info->size = (info->stride[0] + GST_ROUND_UP_8 (width)) * height;
       break;
     case GST_VIDEO_FORMAT_Y444:
+    case GST_VIDEO_FORMAT_GBR:
       info->stride[0] = GST_ROUND_UP_4 (width);
       info->stride[1] = info->stride[0];
       info->stride[2] = info->stride[0];
@@ -493,6 +494,13 @@ fill_planes (GstVideoInfo * info)
       info->offset[0] = 0;
       info->offset[1] = info->stride[0] * GST_ROUND_UP_2 (height);
       info->size = info->stride[0] * GST_ROUND_UP_2 (height) * 3 / 2;
+      break;
+    case GST_VIDEO_FORMAT_NV16:
+      info->stride[0] = GST_ROUND_UP_4 (width);
+      info->stride[1] = info->stride[0];
+      info->offset[0] = 0;
+      info->offset[1] = info->stride[0] * height;
+      info->size = info->stride[0] * height * 2;
       break;
     case GST_VIDEO_FORMAT_A420:
       info->stride[0] = GST_ROUND_UP_4 (width);
@@ -541,6 +549,18 @@ fill_planes (GstVideoInfo * info)
       info->offset[2] = info->offset[1] +
           info->stride[1] * GST_ROUND_UP_2 (height);
       info->size = info->offset[2] + info->stride[2] * GST_ROUND_UP_2 (height);
+      break;
+    case GST_VIDEO_FORMAT_Y444_10LE:
+    case GST_VIDEO_FORMAT_Y444_10BE:
+    case GST_VIDEO_FORMAT_GBR_10LE:
+    case GST_VIDEO_FORMAT_GBR_10BE:
+      info->stride[0] = GST_ROUND_UP_4 (width * 2);
+      info->stride[1] = info->stride[0];
+      info->stride[2] = info->stride[0];
+      info->offset[0] = 0;
+      info->offset[1] = info->stride[0] * height;
+      info->offset[2] = info->offset[1] * 2;
+      info->size = info->stride[0] * height * 3;
       break;
     case GST_VIDEO_FORMAT_ENCODED:
       break;

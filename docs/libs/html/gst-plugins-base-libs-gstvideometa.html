@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideometa</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideo.html" title="gstvideo">
@@ -38,9 +38,10 @@
 <div class="refsynopsisdiv">
 <a name="gst-plugins-base-libs-gstvideometa.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-#include &lt;&gt;gst/video/gstvideometa.h&gt;
+#include &lt;gst/video/gstvideometa.h&gt;
 
 struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta">GstVideoMeta</a>;
+                    <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMetaTransform" title="GstVideoMetaTransform">GstVideoMetaTransform</a>;
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map" title="gst_video_meta_map ()">gst_video_meta_map</a>                  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> *meta</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> plane</code></em>,
                                                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>,
@@ -70,6 +71,22 @@ const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreame
 struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoCropMeta" title="struct GstVideoCropMeta">GstVideoCropMeta</a>;
 #define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-crop-meta" title="gst_buffer_add_video_crop_meta()">gst_buffer_add_video_crop_meta</a>      (b)
 #define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-crop-meta" title="gst_buffer_get_video_crop_meta()">gst_buffer_get_video_crop_meta</a>      (b)
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUpload" title="GstVideoGLTextureUpload ()">*GstVideoGLTextureUpload</a>)          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> *meta</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);
+struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta">GstVideoGLTextureUploadMeta</a>;
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="returnvalue">GstVideoGLTextureUploadMeta</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-gl-texture-upload-meta" title="gst_buffer_add_video_gl_texture_upload_meta ()">gst_buffer_add_video_gl_texture_upload_meta</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><span class="type">GstVideoGLTextureOrientation</span> texture_orientation</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_textures</code></em>,
+                                                         <em class="parameter"><code><span class="type">GstVideoGLTextureType</span> texture_type[4]</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUpload" title="GstVideoGLTextureUpload ()"><span class="type">GstVideoGLTextureUpload</span></a> upload</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GBoxedCopyFunc"><span class="type">GBoxedCopyFunc</span></a> user_data_copy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GBoxedFreeFunc"><span class="type">GBoxedFreeFunc</span></a> user_data_free</code></em>);
+#define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-gl-texture-upload-meta" title="gst_buffer_get_video_gl_texture_upload_meta()">gst_buffer_get_video_gl_texture_upload_meta</a>(b)
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-gl-texture-upload-meta-upload" title="gst_video_gl_texture_upload_meta_upload ()">gst_video_gl_texture_upload_meta_upload</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> *meta</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -102,8 +119,11 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.htm
 <p>
 Extra buffer metadata describing image properties
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a> <em class="structfield"><code><a name="GstVideoMeta.meta"></a>meta</code></em>;</span></p></td>
@@ -161,6 +181,37 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstVideoMetaTransform"></a><h3>GstVideoMetaTransform</h3>
+<pre class="programlisting">typedef struct {
+  GstVideoInfo *in_info;
+  GstVideoInfo *out_info;
+} GstVideoMetaTransform;
+</pre>
+<p>
+Extra data passed to a video transform <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMetaTransformFunction"><span class="type">GstMetaTransformFunction</span></a> such as:
+"gst-video-scale".
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *<em class="structfield"><code><a name="GstVideoMetaTransform.in-info"></a>in_info</code></em>;</span></p></td>
+<td>the input <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *<em class="structfield"><code><a name="GstVideoMetaTransform.out-info"></a>out_info</code></em>;</span></p></td>
+<td>the output <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-video-meta-map"></a><h3>gst_video_meta_map ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_meta_map                  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> *meta</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> plane</code></em>,
@@ -172,8 +223,11 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 Map the video plane with index <em class="parameter"><code>plane</code></em> in <em class="parameter"><code>meta</code></em> and return a pointer to the
 first byte of the plane and the stride of the plane.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>meta</code></em> :</span></p></td>
@@ -219,8 +273,11 @@ first byte of the plane and the stride of the plane.
 <p>
 Unmap a previously mapped plane with <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map" title="gst_video_meta_map ()"><code class="function">gst_video_meta_map()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>meta</code></em> :</span></p></td>
@@ -264,8 +321,11 @@ default offsets and strides for <em class="parameter"><code>format</code></em> a
 This function calculates the default offsets and strides and then calls
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-meta-full" title="gst_buffer_add_video_meta_full ()"><code class="function">gst_buffer_add_video_meta_full()</code></a> with them.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -310,8 +370,11 @@ This function calculates the default offsets and strides and then calls
 <p>
 Attaches GstVideoMeta metadata to <em class="parameter"><code>buffer</code></em> with the given parameters.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -372,8 +435,11 @@ Find the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoM
 Buffers can contain multiple <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> metadata items when dealing with
 multiview buffers.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -407,8 +473,11 @@ on <em class="parameter"><code>buffer</code></em>.</td>
 <p>
 Extra buffer metadata describing image cropping.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a> <em class="structfield"><code><a name="GstVideoCropMeta.meta"></a>meta</code></em>;</span></p></td>
@@ -445,6 +514,146 @@ Extra buffer metadata describing image cropping.
 <a name="gst-buffer-get-video-crop-meta"></a><h3>gst_buffer_get_video_crop_meta()</h3>
 <pre class="programlisting">#define gst_buffer_get_video_crop_meta(b) ((GstVideoCropMeta*)gst_buffer_get_meta((b),GST_VIDEO_CROP_META_API_TYPE))
 </pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoGLTextureUpload"></a><h3>GstVideoGLTextureUpload ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (*GstVideoGLTextureUpload)          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> *meta</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoGLTextureUploadMeta"></a><h3>struct GstVideoGLTextureUploadMeta</h3>
+<pre class="programlisting">struct GstVideoGLTextureUploadMeta {
+  GstMeta       meta;
+
+  GstVideoGLTextureOrientation texture_orientation;
+  guint n_textures;
+  GstVideoGLTextureType texture_type[4];
+};
+</pre>
+<p>
+Extra buffer metadata for uploading a buffer to an OpenGL texture
+ID. The caller of <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-gl-texture-upload-meta-upload" title="gst_video_gl_texture_upload_meta_upload ()"><code class="function">gst_video_gl_texture_upload_meta_upload()</code></a> must
+have OpenGL set up and call this from a thread where it is valid
+to upload something to an OpenGL texture.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a> <em class="structfield"><code><a name="GstVideoGLTextureUploadMeta.meta"></a>meta</code></em>;</span></p></td>
+<td>parent <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">GstVideoGLTextureOrientation</span> <em class="structfield"><code><a name="GstVideoGLTextureUploadMeta.texture-orientation"></a>texture_orientation</code></em>;</span></p></td>
+<td>Orientation of the textures</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoGLTextureUploadMeta.n-textures"></a>n_textures</code></em>;</span></p></td>
+<td>Number of textures that are generated</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="type">GstVideoGLTextureType</span> <em class="structfield"><code><a name="GstVideoGLTextureUploadMeta.texture-type"></a>texture_type</code></em>[4];</span></p></td>
+<td>Type of each texture</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-add-video-gl-texture-upload-meta"></a><h3>gst_buffer_add_video_gl_texture_upload_meta ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="returnvalue">GstVideoGLTextureUploadMeta</span></a> * gst_buffer_add_video_gl_texture_upload_meta
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><span class="type">GstVideoGLTextureOrientation</span> texture_orientation</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_textures</code></em>,
+                                                         <em class="parameter"><code><span class="type">GstVideoGLTextureType</span> texture_type[4]</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUpload" title="GstVideoGLTextureUpload ()"><span class="type">GstVideoGLTextureUpload</span></a> upload</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GBoxedCopyFunc"><span class="type">GBoxedCopyFunc</span></a> user_data_copy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GBoxedFreeFunc"><span class="type">GBoxedFreeFunc</span></a> user_data_free</code></em>);</pre>
+<p>
+Attaches GstVideoGLTextureUploadMeta metadata to <em class="parameter"><code>buffer</code></em> with the given
+parameters.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>upload</code></em> :</span></p></td>
+<td>the function to upload the buffer to a specific texture ID</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data for the implementor of <em class="parameter"><code>upload</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data_copy</code></em> :</span></p></td>
+<td>function to copy <em class="parameter"><code>user_data</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data_free</code></em> :</span></p></td>
+<td>function to free <em class="parameter"><code>user_data</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> on <em class="parameter"><code>buffer</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-get-video-gl-texture-upload-meta"></a><h3>gst_buffer_get_video_gl_texture_upload_meta()</h3>
+<pre class="programlisting">#define gst_buffer_get_video_gl_texture_upload_meta(b) ((GstVideoGLTextureUploadMeta*)gst_buffer_get_meta((b),GST_VIDEO_GL_TEXTURE_UPLOAD_META_API_TYPE))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-gl-texture-upload-meta-upload"></a><h3>gst_video_gl_texture_upload_meta_upload ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_gl_texture_upload_meta_upload
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> *meta</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);</pre>
+<p>
+Uploads the buffer which owns the meta to a specific texture ID.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>meta</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>texture_id</code></em> :</span></p></td>
+<td>the texture IDs to upload to</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if uploading succeeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 </div>
 </div>

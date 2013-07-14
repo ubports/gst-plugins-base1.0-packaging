@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gsttagxmpwriter</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="prev" href="gst-plugins-base-libs-gsttagxmp.html" title="gsttagxmp">
@@ -57,7 +57,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp19265232"></a><p>
+<a name="idp23002640"></a><p>
 This interface is implemented by elements that are able to do XMP serialization. Examples for
 such elements are <span class="type">jifmux</span> and <span class="type">qtmux</span>.
 </p>
@@ -79,8 +79,11 @@ obtained from <a class="link" href="gst-plugins-base-libs-gsttagxmp.html#gst-tag
 Adds all available XMP schemas to the configuration. Meaning that
 all will be used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
 <td>a <span class="type">GstTagXmpWriter</span>
@@ -96,8 +99,11 @@ all will be used.
 <p>
 Adds <em class="parameter"><code>schema</code></em> to the list schemas
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -119,8 +125,11 @@ Adds <em class="parameter"><code>schema</code></em> to the list schemas
 <p>
 Checks if <em class="parameter"><code>schema</code></em> is going to be used
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -148,8 +157,11 @@ Checks if <em class="parameter"><code>schema</code></em> is going to be used
 Removes a schema from the list of schemas to use. Nothing is done if
 the schema wasn't in the list
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
@@ -172,8 +184,11 @@ the schema wasn't in the list
 Removes all schemas from the list of schemas to use. Meaning that no
 XMP will be generated.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
 <td>a <span class="type">GstTagXmpWriter</span>

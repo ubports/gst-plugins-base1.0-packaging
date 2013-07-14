@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>multisocketsink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-multifdsink.html" title="multifdsink">
@@ -192,9 +192,12 @@ Last reviewed on 2006-09-12 (0.10.10)
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp11357696"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="idp11997392"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -215,9 +218,12 @@ Last reviewed on 2006-09-12 (0.10.10)
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp11365264"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="idp12004960"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -462,8 +468,11 @@ multisocketsink and is received in the "client-removed" signal.
 <p>
 Hand the given open socket to multisocketsink to write to.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -495,8 +504,11 @@ Hand the given open socket to multisocketsink to write to.
 Hand the given open socket to multisocketsink to write to and
 specify the burst parameters for the new connection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -544,8 +556,11 @@ specify the burst parameters for the new connection.
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)               : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS"><code class="literal">Action</code></a></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -569,8 +584,11 @@ The given socket was added to multisocketsink. This signal will
 be emitted from the streaming thread so application should be prepared
 for that.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -604,8 +622,11 @@ be prepared for that.
 the get-stats signal from this callback. For the same reason it is
 not safe to <code class="function">close()</code> and reuse <em class="parameter"><code>socket</code></em> in this callback.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -642,8 +663,11 @@ In this callback, <em class="parameter"><code>gstmultisocketsink</code></em> has
 associated with <em class="parameter"><code>socket</code></em> and it is therefore not possible to call get-stats
 with <em class="parameter"><code>socket</code></em>. It is however safe to <code class="function">close()</code> and reuse <em class="parameter"><code>fd</code></em> in the callback.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -670,8 +694,11 @@ with <em class="parameter"><code>socket</code></em>. It is however safe to <code
 <p>
 Get statistics about <em class="parameter"><code>socket</code></em>. This function returns a GstStructure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -706,8 +733,11 @@ All times are expressed in nanoseconds (GstClockTime).</td>
 <p>
 Remove the given open socket from multisocketsink.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -734,8 +764,11 @@ Remove the given open socket from multisocketsink.
 Remove the given open socket from multisocketsink after flushing all
 the pending data to the socket.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>
@@ -760,8 +793,11 @@ the pending data to the socket.
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)               : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gstmultisocketsink</code></em> :</span></p></td>

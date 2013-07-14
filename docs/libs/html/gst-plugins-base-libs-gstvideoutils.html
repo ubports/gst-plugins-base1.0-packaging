@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideoutils</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-GstVideoEncoder.html" title="GstVideoEncoder">
@@ -96,8 +96,11 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideoutils.ht
 A <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> represents a video frame both in raw and
 encoded form.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">guint32</span> <em class="structfield"><code><a name="GstVideoCodecFrame.system-frame-number"></a>system_frame_number</code></em>;</span></p></td>
@@ -164,8 +167,11 @@ be kept.</td>
 <p>
 Flags for <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-CODEC-FRAME-FLAG-DECODE-ONLY:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_CODEC_FRAME_FLAG_DECODE_ONLY</code></span></p></td>
@@ -198,8 +204,11 @@ Flags for <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVide
 <p>
 The entire set of flags for the <em class="parameter"><code>frame</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -215,8 +224,11 @@ The entire set of flags for the <em class="parameter"><code>frame</code></em>
 <p>
 Checks whether the given <em class="parameter"><code>flag</code></em> is set
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -238,8 +250,11 @@ Checks whether the given <em class="parameter"><code>flag</code></em> is set
 <p>
 This macro sets the given bits
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -261,8 +276,11 @@ This macro sets the given bits
 <p>
 This macro usets the given bits.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -284,8 +302,11 @@ This macro usets the given bits.
 <p>
 Tests if the buffer should only be decoded but not sent downstream.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -302,8 +323,11 @@ Tests if the buffer should only be decoded but not sent downstream.
 Tests if the frame must be encoded as a keyframe. Applies only to
 frames provided to encoders. Decoders can safely ignore this field.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -324,8 +348,11 @@ resulting encoded buffer for the given frame.
 Applies only to frames provided to encoders. Decoders can safely
 ignore this field.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -344,8 +371,11 @@ Tests if the frame is a synchronization point (like a keyframe).
 <p>
 Decoder implementations can use this to detect keyframes.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -368,8 +398,11 @@ are not meant to be displayed.
 <p>
 Encoder implementation can safely ignore this field.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -404,8 +437,11 @@ Encoder implementations should set this accordingly.
 Decoder implementing parsing features should set this when they
 detect such a synchronization point.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -438,8 +474,11 @@ detect such a synchronization point.
 <p>
 Increases the refcount of the given frame by one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -461,8 +500,11 @@ Increases the refcount of the given frame by one.
 Decreases the refcount of the frame. If the refcount reaches 0, the frame
 will be freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>
@@ -484,8 +526,11 @@ the frame is freed. Allows to attach private data by the subclass to frames.
 If a <em class="parameter"><code>user_data</code></em> was previously set, then the previous set <em class="parameter"><code>notify</code></em> will be called
 before the <em class="parameter"><code>user_data</code></em> is replaced.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -512,8 +557,11 @@ before the <em class="parameter"><code>user_data</code></em> is replaced.
 Gets private data set on the frame by the subclass via
 <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-set-user-data" title="gst_video_codec_frame_set_user_data ()"><code class="function">gst_video_codec_frame_set_user_data()</code></a> previously.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -552,8 +600,11 @@ Decoders and encoders can set the downstream state, by using the
 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-set-output-state" title="gst_video_decoder_set_output_state ()"><code class="function">gst_video_decoder_set_output_state()</code></a></code></em> or
 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-set-output-state" title="gst_video_encoder_set_output_state ()"><code class="function">gst_video_encoder_set_output_state()</code></a></code></em> methods.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> <em class="structfield"><code><a name="GstVideoCodecState.info"></a>info</code></em>;</span></p></td>
@@ -579,8 +630,11 @@ Decoders and encoders can set the downstream state, by using the
 <p>
 Increases the refcount of the given state by one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
@@ -602,8 +656,11 @@ Increases the refcount of the given state by one.
 Decreases the refcount of the state. If the refcount reaches 0, the state
 will be freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a>

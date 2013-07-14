@@ -11,7 +11,7 @@ check-valgrind:
 	@true
 endif
 
-LOOPS = 10
+LOOPS ?= 10
 
 # run any given test by running make test.check
 # if the test fails, run it again at at least debug level 2
@@ -74,6 +74,17 @@ LOOPS = 10
 	--gen-suppressions=all					\
 	./$* 2>&1 | tee suppressions.log
 	
+# valgrind torture any given test
+%.valgrind-torture: %
+	@for i in `seq 1 $(LOOPS)`; do				\
+		$(MAKE) $*.valgrind ||				\
+		(echo "Failure after $$i runs"; exit 1) ||	\
+		exit 1;						\
+	done
+	@banner="All $(LOOPS) loops passed";			\
+	dashes=`echo "$$banner" | sed s/./=/g`;			\
+	echo $$dashes; echo $$banner; echo $$dashes
+
 # valgrind any given test until failure by running make test.valgrind-forever
 %.valgrind-forever: %
 	@while $(MAKE) $*.valgrind; do				\
@@ -86,9 +97,34 @@ LOOPS = 10
 	$(LIBTOOL) --mode=execute				\
 	gdb $*
 
+%.lcov-reset:
+	$(MAKE) $*.lcov-run
+	$(MAKE) $*.lcov-report
+
+%.lcov: %
+	$(MAKE) $*.lcov-reset
+
+if GST_GCOV_ENABLED
+%.lcov-clean:
+	$(MAKE) -C $(top_builddir) lcov-clean
+
+%.lcov-run:
+	$(MAKE) $*.lcov-clean
+	$(MAKE) $*.check
+
+%.lcov-report:
+	$(MAKE) -C $(top_builddir) lcov-report
+else
+%.lcov-run:
+	echo "Need to reconfigure with --enable-gcov"
+
+%.lcov-report:
+	echo "Need to reconfigure with --enable-gcov"
+endif
+
 # torture tests
 torture: $(TESTS)
-	-rm test-registry.xml
+	-rm test-registry.*
 	@echo "Torturing tests ..."
 	@for i in `seq 1 $(LOOPS)`; do				\
 		$(MAKE) check ||				\
@@ -101,7 +137,7 @@ torture: $(TESTS)
 
 # forever tests
 forever: $(TESTS)
-	-rm test-registry.xml
+	-rm test-registry.*
 	@echo "Forever tests ..."
 	@while true; do						\
 		$(MAKE) check ||				\
@@ -126,6 +162,29 @@ valgrind: $(TESTS)
 		echo "$$whicht";					\
 		false;							\
 	fi
+
+# valgrind all tests until failure
+valgrind-forever: $(TESTS)
+	-rm test-registry.*
+	@echo "Forever valgrinding tests ..."
+	@while true; do						\
+		$(MAKE) valgrind ||				\
+		(echo "Failure"; exit 1) ||			\
+		exit 1;						\
+	done
+
+# valgrind torture all tests
+valgrind-torture: $(TESTS)
+	-rm test-registry.*
+	@echo "Torturing and valgrinding tests ..."
+	@for i in `seq 1 $(LOOPS)`; do				\
+		$(MAKE) valgrind ||				\
+		(echo "Failure after $$i runs"; exit 1) ||	\
+		exit 1;						\
+	done
+	@banner="All $(LOOPS) loops passed";			\
+	dashes=`echo "$$banner" | sed s/./=/g`;			\
+	echo $$dashes; echo $$banner; echo $$dashes
 
 # valgrind all tests and generate suppressions
 valgrind.gen-suppressions: $(TESTS)
@@ -166,10 +225,13 @@ help:
 	@echo "make (dir)/(test).gdb              -- start up gdb for the given test"
 	@echo
 	@echo "make valgrind                      -- valgrind all tests"
+	@echo "make valgrind-forever              -- valgrind all tests forever"
+	@echo "make valgrind-torture              -- valgrind all tests $(LOOPS) times"
 	@echo "make valgrind.gen-suppressions     -- generate suppressions for all tests"
 	@echo "                                      and save to suppressions.log"
 	@echo "make (dir)/(test).valgrind         -- valgrind the given test"
 	@echo "make (dir)/(test).valgrind-forever -- valgrind the given test forever"
+	@echo "make (dir)/(test).valgrind-torture -- valgrind the given test $(LOOPS) times"
 	@echo "make (dir)/(test).valgrind.gen-suppressions -- generate suppressions"
 	@echo "                                               and save to suppressions.log"
 	@echo "make inspect                       -- inspect all plugin features"

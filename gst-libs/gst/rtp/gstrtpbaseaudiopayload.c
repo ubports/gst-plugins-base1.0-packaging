@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -583,7 +583,7 @@ gst_rtp_base_audio_payload_flush (GstRTPBaseAudioPayload * baseaudiopayload,
 
   if (timestamp == -1) {
     /* calculate the timestamp */
-    timestamp = gst_adapter_prev_timestamp (adapter, &distance);
+    timestamp = gst_adapter_prev_pts (adapter, &distance);
 
     GST_LOG_OBJECT (baseaudiopayload,
         "last timestamp %" GST_TIME_FORMAT ", distance %" G_GUINT64_FORMAT,

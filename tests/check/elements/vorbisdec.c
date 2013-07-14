@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include <unistd.h>
@@ -70,12 +70,18 @@ static GstElement *
 setup_vorbisdec (void)
 {
   GstElement *vorbisdec;
+  GstCaps *caps;
 
   GST_DEBUG ("setup_vorbisdec");
   vorbisdec = gst_check_setup_element ("vorbisdec");
   mysrcpad = gst_check_setup_src_pad (vorbisdec, &srctemplate);
   mysinkpad = gst_check_setup_sink_pad (vorbisdec, &sinktemplate);
   gst_pad_set_active (mysrcpad, TRUE);
+
+  caps = gst_caps_new_empty_simple ("audio/x-vorbis");
+  gst_check_setup_events (mysrcpad, vorbisdec, caps, GST_FORMAT_TIME);
+  gst_caps_unref (caps);
+
   gst_pad_set_active (mysinkpad, TRUE);
 
   return vorbisdec;

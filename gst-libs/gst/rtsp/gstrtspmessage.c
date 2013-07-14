@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /*
  * Unless otherwise indicated, Source Code is licensed under MIT license.
@@ -500,7 +500,7 @@ gst_rtsp_message_free (GstRTSPMessage * msg)
  * gst_rtsp_message_take_header:
  * @msg: a #GstRTSPMessage
  * @field: a #GstRTSPHeaderField
- * @value: the value of the header
+ * @value: (transfer full): the value of the header
  *
  * Add a header with key @field and @value to @msg. This function takes
  * ownership of @value.

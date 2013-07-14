@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstffts16</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-ffft.html" title="FFT Library">
 <link rel="prev" href="gst-plugins-base-libs-gstfft.html" title="gstfft">
@@ -109,8 +109,11 @@ the magnitude of the frequency data.
 Data type for complex numbers composed of
 signed 16 bit integers.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">gint16</span> <em class="structfield"><code><a name="GstFFTS16Complex.r"></a>r</code></em>;</span></p></td>
@@ -137,8 +140,11 @@ sense to keep one instance for several calls for speed reasons.
 2, 3 and 5. To get the next number with this characteristics use
 <a class="link" href="gst-plugins-base-libs-gstfft.html#gst-fft-next-fast-length" title="gst_fft_next_fast_length ()"><code class="function">gst_fft_next_fast_length()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
@@ -173,8 +179,11 @@ allocating the <a class="link" href="gst-plugins-base-libs-gstffts16.html#GstFFT
 <em class="parameter"><code>freqdata</code></em> must be large enough to hold <em class="parameter"><code>len</code></em>/2 + 1 <a class="link" href="gst-plugins-base-libs-gstffts16.html#GstFFTS16Complex" title="struct GstFFTS16Complex"><span class="type">GstFFTS16Complex</span></a> frequency
 domain samples.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -208,8 +217,11 @@ while allocating the <a class="link" href="gst-plugins-base-libs-gstffts16.html#
 <p>
 <em class="parameter"><code>timedata</code></em> must be large enough to hold <em class="parameter"><code>len</code></em> time domain samples.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -236,8 +248,11 @@ while allocating the <a class="link" href="gst-plugins-base-libs-gstffts16.html#
 <p>
 This calls the window function <em class="parameter"><code>window</code></em> on the <em class="parameter"><code>timedata</code></em> sample buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -262,8 +277,11 @@ This calls the window function <em class="parameter"><code>window</code></em> on
 <p>
 This frees the memory allocated for <em class="parameter"><code>self</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
 <td>

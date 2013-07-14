@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
  /**
@@ -126,13 +126,13 @@ gst_video_filter_decide_allocation (GstBaseTransform * trans, GstQuery * query)
   GstStructure *config;
   guint min, max, size;
   gboolean update_pool;
+  GstCaps *outcaps = NULL;
 
   if (gst_query_get_n_allocation_pools (query) > 0) {
     gst_query_parse_nth_allocation_pool (query, 0, &pool, &size, &min, &max);
 
     update_pool = TRUE;
   } else {
-    GstCaps *outcaps;
     GstVideoInfo vinfo;
 
     gst_query_parse_allocation (query, &outcaps, NULL);
@@ -148,6 +148,8 @@ gst_video_filter_decide_allocation (GstBaseTransform * trans, GstQuery * query)
 
   config = gst_buffer_pool_get_config (pool);
   gst_buffer_pool_config_add_option (config, GST_BUFFER_POOL_OPTION_VIDEO_META);
+  if (outcaps)
+    gst_buffer_pool_config_set_params (config, outcaps, size, 0, 0);
   gst_buffer_pool_set_config (pool, config);
 
   if (update_pool)

@@ -1,13 +1,13 @@
 # Polish translation for gst-plugins-base.
 # This file is distributed under the same license as the gst-plugins-base package.
-# Jakub Bogusz <qboosh@pld-linux.org>, 2007-2012.
+# Jakub Bogusz <qboosh@pld-linux.org>, 2007-2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.0.3\n"
+"Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-07-11 19:48+0100\n"
-"PO-Revision-Date: 2012-11-28 19:21+0100\n"
+"POT-Creation-Date: 2013-07-11 15:27+0200\n"
+"PO-Revision-Date: 2011-04-26 18:01+0200\n"
 "Last-Translator: Jakub Bogusz <qboosh@pld-linux.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
 "Language: pl\n"
@@ -82,6 +82,10 @@ msgid "Internal data stream error."
 msgstr "Błąd wewnętrzny strumienia danych."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Brak elementu '%s' - proszę sprawdzić instalację GStreamera."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Wtyczka %s jest wymagana do otworzenia tego strumienia, ale nie jest "
@@ -93,9 +97,9 @@ msgstr "Nie udało się określić typu strumienia"
 msgid "This appears to be a text file"
 msgstr "To wygląda na plik tekstowy"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Brak elementu '%s' - proszę sprawdzić instalację GStreamera."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Nie udało się utworzyć elementu \"decodebin\"."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -167,11 +171,174 @@ msgstr "Element źródłowy jest niepoprawny."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Błąd podczas wysyłania danych do \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Nie można zapisywać danych dźwiękowych wystarczająco szybko"
+
 msgid "This CD has no audio tracks"
 msgstr "Ta płyta CD nie ma ścieżek dźwiękowych"
 
-msgid "Can't record audio fast enough"
-msgstr "Nie można zapisywać danych dźwiękowych wystarczająco szybko"
+msgid "ID3 tag"
+msgstr "Znacznik ID3"
+
+msgid "APE tag"
+msgstr "Znacznik APE"
+
+msgid "ICY internet radio"
+msgstr "Radio internetowe ICY"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Speech"
+
+msgid "CYUV Lossless"
+msgstr "CYUV Lossless (bezstratne CYUV)"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Lossless MSZH"
+
+msgid "Run-length encoding"
+msgstr "Kodowanie RLE"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Format podpisów TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Format podpisów Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Format podpisów Kate"
+
+msgid "Sami subtitle format"
+msgstr "Format podpisów Sami"
+
+msgid "TMPlayer subtitle format"
+msgstr "Format podpisów TMPlayer"
+
+msgid "Kate subtitle format"
+msgstr "Format podpisów Kate"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "Nieskompresowany YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Nieskompresowany obraz w szarości"
+
+#, fuzzy, c-format
+msgid "Uncompressed %s YUV %s"
+msgstr "Nieskompresowany YUV"
+
+#, fuzzy, c-format
+msgid "Uncompressed %s%d-bit %s"
+msgstr "Nieskompresowany %d-bitowy %s z paletą"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 w wersji %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "Nieskompresowany YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Surowe %d-bitowy dźwięk PCM"
+
+msgid "Audio CD source"
+msgstr "Źródło Audio CD"
+
+msgid "DVD source"
+msgstr "Źródło DVD"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Źródło RTSP (Real Time Streaming Protocol)"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Źródło protokołu MMS (Microsoft Media Server)"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "Źródło protokołu %s"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "Depayloader obrazu RTP %s"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "Depayloader dźwięku RTP %s"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "Depayloader RTP %s"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "Demuxer %s"
+
+#, c-format
+msgid "%s decoder"
+msgstr "Dekoder %s"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "Payloader obrazu RTP %s"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "Payloader dźwięku RTP %s"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "Payloader RTP %s"
+
+#, c-format
+msgid "%s muxer"
+msgstr "Muxer %s"
+
+#, c-format
+msgid "%s encoder"
+msgstr "Koder %s"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "Element GStreamera %s"
+
+msgid "Unknown source element"
+msgstr "Nieznany element źródłowy"
+
+msgid "Unknown sink element"
+msgstr "Nieznany element pochłaniający"
+
+msgid "Unknown element"
+msgstr "Nieznany element"
+
+msgid "Unknown decoder element"
+msgstr "Nieznany element dekodujący"
+
+msgid "Unknown encoder element"
+msgstr "Nieznany element kodujący"
+
+msgid "Plugin or element of unknown type"
+msgstr "Wtyczka lub element nieznanego typu"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Nie udało się odczytać znacznika: za mało danych"
@@ -328,164 +495,146 @@ msgid "Media (image/video) intended vertical pixel density in ppi"
 msgstr "Rozdzielczość pionowa nośnika w pikselach na cal"
 
 msgid "ID3v2 frame"
-msgstr "ramka ID3v2"
+msgstr ""
 
 msgid "unparsed id3v2 tag frame"
-msgstr "ramka znacznika id3v2"
+msgstr ""
 
-msgid "ID3 tag"
-msgstr "Znacznik ID3"
+#~ msgid "Master"
+#~ msgstr "Główny"
 
-msgid "APE tag"
-msgstr "Znacznik APE"
+#~ msgid "Bass"
+#~ msgstr "Niskie"
 
-msgid "ICY internet radio"
-msgstr "Radio internetowe ICY"
+#~ msgid "Treble"
+#~ msgstr "Wysokie"
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
+#~ msgid "PCM"
+#~ msgstr "PCM"
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
+#~ msgid "Synth"
+#~ msgstr "Syntezator"
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
+#~ msgid "Line-in"
+#~ msgstr "Wejście"
 
-msgid "Windows Media Speech"
-msgstr "Windows Media Speech"
+#~ msgid "CD"
+#~ msgstr "CD"
 
-msgid "CYUV Lossless"
-msgstr "CYUV Lossless (bezstratne CYUV)"
+#~ msgid "Microphone"
+#~ msgstr "Mikrofon"
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
+#~ msgid "PC Speaker"
+#~ msgstr "Głośnik PC"
 
-msgid "Lossless MSZH"
-msgstr "Lossless MSZH"
+#~ msgid "Playback"
+#~ msgstr "Odtwarzanie"
 
-msgid "Run-length encoding"
-msgstr "Kodowanie RLE"
+#~ msgid "Capture"
+#~ msgstr "Nagrywanie"
 
-msgid "Subtitle"
-msgstr "Podpisy"
+#~ msgid "Connection to %s:%d refused."
+#~ msgstr "Połączenie z %s:%d odrzucone."
 
-msgid "MPL2 subtitle format"
-msgstr "Format podpisów MPL2"
+#~ msgid "Uncompressed planar YUV 4:2:0"
+#~ msgstr "Nieskompresowany planarny YUV 4:2:0"
 
-msgid "DKS subtitle format"
-msgstr "Format podpisów DKS"
+#~ msgid "Uncompressed planar YVU 4:2:0"
+#~ msgstr "Nieskompresowany planarny YUV 4:2:0"
 
-msgid "QTtext subtitle format"
-msgstr "Format podpisów QTtext"
+#~ msgid "Uncompressed packed YUV 4:2:2"
+#~ msgstr "Nieskompresowany spakowany YUV 4:2:2"
 
-msgid "Sami subtitle format"
-msgstr "Format podpisów Sami"
+#~ msgid "Uncompressed packed YUV 4:1:0"
+#~ msgstr "Nieskompresowany spakowany YUV 4:1:0"
 
-msgid "TMPlayer subtitle format"
-msgstr "Format podpisów TMPlayer"
+#~ msgid "Uncompressed packed YVU 4:1:0"
+#~ msgstr "Nieskompresowany spakowany YUV 4:1:0"
 
-msgid "Kate subtitle format"
-msgstr "Format podpisów Kate"
+#~ msgid "Uncompressed packed YUV 4:1:1"
+#~ msgstr "Nieskompresowany spakowany YUV 4:1:1"
 
-msgid "Uncompressed video"
-msgstr "Nieskompresowany obraz"
+#~ msgid "Uncompressed packed YUV 4:4:4"
+#~ msgstr "Nieskompresowany spakowany YUV 4:4:4"
 
-msgid "Uncompressed gray"
-msgstr "Nieskompresowane szarości"
+#~ msgid "Uncompressed planar YUV 4:2:2"
+#~ msgstr "Nieskompresowany planarny YUV 4:2:2"
 
-#, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Nieskompresowany %s YUV %s"
+#~ msgid "Uncompressed planar YUV 4:1:1"
+#~ msgstr "Nieskompresowany planarny YUV 4:1:1"
 
-#, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Nieskompresowany %s%d-bitowy %s"
+#~ msgid "Uncompressed black and white Y-plane"
+#~ msgstr "Nieskompresowany czarno-biały plan Y"
 
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 w wersji %d"
+#~ msgid "Raw PCM audio"
+#~ msgstr "Surowy dźwięk PCM"
 
-msgid "Uncompressed audio"
-msgstr "Nieskompresowany dźwięk"
+#~ msgid "Raw %d-bit floating-point audio"
+#~ msgstr "Surowy %d-bitowy dźwięk zmiennoprzecinkowy"
 
-#, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Surowy %d-bitowy dźwięk %s"
+#~ msgid "Raw floating-point audio"
+#~ msgstr "Surowy dźwięk zmiennoprzecinkowy"
 
-msgid "Audio CD source"
-msgstr "Źródło Audio CD"
+#~ msgid "Could not open vfs file \"%s\" for writing: %s."
+#~ msgstr "Nie udało się otworzyć pliku vfs \"%s\" do zapisu: %s."
 
-msgid "DVD source"
-msgstr "Źródło DVD"
+#~ msgid "No filename given"
+#~ msgstr "Nie podano nazwy pliku"
 
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Źródło RTSP (Real Time Streaming Protocol)"
+#~ msgid "Could not close vfs file \"%s\"."
+#~ msgstr "Nie udało się zamknąć pliku vfs \"%s\"."
 
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Źródło protokołu MMS (Microsoft Media Server)"
+#~ msgid "Error while writing to file \"%s\"."
+#~ msgstr "Błąd podczas zapisu do pliku \"%s\"."
 
-#, c-format
-msgid "%s protocol source"
-msgstr "Źródło protokołu %s"
+#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
+#~ msgstr "Niepoprawne URI podpisów \"%s\", podpisy wyłączone."
 
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "Depayloader obrazu RTP %s"
+#~ msgid "RTSP streams cannot be played yet."
+#~ msgstr "Strumieni RTSP jeszcze nie można odtwarzać."
 
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "Depayloader dźwięku RTP %s"
+#~ msgid ""
+#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
+#~ "file or some other type of text file, or the media file was not "
+#~ "recognized."
+#~ msgstr ""
+#~ "Wykryto tylko strumień podpisów. Albo żądano wczytania pliku podpisów lub "
+#~ "innego rodzaju pliku tekstowego, albo nie rozpoznano pliku "
+#~ "multimedialnego."
 
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "Depayloader RTP %s"
+#~ msgid ""
+#~ "You do not have a decoder installed to handle this file. You might need "
+#~ "to install the necessary plugins."
+#~ msgstr ""
+#~ "Nie ma zainstalowanego dekodera do obsługi tego pliku. Być może trzeba "
+#~ "zainstalować potrzebne wtyczki."
 
-#, c-format
-msgid "%s demuxer"
-msgstr "Demuxer %s"
+#~ msgid "This is not a media file"
+#~ msgstr "To nie jest plik multimedialny"
 
-#, c-format
-msgid "%s decoder"
-msgstr "Dekoder %s"
+#~ msgid "A subtitle stream was detected, but no video stream."
+#~ msgstr "Wykryto strumień podpisów, ale brak strumienia obrazu."
 
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "Payloader obrazu RTP %s"
+#~ msgid "Both autovideosink and xvimagesink elements are missing."
+#~ msgstr "Nie ma żadnego z elementów autovideosink i xvimagesink."
 
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "Payloader dźwięku RTP %s"
+#~ msgid "Both autoaudiosink and alsasink elements are missing."
+#~ msgstr "Nie ma żadnego z elementów autoaudiosink i alsasink."
 
-#, c-format
-msgid "%s RTP payloader"
-msgstr "Payloader RTP %s"
+#~ msgid "No device specified."
+#~ msgstr "Nie określono urządzenia."
 
-#, c-format
-msgid "%s muxer"
-msgstr "Muxer %s"
+#~ msgid "Device \"%s\" does not exist."
+#~ msgstr "Urządzenie \"%s\" nie istnieje."
 
-#, c-format
-msgid "%s encoder"
-msgstr "Koder %s"
+#~ msgid "Device \"%s\" is already being used."
+#~ msgstr "Urządzenie \"%s\" jest już używane."
 
-#, c-format
-msgid "GStreamer element %s"
-msgstr "Element GStreamera %s"
+#~ msgid "Could not open device \"%s\" for reading and writing."
+#~ msgstr "Nie udało się otworzyć urządzenia \"%s\" do odczytu i zapisu."
 
-msgid "Unknown source element"
-msgstr "Nieznany element źródłowy"
+#~ msgid "Error while sending gdp header data to \"%s:%d\"."
+#~ msgstr "Błąd podczas wysyłania danych nagłówka gdp do \"%s:%d\"."
 
-msgid "Unknown sink element"
-msgstr "Nieznany element pochłaniający"
-
-msgid "Unknown element"
-msgstr "Nieznany element"
-
-msgid "Unknown decoder element"
-msgstr "Nieznany element dekodujący"
-
-msgid "Unknown encoder element"
-msgstr "Nieznany element kodujący"
-
-msgid "Plugin or element of unknown type"
-msgstr "Wtyczka lub element nieznanego typu"
+#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
+#~ msgstr "Błąd podczas wysyłania danych gdp do \"%s:%d\"."
