@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_META_H__
@@ -29,6 +29,8 @@ G_BEGIN_DECLS
 #define GST_VIDEO_META_API_TYPE (gst_video_meta_api_get_type())
 #define GST_VIDEO_META_INFO  (gst_video_meta_get_info())
 typedef struct _GstVideoMeta GstVideoMeta;
+
+#define GST_CAPS_FEATURE_META_GST_VIDEO_META "meta:GstVideoMeta"
 
 #define GST_VIDEO_CROP_META_API_TYPE  (gst_video_crop_meta_api_get_type())
 #define GST_VIDEO_CROP_META_INFO  (gst_video_crop_meta_get_info())
@@ -127,8 +129,8 @@ GQuark gst_video_meta_transform_scale_get_quark (void);
 
 /**
  * GstVideoMetaTransform:
- * @old_info: the old #GstVideoInfo
- * @new_info: the new #GstVideoInfo
+ * @in_info: the input #GstVideoInfo
+ * @out_info: the output #GstVideoInfo
  *
  * Extra data passed to a video transform #GstMetaTransformFunction such as:
  * "gst-video-scale".
@@ -137,6 +139,89 @@ typedef struct {
   GstVideoInfo *in_info;
   GstVideoInfo *out_info;
 } GstVideoMetaTransform;
+
+/**
+ * GstVideoGLTextureType:
+ * @GST_VIDEO_GL_TEXTURE_TYPE_LUMINANCE: Luminance texture, GL_LUMINANCE
+ * @GST_VIDEO_GL_TEXTURE_TYPE_LUMINANCE_ALPHA: Luminance-alpha texture, GL_LUMINANCE_ALPHA
+ * @GST_VIDEO_GL_TEXTURE_TYPE_RGB16: RGB 565 texture, GL_RGB
+ * @GST_VIDEO_GL_TEXTURE_TYPE_RGB: RGB texture, GL_RGB
+ * @GST_VIDEO_GL_TEXTURE_TYPE_RGBA: RGBA texture, GL_RGBA
+ * @GST_VIDEO_GL_TEXTURE_TYPE_R: R texture, GL_RED_EXT
+ * @GST_VIDEO_GL_TEXTURE_TYPE_RG: RG texture, GL_RG_EXT
+ *
+ * The GL texture type.
+ */
+typedef enum
+{
+  GST_VIDEO_GL_TEXTURE_TYPE_LUMINANCE,
+  GST_VIDEO_GL_TEXTURE_TYPE_LUMINANCE_ALPHA,
+  GST_VIDEO_GL_TEXTURE_TYPE_RGB16,
+  GST_VIDEO_GL_TEXTURE_TYPE_RGB,
+  GST_VIDEO_GL_TEXTURE_TYPE_RGBA,
+  GST_VIDEO_GL_TEXTURE_TYPE_R,
+  GST_VIDEO_GL_TEXTURE_TYPE_RG
+} GstVideoGLTextureType;
+
+/** GstVideoGLTextureOrientation:
+ * @GST_VIDEO_GL_TEXTURE_ORIENTATION_X_NORMAL_Y_NORMAL: Top line first in memory, left row first
+ * @GST_VIDEO_GL_TEXTURE_ORIENTATION_X_NORMAL_Y_FLIP: Bottom line first in memory, left row first
+ * @GST_VIDEO_GL_TEXTURE_ORIENTATION_X_FLIP_Y_NORMAL: Top line first in memory, right row first
+ * @GST_VIDEO_GL_TEXTURE_ORIENTATION_X_FLIP_Y_FLIP: Bottom line first in memory, right row first
+ * 
+ * The orientation of the GL texture.
+ */
+typedef enum
+{
+  GST_VIDEO_GL_TEXTURE_ORIENTATION_X_NORMAL_Y_NORMAL,
+  GST_VIDEO_GL_TEXTURE_ORIENTATION_X_NORMAL_Y_FLIP,
+  GST_VIDEO_GL_TEXTURE_ORIENTATION_X_FLIP_Y_NORMAL,
+  GST_VIDEO_GL_TEXTURE_ORIENTATION_X_FLIP_Y_FLIP
+} GstVideoGLTextureOrientation;
+
+#define GST_VIDEO_GL_TEXTURE_UPLOAD_META_API_TYPE (gst_video_gl_texture_upload_meta_api_get_type())
+#define GST_VIDEO_GL_TEXTURE_UPLOAD_META_INFO  (gst_video_gl_texture_upload_meta_get_info())
+
+typedef struct _GstVideoGLTextureUploadMeta GstVideoGLTextureUploadMeta;
+typedef gboolean (*GstVideoGLTextureUpload) (GstVideoGLTextureUploadMeta *meta, guint texture_id[4]);
+
+#define GST_CAPS_FEATURE_META_GST_VIDEO_GL_TEXTURE_UPLOAD_META "meta:GstVideoGLTextureUploadMeta"
+
+/**
+ * GstVideoGLTextureUploadMeta:
+ * @meta: parent #GstMeta
+ * @texture_orientation: Orientation of the textures
+ * @n_textures: Number of textures that are generated
+ * @texture_type: Type of each texture
+ *
+ * Extra buffer metadata for uploading a buffer to an OpenGL texture
+ * ID. The caller of gst_video_gl_texture_upload_meta_upload() must
+ * have OpenGL set up and call this from a thread where it is valid
+ * to upload something to an OpenGL texture.
+ */
+
+struct _GstVideoGLTextureUploadMeta {
+  GstMeta       meta;
+
+  GstVideoGLTextureOrientation texture_orientation;
+  guint n_textures;
+  GstVideoGLTextureType texture_type[4];
+
+  /* <private> */
+  GstBuffer *buffer;
+  GstVideoGLTextureUpload upload;
+
+  gpointer      user_data;
+  GBoxedCopyFunc user_data_copy;
+  GBoxedFreeFunc user_data_free;
+};
+
+#define gst_buffer_get_video_gl_texture_upload_meta(b) ((GstVideoGLTextureUploadMeta*)gst_buffer_get_meta((b),GST_VIDEO_GL_TEXTURE_UPLOAD_META_API_TYPE))
+GstVideoGLTextureUploadMeta * gst_buffer_add_video_gl_texture_upload_meta (GstBuffer *buffer, GstVideoGLTextureOrientation texture_orientation, guint n_textures, GstVideoGLTextureType texture_type[4], GstVideoGLTextureUpload upload, gpointer user_data, GBoxedCopyFunc user_data_copy, GBoxedFreeFunc user_data_free);
+gboolean gst_video_gl_texture_upload_meta_upload (GstVideoGLTextureUploadMeta *meta, guint texture_id[4]);
+
+GType gst_video_gl_texture_upload_meta_api_get_type (void);
+const GstMetaInfo * gst_video_gl_texture_upload_meta_get_info (void);
 
 G_END_DECLS
 

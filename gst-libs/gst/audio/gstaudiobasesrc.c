@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -38,6 +38,7 @@
 
 #include <string.h>
 
+#include <gst/audio/audio.h>
 #include "gstaudiobasesrc.h"
 
 #include "gst/gst-i18n-plugin.h"
@@ -129,7 +130,8 @@ static void gst_audio_base_src_dispose (GObject * object);
 
 static GstStateChangeReturn gst_audio_base_src_change_state (GstElement *
     element, GstStateChange transition);
-
+static gboolean gst_audio_base_src_post_message (GstElement * element,
+    GstMessage * message);
 static GstClock *gst_audio_base_src_provide_clock (GstElement * elem);
 static GstClockTime gst_audio_base_src_get_time (GstClock * clock,
     GstAudioBaseSrc * src);
@@ -214,6 +216,8 @@ gst_audio_base_src_class_init (GstAudioBaseSrcClass * klass)
       GST_DEBUG_FUNCPTR (gst_audio_base_src_change_state);
   gstelement_class->provide_clock =
       GST_DEBUG_FUNCPTR (gst_audio_base_src_provide_clock);
+  gstelement_class->post_message =
+      GST_DEBUG_FUNCPTR (gst_audio_base_src_post_message);
 
   gstbasesrc_class->set_caps = GST_DEBUG_FUNCPTR (gst_audio_base_src_setcaps);
   gstbasesrc_class->event = GST_DEBUG_FUNCPTR (gst_audio_base_src_event);
@@ -764,6 +768,7 @@ gst_audio_base_src_create (GstBaseSrc * bsrc, guint64 offset, guint length,
   GstClockTime rb_timestamp = GST_CLOCK_TIME_NONE;
   GstClock *clock;
   gboolean first;
+  gboolean first_sample = src->next_sample == -1;
 
   ringbuffer = src->ringbuffer;
   spec = &ringbuffer->spec;
@@ -822,6 +827,10 @@ gst_audio_base_src_create (GstBaseSrc * bsrc, guint64 offset, guint length,
     if (read == samples)
       break;
 
+    if (g_atomic_int_get (&ringbuffer->state) ==
+        GST_AUDIO_RING_BUFFER_STATE_ERROR)
+      goto got_error;
+
     /* else something interrupted us and we wait for playing again. */
     GST_DEBUG_OBJECT (src, "wait playing");
     if (gst_base_src_wait_playing (bsrc) != GST_FLOW_OK)
@@ -860,7 +869,7 @@ gst_audio_base_src_create (GstBaseSrc * bsrc, guint64 offset, guint length,
   if (!(clock = GST_ELEMENT_CLOCK (src)))
     goto no_sync;
 
-  if (clock != src->clock) {
+  if (!GST_CLOCK_TIME_IS_VALID (rb_timestamp) && clock != src->clock) {
     /* we are slaved, check how to handle this */
     switch (src->priv->slave_method) {
       case GST_AUDIO_BASE_SRC_SLAVE_RESAMPLE:
@@ -936,7 +945,7 @@ gst_audio_base_src_create (GstBaseSrc * bsrc, guint64 offset, guint length,
          *    the first time we are ran.
          */
         if ((segment_skew >= ringbuffer->spec.segtotal) ||
-            (last_read_segment == 0)) {
+            (last_read_segment == 0) || first_sample) {
           gint new_read_segment;
           gint segment_diff;
           guint64 new_sample;
@@ -1056,9 +1065,17 @@ alloc_failed:
   }
 stopped:
   {
+    gst_buffer_unmap (buf, &info);
     gst_buffer_unref (buf);
     GST_DEBUG_OBJECT (src, "ringbuffer stopped");
     return GST_FLOW_FLUSHING;
+  }
+got_error:
+  {
+    gst_buffer_unmap (buf, &info);
+    gst_buffer_unref (buf);
+    GST_DEBUG_OBJECT (src, "ringbuffer was in error state, bailing out");
+    return GST_FLOW_ERROR;
   }
 }
 
@@ -1176,4 +1193,31 @@ open_failed:
     return GST_STATE_CHANGE_FAILURE;
   }
 
+}
+
+static gboolean
+gst_audio_base_src_post_message (GstElement * element, GstMessage * message)
+{
+  GstAudioBaseSrc *src = GST_AUDIO_BASE_SRC (element);
+  gboolean ret;
+
+  if (GST_MESSAGE_TYPE (message) == GST_MESSAGE_ERROR) {
+    GstAudioRingBuffer *ringbuffer;
+
+    GST_INFO_OBJECT (element, "subclass posted error");
+
+    ringbuffer = gst_object_ref (src->ringbuffer);
+
+    /* post message first before signalling the error to the ringbuffer, to
+     * make sure it ends up on the bus before the generic basesrc internal
+     * flow error message */
+    ret = GST_ELEMENT_CLASS (parent_class)->post_message (element, message);
+
+    g_atomic_int_set (&ringbuffer->state, GST_AUDIO_RING_BUFFER_STATE_ERROR);
+    GST_AUDIO_RING_BUFFER_SIGNAL (ringbuffer);
+    gst_object_unref (ringbuffer);
+  } else {
+    ret = GST_ELEMENT_CLASS (parent_class)->post_message (element, message);
+  }
+  return ret;
 }

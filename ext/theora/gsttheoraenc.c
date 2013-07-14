@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -58,14 +58,14 @@
 #include "config.h"
 #endif
 
-#include "gsttheoraenc.h"
-
 #include <string.h>
 #include <stdlib.h>             /* free */
 
 #include <gst/tag/tag.h>
 #include <gst/video/video.h>
 #include <gst/video/gstvideometa.h>
+
+#include "gsttheoraenc.h"
 
 #define GST_CAT_DEFAULT theoraenc_debug
 GST_DEBUG_CATEGORY_STATIC (GST_CAT_DEFAULT);
@@ -668,25 +668,13 @@ theora_set_header_on_caps (GstCaps * caps, GList * buffers)
 
   for (walk = buffers; walk; walk = walk->next) {
     buffer = walk->data;
-
-    /* mark buffer */
-    GST_BUFFER_FLAG_SET (buffer, GST_BUFFER_FLAG_HEADER);
-
-    /* Copy buffer, because we can't use the original -
-     * it creates a circular refcount with the caps<->buffers */
-    buffer = gst_buffer_copy (buffer);
-
     g_value_init (&value, GST_TYPE_BUFFER);
     gst_value_set_buffer (&value, buffer);
     gst_value_array_append_value (&array, &value);
     g_value_unset (&value);
-
-    /* Unref our copy */
-    gst_buffer_unref (buffer);
   }
 
-  gst_structure_set_value (structure, "streamheader", &array);
-  g_value_unset (&array);
+  gst_structure_take_value (structure, "streamheader", &array);
 
   return caps;
 }
@@ -853,6 +841,7 @@ theora_enc_buffer_from_header_packet (GstTheoraEnc * enc, ogg_packet * packet)
   GST_BUFFER_OFFSET_END (outbuf) = 0;
   GST_BUFFER_TIMESTAMP (outbuf) = GST_CLOCK_TIME_NONE;
   GST_BUFFER_DURATION (outbuf) = GST_CLOCK_TIME_NONE;
+  GST_BUFFER_FLAG_SET (outbuf, GST_BUFFER_FLAG_HEADER);
 
   GST_DEBUG ("created header packet buffer, %u bytes",
       (guint) gst_buffer_get_size (outbuf));
@@ -960,12 +949,16 @@ theora_enc_handle_frame (GstVideoEncoder * benc, GstVideoCodecFrame * frame)
 
   {
     th_ycbcr_buffer ycbcr;
-    gint res;
+    gint res, keyframe_interval;
     GstVideoFrame vframe;
 
     if (force_keyframe) {
-      theora_enc_reset (enc);
-      theora_enc_reset_ts (enc, running_time, frame->presentation_frame_number);
+      /* if we want a keyframe, temporarily reset the max keyframe interval
+       * to 1, which will cause libtheora to emit one. There is no API to
+       * request a keyframe at the moment. */
+      keyframe_interval = 1;
+      th_encode_ctl (enc->encoder, TH_ENCCTL_SET_KEYFRAME_FREQUENCY_FORCE,
+          &keyframe_interval, sizeof (keyframe_interval));
     }
 
     if (enc->multipass_cache_fd
@@ -996,6 +989,16 @@ theora_enc_handle_frame (GstVideoEncoder * benc, GstVideoCodecFrame * frame)
 
     ret = GST_FLOW_OK;
     while (th_encode_packetout (enc->encoder, 0, &op)) {
+      /* Reset the max keyframe interval to its original state, and reset
+       * the flag so we don't create more keyframes if we loop */
+      if (force_keyframe) {
+        keyframe_interval =
+            enc->keyframe_auto ? enc->keyframe_force : enc->keyframe_freq;
+        th_encode_ctl (enc->encoder, TH_ENCCTL_SET_KEYFRAME_FREQUENCY_FORCE,
+            &keyframe_interval, sizeof (keyframe_interval));
+        force_keyframe = FALSE;
+      }
+
       ret = theora_push_packet (enc, &op);
       if (ret != GST_FLOW_OK)
         goto beach;

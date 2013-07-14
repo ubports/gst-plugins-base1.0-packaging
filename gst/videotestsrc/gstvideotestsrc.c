@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -247,27 +247,23 @@ gst_video_test_src_class_init (GstVideoTestSrcClass * klass)
    *
    * Color to use for solid-color pattern and foreground color of other
    * patterns.  Default is white (0xffffffff).
-   *
-   * Since: 0.10.31
-   **/
+   */
   g_object_class_install_property (gobject_class, PROP_FOREGROUND_COLOR,
       g_param_spec_uint ("foreground-color", "Foreground Color",
           "Foreground color to use (big-endian ARGB)", 0, G_MAXUINT32,
           DEFAULT_FOREGROUND_COLOR,
-          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+          G_PARAM_READWRITE | GST_PARAM_CONTROLLABLE | G_PARAM_STATIC_STRINGS));
   /**
    * GstVideoTestSrc:background-color
    *
    * Color to use for background color of some patterns.  Default is
    * black (0xff000000).
-   *
-   * Since: 0.10.31
-   **/
+   */
   g_object_class_install_property (gobject_class, PROP_BACKGROUND_COLOR,
       g_param_spec_uint ("background-color", "Background Color",
           "Background color to use (big-endian ARGB)", 0, G_MAXUINT32,
           DEFAULT_BACKGROUND_COLOR,
-          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+          G_PARAM_READWRITE | GST_PARAM_CONTROLLABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_HORIZONTAL_SPEED,
       g_param_spec_int ("horizontal-speed", "Horizontal Speed",
@@ -654,34 +650,15 @@ gst_video_test_src_decide_allocation (GstBaseSrc * bsrc, GstQuery * query)
   return GST_BASE_SRC_CLASS (parent_class)->decide_allocation (bsrc, query);
 }
 
-static void
-fill_palette_RGB8P (guint32 * palette)
-{
-  /* build poor man's palette, taken from ffmpegcolorspace */
-  static const guint8 pal_value[6] = { 0x00, 0x33, 0x66, 0x99, 0xcc, 0xff };
-  gint i, r, g, b;
-
-  i = 0;
-  for (r = 0; r < 6; r++) {
-    for (g = 0; g < 6; g++) {
-      for (b = 0; b < 6; b++) {
-        palette[i++] =
-            (0xffU << 24) | (pal_value[r] << 16) | (pal_value[g] << 8) |
-            pal_value[b];
-      }
-    }
-  }
-  palette[i++] = 0;             /* 100% transparent, i == 6*6*6 */
-  while (i < 256)
-    palette[i++] = 0xff000000;
-}
-
 static gboolean
 gst_video_test_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps)
 {
   const GstStructure *structure;
   GstVideoTestSrc *videotestsrc;
   GstVideoInfo info;
+  guint i;
+  guint n_lines;
+  gint offset;
 
   videotestsrc = GST_VIDEO_TEST_SRC (bsrc);
 
@@ -711,6 +688,31 @@ gst_video_test_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps)
     videotestsrc->y_invert = y_inv;
   }
 
+  /* create chroma subsampler */
+  if (videotestsrc->subsample)
+    gst_video_chroma_resample_free (videotestsrc->subsample);
+  videotestsrc->subsample = gst_video_chroma_resample_new (0,
+      info.chroma_site, 0, info.finfo->unpack_format, -info.finfo->w_sub[2],
+      -info.finfo->h_sub[2]);
+
+  for (i = 0; i < videotestsrc->n_lines; i++)
+    g_free (videotestsrc->lines[i]);
+  g_free (videotestsrc->lines);
+
+  if (videotestsrc->subsample != NULL) {
+    gst_video_chroma_resample_get_info (videotestsrc->subsample,
+        &n_lines, &offset);
+  } else {
+    n_lines = 1;
+    offset = 0;
+  }
+
+  videotestsrc->lines = g_malloc (sizeof (gpointer) * n_lines);
+  for (i = 0; i < n_lines; i++)
+    videotestsrc->lines[i] = g_malloc ((info.width + 16) * 8);
+  videotestsrc->n_lines = n_lines;
+  videotestsrc->offset = offset;
+
   /* looks ok here */
   videotestsrc->info = info;
 
@@ -721,18 +723,10 @@ gst_video_test_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps)
   g_free (videotestsrc->tmpline2);
   g_free (videotestsrc->tmpline_u8);
   g_free (videotestsrc->tmpline_u16);
-  g_free (videotestsrc->palette);
   videotestsrc->tmpline_u8 = g_malloc (info.width + 8);
   videotestsrc->tmpline = g_malloc ((info.width + 8) * 4);
   videotestsrc->tmpline2 = g_malloc ((info.width + 8) * 4);
   videotestsrc->tmpline_u16 = g_malloc ((info.width + 16) * 8);
-
-  if (GST_VIDEO_INFO_FORMAT (&info) == GST_VIDEO_FORMAT_RGB8P) {
-    videotestsrc->palette = g_new (guint32, 256);
-    fill_palette_RGB8P (videotestsrc->palette);
-  } else {
-    videotestsrc->palette = NULL;
-  }
 
   videotestsrc->accum_rtime += videotestsrc->running_time;
   videotestsrc->accum_frames += videotestsrc->n_frames;
@@ -847,6 +841,8 @@ gst_video_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer)
   GstVideoTestSrc *src;
   GstClockTime next_time;
   GstVideoFrame frame;
+  gconstpointer pal;
+  gsize palsize;
 
   src = GST_VIDEO_TEST_SRC (psrc);
 
@@ -864,17 +860,20 @@ gst_video_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer)
   if (!gst_video_frame_map (&frame, &src->info, buffer, GST_MAP_WRITE))
     goto invalid_frame;
 
-  src->make_image (src, &frame);
-
-  if (src->palette) {
-    memcpy (GST_VIDEO_FRAME_PLANE_DATA (&frame, 1), src->palette, 256 * 4);
-  }
-
-  gst_video_frame_unmap (&frame);
-
   GST_BUFFER_DTS (buffer) =
       src->accum_rtime + src->timestamp_offset + src->running_time;
   GST_BUFFER_PTS (buffer) = GST_BUFFER_DTS (buffer);
+
+  gst_object_sync_values (GST_OBJECT (psrc), GST_BUFFER_DTS (buffer));
+
+  src->make_image (src, &frame);
+
+  if ((pal = gst_video_format_get_palette (GST_VIDEO_FRAME_FORMAT (&frame),
+              &palsize))) {
+    memcpy (GST_VIDEO_FRAME_PLANE_DATA (&frame, 1), pal, palsize);
+  }
+
+  gst_video_frame_unmap (&frame);
 
   GST_DEBUG_OBJECT (src, "Timestamp: %" GST_TIME_FORMAT " = accumulated %"
       GST_TIME_FORMAT " + offset: %"
@@ -934,6 +933,7 @@ static gboolean
 gst_video_test_src_stop (GstBaseSrc * basesrc)
 {
   GstVideoTestSrc *src = GST_VIDEO_TEST_SRC (basesrc);
+  guint i;
 
   g_free (src->tmpline);
   src->tmpline = NULL;
@@ -943,8 +943,15 @@ gst_video_test_src_stop (GstBaseSrc * basesrc)
   src->tmpline_u8 = NULL;
   g_free (src->tmpline_u16);
   src->tmpline_u16 = NULL;
-  g_free (src->palette);
-  src->palette = NULL;
+  if (src->subsample)
+    gst_video_chroma_resample_free (src->subsample);
+  src->subsample = NULL;
+
+  for (i = 0; i < src->n_lines; i++)
+    g_free (src->lines[i]);
+  g_free (src->lines);
+  src->n_lines = 0;
+  src->lines = NULL;
 
   return TRUE;
 }

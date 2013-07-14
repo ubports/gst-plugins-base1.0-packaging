@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -157,12 +157,17 @@ static SubParseInputChunk srt_input3[] = {
 static void
 setup_subparse (void)
 {
+  GstSegment segment;
   subparse = gst_check_setup_element ("subparse");
 
   mysrcpad = gst_check_setup_src_pad (subparse, &srctemplate);
   mysinkpad = gst_check_setup_sink_pad (subparse, &sinktemplate);
 
   gst_pad_set_active (mysrcpad, TRUE);
+
+  gst_segment_init (&segment, GST_FORMAT_BYTES);
+  gst_pad_push_event (mysrcpad, gst_event_new_stream_start ("test"));
+  gst_pad_push_event (mysrcpad, gst_event_new_segment (&segment));
   gst_pad_set_active (mysinkpad, TRUE);
 
   fail_unless_equals_int (gst_element_set_state (subparse, GST_STATE_PLAYING),

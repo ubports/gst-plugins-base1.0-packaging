@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -110,11 +110,11 @@
 
 /* TODO
  *
- * * Change _set_output_format() to steal the reference of the provided caps
  * * Calculate actual latency based on input/output timestamp/frame_number
  *   and if it exceeds the recorded one, save it and emit a GST_MESSAGE_LATENCY
  */
 
+#include <gst/video/video.h>
 #include "gstvideoencoder.h"
 #include "gstvideoutils.h"
 
@@ -1451,6 +1451,7 @@ gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
   GstVideoCodecState *state = encoder->priv->output_state;
   GstVideoInfo *info = &state->info;
   GstQuery *query = NULL;
+  GstVideoCodecFrame *frame;
 
   g_return_val_if_fail (state->caps != NULL, FALSE);
 
@@ -1475,6 +1476,34 @@ gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
       gst_caps_set_simple (state->caps, "codec_data", GST_TYPE_BUFFER,
           state->codec_data, NULL);
     encoder->priv->output_state_changed = FALSE;
+  }
+
+  /* Push all pending pre-caps events of the oldest frame before
+   * setting caps */
+  frame = encoder->priv->frames ? encoder->priv->frames->data : NULL;
+  if (frame || encoder->priv->current_frame_events) {
+    GList **events, *l;
+
+    if (frame) {
+      events = &frame->events;
+    } else {
+      events = &encoder->priv->current_frame_events;
+    }
+
+    ret = FALSE;
+    for (l = g_list_last (*events); l;) {
+      GstEvent *event = GST_EVENT (l->data);
+      GList *tmp;
+
+      if (GST_EVENT_TYPE (event) < GST_EVENT_CAPS) {
+        gst_video_encoder_push_event (encoder, event);
+        tmp = l;
+        l = l->prev;
+        *events = g_list_delete_link (*events, tmp);
+      } else {
+        l = l->prev;
+      }
+    }
   }
 
   ret = gst_pad_set_caps (encoder->srcpad, state->caps);
@@ -1538,6 +1567,7 @@ gst_video_encoder_negotiate (GstVideoEncoder * encoder)
   gboolean ret = TRUE;
 
   g_return_val_if_fail (GST_IS_VIDEO_ENCODER (encoder), FALSE);
+  g_return_val_if_fail (encoder->priv->output_state, FALSE);
 
   klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
 
@@ -1571,12 +1601,27 @@ gst_video_encoder_allocate_output_buffer (GstVideoEncoder * encoder, gsize size)
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
   if (G_UNLIKELY (encoder->priv->output_state_changed
           || (encoder->priv->output_state
-              && gst_pad_check_reconfigure (encoder->srcpad))))
-    gst_video_encoder_negotiate (encoder);
+              && gst_pad_check_reconfigure (encoder->srcpad)))) {
+    if (!gst_video_encoder_negotiate (encoder)) {
+      GST_DEBUG_OBJECT (encoder, "Failed to negotiate, fallback allocation");
+      goto fallback;
+    }
+  }
 
   buffer =
       gst_buffer_new_allocate (encoder->priv->allocator, size,
       &encoder->priv->params);
+  if (!buffer) {
+    GST_INFO_OBJECT (encoder, "couldn't allocate output buffer");
+    goto fallback;
+  }
+
+  GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+
+  return buffer;
+
+fallback:
+  buffer = gst_buffer_new_allocate (NULL, size, NULL);
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 
@@ -1678,9 +1723,15 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
 
   if (G_UNLIKELY (priv->output_state_changed || (priv->output_state
-              && gst_pad_check_reconfigure (encoder->srcpad))))
-    gst_video_encoder_negotiate (encoder);
-
+              && gst_pad_check_reconfigure (encoder->srcpad)))) {
+    if (!gst_video_encoder_negotiate (encoder)) {
+      if (GST_PAD_IS_FLUSHING (encoder->srcpad))
+        ret = GST_FLOW_FLUSHING;
+      else
+        ret = GST_FLOW_NOT_NEGOTIATED;
+      goto done;
+    }
+  }
 
   if (G_UNLIKELY (priv->output_state == NULL))
     goto no_output_state;

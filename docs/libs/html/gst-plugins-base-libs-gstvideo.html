@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideo</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gstreamer-video.html" title="Video Library">
@@ -164,10 +164,10 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-masks" title="gst_video_format_from_masks ()">gst_video_format_from_masks</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> depth</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpp</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> endianness</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> red_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> green_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> blue_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> alpha_mask</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> red_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> green_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> blue_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> alpha_mask</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-fourcc" title="gst_video_format_from_fourcc ()">gst_video_format_from_fourcc</a>        (<em class="parameter"><code><span class="type">guint32</span> fourcc</code></em>);
 <span class="returnvalue">guint32</span>             <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-fourcc" title="gst_video_format_to_fourcc ()">gst_video_format_to_fourcc</a>          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-from-string" title="gst_video_format_from_string ()">gst_video_format_from_string</a>        (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);
@@ -327,7 +327,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp29493584"></a><p>
+<a name="idp31156624"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -352,8 +352,11 @@ Given the Pixel Aspect Ratio and size of an input video frame, and the
 pixel aspect ratio of the intended display device, calculates the actual
 display ratio the video will be rendered with.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dar_n</code></em> :</span></p></td>
@@ -419,8 +422,11 @@ The output caps can be any raw video formats or any image formats (jpeg, png, ..
 <p>
 The width, height and pixel-aspect-ratio can also be specified in the output caps.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
@@ -475,8 +481,11 @@ this will always be the global default main context.
 <em class="parameter"><code>destroy_notify</code></em> will be called after the callback was called and <em class="parameter"><code>user_data</code></em> is not needed
 anymore.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sample</code></em> :</span></p></td>
@@ -525,8 +534,11 @@ Extra alignment paramters for the memory of video buffers. This
 structure is usually used to configure the bufferpool if it supports the
 <span class="type">GST_BUFFER_POOL_OPTION_VIDEO_ALIGNMENT</span>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstVideoAlignment.padding-top"></a>padding_top</code></em>;</span></p></td>
@@ -558,8 +570,11 @@ structure is usually used to configure the bufferpool if it supports the
 <p>
 Set <em class="parameter"><code>align</code></em> to its default values with no padding and no alignment.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>align</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a>
@@ -580,8 +595,11 @@ the event ends a still frame sequence.
 To parse an event created by <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-still-frame" title="gst_video_event_new_still_frame ()"><code class="function">gst_video_event_new_still_frame()</code></a> use
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-still-frame" title="gst_video_event_parse_still_frame ()"><code class="function">gst_video_event_parse_still_frame()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in_still</code></em> :</span></p></td>
@@ -610,8 +628,11 @@ event.
 <p>
 Create a still frame event using <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-still-frame" title="gst_video_event_new_still_frame ()"><code class="function">gst_video_event_new_still_frame()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
@@ -649,8 +670,11 @@ handled.
 To parse an event created by <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> use
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-downstream-force-key-unit" title="gst_video_event_parse_downstream_force_key_unit ()"><code class="function">gst_video_event_parse_downstream_force_key_unit()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>timestamp</code></em> :</span></p></td>
@@ -695,8 +719,11 @@ Get timestamp, stream-time, running-time, all-headers and count in the force
 key unit event. See <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> for a
 full description of the downstream force key unit event.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
@@ -755,8 +782,11 @@ new key unit as soon as possible.
 To parse an event created by <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-downstream-force-key-unit" title="gst_video_event_new_downstream_force_key_unit ()"><code class="function">gst_video_event_new_downstream_force_key_unit()</code></a> use
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-downstream-force-key-unit" title="gst_video_event_parse_downstream_force_key_unit ()"><code class="function">gst_video_event_parse_downstream_force_key_unit()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>running_time</code></em> :</span></p></td>
@@ -794,8 +824,11 @@ upstream force key unit event.
 <p>
 Create an upstream force key unit event using  <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-upstream-force-key-unit" title="gst_video_event_new_upstream_force_key_unit ()"><code class="function">gst_video_event_new_upstream_force_key_unit()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
@@ -832,8 +865,11 @@ Create an upstream force key unit event using  <a class="link" href="gst-plugins
 Checks if an event is a force key unit event. Returns true for both upstream
 and downstream force key unit events.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em> :</span></p></td>
@@ -897,13 +933,22 @@ and downstream force key unit events.
   GST_VIDEO_FORMAT_I420_10LE,
   GST_VIDEO_FORMAT_I422_10BE,
   GST_VIDEO_FORMAT_I422_10LE,
+  GST_VIDEO_FORMAT_Y444_10BE,
+  GST_VIDEO_FORMAT_Y444_10LE,
+  GST_VIDEO_FORMAT_GBR,
+  GST_VIDEO_FORMAT_GBR_10BE,
+  GST_VIDEO_FORMAT_GBR_10LE,
+  GST_VIDEO_FORMAT_NV16,
 } GstVideoFormat;
 </pre>
 <p>
 Enum value describing the most common video formats.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-FORMAT-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_UNKNOWN</code></span></p></td>
@@ -1135,6 +1180,36 @@ Enum value describing the most common video formats.
 <td>planar 4:2:2 YUV, 10 bits per channel
 </td>
 </tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-Y444-10BE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_Y444_10BE</code></span></p></td>
+<td>planar 4:4:4 YUV, 10 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-Y444-10LE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_Y444_10LE</code></span></p></td>
+<td>planar 4:4:4 YUV, 10 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-GBR:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_GBR</code></span></p></td>
+<td>planar 4:4:4 RGB, 8 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-GBR-10BE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_GBR_10BE</code></span></p></td>
+<td>planar 4:4:4 RGB, 10 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-GBR-10LE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_GBR_10LE</code></span></p></td>
+<td>planar 4:4:4 RGB, 10 bits per channel
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-NV16:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_NV16</code></span></p></td>
+<td>planar 4:2:2 YUV with interleaved UV plane
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1180,8 +1255,11 @@ Enum value describing the most common video formats.
 <p>
 Information for a video format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> <em class="structfield"><code><a name="GstVideoFormatInfo.format"></a>format</code></em>;</span></p></td>
@@ -1293,8 +1371,11 @@ GST_VIDEO_SUB_SCALE to scale a height.</td>
 <p>
 Various Chroma sitings.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-CHROMA-SITE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_CHROMA_SITE_UNKNOWN</code></span></p></td>
@@ -1351,8 +1432,11 @@ Various Chroma sitings.
 <p>
 Convert <em class="parameter"><code>s</code></em> to a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoChromaSite" title="enum GstVideoChromaSite"><span class="type">GstVideoChromaSite</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>s</code></em> :</span></p></td>
@@ -1373,8 +1457,11 @@ not contain a valid chroma description.</td>
 <p>
 Converts <em class="parameter"><code>site</code></em> to its string representation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>site</code></em> :</span></p></td>
@@ -1405,8 +1492,11 @@ Converts <em class="parameter"><code>site</code></em> to its string representati
 <p>
 The different video flags that a format info can have.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-FORMAT-FLAG-YUV:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_FLAG_YUV</code></span></p></td>
@@ -1464,14 +1554,18 @@ The different video flags that a format info can have.
 <a name="GstVideoPackFlags"></a><h3>enum GstVideoPackFlags</h3>
 <pre class="programlisting">typedef enum {
   GST_VIDEO_PACK_FLAG_NONE           = 0,
-  GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE = 1
+  GST_VIDEO_PACK_FLAG_TRUNCATE_RANGE = (1 &lt;&lt; 0),
+  GST_VIDEO_PACK_FLAG_INTERLACED     = (1 &lt;&lt; 1)
 } GstVideoPackFlags;
 </pre>
 <p>
 The different flags that can be used when packing and unpacking.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-PACK-FLAG-NONE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_PACK_FLAG_NONE</code></span></p></td>
@@ -1485,6 +1579,13 @@ The different flags that can be used when packing and unpacking.
   to 0. This is likely sightly faster but less accurate. When this flag
   is not specified, the most significant bits of the source are duplicated
   in the least significant bits of the destination.
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-PACK-FLAG-INTERLACED:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_PACK_FLAG_INTERLACED</code></span></p></td>
+<td>The source is interlaced. The unpacked
+  format will be interlaced as well with each line containing
+  information from alternating fields. (Since 1.2)
 </td>
 </tr>
 </tbody>
@@ -1507,8 +1608,16 @@ format <em class="parameter"><code>info</code></em>. The pixels will be unpacked
 interleaved. <em class="parameter"><code>dest</code></em> should at least be big enough to hold <em class="parameter"><code>width</code></em> *
 n_components * size(unpack_format) bytes.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+For subsampled formats, the components will be duplicated in the destination
+array. Reconstruction of the missing components can be performed in a
+separate step after unpacking.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1568,8 +1677,15 @@ This function operates on pack_lines lines, meaning that <em class="parameter"><
 contain at least pack_lines lines with a stride of <em class="parameter"><code>sstride</code></em> and <em class="parameter"><code>y</code></em>
 should be a multiple of pack_lines.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+Subsampled formats will use the horizontally cosited component in the
+destination. Subsampling should be performed before packing.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1598,7 +1714,7 @@ should be a multiple of pack_lines.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>chroma_site</code></em> :</span></p></td>
-<td>the chroma siting of the target when subsampled</td>
+<td>the chroma siting of the target when subsampled (not used)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
@@ -1802,15 +1918,18 @@ beginning of the next row is aligned in a particular way).
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>      gst_video_format_from_masks         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> depth</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpp</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> endianness</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> red_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> green_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> blue_mask</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> alpha_mask</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> red_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> green_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> blue_mask</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> alpha_mask</code></em>);</pre>
 <p>
 Find the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> for the given parameters.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
@@ -1824,7 +1943,8 @@ Find the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoForma
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>endianness</code></em> :</span></p></td>
-<td>the endianness of the masks</td>
+<td>the endianness of the masks, <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Order-Macros.html#G-LITTLE-ENDIAN:CAPS"><span class="type">G_LITTLE_ENDIAN</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Order-Macros.html#G-BIG-ENDIAN:CAPS"><span class="type">G_BIG_ENDIAN</span></a>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red_mask</code></em> :</span></p></td>
@@ -1840,7 +1960,7 @@ Find the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoForma
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>alpha_mask</code></em> :</span></p></td>
-<td>the optional alpha mask</td>
+<td>the alpha mask, or 0 if no alpha mask</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -1859,8 +1979,11 @@ Converts a FOURCC value into the corresponding <a class="link" href="gst-plugins
 If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>,
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-UNKNOWN:CAPS"><span class="type">GST_VIDEO_FORMAT_UNKNOWN</span></a> is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fourcc</code></em> :</span></p></td>
@@ -1882,8 +2005,11 @@ Converts a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFor
 a few YUV formats have corresponding FOURCC values.  If <em class="parameter"><code>format</code></em> has
 no corresponding FOURCC value, 0 is returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -1904,8 +2030,11 @@ no corresponding FOURCC value, 0 is returned.
 <p>
 Convert the <em class="parameter"><code>format</code></em> string to its <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -1931,8 +2060,11 @@ string is not a known format.</td>
 <p>
 Get the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> for <em class="parameter"><code>format</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -1970,8 +2102,11 @@ Get the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat
 <p>
 Generic caps string for video, for use in pad templates.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>string format that describes the pixel layout, as string
@@ -1992,8 +2127,11 @@ Generic caps string for video, for use in pad templates.
 Possible color range values. These constants are defined for 8 bit color
 values and can be scaled for other bit depths.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-COLOR-RANGE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_RANGE_UNKNOWN</code></span></p></td>
@@ -2030,8 +2168,11 @@ values and can be scaled for other bit depths.
 The color matrix is used to convert between Y'PbPr and
 non-linear RGB (R'G'B')
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-COLOR-MATRIX-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_MATRIX_UNKNOWN</code></span></p></td>
@@ -2087,8 +2228,11 @@ non-linear RGB (R'G'B')
 The video transfer function defines the formula for converting between
 non-linear RGB (R'G'B') and linear RGB
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-TRANSFER-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_TRANSFER_UNKNOWN</code></span></p></td>
@@ -2170,8 +2314,11 @@ non-linear RGB (R'G'B') and linear RGB
 The color primaries define the how to transform linear RGB values to and from
 the CIE XYZ colorspace.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-COLOR-PRIMARIES-UNKNOWN:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_COLOR_PRIMARIES_UNKNOWN</code></span></p></td>
@@ -2224,8 +2371,11 @@ the CIE XYZ colorspace.
 <p>
 Structure describing the color info.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoColorRange" title="enum GstVideoColorRange"><span class="type">GstVideoColorRange</span></a> <em class="structfield"><code><a name="GstVideoColorimetry.range"></a>range</code></em>;</span></p></td>
@@ -2257,8 +2407,11 @@ non-linear RGB (R'G'B')</td>
 Check if the colorimetry information in <em class="parameter"><code>info</code></em> matches that of the
 string <em class="parameter"><code>color</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2287,8 +2440,11 @@ information in <em class="parameter"><code>info</code></em>.</td>
 Parse the colorimetry string and update <em class="parameter"><code>cinfo</code></em> with the parsed
 values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cinfo</code></em> :</span></p></td>
@@ -2314,8 +2470,11 @@ values.
 <p>
 Make a string representation of <em class="parameter"><code>cinfo</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cinfo</code></em> :</span></p></td>
@@ -2346,8 +2505,11 @@ The reverse operation (c[i] * scale[i]) + offset[i] can be used to convert
 the component values in range [0.0 .. 1.0] back to their representation in
 <em class="parameter"><code>info</code></em> and <em class="parameter"><code>range</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>range</code></em> :</span></p></td>
@@ -2406,8 +2568,11 @@ to store the specific video info when mapping a video frame with
 <p>
 Use the provided macros to access the info in this structure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> *<em class="structfield"><code><a name="GstVideoInfo.finfo"></a>finfo</code></em>;</span></p></td>
@@ -2486,8 +2651,11 @@ Use the provided macros to access the info in this structure.
 The possible values of the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode" title="enum GstVideoInterlaceMode"><span class="type">GstVideoInterlaceMode</span></a> describing the interlace
 mode of the stream.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-INTERLACE-MODE-PROGRESSIVE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_INTERLACE_MODE_PROGRESSIVE</code></span></p></td>
@@ -2532,8 +2700,11 @@ mode of the stream.
 <p>
 Extra video flags
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-FLAG-NONE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FLAG_NONE</code></span></p></td>
@@ -2760,8 +2931,11 @@ Extra video flags
 <p>
 Initialize <em class="parameter"><code>info</code></em> with default values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>
@@ -2779,8 +2953,11 @@ Initialize <em class="parameter"><code>info</code></em> with default values.
 <p>
 Set the default info for a video frame of <em class="parameter"><code>format</code></em> and <em class="parameter"><code>width</code></em> and <em class="parameter"><code>height</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2810,8 +2987,11 @@ Set the default info for a video frame of <em class="parameter"><code>format</co
 <p>
 Parse <em class="parameter"><code>caps</code></em> and update <em class="parameter"><code>info</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2837,8 +3017,11 @@ Parse <em class="parameter"><code>caps</code></em> and update <em class="paramet
 <p>
 Convert the values of <em class="parameter"><code>info</code></em> into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2866,8 +3049,11 @@ GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw video, GST_FORMAT_DEFAULT corresponds to video frames.  This
 function can be used to handle pad queries of the type GST_QUERY_CONVERT.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2909,8 +3095,11 @@ function can be used to handle pad queries of the type GST_QUERY_CONVERT.
 <p>
 Compares two <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> and returns whether they are equal or not
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2943,8 +3132,11 @@ stride alignment in <em class="parameter"><code>align</code></em> is respected.
 Extra padding will be added to the right side when stride alignment padding
 is required and <em class="parameter"><code>align</code></em> will be updated with the new padding values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -2976,8 +3168,11 @@ is required and <em class="parameter"><code>align</code></em> will be updated wi
 <p>
 A video frame obtained from <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-frame-map" title="gst_video_frame_map ()"><code class="function">gst_video_frame_map()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> <em class="structfield"><code><a name="GstVideoFrame.info"></a>info</code></em>;</span></p></td>
@@ -3026,8 +3221,11 @@ indentify the frame in case of multiview video.</td>
 <p>
 Extra video frame flags
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-FRAME-FLAG-NONE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FRAME_FLAG_NONE</code></span></p></td>
@@ -3079,8 +3277,11 @@ will return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-
 All video planes of <em class="parameter"><code>buffer</code></em> will be mapped and the pointers will be set in
 <em class="parameter"><code>frame-&gt;data</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -3126,8 +3327,11 @@ Use <em class="parameter"><code>info</code></em> and <em class="parameter"><code
 All video planes of <em class="parameter"><code>buffer</code></em> will be mapped and the pointers will be set in
 <em class="parameter"><code>frame-&gt;data</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
@@ -3162,8 +3366,11 @@ All video planes of <em class="parameter"><code>buffer</code></em> will be mappe
 <p>
 Unmap the memory previously mapped with gst_video_frame_map.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>frame</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a>
@@ -3179,8 +3386,11 @@ Unmap the memory previously mapped with gst_video_frame_map.
 <p>
 Copy the contents from <em class="parameter"><code>src</code></em> to <em class="parameter"><code>dest</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
@@ -3208,8 +3418,11 @@ Copy the contents from <em class="parameter"><code>src</code></em> to <em class=
 <p>
 Copy the plane with index <em class="parameter"><code>plane</code></em> from <em class="parameter"><code>src</code></em> to <em class="parameter"><code>dest</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
@@ -3391,8 +3604,11 @@ Copy the plane with index <em class="parameter"><code>plane</code></em> from <em
 <p>
 Additional video buffer flags.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-BUFFER-FLAG-INTERLACED:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_BUFFER_FLAG_INTERLACED</code></span></p></td>
@@ -3411,14 +3627,14 @@ Additional video buffer flags.
 <tr>
 <td><p><a name="GST-VIDEO-BUFFER-FLAG-RFF:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_BUFFER_FLAG_RFF</code></span></p></td>
 <td>If the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> is interlaced, then the first field
-                                    (as defined by the <code class="literal">GST_VIDEO_BUFFER_TFF</code> flag setting)
+                                    (as defined by the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-TFF:CAPS"><code class="literal">GST_VIDEO_BUFFER_TFF</code></a> flag setting)
                                     is repeated.
 </td>
 </tr>
 <tr>
 <td><p><a name="GST-VIDEO-BUFFER-FLAG-ONEFIELD:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_BUFFER_FLAG_ONEFIELD</code></span></p></td>
 <td>If the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> is interlaced, then only the
-                                    first field (as defined by the <code class="literal">GST_VIDEO_BUFFER_TFF</code>
+                                    first field (as defined by the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-TFF:CAPS"><code class="literal">GST_VIDEO_BUFFER_TFF</code></a>
                                     flag setting) is to be displayed.
 </td>
 </tr>

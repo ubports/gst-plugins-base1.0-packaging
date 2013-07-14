@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -97,6 +97,16 @@ gst_riff_create_video_caps (guint32 codec_fcc,
       }
       break;
     }
+
+    case GST_MAKE_FOURCC ('G', 'R', 'E', 'Y'):
+    case GST_MAKE_FOURCC ('Y', '8', '0', '0'):
+    case GST_MAKE_FOURCC ('Y', '8', ' ', ' '):
+      caps = gst_caps_new_simple ("video/x-raw",
+          "format", G_TYPE_STRING, "GRAY8", NULL);
+      if (codec_name)
+        *codec_name = g_strdup ("Uncompressed 8-bit monochrome");
+      break;
+
     case GST_MAKE_FOURCC ('r', '2', '1', '0'):
       caps = gst_caps_new_simple ("video/x-raw",
           "format", G_TYPE_STRING, "r210", NULL);
@@ -534,7 +544,7 @@ gst_riff_create_video_caps (guint32 codec_fcc,
 
     case GST_MAKE_FOURCC ('W', 'M', 'V', '3'):
       caps = gst_caps_new_simple ("video/x-wmv",
-          "wmvversion", G_TYPE_INT, 3, NULL);
+          "wmvversion", G_TYPE_INT, 3, "format", G_TYPE_STRING, "WMV3", NULL);
       if (codec_name)
         *codec_name = g_strdup ("Microsoft Windows Media 9");
       break;
@@ -882,9 +892,11 @@ gst_riff_create_video_caps (guint32 codec_fcc,
   }
 
   if (strf != NULL) {
+    /* raw rgb data is stored topdown, but instead of inverting the buffer, */
+    /* some tools just negate the height field in the header (e.g. ffmpeg) */
     gst_caps_set_simple (caps,
         "width", G_TYPE_INT, strf->width,
-        "height", G_TYPE_INT, strf->height, NULL);
+        "height", G_TYPE_INT, ABS ((gint) strf->height), NULL);
   } else {
     gst_caps_set_simple (caps,
         "width", GST_TYPE_INT_RANGE, 1, G_MAXINT,
@@ -971,17 +983,12 @@ static const struct
 #define MAX_CHANNEL_POSITIONS G_N_ELEMENTS (layout_mapping)
 
 static gboolean
-gst_riff_wavext_add_channel_mask (GstCaps * caps, guint32 layout,
-    gint channel_reorder_map[18])
+gst_riff_wavext_add_channel_mask (GstCaps * caps, gint num_channels,
+    guint32 layout, gint channel_reorder_map[18])
 {
-  GstStructure *s;
-  gint num_channels, i, p;
+  gint i, p;
   guint64 channel_mask = 0;
   GstAudioChannelPosition from[18], to[18];
-
-  s = gst_caps_get_structure (caps, 0);
-  if (!gst_structure_get_int (s, "channels", &num_channels))
-    g_return_val_if_reached (FALSE);
 
   if (num_channels < 1 || num_channels > MAX_CHANNEL_POSITIONS) {
     GST_DEBUG ("invalid number of channels: %d", num_channels);
@@ -1031,10 +1038,8 @@ gst_riff_wavext_add_channel_mask (GstCaps * caps, guint32 layout,
 
 static gboolean
 gst_riff_wave_add_default_channel_mask (GstCaps * caps,
-    gint channel_reorder_map[18])
+    gint nchannels, gint channel_reorder_map[18])
 {
-  GstStructure *s;
-  gint nchannels;
   guint64 channel_mask = 0;
   static const gint reorder_maps[8][11] = {
     {0,},
@@ -1046,11 +1051,6 @@ gst_riff_wave_add_default_channel_mask (GstCaps * caps,
     {-1, -1, -1, -1, -1, -1, -1},
     {0, 1, 4, 5, 2, 3, 6, 7}
   };
-
-  s = gst_caps_get_structure (caps, 0);
-
-  if (!gst_structure_get_int (s, "channels", &nchannels))
-    g_return_val_if_reached (FALSE);
 
   if (nchannels > 8) {
     GST_DEBUG ("invalid number of channels: %d", nchannels);
@@ -1200,7 +1200,7 @@ gst_riff_create_audio_caps (guint16 codec_id,
          * 8 channels. */
         if (ch > 8)
           GST_WARNING ("don't know default layout for %d channels", ch);
-        else if (gst_riff_wave_add_default_channel_mask (caps,
+        else if (gst_riff_wave_add_default_channel_mask (caps, ch,
                 channel_reorder_map))
           GST_DEBUG ("using default channel layout for %d channels", ch);
         else
@@ -1255,7 +1255,7 @@ gst_riff_create_audio_caps (guint16 codec_id,
          * 8 channels. */
         if (ch > 8)
           GST_WARNING ("don't know default layout for %d channels", ch);
-        else if (gst_riff_wave_add_default_channel_mask (caps,
+        else if (gst_riff_wave_add_default_channel_mask (caps, ch,
                 channel_reorder_map))
           GST_DEBUG ("using default channel layout for %d channels", ch);
         else
@@ -1583,22 +1583,6 @@ gst_riff_create_audio_caps (guint16 codec_id,
                 "channels", G_TYPE_INT, strf->channels,
                 "rate", G_TYPE_INT, strf->rate, NULL);
 
-            /* If channel_mask == 0 and channels > 2 let's
-             * assume default layout as some wav files don't have the
-             * channel mask set. Don't set the layout for 1 channel. */
-            if (channel_mask == 0 && strf->channels > 1)
-              channel_mask =
-                  gst_riff_wavext_get_default_channel_mask (strf->channels);
-
-            if ((channel_mask != 0 || strf->channels > 1) &&
-                !gst_riff_wavext_add_channel_mask (caps, channel_mask,
-                    channel_reorder_map)) {
-              GST_WARNING ("failed to add channel layout");
-              gst_caps_unref (caps);
-              caps = NULL;
-            }
-            rate_chan = FALSE;
-
             if (codec_name) {
               *codec_name = g_strdup_printf ("Uncompressed %d-bit PCM audio",
                   strf->bits_per_sample);
@@ -1616,29 +1600,13 @@ gst_riff_create_audio_caps (guint16 codec_id,
                 "channels", G_TYPE_INT, strf->channels,
                 "rate", G_TYPE_INT, strf->rate, NULL);
 
-            /* If channel_mask == 0 and channels > 1 let's
-             * assume default layout as some wav files don't have the
-             * channel mask set. Don't set the layout for 1 channel. */
-            if (channel_mask == 0 && strf->channels > 1)
-              channel_mask =
-                  gst_riff_wavext_get_default_channel_mask (strf->channels);
-
-            if ((channel_mask != 0 || strf->channels > 1) &&
-                !gst_riff_wavext_add_channel_mask (caps, channel_mask,
-                    channel_reorder_map)) {
-              GST_WARNING ("failed to add channel layout");
-              gst_caps_unref (caps);
-              caps = NULL;
-            }
-            rate_chan = FALSE;
-
             if (codec_name) {
               *codec_name =
                   g_strdup_printf ("Uncompressed %d-bit IEEE float audio",
                   strf->bits_per_sample);
             }
           }
-        } else if (subformat_guid[0] == 00000006) {
+        } else if (subformat_guid[0] == 0x0000006) {
           GST_DEBUG ("ALAW");
           if (strf != NULL) {
             if (strf->bits_per_sample != 8) {
@@ -1685,6 +1653,26 @@ gst_riff_create_audio_caps (guint16 codec_id,
             *codec_name = g_strdup ("Mu-law audio");
         } else if (subformat_guid[0] == 0x00000092) {
           GST_DEBUG ("FIXME: handle DOLBY AC3 SPDIF format");
+          GST_DEBUG ("WAVE_FORMAT_EXTENSIBLE AC-3 SPDIF audio");
+          caps = gst_caps_new_empty_simple ("audio/x-ac3");
+          if (codec_name)
+            *codec_name = g_strdup ("wavext AC-3 SPDIF audio");
+        } else if (subformat_guid[0] == GST_RIFF_WAVE_FORMAT_EXTENSIBLE) {
+          GST_DEBUG ("WAVE_FORMAT_EXTENSIBLE nested");
+        } else {
+          /* recurse where no special consideration has yet to be identified 
+           * for the subformat guid */
+          caps = gst_riff_create_audio_caps (subformat_guid[0], strh, strf,
+              strf_data, strd_data, codec_name, channel_reorder_map);
+          if (!codec_name)
+            GST_DEBUG ("WAVE_FORMAT_EXTENSIBLE audio");
+          if (caps) {
+            if (codec_name) {
+              GST_DEBUG ("WAVE_FORMAT_EXTENSIBLE %s", *codec_name);
+              *codec_name = g_strjoin ("wavext ", *codec_name, NULL);
+            }
+            return caps;
+          }
         }
       } else if (subformat_guid[0] == 0x6ba47966 &&
           subformat_guid[1] == 0x41783f83 &&
@@ -1692,6 +1680,24 @@ gst_riff_create_audio_caps (guint16 codec_id,
         caps = gst_caps_new_empty_simple ("application/x-ogg-avi");
         if (codec_name)
           *codec_name = g_strdup ("Ogg-AVI");
+      }
+
+      if (strf != NULL) {
+        /* If channel_mask == 0 and channels > 1 let's
+         * assume default layout as some wav files don't have the
+         * channel mask set. Don't set the layout for 1 channel. */
+        if (channel_mask == 0 && strf->channels > 1)
+          channel_mask =
+              gst_riff_wavext_get_default_channel_mask (strf->channels);
+
+        if ((channel_mask != 0 || strf->channels > 1) &&
+            !gst_riff_wavext_add_channel_mask (caps, strf->channels,
+                channel_mask, channel_reorder_map)) {
+          GST_WARNING ("failed to add channel layout");
+          gst_caps_unref (caps);
+          caps = NULL;
+        }
+        rate_chan = FALSE;
       }
 
       if (caps == NULL) {

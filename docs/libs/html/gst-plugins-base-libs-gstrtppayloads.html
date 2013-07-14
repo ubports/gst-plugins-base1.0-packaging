@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtppayloads</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtcpbuffer.html" title="gstrtcpbuffer">
@@ -53,7 +53,7 @@ const <a class="link" href="gst-plugins-base-libs-gstrtppayloads.html#GstRTPPayl
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16194368"></a><p>
+<a name="idp17830112"></a><p>
 The GstRTPPayloads helper functions makes it easy to deal with static and dynamic
 payloads. Its main purpose is to retrieve properties such as the default clock-rate 
 and get session bandwidth information.
@@ -121,8 +121,11 @@ Video:
 unassigned: 24, 27, 29, 30, 35-71, 77-95
 Reserved for RTCP conflict avoidance: 72-76
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTP-PAYLOAD-PCMU:CAPS"></a><span class="term"><code class="literal">GST_RTP_PAYLOAD_PCMU</code></span></p></td>
@@ -265,8 +268,11 @@ Reserved for RTCP conflict avoidance: 72-76
 <p>
 Check if <em class="parameter"><code>pt</code></em> is a dynamic payload type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>pt</code></em> :</span></p></td>
 <td>a payload type</td>
@@ -288,8 +294,11 @@ Check if <em class="parameter"><code>pt</code></em> is a dynamic payload type.
 <p>
 Structure holding default payload type information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">guint8</span> <em class="structfield"><code><a name="GstRTPPayloadInfo.payload-type"></a>payload_type</code></em>;</span></p></td>
@@ -334,8 +343,11 @@ types specified with <em class="parameter"><code>media</code></em> and <em class
 <p>
 The search for <em class="parameter"><code>encoding_name</code></em> will be performed in a case insensitve way.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>media</code></em> :</span></p></td>
@@ -361,8 +373,11 @@ Get the <a class="link" href="gst-plugins-base-libs-gstrtppayloads.html#GstRTPPa
 mostly used to get the default clock-rate and bandwidth for static payload
 types specified with <em class="parameter"><code>payload_type</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload_type</code></em> :</span></p></td>

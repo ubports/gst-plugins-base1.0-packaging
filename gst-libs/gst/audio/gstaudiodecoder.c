@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -534,6 +534,29 @@ gst_audio_decoder_finalize (GObject * object)
 }
 
 static gboolean
+gst_audio_decoder_push_event (GstAudioDecoder * dec, GstEvent * event)
+{
+  switch (GST_EVENT_TYPE (event)) {
+    case GST_EVENT_SEGMENT:{
+      GstSegment seg;
+
+      GST_AUDIO_DECODER_STREAM_LOCK (dec);
+      gst_event_copy_segment (event, &seg);
+
+      GST_DEBUG_OBJECT (dec, "starting segment %" GST_SEGMENT_FORMAT, &seg);
+
+      dec->output_segment = seg;
+      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
+      break;
+    }
+    default:
+      break;
+  }
+
+  return gst_pad_push_event (dec->srcpad, event);
+}
+
+static gboolean
 gst_audio_decoder_negotiate_default (GstAudioDecoder * dec)
 {
   GstAudioDecoderClass *klass;
@@ -552,7 +575,30 @@ gst_audio_decoder_negotiate_default (GstAudioDecoder * dec)
 
   GST_DEBUG_OBJECT (dec, "setting src caps %" GST_PTR_FORMAT, caps);
 
-  res = gst_pad_set_caps (dec->srcpad, caps);
+  if (dec->priv->pending_events) {
+    GList *pending_events, *l;
+    gboolean set_caps = FALSE;
+
+    pending_events = dec->priv->pending_events;
+    dec->priv->pending_events = NULL;
+
+    GST_DEBUG_OBJECT (dec, "Pushing pending events");
+    for (l = pending_events; l; l = l->next) {
+      GstEvent *event = GST_EVENT (l->data);
+
+      if (GST_EVENT_TYPE (event) > GST_EVENT_CAPS && !set_caps) {
+        res = gst_pad_set_caps (dec->srcpad, caps);
+        set_caps = TRUE;
+      }
+      gst_audio_decoder_push_event (dec, l->data);
+    }
+    g_list_free (pending_events);
+    if (!set_caps) {
+      res = gst_pad_set_caps (dec->srcpad, caps);
+    }
+  } else {
+    res = gst_pad_set_caps (dec->srcpad, caps);
+  }
 
   if (!res)
     goto done;
@@ -917,29 +963,6 @@ again:
   return ret;
 }
 
-static gboolean
-gst_audio_decoder_push_event (GstAudioDecoder * dec, GstEvent * event)
-{
-  switch (GST_EVENT_TYPE (event)) {
-    case GST_EVENT_SEGMENT:{
-      GstSegment seg;
-
-      GST_AUDIO_DECODER_STREAM_LOCK (dec);
-      gst_event_copy_segment (event, &seg);
-
-      GST_DEBUG_OBJECT (dec, "starting segment %" GST_SEGMENT_FORMAT, &seg);
-
-      dec->output_segment = seg;
-      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
-      break;
-    }
-    default:
-      break;
-  }
-
-  return gst_pad_push_event (dec->srcpad, event);
-}
-
 static void
 send_pending_events (GstAudioDecoder * dec)
 {
@@ -1010,7 +1033,10 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
           (GST_AUDIO_INFO_IS_VALID (&ctx->info)
               && gst_pad_check_reconfigure (dec->srcpad)))) {
     if (!gst_audio_decoder_negotiate (dec)) {
-      ret = GST_FLOW_NOT_NEGOTIATED;
+      if (GST_PAD_IS_FLUSHING (dec->srcpad))
+        ret = GST_FLOW_FLUSHING;
+      else
+        ret = GST_FLOW_NOT_NEGOTIATED;
       goto exit;
     }
   }
@@ -1244,7 +1270,7 @@ gst_audio_decoder_push_buffers (GstAudioDecoder * dec, gboolean force)
         len = av;
       }
       /* track upstream ts, but do not get stuck if nothing new upstream */
-      ts = gst_adapter_prev_timestamp (priv->adapter, &distance);
+      ts = gst_adapter_prev_pts (priv->adapter, &distance);
       if (ts != priv->prev_ts || distance <= priv->prev_distance) {
         priv->prev_ts = ts;
         priv->prev_distance = distance;
@@ -1503,13 +1529,20 @@ gst_audio_decoder_flush_decode (GstAudioDecoder * dec)
   timestamp = GST_CLOCK_TIME_NONE;
   while (priv->queued) {
     GstBuffer *buf = GST_BUFFER_CAST (priv->queued->data);
+    GstClockTime duration;
+
+    duration = GST_BUFFER_DURATION (buf);
 
     /* duration should always be valid for raw audio */
-    g_assert (GST_BUFFER_DURATION_IS_VALID (buf));
+    g_assert (GST_CLOCK_TIME_IS_VALID (duration));
 
     /* interpolate (backward) if needed */
-    if (G_LIKELY (timestamp != -1))
-      timestamp -= GST_BUFFER_DURATION (buf);
+    if (G_LIKELY (timestamp != -1)) {
+      if (timestamp > duration)
+        timestamp -= duration;
+      else
+        timestamp = 0;
+    }
 
     if (!GST_BUFFER_TIMESTAMP_IS_VALID (buf)) {
       GST_LOG_OBJECT (dec, "applying reverse interpolated ts %"
@@ -1665,6 +1698,13 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
   gboolean ret;
 
   switch (GST_EVENT_TYPE (event)) {
+    case GST_EVENT_STREAM_START:
+      GST_AUDIO_DECODER_STREAM_LOCK (dec);
+      gst_audio_decoder_drain (dec);
+      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
+
+      ret = gst_audio_decoder_push_event (dec, event);
+      break;
     case GST_EVENT_SEGMENT:
     {
       GstSegment seg;
@@ -2948,15 +2988,25 @@ gst_audio_decoder_allocate_output_buffer (GstAudioDecoder * dec, gsize size)
   if (G_UNLIKELY (dec->priv->ctx.output_format_changed ||
           (GST_AUDIO_INFO_IS_VALID (&dec->priv->ctx.info)
               && gst_pad_check_reconfigure (dec->srcpad)))) {
-    if (!gst_audio_decoder_negotiate (dec))
-      goto done;
+    if (!gst_audio_decoder_negotiate (dec)) {
+      GST_INFO_OBJECT (dec, "Failed to negotiate, fallback allocation");
+      goto fallback;
+    }
   }
 
   buffer =
       gst_buffer_new_allocate (dec->priv->ctx.allocator, size,
       &dec->priv->ctx.params);
+  if (!buffer) {
+    GST_INFO_OBJECT (dec, "couldn't allocate output buffer");
+    goto fallback;
+  }
 
-done:
+  GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
+
+  return buffer;
+fallback:
+  buffer = gst_buffer_new_allocate (NULL, size, NULL);
   GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
 
   return buffer;

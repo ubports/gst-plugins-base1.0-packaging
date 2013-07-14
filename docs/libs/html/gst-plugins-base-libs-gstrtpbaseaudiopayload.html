@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtpbaseaudiopayload</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gstreamer-rtp.html" title="RTP Library">
@@ -110,7 +110,7 @@ RTP packets always contain full frames.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp14931920"></a><h3>Usage</h3>
+<a name="idp15980400"></a><h3>Usage</h3>
 <p>
 To use this base class, your child element needs to call either
 <a class="link" href="gst-plugins-base-libs-gstrtpbaseaudiopayload.html#gst-rtp-base-audio-payload-set-frame-based" title="gst_rtp_base_audio_payload_set_frame_based ()"><code class="function">gst_rtp_base_audio_payload_set_frame_based()</code></a> or
@@ -144,8 +144,11 @@ specific to GstRTPBaseAudioPayload.
 <p>
 Base class for audio RTP payloader.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayloadClass" title="struct GstRTPBasePayloadClass"><span class="type">GstRTPBasePayloadClass</span></a> <em class="structfield"><code><a name="GstRTPBaseAudioPayloadClass.parent-class"></a>parent_class</code></em>;</span></p></td>
 <td>the parent class</td>
@@ -161,8 +164,11 @@ Base class for audio RTP payloader.
 Tells <a class="link" href="gst-plugins-base-libs-gstrtpbaseaudiopayload.html#GstRTPBaseAudioPayload"><span class="type">GstRTPBaseAudioPayload</span></a> that the child element is for a frame based
 audio codec
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>
 <td>a pointer to the element.</td>
@@ -179,8 +185,11 @@ audio codec
 <p>
 Sets the options for frame based audio codecs.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>
@@ -206,8 +215,11 @@ Sets the options for frame based audio codecs.
 Tells <a class="link" href="gst-plugins-base-libs-gstrtpbaseaudiopayload.html#GstRTPBaseAudioPayload"><span class="type">GstRTPBaseAudioPayload</span></a> that the child element is for a sample based
 audio codec
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>
 <td>a pointer to the element.</td>
@@ -223,8 +235,11 @@ audio codec
 <p>
 Sets the options for sample based audio codecs.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>
@@ -245,8 +260,11 @@ Sets the options for sample based audio codecs.
 <p>
 Gets the internal adapter used by the depayloader.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>
@@ -273,8 +291,11 @@ Create an RTP buffer and store <em class="parameter"><code>payload_len</code></e
 payload. Set the timestamp on the new buffer to <em class="parameter"><code>timestamp</code></em> before pushing
 the buffer downstream.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>baseaudiopayload</code></em> :</span></p></td>
@@ -317,8 +338,11 @@ the buffer downstream.
 If <em class="parameter"><code>payload_len</code></em> is -1, all pending bytes will be flushed. If <em class="parameter"><code>timestamp</code></em> is
 -1, the timestamp will be calculated automatically.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>baseaudiopayload</code></em> :</span></p></td>
@@ -351,8 +375,11 @@ If <em class="parameter"><code>payload_len</code></em> is -1, all pending bytes 
 <p>
 Sets the options for sample based audio codecs.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtpbaseaudiopayload</code></em> :</span></p></td>

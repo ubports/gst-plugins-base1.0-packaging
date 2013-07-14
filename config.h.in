@@ -92,6 +92,9 @@
 /* Define to enable ALSA (used by alsa). */
 #undef HAVE_ALSA
 
+/* ARM NEON support is enabled */
+#undef HAVE_ARM_NEON
+
 /* Define to enable CDParanoia (used by cdparanoia). */
 #undef HAVE_CDPARANOIA
 
@@ -208,6 +211,9 @@
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
+
+/* Defined if mmap is supported */
+#undef HAVE_MMAP
 
 /* Define to enable Xiph Ogg library (used by ogg). */
 #undef HAVE_OGG

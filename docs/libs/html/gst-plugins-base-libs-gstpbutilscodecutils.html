@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstpbutilscodecutils</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpluginsbaseversion.html" title="gstpluginsbaseversion">
@@ -78,7 +78,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="idp21881520"></a><p>
+<a name="idp23255856"></a><p>
 Provides codec-specific ulility functions such as functions to provide the
 codec profile and level in human-readable string form from header data.
 </p>
@@ -96,8 +96,11 @@ codec profile and level in human-readable string form from header data.
 Translates the sample rate index found in AAC headers to the actual sample
 rate.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sr_idx</code></em> :</span></p></td>
@@ -129,8 +132,11 @@ HE-AAC support has not yet been implemented.
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>audio_config</code></em> :</span></p></td>
@@ -166,7 +172,7 @@ most significant bit of the first byte:
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     Bit 0:4 contains the AudioObjectType
   </p></li>
@@ -189,8 +195,11 @@ HE-AAC support has not yet been implemented.
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>audio_config</code></em> :</span></p></td>
@@ -223,8 +232,11 @@ Sets the level and profile on <em class="parameter"><code>caps</code></em> if it
 <em class="parameter"><code>caps</code></em> must be audio/mpeg caps with an "mpegversion" field of either 2 or 4.
 If mpegversion is 4, the "base-profile" field is also set in <em class="parameter"><code>caps</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>caps</code></em> :</span></p></td>
@@ -262,7 +274,7 @@ byte.
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Bit 0:7   - Profile indication</p></li>
 <li class="listitem"><p>Bit 8     - constraint_set0_flag</p></li>
 <li class="listitem"><p>Bit 9     - constraint_set1_flag</p></li>
@@ -274,8 +286,11 @@ byte.
 </ul></div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sps</code></em> :</span></p></td>
@@ -302,8 +317,11 @@ Converts the level indication (level_idc) in the stream's
 sequence parameter set into a string. The SPS is expected to have the
 same format as for <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-h264-get-profile" title="gst_codec_utils_h264_get_profile ()"><code class="function">gst_codec_utils_h264_get_profile()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sps</code></em> :</span></p></td>
@@ -332,8 +350,11 @@ Sets the level and profile in <em class="parameter"><code>caps</code></em> if it
 <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-h264-get-level" title="gst_codec_utils_h264_get_level ()"><code class="function">gst_codec_utils_h264_get_level()</code></a> and <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-h264-get-profile" title="gst_codec_utils_h264_get_profile ()"><code class="function">gst_codec_utils_h264_get_profile()</code></a>
 for more details on the parameters.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>caps</code></em> :</span></p></td>
@@ -362,8 +383,11 @@ for more details on the parameters.
 <p>
 Transform a level string from the caps into the level_idc
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>level</code></em> :</span></p></td>
@@ -388,8 +412,11 @@ a string. <em class="parameter"><code>vis_obj_seq</code></em> is expected to be 
 object sequence start code. Only the first byte
 (profile_and_level_indication) is used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vis_obj_seq</code></em> :</span></p></td>
@@ -418,8 +445,11 @@ a string. <em class="parameter"><code>vis_obj_seq</code></em> is expected to be 
 object sequence start code. Only the first byte
 (profile_and_level_indication) is used.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vis_obj_seq</code></em> :</span></p></td>
@@ -449,8 +479,11 @@ Sets the level and profile in <em class="parameter"><code>caps</code></em> if it
 <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-mpeg4video-get-profile" title="gst_codec_utils_mpeg4video_get_profile ()"><code class="function">gst_codec_utils_mpeg4video_get_profile()</code></a> for more details on the
 parameters.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>caps</code></em> :</span></p></td>

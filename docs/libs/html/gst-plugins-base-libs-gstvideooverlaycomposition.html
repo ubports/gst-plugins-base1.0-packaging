@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideooverlaycomposition</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
@@ -60,12 +60,14 @@
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="returnvalue">GstVideoOverlayComposition</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()">gst_video_overlay_composition_make_writable</a>
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);
+#define             <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GST-VIDEO-OVERLAY-COMPOSITION-BLEND-FORMATS:CAPS" title="GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS">GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS</a>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-blend" title="gst_video_overlay_composition_blend ()">gst_video_overlay_composition_blend</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *video_buf</code></em>);
 
+struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionMeta" title="struct GstVideoOverlayCompositionMeta">GstVideoOverlayCompositionMeta</a>;
 const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMetaInfo"><span class="returnvalue">GstMetaInfo</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-meta-get-info" title="gst_video_overlay_composition_meta_get_info ()">gst_video_overlay_composition_meta_get_info</a>
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">GstVideoOverlayCompositionMeta</span> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-buffer-add-video-overlay-composition-meta" title="gst_buffer_add_video_overlay_composition_meta ()">gst_buffer_add_video_overlay_composition_meta</a>
+<a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionMeta" title="struct GstVideoOverlayCompositionMeta"><span class="returnvalue">GstVideoOverlayCompositionMeta</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-buffer-add-video-overlay-composition-meta" title="gst_buffer_add_video_overlay_composition_meta ()">gst_buffer_add_video_overlay_composition_meta</a>
                                                         (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);
 #define             <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-buffer-get-video-overlay-composition-meta" title="gst_buffer_get_video_overlay_composition_meta()">gst_buffer_get_video_overlay_composition_meta</a>(b)
@@ -132,7 +134,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideooverlayc
 <p>
 </p>
 <div class="refsect2">
-<a name="idp25336896"></a><p>
+<a name="idp28150768"></a><p>
 Functions to create and handle overlay compositions on video buffers.
 </p>
 <p>
@@ -143,7 +145,7 @@ blended on top of a video buffer.
 This API serves two main purposes:
 </p>
 <div class="itemizedlist">
-<span class="type">GstOverlayComposition</span><ul class="itemizedlist" type="disc">
+<span class="type">GstOverlayComposition</span><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
 it can be used to attach overlay information (subtitles or logos)
 to non-raw video buffers such as GL/VAAPI/VDPAU surfaces. The actual
@@ -182,8 +184,11 @@ multiple overlay rectangles.
 Creates a new video overlay composition object to hold one or more
 overlay rectangles.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -213,8 +218,11 @@ Note that the refcount affects the writeability
 of <em class="parameter"><code>comp</code></em>, use <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> to ensure
 a composition and its rectangles can be modified.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -237,8 +245,11 @@ a composition and its rectangles can be modified.
 Decreases the refcount of the composition. If the refcount reaches 0, the
 composition will be freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
@@ -256,8 +267,11 @@ composition will be freed.
 Adds an overlay rectangle to an existing overlay composition object. This
 must be done right after creating the overlay composition.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -281,8 +295,11 @@ composition. <span class="annotation">[<acronym title="Don't free data after the
 <p>
 Returns the number of <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>s contained in <em class="parameter"><code>comp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -305,8 +322,11 @@ Returns the number of <a class="link" href="gst-plugins-base-libs-gstvideooverla
 <p>
 Returns the <em class="parameter"><code>n</code></em>-th <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> contained in <em class="parameter"><code>comp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -339,8 +359,11 @@ monotonically increasing and unique for overlay compositions and rectangles
 (meaning there will never be a rectangle with the same sequence number as
 a composition).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -367,8 +390,11 @@ rectangles or change the render co-ordinates or render dimension). The
 actual overlay pixel data buffers contained in the rectangles are not
 copied.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -396,8 +422,11 @@ new writable copy of <em class="parameter"><code>comp</code></em> and unref <em 
 rectangles will also be copied, but the actual overlay pixel data buffers
 contained in the rectangles are not copied.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -415,6 +444,16 @@ equivalent to <em class="parameter"><code>comp</code></em>. <span class="annotat
 </div>
 <hr>
 <div class="refsect2">
+<a name="GST-VIDEO-OVERLAY-COMPOSITION-BLEND-FORMATS:CAPS"></a><h3>GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS</h3>
+<pre class="programlisting">#define             GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS</pre>
+<p>
+Video formats supported by <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-blend" title="gst_video_overlay_composition_blend ()"><code class="function">gst_video_overlay_composition_blend()</code></a>, for
+use in overlay elements' pad template caps.
+</p>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-video-overlay-composition-blend"></a><h3>gst_video_overlay_composition_blend ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_video_overlay_composition_blend (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *video_buf</code></em>);</pre>
@@ -423,8 +462,11 @@ Blends the overlay rectangles in <em class="parameter"><code>comp</code></em> on
 contained in <em class="parameter"><code>video_buf</code></em>. The data in <em class="parameter"><code>video_buf</code></em> must be writable and
 mapped appropriately.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -440,6 +482,37 @@ mapped appropriately.
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstVideoOverlayCompositionMeta"></a><h3>struct GstVideoOverlayCompositionMeta</h3>
+<pre class="programlisting">struct GstVideoOverlayCompositionMeta {
+  GstMeta meta;
+
+  GstVideoOverlayComposition *overlay;
+};
+</pre>
+<p>
+Extra buffer metadata describing image overlay data.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a> <em class="structfield"><code><a name="GstVideoOverlayCompositionMeta.meta"></a>meta</code></em>;</span></p></td>
+<td>parent <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMeta"><span class="type">GstMeta</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *<em class="structfield"><code><a name="GstVideoOverlayCompositionMeta.overlay"></a>overlay</code></em>;</span></p></td>
+<td>the attached <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-video-overlay-composition-meta-get-info"></a><h3>gst_video_overlay_composition_meta_get_info ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMetaInfo"><span class="returnvalue">GstMetaInfo</span></a> * gst_video_overlay_composition_meta_get_info
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -447,7 +520,7 @@ mapped appropriately.
 <hr>
 <div class="refsect2">
 <a name="gst-buffer-add-video-overlay-composition-meta"></a><h3>gst_buffer_add_video_overlay_composition_meta ()</h3>
-<pre class="programlisting"><span class="returnvalue">GstVideoOverlayCompositionMeta</span> * gst_buffer_add_video_overlay_composition_meta
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionMeta" title="struct GstVideoOverlayCompositionMeta"><span class="returnvalue">GstVideoOverlayCompositionMeta</span></a> * gst_buffer_add_video_overlay_composition_meta
                                                         (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buf</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> *comp</code></em>);</pre>
 <p>
@@ -455,8 +528,11 @@ Sets an overlay composition on a buffer. The buffer will obtain its own
 reference to the composition, meaning this function does not take ownership
 of <em class="parameter"><code>comp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
@@ -493,8 +569,11 @@ of <em class="parameter"><code>comp</code></em>.
 <p>
 Overlay format flags.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-OVERLAY-FORMAT-FLAG-NONE:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_OVERLAY_FORMAT_FLAG_NONE</code></span></p></td>
@@ -546,8 +625,11 @@ non-premultiplied. This is the format that is used by most hardware,
 and also many rendering libraries such as Cairo, for example.
 The pixel data buffer must have <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> set.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixels</code></em> :</span></p></td>
@@ -600,8 +682,11 @@ be modified (there is no <code class="function">gst_video_overlay_rectangle_make
 it is unlikely that someone will hold the single reference to the rectangle
 and not know that that's the case).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
@@ -624,8 +709,11 @@ and not know that that's the case).
 Decreases the refcount of the rectangle. If the refcount reaches 0, the
 rectangle will be freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>comp</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
@@ -639,8 +727,11 @@ rectangle will be freed.
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_overlay_rectangle_get_pixels_raw
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -674,8 +765,11 @@ with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_overlay_rectangle_get_pixels_argb
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -708,8 +802,11 @@ with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *         gst_video_overlay_rectangle_get_pixels_ayuv
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -748,8 +845,11 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -786,8 +886,11 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -824,8 +927,11 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -863,8 +969,11 @@ should obtain a reference of her own with <a href="http://gstreamer.freedesktop.
 Retrieves the render position and render dimension of the overlay
 rectangle on the video.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -920,8 +1029,11 @@ wont be different for different global-alpha values. In this case a
 renderer could also use the GstBuffer pointers as a hint for changed
 pixel-data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -957,8 +1069,11 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-copy" title="gst_video_overlay_composition_copy ()"><code class="function">gst_video_overlay_composition_copy()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -995,8 +1110,11 @@ Makes a copy of <em class="parameter"><code>rectangle</code></em>, so that it is
 actual overlay pixel data buffers contained in the rectangle are not
 copied.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -1024,8 +1142,11 @@ non premultiplied alpha, for example. By knowing whether the rectangle
 uses premultiplied or not, it can request the pixel data in the format
 it is stored in, to avoid unnecessary conversion.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -1047,8 +1168,11 @@ it is stored in, to avoid unnecessary conversion.
 <p>
 Retrieves the global-alpha value associated with a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
@@ -1079,8 +1203,11 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-copy" title="gst_video_overlay_composition_copy ()"><code class="function">gst_video_overlay_composition_copy()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>rectangle</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>

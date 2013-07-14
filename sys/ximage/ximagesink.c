@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -228,7 +228,7 @@ gst_ximagesink_xwindow_draw_borders (GstXImageSink * ximagesink,
 static gboolean
 gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
 {
-  GstXImageMeta *meta;
+  GstXImageMemory *mem;
   GstVideoCropMeta *crop;
   GstVideoRectangle src, dst, result;
   gboolean draw_border = FALSE;
@@ -269,21 +269,21 @@ gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
     }
   }
 
-  meta = gst_buffer_get_ximage_meta (ximage);
+  mem = (GstXImageMemory *) gst_buffer_peek_memory (ximage, 0);
   crop = gst_buffer_get_video_crop_meta (ximage);
 
   if (crop) {
-    src.x = crop->x + meta->x;
-    src.y = crop->y + meta->y;
+    src.x = crop->x + mem->x;
+    src.y = crop->y + mem->y;
     src.w = crop->width;
     src.h = crop->height;
     GST_LOG_OBJECT (ximagesink,
         "crop %dx%d-%dx%d", crop->x, crop->y, crop->width, crop->height);
   } else {
-    src.x = meta->x;
-    src.y = meta->y;
-    src.w = meta->width;
-    src.h = meta->height;
+    src.x = mem->x;
+    src.y = mem->y;
+    src.w = mem->width;
+    src.h = mem->height;
   }
   dst.w = ximagesink->xwindow->width;
   dst.h = ximagesink->xwindow->height;
@@ -304,7 +304,7 @@ gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
         ximage, 0, 0, result.x, result.y, result.w, result.h,
         ximagesink->xwindow->width, ximagesink->xwindow->height);
     XShmPutImage (ximagesink->xcontext->disp, ximagesink->xwindow->win,
-        ximagesink->xwindow->gc, meta->ximage, src.x, src.y, result.x, result.y,
+        ximagesink->xwindow->gc, mem->ximage, src.x, src.y, result.x, result.y,
         result.w, result.h, FALSE);
   } else
 #endif /* HAVE_XSHM */
@@ -314,7 +314,7 @@ gst_ximagesink_ximage_put (GstXImageSink * ximagesink, GstBuffer * ximage)
         ximage, 0, 0, result.x, result.y, result.w, result.h,
         ximagesink->xwindow->width, ximagesink->xwindow->height);
     XPutImage (ximagesink->xcontext->disp, ximagesink->xwindow->win,
-        ximagesink->xwindow->gc, meta->ximage, src.x, src.y, result.x, result.y,
+        ximagesink->xwindow->gc, mem->ximage, src.x, src.y, result.x, result.y,
         result.w, result.h);
   }
 
@@ -832,6 +832,7 @@ gst_ximagesink_xcontext_get (GstXImageSink * ximagesink)
   gint nb_formats = 0, i;
   gint endianness;
   GstVideoFormat vformat;
+  guint32 alpha_mask;
 
   g_return_val_if_fail (GST_IS_XIMAGESINK (ximagesink), NULL);
 
@@ -904,9 +905,15 @@ gst_ximagesink_xcontext_get (GstXImageSink * ximagesink)
     GST_DEBUG ("ximagesink is not using XShm extension");
   }
 
-  vformat = gst_video_format_from_masks (xcontext->depth, xcontext->bpp,
-      endianness, xcontext->visual->red_mask, xcontext->visual->green_mask,
-      xcontext->visual->blue_mask, 0);
+  /* extrapolate alpha mask */
+  alpha_mask = ~(xcontext->visual->red_mask
+      | xcontext->visual->green_mask | xcontext->visual->blue_mask);
+  alpha_mask &= 0xffffffff;
+
+  vformat =
+      gst_video_format_from_masks (xcontext->depth, xcontext->bpp, endianness,
+      xcontext->visual->red_mask, xcontext->visual->green_mask,
+      xcontext->visual->blue_mask, alpha_mask);
 
   if (vformat == GST_VIDEO_FORMAT_UNKNOWN)
     goto unknown_format;
@@ -1300,14 +1307,15 @@ gst_ximagesink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
 {
   GstFlowReturn res;
   GstXImageSink *ximagesink;
-  GstXImageMeta *meta;
+  GstXImageMemory *mem;
   GstBuffer *to_put = NULL;
 
   ximagesink = GST_XIMAGESINK (vsink);
 
-  meta = gst_buffer_get_ximage_meta (buf);
-
-  if (meta && meta->sink == ximagesink) {
+  if (gst_buffer_n_memory (buf) == 1
+      && (mem = (GstXImageMemory *) gst_buffer_peek_memory (buf, 0))
+      && g_strcmp0 (mem->parent.allocator->mem_type, "ximage") == 0
+      && mem->sink == ximagesink) {
     /* If this buffer has been allocated using our buffer management we simply
        put the ximage which is in the PRIVATE pointer */
     GST_LOG_OBJECT (ximagesink, "buffer from our pool, writing directly");

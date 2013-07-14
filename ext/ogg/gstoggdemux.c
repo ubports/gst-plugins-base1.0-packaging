@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -147,7 +147,7 @@ static GstFlowReturn gst_ogg_demux_combine_flows (GstOggDemux * ogg,
     GstOggPad * pad, GstFlowReturn ret);
 static void gst_ogg_demux_sync_streams (GstOggDemux * ogg);
 
-GstCaps *gst_ogg_demux_set_header_on_caps (GstOggDemux * ogg,
+static GstCaps *gst_ogg_demux_set_header_on_caps (GstOggDemux * ogg,
     GstCaps * caps, GList * headers);
 static gboolean gst_ogg_demux_send_event (GstOggDemux * ogg, GstEvent * event);
 static gboolean gst_ogg_demux_perform_seek_push (GstOggDemux * ogg,
@@ -416,6 +416,10 @@ gst_ogg_pad_event (GstPad * pad, GstObject * parent, GstEvent * event)
       res = gst_ogg_demux_perform_seek (ogg, event);
       gst_event_unref (event);
       break;
+    case GST_EVENT_RECONFIGURE:
+      GST_OGG_PAD (pad)->last_ret = GST_FLOW_OK;
+      res = gst_pad_event_default (pad, parent, event);
+      break;
     default:
       res = gst_pad_event_default (pad, parent, event);
       break;
@@ -538,9 +542,11 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
     }
     offset = 0;
     trim = 0;
+    delta_unit = !gst_ogg_stream_packet_is_key_frame (&pad->map, packet);
   } else {
     offset = 0;
     trim = 0;
+    delta_unit = !gst_ogg_stream_packet_is_key_frame (&pad->map, packet);
   }
 
   /* get timing info for the packet */
@@ -576,7 +582,7 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
           pad->current_granule);
     } else if (ogg->segment.rate > 0.0 && pad->current_granule != -1) {
       pad->current_granule += duration;
-      if (gst_ogg_stream_packet_is_key_frame (&pad->map, packet)) {
+      if (!delta_unit) {
         pad->keyframe_granule = pad->current_granule;
       }
       GST_DEBUG_OBJECT (ogg, "interpolating granule %" G_GUINT64_FORMAT,
@@ -665,7 +671,13 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
 
   /* don't push the header packets when we are asked to skip them */
   if (!packet->b_o_s || push_headers) {
-    ret = gst_pad_push (GST_PAD_CAST (pad), buf);
+    if (pad->last_ret == GST_FLOW_OK) {
+      ret = gst_pad_push (GST_PAD_CAST (pad), buf);
+    } else {
+      GST_DEBUG_OBJECT (ogg, "not pushing buffer on error pad");
+      ret = pad->last_ret;
+      gst_buffer_unref (buf);
+    }
     buf = NULL;
 
     /* combine flows */
@@ -877,7 +889,7 @@ gst_ogg_pad_submit_packet (GstOggPad * pad, ogg_packet * packet)
 
   granule = gst_ogg_stream_granulepos_to_granule (&pad->map,
       packet->granulepos);
-  if (granule != -1) {
+  if (granule >= 0) {
     GST_DEBUG_OBJECT (ogg, "%p has granulepos %" G_GINT64_FORMAT, pad, granule);
     pad->current_granule = granule;
   } else if (granule != -1) {
@@ -2498,7 +2510,7 @@ gst_ogg_demux_deactivate_current_chain (GstOggDemux * ogg)
   return TRUE;
 }
 
-GstCaps *
+static GstCaps *
 gst_ogg_demux_set_header_on_caps (GstOggDemux * ogg, GstCaps * caps,
     GList * headers)
 {
@@ -2533,8 +2545,7 @@ gst_ogg_demux_set_header_on_caps (GstOggDemux * ogg, GstCaps * caps,
     headers = headers->next;
   }
 
-  gst_structure_set_value (structure, "streamheader", &array);
-  g_value_unset (&array);
+  gst_structure_take_value (structure, "streamheader", &array);
   GST_LOG_OBJECT (ogg, "here are the newly set caps: %" GST_PTR_FORMAT, caps);
 
   return caps;

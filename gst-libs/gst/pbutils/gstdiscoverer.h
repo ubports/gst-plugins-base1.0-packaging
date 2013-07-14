@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef _GST_DISCOVERER_H_
@@ -62,6 +62,7 @@ GstDiscovererStreamInfo* gst_discoverer_stream_info_get_next(GstDiscovererStream
 GstCaps*                 gst_discoverer_stream_info_get_caps(GstDiscovererStreamInfo* info);
 const GstTagList*        gst_discoverer_stream_info_get_tags(GstDiscovererStreamInfo* info);
 const GstToc*            gst_discoverer_stream_info_get_toc(GstDiscovererStreamInfo* info);
+const gchar*             gst_discoverer_stream_info_get_stream_id(GstDiscovererStreamInfo* info);
 const GstStructure*      gst_discoverer_stream_info_get_misc(GstDiscovererStreamInfo* info);
 const gchar *            gst_discoverer_stream_info_get_stream_type_nick(GstDiscovererStreamInfo* info);
 

@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_H__
@@ -24,7 +24,6 @@
 
 typedef struct _GstVideoAlignment GstVideoAlignment;
 
-#include <gst/video/video-event.h>
 #include <gst/video/video-format.h>
 #include <gst/video/video-color.h>
 #include <gst/video/video-info.h>
@@ -82,6 +81,23 @@ GstSample *   gst_video_convert_sample       (GstSample     * sample,
                                               const GstCaps * to_caps,
                                               GstClockTime    timeout,
                                               GError       ** error);
+
 G_END_DECLS
+
+#include <gst/video/colorbalancechannel.h>
+#include <gst/video/colorbalance.h>
+#include <gst/video/gstvideodecoder.h>
+#include <gst/video/gstvideoencoder.h>
+#include <gst/video/gstvideofilter.h>
+#include <gst/video/gstvideometa.h>
+#include <gst/video/gstvideopool.h>
+#include <gst/video/gstvideosink.h>
+#include <gst/video/gstvideoutils.h>
+#include <gst/video/navigation.h>
+#include <gst/video/video-blend.h>
+#include <gst/video/video-event.h>
+#include <gst/video/videoorientation.h>
+#include <gst/video/video-overlay-composition.h>
+#include <gst/video/videooverlay.h>
 
 #endif /* __GST_VIDEO_H__ */

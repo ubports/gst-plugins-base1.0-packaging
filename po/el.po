@@ -2,16 +2,15 @@
 # This file is put in the public domain.
 #
 # Simos Xenitellis <simos.lists@googlemail.com>, 2010.
-# Michael Kotsarinis <mk73628@gmail.com>, 2010.
-# Savvas Radevic <vicedar@gmail.com>, 2012.
+# Michael Kotsarinis <mk73628@gmail.com>, 2010. 
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 0.10.32.2\n"
+"Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-07-11 19:48+0100\n"
-"PO-Revision-Date: 2012-05-05 19:13+0100\n"
-"Last-Translator: Savvas Radevic <vicedar@gmail.com>\n"
+"POT-Creation-Date: 2013-07-11 15:27+0200\n"
+"PO-Revision-Date: 2010-10-27 12:05+0200\n"
+"Last-Translator: Michael Kotsarinis <mk73628@gmail.com>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -80,6 +79,10 @@ msgid "Internal data stream error."
 msgstr "Σφάλμα εσωτερικής ροής δεδομένων."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Λείπει το στοιχείο '%s' - ελέγξτε την εγκατάσταση του GStreamer."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Απαιτείται μια πρόσθετη λειτουργία %s για την αναπαραγωγή αυτής της ροής, "
@@ -91,9 +94,9 @@ msgstr "Αδυναμία προσδιορισμού τύπου ροής"
 msgid "This appears to be a text file"
 msgstr "Αυτό φαίνεται να είναι αρχείο κειμένου"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Λείπει το στοιχείο '%s' - ελέγξτε την εγκατάσταση του GStreamer."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Αδυναμία δημιουργία στοιχείου «decodebin»."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -165,186 +168,11 @@ msgstr "Το στοιχείο προέλευσης δεν είναι έγκυρ�
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Σφάλμα κατά την αποστολή δεδομένων σε «%s:%d»."
 
-msgid "This CD has no audio tracks"
-msgstr "Αυτό το CD δεν έχει ηχητικά κομμάτια"
-
 msgid "Can't record audio fast enough"
 msgstr "Αδυναμία εγγραφής ήχου αρκετά γρήγορα"
 
-msgid "Failed to read tag: not enough data"
-msgstr "Αποτυχία ανάγνωσης ετικέτας: δεν υπάρχουν αρκετά δεδομένα"
-
-msgid "track ID"
-msgstr "ID κομματιού"
-
-msgid "MusicBrainz track ID"
-msgstr "MusicBrainz ID κομματιού"
-
-msgid "artist ID"
-msgstr "ID καλλιτέχνη"
-
-msgid "MusicBrainz artist ID"
-msgstr "MusicBrainz ID καλλιτέχνη"
-
-msgid "album ID"
-msgstr "ID άλμπουμ"
-
-msgid "MusicBrainz album ID"
-msgstr "MusicBrainz ID άλμπουμ"
-
-msgid "album artist ID"
-msgstr "ID καλλιτενη άλμπουμ"
-
-msgid "MusicBrainz album artist ID"
-msgstr "MusicBrainz ID καλλιτέχνη άλμπουμ"
-
-msgid "track TRM ID"
-msgstr "TRM ID κομματιού"
-
-msgid "MusicBrainz TRM ID"
-msgstr "MusicBrainz TRM ID"
-
-msgid "capturing shutter speed"
-msgstr "ταχύτητα κλείστρου λήψης"
-
-msgid "Shutter speed used when capturing an image, in seconds"
-msgstr "Ταχύτητα κλείστρου κατά τη λήψη μιας εικόνας, σε δευτερόλεπτα"
-
-msgid "capturing focal ratio"
-msgstr "εστιακός λόγος λήψης"
-
-msgid "Focal ratio (f-number) used when capturing the image"
-msgstr ""
-"Εστιακός λόγος (f-number ή f-stop) που χρησιμοποιήθηκε κατά τη λήψη της "
-"εικόνας"
-
-msgid "capturing focal length"
-msgstr "εστιακό μήκος λήψης"
-
-msgid "Focal length of the lens used capturing the image, in mm"
-msgstr ""
-"Το εστιακό μήκος του φακού που χρησιμοποιήθηκε κατά τη λήψη της εικόνας, σε "
-"mm"
-
-msgid "capturing digital zoom ratio"
-msgstr "λόγος ψηφιακού ζουμ λήψης"
-
-msgid "Digital zoom ratio used when capturing an image"
-msgstr "Ο λόγος ψηφιακού ζουμ που χρησιμοποιήθηκε κατά τη λήψη μιας εικόνας"
-
-msgid "capturing iso speed"
-msgstr "ταχύτητα iso λήψης"
-
-msgid "The ISO speed used when capturing an image"
-msgstr "Η ταχύτητα ISO που χρησιμοποιήθηκε κατά τη λήψη μιας εικόνας"
-
-msgid "capturing exposure program"
-msgstr "πρόγραμμα έκθεσης λήψης"
-
-msgid "The exposure program used when capturing an image"
-msgstr "Το πρόγραμμα έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "capturing exposure mode"
-msgstr "τρόπος έκθεσης λήψης"
-
-msgid "The exposure mode used when capturing an image"
-msgstr "Ο τρόπος έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "capturing exposure compensation"
-msgstr "αντιστάθμιση έκθεσης λήψης"
-
-msgid "The exposure compensation used when capturing an image"
-msgstr "Η αντιστάθμιση έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "capturing scene capture type"
-msgstr "τύπος σύλληψης σκηνής της λήψης"
-
-msgid "The scene capture mode used when capturing an image"
-msgstr "Ο τρόπος σύλληψης σκηνής που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "capturing gain adjustment"
-msgstr "προσαρμογή κέρδους λήψης"
-
-msgid "The overall gain adjustment applied on an image"
-msgstr "Η συνολική προσαρμογή κέρδους που εφαρμόσθηκε σε μια εικόνα"
-
-msgid "capturing white balance"
-msgstr "ισορροπία λευκού λήψης"
-
-msgid "The white balance mode set when capturing an image"
-msgstr "Η ισορροπία λευκού που ορίσθηκε κατά τη λήψη μιας εικόνας"
-
-msgid "capturing contrast"
-msgstr "αντίθεση λήψης"
-
-msgid "The direction of contrast processing applied when capturing an image"
-msgstr ""
-"Η κατεύθυνση της επεξεργασίας της αντίθεσης που εφαρμόσθηκε κατά τη λήψη "
-"μιας εικόνας"
-
-msgid "capturing saturation"
-msgstr "κορεσμός λήψης"
-
-msgid "The direction of saturation processing applied when capturing an image"
-msgstr ""
-"Η κατεύθυνση της επεξεργασίας του κορεσμού  που εφαρμόσθηκε κατά τη λήψη "
-"μιας εικόνας"
-
-msgid "capturing sharpness"
-msgstr "ευκρίνεια λήψης"
-
-msgid "The direction of sharpness processing applied when capturing an image"
-msgstr ""
-"Η κατεύθυνση της επεξεργασίας της ευκρίνειας  που εφαρμόσθηκε κατά τη λήψη "
-"μιας εικόνας"
-
-msgid "capturing flash fired"
-msgstr "ενεργοποίηση φλας στη λήψη"
-
-msgid "If the flash fired while capturing an image"
-msgstr "Αν ενεργοποιήθηκε το φλας κατά τη λήψη μιας εικόνας"
-
-msgid "capturing flash mode"
-msgstr "κατάσταση φλας λήψης"
-
-msgid "The selected flash mode while capturing an image"
-msgstr "Η επιλεγμένη κατάσταση λειτουργίας του φλας κατά τη λήψη μιας εικόνας"
-
-msgid "capturing metering mode"
-msgstr "τρόπος φωτομέτρησης λήψης"
-
-msgid ""
-"The metering mode used while determining exposure for capturing an image"
-msgstr "Ο τρόπος φωτομέτρησης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "capturing source"
-msgstr "πηγή λήψης"
-
-msgid "The source or type of device used for the capture"
-msgstr ""
-"Η πηγή ή ο τύπος της συσκευής που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
-
-msgid "image horizontal ppi"
-msgstr "οριζόντια ppi εικόνας"
-
-msgid "Media (image/video) intended horizontal pixel density in ppi"
-msgstr ""
-"Η σκοπούμενη οριζόντια πυκνότητα εικονοστοιχείων (pixel) του μέσου (εικόνα/"
-"βίντεο) σε ppi"
-
-msgid "image vertical ppi"
-msgstr "κάθετα ppi εικόνας"
-
-msgid "Media (image/video) intended vertical pixel density in ppi"
-msgstr ""
-"Η σκοπούμενη κάθετη πυκνότητα εικονοστοιχείων (pixel) του μέσου (εικόνα/"
-"βίντεο) σε ppi"
-
-msgid "ID3v2 frame"
-msgstr ""
-
-msgid "unparsed id3v2 tag frame"
-msgstr ""
+msgid "This CD has no audio tracks"
+msgstr "Αυτό το CD δεν έχει ηχητικά κομμάτια"
 
 msgid "ID3 tag"
 msgstr "Ετικέτα ID3"
@@ -509,6 +337,183 @@ msgstr "Άγνωστο στοιχείο κωδικοποιητή"
 msgid "Plugin or element of unknown type"
 msgstr "Πρόσθετη λειτουργία ή στοιχείο άγνωστου τύπου"
 
+msgid "Failed to read tag: not enough data"
+msgstr "Αποτυχία ανάγνωσης ετικέτας: δεν υπάρχουν αρκετά δεδομένα"
+
+msgid "track ID"
+msgstr "ID κομματιού"
+
+msgid "MusicBrainz track ID"
+msgstr "MusicBrainz ID κομματιού"
+
+msgid "artist ID"
+msgstr "ID καλλιτέχνη"
+
+msgid "MusicBrainz artist ID"
+msgstr "MusicBrainz ID καλλιτέχνη"
+
+msgid "album ID"
+msgstr "ID άλμπουμ"
+
+msgid "MusicBrainz album ID"
+msgstr "MusicBrainz ID άλμπουμ"
+
+msgid "album artist ID"
+msgstr "ID καλλιτενη άλμπουμ"
+
+msgid "MusicBrainz album artist ID"
+msgstr "MusicBrainz ID καλλιτέχνη άλμπουμ"
+
+msgid "track TRM ID"
+msgstr "TRM ID κομματιού"
+
+msgid "MusicBrainz TRM ID"
+msgstr "MusicBrainz TRM ID"
+
+msgid "capturing shutter speed"
+msgstr "ταχύτητα κλείστρου λήψης"
+
+msgid "Shutter speed used when capturing an image, in seconds"
+msgstr "Ταχύτητα κλείστρου κατά τη λήψη μιας εικόνας, σε δευτερόλεπτα"
+
+msgid "capturing focal ratio"
+msgstr "εστιακός λόγος λήψης"
+
+msgid "Focal ratio (f-number) used when capturing the image"
+msgstr ""
+"Εστιακός λόγος (f-number ή f-stop) που χρησιμοποιήθηκε κατά τη λήψη της "
+"εικόνας"
+
+msgid "capturing focal length"
+msgstr "εστιακό μήκος λήψης"
+
+msgid "Focal length of the lens used capturing the image, in mm"
+msgstr ""
+"Το εστιακό μήκος του φακού που χρησιμοποιήθηκε κατά τη λήψη της εικόνας, σε "
+"mm"
+
+msgid "capturing digital zoom ratio"
+msgstr "λόγος ψηφιακού ζουμ λήψης"
+
+msgid "Digital zoom ratio used when capturing an image"
+msgstr "Ο λόγος ψηφιακού ζουμ που χρησιμοποιήθηκε κατά τη λήψη μιας εικόνας"
+
+msgid "capturing iso speed"
+msgstr "ταχύτητα iso λήψης"
+
+msgid "The ISO speed used when capturing an image"
+msgstr "Η ταχύτητα ISO που χρησιμοποιήθηκε κατά τη λήψη μιας εικόνας"
+
+msgid "capturing exposure program"
+msgstr "πρόγραμμα έκθεσης λήψης"
+
+msgid "The exposure program used when capturing an image"
+msgstr "Το πρόγραμμα έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+msgid "capturing exposure mode"
+msgstr "τρόπος έκθεσης λήψης"
+
+msgid "The exposure mode used when capturing an image"
+msgstr "Ο τρόπος έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+#, fuzzy
+msgid "capturing exposure compensation"
+msgstr "τρόπος έκθεσης λήψης"
+
+#, fuzzy
+msgid "The exposure compensation used when capturing an image"
+msgstr "Ο τρόπος έκθεσης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+msgid "capturing scene capture type"
+msgstr "τύπος σύλληψης σκηνής της λήψης"
+
+msgid "The scene capture mode used when capturing an image"
+msgstr "Ο τρόπος σύλληψης σκηνής που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+msgid "capturing gain adjustment"
+msgstr "προσαρμογή κέρδους λήψης"
+
+msgid "The overall gain adjustment applied on an image"
+msgstr "Η συνολική προσαρμογή κέρδους που εφαρμόσθηκε σε μια εικόνα"
+
+msgid "capturing white balance"
+msgstr "ισορροπία λευκού λήψης"
+
+msgid "The white balance mode set when capturing an image"
+msgstr "Η ισορροπία λευκού που ορίσθηκε κατά τη λήψη μιας εικόνας"
+
+msgid "capturing contrast"
+msgstr "αντίθεση λήψης"
+
+msgid "The direction of contrast processing applied when capturing an image"
+msgstr ""
+"Η κατεύθυνση της επεξεργασίας της αντίθεσης που εφαρμόσθηκε κατά τη λήψη "
+"μιας εικόνας"
+
+msgid "capturing saturation"
+msgstr "κορεσμός λήψης"
+
+msgid "The direction of saturation processing applied when capturing an image"
+msgstr ""
+"Η κατεύθυνση της επεξεργασίας του κορεσμού  που εφαρμόσθηκε κατά τη λήψη "
+"μιας εικόνας"
+
+msgid "capturing sharpness"
+msgstr "ευκρίνεια λήψης"
+
+msgid "The direction of sharpness processing applied when capturing an image"
+msgstr ""
+"Η κατεύθυνση της επεξεργασίας της ευκρίνειας  που εφαρμόσθηκε κατά τη λήψη "
+"μιας εικόνας"
+
+msgid "capturing flash fired"
+msgstr "ενεργοποίηση φλας στη λήψη"
+
+msgid "If the flash fired while capturing an image"
+msgstr "Αν ενεργοποιήθηκε το φλας κατά τη λήψη μιας εικόνας"
+
+msgid "capturing flash mode"
+msgstr "κατάσταση φλας λήψης"
+
+msgid "The selected flash mode while capturing an image"
+msgstr "Η επιλεγμένη κατάσταση λειτουργίας του φλας κατά τη λήψη μιας εικόνας"
+
+msgid "capturing metering mode"
+msgstr "τρόπος φωτομέτρησης λήψης"
+
+msgid ""
+"The metering mode used while determining exposure for capturing an image"
+msgstr "Ο τρόπος φωτομέτρησης που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+msgid "capturing source"
+msgstr "πηγή λήψης"
+
+msgid "The source or type of device used for the capture"
+msgstr ""
+"Η πηγή ή ο τύπος της συσκευής που χρησιμοποιήθηκε για τη λήψη μιας εικόνας"
+
+msgid "image horizontal ppi"
+msgstr "οριζόντια ppi εικόνας"
+
+msgid "Media (image/video) intended horizontal pixel density in ppi"
+msgstr ""
+"Η σκοπούμενη οριζόντια πυκνότητα εικονοστοιχείων (pixel) του μέσου (εικόνα/"
+"βίντεο) σε ppi"
+
+msgid "image vertical ppi"
+msgstr "κάθετα ppi εικόνας"
+
+msgid "Media (image/video) intended vertical pixel density in ppi"
+msgstr ""
+"Η σκοπούμενη κάθετη πυκνότητα εικονοστοιχείων (pixel) του μέσου (εικόνα/"
+"βίντεο) σε ppi"
+
+msgid "ID3v2 frame"
+msgstr ""
+
+msgid "unparsed id3v2 tag frame"
+msgstr ""
+
 #~ msgid "Master"
 #~ msgstr "Γενικός"
 
@@ -541,62 +546,6 @@ msgstr "Πρόσθετη λειτουργία ή στοιχείο άγνωστο
 
 #~ msgid "Capture"
 #~ msgstr "Σύλληψη"
-
-#~ msgid "Could not open vfs file \"%s\" for writing: %s."
-#~ msgstr "Αδυναμία ανοίγματος αρχείου vfs «%s» για εγγραφή: %s."
-
-#~ msgid "No filename given"
-#~ msgstr "Δεν δόθηκε όνομα αρχείου"
-
-#~ msgid "Could not close vfs file \"%s\"."
-#~ msgstr "Αδυναμία κλεισίματος αρχείου vfs «%s»."
-
-#~ msgid "Error while writing to file \"%s\"."
-#~ msgstr "Σφάλμα κατά την εγγραφή στο αρχείο «%s»."
-
-#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
-#~ msgstr "Μη έγκυρο URI υποτίτλων «%s», υπότιτλοι απενεργοποιήθηκαν."
-
-#~ msgid "RTSP streams cannot be played yet."
-#~ msgstr "Ροές RTSP δεν μπορούν να αναπαραχθούν ακόμα."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Αδυναμία δημιουργία στοιχείου «decodebin»."
-
-#~ msgid ""
-#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
-#~ "file or some other type of text file, or the media file was not "
-#~ "recognized."
-#~ msgstr ""
-#~ "Ανιχνεύθηκε μόνο μια ροή υποτίτλων. Είτε φορτώνετε ένα αρχείο υποτίτλων ή "
-#~ "κάποιο άλλο τύπο αρχείου κειμένου, ή το αρχείο πολυμέσων δεν "
-#~ "αναγνωρίσθηκε."
-
-#~ msgid ""
-#~ "You do not have a decoder installed to handle this file. You might need "
-#~ "to install the necessary plugins."
-#~ msgstr ""
-#~ "Δεν έχετε εγκατεστημένο αποκωδικοποιητή για να χειριστεί αυτό το αρχείο. "
-#~ "Μπορεί να χρειάζεται να εγκαταστήσετε τις απαραίτητες πρόσθετες "
-#~ "λειτουργίες."
-
-#~ msgid "This is not a media file"
-#~ msgstr "Αυτό δεν είναι αρχείο πολυμέσων"
-
-#~ msgid "A subtitle stream was detected, but no video stream."
-#~ msgstr "Ανιχνεύθηκε ροή υποτίτλων αλλά όχι ροή βίντεο."
-
-#~ msgid "Both autovideosink and xvimagesink elements are missing."
-#~ msgstr "Λείπουν και τα δύο στοιχεία autovideosink και xvimagesink."
-
-#~ msgid "Both autoaudiosink and alsasink elements are missing."
-#~ msgstr "Λείπουν και τα δύο στοιχεία autoaudiosink και alsasink."
-
-#~ msgid "Error while sending gdp header data to \"%s:%d\"."
-#~ msgstr "Σφάλμα κατά την αποστολή δεδομένων κεφαλίδας gdp σε «%s:%d»."
-
-#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
-#~ msgstr "Σφάλμα κατά την αποστολή δεδομένων φόρτου gdp σε «%s:%d»."
 
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Άρνηση σύνδεσης σε %s:%d."
@@ -640,6 +589,53 @@ msgstr "Πρόσθετη λειτουργία ή στοιχείο άγνωστο
 #~ msgid "Raw floating-point audio"
 #~ msgstr "Καθαρός floating-point ήχος"
 
+#~ msgid "Could not open vfs file \"%s\" for writing: %s."
+#~ msgstr "Αδυναμία ανοίγματος αρχείου vfs «%s» για εγγραφή: %s."
+
+#~ msgid "No filename given"
+#~ msgstr "Δεν δόθηκε όνομα αρχείου"
+
+#~ msgid "Could not close vfs file \"%s\"."
+#~ msgstr "Αδυναμία κλεισίματος αρχείου vfs «%s»."
+
+#~ msgid "Error while writing to file \"%s\"."
+#~ msgstr "Σφάλμα κατά την εγγραφή στο αρχείο «%s»."
+
+#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
+#~ msgstr "Μη έγκυρο URI υποτίτλων «%s», υπότιτλοι απενεργοποιήθηκαν."
+
+#~ msgid "RTSP streams cannot be played yet."
+#~ msgstr "Ροές RTSP δεν μπορούν να αναπαραχθούν ακόμα."
+
+#~ msgid ""
+#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
+#~ "file or some other type of text file, or the media file was not "
+#~ "recognized."
+#~ msgstr ""
+#~ "Ανιχνεύθηκε μόνο μια ροή υποτίτλων. Είτε φορτώνετε ένα αρχείο υποτίτλων ή "
+#~ "κάποιο άλλο τύπο αρχείου κειμένου, ή το αρχείο πολυμέσων δεν "
+#~ "αναγνωρίσθηκε."
+
+#~ msgid ""
+#~ "You do not have a decoder installed to handle this file. You might need "
+#~ "to install the necessary plugins."
+#~ msgstr ""
+#~ "Δεν έχετε εγκατεστημένο αποκωδικοποιητή για να χειριστεί αυτό το αρχείο. "
+#~ "Μπορεί να χρειάζεται να εγκαταστήσετε τις απαραίτητες πρόσθετες "
+#~ "λειτουργίες."
+
+#~ msgid "This is not a media file"
+#~ msgstr "Αυτό δεν είναι αρχείο πολυμέσων"
+
+#~ msgid "A subtitle stream was detected, but no video stream."
+#~ msgstr "Ανιχνεύθηκε ροή υποτίτλων αλλά όχι ροή βίντεο."
+
+#~ msgid "Both autovideosink and xvimagesink elements are missing."
+#~ msgstr "Λείπουν και τα δύο στοιχεία autovideosink και xvimagesink."
+
+#~ msgid "Both autoaudiosink and alsasink elements are missing."
+#~ msgstr "Λείπουν και τα δύο στοιχεία autoaudiosink και alsasink."
+
 #~ msgid "No device specified."
 #~ msgstr "Δεν ορίσθηκε συσκευή."
 
@@ -651,3 +647,9 @@ msgstr "Πρόσθετη λειτουργία ή στοιχείο άγνωστο
 
 #~ msgid "Could not open device \"%s\" for reading and writing."
 #~ msgstr "Αδυναμία ανοίγματος συσκευής «%s» για ανάγνωση και εγγραφή."
+
+#~ msgid "Error while sending gdp header data to \"%s:%d\"."
+#~ msgstr "Σφάλμα κατά την αποστολή δεδομένων κεφαλίδας gdp σε «%s:%d»."
+
+#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
+#~ msgstr "Σφάλμα κατά την αποστολή δεδομένων φόρτου gdp σε «%s:%d»."

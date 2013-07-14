@@ -1,5 +1,5 @@
 
-Release notes for GStreamer Base Plugins 1.0.8
+Release notes for GStreamer Base Plugins 1.1.2
 
 
 The GStreamer team is proud to announce a new bug-fix release
@@ -60,19 +60,29 @@ contains a set of codecs plugins based on libav (formerly gst-ffmpeg)
 
 Features of this release
     
-      * tag: ignore malformed ID3v2 TDAT frames
 
 Bugs fixed in this release
      
-      * 636245 : [riff] For ADPCM codecs the average bitrate should be calculated instead of trusting the format header
-      * 688803 : playbin: converters don't work? not-negotiated error with non-1/1 PAR and ximagesink
-      * 690420 : decodebin: Race between GstBin and decodebin trying to change states of child elements
-      * 698896 : liveadder: What is the unit for " latency " ?
-      * 699923 : typefind: fix detection of HLS playlists with alternative renditions
-      * 701976 : flvdemux: Forwards CAPS events from upstream
-      * 703128 : videotestsrc leaks memory
-      * 703283 : id3: gst_date_time_new: assertion `(month > 0 &  & month < = 12) || month == -1' failed with malformed TDAT frames
-      * 699794 : uridecodebin: Leaking queue2 elements in playbin gapless mode
+      * 696300 : H264 video is playing too fast because of invalid PTS:
+      * 698562 : rtpbuffer: broken language bindings for gst_rtp_buffer_get_payload
+      * 700967 : playbin: sink messages are not received in the bus
+      * 701798 : rtspsrc: Regression with connections to certain live stream
+      * 701924 : tests: add playbin test for autoplugging of decoder-sink combination based on capsfeatures
+      * 701943 : playbin: unit tests fail
+      * 701997 : [regression] playbin: loses audio clock and hangs when switching songs after about-to-finish
+      * 702195 : playbin: Emit {audio,text,video}-changed signals when pads are removed
+      * 702215 : pbutils: descriptions: Allow smart codec tag handling
+      * 702465 : playsink: Fix the block diagram of deinterlace bin.
+      * 702467 : audiobasesrc: missing calls to gst_buffer_unmap
+      * 702545 : tags: xmp: adding tags is very slow
+      * 702652 : rtspconnection: tunneled connections do not work
+      * 702840 : queue2 does not work with use-buffering=true
+      * 703088 : rtspsrc parse error race condition
+      * 703119 : rtpbasepayload leaks the segment event
+      * 703196 : videoencoder: Send all pending events with type < CAPS before sending caps.
+      * 703256 : typefind: Fix low probability typefinding for video/mpeg on small amount of data
+      * 703477 : audioresample: disable NEON code path for 16-bit integer
+      * 703684 : POTFILES.in is out of date
 
 ==== Download ====
 
@@ -109,13 +119,20 @@ subscribe to the gstreamer-devel list.
         
 Contributors to this release
     
-      * Andoni Morales Alastruey
+      * Branko Subasic
+      * Brendan Long
+      * Carlos Rafael Giani
       * Edward Hervey
       * Jonas Holmberg
-      * Julien Moutte
       * Marcin Lewandowski
-      * Matej Knopp
+      * Mathieu Duponchelle
+      * Ognyan Tonchev
+      * Patricia Muscalu
+      * Piotr Drąg
       * Sebastian Dröge
+      * Sreerenj Balachandran
       * Thibault Saunier
       * Tim-Philipp Müller
+      * Vincent Penquerc'h
+      * Wim Taymans
  

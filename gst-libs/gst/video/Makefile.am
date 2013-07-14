@@ -3,7 +3,7 @@ ORC_SOURCE=video-orc
 include $(top_srcdir)/common/orc.mak
 
 glib_enum_headers = video.h video-format.h video-color.h video-info.h \
-			colorbalance.h navigation.h
+			colorbalance.h navigation.h video-chroma.h
 glib_enum_define = GST_VIDEO
 glib_gen_prefix = gst_video
 glib_gen_basename = video
@@ -23,6 +23,7 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	video.c          	\
 	video-event.c          	\
 	video-format.c         	\
+	video-chroma.c         	\
 	video-color.c         	\
 	video-info.c         	\
 	video-frame.c         	\
@@ -49,6 +50,7 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	video.h			\
 	video-event.h          	\
 	video-format.h         	\
+	video-chroma.h         	\
 	video-color.h         	\
 	video-info.h         	\
 	video-frame.h         	\
@@ -80,17 +82,15 @@ gir_headers=$(patsubst %,$(srcdir)/%, $(libgstvideo_@GST_API_VERSION@include_HEA
 gir_headers+=$(patsubst %,$(builddir)/%, $(built_headers))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstvideo_@GST_API_VERSION@_la_SOURCES))
 gir_sources+=$(patsubst %,$(builddir)/%, $(built_sources))
-gir_cincludes=$(patsubst %,--c-include='gst/video/%',$(libgstvideo_@GST_API_VERSION@include_HEADERS))
-gir_cincludes+=$(patsubst %,--c-include='gst/video/%',$(nodist_libgstvideo_@GST_API_VERSION@include_HEADERS))
 
 GstVideo-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstvideo-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
-		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstVideo \
 		--nsversion=@GST_API_VERSION@ \
 		--strip-prefix=Gst \
 		--warn-all \
-		$(gir_cincludes) \
+		--c-include "gst/video/video.h" \
 		-I$(top_srcdir)/gst-libs \
 		-I$(top_builddir)/gst-libs \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \

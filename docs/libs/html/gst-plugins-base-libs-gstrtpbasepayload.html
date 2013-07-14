@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtpbasepayload</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtpbasedepayload.html" title="gstrtpbasedepayload">
@@ -130,8 +130,11 @@ Provides a base class for RTP payloaders
 <p>
 Base class for audio RTP payloader.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GstElementClass"><span class="type">GstElementClass</span></a> <em class="structfield"><code><a name="GstRTPBasePayloadClass.parent-class"></a>parent_class</code></em>;</span></p></td>
@@ -172,8 +175,11 @@ Base class for audio RTP payloader.
 <p>
 Get access to the configured MTU of <em class="parameter"><code>payload</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload"><span class="type">GstRTPBasePayload</span></a>
@@ -189,8 +195,11 @@ Get access to the configured MTU of <em class="parameter"><code>payload</code></
 <p>
 Get access to the configured payload type of <em class="parameter"><code>payload</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload"><span class="type">GstRTPBasePayload</span></a>
@@ -206,8 +215,11 @@ Get access to the configured payload type of <em class="parameter"><code>payload
 <p>
 Get access to the sinkpad of <em class="parameter"><code>payload</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload"><span class="type">GstRTPBasePayload</span></a>
@@ -223,8 +235,11 @@ Get access to the sinkpad of <em class="parameter"><code>payload</code></em>.
 <p>
 Get access to the srcpad of <em class="parameter"><code>payload</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload"><span class="type">GstRTPBasePayload</span></a>
@@ -242,8 +257,11 @@ Get access to the srcpad of <em class="parameter"><code>payload</code></em>.
 Check if the packet with <em class="parameter"><code>size</code></em> and <em class="parameter"><code>duration</code></em> would exceed the configured
 maximum size.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
@@ -279,8 +297,11 @@ seqnum and timestamp of the RTP buffer will be updated first.
 <p>
 This function takes ownership of <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
@@ -311,8 +332,11 @@ seqnum and timestamp of the RTP buffer will be updated first.
 <p>
 This function takes ownership of <em class="parameter"><code>list</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
@@ -344,8 +368,11 @@ Set the rtp options of the payloader. These options will be set in the caps
 of the payloader. Subclasses must call this method before calling
 <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#gst-rtp-base-payload-push" title="gst_rtp_base_payload_push ()"><code class="function">gst_rtp_base_payload_push()</code></a> or <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#gst-rtp-base-payload-set-outcaps" title="gst_rtp_base_payload_set_outcaps ()"><code class="function">gst_rtp_base_payload_set_outcaps()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>
@@ -384,8 +411,11 @@ Configure the output caps with the optional parameters.
 Variable arguments should be in the form field name, field type
 (as a GType), value(s).  The last variable argument should be NULL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload</code></em> :</span></p></td>

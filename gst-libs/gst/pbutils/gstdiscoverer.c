@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -54,6 +54,7 @@ GST_DEBUG_CATEGORY_STATIC (discoverer_debug);
 static GQuark _CAPS_QUARK;
 static GQuark _TAGS_QUARK;
 static GQuark _TOC_QUARK;
+static GQuark _STREAM_ID_QUARK;
 static GQuark _MISSING_PLUGIN_QUARK;
 static GQuark _STREAM_TOPOLOGY_QUARK;
 static GQuark _TOPOLOGY_PAD_QUARK;
@@ -67,6 +68,7 @@ typedef struct
   GstElement *sink;
   GstTagList *tags;
   GstToc *toc;
+  gchar *stream_id;
 } PrivateStream;
 
 struct _GstDiscovererPrivate
@@ -134,7 +136,8 @@ _do_init (void)
 
   _CAPS_QUARK = g_quark_from_static_string ("caps");
   _TAGS_QUARK = g_quark_from_static_string ("tags");
-  _TOC_QUARK = g_quark_from_static_string ("toc");
+  _TOC_QUARK = g_quark_from_static_string ("stream-id");
+  _STREAM_ID_QUARK = g_quark_from_static_string ("toc");
   _MISSING_PLUGIN_QUARK = g_quark_from_static_string ("missing-plugin");
   _STREAM_TOPOLOGY_QUARK = g_quark_from_static_string ("stream-topology");
   _TOPOLOGY_PAD_QUARK = g_quark_from_static_string ("pad");
@@ -465,40 +468,55 @@ _event_probe (GstPad * pad, GstPadProbeInfo * info, PrivateStream * ps)
 {
   GstEvent *event = GST_PAD_PROBE_INFO_EVENT (info);
 
-  if (GST_EVENT_TYPE (event) == GST_EVENT_TAG) {
-    GstTagList *tl = NULL, *tmp;
+  switch (GST_EVENT_TYPE (event)) {
+    case GST_EVENT_TAG:{
+      GstTagList *tl = NULL, *tmp;
 
-    gst_event_parse_tag (event, &tl);
-    GST_DEBUG_OBJECT (pad, "tags %" GST_PTR_FORMAT, tl);
-    DISCO_LOCK (ps->dc);
-    /* If preroll is complete, drop these tags - the collected information is
-     * possibly already being processed and adding more tags would be racy */
-    if (G_LIKELY (ps->dc->priv->processing)) {
-      GST_DEBUG_OBJECT (pad, "private stream %p old tags %" GST_PTR_FORMAT, ps,
-          ps->tags);
-      tmp = gst_tag_list_merge (ps->tags, tl, GST_TAG_MERGE_APPEND);
-      if (ps->tags)
-        gst_tag_list_unref (ps->tags);
-      ps->tags = tmp;
-      GST_DEBUG_OBJECT (pad, "private stream %p new tags %" GST_PTR_FORMAT, ps,
-          tmp);
-    } else
-      GST_DEBUG_OBJECT (pad, "Dropping tags since preroll is done");
-    DISCO_UNLOCK (ps->dc);
-  }
+      gst_event_parse_tag (event, &tl);
+      GST_DEBUG_OBJECT (pad, "tags %" GST_PTR_FORMAT, tl);
+      DISCO_LOCK (ps->dc);
+      /* If preroll is complete, drop these tags - the collected information is
+       * possibly already being processed and adding more tags would be racy */
+      if (G_LIKELY (ps->dc->priv->processing)) {
+        GST_DEBUG_OBJECT (pad, "private stream %p old tags %" GST_PTR_FORMAT,
+            ps, ps->tags);
+        tmp = gst_tag_list_merge (ps->tags, tl, GST_TAG_MERGE_APPEND);
+        if (ps->tags)
+          gst_tag_list_unref (ps->tags);
+        ps->tags = tmp;
+        GST_DEBUG_OBJECT (pad, "private stream %p new tags %" GST_PTR_FORMAT,
+            ps, tmp);
+      } else
+        GST_DEBUG_OBJECT (pad, "Dropping tags since preroll is done");
+      DISCO_UNLOCK (ps->dc);
+      break;
+    }
+    case GST_EVENT_TOC:{
+      GstToc *tmp;
 
-  if (GST_EVENT_TYPE (event) == GST_EVENT_TOC) {
-    GstToc *tmp;
+      gst_event_parse_toc (event, &tmp, NULL);
+      GST_DEBUG_OBJECT (pad, "toc %" GST_PTR_FORMAT, tmp);
+      DISCO_LOCK (ps->dc);
+      ps->toc = tmp;
+      if (G_LIKELY (ps->dc->priv->processing)) {
+        GST_DEBUG_OBJECT (pad, "private stream %p toc %" GST_PTR_FORMAT, ps,
+            tmp);
+      } else
+        GST_DEBUG_OBJECT (pad, "Dropping toc since preroll is done");
+      DISCO_UNLOCK (ps->dc);
+      break;
+    }
+    case GST_EVENT_STREAM_START:{
+      const gchar *stream_id;
 
-    gst_event_parse_toc (event, &tmp, NULL);
-    GST_DEBUG_OBJECT (pad, "toc %" GST_PTR_FORMAT, tmp);
-    DISCO_LOCK (ps->dc);
-    ps->toc = tmp;
-    if (G_LIKELY (ps->dc->priv->processing)) {
-      GST_DEBUG_OBJECT (pad, "private stream %p toc %" GST_PTR_FORMAT, ps, tmp);
-    } else
-      GST_DEBUG_OBJECT (pad, "Dropping toc since preroll is done");
-    DISCO_UNLOCK (ps->dc);
+      gst_event_parse_stream_start (event, &stream_id);
+
+      g_free (ps->stream_id);
+      ps->stream_id = stream_id ? g_strdup (stream_id) : NULL;
+      break;
+    }
+    default:
+      break;
   }
 
   return GST_PAD_PROBE_OK;
@@ -685,6 +703,7 @@ uridecodebin_pad_removed_cb (GstElement * uridecodebin, GstPad * pad,
   if (ps->toc) {
     gst_toc_unref (ps->toc);
   }
+  g_free (ps->stream_id);
 
   g_slice_free (PrivateStream, ps);
 
@@ -719,6 +738,9 @@ collect_stream_information (GstDiscoverer * dc, PrivateStream * ps, guint idx)
     gst_structure_id_set (st, _TAGS_QUARK, GST_TYPE_TAG_LIST, ps->tags, NULL);
   if (ps->toc)
     gst_structure_id_set (st, _TOC_QUARK, GST_TYPE_TOC, ps->toc, NULL);
+  if (ps->stream_id)
+    gst_structure_id_set (st, _STREAM_ID_QUARK, G_TYPE_STRING, ps->stream_id,
+        NULL);
 
   return st;
 }
@@ -752,6 +774,7 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
   GstTagList *tags_st;
   GstToc *toc_st;
   const gchar *name;
+  gchar *stream_id;
   int tmp;
   guint utmp;
 
@@ -816,6 +839,12 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->parent.toc = toc_st;
     }
 
+    if (gst_structure_id_has_field (st, _STREAM_ID_QUARK)) {
+      gst_structure_id_get (st, _STREAM_ID_QUARK, G_TYPE_STRING, &stream_id,
+          NULL);
+      info->parent.stream_id = stream_id;
+    }
+
     if (!info->language && ((GstDiscovererStreamInfo *) info)->tags) {
       gchar *language;
       if (gst_tag_list_get_string (((GstDiscovererStreamInfo *) info)->tags,
@@ -875,6 +904,12 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->parent.toc = toc_st;
     }
 
+    if (gst_structure_id_has_field (st, _STREAM_ID_QUARK)) {
+      gst_structure_id_get (st, _STREAM_ID_QUARK, G_TYPE_STRING, &stream_id,
+          NULL);
+      info->parent.stream_id = stream_id;
+    }
+
     gst_caps_unref (caps);
     return (GstDiscovererStreamInfo *) info;
 
@@ -908,6 +943,12 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
       info->parent.toc = toc_st;
     }
 
+    if (gst_structure_id_has_field (st, _STREAM_ID_QUARK)) {
+      gst_structure_id_get (st, _STREAM_ID_QUARK, G_TYPE_STRING, &stream_id,
+          NULL);
+      info->parent.stream_id = stream_id;
+    }
+
     if (!info->language && ((GstDiscovererStreamInfo *) info)->tags) {
       gchar *language;
       if (gst_tag_list_get_string (((GstDiscovererStreamInfo *) info)->tags,
@@ -938,6 +979,11 @@ collect_information (GstDiscoverer * dc, const GstStructure * st,
 
     if (gst_structure_id_get (st, _TOC_QUARK, GST_TYPE_TOC, &toc_st, NULL)) {
       info->toc = toc_st;
+    }
+
+    if (gst_structure_id_get (st, _STREAM_ID_QUARK, G_TYPE_STRING, &stream_id,
+            NULL)) {
+      info->stream_id = stream_id;
     }
 
     gst_caps_unref (caps);

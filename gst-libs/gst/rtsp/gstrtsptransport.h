@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /*
  * Unless otherwise indicated, Source Code is licensed under MIT license.
@@ -83,6 +83,7 @@ typedef enum {
  * @GST_RTSP_LOWER_TRANS_UDP_MCAST: stream data over UDP multicast
  * @GST_RTSP_LOWER_TRANS_TCP: stream data over TCP
  * @GST_RTSP_LOWER_TRANS_HTTP: stream data tunneled over HTTP.
+ * @GST_RTSP_LOWER_TRANS_TLS: encrypt TCP and HTTP with TLS
  *
  * The different transport methods.
  */
@@ -91,7 +92,8 @@ typedef enum {
   GST_RTSP_LOWER_TRANS_UDP       = (1 << 0),
   GST_RTSP_LOWER_TRANS_UDP_MCAST = (1 << 1),
   GST_RTSP_LOWER_TRANS_TCP       = (1 << 2),
-  GST_RTSP_LOWER_TRANS_HTTP      = (1 << 4)
+  GST_RTSP_LOWER_TRANS_HTTP      = (1 << 4),
+  GST_RTSP_LOWER_TRANS_TLS       = (1 << 5)
 } GstRTSPLowerTrans;
 
 #define GST_TYPE_RTSP_LOWER_TRANS (gst_rtsp_lower_trans_get_type())

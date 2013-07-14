@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>tcpclientsink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
@@ -60,7 +60,7 @@
 <pre class="synopsis">
   "<a class="link" href="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--host" title='The "host" property'>host</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--port" title='The "port" property'>port</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--protocol" title='The "protocol" property'>protocol</a>"                 <span class="type">GstTCPProtocol</span>        : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--protocol" title='The "protocol" property'>protocol</a>"                 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPProtocol"><span class="type">GstTCPProtocol</span></a>        : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -68,7 +68,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp12404384"></a><h3>Example launch line</h3>
+<a name="idp11316288"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -92,9 +92,12 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp12336400"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="idp11318608"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -115,9 +118,12 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp13745056"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="idp11771680"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -170,7 +176,7 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 <hr>
 <div class="refsect2">
 <a name="GstTCPClientSink--protocol"></a><h3>The <code class="literal">"protocol"</code> property</h3>
-<pre class="programlisting">  "protocol"                 <span class="type">GstTCPProtocol</span>        : Read / Write</pre>
+<pre class="programlisting">  "protocol"                 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstTCPProtocol"><span class="type">GstTCPProtocol</span></a>        : Read / Write</pre>
 <p>The protocol to wrap data in.</p>
 <p>Default value: GST_TCP_PROTOCOL_NONE</p>
 </div>

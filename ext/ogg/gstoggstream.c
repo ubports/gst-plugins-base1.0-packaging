@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -27,6 +27,7 @@
 #include "vorbis_parse.h"
 
 #include <gst/riff/riff-media.h>
+#include <gst/pbutils/pbutils.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -499,6 +500,9 @@ extract_tags_theora (GstOggStream * pad, ogg_packet * packet)
     if (!pad->taglist)
       pad->taglist = gst_tag_list_new_empty ();
 
+    gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+        GST_TAG_VIDEO_CODEC, "Theora", NULL);
+
     if (pad->bitrate)
       gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
           GST_TAG_BITRATE, (guint) pad->bitrate, NULL);
@@ -513,7 +517,7 @@ setup_dirac_mapper (GstOggStream * pad, ogg_packet * packet)
   int ret;
   DiracSequenceHeader header;
 
-  ret = dirac_sequence_header_parse (&header, packet->packet + 13,
+  ret = gst_dirac_sequence_header_parse (&header, packet->packet + 13,
       packet->bytes - 13);
   if (ret == 0) {
     GST_DEBUG ("Failed to parse Dirac sequence header");
@@ -732,6 +736,9 @@ extract_tags_vp8 (GstOggStream * pad, ogg_packet * packet)
   if (packet->bytes >= 7 && memcmp (packet->packet, "OVP80\2 ", 7) == 0) {
     tag_list_from_vorbiscomment_packet (packet,
         (const guint8 *) "OVP80\2 ", 7, &pad->taglist);
+
+    gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+        GST_TAG_VIDEO_CODEC, "VP8", NULL);
   }
 }
 
@@ -778,7 +785,7 @@ setup_vorbis_mapper (GstOggStream * pad, ogg_packet * packet)
   if (pad->granulerate_n == 0)
     return FALSE;
 
-  parse_vorbis_header_packet (pad, packet);
+  gst_parse_vorbis_header_packet (pad, packet);
 
   pad->caps = gst_caps_new_simple ("audio/x-vorbis",
       "rate", G_TYPE_INT, pad->granulerate_n, "channels", G_TYPE_INT, chans,
@@ -794,7 +801,7 @@ is_header_vorbis (GstOggStream * pad, ogg_packet * packet)
     return FALSE;
 
   if (packet->packet[0] == 5) {
-    parse_vorbis_setup_packet (pad, packet);
+    gst_parse_vorbis_setup_packet (pad, packet);
   }
 
   return TRUE;
@@ -814,7 +821,8 @@ extract_tags_vorbis (GstOggStream * pad, ogg_packet * packet)
       pad->taglist = gst_tag_list_new_empty ();
 
     gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
-        GST_TAG_ENCODER_VERSION, pad->version, NULL);
+        GST_TAG_ENCODER_VERSION, pad->version,
+        GST_TAG_AUDIO_CODEC, "Vorbis", NULL);
 
     if (pad->bitrate_nominal > 0)
       gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
@@ -903,6 +911,16 @@ extract_tags_count (GstOggStream * pad, ogg_packet * packet)
 
     if (!pad->taglist)
       pad->taglist = gst_tag_list_new_empty ();
+
+    if (pad->is_video) {
+      gst_pb_utils_add_codec_description_to_tag_list (pad->taglist,
+          GST_TAG_VIDEO_CODEC, pad->caps);
+    } else if (!pad->is_sparse && !pad->is_ogm_text && !pad->is_ogm) {
+      gst_pb_utils_add_codec_description_to_tag_list (pad->taglist,
+          GST_TAG_AUDIO_CODEC, pad->caps);
+    } else {
+      GST_FIXME ("not adding codec tag, not sure about codec type");
+    }
 
     if (pad->bitrate)
       gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
@@ -1025,6 +1043,9 @@ extract_tags_flac (GstOggStream * pad, ogg_packet * packet)
   if (packet->bytes > 4 && ((packet->packet[0] & 0x7F) == 0x4)) {
     tag_list_from_vorbiscomment_packet (packet,
         packet->packet, 4, &pad->taglist);
+
+    gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+        GST_TAG_AUDIO_CODEC, "FLAC", NULL);
   }
 }
 
@@ -1846,6 +1867,11 @@ extract_tags_kate (GstOggStream * pad, ogg_packet * packet)
     case 0x81:
       tag_list_from_vorbiscomment_packet (packet,
           (const guint8 *) "\201kate\0\0\0\0", 9, &list);
+
+      if (list != NULL) {
+        gst_tag_list_add (list, GST_TAG_MERGE_REPLACE,
+            GST_TAG_SUBTITLE_CODEC, "Kate", NULL);
+      }
       break;
     default:
       break;
@@ -1981,9 +2007,132 @@ extract_tags_opus (GstOggStream * pad, ogg_packet * packet)
   if (packet->bytes >= 8 && memcmp (packet->packet, "OpusTags", 8) == 0) {
     tag_list_from_vorbiscomment_packet (packet,
         (const guint8 *) "OpusTags", 8, &pad->taglist);
+
+    gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+        GST_TAG_AUDIO_CODEC, "Opus", NULL);
   }
 }
 
+/* daala */
+
+static gboolean
+setup_daala_mapper (GstOggStream * pad, ogg_packet * packet)
+{
+  guint8 *data = packet->packet;
+  guint w, h, par_d, par_n;
+  guint8 vmaj, vmin, vrev;
+  guint frame_duration;
+
+  vmaj = data[6];
+  vmin = data[7];
+  vrev = data[8];
+
+  GST_LOG ("daala %d.%d.%d", vmaj, vmin, vrev);
+
+  w = GST_READ_UINT32_LE (data + 9);
+  h = GST_READ_UINT32_LE (data + 13);
+
+  par_n = GST_READ_UINT32_LE (data + 17);
+  par_d = GST_READ_UINT32_LE (data + 21);
+
+  pad->granulerate_n = GST_READ_UINT32_LE (data + 25);
+  pad->granulerate_d = GST_READ_UINT32_LE (data + 29);
+  frame_duration = GST_READ_UINT32_LE (data + 33);
+
+  GST_LOG ("fps = %d/%d, dur %d, PAR = %u/%u, width = %u, height = %u",
+      pad->granulerate_n, pad->granulerate_d, frame_duration, par_n, par_d, w,
+      h);
+
+  pad->granuleshift = GST_READ_UINT8 (data + 37);
+  GST_LOG ("granshift: %d", pad->granuleshift);
+
+  pad->is_video = TRUE;
+  pad->n_header_packets = 3;
+  pad->frame_size = 1;
+
+  if (pad->granulerate_n == 0 || pad->granulerate_d == 0) {
+    GST_WARNING ("frame rate %d/%d", pad->granulerate_n, pad->granulerate_d);
+    return FALSE;
+  }
+
+  pad->caps = gst_caps_new_empty_simple ("video/x-daala");
+
+  if (w > 0 && h > 0) {
+    gst_caps_set_simple (pad->caps, "width", G_TYPE_INT, w, "height",
+        G_TYPE_INT, h, NULL);
+  }
+
+  /* PAR of 0:N, N:0 and 0:0 is allowed and maps to 1:1 */
+  if (par_n == 0 || par_d == 0)
+    par_n = par_d = 1;
+
+  /* only add framerate now so caps look prettier, with width/height first */
+  gst_caps_set_simple (pad->caps, "framerate", GST_TYPE_FRACTION,
+      pad->granulerate_n, pad->granulerate_d, "pixel-aspect-ratio",
+      GST_TYPE_FRACTION, par_n, par_d, NULL);
+
+  return TRUE;
+}
+
+static gint64
+granulepos_to_granule_daala (GstOggStream * pad, gint64 granulepos)
+{
+  gint64 keyindex, keyoffset;
+
+  if (pad->granuleshift != 0) {
+    keyindex = granulepos >> pad->granuleshift;
+    keyoffset = granulepos - (keyindex << pad->granuleshift);
+    return keyindex + keyoffset;
+  } else {
+    return granulepos;
+  }
+}
+
+static gboolean
+is_granulepos_keyframe_daala (GstOggStream * pad, gint64 granulepos)
+{
+  gint64 frame_mask;
+
+  if (granulepos == (gint64) - 1)
+    return FALSE;
+
+  frame_mask = (1 << pad->granuleshift) - 1;
+
+  return ((granulepos & frame_mask) == 0);
+}
+
+static gboolean
+is_packet_keyframe_daala (GstOggStream * pad, ogg_packet * packet)
+{
+  if (packet->bytes == 0)
+    return FALSE;
+  return (packet->packet[0] & 0x40);
+}
+
+static gboolean
+is_header_daala (GstOggStream * pad, ogg_packet * packet)
+{
+  return (packet->bytes > 0 && (packet->packet[0] & 0x80) == 0x80);
+}
+
+static void
+extract_tags_daala (GstOggStream * pad, ogg_packet * packet)
+{
+  if (packet->bytes > 0 && packet->packet[0] == 0x81) {
+    tag_list_from_vorbiscomment_packet (packet,
+        (const guint8 *) "\201daala", 5, &pad->taglist);
+
+    if (!pad->taglist)
+      pad->taglist = gst_tag_list_new_empty ();
+
+    gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+        GST_TAG_VIDEO_CODEC, "Daala", NULL);
+
+    if (pad->bitrate)
+      gst_tag_list_add (pad->taglist, GST_TAG_MERGE_REPLACE,
+          GST_TAG_BITRATE, (guint) pad->bitrate, NULL);
+  }
+}
 
 /* *INDENT-OFF* */
 /* indent hates our freedoms */
@@ -2220,7 +2369,21 @@ const GstOggMap mappers[] = {
     packet_duration_ogm,
     NULL,
     extract_tags_ogm
-  }
+  },
+  {
+    "\200daala", 6, 42,
+    "video/x-daala",
+    setup_daala_mapper,
+    granulepos_to_granule_daala,
+    granule_to_granulepos_default,
+    is_granulepos_keyframe_daala,
+    is_packet_keyframe_daala,
+    is_header_daala,
+    packet_duration_constant,
+    NULL,
+    extract_tags_daala
+  },
+ 
 };
 /* *INDENT-ON* */
 

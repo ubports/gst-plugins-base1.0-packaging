@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:gstappsrc
@@ -746,6 +746,7 @@ gst_app_src_stop (GstBaseSrc * bsrc)
   priv->flushing = TRUE;
   priv->started = FALSE;
   gst_app_src_flush_queued (appsrc);
+  g_cond_broadcast (&priv->cond);
   g_mutex_unlock (&priv->mutex);
 
   return TRUE;
@@ -1008,14 +1009,15 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
     if (!g_queue_is_empty (priv->queue)) {
       guint buf_size;
 
-      *buf = g_queue_pop_head (priv->queue);
-      buf_size = gst_buffer_get_size (*buf);
-
-      GST_DEBUG_OBJECT (appsrc, "we have buffer %p of size %u", *buf, buf_size);
       if (priv->new_caps) {
         gst_app_src_do_negotiate (bsrc);
         priv->new_caps = FALSE;
       }
+
+      *buf = g_queue_pop_head (priv->queue);
+      buf_size = gst_buffer_get_size (*buf);
+
+      GST_DEBUG_OBJECT (appsrc, "we have buffer %p of size %u", *buf, buf_size);
 
       priv->queued_bytes -= buf_size;
 

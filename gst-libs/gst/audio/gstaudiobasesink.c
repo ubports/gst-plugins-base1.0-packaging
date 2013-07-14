@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -34,6 +34,7 @@
 
 #include <string.h>
 
+#include <gst/audio/audio.h>
 #include "gstaudiobasesink.h"
 
 GST_DEBUG_CATEGORY_STATIC (gst_audio_base_sink_debug);
@@ -703,9 +704,9 @@ gst_audio_base_sink_set_alignment_threshold (GstAudioBaseSink * sink,
 GstClockTime
 gst_audio_base_sink_get_alignment_threshold (GstAudioBaseSink * sink)
 {
-  gint64 result;
+  GstClockTime result;
 
-  g_return_val_if_fail (GST_IS_AUDIO_BASE_SINK (sink), -1);
+  g_return_val_if_fail (GST_IS_AUDIO_BASE_SINK (sink), GST_CLOCK_TIME_NONE);
 
   GST_OBJECT_LOCK (sink);
   result = sink->priv->alignment_threshold;

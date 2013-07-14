@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /* FIXME 0.11: suppress warnings for deprecated API such as GValueArray
@@ -98,8 +98,8 @@ GST_START_TEST (test_sink_usage_video_only_stream)
   fakeaudiosink = gst_element_factory_make ("fakesink", "fakeaudiosink");
   fail_unless (fakeaudiosink != NULL, "Failed to create fakeaudiosink element");
 
-  /* video-only stream, audiosink will error out in null => ready if used */
-  g_object_set (fakeaudiosink, "state-error", 1, NULL);
+  /* video-only stream, audiosink will error out in ready => paused if used */
+  g_object_set (fakeaudiosink, "state-error", 2, NULL);
 
   g_object_set (playbin, "video-sink", fakevideosink, NULL);
   g_object_set (playbin, "audio-sink", fakeaudiosink, NULL);
@@ -481,9 +481,9 @@ GST_START_TEST (test_refcount)
 
   ASSERT_OBJECT_REFCOUNT (playbin, "playbin", 1);
 
-  /* we have two refs now, one from ourselves and one from playbin */
-  ASSERT_OBJECT_REFCOUNT (audiosink, "myaudiosink", 2);
-  ASSERT_OBJECT_REFCOUNT (videosink, "myvideosink", 2);
+  /* we have 3 refs now, one from ourselves, one from playbin and one from playsink */
+  ASSERT_OBJECT_REFCOUNT (audiosink, "myaudiosink", 3);
+  ASSERT_OBJECT_REFCOUNT (videosink, "myvideosink", 3);
   ASSERT_OBJECT_REFCOUNT (vis, "myvis", 2);
 
   fail_unless_equals_int (gst_element_set_state (playbin, GST_STATE_PAUSED),
@@ -766,6 +766,70 @@ gst_codec_src_init (GstCodecSrc * src)
 {
 }
 
+#if 0
+GST_START_TEST (test_appsink_twice)
+{
+  GstElement *playbin, *appsink;
+  GstSample *sample;
+  gchar *fn, *uri;
+  int flags;
+
+  fn = g_build_filename (GST_TEST_FILES_PATH, "theora-vorbis.ogg", NULL);
+  uri = gst_filename_to_uri (fn, NULL);
+  g_free (fn);
+
+  playbin = gst_element_factory_make ("playbin", NULL);
+  g_object_set (playbin, "uri", uri, NULL);
+  g_free (uri);
+
+  /* disable video decoding/rendering (doesn't actually work yet though) */
+  g_object_get (playbin, "flags", &flags, NULL);
+  g_object_set (playbin, "flags", flags & ~1, NULL);
+
+  appsink = gst_element_factory_make ("appsink", "appsink");
+  g_object_set (playbin, "audio-sink", appsink, NULL);
+
+  fail_unless_equals_int (gst_element_set_state (playbin, GST_STATE_PLAYING),
+      GST_STATE_CHANGE_ASYNC);
+  fail_unless_equals_int (gst_element_get_state (playbin, NULL, NULL,
+          GST_CLOCK_TIME_NONE), GST_STATE_CHANGE_SUCCESS);
+
+  do {
+    g_signal_emit_by_name (appsink, "pull-sample", &sample);
+    GST_LOG ("got sample: %p", sample);
+    if (sample)
+      gst_sample_unref (sample);
+  }
+  while (sample != NULL);
+
+  GST_INFO ("got first EOS");
+
+  fail_unless_equals_int (gst_element_set_state (playbin, GST_STATE_NULL),
+      GST_STATE_CHANGE_SUCCESS);
+  fail_unless_equals_int (gst_element_set_state (playbin, GST_STATE_PLAYING),
+      GST_STATE_CHANGE_ASYNC);
+  fail_unless_equals_int (gst_element_get_state (playbin, NULL, NULL,
+          GST_CLOCK_TIME_NONE), GST_STATE_CHANGE_SUCCESS);
+
+  do {
+    g_signal_emit_by_name (appsink, "pull-sample", &sample);
+    GST_LOG ("got sample: %p", sample);
+    if (sample)
+      gst_sample_unref (sample);
+  }
+  while (sample != NULL);
+
+  GST_INFO ("got second EOS");
+
+  fail_unless_equals_int (gst_element_set_state (playbin, GST_STATE_NULL),
+      GST_STATE_CHANGE_SUCCESS);
+
+  gst_object_unref (playbin);
+}
+
+GST_END_TEST;
+#endif
+
 #endif /* GST_DISABLE_REGISTRY */
 
 
@@ -788,6 +852,18 @@ playbin_suite (void)
   tcase_add_test (tc_chain, test_missing_primary_decoder);
   tcase_add_test (tc_chain, test_refcount);
   tcase_add_test (tc_chain, test_source_setup);
+
+#if 0
+  {
+    GstRegistry *reg = gst_registry_get ();
+
+    if (gst_registry_check_feature_version (reg, "oggdemux", 1, 0, 0) &&
+        gst_registry_check_feature_version (reg, "theoradec", 1, 0, 0) &&
+        gst_registry_check_feature_version (reg, "vorbisdec", 1, 0, 0)) {
+      tcase_add_test (tc_chain, test_appsink_twice);
+    }
+  }
+#endif
 
   /* one day we might also want to have the following checks:
    * tcase_add_test (tc_chain, test_missing_secondary_decoder_one_fatal);

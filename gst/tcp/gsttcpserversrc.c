@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -98,6 +98,8 @@ gst_tcp_server_src_class_init (GstTCPServerSrcClass * klass)
   gobject_class->get_property = gst_tcp_server_src_get_property;
   gobject_class->finalize = gst_tcp_server_src_finalize;
 
+  /* FIXME 2.0: Rename this to bind-address, host does not make much
+   * sense here */
   g_object_class_install_property (gobject_class, PROP_HOST,
       g_param_spec_string ("host", "Host", "The hostname to listen as",
           TCP_DEFAULT_LISTEN_HOST, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));

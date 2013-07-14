@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_OVERLAY_COMPOSITION_H__
@@ -118,6 +118,19 @@ typedef enum {
   * Supported YUV overlay video format.
   */
 #define GST_VIDEO_OVERLAY_COMPOSITION_FORMAT_YUV      GST_VIDEO_FORMAT_AYUV
+
+/**
+ * GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS:
+ *
+ * Video formats supported by gst_video_overlay_composition_blend(), for
+ * use in overlay elements' pad template caps.
+ *
+ * Since: 1.2
+ */
+#define GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS \
+    "{ BGRx, RGBx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR," \
+     " I420, YV12, AYUV, YUY2, UYVY, v308, Y41B, Y42B, Y444," \
+     " NV12, NV21, A420, YUV9, YVU9, IYU1, GRAY8 }"
 
 GType                        gst_video_overlay_rectangle_get_type (void);
 
