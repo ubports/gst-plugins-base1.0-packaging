@@ -1,4 +1,5 @@
 debian/tmp/usr/lib/*/libgstaudio-@GST_ABI@.so.*
+debian/tmp/usr/lib/*/libgstallocators-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstapp-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstpbutils-@GST_ABI@.so.*
 debian/tmp/usr/lib/*/libgstfft-@GST_ABI@.so.*

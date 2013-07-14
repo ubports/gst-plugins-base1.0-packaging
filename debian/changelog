@@ -1,3 +1,16 @@
+gst-plugins-base1.0 (1.1.2-1) experimental; urgency=low
+
+  * New upstream development snapshot:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer >= 1.1.2 and orc >= 0.4.17.
+    + debian/libgstreamer-plugins-base.install:
+      - Add new allocators library.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sun, 14 Jul 2013 11:16:14 +0200
+
 gst-plugins-base1.0 (1.0.8-1) unstable; urgency=low
 
   * New upstream bugfix release.
