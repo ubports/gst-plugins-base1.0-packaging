@@ -327,7 +327,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp31156624"></a><p>
+<a name="idp31232528"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -939,6 +939,7 @@ and downstream force key unit events.
   GST_VIDEO_FORMAT_GBR_10BE,
   GST_VIDEO_FORMAT_GBR_10LE,
   GST_VIDEO_FORMAT_NV16,
+  GST_VIDEO_FORMAT_NV24,
 } GstVideoFormat;
 </pre>
 <p>
@@ -1208,6 +1209,11 @@ Enum value describing the most common video formats.
 <tr>
 <td><p><a name="GST-VIDEO-FORMAT-NV16:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_NV16</code></span></p></td>
 <td>planar 4:2:2 YUV with interleaved UV plane
+</td>
+</tr>
+<tr>
+<td><p><a name="GST-VIDEO-FORMAT-NV24:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_FORMAT_NV24</code></span></p></td>
+<td>planar 4:4:4 YUV with interleaved UV plane
 </td>
 </tr>
 </tbody>

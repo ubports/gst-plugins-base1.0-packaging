@@ -32,6 +32,7 @@
 <ANCHOR id="GstAppSrc--stream-type" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc--stream-type">
 <ANCHOR id="GstAppSrc--emit-signals" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc--emit-signals">
 <ANCHOR id="GstAppSrc--min-percent" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc--min-percent">
+<ANCHOR id="GstAppSrc--current-level-bytes" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc--current-level-bytes">
 <ANCHOR id="gst-plugins-base-plugins-appsrc.signal-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#gst-plugins-base-plugins-appsrc.signal-details">
 <ANCHOR id="GstAppSrc-end-of-stream" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-end-of-stream">
 <ANCHOR id="GstAppSrc-enough-data" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-enough-data">

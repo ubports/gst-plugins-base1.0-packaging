@@ -550,7 +550,8 @@ noinst_HEADERS = \
 	gstencodebin.h		\
 	gststreamcombiner.h	\
 	gststreamsplitter.h	\
-	gstsmartencoder.h
+	gstsmartencoder.h	\
+	gststreamcombinerpad.h
 
 enum_headers = $(foreach h,$(glib_enum_headers),\n\#include \"$(h)\")
 all: all-am

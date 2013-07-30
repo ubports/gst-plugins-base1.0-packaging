@@ -340,6 +340,9 @@ struct _GstSourceGroup
   gint pending;
   gboolean sub_pending;
 
+  gboolean have_group_id;
+  guint group_id;
+
   gulong pad_added_id;
   gulong pad_removed_id;
   gulong no_more_pads_id;
@@ -359,7 +362,7 @@ struct _GstSourceGroup
   gulong block_id;
 
   GMutex stream_changed_pending_lock;
-  GList *stream_changed_pending;
+  gboolean stream_changed_pending;
 
   /* to prevent that suburidecodebin seek flushes disrupt playback */
   GMutex suburi_flushes_to_drop_lock;
@@ -584,6 +587,9 @@ enum
   SIGNAL_SOURCE_SETUP,
   LAST_SIGNAL
 };
+
+static GstStaticCaps raw_audio_caps = GST_STATIC_CAPS ("audio/x-raw");
+static GstStaticCaps raw_video_caps = GST_STATIC_CAPS ("video/x-raw");
 
 static void gst_play_bin_class_init (GstPlayBinClass * klass);
 static void gst_play_bin_init (GstPlayBin * playbin);
@@ -1274,6 +1280,10 @@ init_group (GstPlayBin * playbin, GstSourceGroup * group)
   group->audio_channels = g_ptr_array_new ();
   group->text_channels = g_ptr_array_new ();
   g_mutex_init (&group->lock);
+
+  group->stream_changed_pending = FALSE;
+  g_mutex_init (&group->stream_changed_pending_lock);
+
   /* init combiners. The combiner is found by finding the first prefix that
    * matches the media. */
   group->playbin = playbin;
@@ -1320,12 +1330,8 @@ free_group (GstPlayBin * playbin, GstSourceGroup * group)
     gst_object_unref (group->text_sink);
   group->text_sink = NULL;
 
-  g_list_free (group->stream_changed_pending);
-  group->stream_changed_pending = NULL;
-
-  if (group->stream_changed_pending_lock.p)
-    g_mutex_clear (&group->stream_changed_pending_lock);
-  group->stream_changed_pending_lock.p = NULL;
+  group->stream_changed_pending = FALSE;
+  g_mutex_clear (&group->stream_changed_pending_lock);
 
   g_slist_free (group->suburi_flushes_to_drop);
   group->suburi_flushes_to_drop = NULL;
@@ -2166,7 +2172,7 @@ gst_play_bin_set_sink (GstPlayBin * playbin, GstPlaySinkType type,
 
   if (*elem)
     gst_object_unref (*elem);
-  *elem = gst_object_ref (sink);
+  *elem = sink ? gst_object_ref (sink) : NULL;
 }
 
 static void
@@ -2605,13 +2611,9 @@ gst_play_bin_query (GstElement * element, GstQuery * query)
     gboolean pending;
 
     GST_SOURCE_GROUP_LOCK (group);
-    if (group->stream_changed_pending_lock.p) {
-      g_mutex_lock (&group->stream_changed_pending_lock);
-      pending = group->pending || group->stream_changed_pending;
-      g_mutex_unlock (&group->stream_changed_pending_lock);
-    } else {
-      pending = group->pending;
-    }
+
+    pending = group->pending || group->stream_changed_pending;
+
     if (pending) {
       GstFormat fmt;
       gint i;
@@ -2691,6 +2693,10 @@ gst_play_bin_handle_message (GstBin * bin, GstMessage * msg)
       gst_message_unref (msg);
       msg = NULL;
     }
+  } else if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_STREAM_START) {
+    GstSourceGroup *new_group = playbin->curr_group;
+
+    new_group->stream_changed_pending = FALSE;
   } else if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ERROR) {
     /* If we get an error of the subtitle uridecodebin transform
      * them into warnings and disable the subtitles */
@@ -2841,31 +2847,72 @@ notify:
 }
 
 static GstPadProbeReturn
-_suburidecodebin_event_probe (GstPad * pad, GstPadProbeInfo * info,
-    gpointer udata)
+_uridecodebin_event_probe (GstPad * pad, GstPadProbeInfo * info, gpointer udata)
 {
   GstPadProbeReturn ret = GST_PAD_PROBE_OK;
   GstSourceGroup *group = udata;
   GstEvent *event = GST_PAD_PROBE_INFO_DATA (info);
+  gboolean suburidecodebin = (GST_PAD_PARENT (pad) == group->suburidecodebin);
 
-  switch (GST_EVENT_TYPE (event)) {
-    case GST_EVENT_FLUSH_START:
-    case GST_EVENT_FLUSH_STOP:
-    {
-      guint32 seqnum = gst_event_get_seqnum (event);
-      GSList *item = g_slist_find (group->suburi_flushes_to_drop,
-          GUINT_TO_POINTER (seqnum));
-      if (item) {
-        ret = GST_PAD_PROBE_DROP;       /* this is from subtitle seek only, drop it */
-        if (GST_EVENT_TYPE (event) == GST_EVENT_FLUSH_STOP) {
-          group->suburi_flushes_to_drop =
-              g_slist_delete_link (group->suburi_flushes_to_drop, item);
+  if (suburidecodebin) {
+    /* Drop flushes that we caused from the suburidecodebin */
+    switch (GST_EVENT_TYPE (event)) {
+      case GST_EVENT_FLUSH_START:
+      case GST_EVENT_FLUSH_STOP:
+      {
+        guint32 seqnum = gst_event_get_seqnum (event);
+        GSList *item = g_slist_find (group->suburi_flushes_to_drop,
+            GUINT_TO_POINTER (seqnum));
+        if (item) {
+          if (GST_EVENT_TYPE (event) == GST_EVENT_FLUSH_STOP) {
+            group->suburi_flushes_to_drop =
+                g_slist_delete_link (group->suburi_flushes_to_drop, item);
+          }
         }
       }
+      default:
+        break;
+    }
+  }
+
+  switch (GST_EVENT_TYPE (event)) {
+    case GST_EVENT_STREAM_START:{
+      guint group_id;
+
+      GST_SOURCE_GROUP_LOCK (group);
+      if (gst_event_parse_group_id (event, &group_id)) {
+        if (group->have_group_id) {
+          if (group->group_id != group_id) {
+            event = gst_event_copy (event);
+            gst_event_set_group_id (event, group->group_id);
+            gst_event_replace ((GstEvent **) & info->data, event);
+            gst_event_unref (event);
+          }
+        } else {
+          group->group_id = group_id;
+          group->have_group_id = TRUE;
+        }
+      } else {
+        GST_FIXME_OBJECT (pad,
+            "Consider implementing group-id handling on stream-start event");
+
+        if (!group->have_group_id) {
+          group->group_id = gst_util_group_id_next ();
+          group->have_group_id = TRUE;
+        }
+
+        event = gst_event_copy (event);
+        gst_event_set_group_id (event, group->group_id);
+        gst_event_replace ((GstEvent **) & info->data, event);
+        gst_event_unref (event);
+      }
+      GST_SOURCE_GROUP_UNLOCK (group);
+      break;
     }
     default:
       break;
   }
+
   return ret;
 }
 
@@ -2939,6 +2986,7 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   gint i, pass;
   gboolean changed = FALSE;
   GstElement *custom_combiner = NULL;
+  gulong group_id_probe_handler;
 
   playbin = group->playbin;
 
@@ -3113,12 +3161,11 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   }
   GST_SOURCE_GROUP_UNLOCK (group);
 
-  if (decodebin == group->suburidecodebin) {
-    /* TODO store the probe id */
-    /* to avoid propagating flushes from suburi specific seeks */
-    gst_pad_add_probe (pad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM,
-        _suburidecodebin_event_probe, group, NULL);
-  }
+  group_id_probe_handler =
+      gst_pad_add_probe (pad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM,
+      _uridecodebin_event_probe, group, NULL);
+  g_object_set_data (G_OBJECT (pad), "playbin.event_probe_id",
+      (gpointer) group_id_probe_handler);
 
   if (changed) {
     int signal;
@@ -3190,6 +3237,7 @@ pad_removed_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   GstElement *combiner;
   GstSourceCombine *combine;
   int signal = -1;
+  gulong group_id_probe_handler;
 
   playbin = group->playbin;
 
@@ -3197,6 +3245,13 @@ pad_removed_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
       "pad %s:%s removed from group %p", GST_DEBUG_PAD_NAME (pad), group);
 
   GST_SOURCE_GROUP_LOCK (group);
+
+  if ((group_id_probe_handler =
+          (guintptr) g_object_get_data (G_OBJECT (pad),
+              "playbin.event_probe_id"))) {
+    gst_pad_remove_probe (pad, group_id_probe_handler);
+    g_object_set_data (G_OBJECT (pad), "playbin.event_probe_id", 0);
+  }
 
   if ((combine = g_object_get_data (G_OBJECT (pad), "playbin.combine"))) {
     g_assert (combine->combiner == NULL);
@@ -3544,15 +3599,22 @@ avelement_compare (gconstpointer p1, gconstpointer p2)
   v1 = (GstAVElement *) p1;
   v2 = (GstAVElement *) p2;
 
-  fs1 = (GstPluginFeature *) v1->sink;
-  fs2 = (GstPluginFeature *) v2->sink;
   fd1 = (GstPluginFeature *) v1->dec;
   fd2 = (GstPluginFeature *) v2->dec;
 
-  v1_rank =
-      gst_plugin_feature_get_rank (fd1) * gst_plugin_feature_get_rank (fs1);
-  v2_rank =
-      gst_plugin_feature_get_rank (fd2) * gst_plugin_feature_get_rank (fs2);
+  /* If both have a sink, we also compare their ranks */
+  if (v1->sink && v2->sink) {
+    fs1 = (GstPluginFeature *) v1->sink;
+    fs2 = (GstPluginFeature *) v2->sink;
+    v1_rank =
+        gst_plugin_feature_get_rank (fd1) * gst_plugin_feature_get_rank (fs1);
+    v2_rank =
+        gst_plugin_feature_get_rank (fd2) * gst_plugin_feature_get_rank (fs2);
+  } else {
+    v1_rank = gst_plugin_feature_get_rank (fd1);
+    v2_rank = gst_plugin_feature_get_rank (fd2);
+    fs1 = fs2 = NULL;
+  }
 
   /* comparison based on the rank */
   diff = v2_rank - v1_rank;
@@ -3566,10 +3628,12 @@ avelement_compare (gconstpointer p1, gconstpointer p2)
   if (diff != 0)
     return diff;
 
-  /* comparison based on the name of sink elements */
-  diff = strcmp (GST_OBJECT_NAME (fs1), GST_OBJECT_NAME (fs2));
-  if (diff != 0)
-    return diff;
+  if (fs1 && fs2) {
+    /* comparison based on the name of sink elements */
+    diff = strcmp (GST_OBJECT_NAME (fs1), GST_OBJECT_NAME (fs2));
+    if (diff != 0)
+      return diff;
+  }
 
   /* comparison based on the name of decoder elements */
   return strcmp (GST_OBJECT_NAME (fd1), GST_OBJECT_NAME (fd2));
@@ -3607,7 +3671,8 @@ is_included (GList * list, GstCapsFeatures * cf)
 
 /* compute the number of common caps features */
 static guint
-get_n_common_capsfeatures (GstElementFactory * dec, GstElementFactory * sink)
+get_n_common_capsfeatures (GstPlayBin * playbin, GstElementFactory * dec,
+    GstElementFactory * sink, gboolean isaudioelement)
 {
   GstCaps *d_tmpl_caps, *s_tmpl_caps;
   GstCapsFeatures *d_features, *s_features;
@@ -3615,6 +3680,14 @@ get_n_common_capsfeatures (GstElementFactory * dec, GstElementFactory * sink)
   GList *cf_list = NULL;
   guint d_caps_size, s_caps_size;
   guint i, j, n_common_cf = 0;
+  GstCaps *raw_caps =
+      (isaudioelement) ? gst_static_caps_get (&raw_audio_caps) :
+      gst_static_caps_get (&raw_video_caps);
+  GstStructure *raw_struct = gst_caps_get_structure (raw_caps, 0);
+  GstPlayFlags flags = gst_play_bin_get_flags (playbin);
+  gboolean native_raw =
+      (isaudioelement ? ! !(flags & GST_PLAY_FLAG_NATIVE_AUDIO) : ! !(flags &
+          GST_PLAY_FLAG_NATIVE_VIDEO));
 
   d_tmpl_caps = get_template_caps (dec, GST_PAD_SRC);
   s_tmpl_caps = get_template_caps (sink, GST_PAD_SINK);
@@ -3631,11 +3704,24 @@ get_n_common_capsfeatures (GstElementFactory * dec, GstElementFactory * sink)
     d_features = gst_caps_get_features ((const GstCaps *) d_tmpl_caps, i);
     d_struct = gst_caps_get_structure ((const GstCaps *) d_tmpl_caps, i);
     for (j = 0; j < s_caps_size; j++) {
+
       s_features = gst_caps_get_features ((const GstCaps *) s_tmpl_caps, j);
       s_struct = gst_caps_get_structure ((const GstCaps *) s_tmpl_caps, j);
-      if (gst_structure_can_intersect (d_struct, s_struct) &&
-          gst_caps_features_is_equal (d_features, s_features) &&
-          !is_included (cf_list, s_features)) {
+
+      /* A common caps feature is given if the caps features are equal
+       * and the structures can intersect. If the NATIVE_AUDIO/NATIVE_VIDEO
+       * flags are not set we also allow if both structures are raw caps with
+       * system memory caps features, because in that case we have converters in
+       * place.
+       */
+      if (gst_caps_features_is_equal (d_features, s_features) &&
+          (gst_structure_can_intersect (d_struct, s_struct) ||
+              (!native_raw
+                  && gst_caps_features_is_equal (d_features,
+                      GST_CAPS_FEATURES_MEMORY_SYSTEM_MEMORY)
+                  && gst_structure_can_intersect (raw_struct, d_struct)
+                  && gst_structure_can_intersect (raw_struct, s_struct)))
+          && !is_included (cf_list, s_features)) {
         cf_list = g_list_prepend (cf_list, s_features);
         n_common_cf++;
       }
@@ -3692,7 +3778,9 @@ avelements_create (GstPlayBin * playbin, gboolean isaudioelement)
     for (; sl; sl = sl->next) {
       s_factory = (GstElementFactory *) sl->data;
 
-      n_common_cf = get_n_common_capsfeatures (d_factory, s_factory);
+      n_common_cf =
+          get_n_common_capsfeatures (playbin, d_factory, s_factory,
+          isaudioelement);
       if (n_common_cf < 1)
         continue;
 
@@ -3751,6 +3839,13 @@ create_decoders_list (GList * factory_list, GSequence * avelements)
           g_sequence_lookup (avelements, factory,
           (GCompareDataFunc) avelement_lookup_decoder, NULL);
       if (!seq_iter) {
+        GstAVElement *ave = g_slice_new0 (GstAVElement);
+
+        ave->dec = factory;
+        ave->sink = NULL;
+        /* There's at least raw */
+        ave->n_comm_cf = 1;
+
         dec_list = g_list_prepend (dec_list, factory);
         continue;
       }
@@ -4129,9 +4224,6 @@ sink_accepts_caps (GstPlayBin * playbin, GstElement * sink, GstCaps * caps)
   return TRUE;
 }
 
-static GstStaticCaps raw_audio_caps = GST_STATIC_CAPS ("audio/x-raw");
-static GstStaticCaps raw_video_caps = GST_STATIC_CAPS ("video/x-raw");
-
 /* We are asked to select an element. See if the next element to check
  * is a sink. If this is the case, we see if the sink works by setting it to
  * READY. If the sink works, we return SELECT_EXPOSE to make decodebin
@@ -4233,6 +4325,7 @@ autoplug_select_cb (GstElement * decodebin, GstPad * pad,
           } else {
             if (!activate_sink (playbin, *sinkp, NULL)) {
               gst_object_unref (*sinkp);
+              *sinkp = NULL;
               GST_WARNING_OBJECT (playbin,
                   "Could not activate sink %s",
                   gst_plugin_feature_get_name (GST_PLUGIN_FEATURE (ave->sink)));
@@ -4381,6 +4474,8 @@ autoplug_select_cb (GstElement * decodebin, GstPad * pad,
   if (!activate_sink (playbin, element, NULL)) {
     GST_WARNING_OBJECT (playbin, "Could not activate sink %s",
         gst_plugin_feature_get_name (GST_PLUGIN_FEATURE (factory)));
+    *sinkp = NULL;
+    gst_object_unref (element);
     GST_SOURCE_GROUP_UNLOCK (group);
     return GST_AUTOPLUG_SELECT_SKIP;
   }
@@ -4783,11 +4878,6 @@ activate_group (GstPlayBin * playbin, GstSourceGroup * group, GstState target)
     }
   }
 
-  g_list_free (group->stream_changed_pending);
-  group->stream_changed_pending = NULL;
-  if (!group->stream_changed_pending_lock.p)
-    g_mutex_init (&group->stream_changed_pending_lock);
-
   g_slist_free (group->suburi_flushes_to_drop);
   group->suburi_flushes_to_drop = NULL;
   if (!group->suburi_flushes_to_drop_lock.p)
@@ -5102,6 +5192,8 @@ deactivate_group (GstPlayBin * playbin, GstSourceGroup * group)
       gst_bin_remove (GST_BIN_CAST (playbin), group->suburidecodebin);
   }
 
+  group->have_group_id = FALSE;
+
   GST_SOURCE_GROUP_UNLOCK (group);
 
   return TRUE;
@@ -5122,6 +5214,8 @@ setup_next_source (GstPlayBin * playbin, GstState target)
   new_group = playbin->next_group;
   if (!new_group || !new_group->valid)
     goto no_next_group;
+
+  new_group->stream_changed_pending = TRUE;
 
   /* first unlink the current source, if any */
   old_group = playbin->curr_group;
@@ -5155,6 +5249,7 @@ no_next_group:
   }
 activate_failed:
   {
+    new_group->stream_changed_pending = FALSE;
     GST_DEBUG_OBJECT (playbin, "activate failed");
     GST_PLAY_BIN_UNLOCK (playbin);
     return FALSE;
