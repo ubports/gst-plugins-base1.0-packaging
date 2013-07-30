@@ -27,6 +27,7 @@
 <ANCHOR id="gst-app-src-get-stream-type" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-get-stream-type">
 <ANCHOR id="gst-app-src-set-max-bytes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-set-max-bytes">
 <ANCHOR id="gst-app-src-get-max-bytes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-get-max-bytes">
+<ANCHOR id="gst-app-src-get-current-level-bytes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-get-current-level-bytes">
 <ANCHOR id="gst-app-src-get-emit-signals" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-get-emit-signals">
 <ANCHOR id="gst-app-src-set-emit-signals" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#gst-app-src-set-emit-signals">
 <ANCHOR id="GstAppSrcCallbacks" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-appsrc.html#GstAppSrcCallbacks">
@@ -1439,6 +1440,7 @@
 <ANCHOR id="gst-plugins-base-libs-gstpbutilscodecutils.description" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-plugins-base-libs-gstpbutilscodecutils.description">
 <ANCHOR id="gst-plugins-base-libs-gstpbutilscodecutils.details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-plugins-base-libs-gstpbutilscodecutils.details">
 <ANCHOR id="gst-codec-utils-aac-get-sample-rate-from-index" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-aac-get-sample-rate-from-index">
+<ANCHOR id="gst-codec-utils-aac-get-index-from-sample-rate" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-aac-get-index-from-sample-rate">
 <ANCHOR id="gst-codec-utils-aac-get-profile" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-aac-get-profile">
 <ANCHOR id="gst-codec-utils-aac-get-level" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-aac-get-level">
 <ANCHOR id="gst-codec-utils-aac-caps-set-level-and-profile" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-aac-caps-set-level-and-profile">
@@ -1720,6 +1722,7 @@
 <ANCHOR id="GST-VIDEO-FORMAT-GBR-10BE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-GBR-10BE:CAPS">
 <ANCHOR id="GST-VIDEO-FORMAT-GBR-10LE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-GBR-10LE:CAPS">
 <ANCHOR id="GST-VIDEO-FORMAT-NV16:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-NV16:CAPS">
+<ANCHOR id="GST-VIDEO-FORMAT-NV24:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-NV24:CAPS">
 <ANCHOR id="GST-VIDEO-MAX-PLANES:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-PLANES:CAPS">
 <ANCHOR id="GST-VIDEO-MAX-COMPONENTS:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-COMPONENTS:CAPS">
 <ANCHOR id="GstVideoFormatInfo" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo">

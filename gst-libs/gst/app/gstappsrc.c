@@ -159,6 +159,7 @@ enum
 #define DEFAULT_PROP_MAX_LATENCY   -1
 #define DEFAULT_PROP_EMIT_SIGNALS  TRUE
 #define DEFAULT_PROP_MIN_PERCENT   0
+#define DEFAULT_PROP_CURRENT_LEVEL_BYTES   0
 
 enum
 {
@@ -174,6 +175,7 @@ enum
   PROP_MAX_LATENCY,
   PROP_EMIT_SIGNALS,
   PROP_MIN_PERCENT,
+  PROP_CURRENT_LEVEL_BYTES,
   PROP_LAST
 };
 
@@ -378,6 +380,20 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           "Emit need-data when queued bytes drops below this percent of max-bytes",
           0, 100, DEFAULT_PROP_MIN_PERCENT,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GstAppSrc::current-level-bytes:
+   *
+   * The number of currently queued bytes inside appsrc.
+   *
+   * Since: 1.2
+   */
+  g_object_class_install_property (gobject_class, PROP_CURRENT_LEVEL_BYTES,
+      g_param_spec_uint64 ("current-level-bytes", "Current Level Bytes",
+          "The number of currently queued bytes",
+          0, G_MAXUINT64, DEFAULT_PROP_CURRENT_LEVEL_BYTES,
+          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
 
   /**
    * GstAppSrc::need-data:
@@ -676,6 +692,9 @@ gst_app_src_get_property (GObject * object, guint prop_id, GValue * value,
       break;
     case PROP_MIN_PERCENT:
       g_value_set_uint (value, priv->min_percent);
+      break;
+    case PROP_CURRENT_LEVEL_BYTES:
+      g_value_set_uint64 (value, gst_app_src_get_current_level_bytes (appsrc));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1297,6 +1316,35 @@ gst_app_src_get_max_bytes (GstAppSrc * appsrc)
   g_mutex_unlock (&priv->mutex);
 
   return result;
+}
+
+/**
+ * gst_app_src_get_current_level_bytes:
+ * @appsrc: a #GstAppSrc
+ *
+ * Get the number of currently queued bytes inside @appsrc.
+ *
+ * Returns: The number of currently queued bytes.
+ *
+ * Since: 1.2
+ */
+guint64
+gst_app_src_get_current_level_bytes (GstAppSrc * appsrc)
+{
+  gint64 queued;
+  GstAppSrcPrivate *priv;
+
+  g_return_val_if_fail (GST_IS_APP_SRC (appsrc), -1);
+
+  priv = appsrc->priv;
+
+  GST_OBJECT_LOCK (appsrc);
+  queued = priv->queued_bytes;
+  GST_DEBUG_OBJECT (appsrc, "current level bytes is %" G_GUINT64_FORMAT,
+      queued);
+  GST_OBJECT_UNLOCK (appsrc);
+
+  return queued;
 }
 
 static void

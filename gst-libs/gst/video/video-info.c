@@ -502,6 +502,13 @@ fill_planes (GstVideoInfo * info)
       info->offset[1] = info->stride[0] * height;
       info->size = info->stride[0] * height * 2;
       break;
+    case GST_VIDEO_FORMAT_NV24:
+      info->stride[0] = GST_ROUND_UP_4 (width);
+      info->stride[1] = GST_ROUND_UP_4 (width * 2);
+      info->offset[0] = 0;
+      info->offset[1] = info->stride[0] * height;
+      info->size = info->stride[0] * height + info->stride[1] * height;
+      break;
     case GST_VIDEO_FORMAT_A420:
       info->stride[0] = GST_ROUND_UP_4 (width);
       info->stride[1] = GST_ROUND_UP_4 (GST_ROUND_UP_2 (width) / 2);
@@ -723,14 +730,37 @@ gst_video_info_align (GstVideoInfo * info, GstVideoAlignment * align)
   GST_LOG ("padding %u-%ux%u-%u", align->padding_top,
       align->padding_left, align->padding_right, align->padding_bottom);
 
-  /* add the padding */
-  padded_width = width + align->padding_left + align->padding_right;
-  padded_height = height + align->padding_top + align->padding_bottom;
-
   n_planes = GST_VIDEO_INFO_N_PLANES (info);
 
   if (GST_VIDEO_FORMAT_INFO_HAS_PALETTE (vinfo))
     n_planes--;
+
+  /* first make sure the left padding does not cause alignment problems later */
+  do {
+    GST_LOG ("left padding %u", align->padding_left);
+    aligned = TRUE;
+    for (i = 0; i < n_planes; i++) {
+      gint hedge;
+
+      /* this is the amout of pixels to add as left padding */
+      hedge = GST_VIDEO_FORMAT_INFO_SCALE_WIDTH (vinfo, i, align->padding_left);
+      hedge *= GST_VIDEO_FORMAT_INFO_PSTRIDE (vinfo, i);
+
+      GST_LOG ("plane %d, padding %d, alignment %u", i, hedge,
+          align->stride_align[i]);
+      aligned &= (hedge & align->stride_align[i]) == 0;
+    }
+    if (aligned)
+      break;
+
+    GST_LOG ("unaligned padding, increasing padding");
+    /* increase padded_width */
+    align->padding_left += align->padding_left & ~(align->padding_left - 1);
+  } while (!aligned);
+
+  /* add the padding */
+  padded_width = width + align->padding_left + align->padding_right;
+  padded_height = height + align->padding_top + align->padding_bottom;
 
   do {
     GST_LOG ("padded dimension %u-%u", padded_width, padded_height);

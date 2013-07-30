@@ -354,7 +354,24 @@ gst_ogg_pad_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
       }
       break;
     }
+    case GST_QUERY_SEGMENT:{
+      GstFormat format;
+      gint64 start, stop;
 
+      format = ogg->segment.format;
+
+      start =
+          gst_segment_to_stream_time (&ogg->segment, format,
+          ogg->segment.start);
+      if ((stop = ogg->segment.stop) == -1)
+        stop = ogg->segment.duration;
+      else
+        stop = gst_segment_to_stream_time (&ogg->segment, format, stop);
+
+      gst_query_set_segment (query, ogg->segment.rate, format, start, stop);
+      res = TRUE;
+      break;
+    }
     default:
       res = gst_pad_query_default (pad, parent, query);
       break;
@@ -2596,6 +2613,7 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
   /* first add the pads */
   for (i = 0; i < chain->streams->len; i++) {
     GstOggPad *pad;
+    GstEvent *ss_event;
     gchar *stream_id;
 
     pad = g_array_index (chain->streams, GstOggPad *, i);
@@ -2621,7 +2639,23 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
     stream_id =
         gst_pad_create_stream_id_printf (GST_PAD (pad), GST_ELEMENT_CAST (ogg),
         "%08x", pad->map.serialno);
-    gst_pad_push_event (GST_PAD (pad), gst_event_new_stream_start (stream_id));
+    ss_event =
+        gst_pad_get_sticky_event (ogg->sinkpad, GST_EVENT_STREAM_START, 0);
+    if (ss_event) {
+      if (gst_event_parse_group_id (ss_event, &ogg->group_id))
+        ogg->have_group_id = TRUE;
+      else
+        ogg->have_group_id = FALSE;
+      gst_event_unref (ss_event);
+    } else if (!ogg->have_group_id) {
+      ogg->have_group_id = TRUE;
+      ogg->group_id = gst_util_group_id_next ();
+    }
+    ss_event = gst_event_new_stream_start (stream_id);
+    if (ogg->have_group_id)
+      gst_event_set_group_id (ss_event, ogg->group_id);
+
+    gst_pad_push_event (GST_PAD (pad), ss_event);
     g_free (stream_id);
 
     /* Set headers on caps */
@@ -2695,7 +2729,7 @@ gst_ogg_demux_activate_chain (GstOggDemux * ogg, GstOggChain * chain,
 static gboolean
 do_binary_search (GstOggDemux * ogg, GstOggChain * chain, gint64 begin,
     gint64 end, gint64 begintime, gint64 endtime, gint64 target,
-    gint64 * offset)
+    gint64 * offset, gboolean only_serial_no, gint serialno)
 {
   gint64 best;
   GstFlowReturn ret;
@@ -2768,6 +2802,11 @@ do_binary_search (GstOggDemux * ogg, GstOggChain * chain, gint64 begin,
           GST_LOG_OBJECT (ogg, "granulepos of next page is -1");
           continue;
         }
+
+        /* Avoid seeking to an incorrect granuletime by only considering 
+           the stream for which we found the earliest time */
+        if (only_serial_no && ogg_page_serialno (&og) != serialno)
+          continue;
 
         /* get the stream */
         pad = gst_ogg_chain_get_stream (chain, ogg_page_serialno (&og));
@@ -2886,8 +2925,8 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
   gint64 total;
   gint64 result = 0;
   GstFlowReturn ret;
-  gint i, pending, len;
-  gboolean first_parsed_page = TRUE;
+  gint i, pending;
+  gint serialno = 0;
 
   position = segment->position;
 
@@ -2911,14 +2950,14 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
   target = position - total + begintime;
 
   if (!do_binary_search (ogg, chain, begin, end, begintime, endtime, target,
-          &best))
+          &best, FALSE, 0))
     goto seek_error;
 
   /* second step: find pages for all streams, we use the keyframe_granule to keep
    * track of which ones we saw. If we have seen a page for each stream we can
    * calculate the positions of each keyframe. */
   GST_DEBUG_OBJECT (ogg, "find keyframes");
-  len = pending = chain->streams->len;
+  pending = chain->streams->len;
 
   /* figure out where the keyframes are */
   keytarget = target;
@@ -2951,32 +2990,6 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
       GST_LOG_OBJECT (ogg, "granulepos of next page is -1");
       continue;
     }
-
-    /* we only do this the first time we pass here */
-    if (first_parsed_page) {
-      /* Now that we have a time reference from the page, we can check
-       * whether all streams still have pages from here on.
-       *
-       * This would be more elegant before the loop, but getting the page from
-       * there without breaking anything would be more costly */
-      granule_time = gst_ogg_stream_get_end_time_for_granulepos (&pad->map,
-          granulepos);
-      for (i = 0; i < len; i++) {
-        GstOggPad *stream = g_array_index (chain->streams, GstOggPad *, i);
-
-        if (stream == pad)
-          /* we already know we have at least one page (the current one)
-           * for this stream */
-          continue;
-
-        if (granule_time > stream->map.total_time)
-          /* we won't encounter any more pages of this stream, so we don't
-           * try finding a key frame for it */
-          pending--;
-      }
-      first_parsed_page = FALSE;
-    }
-
 
     /* in reverse we want to go past the page with the lower timestamp */
     if (segment->rate < 0.0) {
@@ -3012,8 +3025,10 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
     /* collect smallest value */
     if (keyframe_time != -1) {
       keyframe_time += begintime;
-      if (keyframe_time < keytarget)
+      if (keyframe_time < keytarget) {
+        serialno = pad->map.serialno;
         keytarget = keyframe_time;
+      }
     }
 
   next:
@@ -3032,7 +3047,7 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
 
     /* last step, seek to the location of the keyframe */
     if (!do_binary_search (ogg, chain, begin, end, begintime, endtime,
-            keytarget, &best))
+            keytarget, &best, TRUE, serialno))
       goto seek_error;
   } else {
     /* seek back to previous position */
@@ -4654,6 +4669,8 @@ gst_ogg_demux_change_state (GstElement * element, GstStateChange transition)
       ogg->push_time_length = GST_CLOCK_TIME_NONE;
       ogg->push_time_offset = GST_CLOCK_TIME_NONE;
       ogg->push_state = PUSH_PLAYING;
+      ogg->have_group_id = FALSE;
+      ogg->group_id = G_MAXUINT;
 
       ogg->push_disable_seeking = FALSE;
       if (!ogg->pullmode) {
