@@ -53,9 +53,6 @@
 /* system wide data directory */
 #undef GST_DATADIR
 
-/* set to disable libxml2-dependent code in subparse */
-#undef GST_DISABLE_XML
-
 /* Extra platform specific plugin suffix */
 #undef GST_EXTRA_MODULE_SUFFIX
 
