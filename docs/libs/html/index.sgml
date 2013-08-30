@@ -1933,6 +1933,11 @@
 <ANCHOR id="GstVideoCropMeta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#GstVideoCropMeta">
 <ANCHOR id="gst-buffer-add-video-crop-meta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-crop-meta">
 <ANCHOR id="gst-buffer-get-video-crop-meta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-crop-meta">
+<ANCHOR id="GstVideoRegionOfInterestMeta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta">
+<ANCHOR id="gst-buffer-add-video-region-of-interest-meta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-region-of-interest-meta">
+<ANCHOR id="gst-buffer-add-video-region-of-interest-meta-id" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-region-of-interest-meta-id">
+<ANCHOR id="gst-buffer-get-video-region-of-interest-meta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-region-of-interest-meta">
+<ANCHOR id="gst-buffer-get-video-region-of-interest-meta-id" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-region-of-interest-meta-id">
 <ANCHOR id="GstVideoGLTextureUpload" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUpload">
 <ANCHOR id="GstVideoGLTextureUploadMeta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta">
 <ANCHOR id="gst-buffer-add-video-gl-texture-upload-meta" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-gl-texture-upload-meta">

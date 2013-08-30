@@ -174,6 +174,7 @@ struct _ForcedKeyUnitEvent
   gboolean pending;             /* TRUE if this was requested already */
   gboolean all_headers;
   guint count;
+  guint32 frame_id;
 };
 
 static void
@@ -298,16 +299,10 @@ gst_video_encoder_class_init (GstVideoEncoderClass * klass)
 static gboolean
 gst_video_encoder_reset (GstVideoEncoder * encoder, gboolean hard)
 {
-  GstVideoEncoderClass *klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
   GstVideoEncoderPrivate *priv = encoder->priv;
   gboolean ret = TRUE;
 
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
-
-  if (klass->reset) {
-    GST_DEBUG_OBJECT (encoder, "requesting subclass to reset");
-    ret = klass->reset (encoder, hard);
-  }
 
   priv->presentation_frame_number = 0;
   priv->distance_from_sync = 0;
@@ -357,6 +352,21 @@ gst_video_encoder_reset (GstVideoEncoder * encoder, gboolean hard)
 
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 
+  return ret;
+}
+
+/* Always call reset() in one way or another after this */
+static gboolean
+gst_video_encoder_flush (GstVideoEncoder * encoder)
+{
+  GstVideoEncoderClass *klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
+  gboolean ret = TRUE;
+
+  GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+  if (klass->flush)
+    ret = klass->flush (encoder);
+
+  GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
   return ret;
 }
 
@@ -573,6 +583,11 @@ gst_video_encoder_setcaps (GstVideoEncoder * encoder, GstCaps * caps)
           &encoder->priv->input_state->info)) {
     gst_video_codec_state_unref (state);
     goto caps_not_changed;
+  }
+
+  if (encoder_class->reset) {
+    GST_FIXME_OBJECT (encoder, "GstVideoEncoder::reset() is deprecated");
+    ret = encoder_class->reset (encoder, TRUE);
   }
 
   /* and subclass should be ready to configure format at any time around */
@@ -1000,6 +1015,7 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
     }
     case GST_EVENT_FLUSH_STOP:{
       GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+      gst_video_encoder_flush (encoder);
       gst_segment_init (&encoder->input_segment, GST_FORMAT_TIME);
       gst_segment_init (&encoder->output_segment, GST_FORMAT_TIME);
       gst_video_encoder_reset (encoder, FALSE);
@@ -1310,6 +1326,7 @@ gst_video_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
     }
 
     if (fevt) {
+      fevt->frame_id = frame->system_frame_number;
       GST_DEBUG_OBJECT (encoder,
           "Forcing a key unit at running time %" GST_TIME_FORMAT,
           GST_TIME_ARGS (running_time));
@@ -1433,11 +1450,12 @@ gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
   GstVideoEncoderClass *klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
   GstAllocator *allocator;
   GstAllocationParams params;
-  gboolean ret;
+  gboolean ret = TRUE;
   GstVideoCodecState *state = encoder->priv->output_state;
   GstVideoInfo *info = &state->info;
   GstQuery *query = NULL;
   GstVideoCodecFrame *frame;
+  GstCaps *prevcaps;
 
   g_return_val_if_fail (state->caps != NULL, FALSE);
 
@@ -1476,7 +1494,6 @@ gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
       events = &encoder->priv->current_frame_events;
     }
 
-    ret = FALSE;
     for (l = g_list_last (*events); l;) {
       GstEvent *event = GST_EVENT (l->data);
       GList *tmp;
@@ -1492,7 +1509,14 @@ gst_video_encoder_negotiate_default (GstVideoEncoder * encoder)
     }
   }
 
-  ret = gst_pad_set_caps (encoder->srcpad, state->caps);
+  prevcaps = gst_pad_get_current_caps (encoder->srcpad);
+  if (!prevcaps || !gst_caps_is_equal (prevcaps, state->caps))
+    ret = gst_pad_set_caps (encoder->srcpad, state->caps);
+  else
+    ret = TRUE;
+  if (prevcaps)
+    gst_caps_unref (prevcaps);
+
   if (!ret)
     goto done;
 
@@ -1769,6 +1793,12 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
       /* Skip non-pending keyunits */
       if (!tmp->pending)
         continue;
+
+      /* Exact match using the frame id */
+      if (frame->system_frame_number == tmp->frame_id) {
+        fevt = tmp;
+        break;
+      }
 
       /* Simple case, keyunit ASAP */
       if (tmp->running_time == GST_CLOCK_TIME_NONE) {

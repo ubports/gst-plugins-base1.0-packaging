@@ -799,6 +799,7 @@ gst_rtcp_packet_get_rb (GstRTCPPacket * packet, guint nth, guint32 * ssrc,
     guint8 * fractionlost, gint32 * packetslost, guint32 * exthighestseq,
     guint32 * jitter, guint32 * lsr, guint32 * dlsr)
 {
+  guint offset;
   guint8 *data;
   guint32 tmp;
 
@@ -807,18 +808,31 @@ gst_rtcp_packet_get_rb (GstRTCPPacket * packet, guint nth, guint32 * ssrc,
       packet->type == GST_RTCP_TYPE_SR);
   g_return_if_fail (packet->rtcp != NULL);
   g_return_if_fail (packet->rtcp->map.flags & GST_MAP_READ);
+  g_return_if_fail (nth < packet->count);
 
-  data = packet->rtcp->map.data;
-
-  /* skip header */
-  data += packet->offset + 4;
+  /* get offset in 32-bits words into packet, skip the header */
   if (packet->type == GST_RTCP_TYPE_RR)
-    data += 4;
+    offset = 2;
   else
-    data += 24;
+    offset = 7;
 
   /* move to requested index */
-  data += (nth * 24);
+  offset += (nth * 6);
+
+  /* check that we don't go past the packet length */
+  if (offset > packet->length)
+    return;
+
+  /* scale to bytes */
+  offset <<= 2;
+  offset += packet->offset;
+
+  /* check if the packet is valid */
+  if (offset + 24 > packet->rtcp->map.size)
+    return;
+
+  data = packet->rtcp->map.data;
+  data += offset;
 
   if (ssrc)
     *ssrc = GST_READ_UINT32_BE (data);
@@ -1423,17 +1437,12 @@ gst_rtcp_packet_bye_get_nth_ssrc (GstRTCPPacket * packet, guint nth)
   guint8 *data;
   guint offset;
   guint32 ssrc;
-  guint8 sc;
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, 0);
   g_return_val_if_fail (packet->rtcp != NULL, 0);
   g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
-
-  /* get amount of sources and check that we don't read too much */
-  sc = packet->count;
-  if (nth >= sc)
-    return 0;
+  g_return_val_if_fail (nth < packet->count, 0);
 
   /* get offset in 32-bits words into packet, skip the header */
   offset = 1 + nth;
@@ -2054,7 +2063,7 @@ gst_rtcp_packet_fb_set_fci_length (GstRTCPPacket * packet, guint16 wordlen)
   wordlen += 2;
   GST_WRITE_UINT16_BE (data, wordlen);
 
-  packet->rtcp->map.size += wordlen * 4;
+  packet->rtcp->map.size = packet->offset + ((wordlen + 1) * 4);
 
   return TRUE;
 }

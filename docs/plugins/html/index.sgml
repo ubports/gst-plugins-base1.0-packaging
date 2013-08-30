@@ -786,6 +786,8 @@
 <ANCHOR id="GST-VIDEO-TEST-SRC-BALL:CAPS" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GST-VIDEO-TEST-SRC-BALL:CAPS">
 <ANCHOR id="GST-VIDEO-TEST-SRC-SMPTE100:CAPS" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GST-VIDEO-TEST-SRC-SMPTE100:CAPS">
 <ANCHOR id="GST-VIDEO-TEST-SRC-BAR:CAPS" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GST-VIDEO-TEST-SRC-BAR:CAPS">
+<ANCHOR id="GST-VIDEO-TEST-SRC-PINWHEEL:CAPS" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GST-VIDEO-TEST-SRC-PINWHEEL:CAPS">
+<ANCHOR id="GST-VIDEO-TEST-SRC-SPOKES:CAPS" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GST-VIDEO-TEST-SRC-SPOKES:CAPS">
 <ANCHOR id="gst-plugins-base-plugins-videotestsrc.property-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#gst-plugins-base-plugins-videotestsrc.property-details">
 <ANCHOR id="GstVideoTestSrc--pattern" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--pattern">
 <ANCHOR id="GstVideoTestSrc--timestamp-offset" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--timestamp-offset">

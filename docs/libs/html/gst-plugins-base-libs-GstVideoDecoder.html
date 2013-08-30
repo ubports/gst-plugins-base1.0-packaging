@@ -501,6 +501,8 @@ The opaque <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstV
   gboolean      (*decide_allocation)  (GstVideoDecoder *decoder, GstQuery *query);
 
   gboolean      (*propose_allocation) (GstVideoDecoder *decoder, GstQuery * query);
+
+  gboolean      (*flush)              (GstVideoDecoder *decoder);
 };
 </pre>
 <p>
@@ -552,7 +554,8 @@ for subsequent decoding.</td>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoDecoderClass.reset"></a>reset</code></em> ()</span></p></td>
 <td>Optional.
-Allows subclass (decoder) to perform post-seek semantics reset.</td>
+Allows subclass (decoder) to perform post-seek semantics reset.
+Deprecated.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstVideoDecoderClass.finish"></a>finish</code></em> ()</span></p></td>
@@ -604,6 +607,12 @@ invoke the default handler.</td>
 Propose buffer allocation parameters for upstream elements.
 Subclasses should chain up to the parent implementation to
 invoke the default handler.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="GstVideoDecoderClass.flush"></a>flush</code></em> ()</span></p></td>
+<td>Optional.
+Flush all remaining data from the decoder without
+pushing it downstream. Since: 1.2</td>
 </tr>
 </tbody>
 </table></div>
