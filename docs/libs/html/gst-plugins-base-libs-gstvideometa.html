@@ -71,6 +71,25 @@ const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreame
 struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoCropMeta" title="struct GstVideoCropMeta">GstVideoCropMeta</a>;
 #define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-crop-meta" title="gst_buffer_add_video_crop_meta()">gst_buffer_add_video_crop_meta</a>      (b)
 #define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-crop-meta" title="gst_buffer_get_video_crop_meta()">gst_buffer_get_video_crop_meta</a>      (b)
+                    <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta">GstVideoRegionOfInterestMeta</a>;
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-region-of-interest-meta" title="gst_buffer_add_video_region_of_interest_meta ()">gst_buffer_add_video_region_of_interest_meta</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *roi_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> w</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> h</code></em>);
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-region-of-interest-meta-id" title="gst_buffer_add_video_region_of_interest_meta_id ()">gst_buffer_add_video_region_of_interest_meta_id</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> roi_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> w</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> h</code></em>);
+#define             <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-region-of-interest-meta" title="gst_buffer_get_video_region_of_interest_meta()">gst_buffer_get_video_region_of_interest_meta</a>(b)
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-region-of-interest-meta-id" title="gst_buffer_get_video_region_of_interest_meta_id ()">gst_buffer_get_video_region_of_interest_meta_id</a>
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> id</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUpload" title="GstVideoGLTextureUpload ()">*GstVideoGLTextureUpload</a>)          (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> *meta</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);
 struct              <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta">GstVideoGLTextureUploadMeta</a>;
@@ -514,6 +533,168 @@ Extra buffer metadata describing image cropping.
 <a name="gst-buffer-get-video-crop-meta"></a><h3>gst_buffer_get_video_crop_meta()</h3>
 <pre class="programlisting">#define gst_buffer_get_video_crop_meta(b) ((GstVideoCropMeta*)gst_buffer_get_meta((b),GST_VIDEO_CROP_META_API_TYPE))
 </pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoRegionOfInterestMeta"></a><h3>GstVideoRegionOfInterestMeta</h3>
+<pre class="programlisting">typedef struct {
+  GstMeta meta;
+
+  GQuark roi_type;
+  gint id;
+  gint parent_id;
+
+  guint x;
+  guint y;
+  guint w;
+  guint h;
+} GstVideoRegionOfInterestMeta;
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-add-video-region-of-interest-meta"></a><h3>gst_buffer_add_video_region_of_interest_meta ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * gst_buffer_add_video_region_of_interest_meta
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *roi_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> w</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> h</code></em>);</pre>
+<p>
+Attaches <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> metadata to <em class="parameter"><code>buffer</code></em> with the given
+parameters.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>roi_type</code></em> :</span></p></td>
+<td>Type of the region of interest (e.g. "face")</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>X position</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Y position</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>w</code></em> :</span></p></td>
+<td>width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td>height</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-add-video-region-of-interest-meta-id"></a><h3>gst_buffer_add_video_region_of_interest_meta_id ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * gst_buffer_add_video_region_of_interest_meta_id
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> roi_type</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> w</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> h</code></em>);</pre>
+<p>
+Attaches <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> metadata to <em class="parameter"><code>buffer</code></em> with the given
+parameters.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>roi_type</code></em> :</span></p></td>
+<td>Type of the region of interest (e.g. "face")</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>X position</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Y position</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>w</code></em> :</span></p></td>
+<td>width</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td>height</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-get-video-region-of-interest-meta"></a><h3>gst_buffer_get_video_region_of_interest_meta()</h3>
+<pre class="programlisting">#define             gst_buffer_get_video_region_of_interest_meta(b)</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-buffer-get-video-region-of-interest-meta-id"></a><h3>gst_buffer_get_video_region_of_interest_meta_id ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="returnvalue">GstVideoRegionOfInterestMeta</span></a> * gst_buffer_get_video_region_of_interest_meta_id
+                                                        (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> id</code></em>);</pre>
+<p>
+Find the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em> with the given <em class="parameter"><code>id</code></em>.
+</p>
+<p>
+Buffers can contain multiple <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> metadata items if
+multiple regions of interests are marked on a frame.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
+<td>a metadata id</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <span class="type">GstVideoeRegionOfInterestMeta</span> with <em class="parameter"><code>id</code></em> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is
+no such metadata on <em class="parameter"><code>buffer</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">

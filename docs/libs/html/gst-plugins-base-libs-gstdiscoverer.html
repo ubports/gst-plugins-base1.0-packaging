@@ -1618,8 +1618,8 @@ set on the result flags.
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>            *error,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Will be emitted when all information on a URI could be discovered, or
-an error ocurred.
+Will be emitted in async mode when all information on a URI could be
+discovered, or an error occurred.
 </p>
 <p>
 When an error occurs, <em class="parameter"><code>info</code></em> might still contain some partial information,
@@ -1663,7 +1663,7 @@ the discoverer. <span class="annotation">[<acronym title="Override the parsed C 
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a> *discoverer,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Will be emitted when all pending URIs have been processed.
+Will be emitted in async mode when all pending URIs have been processed.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>

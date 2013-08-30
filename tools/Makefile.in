@@ -79,7 +79,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-bin_PROGRAMS = gst-discoverer-@GST_API_VERSION@$(EXEEXT)
+bin_PROGRAMS = gst-discoverer-@GST_API_VERSION@$(EXEEXT) \
+	gst-play-@GST_API_VERSION@$(EXEEXT)
 subdir = tools
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -143,6 +144,15 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_gst_play_@GST_API_VERSION@_OBJECTS = gst-play.$(OBJEXT)
+gst_play_@GST_API_VERSION@_OBJECTS =  \
+	$(am_gst_play_@GST_API_VERSION@_OBJECTS)
+gst_play_@GST_API_VERSION@_LDADD = $(LDADD)
+gst_play_@GST_API_VERSION@_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -177,8 +187,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES)
-DIST_SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES)
+SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES) \
+	$(gst_play_@GST_API_VERSION@_SOURCES)
+DIST_SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES) \
+	$(gst_play_@GST_API_VERSION@_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -507,11 +519,13 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 man_MANS = \
-        gst-discoverer-@GST_API_VERSION@.1
+	gst-discoverer-@GST_API_VERSION@.1 \
+	gst-play-@GST_API_VERSION@.1	
 
 gst_discoverer_@GST_API_VERSION@_SOURCES = gst-discoverer.c
+gst_play_@GST_API_VERSION@_SOURCES = gst-play.c
 CLEANFILES = $(bin_SCRIPTS) $(bin_PROGRAMS)
-EXTRA_DIST = gst-discoverer-1.0.1
+EXTRA_DIST = $(man_MANS)
 LDADD = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
@@ -607,6 +621,10 @@ gst-discoverer-@GST_API_VERSION@$(EXEEXT): $(gst_discoverer_@GST_API_VERSION@_OB
 	@rm -f gst-discoverer-@GST_API_VERSION@$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(gst_discoverer_@GST_API_VERSION@_OBJECTS) $(gst_discoverer_@GST_API_VERSION@_LDADD) $(LIBS)
 
+gst-play-@GST_API_VERSION@$(EXEEXT): $(gst_play_@GST_API_VERSION@_OBJECTS) $(gst_play_@GST_API_VERSION@_DEPENDENCIES) $(EXTRA_gst_play_@GST_API_VERSION@_DEPENDENCIES) 
+	@rm -f gst-play-@GST_API_VERSION@$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(gst_play_@GST_API_VERSION@_OBJECTS) $(gst_play_@GST_API_VERSION@_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -614,24 +632,28 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-discoverer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-play.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c $<
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c `$(CYGPATH_W) '$<'`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<

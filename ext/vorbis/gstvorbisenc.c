@@ -115,6 +115,7 @@ static void gst_vorbis_enc_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
 static void gst_vorbis_enc_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
+static void gst_vorbis_enc_flush (GstAudioEncoder * vorbisenc);
 
 #define gst_vorbis_enc_parent_class parent_class
 G_DEFINE_TYPE_WITH_CODE (GstVorbisEnc, gst_vorbis_enc,
@@ -182,6 +183,7 @@ gst_vorbis_enc_class_init (GstVorbisEncClass * klass)
   base_class->handle_frame = GST_DEBUG_FUNCPTR (gst_vorbis_enc_handle_frame);
   base_class->getcaps = GST_DEBUG_FUNCPTR (gst_vorbis_enc_getcaps);
   base_class->sink_event = GST_DEBUG_FUNCPTR (gst_vorbis_enc_sink_event);
+  base_class->flush = GST_DEBUG_FUNCPTR (gst_vorbis_enc_flush);
 }
 
 static void
@@ -555,6 +557,15 @@ gst_vorbis_enc_clear (GstVorbisEnc * vorbisenc)
   return ret;
 }
 
+static void
+gst_vorbis_enc_flush (GstAudioEncoder * enc)
+{
+  GstVorbisEnc *vorbisenc = GST_VORBISENC (enc);
+
+  gst_vorbis_enc_clear (vorbisenc);
+  vorbisenc->header_sent = FALSE;
+}
+
 static GstBuffer *
 gst_vorbis_enc_buffer_from_header_packet (GstVorbisEnc * vorbisenc,
     ogg_packet * packet)
@@ -565,7 +576,7 @@ gst_vorbis_enc_buffer_from_header_packet (GstVorbisEnc * vorbisenc,
       gst_audio_encoder_allocate_output_buffer (GST_AUDIO_ENCODER (vorbisenc),
       packet->bytes);
   gst_buffer_fill (outbuf, 0, packet->packet, packet->bytes);
-  GST_BUFFER_OFFSET (outbuf) = vorbisenc->bytes_out;
+  GST_BUFFER_OFFSET (outbuf) = 0;
   GST_BUFFER_OFFSET_END (outbuf) = 0;
   GST_BUFFER_TIMESTAMP (outbuf) = GST_CLOCK_TIME_NONE;
   GST_BUFFER_DURATION (outbuf) = GST_CLOCK_TIME_NONE;
@@ -763,8 +774,6 @@ gst_vorbis_enc_handle_frame (GstAudioEncoder * enc, GstBuffer * buffer)
   gst_buffer_unmap (buffer, &map);
 
   GST_LOG_OBJECT (vorbisenc, "wrote %lu samples to vorbis", size);
-
-  vorbisenc->samples_in += size;
 
   ret = gst_vorbis_enc_output_buffers (vorbisenc);
 
