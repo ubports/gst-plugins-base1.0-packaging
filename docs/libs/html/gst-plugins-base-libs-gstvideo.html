@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gstreamer-video.html" title="Video Library">
 <link rel="next" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -63,6 +63,10 @@
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> destroy_notify</code></em>);
 struct              <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment">GstVideoAlignment</a>;
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-alignment-reset" title="gst_video_alignment_reset ()">gst_video_alignment_reset</a>           (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment" title="struct GstVideoAlignment"><span class="type">GstVideoAlignment</span></a> *align</code></em>);
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-STR:CAPS" title="GST_META_TAG_VIDEO_STR">GST_META_TAG_VIDEO_STR</a>
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-ORIENTATION-STR:CAPS" title="GST_META_TAG_VIDEO_ORIENTATION_STR">GST_META_TAG_VIDEO_ORIENTATION_STR</a>
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-SIZE-STR:CAPS" title="GST_META_TAG_VIDEO_SIZE_STR">GST_META_TAG_VIDEO_SIZE_STR</a>
+#define             <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-COLORSPACE-STR:CAPS" title="GST_META_TAG_VIDEO_COLORSPACE_STR">GST_META_TAG_VIDEO_COLORSPACE_STR</a>
 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="returnvalue">GstEvent</span></a> *          <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-still-frame" title="gst_video_event_new_still_frame ()">gst_video_event_new_still_frame</a>     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> in_still</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-still-frame" title="gst_video_event_parse_still_frame ()">gst_video_event_parse_still_frame</a>   (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstEvent.html#GstEvent"><span class="type">GstEvent</span></a> *event</code></em>,
@@ -327,7 +331,7 @@ enum                <a class="link" href="gst-plugins-base-libs-gstvideo.html#Gs
 <p>
 </p>
 <div class="refsect2">
-<a name="idp81607216"></a><p>
+<a name="id-1.2.14.3.4.2.1"></a><p>
 This library contains some helper functions and includes the
 videosink and videofilter base classes.
 </p>
@@ -581,6 +585,46 @@ Set <em class="parameter"><code>align</code></em> to its default values with no 
 </td>
 </tr></tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-META-TAG-VIDEO-STR:CAPS"></a><h3>GST_META_TAG_VIDEO_STR</h3>
+<pre class="programlisting">#define GST_META_TAG_VIDEO_STR "video"
+</pre>
+<p>
+This metadata is relevant for video streams.
+</p>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-META-TAG-VIDEO-ORIENTATION-STR:CAPS"></a><h3>GST_META_TAG_VIDEO_ORIENTATION_STR</h3>
+<pre class="programlisting">#define GST_META_TAG_VIDEO_ORIENTATION_STR "orientation"
+</pre>
+<p>
+This metadata stays relevant as long as video orientation is unchanged.
+</p>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-META-TAG-VIDEO-SIZE-STR:CAPS"></a><h3>GST_META_TAG_VIDEO_SIZE_STR</h3>
+<pre class="programlisting">#define GST_META_TAG_VIDEO_SIZE_STR "size"
+</pre>
+<p>
+This metadata stays relevant as long as video size is unchanged.
+</p>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-META-TAG-VIDEO-COLORSPACE-STR:CAPS"></a><h3>GST_META_TAG_VIDEO_COLORSPACE_STR</h3>
+<pre class="programlisting">#define GST_META_TAG_VIDEO_COLORSPACE_STR "colorspace"
+</pre>
+<p>
+This metadata stays relevant as long as video colorspace is unchanged.
+</p>
+<p class="since">Since 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3655,6 +3699,6 @@ Additional video buffer flags.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>
