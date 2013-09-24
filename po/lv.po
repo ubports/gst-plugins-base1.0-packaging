@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2011-09-02 12:02-0000\n"
 "Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -81,6 +81,10 @@ msgid "Internal data stream error."
 msgstr "Iekšējās datu plūsmas kļūda."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Trūkst elements \"%s\" - pārbaudiet savu GStreamer instalāciju."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Nepieciešamas %s spraudnis, lai atskaņotu šo plūsmu, bet tas nav instalēts."
@@ -91,9 +95,9 @@ msgstr "Nevarēja noteikts straumes tipu"
 msgid "This appears to be a text file"
 msgstr "Tiek atpazīts kā teksta fails"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Trūkst elements \"%s\" - pārbaudiet savu GStreamer instalāciju."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Nevarēja izveidot \"decodebin\" elementu."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -165,11 +169,186 @@ msgstr "Avota elements ir nederīgs."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Radās kļūda nosūtot datus uz \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Nevar ierakstīt audio pietiekami ātri"
+
 msgid "This CD has no audio tracks"
 msgstr "Šajā CD nav neviena audio celiņa"
 
-msgid "Can't record audio fast enough"
-msgstr "Nevar ierakstīt audio pietiekami ātri"
+msgid "ID3 tag"
+msgstr "ID3 atzīme"
+
+msgid "APE tag"
+msgstr "APE atzīme"
+
+msgid "ICY internet radio"
+msgstr "ICY interneta radio"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Bez zudumu True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows mediju runa"
+
+msgid "CYUV Lossless"
+msgstr "CYUV bez zudumu"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Bez zudumu MSZH"
+
+msgid "Run-length encoding"
+msgstr "Sērijas garuma kodēšana"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer subtitru formāts"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami subtitru formāts"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate subtitru formāts"
+
+msgid "Sami subtitle format"
+msgstr "Sami subtitru formāts"
+
+msgid "TMPlayer subtitle format"
+msgstr "TMPlayer subtitru formāts"
+
+msgid "Kate subtitle format"
+msgstr "Kate subtitru formāts"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "Nesaspiests YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Neatspiests Pelēks attēls"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Nesaspiests pakots YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Nesaspiesta plakne YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Nesaspiesta plakne YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Nesaspiests paletizēts %d-bitu %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Nesaspiests paletizēts %d-bitu %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 versija %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "Nesaspiests YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Jēls %d-bitu PCM audio"
+
+msgid "Audio CD source"
+msgstr "Audio CD avots"
+
+msgid "DVD source"
+msgstr "DVD avots"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Tiešās straumēšanas protokola (RTSP) avots"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Microsoft Mediju Servera (MMS) protokola avots"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "%s protokola avots"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s video RTP izkrāvējs"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s audio RTP izskrāvējs"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "%s RTP izkrāvējs"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s atjaucējs"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s atkodētājs"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s video RTP iekrāvējs"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s audio RTP iekrāvējs"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s RTP iekrāvējs"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s jaucējs"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s kodētājs"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "GStreamer elements %s"
+
+msgid "Unknown source element"
+msgstr "Nezināms avota elements"
+
+msgid "Unknown sink element"
+msgstr "Nezināms iegremdēšanas elements"
+
+msgid "Unknown element"
+msgstr "Nezināms elements"
+
+msgid "Unknown decoder element"
+msgstr "Nezināms atkodētāja elements"
+
+msgid "Unknown encoder element"
+msgstr "Nezināms kodētāja elements"
+
+msgid "Plugin or element of unknown type"
+msgstr "Nezināma veida spraudnis vai elements"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Neizdevās nolasīt atzīmi: nepietiek datu"
@@ -331,168 +510,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3 atzīme"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "APE atzīme"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "ICY interneta radio"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Bez zudumu True Audio (TTA)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows mediju runa"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "CYUV bez zudumu"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Bez zudumu MSZH"
-
-msgid "Run-length encoding"
-msgstr "Sērijas garuma kodēšana"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "TMPlayer subtitru formāts"
-
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sami subtitru formāts"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Kate subtitru formāts"
-
-msgid "Sami subtitle format"
-msgstr "Sami subtitru formāts"
-
-msgid "TMPlayer subtitle format"
-msgstr "TMPlayer subtitru formāts"
-
-msgid "Kate subtitle format"
-msgstr "Kate subtitru formāts"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "Nesaspiests YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Neatspiests Pelēks attēls"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Nesaspiests YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Nesaspiests paletizēts %d-bitu %s"
-
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 versija %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "Nesaspiests YUV"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Jēls %d-bitu PCM audio"
-
-msgid "Audio CD source"
-msgstr "Audio CD avots"
-
-msgid "DVD source"
-msgstr "DVD avots"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Tiešās straumēšanas protokola (RTSP) avots"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Microsoft Mediju Servera (MMS) protokola avots"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "%s protokola avots"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s video RTP izkrāvējs"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s audio RTP izskrāvējs"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "%s RTP izkrāvējs"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s atjaucējs"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s atkodētājs"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s video RTP iekrāvējs"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s audio RTP iekrāvējs"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s RTP iekrāvējs"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s jaucējs"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s kodētājs"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "GStreamer elements %s"
-
-msgid "Unknown source element"
-msgstr "Nezināms avota elements"
-
-msgid "Unknown sink element"
-msgstr "Nezināms iegremdēšanas elements"
-
-msgid "Unknown element"
-msgstr "Nezināms elements"
-
-msgid "Unknown decoder element"
-msgstr "Nezināms atkodētāja elements"
-
-msgid "Unknown encoder element"
-msgstr "Nezināms kodētāja elements"
-
-msgid "Plugin or element of unknown type"
-msgstr "Nezināma veida spraudnis vai elements"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "Nesaspiests YUV"
 
 #~ msgid "Master"
 #~ msgstr "Galvenais"
@@ -548,9 +596,6 @@ msgstr "Nezināma veida spraudnis vai elements"
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "RTSP plūsmas pagaidām nevar tikt atskaņotas."
 
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Nevarēja izveidot \"decodebin\" elementu."
-
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "
 #~ "file or some other type of text file, or the media file was not "
@@ -584,14 +629,8 @@ msgstr "Nezināma veida spraudnis vai elements"
 #~ msgid "Error while sending gdp payload data to \"%s:%d\"."
 #~ msgstr "Kļūda sūtot gdp iekrāvēja datus uz \"%s:%d\""
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Nesaspiesta plakne YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Nesaspiesta plakne YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Nesaspiests pakots YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Nesaspiests pakots YUP 4:1:0"

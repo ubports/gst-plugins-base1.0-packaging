@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:element-adder
@@ -49,29 +49,109 @@
 #include <string.h>             /* strcmp */
 #include "gstadderorc.h"
 
-/* highest positive/lowest negative x-bit value we can use for clamping */
-#define MAX_INT_32  ((gint32) (0x7fffffff))
-#define MAX_INT_16  ((gint16) (0x7fff))
-#define MAX_INT_8   ((gint8)  (0x7f))
-#define MAX_UINT_32 ((guint32)(0xffffffff))
-#define MAX_UINT_16 ((guint16)(0xffff))
-#define MAX_UINT_8  ((guint8) (0xff))
+#define GST_CAT_DEFAULT gst_adder_debug
+GST_DEBUG_CATEGORY_STATIC (GST_CAT_DEFAULT);
 
-#define MIN_INT_32  ((gint32) (0x80000000))
-#define MIN_INT_16  ((gint16) (0x8000))
-#define MIN_INT_8   ((gint8)  (0x80))
-#define MIN_UINT_32 ((guint32)(0x00000000))
-#define MIN_UINT_16 ((guint16)(0x0000))
-#define MIN_UINT_8  ((guint8) (0x00))
+#define DEFAULT_PAD_VOLUME (1.0)
+#define DEFAULT_PAD_MUTE (FALSE)
+
+/* some defines for audio processing */
+/* the volume factor is a range from 0.0 to (arbitrary) VOLUME_MAX_DOUBLE = 10.0
+ * we map 1.0 to VOLUME_UNITY_INT*
+ */
+#define VOLUME_UNITY_INT8            8  /* internal int for unity 2^(8-5) */
+#define VOLUME_UNITY_INT8_BIT_SHIFT  3  /* number of bits to shift for unity */
+#define VOLUME_UNITY_INT16           2048       /* internal int for unity 2^(16-5) */
+#define VOLUME_UNITY_INT16_BIT_SHIFT 11 /* number of bits to shift for unity */
+#define VOLUME_UNITY_INT24           524288     /* internal int for unity 2^(24-5) */
+#define VOLUME_UNITY_INT24_BIT_SHIFT 19 /* number of bits to shift for unity */
+#define VOLUME_UNITY_INT32           134217728  /* internal int for unity 2^(32-5) */
+#define VOLUME_UNITY_INT32_BIT_SHIFT 27
+
+enum
+{
+  PROP_PAD_0,
+  PROP_PAD_VOLUME,
+  PROP_PAD_MUTE
+};
+
+G_DEFINE_TYPE (GstAdderPad, gst_adder_pad, GST_TYPE_PAD);
+
+static void
+gst_adder_pad_get_property (GObject * object, guint prop_id,
+    GValue * value, GParamSpec * pspec)
+{
+  GstAdderPad *pad = GST_ADDER_PAD (object);
+
+  switch (prop_id) {
+    case PROP_PAD_VOLUME:
+      g_value_set_double (value, pad->volume);
+      break;
+    case PROP_PAD_MUTE:
+      g_value_set_boolean (value, pad->mute);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+gst_adder_pad_set_property (GObject * object, guint prop_id,
+    const GValue * value, GParamSpec * pspec)
+{
+  GstAdderPad *pad = GST_ADDER_PAD (object);
+
+  switch (prop_id) {
+    case PROP_PAD_VOLUME:
+      GST_OBJECT_LOCK (pad);
+      pad->volume = g_value_get_double (value);
+      pad->volume_i8 = pad->volume * VOLUME_UNITY_INT8;
+      pad->volume_i16 = pad->volume * VOLUME_UNITY_INT16;
+      pad->volume_i32 = pad->volume * VOLUME_UNITY_INT32;
+      GST_OBJECT_UNLOCK (pad);
+      break;
+    case PROP_PAD_MUTE:
+      GST_OBJECT_LOCK (pad);
+      pad->mute = g_value_get_boolean (value);
+      GST_OBJECT_UNLOCK (pad);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+gst_adder_pad_class_init (GstAdderPadClass * klass)
+{
+  GObjectClass *gobject_class = (GObjectClass *) klass;
+
+  gobject_class->set_property = gst_adder_pad_set_property;
+  gobject_class->get_property = gst_adder_pad_get_property;
+
+  g_object_class_install_property (gobject_class, PROP_PAD_VOLUME,
+      g_param_spec_double ("volume", "Volume", "Volume of this pad",
+          0.0, 10.0, DEFAULT_PAD_VOLUME,
+          G_PARAM_READWRITE | GST_PARAM_CONTROLLABLE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_class, PROP_PAD_MUTE,
+      g_param_spec_boolean ("mute", "Mute", "Mute this pad",
+          DEFAULT_PAD_MUTE,
+          G_PARAM_READWRITE | GST_PARAM_CONTROLLABLE | G_PARAM_STATIC_STRINGS));
+}
+
+static void
+gst_adder_pad_init (GstAdderPad * pad)
+{
+  pad->volume = DEFAULT_PAD_VOLUME;
+  pad->mute = DEFAULT_PAD_MUTE;
+}
 
 enum
 {
   PROP_0,
   PROP_FILTER_CAPS
 };
-
-#define GST_CAT_DEFAULT gst_adder_debug
-GST_DEBUG_CATEGORY_STATIC (GST_CAT_DEFAULT);
 
 /* elementfactory information */
 
@@ -99,8 +179,11 @@ GST_STATIC_PAD_TEMPLATE ("sink_%u",
     GST_STATIC_CAPS (CAPS)
     );
 
+static void gst_adder_child_proxy_init (gpointer g_iface, gpointer iface_data);
+
 #define gst_adder_parent_class parent_class
-G_DEFINE_TYPE (GstAdder, gst_adder, GST_TYPE_ELEMENT);
+G_DEFINE_TYPE_WITH_CODE (GstAdder, gst_adder, GST_TYPE_ELEMENT,
+    G_IMPLEMENT_INTERFACE (GST_TYPE_CHILD_PROXY, gst_adder_child_proxy_init));
 
 static void gst_adder_dispose (GObject * object);
 static void gst_adder_set_property (GObject * object, guint prop_id,
@@ -132,18 +215,6 @@ static GstFlowReturn gst_adder_do_clip (GstCollectPads * pads,
 static GstFlowReturn gst_adder_collected (GstCollectPads * pads,
     gpointer user_data);
 
-/* non-clipping versions (for float) */
-#define MAKE_FUNC_NC(name,type)                                 \
-static void name (type *out, type *in, gint samples) {          \
-  gint i;                                                       \
-  for (i = 0; i < samples; i++)                                 \
-    out[i] += in[i];                                            \
-}
-
-/* *INDENT-OFF* */
-MAKE_FUNC_NC (adder_orc_add_float64, gdouble)
-/* *INDENT-ON* */
-
 /* we can only accept caps that we and downstream can handle.
  * if we have filtercaps set, use those to constrain the target caps.
  */
@@ -151,7 +222,7 @@ static GstCaps *
 gst_adder_sink_getcaps (GstPad * pad, GstCaps * filter)
 {
   GstAdder *adder;
-  GstCaps *result, *peercaps, *sinkcaps, *filter_caps;
+  GstCaps *result, *peercaps, *current_caps, *filter_caps;
 
   adder = GST_ADDER (GST_PAD_PARENT (pad));
 
@@ -178,33 +249,37 @@ gst_adder_sink_getcaps (GstPad * pad, GstCaps * filter)
   peercaps = gst_pad_peer_query_caps (adder->srcpad, filter_caps);
 
   /* get the allowed caps on this sinkpad */
-  sinkcaps = gst_pad_get_current_caps (pad);
-  if (sinkcaps == NULL) {
-    sinkcaps = gst_pad_get_pad_template_caps (pad);
-    if (!sinkcaps)
-      sinkcaps = gst_caps_new_any ();
+  GST_OBJECT_LOCK (adder);
+  current_caps =
+      adder->current_caps ? gst_caps_ref (adder->current_caps) : NULL;
+  if (current_caps == NULL) {
+    current_caps = gst_pad_get_pad_template_caps (pad);
+    if (!current_caps)
+      current_caps = gst_caps_new_any ();
   }
+  GST_OBJECT_UNLOCK (adder);
 
   if (peercaps) {
     /* if the peer has caps, intersect */
-    GST_DEBUG_OBJECT (adder, "intersecting peer and template caps");
+    GST_DEBUG_OBJECT (adder, "intersecting peer and our caps");
     result =
-        gst_caps_intersect_full (peercaps, sinkcaps, GST_CAPS_INTERSECT_FIRST);
+        gst_caps_intersect_full (peercaps, current_caps,
+        GST_CAPS_INTERSECT_FIRST);
     gst_caps_unref (peercaps);
-    gst_caps_unref (sinkcaps);
+    gst_caps_unref (current_caps);
   } else {
     /* the peer has no caps (or there is no peer), just use the allowed caps
      * of this sinkpad. */
     /* restrict with filter-caps if any */
     if (filter_caps) {
-      GST_DEBUG_OBJECT (adder, "no peer caps, using filtered sinkcaps");
+      GST_DEBUG_OBJECT (adder, "no peer caps, using filtered caps");
       result =
-          gst_caps_intersect_full (filter_caps, sinkcaps,
+          gst_caps_intersect_full (filter_caps, current_caps,
           GST_CAPS_INTERSECT_FIRST);
-      gst_caps_unref (sinkcaps);
+      gst_caps_unref (current_caps);
     } else {
-      GST_DEBUG_OBJECT (adder, "no peer caps, using sinkcaps");
-      result = sinkcaps;
+      GST_DEBUG_OBJECT (adder, "no peer caps, using our caps");
+      result = current_caps;
     }
   }
 
@@ -243,121 +318,44 @@ gst_adder_sink_query (GstCollectPads * pads, GstCollectData * pad,
   return res;
 }
 
-typedef struct
-{
-  GstPad *pad;
-  GstCaps *caps;
-} IterData;
-
-static void
-setcapsfunc (const GValue * item, IterData * data)
-{
-  GstPad *otherpad = g_value_get_object (item);
-
-  if (otherpad != data->pad) {
-    GST_LOG_OBJECT (data->pad, "calling set_caps with %" GST_PTR_FORMAT,
-        data->caps);
-    gst_pad_set_caps (data->pad, data->caps);
-    gst_pad_use_fixed_caps (data->pad);
-  }
-}
-
 /* the first caps we receive on any of the sinkpads will define the caps for all
  * the other sinkpads because we can only mix streams with the same caps.
  */
 static gboolean
 gst_adder_setcaps (GstAdder * adder, GstPad * pad, GstCaps * caps)
 {
-  GstIterator *it;
-  GstIteratorResult ires;
-  IterData idata;
-  gboolean done;
+  GstAudioInfo info;
 
-  /* this gets called recursively due to gst_iterator_foreach calling
-   * gst_pad_set_caps() */
-  if (adder->in_setcaps)
-    return TRUE;
+  if (!gst_audio_info_from_caps (&info, caps))
+    goto invalid_format;
 
+  GST_OBJECT_LOCK (adder);
   /* don't allow reconfiguration for now; there's still a race between the
    * different upstream threads doing query_caps + accept_caps + sending
    * (possibly different) CAPS events, but there's not much we can do about
    * that, upstream needs to deal with it. */
   if (adder->current_caps != NULL) {
-    /* FIXME: not quite right for optional fields such as channel-mask, which
-     * may or may not be present for mono/stereo */
-    if (gst_caps_is_equal (caps, adder->current_caps)) {
+    if (gst_audio_info_is_equal (&info, &adder->info)) {
+      GST_OBJECT_UNLOCK (adder);
       return TRUE;
     } else {
       GST_DEBUG_OBJECT (pad, "got input caps %" GST_PTR_FORMAT ", but "
           "current caps are %" GST_PTR_FORMAT, caps, adder->current_caps);
+      GST_OBJECT_UNLOCK (adder);
       gst_pad_push_event (pad, gst_event_new_reconfigure ());
       return FALSE;
     }
   }
 
   GST_INFO_OBJECT (pad, "setting caps to %" GST_PTR_FORMAT, caps);
-
   adder->current_caps = gst_caps_ref (caps);
+
+  memcpy (&adder->info, &info, sizeof (info));
+  GST_OBJECT_UNLOCK (adder);
   /* send caps event later, after stream-start event */
-
-  it = gst_element_iterate_pads (GST_ELEMENT_CAST (adder));
-
-  /* FIXME, see if the other pads can accept the format. Also lock the
-   * format on the other pads to this new format. */
-  idata.caps = caps;
-  idata.pad = pad;
-
-  adder->in_setcaps = TRUE;
-  done = FALSE;
-  while (!done) {
-    ires = gst_iterator_foreach (it, (GstIteratorForeachFunction) setcapsfunc,
-        &idata);
-
-    switch (ires) {
-      case GST_ITERATOR_RESYNC:
-        gst_iterator_resync (it);
-        break;
-      default:
-        done = TRUE;
-        break;
-    }
-  }
-  adder->in_setcaps = FALSE;
-  gst_iterator_free (it);
 
   GST_INFO_OBJECT (pad, "handle caps change to %" GST_PTR_FORMAT, caps);
 
-  if (!gst_audio_info_from_caps (&adder->info, caps))
-    goto invalid_format;
-
-  switch (GST_AUDIO_INFO_FORMAT (&adder->info)) {
-    case GST_AUDIO_FORMAT_S8:
-      adder->func = (GstAdderFunction) adder_orc_add_int8;
-      break;
-    case GST_AUDIO_FORMAT_U8:
-      adder->func = (GstAdderFunction) adder_orc_add_uint8;
-      break;
-    case GST_AUDIO_FORMAT_S16:
-      adder->func = (GstAdderFunction) adder_orc_add_int16;
-      break;
-    case GST_AUDIO_FORMAT_U16:
-      adder->func = (GstAdderFunction) adder_orc_add_uint16;
-      break;
-    case GST_AUDIO_FORMAT_S32:
-      adder->func = (GstAdderFunction) adder_orc_add_int32;
-      break;
-    case GST_AUDIO_FORMAT_U32:
-      adder->func = (GstAdderFunction) adder_orc_add_uint32;
-      break;
-    case GST_AUDIO_FORMAT_F32:
-      adder->func = (GstAdderFunction) adder_orc_add_float32;
-      break;
-    case GST_AUDIO_FORMAT_F64:
-      adder->func = (GstAdderFunction) adder_orc_add_float64;
-      break;
-    default:
-      goto invalid_format;
-  }
   return TRUE;
 
   /* ERRORS */
@@ -693,24 +691,34 @@ gst_adder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
     {
       GstSeekFlags flags;
       gdouble rate;
-      GstSeekType curtype, endtype;
-      gint64 cur, end;
+      GstSeekType start_type, stop_type;
+      gint64 start, stop;
+      GstFormat seek_format, dest_format;
       gboolean flush;
 
       /* parse the seek parameters */
-      gst_event_parse_seek (event, &rate, NULL, &flags, &curtype,
-          &cur, &endtype, &end);
+      gst_event_parse_seek (event, &rate, &seek_format, &flags, &start_type,
+          &start, &stop_type, &stop);
 
-      if ((curtype != GST_SEEK_TYPE_NONE) && (curtype != GST_SEEK_TYPE_SET)) {
+      if ((start_type != GST_SEEK_TYPE_NONE)
+          && (start_type != GST_SEEK_TYPE_SET)) {
         result = FALSE;
         GST_DEBUG_OBJECT (adder,
-            "seeking failed, unhandled seek type for start: %d", curtype);
+            "seeking failed, unhandled seek type for start: %d", start_type);
         goto done;
       }
-      if ((endtype != GST_SEEK_TYPE_NONE) && (endtype != GST_SEEK_TYPE_SET)) {
+      if ((stop_type != GST_SEEK_TYPE_NONE) && (stop_type != GST_SEEK_TYPE_SET)) {
         result = FALSE;
         GST_DEBUG_OBJECT (adder,
-            "seeking failed, unhandled seek type for end: %d", endtype);
+            "seeking failed, unhandled seek type for end: %d", stop_type);
+        goto done;
+      }
+
+      dest_format = adder->segment.format;
+      if (seek_format != dest_format) {
+        result = FALSE;
+        GST_DEBUG_OBJECT (adder,
+            "seeking failed, unhandled seek format: %d", seek_format);
         goto done;
       }
 
@@ -733,7 +741,10 @@ gst_adder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
          * forwarding the seek upstream or from gst_adder_collected,
          * whichever happens first.
          */
-        g_atomic_int_set (&adder->flush_stop_pending, TRUE);
+        GST_COLLECT_PADS_STREAM_LOCK (adder->collect);
+        adder->flush_stop_pending = TRUE;
+        GST_COLLECT_PADS_STREAM_UNLOCK (adder->collect);
+        GST_DEBUG_OBJECT (adder, "mark pending flush stop event");
       }
       GST_DEBUG_OBJECT (adder, "handling seek event: %" GST_PTR_FORMAT, event);
 
@@ -741,15 +752,13 @@ gst_adder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
        * segment. After we have the lock, no collect function is running and no
        * new collect function will be called for as long as we're flushing. */
       GST_COLLECT_PADS_STREAM_LOCK (adder->collect);
-      adder->segment.rate = rate;
-      if (curtype == GST_SEEK_TYPE_SET)
-        adder->segment.start = cur;
-      else
-        adder->segment.start = 0;
-      if (endtype == GST_SEEK_TYPE_SET)
-        adder->segment.stop = end;
-      else
-        adder->segment.stop = GST_CLOCK_TIME_NONE;
+      /* clip position and update our segment */
+      if (adder->segment.stop != -1) {
+        adder->segment.position = adder->segment.stop;
+      }
+      gst_segment_do_seek (&adder->segment, rate, seek_format, flags,
+          start_type, start, stop_type, stop, NULL);
+
       if (flush) {
         /* Yes, we need to call _set_flushing again *WHEN* the streaming threads
          * have stopped so that the cookie gets properly updated. */
@@ -758,10 +767,12 @@ gst_adder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
       GST_COLLECT_PADS_STREAM_UNLOCK (adder->collect);
       GST_DEBUG_OBJECT (adder, "forwarding seek event: %" GST_PTR_FORMAT,
           event);
+      GST_DEBUG_OBJECT (adder, "updated segment: %" GST_SEGMENT_FORMAT,
+          &adder->segment);
 
       /* we're forwarding seek to all upstream peers and wait for one to reply
        * with a newsegment-event before we send a newsegment-event downstream */
-      g_atomic_int_set (&adder->wait_for_new_segment, TRUE);
+      g_atomic_int_set (&adder->new_segment_pending, TRUE);
       result = forward_event (adder, event, flush);
       if (!result) {
         /* seek failed. maybe source is a live source. */
@@ -770,7 +781,10 @@ gst_adder_src_event (GstPad * pad, GstObject * parent, GstEvent * event)
       if (g_atomic_int_compare_and_exchange (&adder->flush_stop_pending,
               TRUE, FALSE)) {
         GST_DEBUG_OBJECT (adder, "pending flush stop");
-        gst_pad_push_event (adder->srcpad, gst_event_new_flush_stop (TRUE));
+        if (!gst_pad_push_event (adder->srcpad,
+                gst_event_new_flush_stop (TRUE))) {
+          GST_WARNING_OBJECT (adder, "Sending flush stop event failed");
+        }
       }
       break;
     }
@@ -816,19 +830,32 @@ gst_adder_sink_event (GstCollectPads * pads, GstCollectData * pad,
       res = gst_adder_setcaps (adder, pad->pad, caps);
       gst_event_unref (event);
       event = NULL;
+      break;
     }
+    case GST_EVENT_FLUSH_START:
+      /* ensure that we will send a flush stop */
+      res = gst_collect_pads_event_default (pads, pad, event, discard);
+      event = NULL;
+      GST_COLLECT_PADS_STREAM_LOCK (adder->collect);
+      adder->flush_stop_pending = TRUE;
+      GST_COLLECT_PADS_STREAM_UNLOCK (adder->collect);
+      break;
     case GST_EVENT_FLUSH_STOP:
       /* we received a flush-stop. We will only forward it when
        * flush_stop_pending is set, and we will unset it then.
        */
-      if (g_atomic_int_compare_and_exchange (&adder->flush_stop_pending,
-              TRUE, FALSE)) {
-        g_atomic_int_set (&adder->new_segment_pending, TRUE);
+      g_atomic_int_set (&adder->new_segment_pending, TRUE);
+      GST_COLLECT_PADS_STREAM_LOCK (adder->collect);
+      if (adder->flush_stop_pending) {
         GST_DEBUG_OBJECT (pad->pad, "forwarding flush stop");
+        res = gst_collect_pads_event_default (pads, pad, event, discard);
+        adder->flush_stop_pending = FALSE;
+        event = NULL;
       } else {
         discard = TRUE;
         GST_DEBUG_OBJECT (pad->pad, "eating flush stop");
       }
+      GST_COLLECT_PADS_STREAM_UNLOCK (adder->collect);
       /* Clear pending tags */
       if (adder->pending_events) {
         g_list_foreach (adder->pending_events, (GFunc) gst_event_unref, NULL);
@@ -841,15 +868,20 @@ gst_adder_sink_event (GstCollectPads * pads, GstCollectData * pad,
       adder->pending_events = g_list_append (adder->pending_events, event);
       event = NULL;
       break;
-    case GST_EVENT_SEGMENT:
-      if (g_atomic_int_compare_and_exchange (&adder->wait_for_new_segment,
-              TRUE, FALSE)) {
-        /* make sure we push a new segment, to inform about new basetime
-         * see FIXME in gst_adder_collected() */
-        g_atomic_int_set (&adder->new_segment_pending, TRUE);
+    case GST_EVENT_SEGMENT:{
+      const GstSegment *segment;
+      gst_event_parse_segment (event, &segment);
+      if (segment->rate != adder->segment.rate) {
+        GST_ERROR_OBJECT (pad->pad,
+            "Got segment event with wrong rate %lf, expected %lf",
+            segment->rate, adder->segment.rate);
+        res = FALSE;
+        gst_event_unref (event);
+        event = NULL;
       }
       discard = TRUE;
       break;
+    }
     default:
       break;
   }
@@ -911,7 +943,6 @@ gst_adder_init (GstAdder * adder)
   adder->current_caps = NULL;
   gst_audio_info_init (&adder->info);
   adder->padcount = 0;
-  adder->func = NULL;
 
   adder->filter_caps = NULL;
 
@@ -1019,7 +1050,8 @@ gst_adder_request_new_pad (GstElement * element, GstPadTemplate * templ,
   padcount = g_atomic_int_add (&adder->padcount, 1);
 
   name = g_strdup_printf ("sink_%u", padcount);
-  newpad = gst_pad_new_from_template (templ, name);
+  newpad = g_object_new (GST_TYPE_ADDER_PAD, "name", name, "direction",
+      templ->direction, "template", templ, NULL);
   GST_DEBUG_OBJECT (adder, "request new pad %s", name);
   g_free (name);
 
@@ -1029,6 +1061,9 @@ gst_adder_request_new_pad (GstElement * element, GstPadTemplate * templ,
   /* takes ownership of the pad */
   if (!gst_element_add_pad (GST_ELEMENT (adder), newpad))
     goto could_not_add;
+
+  gst_child_proxy_child_added (GST_CHILD_PROXY (adder), G_OBJECT (newpad),
+      GST_OBJECT_NAME (newpad));
 
   return newpad;
 
@@ -1056,6 +1091,8 @@ gst_adder_release_pad (GstElement * element, GstPad * pad)
 
   GST_DEBUG_OBJECT (adder, "release pad %s:%s", GST_DEBUG_PAD_NAME (pad));
 
+  gst_child_proxy_child_removed (GST_CHILD_PROXY (adder), G_OBJECT (pad),
+      GST_OBJECT_NAME (pad));
   if (adder->collect)
     gst_collect_pads_remove_pad (adder->collect, pad);
   gst_element_remove_pad (element, pad);
@@ -1105,19 +1142,32 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
   gint64 next_offset;
   gint64 next_timestamp;
   gint rate, bps, bpf;
+  gboolean had_mute = FALSE;
 
   adder = GST_ADDER (user_data);
 
   /* this is fatal */
-  if (G_UNLIKELY (adder->func == NULL))
+  if (G_UNLIKELY (adder->info.finfo->format == GST_AUDIO_FORMAT_UNKNOWN))
     goto not_negotiated;
+
+  if (adder->flush_stop_pending == TRUE) {
+    GST_INFO_OBJECT (adder->srcpad, "send pending flush stop event");
+    if (!gst_pad_push_event (adder->srcpad, gst_event_new_flush_stop (TRUE))) {
+      GST_WARNING_OBJECT (adder->srcpad, "Sending flush stop event failed");
+    }
+
+    adder->flush_stop_pending = FALSE;
+  }
 
   if (adder->send_stream_start) {
     gchar s_id[32];
 
+    GST_INFO_OBJECT (adder->srcpad, "send pending stream start event");
     /* stream-start (FIXME: create id based on input ids) */
     g_snprintf (s_id, sizeof (s_id), "adder-%08x", g_random_int ());
-    gst_pad_push_event (adder->srcpad, gst_event_new_stream_start (s_id));
+    if (!gst_pad_push_event (adder->srcpad, gst_event_new_stream_start (s_id))) {
+      GST_WARNING_OBJECT (adder->srcpad, "Sending stream start event failed");
+    }
     adder->send_stream_start = FALSE;
   }
 
@@ -1125,15 +1175,12 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
     GstEvent *caps_event;
 
     caps_event = gst_event_new_caps (adder->current_caps);
-    GST_INFO_OBJECT (adder, "caps event %" GST_PTR_FORMAT, caps_event);
-    gst_pad_push_event (adder->srcpad, caps_event);
+    GST_INFO_OBJECT (adder->srcpad, "send pending caps event %" GST_PTR_FORMAT,
+        caps_event);
+    if (!gst_pad_push_event (adder->srcpad, caps_event)) {
+      GST_WARNING_OBJECT (adder->srcpad, "Sending caps event failed");
+    }
     adder->send_caps = FALSE;
-  }
-
-  if (g_atomic_int_compare_and_exchange (&adder->flush_stop_pending,
-          TRUE, FALSE)) {
-    GST_DEBUG_OBJECT (adder, "pending flush stop");
-    gst_pad_push_event (adder->srcpad, gst_event_new_flush_stop (TRUE));
   }
 
   /* get available bytes for reading, this can be 0 which could mean empty
@@ -1155,11 +1202,14 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
     GstCollectData *collect_data;
     GstBuffer *inbuf;
     gboolean is_gap;
+    GstAdderPad *pad;
+    GstClockTime timestamp, stream_time;
 
     /* take next to see if this is the last collectdata */
     next = g_slist_next (collected);
 
     collect_data = (GstCollectData *) collected->data;
+    pad = GST_ADDER_PAD (collect_data->pad);
 
     /* get a buffer of size bytes, if we get a buffer, it is at least outsize
      * bytes big. */
@@ -1168,6 +1218,24 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
      * case of an empty buffer. */
     if (inbuf == NULL) {
       GST_LOG_OBJECT (adder, "channel %p: no bytes available", collect_data);
+      continue;
+    }
+
+    timestamp = GST_BUFFER_TIMESTAMP (inbuf);
+    stream_time =
+        gst_segment_to_stream_time (&collect_data->segment, GST_FORMAT_TIME,
+        timestamp);
+
+    /* sync object properties on stream time */
+    if (GST_CLOCK_TIME_IS_VALID (stream_time))
+      gst_object_sync_values (GST_OBJECT (pad), stream_time);
+
+    GST_OBJECT_LOCK (pad);
+    if (pad->mute || pad->volume < G_MINDOUBLE) {
+      had_mute = TRUE;
+      GST_DEBUG_OBJECT (adder, "channel %p: skipping muted pad", collect_data);
+      gst_buffer_unref (inbuf);
+      GST_OBJECT_UNLOCK (pad);
       continue;
     }
 
@@ -1186,6 +1254,7 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
           gapbuf = inbuf;
         else
           gst_buffer_unref (inbuf);
+        GST_OBJECT_UNLOCK (pad);
         continue;
       }
 
@@ -1196,7 +1265,47 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
        * are the only one referencing this buffer. If this is the last (and
        * only) GAP buffer, it will automatically copy the GAP flag. */
       outbuf = gst_buffer_make_writable (inbuf);
-      gst_buffer_map (outbuf, &outmap, GST_MAP_WRITE);
+      gst_buffer_map (outbuf, &outmap, GST_MAP_READWRITE);
+
+      if (pad->volume != 1.0) {
+        switch (adder->info.finfo->format) {
+          case GST_AUDIO_FORMAT_U8:
+            adder_orc_volume_u8 ((gpointer) outmap.data, pad->volume_i8,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_S8:
+            adder_orc_volume_s8 ((gpointer) outmap.data, pad->volume_i8,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_U16:
+            adder_orc_volume_u16 ((gpointer) outmap.data, pad->volume_i16,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_S16:
+            adder_orc_volume_s16 ((gpointer) outmap.data, pad->volume_i16,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_U32:
+            adder_orc_volume_u32 ((gpointer) outmap.data, pad->volume_i32,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_S32:
+            adder_orc_volume_s32 ((gpointer) outmap.data, pad->volume_i32,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_F32:
+            adder_orc_volume_f32 ((gpointer) outmap.data, pad->volume,
+                outmap.size / bps);
+            break;
+          case GST_AUDIO_FORMAT_F64:
+            adder_orc_volume_f64 ((gpointer) outmap.data, pad->volume,
+                outmap.size / bps);
+            break;
+          default:
+            g_assert_not_reached ();
+            break;
+        }
+      }
     } else {
       if (!is_gap) {
         /* we had a previous output buffer, mix this non-GAP buffer */
@@ -1212,8 +1321,83 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
             " from data %p", collect_data, inmap.size, inmap.data);
 
         /* further buffers, need to add them */
-        adder->func ((gpointer) outmap.data, (gpointer) inmap.data,
-            inmap.size / bps);
+        if (pad->volume == 1.0) {
+          switch (adder->info.finfo->format) {
+            case GST_AUDIO_FORMAT_U8:
+              adder_orc_add_u8 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S8:
+              adder_orc_add_s8 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_U16:
+              adder_orc_add_u16 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S16:
+              adder_orc_add_s16 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_U32:
+              adder_orc_add_u32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S32:
+              adder_orc_add_s32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_F32:
+              adder_orc_add_f32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_F64:
+              adder_orc_add_f64 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, inmap.size / bps);
+              break;
+            default:
+              g_assert_not_reached ();
+              break;
+          }
+        } else {
+          switch (adder->info.finfo->format) {
+            case GST_AUDIO_FORMAT_U8:
+              adder_orc_add_volume_u8 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i8, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S8:
+              adder_orc_add_volume_s8 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i8, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_U16:
+              adder_orc_add_volume_u16 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i16, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S16:
+              adder_orc_add_volume_s16 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i16, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_U32:
+              adder_orc_add_volume_u32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i32, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_S32:
+              adder_orc_add_volume_s32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume_i32, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_F32:
+              adder_orc_add_volume_f32 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume, inmap.size / bps);
+              break;
+            case GST_AUDIO_FORMAT_F64:
+              adder_orc_add_volume_f64 ((gpointer) outmap.data,
+                  (gpointer) inmap.data, pad->volume, inmap.size / bps);
+              break;
+            default:
+              g_assert_not_reached ();
+              break;
+          }
+        }
         gst_buffer_unmap (inbuf, &inmap);
       } else {
         /* skip gap buffer */
@@ -1221,6 +1405,7 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
       }
       gst_buffer_unref (inbuf);
     }
+    GST_OBJECT_UNLOCK (pad);
   }
   if (outbuf)
     gst_buffer_unmap (outbuf, &outmap);
@@ -1230,26 +1415,34 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
     if (gapbuf) {
       GST_LOG_OBJECT (adder, "reusing GAP buffer %p", gapbuf);
       outbuf = gapbuf;
-    } else
+    } else if (had_mute) {
+      GstMapInfo map;
+
+      /* Means we had all pads muted, create some silence */
+      outbuf = gst_buffer_new_allocate (NULL, outsize, NULL);
+      gst_buffer_map (outbuf, &map, GST_MAP_WRITE);
+      gst_audio_format_fill_silence (adder->info.finfo, map.data, outsize);
+      gst_buffer_unmap (outbuf, &map);
+      GST_BUFFER_FLAG_SET (outbuf, GST_BUFFER_FLAG_GAP);
+    } else {
       /* assume EOS otherwise, this should not happen, really */
       goto eos;
-  } else if (gapbuf)
+    }
+  } else if (gapbuf) {
     /* we had an output buffer, unref the gapbuffer we kept */
     gst_buffer_unref (gapbuf);
+  }
 
   if (g_atomic_int_compare_and_exchange (&adder->new_segment_pending, TRUE,
           FALSE)) {
     GstEvent *event;
 
-    /* FIXME, use rate/applied_rate as set on all sinkpads.
-     * - currently we just set rate as received from last seek-event
-     *
+    /* 
      * When seeking we set the start and stop positions as given in the seek
      * event. We also adjust offset & timestamp accordingly.
      * This basically ignores all newsegments sent by upstream.
      */
     event = gst_event_new_segment (&adder->segment);
-
     if (adder->segment.rate > 0.0) {
       adder->segment.position = adder->segment.start;
     } else {
@@ -1257,11 +1450,9 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
     }
     adder->offset = gst_util_uint64_scale (adder->segment.position,
         rate, GST_SECOND);
-    GST_INFO_OBJECT (adder, "seg_start %" G_GUINT64_FORMAT ", seg_end %"
-        G_GUINT64_FORMAT, adder->segment.start, adder->segment.stop);
-    GST_INFO_OBJECT (adder, "timestamp %" G_GINT64_FORMAT ",new offset %"
-        G_GINT64_FORMAT, adder->segment.position, adder->offset);
 
+    GST_INFO_OBJECT (adder->srcpad, "sending pending new segment event %"
+        GST_SEGMENT_FORMAT, &adder->segment);
     if (event) {
       if (!gst_pad_push_event (adder->srcpad, event)) {
         GST_WARNING_OBJECT (adder->srcpad, "Sending new segment event failed");
@@ -1297,13 +1488,14 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
 
 
   /* set timestamps on the output buffer */
+  GST_BUFFER_DTS (outbuf) = GST_CLOCK_TIME_NONE;
   if (adder->segment.rate > 0.0) {
-    GST_BUFFER_TIMESTAMP (outbuf) = adder->segment.position;
+    GST_BUFFER_PTS (outbuf) = adder->segment.position;
     GST_BUFFER_OFFSET (outbuf) = adder->offset;
     GST_BUFFER_OFFSET_END (outbuf) = next_offset;
     GST_BUFFER_DURATION (outbuf) = next_timestamp - adder->segment.position;
   } else {
-    GST_BUFFER_TIMESTAMP (outbuf) = next_timestamp;
+    GST_BUFFER_PTS (outbuf) = next_timestamp;
     GST_BUFFER_OFFSET (outbuf) = next_offset;
     GST_BUFFER_OFFSET_END (outbuf) = adder->offset;
     GST_BUFFER_DURATION (outbuf) = adder->segment.position - next_timestamp;
@@ -1350,11 +1542,9 @@ gst_adder_change_state (GstElement * element, GstStateChange transition)
     case GST_STATE_CHANGE_NULL_TO_READY:
       break;
     case GST_STATE_CHANGE_READY_TO_PAUSED:
-      adder->segment.position = 0;
       adder->offset = 0;
       adder->flush_stop_pending = FALSE;
       adder->new_segment_pending = TRUE;
-      adder->wait_for_new_segment = FALSE;
       adder->send_stream_start = TRUE;
       adder->send_caps = TRUE;
       gst_caps_replace (&adder->current_caps, NULL);
@@ -1380,6 +1570,45 @@ gst_adder_change_state (GstElement * element, GstStateChange transition)
   }
 
   return ret;
+}
+
+/* GstChildProxy implementation */
+static GObject *
+gst_adder_child_proxy_get_child_by_index (GstChildProxy * child_proxy,
+    guint index)
+{
+  GstAdder *adder = GST_ADDER (child_proxy);
+  GObject *obj = NULL;
+
+  GST_OBJECT_LOCK (adder);
+  obj = g_list_nth_data (GST_ELEMENT_CAST (adder)->sinkpads, index);
+  if (obj)
+    gst_object_ref (obj);
+  GST_OBJECT_UNLOCK (adder);
+  return obj;
+}
+
+static guint
+gst_adder_child_proxy_get_children_count (GstChildProxy * child_proxy)
+{
+  guint count = 0;
+  GstAdder *adder = GST_ADDER (child_proxy);
+
+  GST_OBJECT_LOCK (adder);
+  count = GST_ELEMENT_CAST (adder)->numsinkpads;
+  GST_OBJECT_UNLOCK (adder);
+  GST_INFO_OBJECT (adder, "Children Count: %d", count);
+  return count;
+}
+
+static void
+gst_adder_child_proxy_init (gpointer g_iface, gpointer iface_data)
+{
+  GstChildProxyInterface *iface = g_iface;
+
+  GST_INFO ("intializing child proxy interface");
+  iface->get_child_by_index = gst_adder_child_proxy_get_child_by_index;
+  iface->get_children_count = gst_adder_child_proxy_get_children_count;
 }
 
 static gboolean

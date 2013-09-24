@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -102,7 +102,7 @@ static gboolean theora_dec_start (GstVideoDecoder * decoder);
 static gboolean theora_dec_stop (GstVideoDecoder * decoder);
 static gboolean theora_dec_set_format (GstVideoDecoder * decoder,
     GstVideoCodecState * state);
-static gboolean theora_dec_reset (GstVideoDecoder * decoder, gboolean hard);
+static gboolean theora_dec_flush (GstVideoDecoder * decoder);
 static GstFlowReturn theora_dec_parse (GstVideoDecoder * decoder,
     GstVideoCodecFrame * frame, GstAdapter * adapter, gboolean at_eos);
 static GstFlowReturn theora_dec_handle_frame (GstVideoDecoder * decoder,
@@ -185,7 +185,7 @@ gst_theora_dec_class_init (GstTheoraDecClass * klass)
 
   video_decoder_class->start = GST_DEBUG_FUNCPTR (theora_dec_start);
   video_decoder_class->stop = GST_DEBUG_FUNCPTR (theora_dec_stop);
-  video_decoder_class->reset = GST_DEBUG_FUNCPTR (theora_dec_reset);
+  video_decoder_class->flush = GST_DEBUG_FUNCPTR (theora_dec_flush);
   video_decoder_class->set_format = GST_DEBUG_FUNCPTR (theora_dec_set_format);
   video_decoder_class->parse = GST_DEBUG_FUNCPTR (theora_dec_parse);
   video_decoder_class->handle_frame =
@@ -209,24 +209,15 @@ gst_theora_dec_init (GstTheoraDec * dec)
   gst_video_decoder_set_packetized (GST_VIDEO_DECODER (dec), FALSE);
 }
 
-static void
-gst_theora_dec_reset (GstTheoraDec * dec)
-{
-  dec->need_keyframe = TRUE;
-  dec->can_crop = FALSE;
-}
-
 static gboolean
 theora_dec_start (GstVideoDecoder * decoder)
 {
   GstTheoraDec *dec = GST_THEORA_DEC (decoder);
 
   GST_DEBUG_OBJECT (dec, "start");
-  th_info_clear (&dec->info);
-  th_comment_clear (&dec->comment);
   GST_DEBUG_OBJECT (dec, "Setting have_header to FALSE");
   dec->have_header = FALSE;
-  gst_theora_dec_reset (dec);
+  dec->can_crop = FALSE;
 
   return TRUE;
 }
@@ -237,13 +228,18 @@ theora_dec_stop (GstVideoDecoder * decoder)
   GstTheoraDec *dec = GST_THEORA_DEC (decoder);
 
   GST_DEBUG_OBJECT (dec, "stop");
+
   th_info_clear (&dec->info);
   th_comment_clear (&dec->comment);
-  th_setup_free (dec->setup);
-  dec->setup = NULL;
-  th_decode_free (dec->decoder);
-  dec->decoder = NULL;
-  gst_theora_dec_reset (dec);
+  if (dec->setup) {
+    th_setup_free (dec->setup);
+    dec->setup = NULL;
+  }
+  if (dec->decoder) {
+    th_decode_free (dec->decoder);
+    dec->decoder = NULL;
+  }
+
   if (dec->input_state) {
     gst_video_codec_state_unref (dec->input_state);
     dec->input_state = NULL;
@@ -252,15 +248,18 @@ theora_dec_stop (GstVideoDecoder * decoder)
     gst_video_codec_state_unref (dec->output_state);
     dec->output_state = NULL;
   }
+  dec->can_crop = FALSE;
 
   return TRUE;
 }
 
-/* FIXME : Do we want to handle hard resets differently ? */
 static gboolean
-theora_dec_reset (GstVideoDecoder * bdec, gboolean hard)
+theora_dec_flush (GstVideoDecoder * decoder)
 {
-  gst_theora_dec_reset (GST_THEORA_DEC (bdec));
+  GstTheoraDec *dec = GST_THEORA_DEC (decoder);
+
+  dec->need_keyframe = TRUE;
+
   return TRUE;
 }
 
@@ -273,11 +272,13 @@ theora_dec_parse (GstVideoDecoder * decoder,
 
   av = gst_adapter_available (adapter);
 
-  data = gst_adapter_map (adapter, 1);
-  /* check for keyframe; must not be header packet */
-  if (!(data[0] & 0x80) && (data[0] & 0x40) == 0)
-    GST_VIDEO_CODEC_FRAME_SET_SYNC_POINT (frame);
-  gst_adapter_unmap (adapter);
+  if (av > 0) {
+    data = gst_adapter_map (adapter, 1);
+    /* check for keyframe; must not be header packet */
+    if (!(data[0] & 0x80) && (data[0] & 0x40) == 0)
+      GST_VIDEO_CODEC_FRAME_SET_SYNC_POINT (frame);
+    gst_adapter_unmap (adapter);
+  }
 
   /* and pass along all */
   gst_video_decoder_add_to_frame (decoder, av);
@@ -395,7 +396,12 @@ theora_handle_type_packet (GstTheoraDec * dec)
   GstFlowReturn ret = GST_FLOW_OK;
   GstVideoCodecState *state;
   GstVideoFormat fmt;
-  GstVideoInfo *info = &dec->input_state->info;
+  GstVideoInfo *info;
+
+  if (!dec->input_state)
+    return GST_FLOW_NOT_NEGOTIATED;
+
+  info = &dec->input_state->info;
 
   GST_DEBUG_OBJECT (dec, "fps %d/%d, PAR %d/%d",
       dec->info.fps_numerator, dec->info.fps_denominator,
@@ -782,6 +788,8 @@ theora_dec_decode_buffer (GstTheoraDec * dec, GstBuffer * buf,
   if (packet.bytes && packet.packet[0] & 0x80) {
     if (dec->have_header) {
       GST_WARNING_OBJECT (GST_OBJECT (dec), "Ignoring header");
+      GST_VIDEO_CODEC_FRAME_FLAG_SET (frame,
+          GST_VIDEO_CODEC_FRAME_FLAG_DECODE_ONLY);
       result = GST_CUSTOM_FLOW_DROP;
       goto done;
     }

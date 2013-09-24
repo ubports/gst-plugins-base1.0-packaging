@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -41,6 +41,7 @@
 
 #include <string.h>
 
+#include <gst/audio/audio.h>
 #include "gstaudioringbuffer.h"
 
 GST_DEBUG_CATEGORY_STATIC (gst_audio_ring_buffer_debug);
@@ -87,6 +88,8 @@ gst_audio_ring_buffer_init (GstAudioRingBuffer * ringbuffer)
   ringbuffer->waiting = 0;
   ringbuffer->empty_seg = NULL;
   ringbuffer->flushing = TRUE;
+  ringbuffer->segbase = 0;
+  ringbuffer->segdone = 0;
 }
 
 static void
@@ -123,7 +126,9 @@ static const gchar *format_type_names[] = {
   "iec958",
   "ac3",
   "eac3",
-  "dts"
+  "dts",
+  "aac mpeg2",
+  "aac mpeg4"
 };
 #endif
 
@@ -175,9 +180,10 @@ gst_audio_ring_buffer_debug_spec_buff (GstAudioRingBufferSpec * spec)
   GST_DEBUG ("acquire ringbuffer: total segments: %d", spec->segtotal);
   GST_DEBUG ("acquire ringbuffer: latency segments: %d", spec->seglatency);
   GST_DEBUG ("acquire ringbuffer: segment size: %d bytes = %d samples",
-      spec->segsize, spec->segsize / bpf);
+      spec->segsize, (bpf != 0) ? (spec->segsize / bpf) : -1);
   GST_DEBUG ("acquire ringbuffer: buffer size: %d bytes = %d samples",
-      spec->segsize * spec->segtotal, spec->segsize * spec->segtotal / bpf);
+      spec->segsize * spec->segtotal,
+      (bpf != 0) ? (spec->segsize * spec->segtotal / bpf) : -1);
 }
 
 /**
@@ -261,6 +267,17 @@ gst_audio_ring_buffer_parse_caps (GstAudioRingBufferSpec * spec, GstCaps * caps)
       goto parse_error;
 
     spec->type = GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MPEG;
+    info.bpf = 4;
+  } else if (g_str_equal (mimetype, "audio/mpeg") &&
+      gst_structure_get_int (structure, "mpegversion", &i) &&
+      (i == 2 || i == 4) &&
+      !g_strcmp0 (gst_structure_get_string (structure, "stream-format"),
+          "adts")) {
+    /* MPEG-2 AAC or MPEG-4 AAC */
+    if (!(gst_structure_get_int (structure, "rate", &info.rate)))
+      goto parse_error;
+    spec->type = (i == 2) ? GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MPEG2_AAC :
+        GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MPEG4_AAC;
     info.bpf = 4;
   } else {
     goto parse_error;
@@ -667,6 +684,8 @@ gst_audio_ring_buffer_release (GstAudioRingBuffer * buf)
   if (G_UNLIKELY (!res))
     goto release_failed;
 
+  g_atomic_int_set (&buf->segdone, 0);
+  buf->segbase = 0;
   g_free (buf->empty_seg);
   buf->empty_seg = NULL;
   gst_caps_replace (&buf->spec.caps, NULL);
@@ -1469,6 +1488,8 @@ default_commit (GstAudioRingBuffer * buf, guint64 * sample,
   writeseg = *sample / sps;
   sampleoff = (*sample % sps) * bpf;
 
+  GST_DEBUG_OBJECT (buf, "write %d : %d", in_samples, out_samples);
+
   /* write out all samples */
   while (*toprocess > 0) {
     gint avail;
@@ -1485,14 +1506,13 @@ default_commit (GstAudioRingBuffer * buf, guint64 * sample,
       /* see how far away it is from the write segment */
       diff = writeseg - segdone;
 
-      GST_DEBUG
-          ("pointer at %d, write to %d-%d, diff %d, segtotal %d, segsize %d, base %d",
+      GST_DEBUG_OBJECT (buf,
+          "pointer at %d, write to %d-%d, diff %d, segtotal %d, segsize %d, base %d",
           segdone, writeseg, sampleoff, diff, segtotal, segsize, buf->segbase);
 
       /* segment too far ahead, writer too slow, we need to drop, hopefully UNLIKELY */
       if (G_UNLIKELY (diff < 0)) {
-        /* we need to drop one segment at a time, pretend we wrote a
-         * segment. */
+        /* we need to drop one segment at a time, pretend we wrote a segment. */
         skip = TRUE;
         break;
       }

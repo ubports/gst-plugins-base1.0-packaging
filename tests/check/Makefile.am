@@ -4,14 +4,14 @@ CHECK_REGISTRY = $(top_builddir)/tests/check/test-registry.reg
 TEST_FILES_DIRECTORY = $(top_srcdir)/tests/files
 
 REGISTRY_ENVIRONMENT = \
-	GST_REGISTRY=$(CHECK_REGISTRY)
+	GST_REGISTRY_1_0=$(CHECK_REGISTRY)
 
 TESTS_ENVIRONMENT = \
-        CK_DEFAULT_TIMEOUT=120                                  \
-        GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
+	CK_DEFAULT_TIMEOUT=120                                  \
+	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
 	$(REGISTRY_ENVIRONMENT)					\
-	GST_PLUGIN_SYSTEM_PATH=					\
-	GST_PLUGIN_PATH=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(GST_PLUGINS_DIR) \
+	GST_PLUGIN_SYSTEM_PATH_1_0=				\
+	GST_PLUGIN_PATH_1_0=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(GST_PLUGINS_DIR) \
 	GST_PLUGIN_LOADING_WHITELIST="gstreamer:gst-plugins-base@$(top_builddir)" \
 	GST_TAG_LICENSE_TRANSLATIONS_DICT="$(top_srcdir)/gst-libs/gst/tag/license-translations.dict"
 
@@ -19,7 +19,9 @@ TESTS_ENVIRONMENT = \
 # ths core dumps of some machines have PIDs appended
 CLEANFILES = core.* test-registry.*
 
-clean-local: clean-local-check clean-local-orc
+clean-local: clean-local-check
+	
+distclean-local: distclean-local-orc
 
 $(CHECK_REGISTRY):
 	$(TESTS_ENVIRONMENT)
@@ -109,6 +111,7 @@ check_PROGRAMS = \
 	libs/profile \
 	libs/rtp \
 	libs/rtsp \
+	libs/sdp \
 	libs/tag \
 	libs/video \
 	libs/xmpwriter \
@@ -125,7 +128,7 @@ check_PROGRAMS = \
 	elements/multifdsink        \
 	elements/multisocketsink    \
 	elements/playbin            \
-	elements/playbin-compressed \
+	elements/playbin-complex    \
 	$(check_pango)              \
 	$(check_subparse)           \
 	elements/videoconvert       \
@@ -234,6 +237,13 @@ libs_navigation_LDADD = \
         $(GST_BASE_LIBS) \
         $(LDADD)
 
+libs_sdp_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(AM_CFLAGS)
+libs_sdp_LDADD = \
+	$(top_builddir)/gst-libs/gst/sdp/libgstsdp-@GST_API_VERSION@.la \
+	$(GST_BASE_LIBS) $(LDADD)
+
 libs_rtp_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
 	$(AM_CFLAGS)
@@ -321,8 +331,8 @@ elements_libvisual_CFLAGS = $(CFLAGS) $(AM_CFLAGS)
 elements_playbin_LDADD = $(GST_BASE_LIBS) $(LDADD)
 elements_playbin_CFLAGS = $(GST_BASE_CFLAGS) $(AM_CFLAGS)
 
-elements_playbin_compressed_LDADD = $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la $(GST_BASE_LIBS) $(LDADD)
-elements_playbin_compressed_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(AM_CFLAGS)
+elements_playbin_complex_LDADD = $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la $(GST_BASE_LIBS) $(LDADD)
+elements_playbin_complex_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(AM_CFLAGS)
 
 elements_decodebin_LDADD = $(GST_BASE_LIBS) $(LDADD)
 elements_decodebin_CFLAGS = $(GST_BASE_CFLAGS) $(AM_CFLAGS)
@@ -494,7 +504,7 @@ orc/videotestsrc.c: $(top_srcdir)/gst/videotestsrc/gstvideotestsrcorc.orc
 	$(ORCC) --test -o $@ $<
 
 
-clean-local-orc:
+distclean-local-orc:
 	rm -rf orc
 
 EXTRA_DIST = gst-plugins-base.supp

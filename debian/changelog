@@ -1,14 +1,49 @@
-gst-plugins-base1.0 (1.0.10-1) unstable; urgency=low
+gst-plugins-base1.0 (1.1.90-1) experimental; urgency=low
 
-  * New upstream bugfix release.
+  * New upstream release candidate:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer >= 1.1.90.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbols.
 
- -- Sebastian Dröge <slomo@debian.org>  Fri, 30 Aug 2013 10:58:16 +0200
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 19 Sep 2013 12:42:47 +0200
 
-gst-plugins-base1.0 (1.0.9-1) unstable; urgency=low
+gst-plugins-base1.0 (1.1.4-1) experimental; urgency=low
 
-  * New upstream bugfix release.
+  * New upstream development snapshot:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer >= 1.1.4.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbols.
 
- -- Sebastian Dröge <slomo@debian.org>  Fri, 16 Aug 2013 10:49:19 +0200
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 30 Aug 2013 12:44:33 +0200
+
+gst-plugins-base1.0 (1.1.3-1) experimental; urgency=low
+
+  * New upstream development snapshot:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer >= 1.1.3.
+      - Remove build-dependency on libxml2-dev.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 30 Jul 2013 08:31:11 +0200
+
+gst-plugins-base1.0 (1.1.2-1) experimental; urgency=low
+
+  * New upstream development snapshot:
+    + debian/rules,
+      debian/build-deps.in:
+      - Build-depend on GStreamer >= 1.1.2 and orc >= 0.4.17.
+    + debian/libgstreamer-plugins-base.install:
+      - Add new allocators library.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sun, 14 Jul 2013 11:16:14 +0200
 
 gst-plugins-base1.0 (1.0.8-1) unstable; urgency=low
 

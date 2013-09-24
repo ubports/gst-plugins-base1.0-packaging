@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_RTPBUFFER_H__
@@ -94,6 +94,7 @@ gboolean        gst_rtp_buffer_get_extension         (GstRTPBuffer *rtp);
 void            gst_rtp_buffer_set_extension         (GstRTPBuffer *rtp, gboolean extension);
 gboolean        gst_rtp_buffer_get_extension_data    (GstRTPBuffer *rtp, guint16 *bits,
                                                       gpointer *data, guint *wordlen);
+GBytes*         gst_rtp_buffer_get_extension_bytes   (GstRTPBuffer *rtp, guint16 *bits);
 gboolean        gst_rtp_buffer_set_extension_data    (GstRTPBuffer *rtp, guint16 bits, guint16 length);
 
 guint32         gst_rtp_buffer_get_ssrc              (GstRTPBuffer *rtp);
@@ -120,6 +121,7 @@ GstBuffer*      gst_rtp_buffer_get_payload_subbuffer (GstRTPBuffer *rtp, guint o
 
 guint           gst_rtp_buffer_get_payload_len       (GstRTPBuffer *rtp);
 gpointer        gst_rtp_buffer_get_payload           (GstRTPBuffer *rtp);
+GBytes*         gst_rtp_buffer_get_payload_bytes     (GstRTPBuffer *rtp);
 
 /* some helpers */
 guint32         gst_rtp_buffer_default_clock_rate    (guint8 payload_type);

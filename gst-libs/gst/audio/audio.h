@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_AUDIO_AUDIO_H__
@@ -51,6 +51,25 @@ G_BEGIN_DECLS
 #define GST_CLOCK_TIME_TO_FRAMES(clocktime, rate) \
   gst_util_uint64_scale_round (clocktime, rate, GST_SECOND)
 
+/* metadata macros */
+
+/**
+ * GST_META_TAG_AUDIO_STR:
+ *
+ * This metadata is relevant for audio streams.
+ *
+ * Since: 1.2
+ */
+#define GST_META_TAG_AUDIO_STR "audio"
+/**
+ * GST_META_TAG_AUDIO_CHANNELS_STR:
+ *
+ * This metadata stays relevant as long as channels are unchanged.
+ *
+ * Since: 1.2
+ */
+#define GST_META_TAG_AUDIO_CHANNELS_STR "channels"
+
 /*
  * this library defines and implements some helper functions for audio
  * handling
@@ -61,5 +80,19 @@ GstBuffer *    gst_audio_buffer_clip     (GstBuffer *buffer, GstSegment *segment
 
 
 G_END_DECLS
+
+#include <gst/audio/gstaudioringbuffer.h>
+#include <gst/audio/gstaudioclock.h>
+#include <gst/audio/gstaudiofilter.h>
+#include <gst/audio/gstaudiocdsrc.h>
+#include <gst/audio/gstaudiodecoder.h>
+#include <gst/audio/gstaudioencoder.h>
+#include <gst/audio/gstaudiobasesink.h>
+#include <gst/audio/gstaudiobasesrc.h>
+#include <gst/audio/gstaudiometa.h>
+#include <gst/audio/gstaudiosink.h>
+#include <gst/audio/gstaudiosrc.h>
+#include <gst/audio/streamvolume.h>
+#include <gst/audio/gstaudioiec61937.h>
 
 #endif /* __GST_AUDIO_AUDIO_H__ */

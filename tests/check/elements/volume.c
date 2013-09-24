@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include <unistd.h>
@@ -198,7 +198,7 @@ GST_START_TEST (test_unity_s8)
   inbuffer = gst_buffer_new_and_alloc (2);
   gst_buffer_fill (inbuffer, 0, in, 2);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S8);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -241,7 +241,7 @@ GST_START_TEST (test_half_s8)
   inbuffer = gst_buffer_new_and_alloc (2);
   gst_buffer_fill (inbuffer, 0, in, 2);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S8);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -290,7 +290,7 @@ GST_START_TEST (test_double_s8)
   inbuffer = gst_buffer_new_and_alloc (2);
   gst_buffer_fill (inbuffer, 0, in, 2);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S8);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -340,7 +340,7 @@ GST_START_TEST (test_ten_s8)
   gst_buffer_fill (inbuffer, 0, in, 2);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 2) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S8);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -388,7 +388,7 @@ GST_START_TEST (test_mute_s8)
   inbuffer = gst_buffer_new_and_alloc (2);
   gst_buffer_fill (inbuffer, 0, in, 2);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S8);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -432,7 +432,7 @@ GST_START_TEST (test_unity_s16)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -474,7 +474,7 @@ GST_START_TEST (test_half_s16)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -521,7 +521,7 @@ GST_START_TEST (test_double_s16)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -569,7 +569,7 @@ GST_START_TEST (test_ten_s16)
   gst_buffer_fill (inbuffer, 0, in, 4);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 4) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -617,7 +617,7 @@ GST_START_TEST (test_mute_s16)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -674,7 +674,7 @@ GST_START_TEST (test_unity_s24)
   inbuffer = gst_buffer_new_and_alloc (6);
   gst_buffer_fill (inbuffer, 0, in, 6);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S24);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -725,7 +725,7 @@ GST_START_TEST (test_half_s24)
   inbuffer = gst_buffer_new_and_alloc (6);
   gst_buffer_fill (inbuffer, 0, in, 6);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S24);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -781,7 +781,7 @@ GST_START_TEST (test_double_s24)
   inbuffer = gst_buffer_new_and_alloc (6);
   gst_buffer_fill (inbuffer, 0, in, 6);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S24);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -838,7 +838,7 @@ GST_START_TEST (test_ten_s24)
   gst_buffer_fill (inbuffer, 0, in, 6);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 6) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S24);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -894,7 +894,7 @@ GST_START_TEST (test_mute_s24)
   inbuffer = gst_buffer_new_and_alloc (6);
   gst_buffer_fill (inbuffer, 0, in, 6);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S24);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -943,7 +943,7 @@ GST_START_TEST (test_unity_s32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -985,7 +985,7 @@ GST_START_TEST (test_half_s32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1032,7 +1032,7 @@ GST_START_TEST (test_double_s32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1080,7 +1080,7 @@ GST_START_TEST (test_ten_s32)
   gst_buffer_fill (inbuffer, 0, in, 8);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 8) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1127,7 +1127,7 @@ GST_START_TEST (test_mute_s32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1171,7 +1171,7 @@ GST_START_TEST (test_unity_f32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, sizeof (in));
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -1216,7 +1216,7 @@ GST_START_TEST (test_half_f32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1266,7 +1266,7 @@ GST_START_TEST (test_double_f32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1317,7 +1317,7 @@ GST_START_TEST (test_ten_f32)
   gst_buffer_fill (inbuffer, 0, in, 8);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 8) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1368,7 +1368,7 @@ GST_START_TEST (test_mute_f32)
   inbuffer = gst_buffer_new_and_alloc (8);
   gst_buffer_fill (inbuffer, 0, in, 8);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F32);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1415,7 +1415,7 @@ GST_START_TEST (test_unity_f64)
   inbuffer = gst_buffer_new_and_alloc (16);
   gst_buffer_fill (inbuffer, 0, in, 16);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F64);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -1460,7 +1460,7 @@ GST_START_TEST (test_half_f64)
   inbuffer = gst_buffer_new_and_alloc (16);
   gst_buffer_fill (inbuffer, 0, in, 16);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F64);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1510,7 +1510,7 @@ GST_START_TEST (test_double_f64)
   inbuffer = gst_buffer_new_and_alloc (16);
   gst_buffer_fill (inbuffer, 0, in, 16);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F64);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1561,7 +1561,7 @@ GST_START_TEST (test_ten_f64)
   gst_buffer_fill (inbuffer, 0, in, 16);
   fail_unless (gst_buffer_memcmp (inbuffer, 0, in, 16) == 0);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F64);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1612,7 +1612,7 @@ GST_START_TEST (test_mute_f64)
   inbuffer = gst_buffer_new_and_alloc (16);
   gst_buffer_fill (inbuffer, 0, in, 16);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_F64);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   /* FIXME: reffing the inbuffer should make the transformation not be
@@ -1661,7 +1661,7 @@ GST_START_TEST (test_wrong_caps)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_WRONG_CAPS_STRING);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
   gst_buffer_ref (inbuffer);
@@ -1706,7 +1706,7 @@ GST_START_TEST (test_passthrough)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
 
@@ -1786,7 +1786,7 @@ GST_START_TEST (test_controller_processing)
   inbuffer = gst_buffer_new_and_alloc (4);
   gst_buffer_fill (inbuffer, 0, in, 4);
   caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
-  gst_pad_set_caps (mysrcpad, caps);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
   GST_BUFFER_TIMESTAMP (inbuffer) = 0;
   gst_caps_unref (caps);
   ASSERT_BUFFER_REFCOUNT (inbuffer, "inbuffer", 1);
@@ -1813,6 +1813,55 @@ GST_START_TEST (test_controller_processing)
 }
 
 GST_END_TEST;
+
+GST_START_TEST (test_controller_defaults_at_ts0)
+{
+  GstControlSource *cs;
+  GstTimedValueControlSource *tvcs;
+  GstElement *volume;
+  GstBuffer *inbuffer;
+  GstCaps *caps;
+  GstSegment seg;
+
+  volume = setup_volume ();
+
+  cs = gst_interpolation_control_source_new ();
+  g_object_set (cs, "mode", GST_INTERPOLATION_MODE_LINEAR, NULL);
+  gst_object_add_control_binding (GST_OBJECT_CAST (volume),
+      gst_direct_control_binding_new (GST_OBJECT_CAST (volume), "volume", cs));
+
+  /* make a control curve that does not start at ts=0, the element will use
+   * the current property value (default) until the control curve starts 
+   */
+  tvcs = (GstTimedValueControlSource *) cs;
+  gst_timed_value_control_source_set (tvcs, GST_SECOND / 100, 0.1);
+  gst_timed_value_control_source_set (tvcs, GST_SECOND, 1.0);
+
+  fail_unless (gst_element_set_state (volume,
+          GST_STATE_PLAYING) == GST_STATE_CHANGE_SUCCESS,
+      "could not set to playing");
+
+  /* controller curve starts at sample: 441 */
+  inbuffer = gst_buffer_new_and_alloc (1000 * sizeof (gint16));
+  gst_buffer_memset (inbuffer, 0, 0, 1000 * sizeof (gint16));
+  caps = gst_caps_from_string (VOLUME_CAPS_STRING_S16);
+  gst_check_setup_events (mysrcpad, volume, caps, GST_FORMAT_TIME);
+  GST_BUFFER_TIMESTAMP (inbuffer) = 0;
+  gst_caps_unref (caps);
+
+  gst_segment_init (&seg, GST_FORMAT_TIME);
+  fail_unless (gst_pad_push_event (mysrcpad,
+          gst_event_new_segment (&seg)) == TRUE);
+
+  /* pushing gives away my reference ... */
+  fail_unless (gst_pad_push (mysrcpad, inbuffer) == GST_FLOW_OK);
+
+  gst_object_unref (cs);
+  cleanup_volume (volume);
+}
+
+GST_END_TEST;
+
 
 static Suite *
 volume_suite (void)
@@ -1856,6 +1905,7 @@ volume_suite (void)
   tcase_add_test (tc_chain, test_passthrough);
   tcase_add_test (tc_chain, test_controller_usability);
   tcase_add_test (tc_chain, test_controller_processing);
+  tcase_add_test (tc_chain, test_controller_defaults_at_ts0);
 
   return s;
 }

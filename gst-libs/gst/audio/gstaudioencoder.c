@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -62,9 +62,10 @@
  *     </para></listitem>
  *     <listitem><para>
  *       If codec processing results in encoded data, subclass should call
- *       @gst_audio_encoder_finish_frame to have encoded data pushed
- *       downstream.  Alternatively, it might also call to indicate dropped
- *       (non-encoded) samples.
+ *       gst_audio_encoder_finish_frame() to have encoded data pushed
+ *       downstream. Alternatively, it might also call
+ *       gst_audio_encoder_finish_frame() (with a NULL buffer and some number of
+ *       dropped samples) to indicate dropped (non-encoded) samples.
  *     </para></listitem>
  *     <listitem><para>
  *       Just prior to actually pushing a buffer downstream,
@@ -140,7 +141,7 @@
  *   </para></listitem>
  *   <listitem><para>
  *      Accept data in @handle_frame and provide encoded results to
- *      @gst_audio_encoder_finish_frame.
+ *      gst_audio_encoder_finish_frame().
  *   </para></listitem>
  * </itemizedlist>
  *
@@ -626,7 +627,11 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
   if (G_UNLIKELY (ctx->output_caps_changed
           || gst_pad_check_reconfigure (enc->srcpad))) {
     if (!gst_audio_encoder_negotiate (enc)) {
-      ret = GST_FLOW_NOT_NEGOTIATED;
+      gst_pad_mark_reconfigure (enc->srcpad);
+      if (GST_PAD_IS_FLUSHING (enc->srcpad))
+        ret = GST_FLOW_FLUSHING;
+      else
+        ret = GST_FLOW_NOT_NEGOTIATED;
       goto exit;
     }
   }
@@ -679,7 +684,7 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
     if (!enc->priv->perfect_ts) {
       guint64 ts, distance;
 
-      ts = gst_adapter_prev_timestamp (priv->adapter, &distance);
+      ts = gst_adapter_prev_pts (priv->adapter, &distance);
       g_assert (distance % ctx->info.bpf == 0);
       distance /= ctx->info.bpf;
       GST_LOG_OBJECT (enc, "%" G_GUINT64_FORMAT " samples past prev_ts %"
@@ -1099,7 +1104,6 @@ gst_audio_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
   }
 
   /* clip to segment */
-  /* NOTE: slightly painful linking -laudio only for this one ... */
   buffer = gst_audio_buffer_clip (buffer, &enc->input_segment, ctx->info.rate,
       ctx->info.bpf);
   if (G_UNLIKELY (!buffer)) {
@@ -1218,25 +1222,6 @@ wrong_buffer:
 }
 
 static gboolean
-audio_info_is_equal (GstAudioInfo * from, GstAudioInfo * to)
-{
-  if (from == to)
-    return TRUE;
-  if (from->finfo == NULL || to->finfo == NULL)
-    return FALSE;
-  if (GST_AUDIO_INFO_FORMAT (from) != GST_AUDIO_INFO_FORMAT (to))
-    return FALSE;
-  if (GST_AUDIO_INFO_RATE (from) != GST_AUDIO_INFO_RATE (to))
-    return FALSE;
-  if (GST_AUDIO_INFO_CHANNELS (from) != GST_AUDIO_INFO_CHANNELS (to))
-    return FALSE;
-  if (GST_AUDIO_INFO_CHANNELS (from) > 64)
-    return TRUE;
-  return (memcmp (from->position, to->position,
-          GST_AUDIO_INFO_CHANNELS (from) * sizeof (to->position[0])) == 0);
-}
-
-static gboolean
 gst_audio_encoder_sink_setcaps (GstAudioEncoder * enc, GstCaps * caps)
 {
   GstAudioEncoderClass *klass;
@@ -1268,7 +1253,7 @@ gst_audio_encoder_sink_setcaps (GstAudioEncoder * enc, GstCaps * caps)
   if (!gst_audio_info_from_caps (&state, caps))
     goto refuse_caps;
 
-  if (enc->priv->ctx.input_caps && audio_info_is_equal (&state, &ctx->info))
+  if (enc->priv->ctx.input_caps && gst_audio_info_is_equal (&state, &ctx->info))
     goto same_caps;
 
   /* adjust ts tracking to new sample rate */
@@ -2053,6 +2038,7 @@ gst_audio_encoder_set_frame_samples_min (GstAudioEncoder * enc, gint num)
   g_return_if_fail (GST_IS_AUDIO_ENCODER (enc));
 
   enc->priv->ctx.frame_samples_min = num;
+  GST_LOG_OBJECT (enc, "set to %d", num);
 }
 
 /**
@@ -2086,6 +2072,7 @@ gst_audio_encoder_set_frame_samples_max (GstAudioEncoder * enc, gint num)
   g_return_if_fail (GST_IS_AUDIO_ENCODER (enc));
 
   enc->priv->ctx.frame_samples_max = num;
+  GST_LOG_OBJECT (enc, "set to %d", num);
 }
 
 /**
@@ -2116,6 +2103,7 @@ gst_audio_encoder_set_frame_max (GstAudioEncoder * enc, gint num)
   g_return_if_fail (GST_IS_AUDIO_ENCODER (enc));
 
   enc->priv->ctx.frame_max = num;
+  GST_LOG_OBJECT (enc, "set to %d", num);
 }
 
 /**
@@ -2145,6 +2133,7 @@ gst_audio_encoder_set_lookahead (GstAudioEncoder * enc, gint num)
   g_return_if_fail (GST_IS_AUDIO_ENCODER (enc));
 
   enc->priv->ctx.lookahead = num;
+  GST_LOG_OBJECT (enc, "set to %d", num);
 }
 
 /**
@@ -2179,6 +2168,9 @@ gst_audio_encoder_set_latency (GstAudioEncoder * enc,
   enc->priv->ctx.min_latency = min;
   enc->priv->ctx.max_latency = max;
   GST_OBJECT_UNLOCK (enc);
+
+  GST_LOG_OBJECT (enc, "set to %" GST_TIME_FORMAT "-%" GST_TIME_FORMAT,
+      GST_TIME_ARGS (min), GST_TIME_ARGS (max));
 }
 
 /**
@@ -2378,6 +2370,8 @@ gst_audio_encoder_set_tolerance (GstAudioEncoder * enc, GstClockTime tolerance)
   GST_OBJECT_LOCK (enc);
   enc->priv->tolerance = tolerance;
   GST_OBJECT_UNLOCK (enc);
+
+  GST_LOG_OBJECT (enc, "set to %" GST_TIME_FORMAT, GST_TIME_ARGS (tolerance));
 }
 
 /**
@@ -2536,11 +2530,11 @@ static gboolean
 gst_audio_encoder_negotiate_default (GstAudioEncoder * enc)
 {
   GstAudioEncoderClass *klass;
-  gboolean res = FALSE;
+  gboolean res = TRUE;
   GstQuery *query = NULL;
   GstAllocator *allocator;
   GstAllocationParams params;
-  GstCaps *caps;
+  GstCaps *caps, *prevcaps;
 
   g_return_val_if_fail (GST_IS_AUDIO_ENCODER (enc), FALSE);
   g_return_val_if_fail (GST_IS_CAPS (enc->priv->ctx.caps), FALSE);
@@ -2551,7 +2545,33 @@ gst_audio_encoder_negotiate_default (GstAudioEncoder * enc)
 
   GST_DEBUG_OBJECT (enc, "Setting srcpad caps %" GST_PTR_FORMAT, caps);
 
-  res = gst_pad_set_caps (enc->srcpad, caps);
+  if (enc->priv->pending_events) {
+    GList **pending_events, *l;
+
+    pending_events = &enc->priv->pending_events;
+
+    GST_DEBUG_OBJECT (enc, "Pushing pending events");
+    for (l = *pending_events; l;) {
+      GstEvent *event = GST_EVENT (l->data);
+      GList *tmp;
+
+      if (GST_EVENT_TYPE (event) < GST_EVENT_CAPS) {
+        gst_audio_encoder_push_event (enc, l->data);
+        tmp = l;
+        l = l->next;
+        *pending_events = g_list_delete_link (*pending_events, tmp);
+      } else {
+        l = l->next;
+      }
+    }
+  }
+
+  prevcaps = gst_pad_get_current_caps (enc->srcpad);
+  if (!prevcaps || !gst_caps_is_equal (prevcaps, caps))
+    res = gst_pad_set_caps (enc->srcpad, caps);
+  if (prevcaps)
+    gst_caps_unref (prevcaps);
+
   if (!res)
     goto done;
   enc->priv->ctx.output_caps_changed = FALSE;
@@ -2693,15 +2713,27 @@ gst_audio_encoder_allocate_output_buffer (GstAudioEncoder * enc, gsize size)
 
   if (G_UNLIKELY (enc->priv->ctx.output_caps_changed || (enc->priv->ctx.caps
               && gst_pad_check_reconfigure (enc->srcpad)))) {
-    if (!gst_audio_encoder_negotiate (enc))
-      goto done;
+    if (!gst_audio_encoder_negotiate (enc)) {
+      GST_INFO_OBJECT (enc, "Failed to negotiate, fallback allocation");
+      gst_pad_mark_reconfigure (enc->srcpad);
+      goto fallback;
+    }
   }
 
   buffer =
       gst_buffer_new_allocate (enc->priv->ctx.allocator, size,
       &enc->priv->ctx.params);
+  if (!buffer) {
+    GST_INFO_OBJECT (enc, "couldn't allocate output buffer");
+    goto fallback;
+  }
 
-done:
+  GST_AUDIO_ENCODER_STREAM_UNLOCK (enc);
+
+  return buffer;
+
+fallback:
+  buffer = gst_buffer_new_allocate (NULL, size, NULL);
   GST_AUDIO_ENCODER_STREAM_UNLOCK (enc);
 
   return buffer;

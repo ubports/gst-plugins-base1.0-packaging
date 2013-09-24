@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef _GST_VIDEO_ENCODER_H_
@@ -172,6 +172,7 @@ struct _GstVideoEncoder
  * @handle_frame:   Provides input frame to subclass.
  * @reset:          Optional.
  *                  Allows subclass (encoder) to perform post-seek semantics reset.
+ *                  Deprecated.
  * @finish:         Optional.
  *                  Called to request subclass to dispatch any pending remaining
  *                  data (e.g. at EOS).
@@ -210,6 +211,9 @@ struct _GstVideoEncoder
  *                      Propose buffer allocation parameters for upstream elements.
  *                      Subclasses should chain up to the parent implementation to
  *                      invoke the default handler.
+ * @flush:              Optional.
+ *                      Flush all remaining data from the encoder without
+ *                      pushing it downstream. Since: 1.2
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @handle_frame needs to be overridden, and @set_format
@@ -259,9 +263,10 @@ struct _GstVideoEncoderClass
 
   gboolean      (*propose_allocation) (GstVideoEncoder * encoder,
                                        GstQuery * query);
+  gboolean      (*flush)              (GstVideoEncoder *encoder);
 
   /*< private >*/
-  gpointer       _gst_reserved[GST_PADDING_LARGE];
+  gpointer       _gst_reserved[GST_PADDING_LARGE-1];
 };
 
 GType                gst_video_encoder_get_type (void);

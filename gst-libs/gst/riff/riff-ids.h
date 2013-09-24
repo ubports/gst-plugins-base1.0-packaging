@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_RIFF_IDS_H__
@@ -58,6 +58,7 @@ G_BEGIN_DECLS
 #define GST_RIFF_TAG_fact GST_MAKE_FOURCC ('f','a','c','t')
 #define GST_RIFF_TAG_acid GST_MAKE_FOURCC ('a','c','i','d')
 #define GST_RIFF_TAG_labl GST_MAKE_FOURCC ('l','a','b','l')
+#define GST_RIFF_TAG_note GST_MAKE_FOURCC ('n','o','t','e')
 
 /* LIST types */
 #define GST_RIFF_LIST_movi GST_MAKE_FOURCC ('m','o','v','i')

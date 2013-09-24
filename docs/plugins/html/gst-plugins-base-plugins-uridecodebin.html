@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>uridecodebin</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-timeoverlay.html" title="timeoverlay">
 <link rel="next" href="gst-plugins-base-plugins-videorate.html" title="videorate">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -92,6 +92,7 @@ GstURIDecodeBin implements
   "<a class="link" href="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-drained" title='The "drained" signal'>drained</a>"                                        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
   "<a class="link" href="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-autoplug-sort" title='The "autoplug-sort" signal'>autoplug-sort</a>"                                  : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
   "<a class="link" href="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-source-setup" title='The "source-setup" signal'>source-setup</a>"                                   : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-autoplug-query" title='The "autoplug-query" signal'>autoplug-query</a>"                                 : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
 </pre>
 </div>
 <div class="refsect1">
@@ -103,9 +104,12 @@ handle the given <a class="link" href="gst-plugins-base-plugins-uridecodebin.htm
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp15325792"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.36.8.3.1"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -126,9 +130,12 @@ handle the given <a class="link" href="gst-plugins-base-plugins-uridecodebin.htm
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp15333248"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.36.8.3.2"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -174,8 +181,11 @@ uridecodebin element struct
 <p>
 return values for the autoplug-select signal.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-AUTOPLUG-SELECT-TRY:CAPS"></a><span class="term"><code class="literal">GST_AUTOPLUG_SELECT_TRY</code></span></p></td>
@@ -299,8 +309,11 @@ returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macr
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -358,8 +371,11 @@ having an unhandled type media type.
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -425,8 +441,11 @@ next factory.
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -468,8 +487,11 @@ operation. The default handler will always return
 This signal is emitted when a pad for which there is no further possible
 decoding is added to the uridecodebin.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -499,8 +521,11 @@ stream type.</td>
 <p>
 This signal is emitted when the data for the current uri is played.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
 <td>user data set when the signal handler was connected.</td>
@@ -537,8 +562,11 @@ order should not change.
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -581,8 +609,11 @@ proxy server for an http source, or set the device and read speed for
 an audio cd source). This is functionally equivalent to connecting to
 the notify::source signal, but more convenient.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bin</code></em> :</span></p></td>
@@ -600,10 +631,37 @@ the notify::source signal, but more convenient.
 </table></div>
 <p class="since">Since 0.10.33</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstURIDecodeBin-autoplug-query"></a><h3>The <code class="literal">"autoplug-query"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin"><span class="type">GstURIDecodeBin</span></a> *gsturidecodebin,
+                                                        <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>          *arg1,
+                                                        <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a>      *arg2,
+                                                        <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstQuery.html#GstQuery"><span class="type">GstQuery</span></a>        *arg3,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>         user_data)            : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>gsturidecodebin</code></em> :</span></p></td>
+<td>the object which received the signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

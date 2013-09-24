@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gsttagid3</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="prev" href="gst-plugins-base-libs-gsttagvorbis.html" title="gsttagvorbis">
 <link rel="next" href="gst-plugins-base-libs-gsttagexif.html" title="gsttagexif">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -61,7 +61,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="idp22687184"></a><p>
+<a name="id-1.2.12.5.4.2.1"></a><p>
 Contains various utility functions for plugins to parse or create
 ID3 tags and map ID3v2 identifiers to and from GStreamer identifiers.
 </p>
@@ -78,8 +78,11 @@ ID3 tags and map ID3v2 identifiers to and from GStreamer identifiers.
 Gets the number of ID3v1 genres that can be identified. Winamp genres are 
 included.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the number of ID3v1 genres that can be identified</td>
@@ -93,8 +96,11 @@ included.
 <p>
 Gets the ID3v1 genre name for a given ID.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
@@ -115,8 +121,11 @@ Gets the ID3v1 genre name for a given ID.
 Parses the data containing an ID3v1 tag and returns a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> from the
 parsed data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -136,8 +145,11 @@ parsed data.
 <p>
 Looks up the GStreamer tag for a ID3v2 tag.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>id3_tag</code></em> :</span></p></td>
@@ -159,8 +171,11 @@ Looks up the GStreamer tag for a ID3v2 tag.
 Looks up the GStreamer tag for an ID3v2 user tag (e.g. description in
 TXXX frame or owner in UFID frame).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -184,8 +199,11 @@ TXXX frame or owner in UFID frame).
 <p>
 Looks up the ID3v2 tag for a GStreamer tag.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gst_tag</code></em> :</span></p></td>
@@ -210,8 +228,11 @@ Adds an image from an ID3 APIC frame (or similar, such as used in FLAC)
 to the given tag list. Also see <code class="function">gst_tag_image_data_to_image_sample()</code> for
 more information on image tags in GStreamer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tag_list</code></em> :</span></p></td>
@@ -248,8 +269,11 @@ the APIC frame (0 = unknown/other)</td>
 Determines size of an ID3v2 tag on buffer containing at least ID3v2 header,
 i.e. at least <a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-ID3V2-HEADER-SIZE:CAPS" title="GST_TAG_ID3V2_HEADER_SIZE"><span class="type">GST_TAG_ID3V2_HEADER_SIZE</span></a> (10) bytes;
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -270,8 +294,11 @@ i.e. at least <a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-ID
 Creates a new tag list that contains the information parsed out of a
 ID3 tag.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -293,6 +320,6 @@ given vorbiscomment buffer or NULL on error.</td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

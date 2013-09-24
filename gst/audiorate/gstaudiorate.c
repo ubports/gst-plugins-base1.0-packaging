@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -339,6 +339,11 @@ gst_audio_rate_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
       if (GST_CLOCK_TIME_IS_VALID (audiorate->src_segment.stop))
         gst_audio_rate_fill_to_time (audiorate, audiorate->src_segment.stop);
       res = gst_pad_push_event (audiorate->srcpad, event);
+      break;
+    case GST_EVENT_GAP:
+      /* no gaps after audiorate, ignore the event */
+      gst_event_unref (event);
+      res = TRUE;
       break;
     default:
       res = gst_pad_event_default (pad, parent, event);

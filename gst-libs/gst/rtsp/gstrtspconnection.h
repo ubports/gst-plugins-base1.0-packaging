@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /*
  * Unless otherwise indicated, Source Code is licensed under MIT license.
@@ -71,6 +71,9 @@ GstRTSPResult      gst_rtsp_connection_accept         (GSocket *socket, GstRTSPC
 GstRTSPResult      gst_rtsp_connection_connect        (GstRTSPConnection *conn, GTimeVal *timeout);
 GstRTSPResult      gst_rtsp_connection_close          (GstRTSPConnection *conn);
 GstRTSPResult      gst_rtsp_connection_free           (GstRTSPConnection *conn);
+
+/* TLS connections */
+GTlsConnection *   gst_rtsp_connection_get_tls        (GstRTSPConnection * conn, GError ** error);
 
 
 /* sending/receiving raw bytes */
@@ -131,6 +134,9 @@ gboolean           gst_rtsp_connection_is_tunneled    (const GstRTSPConnection *
 const gchar *      gst_rtsp_connection_get_tunnelid   (const GstRTSPConnection *conn);
 GstRTSPResult      gst_rtsp_connection_do_tunnel      (GstRTSPConnection *conn, GstRTSPConnection *conn2);
 
+void               gst_rtsp_connection_set_remember_session_id (GstRTSPConnection *conn, gboolean remember);
+gboolean           gst_rtsp_connection_get_remember_session_id (GstRTSPConnection *conn);
+
 /* async IO */
 
 /**
@@ -186,6 +192,11 @@ void               gst_rtsp_watch_unref              (GstRTSPWatch *watch);
 
 guint              gst_rtsp_watch_attach             (GstRTSPWatch *watch,
                                                       GMainContext *context);
+
+void               gst_rtsp_watch_set_send_backlog  (GstRTSPWatch *watch,
+                                                     gsize bytes, guint messages);
+void               gst_rtsp_watch_get_send_backlog  (GstRTSPWatch *watch,
+                                                     gsize *bytes, guint *messages);
 
 GstRTSPResult      gst_rtsp_watch_write_data         (GstRTSPWatch *watch,
                                                       const guint8 *data,

@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VORBIS_PARSE_H__
@@ -24,7 +24,9 @@
 
 #include <gst/gst.h>
 
-void parse_vorbis_header_packet (GstOggStream * pad, ogg_packet * packet);
-void parse_vorbis_setup_packet (GstOggStream * pad, ogg_packet * op);
+G_GNUC_INTERNAL
+void gst_parse_vorbis_header_packet (GstOggStream * pad, ogg_packet * packet);
+G_GNUC_INTERNAL
+void gst_parse_vorbis_setup_packet (GstOggStream * pad, ogg_packet * op);
 
 #endif /* __GST_VORBIS_PARSE_H__ */

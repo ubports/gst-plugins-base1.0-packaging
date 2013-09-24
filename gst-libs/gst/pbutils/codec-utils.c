@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -45,6 +45,10 @@
 #define GST_SIMPLE_CAPS_HAS_FIELD(caps,field) \
     gst_structure_has_field(gst_caps_get_structure((caps),0),(field))
 
+static const guint aac_sample_rates[] = { 96000, 88200, 64000, 48000, 44100,
+  32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350
+};
+
 static const gchar *
 digit_to_string (guint digit)
 {
@@ -71,15 +75,33 @@ digit_to_string (guint digit)
 guint
 gst_codec_utils_aac_get_sample_rate_from_index (guint sr_idx)
 {
-  static const guint aac_sample_rates[] = { 96000, 88200, 64000, 48000, 44100,
-    32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350
-  };
-
   if (G_LIKELY (sr_idx < G_N_ELEMENTS (aac_sample_rates)))
     return aac_sample_rates[sr_idx];
 
   GST_WARNING ("Invalid sample rate index %u", sr_idx);
   return 0;
+}
+
+/**
+ * gst_codec_utils_aac_get_index_from_sample_rate:
+ * @rate: Sample rate
+ *
+ * Translates the sample rate to the index corresponding to it in AAC spec.
+ *
+ * Returns: The AAC index for this sample rate, -1 if the rate is not a
+ * valid AAC sample rate.
+ */
+gint
+gst_codec_utils_aac_get_index_from_sample_rate (guint rate)
+{
+  guint n;
+
+  for (n = 0; n < G_N_ELEMENTS (aac_sample_rates); n++)
+    if (aac_sample_rates[n] == rate)
+      return n;
+
+  GST_WARNING ("Invalid sample rate %u", rate);
+  return -1;
 }
 
 /**
@@ -452,6 +474,12 @@ gst_codec_utils_h264_get_profile (const guint8 * sps, guint len)
     case 44:
       profile = "cavlc-4:4:4-intra";
       break;
+    case 118:
+      profile = "multiview-high";
+      break;
+    case 128:
+      profile = "stereo-high";
+      break;
     default:
       return NULL;
   }
@@ -484,7 +512,7 @@ gst_codec_utils_h264_get_level (const guint8 * sps, guint len)
 
   csf3 = (sps[1] & 0x10) >> 4;
 
-  if (sps[2] == 11 && csf3)
+  if ((sps[2] == 11 && csf3) || sps[2] == 9)
     return "1b";
   else if (sps[2] % 10 == 0)
     return digit_to_string (sps[2] / 10);

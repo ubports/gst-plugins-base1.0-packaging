@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include <unistd.h>
@@ -93,12 +93,18 @@ static GstElement *
 setup_vorbistag (void)
 {
   GstElement *vorbistag;
+  GstCaps *caps;
 
   GST_DEBUG ("setup_vorbistag");
   vorbistag = gst_check_setup_element ("vorbistag");
   mysrcpad = gst_check_setup_src_pad (vorbistag, &srctemplate);
   mysinkpad = gst_check_setup_sink_pad (vorbistag, &sinktemplate);
   gst_pad_set_active (mysrcpad, TRUE);
+
+  caps = gst_caps_new_empty_simple ("audio/x-vorbis");
+  gst_check_setup_events (mysrcpad, vorbistag, caps, GST_FORMAT_TIME);
+  gst_caps_unref (caps);
+
   gst_pad_set_active (mysinkpad, TRUE);
 
   return vorbistag;
@@ -217,7 +223,7 @@ _create_audio_buffer (void)
   vorbis_bitrate_flushpacket (&vd, &packet);
   buffer = gst_buffer_new_and_alloc (packet.bytes);
   gst_buffer_fill (buffer, 0, packet.packet, packet.bytes);
-  GST_DEBUG ("%p %d", packet.packet, packet.bytes);
+  GST_DEBUG ("%p %ld", packet.packet, packet.bytes);
 
   vorbis_comment_clear (&vc);
   vorbis_block_clear (&vb);

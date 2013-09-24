@@ -1,6 +1,9 @@
 libgstrtspincludedir = $(includedir)/gstreamer-@GST_API_VERSION@/gst/rtsp
 
-libgstrtspinclude_HEADERS = gstrtsptransport.h \
+libgstrtspinclude_HEADERS = \
+			    rtsp.h \
+			    gstrtsp.h \
+			    gstrtsptransport.h \
 			    gstrtspurl.h \
 			    gstrtspmessage.h    \
 			    gstrtspconnection.h \
@@ -27,13 +30,11 @@ libgstrtsp_@GST_API_VERSION@_la_SOURCES = gstrtsptransport.c \
 nodist_libgstrtsp_@GST_API_VERSION@_la_SOURCES = $(built_sources)
 nodist_libgstrtspinclude_HEADERS = gstrtsp-enumtypes.h
 
-noinst_HEADERS = gstrtsp.h
-
 #gstrtspextwms.c  
 #rtspextreal.c    
 
 libgstrtsp_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) $(GIO_CFLAGS)
-libgstrtsp_@GST_API_VERSION@_la_LIBADD = $(GST_LIBS) $(GIO_LIBS)
+libgstrtsp_@GST_API_VERSION@_la_LIBADD = $(GST_LIBS) $(GIO_LIBS) $(LIBM)
 libgstrtsp_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 BUILT_SOURCES = $(built_headers) $(built_sources)
@@ -54,17 +55,15 @@ gir_headers=$(patsubst %,$(srcdir)/%, $(libgstrtspinclude_HEADERS))
 gir_headers+=$(patsubst %,$(builddir)/%, $(nodist_libgstrtspinclude_HEADERS))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstrtsp_@GST_API_VERSION@_la_SOURCES))
 gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstrtsp_@GST_API_VERSION@_la_SOURCES))
-gir_cincludes=$(patsubst %,--c-include='gst/rtsp/%',$(libgstrtspinclude_HEADERS))
-gir_cincludes+=$(patsubst %,--c-include='gst/rtsp/%',$(nodist_libgstrtspinclude_HEADERS))
 
 GstRtsp-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstrtsp-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
-		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstRtsp \
 		--nsversion=@GST_API_VERSION@ \
 		--strip-prefix=Gst \
 		--warn-all \
-		$(gir_cincludes) \
+		--c-include "gst/rtsp/rtsp.h" \
 		-I$(top_builddir)/gst-libs \
 		-I$(top_srcdir)/gst-libs \
 		--add-include-path=$(builddir)/../sdp \

@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -102,7 +102,11 @@ _internal_get_supported_protocols (gpointer data)
   gint i, j;
 
   schemes = g_vfs_get_supported_uri_schemes (g_vfs_get_default ());
-  num = g_strv_length ((gchar **) schemes);
+
+  if (schemes != NULL)
+    num = g_strv_length ((gchar **) schemes);
+  else
+    num = 0;
 
   if (num == 0) {
     GST_WARNING ("No GIO supported URI schemes found");

@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_OGG_DEMUX_H__
@@ -134,6 +134,9 @@ struct _GstOggDemux
   gboolean pullmode;
   gboolean running;
 
+  gboolean have_group_id;
+  guint group_id;
+
   gboolean need_chains;
   gboolean resync;
 
@@ -171,6 +174,7 @@ struct _GstOggDemux
   enum { PUSH_PLAYING, PUSH_DURATION, PUSH_BISECT1, PUSH_LINEAR1, PUSH_BISECT2, PUSH_LINEAR2 } push_state;
 
   GstClockTime push_seek_time_original_target;
+  GstClockTime push_seek_time_original_stop;
   GstClockTime push_seek_time_target;
   gint64 push_last_seek_offset;
   GstClockTime push_last_seek_time;
@@ -184,6 +188,7 @@ struct _GstOggDemux
   gboolean seek_secant;
   gboolean seek_undershot;
   GstClockTime push_prev_seek_time;
+  guint32 push_seek_seqnum;
 
   gint push_bisection_steps[2];
   gint stats_bisection_steps[2];

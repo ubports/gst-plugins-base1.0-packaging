@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /* This ogg parser is essentially a subset of the ogg demuxer - rather than
@@ -585,11 +585,9 @@ gst_ogg_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
             caps = gst_caps_make_writable (caps);
 
             structure = gst_caps_get_structure (caps, 0);
-            gst_structure_set_value (structure, "streamheader", &array);
+            gst_structure_take_value (structure, "streamheader", &array);
 
             gst_pad_set_caps (ogg->srcpad, caps);
-
-            g_value_unset (&array);
 
             if (ogg->caps)
               gst_caps_unref (ogg->caps);

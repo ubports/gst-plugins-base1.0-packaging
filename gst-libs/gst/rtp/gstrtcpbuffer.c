@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -1437,17 +1437,12 @@ gst_rtcp_packet_bye_get_nth_ssrc (GstRTCPPacket * packet, guint nth)
   guint8 *data;
   guint offset;
   guint32 ssrc;
-  guint8 sc;
 
   g_return_val_if_fail (packet != NULL, 0);
   g_return_val_if_fail (packet->type == GST_RTCP_TYPE_BYE, 0);
   g_return_val_if_fail (packet->rtcp != NULL, 0);
   g_return_val_if_fail (packet->rtcp->map.flags & GST_MAP_READ, 0);
-
-  /* get amount of sources and check that we don't read too much */
-  sc = packet->count;
-  if (nth >= sc)
-    return 0;
+  g_return_val_if_fail (nth < packet->count, 0);
 
   /* get offset in 32-bits words into packet, skip the header */
   offset = 1 + nth;

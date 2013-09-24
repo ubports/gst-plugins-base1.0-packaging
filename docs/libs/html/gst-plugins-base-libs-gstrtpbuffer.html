@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtpbuffer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtpbasepayload.html" title="gstrtpbasepayload">
 <link rel="next" href="gst-plugins-base-libs-gstrtcpbuffer.html" title="gstrtcpbuffer">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -154,7 +154,7 @@ struct              <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.htm
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16029472"></a><p>
+<a name="id-1.2.9.6.4.2.1"></a><p>
 The GstRTPBuffer helper functions makes it easy to parse and create regular 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> objects that contain RTP payloads. These buffers are typically of
 'application/x-rtp' <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
@@ -190,8 +190,11 @@ a payload length of <em class="parameter"><code>payload_len</code></em> and padd
 If <em class="parameter"><code>pad_len</code></em> is &gt;0, the padding bit will be set. All other RTP header fields
 will be set to 0/FALSE.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -223,8 +226,11 @@ Create a new buffer and set the data and size of the buffer to <em class="parame
 respectively. <em class="parameter"><code>data</code></em> will be freed when the buffer is unreffed, so this
 function transfers ownership of <em class="parameter"><code>data</code></em> to the new buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -252,8 +258,11 @@ Create a new buffer and set the data to a copy of <em class="parameter"><code>le
 bytes of <em class="parameter"><code>data</code></em> and the size to <em class="parameter"><code>len</code></em>. The data will be freed when the buffer
 is freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -283,8 +292,11 @@ Allocate a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head
 <em class="parameter"><code>csrc_count</code></em> CSRCs, a payload length of <em class="parameter"><code>payload_len</code></em> and padding of <em class="parameter"><code>pad_len</code></em>.
 All other RTP header fields will be set to 0/FALSE.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload_len</code></em> :</span></p></td>
@@ -318,8 +330,11 @@ Create a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/g
 <em class="parameter"><code>csrc_count</code></em> and can be calculated with <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-calc-payload-len" title="gst_rtp_buffer_calc_payload_len ()"><code class="function">gst_rtp_buffer_calc_payload_len()</code></a>.
 All RTP header fields will be set to 0/FALSE.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet_len</code></em> :</span></p></td>
@@ -355,8 +370,11 @@ All RTP header fields will be set to 0/FALSE.
 Data structure that points to an RTP packet.
 The size of the structure is made public to allow stack allocations.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *<em class="structfield"><code><a name="GstRTPBuffer.buffer"></a>buffer</code></em>;</span></p></td>
@@ -396,8 +414,11 @@ The size of the structure is made public to allow stack allocations.
 <p>
 Map the contents of <em class="parameter"><code>buffer</code></em> into <em class="parameter"><code>rtp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -428,8 +449,11 @@ Map the contents of <em class="parameter"><code>buffer</code></em> into <em clas
 <p>
 Unmap <em class="parameter"><code>rtp</code></em> previously mapped with <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-map" title="gst_rtp_buffer_map ()"><code class="function">gst_rtp_buffer_map()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a>
@@ -445,8 +469,11 @@ Unmap <em class="parameter"><code>rtp</code></em> previously mapped with <a clas
 Calculate the header length of an RTP packet with <em class="parameter"><code>csrc_count</code></em> CSRC entries.
 An RTP packet can have at most 15 CSRC entries.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>csrc_count</code></em> :</span></p></td>
@@ -469,8 +496,11 @@ An RTP packet can have at most 15 CSRC entries.
 Calculate the total length of an RTP packet with a payload size of <em class="parameter"><code>payload_len</code></em>,
 a padding of <em class="parameter"><code>pad_len</code></em> and a <em class="parameter"><code>csrc_count</code></em> CSRC entries.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload_len</code></em> :</span></p></td>
@@ -501,8 +531,11 @@ a padding of <em class="parameter"><code>pad_len</code></em> and a <em class="pa
 Calculate the length of the payload of an RTP packet with size <em class="parameter"><code>packet_len</code></em>,
 a padding of <em class="parameter"><code>pad_len</code></em> and a <em class="parameter"><code>csrc_count</code></em> CSRC entries.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet_len</code></em> :</span></p></td>
@@ -532,8 +565,11 @@ a padding of <em class="parameter"><code>pad_len</code></em> and a <em class="pa
 Set the total <em class="parameter"><code>rtp</code></em> size to <em class="parameter"><code>len</code></em>. The data in the buffer will be made
 larger if needed. Any padding will be removed from the packet.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -553,8 +589,11 @@ larger if needed. Any padding will be removed from the packet.
 <p>
 Return the total length of the packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -575,8 +614,11 @@ Return the total length of the packet in <em class="parameter"><code>buffer</cod
 Return the total length of the header in <em class="parameter"><code>buffer</code></em>. This include the length of
 the fixed header, the CSRC list and the extension header.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -596,8 +638,11 @@ the fixed header, the CSRC list and the extension header.
 <p>
 Get the version number of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -618,8 +663,11 @@ Get the version number of the RTP packet in <em class="parameter"><code>buffer</
 <p>
 Set the version of the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>version</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -639,8 +687,11 @@ Set the version of the RTP packet in <em class="parameter"><code>buffer</code></
 <p>
 Check if the padding bit is set on the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -661,8 +712,11 @@ Check if the padding bit is set on the RTP packet in <em class="parameter"><code
 <p>
 Set the padding bit on the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>padding</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -687,8 +741,11 @@ Set the amount of padding in the RTP packet in <em class="parameter"><code>buffe
 <p>
 NOTE: This function does not work correctly.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -708,8 +765,11 @@ NOTE: This function does not work correctly.
 <p>
 Check if the extension bit is set on the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -730,8 +790,11 @@ Check if the extension bit is set on the RTP packet in <em class="parameter"><co
 <p>
 Set the extension bit on the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>extension</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -760,8 +823,11 @@ the length of <em class="parameter"><code>data</code></em> in 32 bits words.
 If <em class="parameter"><code>buffer</code></em> did not contain an extension, this function will return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
 with <em class="parameter"><code>bits</code></em>, <em class="parameter"><code>data</code></em> and <em class="parameter"><code>wordlen</code></em> unchanged.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -796,8 +862,11 @@ with <em class="parameter"><code>bits</code></em>, <em class="parameter"><code>d
 <p>
 Get the SSRC of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -818,8 +887,11 @@ Get the SSRC of the RTP packet in <em class="parameter"><code>buffer</code></em>
 <p>
 Set the SSRC on the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>ssrc</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -839,8 +911,11 @@ Set the SSRC on the RTP packet in <em class="parameter"><code>buffer</code></em>
 <p>
 Get the CSRC count of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -861,8 +936,11 @@ Get the CSRC count of the RTP packet in <em class="parameter"><code>buffer</code
 <p>
 Get the CSRC at index <em class="parameter"><code>idx</code></em> in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -888,8 +966,11 @@ Get the CSRC at index <em class="parameter"><code>idx</code></em> in <em class="
 <p>
 Modify the CSRC at index <em class="parameter"><code>idx</code></em> in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>csrc</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -914,8 +995,11 @@ Modify the CSRC at index <em class="parameter"><code>idx</code></em> in <em clas
 <p>
 Check if the marker bit is set on the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -936,8 +1020,11 @@ Check if the marker bit is set on the RTP packet in <em class="parameter"><code>
 <p>
 Set the marker bit on the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>marker</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -957,8 +1044,11 @@ Set the marker bit on the RTP packet in <em class="parameter"><code>buffer</code
 <p>
 Get the payload type of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -979,8 +1069,11 @@ Get the payload type of the RTP packet in <em class="parameter"><code>buffer</co
 <p>
 Set the payload type of the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>payload_type</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1000,8 +1093,11 @@ Set the payload type of the RTP packet in <em class="parameter"><code>buffer</co
 <p>
 Get the sequence number of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1022,8 +1118,11 @@ Get the sequence number of the RTP packet in <em class="parameter"><code>buffer<
 <p>
 Set the sequence number of the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>seq</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1043,8 +1142,11 @@ Set the sequence number of the RTP packet in <em class="parameter"><code>buffer<
 <p>
 Get the timestamp of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1065,8 +1167,11 @@ Get the timestamp of the RTP packet in <em class="parameter"><code>buffer</code>
 <p>
 Set the timestamp of the RTP packet in <em class="parameter"><code>buffer</code></em> to <em class="parameter"><code>timestamp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1088,8 +1193,11 @@ Create a buffer of the payload of the RTP packet in <em class="parameter"><code>
 will internally create a subbuffer of <em class="parameter"><code>buffer</code></em> so that a memcpy can be
 avoided.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1114,8 +1222,11 @@ Create a subbuffer of the payload of the RTP packet in <em class="parameter"><co
 are skipped in the payload and the subbuffer will be of size <em class="parameter"><code>len</code></em>.
 If <em class="parameter"><code>len</code></em> is -1 the total payload starting from <em class="parameter"><code>offset</code></em> if subbuffered.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1143,8 +1254,11 @@ If <em class="parameter"><code>len</code></em> is -1 the total payload starting 
 <p>
 Get the length of the payload of the RTP packet in <em class="parameter"><code>buffer</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1165,8 +1279,11 @@ Get the length of the payload of the RTP packet in <em class="parameter"><code>b
 Get a pointer to the payload data in <em class="parameter"><code>buffer</code></em>. This pointer is valid as long
 as a reference to <em class="parameter"><code>buffer</code></em> is held.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1188,8 +1305,11 @@ to the payload data in <em class="parameter"><code>buffer</code></em>. <span cla
 <p>
 Get the default clock-rate for the static payload type <em class="parameter"><code>payload_type</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>payload_type</code></em> :</span></p></td>
@@ -1212,8 +1332,11 @@ the clock-rate is undefined.</td>
 Compare two sequence numbers, taking care of wraparounds. This function
 returns the difference between <em class="parameter"><code>seqnum1</code></em> and <em class="parameter"><code>seqnum2</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>seqnum1</code></em> :</span></p></td>
@@ -1244,8 +1367,11 @@ method, <em class="parameter"><code>exttimestamp</code></em> should point to a l
 This function makes sure that the returned value is a constantly increasing
 value even in the case where there is a timestamp wraparound.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>exttimestamp</code></em> :</span></p></td>
@@ -1273,8 +1399,11 @@ Set the extension bit of the rtp buffer and fill in the <em class="parameter"><c
 extension header. If the existing extension data is not large enough, it will
 be made larger.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1309,8 +1438,11 @@ the extension, excluding the extension header ( therefore zero is a valid length
 Parses RFC 5285 style header extensions with a one byte header. It will
 return the nth extension with the requested id.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1355,8 +1487,11 @@ return the nth extension with the requested id.
 Parses RFC 5285 style header extensions with a two bytes header. It will
 return the nth extension with the requested id.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1409,8 +1544,11 @@ the mecanism described in RFC 5285 or if there is a header extension with
 a two bytes header as described in RFC 5285. In that case, use
 <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-add-extension-twobytes-header" title="gst_rtp_buffer_add_extension_twobytes_header ()"><code class="function">gst_rtp_buffer_add_extension_twobytes_header()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1455,8 +1593,11 @@ the mecanism described in RFC 5285 or if there is a header extension with
 a one byte header as described in RFC 5285. In that case, use
 <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-add-extension-onebyte-header" title="gst_rtp_buffer_add_extension_onebyte_header ()"><code class="function">gst_rtp_buffer_add_extension_onebyte_header()</code></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtp</code></em> :</span></p></td>
@@ -1495,6 +1636,6 @@ a one byte header as described in RFC 5285. In that case, use
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

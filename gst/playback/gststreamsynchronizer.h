@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_STREAM_SYNCHRONIZER_H__
@@ -52,6 +52,9 @@ struct _GstStreamSynchronizer
   guint current_stream_number;
 
   GstClockTime group_start_time;
+
+  gboolean have_group_id;
+  guint group_id;
 };
 
 struct _GstStreamSynchronizerClass

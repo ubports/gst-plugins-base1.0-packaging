@@ -223,7 +223,11 @@ audio_orc_unpack_u8 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_int8 *ORC_RESTRICT ptr4;
   orc_int8 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union32 var36;
   orc_union16 var37;
   orc_union32 var38;
@@ -261,7 +265,11 @@ _backup_audio_orc_unpack_u8 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_int8 *ORC_RESTRICT ptr4;
   orc_int8 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union32 var36;
   orc_union16 var37;
   orc_union32 var38;
@@ -304,6 +312,16 @@ audio_orc_unpack_u8 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 19, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 56, 11, 4, 4, 12, 1, 1, 14, 4, 0, 0,
+        0, 128, 14, 4, 24, 0, 0, 0, 20, 2, 20, 4, 150, 32, 4, 154,
+        33, 32, 124, 33, 33, 17, 132, 0, 33, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u8);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u8");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u8);
@@ -322,6 +340,7 @@ audio_orc_unpack_u8 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -422,6 +441,16 @@ audio_orc_unpack_s8 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 19, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 56, 11, 4, 4, 12, 1, 1, 14, 4, 24, 0,
+        0, 0, 20, 2, 20, 4, 150, 32, 4, 154, 33, 32, 124, 0, 33, 16,
+        2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s8);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s8");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s8);
@@ -437,6 +466,7 @@ audio_orc_unpack_s8 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "shll", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -468,7 +498,11 @@ audio_orc_unpack_u16 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union16 *ORC_RESTRICT ptr4;
   orc_union16 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -503,7 +537,11 @@ _backup_audio_orc_unpack_u16 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union16 *ORC_RESTRICT ptr4;
   orc_union16 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -543,6 +581,16 @@ audio_orc_unpack_u16 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 49, 54, 11, 4, 4, 12, 2, 2, 14, 4, 16,
+        0, 0, 0, 14, 4, 0, 0, 0, 128, 20, 4, 154, 32, 4, 124, 32,
+        32, 16, 132, 0, 32, 17, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u16);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u16");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u16);
@@ -558,6 +606,7 @@ audio_orc_unpack_u16 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C2,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -652,6 +701,15 @@ audio_orc_unpack_s16 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 49, 54, 11, 4, 4, 12, 2, 2, 14, 4, 16,
+        0, 0, 0, 20, 4, 154, 32, 4, 124, 0, 32, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s16);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s16");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s16);
@@ -664,6 +722,7 @@ audio_orc_unpack_s16 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "shll", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -695,7 +754,11 @@ audio_orc_unpack_u16_swap (gint32 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union16 *ORC_RESTRICT ptr4;
   orc_union16 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union32 var36;
   orc_union16 var37;
   orc_union32 var38;
@@ -733,7 +796,11 @@ _backup_audio_orc_unpack_u16_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union16 *ORC_RESTRICT ptr4;
   orc_union16 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union32 var36;
   orc_union16 var37;
   orc_union32 var38;
@@ -776,6 +843,17 @@ audio_orc_unpack_u16_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 49, 54, 95, 115, 119, 97, 112, 11, 4, 4, 12,
+        2, 2, 14, 4, 16, 0, 0, 0, 14, 4, 0, 0, 0, 128, 20, 2,
+        20, 4, 183, 32, 4, 154, 33, 32, 124, 33, 33, 16, 132, 0, 33, 17,
+        2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u16_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u16_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u16_swap);
@@ -794,6 +872,7 @@ audio_orc_unpack_u16_swap (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_C2,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -894,6 +973,16 @@ audio_orc_unpack_s16_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 49, 54, 95, 115, 119, 97, 112, 11, 4, 4, 12,
+        2, 2, 14, 4, 16, 0, 0, 0, 20, 2, 20, 4, 183, 32, 4, 154,
+        33, 32, 124, 0, 33, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s16_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s16_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s16_swap);
@@ -909,6 +998,7 @@ audio_orc_unpack_s16_swap (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "shll", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -940,7 +1030,11 @@ audio_orc_unpack_u24_32 (gint32 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -972,7 +1066,11 @@ _backup_audio_orc_unpack_u24_32 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -1009,6 +1107,16 @@ audio_orc_unpack_u24_32 (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 50, 52, 95, 51, 50, 11, 4, 4, 12, 4, 4,
+        14, 4, 8, 0, 0, 0, 14, 4, 0, 0, 0, 128, 20, 4, 124, 32,
+        4, 16, 132, 0, 32, 17, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u24_32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u24_32");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u24_32);
@@ -1022,6 +1130,7 @@ audio_orc_unpack_u24_32 (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C2,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1110,6 +1219,15 @@ audio_orc_unpack_s24_32 (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 50, 52, 95, 51, 50, 11, 4, 4, 12, 4, 4,
+        14, 4, 8, 0, 0, 0, 124, 0, 4, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s24_32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s24_32");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s24_32);
@@ -1119,6 +1237,7 @@ audio_orc_unpack_s24_32 (gint32 * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "shll", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1150,7 +1269,11 @@ audio_orc_unpack_u24_32_swap (gint32 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -1185,7 +1308,11 @@ _backup_audio_orc_unpack_u24_32_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -1225,6 +1352,17 @@ audio_orc_unpack_u24_32_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 28, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 50, 52, 95, 51, 50, 95, 115, 119, 97, 112, 11,
+        4, 4, 12, 4, 4, 14, 4, 8, 0, 0, 0, 14, 4, 0, 0, 0,
+        128, 20, 4, 184, 32, 4, 124, 32, 32, 16, 132, 0, 32, 17, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u24_32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u24_32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u24_32_swap);
@@ -1240,6 +1378,7 @@ audio_orc_unpack_u24_32_swap (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C2,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1334,6 +1473,16 @@ audio_orc_unpack_s24_32_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 28, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 50, 52, 95, 51, 50, 95, 115, 119, 97, 112, 11,
+        4, 4, 12, 4, 4, 14, 4, 8, 0, 0, 0, 20, 4, 184, 32, 4,
+        124, 0, 32, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s24_32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s24_32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s24_32_swap);
@@ -1346,6 +1495,7 @@ audio_orc_unpack_s24_32_swap (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "shll", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1377,7 +1527,11 @@ audio_orc_unpack_u32 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) d1;
@@ -1406,7 +1560,11 @@ _backup_audio_orc_unpack_u32 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) ex->arrays[0];
@@ -1440,6 +1598,15 @@ audio_orc_unpack_u32 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 51, 50, 11, 4, 4, 12, 4, 4, 14, 4, 0,
+        0, 0, 128, 132, 0, 4, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u32");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u32);
@@ -1449,6 +1616,7 @@ audio_orc_unpack_u32 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1480,7 +1648,11 @@ audio_orc_unpack_u32_swap (gint32 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -1512,7 +1684,11 @@ _backup_audio_orc_unpack_u32_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -1549,6 +1725,16 @@ audio_orc_unpack_u32_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 117, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4, 12,
+        4, 4, 14, 4, 0, 0, 0, 128, 20, 4, 184, 32, 4, 132, 0, 32,
+        16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_u32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_u32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_u32_swap);
@@ -1561,6 +1747,7 @@ audio_orc_unpack_u32_swap (gint32 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1649,6 +1836,15 @@ audio_orc_unpack_s32 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 51, 50, 11, 4, 4, 12, 4, 4, 112, 0, 4,
+        2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s32");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s32);
@@ -1657,6 +1853,7 @@ audio_orc_unpack_s32 (gint32 * ORC_RESTRICT d1, const guint8 * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "copyl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1745,6 +1942,15 @@ audio_orc_unpack_s32_swap (gint32 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 115, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4, 12,
+        4, 4, 184, 0, 4, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_s32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_s32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_s32_swap);
@@ -1753,6 +1959,7 @@ audio_orc_unpack_s32_swap (gint32 * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "swapl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1849,6 +2056,15 @@ audio_orc_unpack_f32 (gdouble * ORC_RESTRICT d1, const gfloat * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 102, 51, 50, 11, 8, 8, 12, 4, 4, 224, 0, 4,
+        2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_f32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_f32");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_f32);
@@ -1857,6 +2073,7 @@ audio_orc_unpack_f32 (gdouble * ORC_RESTRICT d1, const gfloat * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "convfd", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -1959,6 +2176,15 @@ audio_orc_unpack_f32_swap (gdouble * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 102, 51, 50, 95, 115, 119, 97, 112, 11, 8, 8, 12,
+        4, 4, 20, 4, 184, 32, 4, 224, 0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_f32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_f32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_f32_swap);
@@ -1970,6 +2196,7 @@ audio_orc_unpack_f32_swap (gdouble * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "convfd", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2058,6 +2285,15 @@ audio_orc_unpack_f64 (gdouble * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 20, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 102, 54, 52, 11, 8, 8, 12, 8, 8, 137, 0, 4,
+        2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_f64);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_f64");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_f64);
@@ -2066,6 +2302,7 @@ audio_orc_unpack_f64 (gdouble * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "copyq", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2154,6 +2391,15 @@ audio_orc_unpack_f64_swap (gdouble * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 25, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 117, 110, 112,
+        97, 99, 107, 95, 102, 54, 52, 95, 115, 119, 97, 112, 11, 8, 8, 12,
+        8, 8, 186, 0, 4, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_unpack_f64_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_unpack_f64_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_unpack_f64_swap);
@@ -2162,6 +2408,7 @@ audio_orc_unpack_f64_swap (gdouble * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "swapq", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2193,7 +2440,11 @@ audio_orc_pack_u8 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
   orc_int8 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_int8 var36;
   orc_union32 var37;
   orc_union32 var38;
@@ -2231,7 +2482,11 @@ _backup_audio_orc_pack_u8 (OrcExecutor * ORC_RESTRICT ex)
   orc_int8 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_int8 var36;
   orc_union32 var37;
   orc_union32 var38;
@@ -2274,6 +2529,16 @@ audio_orc_pack_u8 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 17, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 56, 11, 1, 1, 12, 4, 4, 14, 4, 24, 0, 0, 0,
+        14, 4, 0, 0, 0, 128, 20, 4, 20, 2, 132, 32, 4, 17, 126, 32,
+        32, 16, 163, 33, 32, 157, 0, 33, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u8);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u8");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u8);
@@ -2292,6 +2557,7 @@ audio_orc_pack_u8 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "convwb", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2392,6 +2658,16 @@ audio_orc_pack_s8 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 17, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 56, 11, 1, 1, 12, 4, 4, 14, 4, 24, 0, 0, 0,
+        20, 4, 20, 2, 125, 32, 4, 16, 163, 33, 32, 157, 0, 33, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s8);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s8");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s8);
@@ -2407,6 +2683,7 @@ audio_orc_pack_s8 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "convwb", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2438,7 +2715,11 @@ audio_orc_pack_u16 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
   orc_union16 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union16 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -2473,7 +2754,11 @@ _backup_audio_orc_pack_u16 (OrcExecutor * ORC_RESTRICT ex)
   orc_union16 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union16 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -2513,6 +2798,16 @@ audio_orc_pack_u16 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 49, 54, 11, 2, 2, 12, 4, 4, 14, 4, 16, 0, 0,
+        0, 14, 4, 0, 0, 0, 128, 20, 4, 132, 32, 4, 17, 126, 32, 32,
+        16, 163, 0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u16);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u16");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u16);
@@ -2528,6 +2823,7 @@ audio_orc_pack_u16 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "convlw", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2622,6 +2918,15 @@ audio_orc_pack_s16 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 49, 54, 11, 2, 2, 12, 4, 4, 14, 4, 16, 0, 0,
+        0, 20, 4, 125, 32, 4, 16, 163, 0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s16);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s16");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s16);
@@ -2634,6 +2939,7 @@ audio_orc_pack_s16 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "convlw", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2665,7 +2971,11 @@ audio_orc_pack_u16_swap (guint8 * ORC_RESTRICT d1,
   orc_union16 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union16 var36;
   orc_union32 var37;
   orc_union32 var38;
@@ -2703,7 +3013,11 @@ _backup_audio_orc_pack_u16_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union16 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var34;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var35;
+#else
   orc_union32 var35;
+#endif
   orc_union16 var36;
   orc_union32 var37;
   orc_union32 var38;
@@ -2746,6 +3060,17 @@ audio_orc_pack_u16_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 49, 54, 95, 115, 119, 97, 112, 11, 2, 2, 12, 4, 4,
+        14, 4, 0, 0, 0, 128, 14, 4, 16, 0, 0, 0, 20, 4, 20, 2,
+        132, 32, 4, 16, 126, 32, 32, 17, 163, 33, 32, 183, 0, 33, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u16_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u16_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u16_swap);
@@ -2764,6 +3089,7 @@ audio_orc_pack_u16_swap (guint8 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "swapw", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2864,6 +3190,16 @@ audio_orc_pack_s16_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 49, 54, 95, 115, 119, 97, 112, 11, 2, 2, 12, 4, 4,
+        14, 4, 16, 0, 0, 0, 20, 4, 20, 2, 125, 32, 4, 16, 163, 33,
+        32, 183, 0, 33, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s16_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s16_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s16_swap);
@@ -2879,6 +3215,7 @@ audio_orc_pack_s16_swap (guint8 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "swapw", 0, ORC_VAR_D1, ORC_VAR_T2, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -2910,7 +3247,11 @@ audio_orc_pack_u24_32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -2942,7 +3283,11 @@ _backup_audio_orc_pack_u24_32 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
 
@@ -2979,6 +3324,16 @@ audio_orc_pack_u24_32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 21, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 50, 52, 95, 51, 50, 11, 4, 4, 12, 4, 4, 14, 4,
+        0, 0, 0, 128, 14, 4, 8, 0, 0, 0, 20, 4, 132, 32, 4, 16,
+        126, 0, 32, 17, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u24_32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u24_32");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u24_32);
@@ -2992,6 +3347,7 @@ audio_orc_pack_u24_32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "shrul", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_C2,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3080,6 +3436,15 @@ audio_orc_pack_s24_32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 21, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 50, 52, 95, 51, 50, 11, 4, 4, 12, 4, 4, 14, 4,
+        8, 0, 0, 0, 125, 0, 4, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s24_32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s24_32");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s24_32);
@@ -3089,6 +3454,7 @@ audio_orc_pack_s24_32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "shrsl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3120,7 +3486,11 @@ audio_orc_pack_u24_32_swap (guint8 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -3155,7 +3525,11 @@ _backup_audio_orc_pack_u24_32_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var33;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var34;
+#else
   orc_union32 var34;
+#endif
   orc_union32 var35;
   orc_union32 var36;
   orc_union32 var37;
@@ -3195,6 +3569,16 @@ audio_orc_pack_u24_32_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 26, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 50, 52, 95, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4,
+        12, 4, 4, 14, 4, 0, 0, 0, 128, 14, 4, 8, 0, 0, 0, 20,
+        4, 132, 32, 4, 16, 126, 32, 32, 17, 184, 0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u24_32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u24_32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u24_32_swap);
@@ -3210,6 +3594,7 @@ audio_orc_pack_u24_32_swap (guint8 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "swapl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3304,6 +3689,16 @@ audio_orc_pack_s24_32_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 26, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 50, 52, 95, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4,
+        12, 4, 4, 14, 4, 8, 0, 0, 0, 20, 4, 125, 32, 4, 16, 184,
+        0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s24_32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s24_32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s24_32_swap);
@@ -3316,6 +3711,7 @@ audio_orc_pack_s24_32_swap (guint8 * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "swapl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3347,7 +3743,11 @@ audio_orc_pack_u32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) d1;
@@ -3376,7 +3776,11 @@ _backup_audio_orc_pack_u32 (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) ex->arrays[0];
@@ -3410,6 +3814,15 @@ audio_orc_pack_u32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 51, 50, 11, 4, 4, 12, 4, 4, 14, 4, 0, 0, 0,
+        128, 132, 0, 4, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u32");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u32);
@@ -3419,6 +3832,7 @@ audio_orc_pack_u32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3507,6 +3921,15 @@ audio_orc_pack_s32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 51, 50, 11, 4, 4, 12, 4, 4, 112, 0, 4, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s32");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s32);
@@ -3515,6 +3938,7 @@ audio_orc_pack_s32 (guint8 * ORC_RESTRICT d1, const gint32 * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "copyl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3546,7 +3970,11 @@ audio_orc_pack_u32_swap (guint8 * ORC_RESTRICT d1,
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) d1;
@@ -3575,7 +4003,11 @@ _backup_audio_orc_pack_u32_swap (OrcExecutor * ORC_RESTRICT ex)
   orc_union32 *ORC_RESTRICT ptr0;
   const orc_union32 *ORC_RESTRICT ptr4;
   orc_union32 var32;
+#if defined(__APPLE__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && defined (__i386__)
+  volatile orc_union32 var33;
+#else
   orc_union32 var33;
+#endif
   orc_union32 var34;
 
   ptr0 = (orc_union32 *) ex->arrays[0];
@@ -3609,6 +4041,15 @@ audio_orc_pack_u32_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 117, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4, 12, 4, 4,
+        14, 4, 0, 0, 0, 128, 132, 0, 4, 16, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_u32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_u32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_u32_swap);
@@ -3618,6 +4059,7 @@ audio_orc_pack_u32_swap (guint8 * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "xorl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_C1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3706,6 +4148,15 @@ audio_orc_pack_s32_swap (guint8 * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 115, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4, 12, 4, 4,
+        184, 0, 4, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_s32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_s32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_s32_swap);
@@ -3714,6 +4165,7 @@ audio_orc_pack_s32_swap (guint8 * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "swapl", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3814,6 +4266,15 @@ audio_orc_pack_f32 (gfloat * ORC_RESTRICT d1, const gdouble * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 102, 51, 50, 11, 4, 4, 12, 8, 8, 225, 0, 4, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_f32);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_f32");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_f32);
@@ -3822,6 +4283,7 @@ audio_orc_pack_f32 (gfloat * ORC_RESTRICT d1, const gdouble * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "convdf", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -3928,6 +4390,15 @@ audio_orc_pack_f32_swap (gfloat * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 102, 51, 50, 95, 115, 119, 97, 112, 11, 4, 4, 12, 8, 8,
+        20, 4, 225, 32, 4, 184, 0, 32, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_f32_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_f32_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_f32_swap);
@@ -3939,6 +4410,7 @@ audio_orc_pack_f32_swap (gfloat * ORC_RESTRICT d1,
           ORC_VAR_D1);
       orc_program_append_2 (p, "swapl", 0, ORC_VAR_D1, ORC_VAR_T1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -4027,6 +4499,15 @@ audio_orc_pack_f64 (gdouble * ORC_RESTRICT d1, const gdouble * ORC_RESTRICT s1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 18, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 102, 54, 52, 11, 8, 8, 12, 8, 8, 137, 0, 4, 2, 0,
+
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_f64);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_f64");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_f64);
@@ -4035,6 +4516,7 @@ audio_orc_pack_f64 (gdouble * ORC_RESTRICT d1, const gdouble * ORC_RESTRICT s1,
 
       orc_program_append_2 (p, "copyq", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);
@@ -4123,6 +4605,15 @@ audio_orc_pack_f64_swap (gdouble * ORC_RESTRICT d1,
     if (!p_inited) {
       OrcProgram *p;
 
+#if 1
+      static const orc_uint8 bc[] = {
+        1, 9, 23, 97, 117, 100, 105, 111, 95, 111, 114, 99, 95, 112, 97, 99,
+        107, 95, 102, 54, 52, 95, 115, 119, 97, 112, 11, 8, 8, 12, 8, 8,
+        186, 0, 4, 2, 0,
+      };
+      p = orc_program_new_from_static_bytecode (bc);
+      orc_program_set_backup_function (p, _backup_audio_orc_pack_f64_swap);
+#else
       p = orc_program_new ();
       orc_program_set_name (p, "audio_orc_pack_f64_swap");
       orc_program_set_backup_function (p, _backup_audio_orc_pack_f64_swap);
@@ -4131,6 +4622,7 @@ audio_orc_pack_f64_swap (gdouble * ORC_RESTRICT d1,
 
       orc_program_append_2 (p, "swapq", 0, ORC_VAR_D1, ORC_VAR_S1, ORC_VAR_D1,
           ORC_VAR_D1);
+#endif
 
       orc_program_compile (p);
       c = orc_program_take_code (p);

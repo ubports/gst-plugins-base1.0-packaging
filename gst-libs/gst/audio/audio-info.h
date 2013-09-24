@@ -15,17 +15,16 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
+
+#ifndef __GST_AUDIO_AUDIO_H__
+#include <gst/audio/audio.h>
+#endif
 
 #ifndef __GST_AUDIO_INFO_H__
 #define __GST_AUDIO_INFO_H__
-
-#include <gst/gst.h>
-#include <gst/audio/audio-enumtypes.h>
-#include <gst/audio/audio-format.h>
-#include <gst/audio/audio-channels.h>
 
 G_BEGIN_DECLS
 
@@ -127,6 +126,9 @@ GstCaps *      gst_audio_info_to_caps     (const GstAudioInfo *info);
 gboolean       gst_audio_info_convert     (const GstAudioInfo * info,
                                            GstFormat src_fmt, gint64 src_val,
                                            GstFormat dest_fmt, gint64 * dest_val);
+
+gboolean       gst_audio_info_is_equal    (const GstAudioInfo *info,
+                                           const GstAudioInfo *other);
 
 G_END_DECLS
 

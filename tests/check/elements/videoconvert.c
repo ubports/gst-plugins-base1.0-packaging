@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -56,7 +56,9 @@ check_pad_template (GstPadTemplate * tmpl)
   caps = gst_pad_template_get_caps (tmpl);
 
   /* If this fails, we need to update this unit test */
-  fail_unless_equals_int (gst_caps_get_size (caps), 1);
+  fail_unless_equals_int (gst_caps_get_size (caps), 2);
+  /* Remove the ANY caps features structure */
+  caps = gst_caps_truncate (caps);
   s = gst_caps_get_structure (caps, 0);
 
   fail_unless (gst_structure_has_name (s, "video/x-raw"));

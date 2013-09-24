@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
  /**
@@ -126,13 +126,13 @@ gst_video_filter_decide_allocation (GstBaseTransform * trans, GstQuery * query)
   GstStructure *config;
   guint min, max, size;
   gboolean update_pool;
+  GstCaps *outcaps = NULL;
 
   if (gst_query_get_n_allocation_pools (query) > 0) {
     gst_query_parse_nth_allocation_pool (query, 0, &pool, &size, &min, &max);
 
     update_pool = TRUE;
   } else {
-    GstCaps *outcaps;
     GstVideoInfo vinfo;
 
     gst_query_parse_allocation (query, &outcaps, NULL);
@@ -148,6 +148,8 @@ gst_video_filter_decide_allocation (GstBaseTransform * trans, GstQuery * query)
 
   config = gst_buffer_pool_get_config (pool);
   gst_buffer_pool_config_add_option (config, GST_BUFFER_POOL_OPTION_VIDEO_META);
+  if (outcaps)
+    gst_buffer_pool_config_set_params (config, outcaps, size, 0, 0);
   gst_buffer_pool_set_config (pool, config);
 
   if (update_pool)
@@ -339,6 +341,24 @@ invalid_buffer:
   }
 }
 
+static gboolean
+gst_video_filter_transform_meta (GstBaseTransform * trans, GstBuffer * inbuf,
+    GstMeta * meta, GstBuffer * outbuf)
+{
+  const GstMetaInfo *info = meta->info;
+  const gchar *const *tags;
+
+  tags = gst_meta_api_type_get_tags (info->api);
+
+  if (tags && g_strv_length ((gchar **) tags) == 1
+      && gst_meta_api_type_has_tag (info->api,
+          g_quark_from_string (GST_META_TAG_VIDEO_STR)))
+    return TRUE;
+
+  return GST_BASE_TRANSFORM_CLASS (parent_class)->transform_meta (trans, inbuf,
+      meta, outbuf);
+}
+
 static void
 gst_video_filter_class_init (GstVideoFilterClass * g_class)
 {
@@ -359,6 +379,8 @@ gst_video_filter_class_init (GstVideoFilterClass * g_class)
       GST_DEBUG_FUNCPTR (gst_video_filter_get_unit_size);
   trans_class->transform = GST_DEBUG_FUNCPTR (gst_video_filter_transform);
   trans_class->transform_ip = GST_DEBUG_FUNCPTR (gst_video_filter_transform_ip);
+  trans_class->transform_meta =
+      GST_DEBUG_FUNCPTR (gst_video_filter_transform_meta);
 
   GST_DEBUG_CATEGORY_INIT (gst_video_filter_debug, "videofilter", 0,
       "videofilter");

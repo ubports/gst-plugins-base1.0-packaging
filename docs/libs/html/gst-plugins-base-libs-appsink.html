@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>appsink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-app.html" title="App Library">
 <link rel="prev" href="gst-plugins-base-libs-appsrc.html" title="appsrc">
 <link rel="next" href="gstreamer-audio.html" title="Audio Library">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -124,8 +124,11 @@ a copy of the caps structure. After calling this method, the sink will only
 accept caps that match <em class="parameter"><code>caps</code></em>. If <em class="parameter"><code>caps</code></em> is non-fixed, you must check the caps
 on the buffers to get the actual used caps.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -146,8 +149,11 @@ on the buffers to get the actual used caps.
 <p>
 Get the configured caps on <em class="parameter"><code>appsink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -173,8 +179,11 @@ an EOS event was received.
 This function also returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> when the appsink is not in the PAUSED or
 PLAYING state.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -199,8 +208,11 @@ Make appsink emit the "new-preroll" and "new-sample" signals. This option is
 by default disabled because signal emission is expensive and unneeded when
 the application prefers to operate in pull mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -221,8 +233,11 @@ the application prefers to operate in pull mode.
 <p>
 Check if appsink will emit the "new-preroll" and "new-sample" signals.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -248,8 +263,11 @@ Set the maximum amount of buffers that can be queued in <em class="parameter"><c
 amount of buffers are queued in appsink, any more buffers will block upstream
 elements until a sample is pulled from <em class="parameter"><code>appsink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -270,8 +288,11 @@ elements until a sample is pulled from <em class="parameter"><code>appsink</code
 <p>
 Get the maximum amount of buffers that can be queued in <em class="parameter"><code>appsink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -294,8 +315,11 @@ Get the maximum amount of buffers that can be queued in <em class="parameter"><c
 Instruct <em class="parameter"><code>appsink</code></em> to drop old buffers when the maximum amount of queued
 buffers is reached.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -317,8 +341,11 @@ buffers is reached.
 Check if <em class="parameter"><code>appsink</code></em> will drop old buffers when the maximum amount of queued
 buffers is reached.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -360,8 +387,11 @@ If an EOS event was received before any buffers, this function returns
 This function blocks until a preroll sample or EOS is received or the appsink
 element is set to the READY/NULL state.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -394,8 +424,11 @@ especially when dealing with raw video frames.
 If an EOS event was received before any buffers, this function returns
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Use <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-is-eos" title="gst_app_sink_is_eos ()"><code class="function">gst_app_sink_is_eos()</code></a> to check for the EOS condition.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -422,8 +455,11 @@ If an EOS event was received before any buffers, this function returns
 A set of callbacks that can be installed on the appsink with
 <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-set-callbacks" title="gst_app_sink_set_callbacks ()"><code class="function">gst_app_sink_set_callbacks()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstAppSinkCallbacks.eos"></a>eos</code></em> ()</span></p></td>
@@ -465,8 +501,11 @@ less expensive, but also less flexible.
 If callbacks are installed, no signals will be emitted for performance
 reasons.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>appsink</code></em> :</span></p></td>
@@ -496,6 +535,6 @@ reasons.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

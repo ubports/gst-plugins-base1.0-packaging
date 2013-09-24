@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudiobasesink</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiosrc.html" title="gstaudiosrc">
 <link rel="next" href="gst-plugins-base-libs-gstaudiobasesrc.html" title="gstaudiobasesrc">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -141,8 +141,11 @@ Opaque <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudi
 <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> class. Override the vmethod to implement
 functionality.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html#GstBaseSinkClass"><span class="type">GstBaseSinkClass</span></a> <em class="structfield"><code><a name="GstAudioBaseSinkClass.parent-class"></a>parent_class</code></em>;</span></p></td>
@@ -175,8 +178,11 @@ copied.</td>
 Different possible clock slaving algorithms used when the internal audio
 clock is not selected as the pipeline master clock.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-AUDIO-BASE-SINK-SLAVE-RESAMPLE:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_BASE_SINK_SLAVE_RESAMPLE</code></span></p></td>
@@ -205,8 +211,11 @@ drifts too much.
 <p>
 Get the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html"><span class="type">GstClock</span></a> of <em class="parameter"><code>obj</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
@@ -222,8 +231,11 @@ Get the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstrea
 <p>
 Get the sink <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> of <em class="parameter"><code>obj</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a>
@@ -241,8 +253,11 @@ Create and return the <a class="link" href="gst-plugins-base-libs-gstaudioringbu
 ::create_ringbuffer vmethod and will set <em class="parameter"><code>sink</code></em> as the parent of the returned
 buffer (see <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html#gst-object-set-parent"><code class="function">gst_object_set_parent()</code></a>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -267,8 +282,11 @@ Controls whether <em class="parameter"><code>sink</code></em> will provide a clo
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-provide-clock"><code class="function">gst_element_provide_clock()</code></a> will return a clock that reflects the datarate
 of <em class="parameter"><code>sink</code></em>. If <em class="parameter"><code>provide</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-provide-clock"><code class="function">gst_element_provide_clock()</code></a> will return NULL.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -291,8 +309,11 @@ of <em class="parameter"><code>sink</code></em>. If <em class="parameter"><code>
 Queries whether <em class="parameter"><code>sink</code></em> will provide a clock or not. See also
 gst_audio_base_sink_set_provide_clock.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -316,8 +337,11 @@ gst_audio_base_sink_set_provide_clock.
 <p>
 Controls how clock slaving will be performed in <em class="parameter"><code>sink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -339,8 +363,11 @@ Controls how clock slaving will be performed in <em class="parameter"><code>sink
 <p>
 Get the current slave method used by <em class="parameter"><code>sink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -363,8 +390,11 @@ Get the current slave method used by <em class="parameter"><code>sink</code></em
 <p>
 Controls the sink's drift tolerance.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -386,8 +416,11 @@ Controls the sink's drift tolerance.
 <p>
 Get the current drift tolerance, in microseconds, used by <em class="parameter"><code>sink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -410,8 +443,11 @@ Get the current drift tolerance, in microseconds, used by <em class="parameter">
 <p>
 Controls the sink's alignment threshold.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -433,8 +469,11 @@ Controls the sink's alignment threshold.
 <p>
 Get the current alignment threshold, in nanoseconds, used by <em class="parameter"><code>sink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -457,8 +496,11 @@ Get the current alignment threshold, in nanoseconds, used by <em class="paramete
 <p>
 Controls how long the sink will wait before creating a discontinuity.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -480,8 +522,11 @@ Controls how long the sink will wait before creating a discontinuity.
 <p>
 Get the current discont wait, in nanoseconds, used by <em class="parameter"><code>sink</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sink</code></em> :</span></p></td>
@@ -572,6 +617,6 @@ to drift before resynchronisation happens.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtcpbuffer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtpbuffer.html" title="gstrtpbuffer">
 <link rel="next" href="gst-plugins-base-libs-gstrtppayloads.html" title="gstrtppayloads">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -178,7 +178,7 @@ Note: The API in this module is not yet declared stable.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp16821712"></a><p>
+<a name="id-1.2.9.7.4.3.1"></a><p>
 The GstRTPCBuffer helper functions makes it easy to parse and create regular 
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> objects that contain compound RTCP packets. These buffers are typically
 of 'application/x-rtcp' <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.
@@ -278,8 +278,11 @@ Valid value for the first two bytes of an RTCP packet after applying
 <p>
 Different RTCP packet types.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTCP-TYPE-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTCP_TYPE_INVALID</code></span></p></td>
@@ -336,8 +339,11 @@ Different RTCP packet types.
 Data structure that points to a packet at <em class="parameter"><code>offset</code></em> in <em class="parameter"><code>buffer</code></em>.
 The size of the structure is made public to allow stack allocations.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *<em class="structfield"><code><a name="GstRTCPPacket.rtcp"></a>rtcp</code></em>;</span></p></td>
@@ -369,8 +375,11 @@ The size of the structure is made public to allow stack allocations.
 <p>
 Different types of SDES content.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTCP-SDES-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTCP_SDES_INVALID</code></span></p></td>
@@ -430,29 +439,34 @@ Different types of SDES content.
 <a name="GstRTCPFBType"></a><h3>enum GstRTCPFBType</h3>
 <pre class="programlisting">typedef enum {
   /* generic */
-  GST_RTCP_FB_TYPE_INVALID    = 0,
+  GST_RTCP_FB_TYPE_INVALID        = 0,
   /* RTPFB types */
-  GST_RTCP_RTPFB_TYPE_NACK    = 1,
+  GST_RTCP_RTPFB_TYPE_NACK        = 1,
   /* RTPFB types assigned in RFC 5104 */
-  GST_RTCP_RTPFB_TYPE_TMMBR   = 3,
-  GST_RTCP_RTPFB_TYPE_TMMBN   = 4,
+  GST_RTCP_RTPFB_TYPE_TMMBR       = 3,
+  GST_RTCP_RTPFB_TYPE_TMMBN       = 4,
+  /* RTPFB types assigned in RFC 6051 */
+  GST_RTCP_RTPFB_TYPE_RCTP_SR_REQ = 5,
   /* PSFB types */
-  GST_RTCP_PSFB_TYPE_PLI      = 1,
-  GST_RTCP_PSFB_TYPE_SLI      = 2,
-  GST_RTCP_PSFB_TYPE_RPSI     = 3,
-  GST_RTCP_PSFB_TYPE_AFB      = 15,
+  GST_RTCP_PSFB_TYPE_PLI          = 1,
+  GST_RTCP_PSFB_TYPE_SLI          = 2,
+  GST_RTCP_PSFB_TYPE_RPSI         = 3,
+  GST_RTCP_PSFB_TYPE_AFB          = 15,
   /* PSFB types assigned in RFC 5104 */
-  GST_RTCP_PSFB_TYPE_FIR      = 4,
-  GST_RTCP_PSFB_TYPE_TSTR     = 5,
-  GST_RTCP_PSFB_TYPE_TSTN     = 6,
-  GST_RTCP_PSFB_TYPE_VBCN     = 7,
+  GST_RTCP_PSFB_TYPE_FIR          = 4,
+  GST_RTCP_PSFB_TYPE_TSTR         = 5,
+  GST_RTCP_PSFB_TYPE_TSTN         = 6,
+  GST_RTCP_PSFB_TYPE_VBCN         = 7,
 } GstRTCPFBType;
 </pre>
 <p>
 Different types of feedback messages.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTCP-FB-TYPE-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTCP_FB_TYPE_INVALID</code></span></p></td>
@@ -474,6 +488,10 @@ Different types of feedback messages.
 <td>Temporary Maximum Media Stream Bit Rate
    Notification
 </td>
+</tr>
+<tr>
+<td><p><a name="GST-RTCP-RTPFB-TYPE-RCTP-SR-REQ:CAPS"></a><span class="term"><code class="literal">GST_RTCP_RTPFB_TYPE_RCTP_SR_REQ</code></span></p></td>
+<td></td>
 </tr>
 <tr>
 <td><p><a name="GST-RTCP-PSFB-TYPE-PLI:CAPS"></a><span class="term"><code class="literal">GST_RTCP_PSFB_TYPE_PLI</code></span></p></td>
@@ -528,8 +546,11 @@ Create a new buffer and set the data and size of the buffer to <em class="parame
 respectively. <em class="parameter"><code>data</code></em> will be freed when the buffer is unreffed, so this
 function transfers ownership of <em class="parameter"><code>data</code></em> to the new buffer.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -557,8 +578,11 @@ Create a new buffer and set the data to a copy of <em class="parameter"><code>le
 bytes of <em class="parameter"><code>data</code></em> and the size to <em class="parameter"><code>len</code></em>. The data will be freed when the buffer
 is freed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -587,8 +611,11 @@ packet.
 Use this function to validate a packet before using the other functions in
 this module.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
@@ -614,8 +641,11 @@ this module.
 Check if the data pointed to by <em class="parameter"><code>buffer</code></em> is a valid RTCP packet using
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-data" title="gst_rtcp_buffer_validate_data ()"><code class="function">gst_rtcp_buffer_validate_data()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -651,8 +681,11 @@ Check if the data pointed to by <em class="parameter"><code>buffer</code></em> i
 Create a new buffer for constructing RTCP packets. The packet will have a
 maximum size of <em class="parameter"><code>mtu</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mtu</code></em> :</span></p></td>
@@ -675,8 +708,11 @@ maximum size of <em class="parameter"><code>mtu</code></em>.
 Open <em class="parameter"><code>buffer</code></em> for reading or writing, depending on <em class="parameter"><code>flags</code></em>. The resulting RTCP
 buffer state is stored in <em class="parameter"><code>rtcp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
@@ -706,8 +742,11 @@ after <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-bu
 The function adjusts the size of <em class="parameter"><code>rtcp</code></em> with the total length of all the
 added packets.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>rtcp</code></em> :</span></p></td>
 <td>a buffer with an RTCP packet</td>
@@ -721,8 +760,11 @@ added packets.
 <p>
 Get the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtcp</code></em> :</span></p></td>
@@ -744,8 +786,11 @@ Get the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>.
 Initialize a new <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> pointer that points to the first packet in
 <em class="parameter"><code>rtcp</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtcp</code></em> :</span></p></td>
@@ -771,8 +816,11 @@ Initialize a new <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#
 Move the packet pointer <em class="parameter"><code>packet</code></em> to the next packet in the payload.
 Use <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-first-packet" title="gst_rtcp_buffer_get_first_packet ()"><code class="function">gst_rtcp_buffer_get_first_packet()</code></a> to initialize <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -797,8 +845,11 @@ function.</td>
 Add a new packet of <em class="parameter"><code>type</code></em> to <em class="parameter"><code>rtcp</code></em>. <em class="parameter"><code>packet</code></em> will point to the newly created 
 packet.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rtcp</code></em> :</span></p></td>
@@ -828,8 +879,11 @@ if the max mtu is exceeded for the buffer.</td>
 <p>
 Removes the packet pointed to by <em class="parameter"><code>packet</code></em> and moves pointer to the next one
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -851,8 +905,11 @@ function.</td>
 <p>
 Get the packet padding of the packet pointed to by <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -873,8 +930,11 @@ Get the packet padding of the packet pointed to by <em class="parameter"><code>p
 <p>
 Get the count field in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -896,8 +956,11 @@ valid packet.</td>
 <p>
 Get the packet type of the packet pointed to by <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -920,8 +983,11 @@ pointing to a valid packet.</td>
 Get the length field of <em class="parameter"><code>packet</code></em>. This is the length of the packet in 
 32-bit words minus one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -947,8 +1013,11 @@ Get the length field of <em class="parameter"><code>packet</code></em>. This is 
 <p>
 Parse the SR sender info and store the values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -990,8 +1059,11 @@ Parse the SR sender info and store the values.
 <p>
 Set the given values in the SR packet <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1028,8 +1100,11 @@ Set the given values in the SR packet <em class="parameter"><code>packet</code><
 <p>
 Get the ssrc field of the RR <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1051,8 +1126,11 @@ Get the ssrc field of the RR <em class="parameter"><code>packet</code></em>.
 <p>
 Set the ssrc field of the RR <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1073,8 +1151,11 @@ Set the ssrc field of the RR <em class="parameter"><code>packet</code></em>.
 <p>
 Get the number of report blocks in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1104,8 +1185,11 @@ Get the number of report blocks in <em class="parameter"><code>packet</code></em
 Parse the values of the <em class="parameter"><code>nth</code></em> report block in <em class="parameter"><code>packet</code></em> and store the result in
 the values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1162,8 +1246,11 @@ the values.
 <p>
 Add a new report block to <em class="parameter"><code>packet</code></em> with the given values.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1226,8 +1313,11 @@ Set the <em class="parameter"><code>nth</code></em> new report block in <em clas
 <p>
 Note: Not implemented.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1276,8 +1366,11 @@ Note: Not implemented.
 <p>
 Get the number of items in the SDES packet <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1298,8 +1391,11 @@ Get the number of items in the SDES packet <em class="parameter"><code>packet</c
 <p>
 Move to the first SDES item in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1320,8 +1416,11 @@ Move to the first SDES item in <em class="parameter"><code>packet</code></em>.
 <p>
 Move to the next SDES item in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1342,8 +1441,11 @@ Move to the next SDES item in <em class="parameter"><code>packet</code></em>.
 <p>
 Get the SSRC of the current SDES item.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1364,8 +1466,11 @@ Get the SSRC of the current SDES item.
 <p>
 Move to the first SDES entry in the current item.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1387,8 +1492,11 @@ Move to the first SDES entry in the current item.
 <p>
 Move to the next SDES entry in the current item.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1420,8 +1528,11 @@ When <em class="parameter"><code>type</code></em> refers to a text item, <em cla
 that this UTF8 string is NOT null-terminated. Use
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-sdes-copy-entry" title="gst_rtcp_packet_sdes_copy_entry ()"><code class="function">gst_rtcp_packet_sdes_copy_entry()</code></a> to get a null-terminated copy of the entry.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1461,8 +1572,11 @@ that this UTF8 string is NOT null-terminated. Use
 This function is like <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-sdes-get-entry" title="gst_rtcp_packet_sdes_get_entry ()"><code class="function">gst_rtcp_packet_sdes_get_entry()</code></a> but it returns a
 null-terminated copy of the data instead. use <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1499,8 +1613,11 @@ null-terminated copy of the data instead. use <a href="http://library.gnome.org/
 <p>
 Add a new SDES item for <em class="parameter"><code>ssrc</code></em> to <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1530,8 +1647,11 @@ items has been exceeded for the SDES packet or the MTU has been reached.</td>
 <p>
 Add a new SDES entry to the current item in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1567,8 +1687,11 @@ reached.</td>
 <p>
 Get the number of SSRC fields in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1590,8 +1713,11 @@ Get the number of SSRC fields in <em class="parameter"><code>packet</code></em>.
 <p>
 Get the <em class="parameter"><code>nth</code></em> SSRC of the BYE <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1617,8 +1743,11 @@ Get the <em class="parameter"><code>nth</code></em> SSRC of the BYE <em class="p
 <p>
 Add <em class="parameter"><code>ssrc</code></em> to the BYE <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1648,8 +1777,11 @@ the max MTU is exceeded or the number of sources blocks is greater than
 <p>
 Adds <em class="parameter"><code>len</code></em> SSRCs in <em class="parameter"><code>ssrc</code></em> to BYE <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1682,8 +1814,11 @@ the max MTU is exceeded or the number of sources blocks is greater than
 <p>
 Get the length of the reason string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1705,8 +1840,11 @@ present.</td>
 <p>
 Get the reason in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1729,8 +1867,11 @@ a reason string. The string must be freed with <a href="http://library.gnome.org
 <p>
 Set the reason string to <em class="parameter"><code>reason</code></em> in <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1755,8 +1896,11 @@ Set the reason string to <em class="parameter"><code>reason</code></em> in <em c
 <p>
 Get the feedback message type of the FB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1778,8 +1922,11 @@ Get the feedback message type of the FB <em class="parameter"><code>packet</code
 <p>
 Set the feedback message type of the FB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1800,8 +1947,11 @@ Set the feedback message type of the FB <em class="parameter"><code>packet</code
 <p>
 Get the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1823,8 +1973,11 @@ Get the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packe
 <p>
 Set the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1845,8 +1998,11 @@ Set the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packe
 <p>
 Get the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1868,8 +2024,11 @@ Get the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet
 <p>
 Set the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1891,8 +2050,11 @@ Set the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet
 Get the length of the Feedback Control Information attached to a
 RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1915,8 +2077,11 @@ RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 Set the length of the Feedback Control Information attached to a
 RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1942,8 +2107,11 @@ RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 <p>
 Get the Feedback Control Information attached to a RTPFB or PSFB <em class="parameter"><code>packet</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>packet</code></em> :</span></p></td>
@@ -1967,8 +2135,11 @@ the NTP time of an SR RTCP message and contains, in the upper 32 bits, the
 number of seconds since 1900 and, in the lower 32 bits, the fractional
 seconds. The resulting value will be the number of nanoseconds since 1970.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ntptime</code></em> :</span></p></td>
@@ -1992,8 +2163,11 @@ pass a value with nanoseconds since 1970. The NTP time will, in the upper
 bits, the fractional seconds. The resulting value can be used as an ntptime
 for constructing SR RTCP packets.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unixtime</code></em> :</span></p></td>
@@ -2014,8 +2188,11 @@ for constructing SR RTCP packets.
 Convert <em class="parameter"><code>name</code></em> into a <em class="parameter"><code>GstRTCPSDESType</code></em>. <em class="parameter"><code>name</code></em> is typically a key in a
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="type">GstStructure</span></a> containing SDES items.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
@@ -2037,8 +2214,11 @@ is a private sdes item.</td>
 Converts <em class="parameter"><code>type</code></em> to the string equivalent. The string is typically used as a
 key in a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="type">GstStructure</span></a> containing SDES items.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
@@ -2061,6 +2241,6 @@ key in a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstre
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

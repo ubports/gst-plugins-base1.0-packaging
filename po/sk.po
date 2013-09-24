@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2010-11-08 15:34+0100\n"
 "Last-Translator: Peter Tuhársky <tuharsky@misbb.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -79,6 +79,10 @@ msgid "Internal data stream error."
 msgstr "Vnútorná chyba prúdu údajov."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Chýa prvok '%s' - skontrolujte svoju inštaláciu GStreamer."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Na prehratie tohto prúdu údajov je vyžadovaný zásuvný modul %s, ktorý nie je "
@@ -90,9 +94,9 @@ msgstr "Nepodarilo sa zistiť typ prádu údajov"
 msgid "This appears to be a text file"
 msgstr "Tento súbor je asi textový"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Chýa prvok '%s' - skontrolujte svoju inštaláciu GStreamer."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Nepodarilo sa vytvoriť prvok \"decodebin\""
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -164,11 +168,186 @@ msgstr "Zdrojový prvok je chybný."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Chyba pri posielaní údajov do \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Zvuk sa nedá nahrávať dostatočne rýchlo"
+
 msgid "This CD has no audio tracks"
 msgstr "Toto CD nemá zvukové stopy"
 
-msgid "Can't record audio fast enough"
-msgstr "Zvuk sa nedá nahrávať dostatočne rýchlo"
+msgid "ID3 tag"
+msgstr "ID3 značka"
+
+msgid "APE tag"
+msgstr "APE značka"
+
+msgid "ICY internet radio"
+msgstr "Internetové rádio ICY"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Bezstratový zvuk Apple (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Slobodný bezstratový zvukový kodek (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Bezstratový verný zvuk (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Reč"
+
+msgid "CYUV Lossless"
+msgstr "Bezstratové CYUV"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Bezstratové MSZH"
+
+msgid "Run-length encoding"
+msgstr "Kódovanie počas prehrávania"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Titulkový formát TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Formát titulkov sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Formát titulkov Kate"
+
+msgid "Sami subtitle format"
+msgstr "Formát titulkov sami"
+
+msgid "TMPlayer subtitle format"
+msgstr "Titulkový formát TMPlayer"
+
+msgid "Kate subtitle format"
+msgstr "Formát titulkov Kate"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "Nekomprimovaný YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Nekomprimovaný šedotónový obrázok"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Nekomprimovaný pakovaný YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Nekomprimovaný planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Nekomprimovaný planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Nekomprimovaný paletizovaný %d-bit %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Nekomprimovaný paletizovaný %d-bit %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 Verzie %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "Nekomprimovaný YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Surový %d-bit PCM zvuk"
+
+msgid "Audio CD source"
+msgstr "Zdroj zvukové CD"
+
+msgid "DVD source"
+msgstr "Zdroj DVD"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Zdroj Real Time Streaming Protocol (RTSP)"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Zdroj protokolu Microsoft Media Server (MMS)"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "zdroj protokolu %s"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s demuxer"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s dekodér"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s muxer"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s enkodér"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "Prvok GStreamera %s"
+
+msgid "Unknown source element"
+msgstr "Neznámy zdrojový prvok"
+
+msgid "Unknown sink element"
+msgstr "Neznámy prvok sink"
+
+msgid "Unknown element"
+msgstr "Neznámy prvok"
+
+msgid "Unknown decoder element"
+msgstr "Neznámy prvok dekodéra"
+
+msgid "Unknown encoder element"
+msgstr "Neznámy prvok enkodéra"
+
+msgid "Plugin or element of unknown type"
+msgstr "Neznámy typ zásuvného modulu alebo prvku"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Načítanie značky zlyhalo: málo údajov"
@@ -332,168 +511,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3 značka"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "APE značka"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "Internetové rádio ICY"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Bezstratový zvuk Apple (ALAC)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Slobodný bezstratový zvukový kodek (FLAC)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Bezstratový verný zvuk (TTA)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows Media Reč"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "Bezstratové CYUV"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Bezstratové MSZH"
-
-msgid "Run-length encoding"
-msgstr "Kódovanie počas prehrávania"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "Titulkový formát TMPlayer"
-
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Formát titulkov sami"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Formát titulkov Kate"
-
-msgid "Sami subtitle format"
-msgstr "Formát titulkov sami"
-
-msgid "TMPlayer subtitle format"
-msgstr "Titulkový formát TMPlayer"
-
-msgid "Kate subtitle format"
-msgstr "Formát titulkov Kate"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "Nekomprimovaný YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Nekomprimovaný šedotónový obrázok"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Nekomprimovaný YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Nekomprimovaný paletizovaný %d-bit %s"
-
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 Verzie %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "Nekomprimovaný YUV"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Surový %d-bit PCM zvuk"
-
-msgid "Audio CD source"
-msgstr "Zdroj zvukové CD"
-
-msgid "DVD source"
-msgstr "Zdroj DVD"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Zdroj Real Time Streaming Protocol (RTSP)"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Zdroj protokolu Microsoft Media Server (MMS)"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "zdroj protokolu %s"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s demuxer"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s dekodér"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s muxer"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s enkodér"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "Prvok GStreamera %s"
-
-msgid "Unknown source element"
-msgstr "Neznámy zdrojový prvok"
-
-msgid "Unknown sink element"
-msgstr "Neznámy prvok sink"
-
-msgid "Unknown element"
-msgstr "Neznámy prvok"
-
-msgid "Unknown decoder element"
-msgstr "Neznámy prvok dekodéra"
-
-msgid "Unknown encoder element"
-msgstr "Neznámy prvok enkodéra"
-
-msgid "Plugin or element of unknown type"
-msgstr "Neznámy typ zásuvného modulu alebo prvku"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "Nekomprimovaný YUV"
 
 #~ msgid "Master"
 #~ msgstr "Hlavný"
@@ -531,14 +579,8 @@ msgstr "Neznámy typ zásuvného modulu alebo prvku"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Spojenie s %s:%d bolo odmietnuté."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Nekomprimovaný planar YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Nekomprimovaný planar YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Nekomprimovaný pakovaný YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Nekomprimovaný pakovaný YUV 4:1:0"
@@ -587,9 +629,6 @@ msgstr "Neznámy typ zásuvného modulu alebo prvku"
 
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "RTSP prúdy sa teraz nedajú prehrávať."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Nepodarilo sa vytvoriť prvok \"decodebin\""
 
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "

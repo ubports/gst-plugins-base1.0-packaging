@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_SUBTITLE_OVERLAY_H__
@@ -74,14 +74,12 @@ struct _GstSubtitleOverlay
   GstPad *video_block_pad;
   gulong video_block_id;
   gboolean video_sink_blocked;
-  GstSegment video_segment;
   gint fps_n, fps_d;
 
   GstPad *subtitle_sinkpad;
   GstPad *subtitle_block_pad;
   gulong subtitle_block_id;
   gboolean subtitle_sink_blocked;
-  GstSegment subtitle_segment;
   gboolean subtitle_flush;
   gboolean subtitle_error;
 

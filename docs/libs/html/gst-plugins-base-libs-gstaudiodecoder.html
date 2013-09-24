@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudiodecoder</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudioclock.html" title="gstaudioclock">
 <link rel="next" href="gst-plugins-base-libs-gstaudioencoder.html" title="gstaudioencoder">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -139,7 +139,7 @@ GstAudioDecoder and subclass should cooperate as follows.
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Configuration</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     Initially, GstAudioDecoder calls <em class="parameter"><code>start</code></em> when the decoder element
     is activated, which allows subclass to perform any global setup.
@@ -160,7 +160,7 @@ GstAudioDecoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Data processing</b></p>
-<ul class="itemizedlist" type="disc">
+<ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       Base class gathers input data, and optionally allows subclass
       to parse this into subsequently manageable (as defined by subclass)
@@ -191,7 +191,7 @@ GstAudioDecoder and subclass should cooperate as follows.
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Shutdown phase</b></p>
-<ul class="itemizedlist" type="disc"><li class="listitem"><p>
+<ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
     GstAudioDecoder class calls <em class="parameter"><code>stop</code></em> to inform the subclass that data
     parsing will be stopped.
   </p></li></ul>
@@ -234,7 +234,7 @@ bitrates.
 <p>
 Things that subclass need to take care of:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Provide pad templates</p></li>
 <li class="listitem"><p>
      Set source pad caps when appropriate
@@ -312,8 +312,11 @@ Subclasses can override any of the available virtual methods or not, as
 needed. At minimum <em class="parameter"><code>handle_frame</code></em> (and likely <em class="parameter"><code>set_format</code></em>) needs to be
 overridden.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GstElementClass"><span class="type">GstElementClass</span></a> <em class="structfield"><code><a name="GstAudioDecoderClass.element-class"></a>element_class</code></em>;</span></p></td>
@@ -430,8 +433,11 @@ media processing.  Otherwise, it is considered a "glitch" and only a warning
 is logged. In either case, <em class="parameter"><code>ret</code></em> is set to the proper value to
 return to upstream/caller (indicating either GST_FLOW_ERROR or GST_FLOW_OK).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>el</code></em> :</span></p></td>
@@ -483,8 +489,11 @@ The name of the templates for the sink pad.
 <p>
 Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>base audio codec instance</td>
@@ -508,8 +517,11 @@ The name of the templates for the source pad.
 <p>
 Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
 <td>base audio codec instance</td>
@@ -536,8 +548,11 @@ data in <em class="parameter"><code>buf</code></em>.
 Note that a frame received in <code class="function">gst_audio_decoder_handle_frame()</code> may be
 invalidated by a call to this function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -567,8 +582,11 @@ invalidated by a call to this function.
 <p>
 Configure output info on the srcpad of <em class="parameter"><code>dec</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -594,8 +612,11 @@ Configure output info on the srcpad of <em class="parameter"><code>dec</code></e
 <p>
 Negotiate with downstreame elements to currently configured <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -620,8 +641,11 @@ Negotiate with downstreame elements to currently configured <a class="link" href
 Helper function that allocates a buffer to hold an audio frame
 for <em class="parameter"><code>dec</code></em>'s current output format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -653,8 +677,11 @@ used by the base class and its <em class="parameter"><code>params</code></em>.
 <p>
 Unref the <em class="parameter"><code>allocator</code></em> after use it.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -680,8 +707,11 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <div class="refsect2">
 <a name="gst-audio-decoder-get-audio-info"></a><h3>gst_audio_decoder_get_audio_info ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="returnvalue">GstAudioInfo</span></a> *      gst_audio_decoder_get_audio_info    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -699,8 +729,11 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <div class="refsect2">
 <a name="gst-audio-decoder-get-estimate-rate"></a><h3>gst_audio_decoder_get_estimate_rate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_decoder_get_estimate_rate (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -718,8 +751,11 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <div class="refsect2">
 <a name="gst-audio-decoder-get-delay"></a><h3>gst_audio_decoder_get_delay ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_decoder_get_delay         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -740,8 +776,11 @@ used. <span class="annotation">[<acronym title="Parameter for returning results.
 <p>
 Queries decoder drain handling.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -766,8 +805,11 @@ MT safe.</td>
 Sets the variables pointed to by <em class="parameter"><code>min</code></em> and <em class="parameter"><code>max</code></em> to the currently configured
 latency.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -791,8 +833,11 @@ latency.
 <div class="refsect2">
 <a name="gst-audio-decoder-get-max-errors"></a><h3>gst_audio_decoder_get_max_errors ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_decoder_get_max_errors    (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -813,8 +858,11 @@ latency.
 <p>
 Queries decoder's latency aggregation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -836,8 +884,11 @@ MT safe.</td>
 <p>
 Queries decoder required format handling.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -861,8 +912,11 @@ MT safe.</td>
 <p>
 Return current parsing (sync and eos) state.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -887,8 +941,11 @@ Return current parsing (sync and eos) state.
 <p>
 Queries decoder packet loss concealment handling.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -907,8 +964,11 @@ MT safe.</td>
 <div class="refsect2">
 <a name="gst-audio-decoder-get-plc-aware"></a><h3>gst_audio_decoder_get_plc_aware ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gst_audio_decoder_get_plc_aware     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -929,8 +989,11 @@ MT safe.</td>
 <p>
 Queries current audio jitter tolerance threshold.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -953,8 +1016,11 @@ MT safe.</td>
 <p>
 Allows baseclass to perform byte to time estimated conversion.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -982,8 +1048,11 @@ real data.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1006,8 +1075,11 @@ MT safe.
 <p>
 Sets decoder latency.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1035,8 +1107,11 @@ Sets numbers of tolerated decoder errors, where a tolerated one is then only
 warned about, but more than tolerated will lead to fatal error.  Default
 is set to GST_AUDIO_DECODER_MAX_ERRORS.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1061,8 +1136,11 @@ Sets decoder minimum aggregation latency.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1092,8 +1170,11 @@ or based on the input data.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1119,8 +1200,11 @@ and codec are capable and allow handling plc.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1142,8 +1226,11 @@ MT safe.
 <p>
 Indicates whether or not subclass handles packet loss concealment (plc).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1168,8 +1255,11 @@ Configures decoder audio jitter tolerance threshold.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1202,8 +1292,11 @@ of the usual CODEC/AUDIO_CODEC tags.
 <p>
 MT safe.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dec</code></em> :</span></p></td>
@@ -1254,6 +1347,6 @@ MT safe.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

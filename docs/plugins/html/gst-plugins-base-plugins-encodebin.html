@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>encodebin</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-decodebin.html" title="decodebin">
 <link rel="next" href="gst-plugins-base-plugins-videoconvert.html" title="videoconvert">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -81,6 +81,7 @@ GstEncodeBin implements
 <a name="gst-plugins-base-plugins-encodebin.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-pad" title='The "request-pad" signal'>request-pad</a>"                                    : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS"><code class="literal">Action</code></a>
+  "<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-profile-pad" title='The "request-profile-pad" signal'>request-profile-pad</a>"                            : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS"><code class="literal">Action</code></a>
 </pre>
 </div>
 <div class="refsect1">
@@ -99,8 +100,8 @@ encoded/muxed/converted stream in output.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp10591568"></a><h3>Features</h3>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<a name="id-1.2.14.8.4.1"></a><h3>Features</h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
 Automatic encoder and muxer selection based on elements available on the
 system.
@@ -164,9 +165,12 @@ user a way to install the missing element.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp11945680"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.14.8.5.1"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -187,9 +191,12 @@ user a way to install the missing element.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp11953088"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.14.8.5.2"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -209,8 +216,11 @@ user a way to install the missing element.
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -230,8 +240,11 @@ user a way to install the missing element.
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -251,8 +264,11 @@ user a way to install the missing element.
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -352,8 +368,11 @@ Use this method to request an unused sink request <a href="http://gstreamer.free
 provided <em class="parameter"><code>caps</code></em> as input. You must release the pad with
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-release-request-pad"><code class="function">gst_element_release_request_pad()</code></a> when you are done with it.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encodebin</code></em> :</span></p></td>
@@ -376,10 +395,48 @@ created or is available.</td>
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstEncodeBin-request-profile-pad"></a><h3>The <code class="literal">"request-profile-pad"</code> signal</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*             user_function                      (<a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin"><span class="type">GstEncodeBin</span></a> *encodebin,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>        *profilename,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS"><code class="literal">Action</code></a></pre>
+<p>
+Use this method to request an unused sink request <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> from the profile
+<em class="parameter"><code>profilename</code></em>. You must release the pad with
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-release-request-pad"><code class="function">gst_element_release_request_pad()</code></a> when you are done with it.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>encodebin</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin"><span class="type">GstEncodeBin</span></a> instance</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>profilename</code></em> :</span></p></td>
+<td>the name of a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> could be
+created or is available.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

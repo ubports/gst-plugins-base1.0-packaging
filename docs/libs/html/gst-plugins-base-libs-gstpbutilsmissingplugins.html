@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstpbutilsmissingplugins</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsdescriptions.html" title="gstpbutilsdescriptions">
 <link rel="next" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html" title="gstpbutilsinstallplugins">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -74,7 +74,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp22565392"></a><p>
+<a name="id-1.2.13.7.4.2.1"></a><p>
 Functions to create, recognise and parse missing-plugins messages for
 applications and elements.
 </p>
@@ -83,7 +83,7 @@ Missing-plugin messages are posted on the bus by elements like decodebin
 or playbin if they can't find an appropriate source element or decoder
 element. The application can use these messages for two things:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
     concise error/problem reporting to the user mentioning what exactly
     is missing, see <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-plugin-message-get-description" title="gst_missing_plugin_message_get_description ()"><code class="function">gst_missing_plugin_message_get_description()</code></a>
@@ -120,8 +120,11 @@ element to be passed to an external installer called via
 This function is mainly for applications that call external plugin
 installation mechanisms using one of the two above-mentioned functions.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
@@ -151,8 +154,11 @@ This function is mainly for applications that need a human-readable string
 describing a missing plugin, given a previously collected missing-plugin
 message
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
@@ -174,8 +180,11 @@ string with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Al
 <p>
 Checks whether <em class="parameter"><code>msg</code></em> is a missing plugins message.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
@@ -200,8 +209,11 @@ Creates a missing-plugin message for <em class="parameter"><code>element</code><
 that a decoder element for a particular set of (fixed) caps is missing.
 This function is mainly for use in plugins.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>element</code></em> :</span></p></td>
@@ -229,8 +241,11 @@ Creates a missing-plugin message for <em class="parameter"><code>element</code><
 that an encoder element for a particular set of (fixed) caps is missing.
 This function is mainly for use in plugins.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>element</code></em> :</span></p></td>
@@ -258,8 +273,11 @@ Creates a missing-plugin message for <em class="parameter"><code>element</code><
 that a source element for a particular URI protocol is missing. This
 function is mainly for use in plugins.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>element</code></em> :</span></p></td>
@@ -288,8 +306,11 @@ Creates a missing-plugin message for <em class="parameter"><code>element</code><
 that a sink element for a particular URI protocol is missing. This
 function is mainly for use in plugins.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>element</code></em> :</span></p></td>
@@ -318,8 +339,11 @@ Creates a missing-plugin message for <em class="parameter"><code>element</code><
 that a certain required element is missing. This function is mainly for
 use in plugins.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>element</code></em> :</span></p></td>
@@ -354,8 +378,11 @@ installation mechanisms using one of the two above-mentioned functions in
 the case where the application knows exactly what kind of plugin it is
 missing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>protocol</code></em> :</span></p></td>
@@ -386,8 +413,11 @@ installation mechanisms using one of the two above-mentioned functions in
 the case where the application knows exactly what kind of plugin it is
 missing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>protocol</code></em> :</span></p></td>
@@ -418,8 +448,11 @@ installation mechanisms using one of the two above-mentioned functions in
 the case where the application knows exactly what kind of plugin it is
 missing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>factory_name</code></em> :</span></p></td>
@@ -450,8 +483,11 @@ installation mechanisms using one of the two above-mentioned functions in
 the case where the application knows exactly what kind of plugin it is
 missing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>decode_caps</code></em> :</span></p></td>
@@ -481,8 +517,11 @@ installation mechanisms using one of the two above-mentioned functions in
 the case where the application knows exactly what kind of plugin it is
 missing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>encode_caps</code></em> :</span></p></td>
@@ -500,6 +539,6 @@ with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocatio
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

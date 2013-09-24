@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -164,9 +164,8 @@ vorbis_parse_set_header_on_caps (GstVorbisParse * parse, GstCaps * caps)
   g_value_init (&value, GST_TYPE_BUFFER);
   gst_value_set_buffer (&value, buf3);
   gst_value_array_append_value (&array, &value);
-  gst_structure_set_value (structure, "streamheader", &array);
+  gst_structure_take_value (structure, "streamheader", &array);
   g_value_unset (&value);
-  g_value_unset (&array);
 }
 
 static void

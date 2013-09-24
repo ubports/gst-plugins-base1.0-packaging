@@ -84,13 +84,16 @@
 #define GST_PACKAGE_ORIGIN "Unknown package origin"
 
 /* GStreamer package release date/time for plugins as YYYY-MM-DD */
-#define GST_PACKAGE_RELEASE_DATETIME "2013-08-28"
+#define GST_PACKAGE_RELEASE_DATETIME "2013-09-19"
 
 /* Define if static plugins should be built */
 #undef GST_PLUGIN_BUILD_STATIC
 
 /* Define to enable ALSA (used by alsa). */
 #undef HAVE_ALSA
+
+/* ARM NEON support is enabled */
+#undef HAVE_ARM_NEON
 
 /* Define to enable CDParanoia (used by cdparanoia). */
 #undef HAVE_CDPARANOIA
@@ -209,6 +212,9 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* Defined if mmap is supported */
+#undef HAVE_MMAP
+
 /* Define to enable Xiph Ogg library (used by ogg). */
 #undef HAVE_OGG
 
@@ -306,9 +312,6 @@
    */
 #undef LT_OBJDIR
 
-/* Define to 1 if your C compiler doesn't accept -c and -o together. */
-#undef NO_MINUS_C_MINUS_O
-
 /* Name of package */
 #define PACKAGE "gst-plugins-base"
 
@@ -319,7 +322,7 @@
 #define PACKAGE_NAME "GStreamer Base Plug-ins"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "GStreamer Base Plug-ins 1.0.10"
+#define PACKAGE_STRING "GStreamer Base Plug-ins 1.1.90"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "gst-plugins-base"
@@ -328,7 +331,7 @@
 #undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.10"
+#define PACKAGE_VERSION "1.1.90"
 
 /* directory where plugins are located */
 #ifdef _DEBUG
@@ -362,7 +365,7 @@
 #undef USE_TREMOLO
 
 /* Version number of package */
-#define VERSION "1.0.10"
+#define VERSION "1.1.90"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.30.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2010-12-31 23:21+0200\n"
 "Last-Translator: Tommi Vainikainen <Tommi.Vainikainen@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -80,6 +80,10 @@ msgid "Internal data stream error."
 msgstr "Sisäisen tietovirran virhe."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Puuttuva elementti \"%s\" - tarkista GStreamer-asennuksesi."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Virran toistamiseen tarvitaan %s-liitännäinen, mutta se ei ole asennettu."
@@ -90,9 +94,9 @@ msgstr "Virran tyyppiä ei voitu määrittää"
 msgid "This appears to be a text file"
 msgstr "Tämä näyttää olevan tekstitiedosto"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Puuttuva elementti \"%s\" - tarkista GStreamer-asennuksesi."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Elementtiä \"decodebin\" ei voitu luoda."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -164,11 +168,186 @@ msgstr "Lähde-elementti on virheellinen."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Virhe lähetettäessä tietoa kohteeseen \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Ääntä ei voi nauhoittaa tarpeeksi nopeasti"
+
 msgid "This CD has no audio tracks"
 msgstr "Tällä CD-levyllä ei ole ääniraitoja"
 
-msgid "Can't record audio fast enough"
-msgstr "Ääntä ei voi nauhoittaa tarpeeksi nopeasti"
+msgid "ID3 tag"
+msgstr "ID3-tagi"
+
+msgid "APE tag"
+msgstr "APE-tagi"
+
+msgid "ICY internet radio"
+msgstr "ICY-Internet-radio"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows-media (puhe)"
+
+msgid "CYUV Lossless"
+msgstr "Häviötön CYUV"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Häviötön MSZH"
+
+msgid "Run-length encoding"
+msgstr "RLE-koodaus"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer-tekstitysmuoto"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami-tekstitysmuoto"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate-tekstitysmuoto"
+
+msgid "Sami subtitle format"
+msgstr "Sami-tekstitysmuoto"
+
+msgid "TMPlayer subtitle format"
+msgstr "TMPlayer-tekstitysmuoto"
+
+msgid "Kate subtitle format"
+msgstr "Kate-tekstitysmuoto"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "Pakkaamaton YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Pakkaamaton harmaakuva"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Pakkaamaton paketoitu YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Pakkaamaton tasollinen YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Pakkaamaton tasollinen YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Pakkaamaton paletillinen %d-bittinen %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Pakkaamaton paletillinen %d-bittinen %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 versio %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "Pakkaamaton YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Raaka %d-bittinen pcm-ääni"
+
+msgid "Audio CD source"
+msgstr "Ääni-CD-lähde"
+
+msgid "DVD source"
+msgstr "DVD-lähde"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Real Time Streaming Protocol (RTSP) -lähde"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Microsoft Media Server (MMS) -protokollalähde"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "%s-protokollalähde"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s-video-RTP-purkaja"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s-ääni-RTP-purkaja"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "%s-RTP-purkaja"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s-demukseri"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s-purkaja"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s-video-RTP-pakkain"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s-ääni-RTP-pakkain"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s-RTP-pakkain"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s-mukseri"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s-pakkain"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "GStreamer-elementti %s"
+
+msgid "Unknown source element"
+msgstr "Tuntematon lähde-elementti"
+
+msgid "Unknown sink element"
+msgstr "Tuntematon nieluelementti"
+
+msgid "Unknown element"
+msgstr "Tuntematon elementti"
+
+msgid "Unknown decoder element"
+msgstr "Tuntematon purkajaelementti"
+
+msgid "Unknown encoder element"
+msgstr "Tuntematon kodekkielementti"
+
+msgid "Plugin or element of unknown type"
+msgstr "Liitännäisen tai elementin tyyppi on tuntematon"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Tagin lukeminen epäonnistui: ei riittävästi dataa"
@@ -332,168 +511,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3-tagi"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "APE-tagi"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "ICY-Internet-radio"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows-media (puhe)"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "Häviötön CYUV"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Häviötön MSZH"
-
-msgid "Run-length encoding"
-msgstr "RLE-koodaus"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "TMPlayer-tekstitysmuoto"
-
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sami-tekstitysmuoto"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Kate-tekstitysmuoto"
-
-msgid "Sami subtitle format"
-msgstr "Sami-tekstitysmuoto"
-
-msgid "TMPlayer subtitle format"
-msgstr "TMPlayer-tekstitysmuoto"
-
-msgid "Kate subtitle format"
-msgstr "Kate-tekstitysmuoto"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "Pakkaamaton YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Pakkaamaton harmaakuva"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Pakkaamaton YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Pakkaamaton paletillinen %d-bittinen %s"
-
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 versio %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "Pakkaamaton YUV"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Raaka %d-bittinen pcm-ääni"
-
-msgid "Audio CD source"
-msgstr "Ääni-CD-lähde"
-
-msgid "DVD source"
-msgstr "DVD-lähde"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Real Time Streaming Protocol (RTSP) -lähde"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Microsoft Media Server (MMS) -protokollalähde"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "%s-protokollalähde"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s-video-RTP-purkaja"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s-ääni-RTP-purkaja"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "%s-RTP-purkaja"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s-demukseri"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s-purkaja"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s-video-RTP-pakkain"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s-ääni-RTP-pakkain"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s-RTP-pakkain"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s-mukseri"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s-pakkain"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "GStreamer-elementti %s"
-
-msgid "Unknown source element"
-msgstr "Tuntematon lähde-elementti"
-
-msgid "Unknown sink element"
-msgstr "Tuntematon nieluelementti"
-
-msgid "Unknown element"
-msgstr "Tuntematon elementti"
-
-msgid "Unknown decoder element"
-msgstr "Tuntematon purkajaelementti"
-
-msgid "Unknown encoder element"
-msgstr "Tuntematon kodekkielementti"
-
-msgid "Plugin or element of unknown type"
-msgstr "Liitännäisen tai elementin tyyppi on tuntematon"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "Pakkaamaton YUV"
 
 #~ msgid "Master"
 #~ msgstr "Pääkanava"
@@ -531,14 +579,8 @@ msgstr "Liitännäisen tai elementin tyyppi on tuntematon"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Yhteys kohteeseen %s:%d estettiin."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Pakkaamaton tasollinen YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Pakkaamaton tasollinen YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Pakkaamaton paketoitu YUV 4:2:0"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Pakkaamaton paketoitu YUV 4:1:0"
@@ -587,9 +629,6 @@ msgstr "Liitännäisen tai elementin tyyppi on tuntematon"
 
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "RTSP-virtoja ei voi vielä soittaa."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Elementtiä \"decodebin\" ei voitu luoda."
 
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "

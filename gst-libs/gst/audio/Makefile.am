@@ -82,25 +82,27 @@ gir_headers=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@include_HEA
 gir_headers+=$(patsubst %,$(builddir)/%, $(built_headers))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstaudio_@GST_API_VERSION@_la_SOURCES))
 gir_sources+=$(patsubst %,$(builddir)/%, $(built_sources))
-gir_cincludes=$(patsubst %,--c-include='gst/audio/%',$(libgstaudio_@GST_API_VERSION@include_HEADERS))
-gir_cincludes+=$(patsubst %,--c-include='gst/audio/%',$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS))
 
 GstAudio-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstaudio-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
-		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstAudio \
 		--nsversion=@GST_API_VERSION@ \
 		--warn-all \
 		--strip-prefix=Gst \
 		-I$(top_srcdir)/gst-libs \
 		-I$(top_builddir)/gst-libs \
-		$(gir_cincludes) \
+		--c-include "gst/audio/audio.h" \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
-		--library=$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+		--add-include-path="$(top_builddir)/gst-libs/gst/tag/" \
 		--library=libgstaudio-@GST_API_VERSION@.la \
+		--library-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=libdir gstreamer-@GST_API_VERSION@` \
+		--library-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=libdir gstreamer-base-@GST_API_VERSION@` \
+		--library-path="$(top_builddir)/gst-libs/gst/tag/" \
 		--include=Gst-@GST_API_VERSION@ \
 		--include=GstBase-@GST_API_VERSION@ \
+		--include=GstTag-@GST_API_VERSION@ \
 		--libtool="$(top_builddir)/libtool" \
 		--pkg gstreamer-@GST_API_VERSION@ \
 		--pkg gstreamer-base-@GST_API_VERSION@ \
@@ -124,6 +126,7 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 		$(INTROSPECTION_COMPILER) \
 		--includedir=$(srcdir) \
 		--includedir=$(builddir) \
+		--includedir="$(top_builddir)/gst-libs/gst/tag/" \
 		--includedir=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-base-@GST_API_VERSION@` \
 		--includedir=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)

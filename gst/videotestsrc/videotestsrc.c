@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -197,6 +197,9 @@ videotestsrc_setup_paintinfo (GstVideoTestSrc * v, paintinfo * p, int w, int h)
   p->tmpline2 = v->tmpline2;
   p->tmpline_u8 = v->tmpline_u8;
   p->tmpline_u16 = v->tmpline_u16;
+  p->n_lines = v->n_lines;
+  p->offset = v->offset;
+  p->lines = v->lines;
   p->x_offset = (v->horizontal_speed * v->n_frames) % width;
   if (p->x_offset < 0)
     p->x_offset += width;
@@ -243,6 +246,7 @@ videotestsrc_setup_paintinfo (GstVideoTestSrc * v, paintinfo * p, int w, int h)
   }
   p->background_color.gray = RGB_TO_Y (r, g, b);
 
+  p->subsample = v->subsample;
 }
 
 static void
@@ -251,6 +255,9 @@ videotestsrc_convert_tmpline (paintinfo * p, GstVideoFrame * frame, int j)
   int x = p->x_offset;
   int i;
   int width = frame->info.width;
+  int height = frame->info.height;
+  int n_lines = p->n_lines;
+  int offset = p->offset;
 
   if (x != 0) {
     memcpy (p->tmpline2, p->tmpline, width * 4);
@@ -266,6 +273,13 @@ videotestsrc_convert_tmpline (paintinfo * p, GstVideoFrame * frame, int j)
   }
 
   p->convert_tmpline (p, frame, j);
+
+  if (j == height - 1) {
+    while (j % n_lines - offset != n_lines - 1) {
+      j++;
+      p->convert_tmpline (p, frame, j);
+    }
+  }
 }
 
 #define BLEND1(a,b,x) ((a)*(x) + (b)*(255-(x)))
@@ -1134,13 +1148,24 @@ static void
 convert_hline_generic (paintinfo * p, GstVideoFrame * frame, int y)
 {
   const GstVideoFormatInfo *finfo, *uinfo;
-  gint i, width = GST_VIDEO_FRAME_WIDTH (frame);
-  gpointer src;
+  gint line, offset, i, width, height, bits;
+  guint n_lines;
+  gpointer dest;
 
   finfo = frame->info.finfo;
   uinfo = gst_video_format_get_info (finfo->unpack_format);
 
-  if (GST_VIDEO_FORMAT_INFO_DEPTH (uinfo, 0) == 16) {
+  width = GST_VIDEO_FRAME_WIDTH (frame);
+  height = GST_VIDEO_FRAME_HEIGHT (frame);
+
+  bits = GST_VIDEO_FORMAT_INFO_DEPTH (uinfo, 0);
+
+  n_lines = p->n_lines;
+  offset = p->offset;
+  line = y % n_lines;
+  dest = p->lines[line];
+
+  if (bits == 16) {
     /* 16 bits */
     for (i = 0; i < width; i++) {
       p->tmpline_u16[i * 4 + 0] = TO_16 (p->tmpline[i * 4 + 0]);
@@ -1148,13 +1173,37 @@ convert_hline_generic (paintinfo * p, GstVideoFrame * frame, int y)
       p->tmpline_u16[i * 4 + 2] = TO_16 (p->tmpline[i * 4 + 2]);
       p->tmpline_u16[i * 4 + 3] = TO_16 (p->tmpline[i * 4 + 3]);
     }
-    src = p->tmpline_u16;
+    memcpy (dest, p->tmpline_u16, width * 8);
   } else {
-    src = p->tmpline;
+    memcpy (dest, p->tmpline, width * 4);
   }
-  finfo->pack_func (finfo, GST_VIDEO_PACK_FLAG_NONE,
-      src, 0, frame->data, frame->info.stride,
-      frame->info.chroma_site, y, width);
+
+  if (line - offset == n_lines - 1) {
+    gpointer lines[8];
+    guint idx;
+
+    y -= n_lines - 1;
+
+    for (i = 0; i < n_lines; i++) {
+      idx = CLAMP (y + i + offset, 0, height - 1);
+
+      GST_DEBUG ("line %d, %d, idx %d", i, y + i + offset, idx);
+      lines[i] = p->lines[idx % n_lines];
+    }
+
+    if (p->subsample)
+      gst_video_chroma_resample (p->subsample, lines, width);
+
+    for (i = 0; i < n_lines; i++) {
+      idx = y + i + offset;
+      if (idx > height - 1)
+        break;
+      GST_DEBUG ("pack line %d", idx);
+      finfo->pack_func (finfo, GST_VIDEO_PACK_FLAG_NONE,
+          lines[i], 0, frame->data, frame->info.stride,
+          frame->info.chroma_site, idx, width);
+    }
+  }
 }
 
 static void
@@ -1184,5 +1233,106 @@ convert_hline_bayer (paintinfo * p, GstVideoFrame * frame, int y)
         R[i] = argb[4 * i + 3];
       }
     }
+  }
+}
+
+void
+gst_video_test_src_pinwheel (GstVideoTestSrc * v, GstVideoFrame * frame)
+{
+  int i;
+  int j;
+  int k;
+  int t = v->n_frames;
+  paintinfo pi = PAINT_INFO_INIT;
+  paintinfo *p = &pi;
+  struct vts_color_struct color;
+  int w = frame->info.width, h = frame->info.height;
+  double c[20];
+  double s[20];
+
+  videotestsrc_setup_paintinfo (v, p, w, h);
+
+  color = p->colors[COLOR_BLACK];
+  p->color = &color;
+
+  for (k = 0; k < 19; k++) {
+    double theta = M_PI / 19 * k + 0.001 * v->kt * t;
+    c[k] = cos (theta);
+    s[k] = sin (theta);
+  }
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      double v;
+      v = 0;
+      for (k = 0; k < 19; k++) {
+        double x, y;
+
+        x = c[k] * (i - 0.5 * w) + s[k] * (j - 0.5 * h);
+        x *= 1.0;
+
+        y = CLAMP (x, -1, 1);
+        if (k & 1)
+          y = -y;
+
+        v += y;
+      }
+
+      p->tmpline_u8[i] = CLAMP (rint (v * 128 + 128), 0, 255);
+    }
+    videotestsrc_blend_line (v, p->tmpline, p->tmpline_u8,
+        &p->foreground_color, &p->background_color, w);
+    videotestsrc_convert_tmpline (p, frame, j);
+  }
+}
+
+void
+gst_video_test_src_spokes (GstVideoTestSrc * v, GstVideoFrame * frame)
+{
+  int i;
+  int j;
+  int k;
+  int t = v->n_frames;
+  paintinfo pi = PAINT_INFO_INIT;
+  paintinfo *p = &pi;
+  struct vts_color_struct color;
+  int w = frame->info.width, h = frame->info.height;
+  double c[20];
+  double s[20];
+
+  videotestsrc_setup_paintinfo (v, p, w, h);
+
+  color = p->colors[COLOR_BLACK];
+  p->color = &color;
+
+  for (k = 0; k < 19; k++) {
+    double theta = M_PI / 19 * k + 0.001 * v->kt * t;
+    c[k] = cos (theta);
+    s[k] = sin (theta);
+  }
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      double v;
+      v = 0;
+      for (k = 0; k < 19; k++) {
+        double x, y;
+        double sharpness = 1.0;
+        double linewidth = 2.0;
+
+        x = c[k] * (i - 0.5 * w) + s[k] * (j - 0.5 * h);
+        x = linewidth * 0.5 - fabs (x);
+        x *= sharpness;
+
+        y = CLAMP (x + 0.5, 0.0, 1.0);
+
+        v += y;
+      }
+
+      p->tmpline_u8[i] = CLAMP (rint (v * 255), 0, 255);
+    }
+    videotestsrc_blend_line (v, p->tmpline, p->tmpline_u8,
+        &p->foreground_color, &p->background_color, w);
+    videotestsrc_convert_tmpline (p, frame, j);
   }
 }

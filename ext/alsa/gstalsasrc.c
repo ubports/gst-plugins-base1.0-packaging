@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -224,7 +224,6 @@ static GstStateChangeReturn
 gst_alsasrc_change_state (GstElement * element, GstStateChange transition)
 {
   GstStateChangeReturn ret = GST_STATE_CHANGE_SUCCESS;
-  GstAudioBaseSrc *src = GST_AUDIO_BASE_SRC (element);
   GstAlsaSrc *alsa = GST_ALSA_SRC (element);
   GstClock *clk;
 
@@ -238,15 +237,20 @@ gst_alsasrc_change_state (GstElement * element, GstStateChange transition)
       break;
 
     case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
-      clk = src->clock;
       alsa->driver_timestamps = FALSE;
-      if (GST_IS_SYSTEM_CLOCK (clk)) {
-        gint clocktype;
-        g_object_get (clk, "clock-type", &clocktype, NULL);
-        if (clocktype == GST_CLOCK_TYPE_MONOTONIC) {
-          GST_INFO ("Using driver timestamps !");
-          alsa->driver_timestamps = TRUE;
+
+      clk = gst_element_get_clock (element);
+      if (clk != NULL) {
+        if (GST_IS_SYSTEM_CLOCK (clk)) {
+          gint clocktype;
+          g_object_get (clk, "clock-type", &clocktype, NULL);
+          if (clocktype == GST_CLOCK_TYPE_MONOTONIC) {
+            GST_INFO ("Using driver timestamps !");
+            alsa->driver_timestamps = TRUE;
+          }
         }
+
+        gst_object_unref (clk);
       }
       break;
   }
@@ -354,15 +358,41 @@ set_hwparams (GstAlsaSrc * alsa)
   if (rrate != alsa->rate)
     goto rate_match;
 
+#ifndef GST_DISABLE_GST_DEBUG
+  /* get and dump some limits */
+  {
+    guint min, max;
+
+    snd_pcm_hw_params_get_buffer_time_min (params, &min, NULL);
+    snd_pcm_hw_params_get_buffer_time_max (params, &max, NULL);
+
+    GST_DEBUG_OBJECT (alsa, "buffer time %u, min %u, max %u",
+        alsa->buffer_time, min, max);
+
+    snd_pcm_hw_params_get_period_time_min (params, &min, NULL);
+    snd_pcm_hw_params_get_period_time_max (params, &max, NULL);
+
+    GST_DEBUG_OBJECT (alsa, "period time %u, min %u, max %u",
+        alsa->period_time, min, max);
+
+    snd_pcm_hw_params_get_periods_min (params, &min, NULL);
+    snd_pcm_hw_params_get_periods_max (params, &max, NULL);
+
+    GST_DEBUG_OBJECT (alsa, "periods min %u, max %u", min, max);
+  }
+#endif
+
   if (alsa->buffer_time != -1) {
     /* set the buffer time */
     CHECK (snd_pcm_hw_params_set_buffer_time_near (alsa->handle, params,
             &alsa->buffer_time, NULL), buffer_time);
+    GST_DEBUG_OBJECT (alsa, "buffer time %u", alsa->buffer_time);
   }
   if (alsa->period_time != -1) {
     /* set the period time */
     CHECK (snd_pcm_hw_params_set_period_time_near (alsa->handle, params,
             &alsa->period_time, NULL), period_time);
+    GST_DEBUG_OBJECT (alsa, "period time %u", alsa->period_time);
   }
 
   /* write the parameters to device */
@@ -737,6 +767,22 @@ gst_alsasrc_prepare (GstAudioSrc * asrc, GstAudioRingBufferSpec * spec)
   spec->segsize = alsa->period_size * alsa->bpf;
   spec->segtotal = alsa->buffer_size / alsa->period_size;
 
+  {
+    snd_output_t *out_buf = NULL;
+    char *msg = NULL;
+
+    snd_output_buffer_open (&out_buf);
+    snd_pcm_dump_hw_setup (alsa->handle, out_buf);
+    snd_output_buffer_string (out_buf, &msg);
+    GST_DEBUG_OBJECT (alsa, "Hardware setup: \n%s", msg);
+    snd_output_close (out_buf);
+    snd_output_buffer_open (&out_buf);
+    snd_pcm_dump_sw_setup (alsa->handle, out_buf);
+    snd_output_buffer_string (out_buf, &msg);
+    GST_DEBUG_OBJECT (alsa, "Software setup: \n%s", msg);
+    snd_output_close (out_buf);
+  }
+
   return TRUE;
 
   /* ERRORS */
@@ -936,7 +982,8 @@ device_disappeared:
     GST_ELEMENT_ERROR (asrc, RESOURCE, READ,
         (_("Error recording from audio device. "
                 "The device has been disconnected.")), (NULL));
-    goto read_error;
+    GST_ALSA_SRC_UNLOCK (asrc);
+    return (guint) - 1;
   }
 }
 

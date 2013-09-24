@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.29.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2010-08-16 01:21+0300\n"
 "Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -77,6 +77,10 @@ msgid "Internal data stream error."
 msgstr "Eroare internă a fluxului de date."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Element %s lipsă - verificați instalarea GStreamer."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Un modul de extensie %s este necesar pentru a reda acest flux, dar acesta nu "
@@ -88,9 +92,9 @@ msgstr "Nu s-a putut determina tipul fluxului"
 msgid "This appears to be a text file"
 msgstr "Acesta pare să fie un fișier text."
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Element %s lipsă - verificați instalarea GStreamer."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Nu se poate crea elementul „decodebin”."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -162,11 +166,186 @@ msgstr "Element sursă nevalid."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Eroare la trimiterea datelor către „%s:%d”."
 
+msgid "Can't record audio fast enough"
+msgstr "Nu se poate înregistra sunetul destul de repede"
+
 msgid "This CD has no audio tracks"
 msgstr "Acest CD nu conține piste audio"
 
-msgid "Can't record audio fast enough"
-msgstr "Nu se poate înregistra sunetul destul de repede"
+msgid "ID3 tag"
+msgstr "etichetă ID3"
+
+msgid "APE tag"
+msgstr "etichetă APE"
+
+msgid "ICY internet radio"
+msgstr "Radio Internet ICY"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Audio fără pierdere (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Codec audio liber fără pierdere (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Speech"
+
+msgid "CYUV Lossless"
+msgstr "CYUV fără pierdere"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "MSZH fără pierdere"
+
+msgid "Run-length encoding"
+msgstr "Codarea run-length"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Format subtitrare TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Format subtitrare Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Format subtitrare Kate"
+
+msgid "Sami subtitle format"
+msgstr "Format subtitrare Sami"
+
+msgid "TMPlayer subtitle format"
+msgstr "Format subtitrare TMPlayer"
+
+msgid "Kate subtitle format"
+msgstr "Format subtitrare Kate"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "YUV necomprimat"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Imagine gri necomprimată"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Pachet necomprimat YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Planar necomprimat YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Planar necomprimat YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Paletizat la %d biți necomprimat %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Paletizat la %d biți necomprimat %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 versiunea %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "YUV necomprimat"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "PCM audio brut %d biți"
+
+msgid "Audio CD source"
+msgstr "Sursă CD audio"
+
+msgid "DVD source"
+msgstr "Sursă DVD"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Sursă RTSP (protocol pentru flux în timp real)"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Sursă protocol Microsoft Media Server (MMS)"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "Sursă protocol %s"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr ""
+
+#, c-format
+msgid "%s demuxer"
+msgstr "Demuxer %s"
+
+#, c-format
+msgid "%s decoder"
+msgstr "Decoder %s"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr ""
+
+#, c-format
+msgid "%s muxer"
+msgstr "Muxer %s"
+
+#, c-format
+msgid "%s encoder"
+msgstr "codificator %s"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "Element GStreamer %s"
+
+msgid "Unknown source element"
+msgstr "Element sursă necunoscut"
+
+msgid "Unknown sink element"
+msgstr "Element sink necunoscut"
+
+msgid "Unknown element"
+msgstr "Element necunoscut"
+
+msgid "Unknown decoder element"
+msgstr "Element decodor necunoscut"
+
+msgid "Unknown encoder element"
+msgstr "Element codor necunoscut"
+
+msgid "Plugin or element of unknown type"
+msgstr "Modul de extensie sau element de tip necunoscut"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Citirea etichetei a eșuat: date insuficiente"
@@ -328,168 +507,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "etichetă ID3"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "etichetă APE"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "Radio Internet ICY"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Audio fără pierdere (ALAC)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Codec audio liber fără pierdere (FLAC)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows Media Speech"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "CYUV fără pierdere"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "MSZH fără pierdere"
-
-msgid "Run-length encoding"
-msgstr "Codarea run-length"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "Format subtitrare TMPlayer"
-
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Format subtitrare Sami"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Format subtitrare Kate"
-
-msgid "Sami subtitle format"
-msgstr "Format subtitrare Sami"
-
-msgid "TMPlayer subtitle format"
-msgstr "Format subtitrare TMPlayer"
-
-msgid "Kate subtitle format"
-msgstr "Format subtitrare Kate"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "YUV necomprimat"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Imagine gri necomprimată"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "YUV necomprimat"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Paletizat la %d biți necomprimat %s"
-
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 versiunea %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "YUV necomprimat"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "PCM audio brut %d biți"
-
-msgid "Audio CD source"
-msgstr "Sursă CD audio"
-
-msgid "DVD source"
-msgstr "Sursă DVD"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Sursă RTSP (protocol pentru flux în timp real)"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Sursă protocol Microsoft Media Server (MMS)"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "Sursă protocol %s"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr ""
-
-#, c-format
-msgid "%s demuxer"
-msgstr "Demuxer %s"
-
-#, c-format
-msgid "%s decoder"
-msgstr "Decoder %s"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr ""
-
-#, c-format
-msgid "%s muxer"
-msgstr "Muxer %s"
-
-#, c-format
-msgid "%s encoder"
-msgstr "codificator %s"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "Element GStreamer %s"
-
-msgid "Unknown source element"
-msgstr "Element sursă necunoscut"
-
-msgid "Unknown sink element"
-msgstr "Element sink necunoscut"
-
-msgid "Unknown element"
-msgstr "Element necunoscut"
-
-msgid "Unknown decoder element"
-msgstr "Element decodor necunoscut"
-
-msgid "Unknown encoder element"
-msgstr "Element codor necunoscut"
-
-msgid "Plugin or element of unknown type"
-msgstr "Modul de extensie sau element de tip necunoscut"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "YUV necomprimat"
 
 #~ msgid "Master"
 #~ msgstr "Principal"
@@ -527,14 +575,8 @@ msgstr "Modul de extensie sau element de tip necunoscut"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Conexiunea la %s:%d a fost refuzată."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Planar necomprimat YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Planar necomprimat YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Pachet necomprimat YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Pachet necomprimat YUV 4:1:0"
@@ -583,9 +625,6 @@ msgstr "Modul de extensie sau element de tip necunoscut"
 
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "Fluxurile RTSP nu pot fi redate încă."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Nu se poate crea elementul „decodebin”."
 
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "

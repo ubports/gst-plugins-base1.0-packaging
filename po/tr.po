@@ -1,12 +1,13 @@
-# translation of gst-plugins-base-0.10.32.2.po to Turkish
+# translation of gst-plugins-base-1.0.3.po to Turkish
 # This file is put in the public domain.
 # Server Acim <serveracim@gmail.com>, 2010.
+# Server Acim <serveracim@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 0.10.32.2\n"
+"Project-Id-Version: gst-plugins-base 1.0.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
-"PO-Revision-Date: 2011-04-26 19:22+0200\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
+"PO-Revision-Date: 2013-03-10 12:46+0200\n"
 "Last-Translator: Server Acim <serveracim@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
@@ -73,6 +74,10 @@ msgid "Internal data stream error."
 msgstr "İç veri akışı hatası."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Kayıp öğe '%s' - GStreamer kurulumunu denetleyin."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr "Bir %s eklenti bu akışı çalmak için gerekli, fakat kurulu değil."
 
@@ -82,9 +87,9 @@ msgstr "Akışın türü belirlenemiyor"
 msgid "This appears to be a text file"
 msgstr "Bu bir metin dosyasına benziyor"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Kayıp öğe '%s' - GStreamer kurulumunu denetleyin."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "\"decodebin\" öğesi oluşturulamıyor."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -156,11 +161,180 @@ msgstr "Kaynak öğesi geçersiz."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Dosyayı şuraya gönderirken hata \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Sesi yeterince hızlı kaydedemiyor"
+
 msgid "This CD has no audio tracks"
 msgstr "Bu CD hiç ses izi içermiyor"
 
-msgid "Can't record audio fast enough"
-msgstr "Sesi yeterince hızlı kaydedemiyor"
+msgid "ID3 tag"
+msgstr "ID3 etiketi"
+
+msgid "APE tag"
+msgstr "APE etiketi"
+
+msgid "ICY internet radio"
+msgstr "ICY internet radyosu"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Hecelemesi"
+
+msgid "CYUV Lossless"
+msgstr "CYUV Kayıpsız"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Kayıpsız MSZH"
+
+msgid "Run-length encoding"
+msgstr "Çalıştırma-uzunluğu kodlaması"
+
+msgid "Subtitle"
+msgstr "Altyazı"
+
+msgid "MPL2 subtitle format"
+msgstr "MPL2 altyazı kipi"
+
+msgid "DKS subtitle format"
+msgstr "DKS altyazı kipi"
+
+msgid "QTtext subtitle format"
+msgstr "QTtext altyazı kipi"
+
+msgid "Sami subtitle format"
+msgstr "Sami altyazı kipi"
+
+msgid "TMPlayer subtitle format"
+msgstr "TMPlayer altyazı kipi"
+
+msgid "Kate subtitle format"
+msgstr "Kate altyazı kipi"
+
+msgid "Uncompressed video"
+msgstr "Sıkıştırılmamış video"
+
+msgid "Uncompressed gray"
+msgstr "Sıkıştırılmamış gri resim"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Sıkıştırılmamış paket YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Sıkıştırılmamış planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Sıkıştırılmamış planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Şıkıştırılmamış ses seviyesi %s%d-bit %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Şıkıştırılmamış ses seviyesi %s%d-bit %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 Versiyonu %d"
+
+msgid "Uncompressed audio"
+msgstr "Sıkıştırılmamış ses"
+
+#, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Ham %d-bit %s audio"
+
+msgid "Audio CD source"
+msgstr "Ses CD'si kaynağı"
+
+msgid "DVD source"
+msgstr "DVD kaynağı"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Gerçek Zamanlı Akış Protokolu (RTSP) kaynağı"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Microsoft Medya Sunucusu (MMS) protokol kaynağı"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "%s protokol kaynağı"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s video RTP depayloader"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s audio RTP depayloader"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "%s RTP depayloader"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s demuxer"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s kod çözücü"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s video RTP payloader"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s audio RTP payloader"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s RTP payloader"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s muxer"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s kodlayıcı"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "GStreamer öğesi %s"
+
+msgid "Unknown source element"
+msgstr "Bilinmeyen kaynak öğesi"
+
+msgid "Unknown sink element"
+msgstr "Bilinmeyen gömme öğesi"
+
+msgid "Unknown element"
+msgstr "Bilinmeyen öğe"
+
+msgid "Unknown decoder element"
+msgstr "Bilinmeyen kod çözücü öğesi"
+
+msgid "Unknown encoder element"
+msgstr "Bilinmeyen kodlama öğesi"
+
+msgid "Plugin or element of unknown type"
+msgstr "Bilinmeyen türde eklenti veya öğe"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Etiketi okunamadı: yetersiz veri"
@@ -317,173 +491,41 @@ msgid "Media (image/video) intended vertical pixel density in ppi"
 msgstr "Medya (resim/vidyo)'nun ppi değerinden dikey piksel yoğunluğu"
 
 msgid "ID3v2 frame"
-msgstr ""
+msgstr "ID3v2 çerçevesi"
 
 msgid "unparsed id3v2 tag frame"
+msgstr "ayrıştırılmamış id3v2 etiket çerçevesi"
+
+msgid "musical-key"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3 etiketi"
-
-msgid "APE tag"
-msgstr "APE etiketi"
-
-msgid "ICY internet radio"
-msgstr "ICY internet radyosu"
-
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
-
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
-
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
-
-msgid "Windows Media Speech"
-msgstr "Windows Media Hecelemesi"
-
-msgid "CYUV Lossless"
-msgstr "CYUV Kayıpsız"
-
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Kayıpsız MSZH"
-
-msgid "Run-length encoding"
-msgstr "Çalıştırma-uzunluğu kodlaması"
-
-msgid "Subtitle"
+msgid "Initial key in which the sound starts"
 msgstr ""
 
-#, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "TMPlayer altyazı kipi"
+msgid "Buffering..."
+msgstr ""
 
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sami altyazı kipi"
+msgid "Print version information and exit"
+msgstr ""
 
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Kate altyazı kipi"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Sami subtitle format"
-msgstr "Sami altyazı kipi"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "TMPlayer subtitle format"
-msgstr "TMPlayer altyazı kipi"
-
-msgid "Kate subtitle format"
-msgstr "Kate altyazı kipi"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "Sıkıştırılmamış YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Sıkıştırılmamış Gri Resim"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Sıkıştırılmamış YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Şıkıştırılmamış seviyesi şuna düşürülmüş %d-bit %s"
+msgid "Enable gapless playback"
+msgstr ""
 
 #, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 Versiyonu %d"
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "Sıkıştırılmamış YUV"
+msgid "You must provide at least one filename or URI to play."
+msgstr ""
 
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Ham %d-bit PCM ses"
-
-msgid "Audio CD source"
-msgstr "Ses CD'si kaynağı"
-
-msgid "DVD source"
-msgstr "DVD kaynağı"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Gerçek Zamanlı Akış Protokolu (RTSP) kaynağı"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Microsoft Medya Sunucusu (MMS) protokol kaynağı"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "%s protokol kaynağı"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s video RTP depayloader"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s audio RTP depayloader"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "%s RTP depayloader"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s demuxer"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s kod çözücü"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s video RTP payloader"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s audio RTP payloader"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s RTP payloader"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s muxer"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s kodlayıcı"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "GStreamer öğesi %s"
-
-msgid "Unknown source element"
-msgstr "Bilinmeyen kaynak öğesi"
-
-msgid "Unknown sink element"
-msgstr "Bilinmeyen gömme öğesi"
-
-msgid "Unknown element"
-msgstr "Bilinmeyen öğe"
-
-msgid "Unknown decoder element"
-msgstr "Bilinmeyen kod çözücü öğesi"
-
-msgid "Unknown encoder element"
-msgstr "Bilinmeyen kodlama öğesi"
-
-msgid "Plugin or element of unknown type"
-msgstr "Bilinmeyen türde eklenti veya öğe"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "Sıkıştırılmamış %s YUV %s"
 
 #~ msgid "Master"
 #~ msgstr "Ana"
@@ -536,9 +578,6 @@ msgstr "Bilinmeyen türde eklenti veya öğe"
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "RTSP akışları henüz çalınamıyor."
 
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "\"decodebin\" öğesi oluşturulamıyor."
-
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "
 #~ "file or some other type of text file, or the media file was not "
@@ -575,14 +614,8 @@ msgstr "Bilinmeyen türde eklenti veya öğe"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Şuraya bağlantı %s:%d reddedildi."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Sıkıştırılmamış planar YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Sıkıştırılmamış planar YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Sıkıştırılmamış paket YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Sıkıştırılmamış paket YUV 4:1:0"

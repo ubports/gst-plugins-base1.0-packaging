@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -97,7 +97,7 @@ GST_START_TEST (test_basetime_calculation)
 
   /* Run main pipeline first */
   gst_element_set_state (p1, GST_STATE_PLAYING);
-  g_timeout_add (2 * 1000, break_mainloop, loop);
+  g_timeout_add_seconds (2, break_mainloop, loop);
   g_main_loop_run (loop);
 
   /* Now activate the audio pipeline */
@@ -111,7 +111,7 @@ GST_START_TEST (test_basetime_calculation)
   /* At this point a new clock is selected */
   gst_element_set_state (p1, GST_STATE_PLAYING);
 
-  g_timeout_add (2 * 1000, break_mainloop, loop);
+  g_timeout_add_seconds (2, break_mainloop, loop);
   g_main_loop_run (loop);
 
   gst_object_unref (pad);

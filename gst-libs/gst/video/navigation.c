@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -278,9 +278,7 @@ gst_navigation_query_set_commands (GstQuery * query, gint n_cmds, ...)
   va_end (ap);
 
   structure = gst_query_writable_structure (query);
-  gst_structure_set_value (structure, "commands", &list);
-
-  g_value_unset (&list);
+  gst_structure_take_value (structure, "commands", &list);
 }
 
 /**
@@ -307,9 +305,7 @@ gst_navigation_query_set_commandsv (GstQuery * query, gint n_cmds,
     gst_query_list_add_command (&list, cmds[i]);
   }
   structure = gst_query_writable_structure (query);
-  gst_structure_set_value (structure, "commands", &list);
-
-  g_value_unset (&list);
+  gst_structure_take_value (structure, "commands", &list);
 }
 
 /**
