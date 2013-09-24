@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:gstappsrc
@@ -159,6 +159,7 @@ enum
 #define DEFAULT_PROP_MAX_LATENCY   -1
 #define DEFAULT_PROP_EMIT_SIGNALS  TRUE
 #define DEFAULT_PROP_MIN_PERCENT   0
+#define DEFAULT_PROP_CURRENT_LEVEL_BYTES   0
 
 enum
 {
@@ -174,6 +175,7 @@ enum
   PROP_MAX_LATENCY,
   PROP_EMIT_SIGNALS,
   PROP_MIN_PERCENT,
+  PROP_CURRENT_LEVEL_BYTES,
   PROP_LAST
 };
 
@@ -378,6 +380,20 @@ gst_app_src_class_init (GstAppSrcClass * klass)
           "Emit need-data when queued bytes drops below this percent of max-bytes",
           0, 100, DEFAULT_PROP_MIN_PERCENT,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GstAppSrc::current-level-bytes:
+   *
+   * The number of currently queued bytes inside appsrc.
+   *
+   * Since: 1.2
+   */
+  g_object_class_install_property (gobject_class, PROP_CURRENT_LEVEL_BYTES,
+      g_param_spec_uint64 ("current-level-bytes", "Current Level Bytes",
+          "The number of currently queued bytes",
+          0, G_MAXUINT64, DEFAULT_PROP_CURRENT_LEVEL_BYTES,
+          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
 
   /**
    * GstAppSrc::need-data:
@@ -677,6 +693,9 @@ gst_app_src_get_property (GObject * object, guint prop_id, GValue * value,
     case PROP_MIN_PERCENT:
       g_value_set_uint (value, priv->min_percent);
       break;
+    case PROP_CURRENT_LEVEL_BYTES:
+      g_value_set_uint64 (value, gst_app_src_get_current_level_bytes (appsrc));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -746,6 +765,7 @@ gst_app_src_stop (GstBaseSrc * bsrc)
   priv->flushing = TRUE;
   priv->started = FALSE;
   gst_app_src_flush_queued (appsrc);
+  g_cond_broadcast (&priv->cond);
   g_mutex_unlock (&priv->mutex);
 
   return TRUE;
@@ -1008,14 +1028,15 @@ gst_app_src_create (GstBaseSrc * bsrc, guint64 offset, guint size,
     if (!g_queue_is_empty (priv->queue)) {
       guint buf_size;
 
-      *buf = g_queue_pop_head (priv->queue);
-      buf_size = gst_buffer_get_size (*buf);
-
-      GST_DEBUG_OBJECT (appsrc, "we have buffer %p of size %u", *buf, buf_size);
       if (priv->new_caps) {
         gst_app_src_do_negotiate (bsrc);
         priv->new_caps = FALSE;
       }
+
+      *buf = g_queue_pop_head (priv->queue);
+      buf_size = gst_buffer_get_size (*buf);
+
+      GST_DEBUG_OBJECT (appsrc, "we have buffer %p of size %u", *buf, buf_size);
 
       priv->queued_bytes -= buf_size;
 
@@ -1295,6 +1316,35 @@ gst_app_src_get_max_bytes (GstAppSrc * appsrc)
   g_mutex_unlock (&priv->mutex);
 
   return result;
+}
+
+/**
+ * gst_app_src_get_current_level_bytes:
+ * @appsrc: a #GstAppSrc
+ *
+ * Get the number of currently queued bytes inside @appsrc.
+ *
+ * Returns: The number of currently queued bytes.
+ *
+ * Since: 1.2
+ */
+guint64
+gst_app_src_get_current_level_bytes (GstAppSrc * appsrc)
+{
+  gint64 queued;
+  GstAppSrcPrivate *priv;
+
+  g_return_val_if_fail (GST_IS_APP_SRC (appsrc), -1);
+
+  priv = appsrc->priv;
+
+  GST_OBJECT_LOCK (appsrc);
+  queued = priv->queued_bytes;
+  GST_DEBUG_OBJECT (appsrc, "current level bytes is %" G_GUINT64_FORMAT,
+      queued);
+  GST_OBJECT_UNLOCK (appsrc);
+
+  return queued;
 }
 
 static void

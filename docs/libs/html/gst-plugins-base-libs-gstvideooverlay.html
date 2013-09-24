@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideooverlay</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideoorientation.html" title="gstvideoorientation">
 <link rel="next" href="gst-plugins-base-libs-GstVideoDecoder.html" title="GstVideoDecoder">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -77,10 +77,10 @@ struct              <a class="link" href="gst-plugins-base-libs-gstvideooverlay.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp29095584"></a><p>
+<a name="id-1.2.14.11.5.2.1"></a><p>
 The <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface is used for 2 main purposes :
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
 To get a grab on the Window where the video sink element is going to render.
 This is achieved by either being informed about the Window identifier that
@@ -191,7 +191,7 @@ immediately. Here is an example on how to do that correctly:
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp29050336"></a><h3>Two basic usage scenarios</h3>
+<a name="id-1.2.14.11.5.2.2"></a><h3>Two basic usage scenarios</h3>
 <p>
 There are two basic usage scenarios: in the simplest case, the application
 knows exactly what particular element is used for video output, which is
@@ -225,10 +225,10 @@ prepare-window-handle message is handled, because most GUI toolkits and
 windowing systems are not thread-safe at all and a lot of care would be
 required to co-ordinate the toolkit and window system calls of the
 different threads (Gtk+ users please note: prior to Gtk+ 2.18
-<a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
+<a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
 within the bus sync handler; this macro was changed to a function call in
 Gtk+ 2.18 and later, which is likely to cause problems when called from a
-sync handler; see below for a better approach without <a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
+sync handler; see below for a better approach without <a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
 used in the callback).
 </p>
 </div>
@@ -236,7 +236,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp29062496"></a><h3>GstVideoOverlay and Gtk+</h3>
+<a name="id-1.2.14.11.5.2.3"></a><h3>GstVideoOverlay and Gtk+</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -379,19 +379,19 @@ used in the callback).
   <span class="gtkdoc slc">// drawing onto the parent widget.</span>
   <span class="gtkdoc slc">// This is here just for pedagogical purposes, GDK_WINDOW_XID will call</span>
   <span class="gtkdoc slc">// it as well in newer Gtk versions</span>
-  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://developer.gnome.org/devel/gdk/gdk3-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
+  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="/usr/share/gtk-doc/html/gdk2/gdk2-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
     <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Message-Logging.html#g-error">g_error</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Couldn't create native window needed for GstVideoOverlay!&quot;</span><span class="gtkdoc opt">);</span>
 <span class="gtkdoc ppc">#endif</span>
 
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
   <span class="gtkdoc opt">{</span>
-    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gdk/gdk3-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">=</span> xid<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_WIN32</span>
   <span class="gtkdoc opt">{</span>
-    HWND wnd <span class="gtkdoc opt">=</span> <span class="function">GDK_WINDOW_HWND</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    HWND wnd <span class="gtkdoc opt">=</span> <span class="function">GDK_WINDOW_HWND</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">= (</span>guintptr<span class="gtkdoc opt">)</span> wnd<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
@@ -403,25 +403,25 @@ used in the callback).
   GtkWidget <span class="gtkdoc opt">*</span>video_window<span class="gtkdoc opt">;</span>
   GtkWidget <span class="gtkdoc opt">*</span>app_window<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">...</span>
-  app_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWindow.html#gtk-window-new">gtk_window_new</a></span> <span class="gtkdoc opt">(</span>GTK_WINDOW_TOPLEVEL<span class="gtkdoc opt">);</span>
+  app_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWindow.html#gtk-window-new">gtk_window_new</a></span> <span class="gtkdoc opt">(</span>GTK_WINDOW_TOPLEVEL<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
-  video_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkDrawingArea.html#gtk-drawing-area-new">gtk_drawing_area_new</a></span> <span class="gtkdoc opt">();</span>
+  video_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/gtk2/GtkDrawingArea.html#gtk-drawing-area-new">gtk_drawing_area_new</a></span> <span class="gtkdoc opt">();</span>
   <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-connect">g_signal_connect</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> <span class="string">&quot;realize&quot;</span><span class="gtkdoc opt">,</span>
       <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Closures.html#G-CALLBACK:CAPS">G_CALLBACK</a></span> <span class="gtkdoc opt">(</span>video_widget_realize_cb<span class="gtkdoc opt">),</span> NULL<span class="gtkdoc opt">);</span>
-  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-set-double-buffered">gtk_widget_set_double_buffered</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-set-double-buffered">gtk_widget_set_double_buffered</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// usually the video_window will not be directly embedded into the</span>
   <span class="gtkdoc slc">// application window like this, but there will be many other widgets</span>
   <span class="gtkdoc slc">// and the video window will be embedded in one of them instead</span>
-  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkContainer.html#gtk-container-add">gtk_container_add</a></span> <span class="gtkdoc opt">(</span><span class="function">GTK_CONTAINER</span> <span class="gtkdoc opt">(</span>ap_window<span class="gtkdoc opt">),</span> video_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/gtk2/GtkContainer.html#gtk-container-add">gtk_container_add</a></span> <span class="gtkdoc opt">(</span><span class="function">GTK_CONTAINER</span> <span class="gtkdoc opt">(</span>ap_window<span class="gtkdoc opt">),</span> video_window<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// show the GUI</span>
-  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-show-all">gtk_widget_show_all</a></span> <span class="gtkdoc opt">(</span>app_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-show-all">gtk_widget_show_all</a></span> <span class="gtkdoc opt">(</span>app_window<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// realize window now so that the video window gets created and we can</span>
   <span class="gtkdoc slc">// obtain its XID/HWND before the pipeline is started up and the videosink</span>
   <span class="gtkdoc slc">// asks for the XID/HWND of the window to render onto</span>
-  <span class="function"><a href="http://developer.gnome.org/devel/gtk/GtkWidget.html#gtk-widget-realize">gtk_widget_realize</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-realize">gtk_widget_realize</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// we should have the XID/HWND now</span>
   <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Testing.html#g-assert">g_assert</a></span> <span class="gtkdoc opt">(</span>video_window_handle <span class="gtkdoc opt">!=</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
@@ -447,7 +447,7 @@ used in the callback).
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp29067696"></a><h3>GstVideoOverlay and Qt</h3>
+<a name="id-1.2.14.11.5.2.4"></a><h3>GstVideoOverlay and Qt</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -601,8 +601,11 @@ Opaque <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideo
 <p>
 <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstVideoOverlayInterface.iface"></a>iface</code></em>;</span></p></td>
@@ -638,8 +641,11 @@ This will post a "have-window-handle" element message on the bus.
 <p>
 This function should only be used by video overlay plugin developers.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
@@ -663,8 +669,11 @@ should use this method to tell to an overlay to display video output to a
 specific window (e.g. an XWindow on X11). Passing 0 as the  <em class="parameter"><code>handle</code></em> will
 tell the overlay to stop using that window and create an internal one.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
@@ -691,8 +700,11 @@ window.
 <p>
 This function should only be used by video overlay plugin developers.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> which does not yet have an Window handle set</td>
@@ -707,8 +719,11 @@ This function should only be used by video overlay plugin developers.
 Tell an overlay that it has been exposed. This will redraw the current frame
 in the drawable even if the pipeline is PAUSED.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> to expose.</td>
@@ -727,8 +742,11 @@ events are not propagated in the window hierarchy if a client is listening
 for them. This method allows you to disable events handling completely
 from the <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
@@ -763,8 +781,11 @@ the <em class="parameter"><code>width</code></em> and <em class="parameter"><cod
 This method is needed for non fullscreen video overlay in UI toolkits that
 do not support subwindows.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>overlay</code></em> :</span></p></td>
@@ -804,8 +825,11 @@ do not support subwindows.
 Convenience function to check if the given message is a
 "prepare-window-handle" message from a <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
@@ -823,6 +847,6 @@ Convenience function to check if the given message is a
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

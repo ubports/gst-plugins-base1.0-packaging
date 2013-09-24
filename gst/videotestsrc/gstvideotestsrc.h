@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_TEST_SRC_H__
@@ -62,6 +62,8 @@ G_BEGIN_DECLS
  * @GST_VIDEO_TEST_SRC_BALL: Moving ball
  * @GST_VIDEO_TEST_SRC_SMPTE100: SMPTE test pattern (100% color bars)
  * @GST_VIDEO_TEST_SRC_BAR: Bar with foreground color
+ * @GST_VIDEO_TEST_SRC_PINWHEEL: Pinwheel
+ * @GST_VIDEO_TEST_SRC_SPOKES: Spokes
  *
  * The test pattern to produce.
  *
@@ -103,7 +105,9 @@ typedef enum {
   GST_VIDEO_TEST_SRC_SOLID,
   GST_VIDEO_TEST_SRC_BALL,
   GST_VIDEO_TEST_SRC_SMPTE100,
-  GST_VIDEO_TEST_SRC_BAR
+  GST_VIDEO_TEST_SRC_BAR,
+  GST_VIDEO_TEST_SRC_PINWHEEL,
+  GST_VIDEO_TEST_SRC_SPOKES
 } GstVideoTestSrcPattern;
 
 typedef struct _GstVideoTestSrc GstVideoTestSrc;
@@ -124,6 +128,7 @@ struct _GstVideoTestSrc {
 
   /* video state */
   GstVideoInfo info;
+  GstVideoChromaResample *subsample;
   gboolean bayer;
   gint x_invert;
   gint y_invert;
@@ -162,13 +167,16 @@ struct _GstVideoTestSrc {
   gint horizontal_speed;
 
   void (*make_image) (GstVideoTestSrc *v, GstVideoFrame *frame);
-  guint32 *palette;
 
   /* temporary AYUV/ARGB scanline */
   guint8 *tmpline_u8;
   guint8 *tmpline;
   guint8 *tmpline2;
   guint16 *tmpline_u16;
+
+  guint n_lines;
+  gint offset;
+  gpointer *lines;
 };
 
 struct _GstVideoTestSrcClass {

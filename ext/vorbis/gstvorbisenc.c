@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -115,6 +115,7 @@ static void gst_vorbis_enc_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
 static void gst_vorbis_enc_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
+static void gst_vorbis_enc_flush (GstAudioEncoder * vorbisenc);
 
 #define gst_vorbis_enc_parent_class parent_class
 G_DEFINE_TYPE_WITH_CODE (GstVorbisEnc, gst_vorbis_enc,
@@ -182,6 +183,7 @@ gst_vorbis_enc_class_init (GstVorbisEncClass * klass)
   base_class->handle_frame = GST_DEBUG_FUNCPTR (gst_vorbis_enc_handle_frame);
   base_class->getcaps = GST_DEBUG_FUNCPTR (gst_vorbis_enc_getcaps);
   base_class->sink_event = GST_DEBUG_FUNCPTR (gst_vorbis_enc_sink_event);
+  base_class->flush = GST_DEBUG_FUNCPTR (gst_vorbis_enc_flush);
 }
 
 static void
@@ -555,6 +557,15 @@ gst_vorbis_enc_clear (GstVorbisEnc * vorbisenc)
   return ret;
 }
 
+static void
+gst_vorbis_enc_flush (GstAudioEncoder * enc)
+{
+  GstVorbisEnc *vorbisenc = GST_VORBISENC (enc);
+
+  gst_vorbis_enc_clear (vorbisenc);
+  vorbisenc->header_sent = FALSE;
+}
+
 static GstBuffer *
 gst_vorbis_enc_buffer_from_header_packet (GstVorbisEnc * vorbisenc,
     ogg_packet * packet)
@@ -565,10 +576,11 @@ gst_vorbis_enc_buffer_from_header_packet (GstVorbisEnc * vorbisenc,
       gst_audio_encoder_allocate_output_buffer (GST_AUDIO_ENCODER (vorbisenc),
       packet->bytes);
   gst_buffer_fill (outbuf, 0, packet->packet, packet->bytes);
-  GST_BUFFER_OFFSET (outbuf) = vorbisenc->bytes_out;
+  GST_BUFFER_OFFSET (outbuf) = 0;
   GST_BUFFER_OFFSET_END (outbuf) = 0;
   GST_BUFFER_TIMESTAMP (outbuf) = GST_CLOCK_TIME_NONE;
   GST_BUFFER_DURATION (outbuf) = GST_CLOCK_TIME_NONE;
+  GST_BUFFER_FLAG_SET (outbuf, GST_BUFFER_FLAG_HEADER);
 
   GST_DEBUG ("created header packet buffer, %" G_GSIZE_FORMAT " bytes",
       gst_buffer_get_size (outbuf));
@@ -638,24 +650,15 @@ _gst_caps_set_buffer_array (GstCaps * caps, const gchar * field,
   va_start (va, buf);
   /* put buffers in a fixed list */
   while (buf) {
-    g_assert (gst_buffer_is_writable (buf));
-
-    /* mark buffer */
-    GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_HEADER);
-
     g_value_init (&value, GST_TYPE_BUFFER);
-    buf = gst_buffer_copy (buf);
-    GST_BUFFER_FLAG_SET (buf, GST_BUFFER_FLAG_HEADER);
     gst_value_set_buffer (&value, buf);
-    gst_buffer_unref (buf);
     gst_value_array_append_value (&array, &value);
     g_value_unset (&value);
 
     buf = va_arg (va, GstBuffer *);
   }
 
-  gst_structure_set_value (structure, field, &array);
-  g_value_unset (&array);
+  gst_structure_take_value (structure, field, &array);
 
   return caps;
 }
@@ -771,8 +774,6 @@ gst_vorbis_enc_handle_frame (GstAudioEncoder * enc, GstBuffer * buffer)
   gst_buffer_unmap (buffer, &map);
 
   GST_LOG_OBJECT (vorbisenc, "wrote %lu samples to vorbis", size);
-
-  vorbisenc->samples_in += size;
 
   ret = gst_vorbis_enc_output_buffers (vorbisenc);
 

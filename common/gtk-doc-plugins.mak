@@ -94,9 +94,9 @@ all-local: html-build.stamp
 INSPECT_REGISTRY=$(top_builddir)/docs/plugins/inspect-registry.xml
 INSPECT_ENVIRONMENT=\
 	LC_ALL=C \
-	GST_PLUGIN_SYSTEM_PATH= \
-	GST_PLUGIN_PATH=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(top_builddir)/plugins:$(top_builddir)/src:$(top_builddir)/gnl \
-	GST_REGISTRY=$(INSPECT_REGISTRY) \
+	GST_PLUGIN_SYSTEM_PATH_1_0= \
+	GST_PLUGIN_PATH_1_0=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(top_builddir)/plugins:$(top_builddir)/src:$(top_builddir)/gnl \
+	GST_REGISTRY_1_0=$(INSPECT_REGISTRY) \
 	PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
 	$(INSPECT_EXTRA_ENVIRONMENT)
 
@@ -222,10 +222,7 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	    mkhtml_options="$$mkhtml_options --verbose"; \
 	  fi; \
 	fi; \
-	cd html && gtkdoc-mkhtml $$mkhtml_options $(DOC_MODULE) $(DOC_MAIN_SGML_FILE)
-	@mv html/index.sgml html/index.sgml.bak
-	@$(SED) "s/ href=\"$(DOC_MODULE)\// href=\"$(DOC_MODULE)-@GST_API_VERSION@\//g" html/index.sgml.bak >html/index.sgml
-	@rm -f html/index.sgml.bak
+	cd html && gtkdoc-mkhtml $$mkhtml_options $(DOC_MODULE)-@GST_API_VERSION@ $(DOC_MAIN_SGML_FILE)
 	@rm -f html/$(DOC_MAIN_SGML_FILE)
 	@rm -rf html/xml
 	@rm -f html/version.entities
@@ -289,9 +286,9 @@ install-data-local:
 	      $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
 	    done; \
 	  fi; \
-	  echo '-- Installing $(builddir)/html/$(DOC_MODULE).devhelp2' ; \
-	  if test -e $(builddir)/html/$(DOC_MODULE).devhelp2; then \
-	            $(INSTALL_DATA) $(builddir)/html/$(DOC_MODULE).devhelp2 \
+	  echo '-- Installing $(builddir)/html/$(DOC_MODULE)-@GST_API_VERSION@.devhelp2' ; \
+	  if test -e $(builddir)/html/$(DOC_MODULE)-@GST_API_VERSION@.devhelp2; then \
+	            $(INSTALL_DATA) $(builddir)/html/$(DOC_MODULE)-@GST_API_VERSION@.devhelp2 \
 	            $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_API_VERSION@.devhelp2; \
 	  fi; \
 	  $(GTKDOC_REBASE) --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \

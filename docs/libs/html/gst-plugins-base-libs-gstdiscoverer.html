@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstdiscoverer</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html" title="gstpbutilsinstallplugins">
 <link rel="next" href="gst-plugins-base-libs-encoding-profile.html" title="encoding-profile">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -86,6 +86,8 @@ const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreame
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);
 const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="returnvalue">GstTagList</span></a> *  <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-tags" title="gst_discoverer_stream_info_get_tags ()">gst_discoverer_stream_info_get_tags</a> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);
 const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="returnvalue">GstToc</span></a> *      <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-toc" title="gst_discoverer_stream_info_get_toc ()">gst_discoverer_stream_info_get_toc</a>  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-stream-id" title="gst_discoverer_stream_info_get_stream_id ()">gst_discoverer_stream_info_get_stream_id</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);
 #define             <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-ref" title="gst_discoverer_stream_info_ref()">gst_discoverer_stream_info_ref</a>      (info)
 #define             <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-unref" title="gst_discoverer_stream_info_unref()">gst_discoverer_stream_info_unref</a>    (info)
 <span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free" title="gst_discoverer_stream_info_list_free ()">gst_discoverer_stream_info_list_free</a>
@@ -204,8 +206,11 @@ The <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer
 <p>
 Creates a new <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a> with the provided timeout.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
@@ -237,8 +242,11 @@ Allow asynchronous discovering of URIs to take place.
 A <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GMainLoop"><span class="type">GMainLoop</span></a> must be available for <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a> to properly work in
 asynchronous mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
 <td>A <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a>
@@ -254,8 +262,11 @@ asynchronous mode.
 Stop the discovery of any pending URIs and clears the list of
 pending URIS (if any).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
 <td>A <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a>
@@ -276,8 +287,11 @@ Synchronously discovers the given <em class="parameter"><code>uri</code></em>.
 A copy of <em class="parameter"><code>uri</code></em> will be made internally, so the caller can safely <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>
 afterwards.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -316,8 +330,11 @@ been called.
 A copy of <em class="parameter"><code>uri</code></em> will be made internally, so the caller can safely <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>
 afterwards.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -361,8 +378,11 @@ Structure containing the information of a URI analyzed by <a class="link" href="
 <p>
 Result values for the discovery process.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-DISCOVERER-OK:CAPS"></a><span class="term"><code class="literal">GST_DISCOVERER_OK</code></span></p></td>
@@ -401,8 +421,11 @@ Result values for the discovery process.
 <div class="refsect2">
 <a name="gst-discoverer-info-get-duration"></a><h3>gst_discoverer_info_get_duration ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="returnvalue">GstClockTime</span></a>        gst_discoverer_info_get_duration    (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -420,8 +443,11 @@ Result values for the discovery process.
 <div class="refsect2">
 <a name="gst-discoverer-info-get-misc"></a><h3>gst_discoverer_info_get_misc ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="returnvalue">GstStructure</span></a> * gst_discoverer_info_get_misc       (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -442,8 +468,11 @@ Result values for the discovery process.
 <div class="refsect2">
 <a name="gst-discoverer-info-get-result"></a><h3>gst_discoverer_info_get_result ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererResult" title="enum GstDiscovererResult"><span class="returnvalue">GstDiscovererResult</span></a> gst_discoverer_info_get_result      (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -462,8 +491,11 @@ Result values for the discovery process.
 <a name="gst-discoverer-info-get-stream-info"></a><h3>gst_discoverer_info_get_stream_info ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="returnvalue">GstDiscovererStreamInfo</span></a> * gst_discoverer_info_get_stream_info
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -485,8 +517,11 @@ This structure can be traversed to see the original hierarchy. Unref with
 <div class="refsect2">
 <a name="gst-discoverer-info-get-stream-list"></a><h3>gst_discoverer_info_get_stream_list ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *             gst_discoverer_info_get_stream_list (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -507,8 +542,11 @@ with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-discover
 <div class="refsect2">
 <a name="gst-discoverer-info-get-tags"></a><h3>gst_discoverer_info_get_tags ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="returnvalue">GstTagList</span></a> *  gst_discoverer_info_get_tags        (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -528,8 +566,11 @@ the tags after the life-time of <em class="parameter"><code>info</code></em>, yo
 <div class="refsect2">
 <a name="gst-discoverer-info-get-toc"></a><h3>gst_discoverer_info_get_toc ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="returnvalue">GstToc</span></a> *      gst_discoverer_info_get_toc         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -549,8 +590,11 @@ the TOC after the life-time of <em class="parameter"><code>info</code></em>, you
 <div class="refsect2">
 <a name="gst-discoverer-info-get-uri"></a><h3>gst_discoverer_info_get_uri ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_discoverer_info_get_uri         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -570,8 +614,11 @@ Copy it if you wish to use it after the life-time of <em class="parameter"><code
 <div class="refsect2">
 <a name="gst-discoverer-info-get-seekable"></a><h3>gst_discoverer_info_get_seekable ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_discoverer_info_get_seekable    (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -593,8 +640,11 @@ Copy it if you wish to use it after the life-time of <em class="parameter"><code
 <p>
 Increments the reference count of <em class="parameter"><code>info</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -616,8 +666,11 @@ Increments the reference count of <em class="parameter"><code>info</code></em>.
 <p>
 Decrements the reference count of <em class="parameter"><code>info</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererInfo"><span class="type">GstDiscovererInfo</span></a>
@@ -686,8 +739,11 @@ image based ones).
 <div class="refsect2">
 <a name="gst-discoverer-stream-info-get-caps"></a><h3>gst_discoverer_stream_info_get_caps ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *           gst_discoverer_stream_info_get_caps (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -708,8 +764,11 @@ image based ones).
 <a name="gst-discoverer-stream-info-get-misc"></a><h3>gst_discoverer_stream_info_get_misc ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="returnvalue">GstStructure</span></a> * gst_discoverer_stream_info_get_misc
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -731,8 +790,11 @@ after the life-time of <em class="parameter"><code>info</code></em> you will nee
 <a name="gst-discoverer-stream-info-get-next"></a><h3>gst_discoverer_stream_info_get_next ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="returnvalue">GstDiscovererStreamInfo</span></a> * gst_discoverer_stream_info_get_next
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -754,8 +816,11 @@ Unref with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-di
 <a name="gst-discoverer-stream-info-get-previous"></a><h3>gst_discoverer_stream_info_get_previous ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="returnvalue">GstDiscovererStreamInfo</span></a> * gst_discoverer_stream_info_get_previous
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -776,8 +841,11 @@ after usage. <span class="annotation">[<acronym title="Free data after the code 
 <div class="refsect2">
 <a name="gst-discoverer-stream-info-get-tags"></a><h3>gst_discoverer_stream_info_get_tags ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="returnvalue">GstTagList</span></a> *  gst_discoverer_stream_info_get_tags (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -797,8 +865,11 @@ use the tags after the life-time of <em class="parameter"><code>info</code></em>
 <div class="refsect2">
 <a name="gst-discoverer-stream-info-get-toc"></a><h3>gst_discoverer_stream_info_get_toc ()</h3>
 <pre class="programlisting">const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="returnvalue">GstToc</span></a> *      gst_discoverer_stream_info_get_toc  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -816,14 +887,42 @@ use the TOC after the life-time of <em class="parameter"><code>info</code></em> 
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-discoverer-stream-info-get-stream-id"></a><h3>gst_discoverer_stream_info_get_stream_id ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_discoverer_stream_info_get_stream_id
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the stream ID of this stream. If you wish to
+use the stream ID after the life-time of <em class="parameter"><code>info</code></em> you will need to copy it. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-discoverer-stream-info-ref"></a><h3>gst_discoverer_stream_info_ref()</h3>
 <pre class="programlisting">#define gst_discoverer_stream_info_ref(info) ((GstDiscovererStreamInfo*) g_object_ref((GObject*) info))
 </pre>
 <p>
 Increments the reference count of <em class="parameter"><code>info</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -845,8 +944,11 @@ Increments the reference count of <em class="parameter"><code>info</code></em>.
 <p>
 Decrements the reference count of <em class="parameter"><code>info</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>
@@ -863,8 +965,11 @@ Decrements the reference count of <em class="parameter"><code>info</code></em>.
 Decrements the reference count of all contained <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>
 and fress the <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>infos</code></em> :</span></p></td>
 <td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a>. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstPbutils.DiscovererStreamInfo]</span>
@@ -877,8 +982,11 @@ and fress the <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-
 <a name="gst-discoverer-stream-info-get-stream-type-nick"></a><h3>gst_discoverer_stream_info_get_stream_type_nick ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_discoverer_stream_info_get_stream_type_nick
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -901,8 +1009,11 @@ and fress the <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-
 <p>
 Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> contained in <em class="parameter"><code>info</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -927,8 +1038,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <p>
 Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererContainerInfo" title="GstDiscovererContainerInfo"><span class="type">GstDiscovererContainerInfo</span></a> contained in <em class="parameter"><code>info</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -954,8 +1068,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 Finds the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererStreamInfo" title="GstDiscovererStreamInfo"><span class="type">GstDiscovererStreamInfo</span></a> contained in <em class="parameter"><code>info</code></em> that match the
 given <em class="parameter"><code>streamtype</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -985,8 +1102,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <p>
 Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererSubtitleInfo" title="GstDiscovererSubtitleInfo"><span class="type">GstDiscovererSubtitleInfo</span></a> contained in <em class="parameter"><code>info</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1011,8 +1131,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <p>
 Finds all the <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> contained in <em class="parameter"><code>info</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1034,8 +1157,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-audio-info-get-bitrate"></a><h3>gst_discoverer_audio_info_get_bitrate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_audio_info_get_bitrate
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1054,8 +1180,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-audio-info-get-channels"></a><h3>gst_discoverer_audio_info_get_channels ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_audio_info_get_channels
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1073,8 +1202,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <div class="refsect2">
 <a name="gst-discoverer-audio-info-get-depth"></a><h3>gst_discoverer_audio_info_get_depth ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_audio_info_get_depth (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1093,8 +1225,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-audio-info-get-language"></a><h3>gst_discoverer_audio_info_get_language ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_discoverer_audio_info_get_language
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1113,8 +1248,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-audio-info-get-max-bitrate"></a><h3>gst_discoverer_audio_info_get_max_bitrate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_audio_info_get_max_bitrate
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1133,8 +1271,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-audio-info-get-sample-rate"></a><h3>gst_discoverer_audio_info_get_sample_rate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_audio_info_get_sample_rate
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererAudioInfo" title="GstDiscovererAudioInfo"><span class="type">GstDiscovererAudioInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1153,8 +1294,11 @@ matching <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDisco
 <a name="gst-discoverer-container-info-get-streams"></a><h3>gst_discoverer_container_info_get_streams ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *             gst_discoverer_container_info_get_streams
                                                         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererContainerInfo" title="GstDiscovererContainerInfo"><span class="type">GstDiscovererContainerInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1176,8 +1320,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-subtitle-info-get-language"></a><h3>gst_discoverer_subtitle_info_get_language ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       gst_discoverer_subtitle_info_get_language
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererSubtitleInfo" title="GstDiscovererSubtitleInfo"><span class="type">GstDiscovererSubtitleInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1196,8 +1343,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-video-info-get-bitrate"></a><h3>gst_discoverer_video_info_get_bitrate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_bitrate
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1215,8 +1365,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <div class="refsect2">
 <a name="gst-discoverer-video-info-get-depth"></a><h3>gst_discoverer_video_info_get_depth ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_depth (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1235,8 +1388,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-video-info-get-framerate-denom"></a><h3>gst_discoverer_video_info_get_framerate_denom ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_framerate_denom
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1255,8 +1411,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-video-info-get-framerate-num"></a><h3>gst_discoverer_video_info_get_framerate_num ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_framerate_num
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1275,8 +1434,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-video-info-get-height"></a><h3>gst_discoverer_video_info_get_height ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_height
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1295,8 +1457,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <a name="gst-discoverer-video-info-is-interlaced"></a><h3>gst_discoverer_video_info_is_interlaced ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_discoverer_video_info_is_interlaced
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1315,8 +1480,11 @@ Free with <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#gst-dis
 <div class="refsect2">
 <a name="gst-discoverer-video-info-is-image"></a><h3>gst_discoverer_video_info_is_image ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_discoverer_video_info_is_image  (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1337,8 +1505,11 @@ one frame).</td>
 <a name="gst-discoverer-video-info-get-max-bitrate"></a><h3>gst_discoverer_video_info_get_max_bitrate ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_max_bitrate
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1357,8 +1528,11 @@ one frame).</td>
 <a name="gst-discoverer-video-info-get-par-denom"></a><h3>gst_discoverer_video_info_get_par_denom ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_par_denom
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1377,8 +1551,11 @@ one frame).</td>
 <a name="gst-discoverer-video-info-get-par-num"></a><h3>gst_discoverer_video_info_get_par_num ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_par_num
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1396,8 +1573,11 @@ one frame).</td>
 <div class="refsect2">
 <a name="gst-discoverer-video-info-get-width"></a><h3>gst_discoverer_video_info_get_width ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               gst_discoverer_video_info_get_width (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscovererVideoInfo" title="GstDiscovererVideoInfo"><span class="type">GstDiscovererVideoInfo</span></a> *info</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>info</code></em> :</span></p></td>
@@ -1438,15 +1618,18 @@ set on the result flags.
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>            *error,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Will be emitted when all information on a URI could be discovered, or
-an error ocurred.
+Will be emitted in async mode when all information on a URI could be
+discovered, or an error occurred.
 </p>
 <p>
 When an error occurs, <em class="parameter"><code>info</code></em> might still contain some partial information,
 depending on the circumstances of the error.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -1464,7 +1647,7 @@ depending on the circumstances of the error.
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, which will be non-NULL if an error
 occurred during discovery. You must not
 free this <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, it will be freed by
-the discoverer. <span class="annotation">[<acronym title="Override the parsed C type with given type"><span class="acronym">type</span></acronym> GLib.Error]</span>
+the discoverer. <span class="annotation">[<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> GLib.Error]</span>
 </td>
 </tr>
 <tr>
@@ -1480,10 +1663,13 @@ the discoverer. <span class="annotation">[<acronym title="Override the parsed C 
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer"><span class="type">GstDiscoverer</span></a> *discoverer,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Will be emitted when all pending URIs have been processed.
+Will be emitted in async mode when all pending URIs have been processed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -1513,8 +1699,11 @@ and read speed for an audio cd source).
 This signal is usually emitted from the context of a GStreamer streaming
 thread.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -1540,8 +1729,11 @@ thread.
 <p>
 Will be emitted when the discover starts analyzing the pending URIs
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>discoverer</code></em> :</span></p></td>
@@ -1559,6 +1751,6 @@ Will be emitted when the discover starts analyzing the pending URIs
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

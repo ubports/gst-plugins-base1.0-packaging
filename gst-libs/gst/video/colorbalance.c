@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -51,7 +51,7 @@ enum
   LAST_SIGNAL
 };
 
-static void gst_color_balance_class_init (GstColorBalanceInterface * iface);
+static void gst_color_balance_base_init (GstColorBalanceInterface * iface);
 
 static guint gst_color_balance_signals[LAST_SIGNAL] = { 0 };
 
@@ -63,7 +63,7 @@ gst_color_balance_get_type (void)
   if (!gst_color_balance_type) {
     static const GTypeInfo gst_color_balance_info = {
       sizeof (GstColorBalanceInterface),
-      (GBaseInitFunc) gst_color_balance_class_init,
+      (GBaseInitFunc) gst_color_balance_base_init,
       NULL,
       NULL,
       NULL,
@@ -81,7 +81,7 @@ gst_color_balance_get_type (void)
 }
 
 static void
-gst_color_balance_class_init (GstColorBalanceInterface * iface)
+gst_color_balance_base_init (GstColorBalanceInterface * iface)
 {
   static gboolean initialized = FALSE;
 

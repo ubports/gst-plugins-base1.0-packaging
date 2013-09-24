@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -121,48 +121,6 @@ GST_DEBUG_CATEGORY (pango_debug);
 #define MINIMUM_OUTLINE_OFFSET 1.0
 #define DEFAULT_SCALE_BASIS    640
 
-#define COMP_Y(ret, r, g, b) \
-{ \
-   ret = (int) (((19595 * r) >> 16) + ((38470 * g) >> 16) + ((7471 * b) >> 16)); \
-   ret = CLAMP (ret, 0, 255); \
-}
-
-#define COMP_U(ret, r, g, b) \
-{ \
-   ret = (int) (-((11059 * r) >> 16) - ((21709 * g) >> 16) + ((32768 * b) >> 16) + 128); \
-   ret = CLAMP (ret, 0, 255); \
-}
-
-#define COMP_V(ret, r, g, b) \
-{ \
-   ret = (int) (((32768 * r) >> 16) - ((27439 * g) >> 16) - ((5329 * b) >> 16) + 128); \
-   ret = CLAMP (ret, 0, 255); \
-}
-
-#define BLEND(ret, alpha, v0, v1) \
-{ \
-	ret = (v0 * alpha + v1 * (255 - alpha)) / 255; \
-}
-
-#define OVER(ret, alphaA, Ca, alphaB, Cb, alphaNew)	\
-{ \
-    gint _tmp; \
-    _tmp = (Ca * alphaA + Cb * alphaB * (255 - alphaA) / 255) / alphaNew; \
-    ret = CLAMP (_tmp, 0, 255); \
-}
-
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-# define CAIRO_ARGB_A 3
-# define CAIRO_ARGB_R 2
-# define CAIRO_ARGB_G 1
-# define CAIRO_ARGB_B 0
-#else
-# define CAIRO_ARGB_A 0
-# define CAIRO_ARGB_R 1
-# define CAIRO_ARGB_G 2
-# define CAIRO_ARGB_B 3
-#endif
-
 enum
 {
   PROP_0,
@@ -189,12 +147,7 @@ enum
   PROP_LAST
 };
 
-/* FIXME: video-blend.c doesn't support formats with more than 8 bit per
- * component (which get unpacked into ARGB64 or AYUV64) yet, such as:
- *  v210, v216, UYVP, GRAY16_LE, GRAY16_BE */
-#define VIDEO_FORMATS "{ BGRx, RGBx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, \
-    I420, YV12, AYUV, YUY2, UYVY, v308, Y41B, Y42B, Y444, \
-    NV12, NV21, A420, YUV9, YVU9, IYU1, GRAY8 }"
+#define VIDEO_FORMATS GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS
 
 static GstStaticPadTemplate src_template_factory =
 GST_STATIC_PAD_TEMPLATE ("src",
@@ -1035,7 +988,7 @@ gst_base_text_overlay_src_query (GstPad * pad, GstObject * parent,
       break;
     }
     default:
-      ret = gst_pad_peer_query (overlay->video_sinkpad, query);
+      ret = gst_pad_query_default (pad, parent, query);
       break;
   }
 
@@ -1545,6 +1498,34 @@ gst_base_text_overlay_shade_rgb24 (GstBaseTextOverlay * overlay,
   }
 }
 
+static void
+gst_base_text_overlay_shade_IYU1 (GstBaseTextOverlay * overlay,
+    GstVideoFrame * frame, gint x0, gint x1, gint y0, gint y1)
+{
+  gint y, x, stride, shading_val, tmp;
+  guint8 *p;
+
+  shading_val = overlay->shading_value;
+  stride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, 0);
+
+  /* IYU1: packed 4:1:1 YUV (Cb-Y0-Y1-Cr-Y2-Y3 ...) */
+  for (y = y0; y < y1; ++y) {
+    p = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
+    /* move to Y0 or Y1 (we pretend the chroma is the last of the 3 bytes) */
+    /* FIXME: we're not pixel-exact here if x0 is an odd number, but it's
+     * unlikely anyone will notice.. */
+    p += (y * stride) + ((x0 / 2) * 3) + 1;
+    for (x = x0; x < x1; x += 2) {
+      tmp = *p + shading_val;
+      *p++ = CLAMP (tmp, 0, 255);
+      tmp = *p + shading_val;
+      *p++ = CLAMP (tmp, 0, 255);
+      /* skip chroma */
+      p++;
+    }
+  }
+}
+
 #define ARGB_SHADE_FUNCTION(name, OFFSET)	\
 static inline void \
 gst_base_text_overlay_shade_##name (GstBaseTextOverlay * overlay, GstVideoFrame * dest, \
@@ -1630,6 +1611,7 @@ gst_base_text_overlay_shade_background (GstBaseTextOverlay * overlay,
     case GST_VIDEO_FORMAT_YUV9:
     case GST_VIDEO_FORMAT_YVU9:
     case GST_VIDEO_FORMAT_GRAY8:
+    case GST_VIDEO_FORMAT_A420:
       gst_base_text_overlay_shade_planar_Y (overlay, frame, x0, x1, y0, y1);
       break;
     case GST_VIDEO_FORMAT_AYUV:
@@ -1665,6 +1647,9 @@ gst_base_text_overlay_shade_background (GstBaseTextOverlay * overlay,
     case GST_VIDEO_FORMAT_BGR:
     case GST_VIDEO_FORMAT_RGB:
       gst_base_text_overlay_shade_rgb24 (overlay, frame, x0, x1, y0, y1);
+      break;
+    case GST_VIDEO_FORMAT_IYU1:
+      gst_base_text_overlay_shade_IYU1 (overlay, frame, x0, x1, y0, y1);
       break;
     default:
       GST_FIXME_OBJECT (overlay, "implement background shading for format %s",

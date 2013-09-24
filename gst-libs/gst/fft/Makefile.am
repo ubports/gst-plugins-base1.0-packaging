@@ -3,6 +3,7 @@ lib_LTLIBRARIES = libgstfft-@GST_API_VERSION@.la
 libgstfft_@GST_API_VERSION@_includedir = $(includedir)/gstreamer-@GST_API_VERSION@/gst/fft
 
 libgstfft_@GST_API_VERSION@_include_HEADERS = \
+	fft.h \
 	gstfft.h \
 	gstffts16.h \
 	gstffts32.h \
@@ -39,7 +40,7 @@ libgstfft_@GST_API_VERSION@_la_SOURCES = \
 	kiss_fftr_f64.c
 
 libgstfft_@GST_API_VERSION@_la_LIBADD = $(GST_LIBS) $(LIBM)
-libgstfft_@GST_API_VERSION@_la_CFLAGS = $(GST_CFLAGS)
+libgstfft_@GST_API_VERSION@_la_CFLAGS =  $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
 libgstfft_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 EXTRA_DIST = kiss_version
@@ -49,16 +50,17 @@ BUILT_GIRSOURCES = GstFft-@GST_API_VERSION@.gir
 
 gir_headers=$(patsubst %,$(srcdir)/%, $(libgstfft_@GST_API_VERSION@_include_HEADERS))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgstfft_@GST_API_VERSION@_la_SOURCES))
-gir_cincludes=$(patsubst %,--c-include='gst/fft/%',$(libgstfft_@GST_API_VERSION@_include_HEADERS))
 
 GstFft-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstfft-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
-		GST_PLUGIN_SYSTEM_PATH="" GST_PLUGIN_PATH="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstFft \
 		--nsversion=@GST_API_VERSION@ \
 		--strip-prefix=Gst \
 		--warn-all \
-		$(gir_cincludes) \
+		--c-include "gst/fft/fft.h" \
+		-I$(top_srcdir)/gst-libs \
+		-I$(top_builddir)/gst-libs \
 		--add-include-path=`PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" $(PKG_CONFIG) --variable=girdir gstreamer-@GST_API_VERSION@` \
 		--library=libgstfft-@GST_API_VERSION@.la \
 		--include=Gst-@GST_API_VERSION@ \

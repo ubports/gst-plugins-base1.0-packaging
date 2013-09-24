@@ -15,18 +15,18 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
-#include <gst/gst.h>
+#ifndef __GST_AUDIO_AUDIO_H__
+#include <gst/audio/audio.h>
+#endif
 
 #ifndef __GST_AUDIO_FORMAT_H__
 #define __GST_AUDIO_FORMAT_H__
 
 G_BEGIN_DECLS
-
-#include <gst/audio/audio-enumtypes.h>
 
 #if G_BYTE_ORDER == G_BIG_ENDIAN
 #define _GST_AUDIO_FORMAT_NE(fmt) GST_AUDIO_FORMAT_ ## fmt ## BE
@@ -273,9 +273,31 @@ const GstAudioFormatInfo *
 void           gst_audio_format_fill_silence     (const GstAudioFormatInfo *info,
                                                   gpointer dest, gsize length);
 
+/**
+ * GST_AUDIO_RATE_RANGE:
+ *
+ * Maximum range of allowed sample rates, for use in template caps strings.
+ */
 #define GST_AUDIO_RATE_RANGE "(int) [ 1, max ]"
+/**
+ * GST_AUDIO_CHANNELS_RANGE:
+ *
+ * Maximum range of allowed channels, for use in template caps strings.
+ */
 #define GST_AUDIO_CHANNELS_RANGE "(int) [ 1, max ]"
 
+/**
+ * GST_AUDIO_NE:
+ * @s: format string without endianness marker
+ *
+ * Turns audio format string @s into the format string for native endianness.
+ */
+/**
+ * GST_AUDIO_OE:
+ * @s: format string without endianness marker
+ *
+ * Turns audio format string @s into the format string for other endianness.
+ */
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
 # define GST_AUDIO_NE(s) G_STRINGIFY(s)"LE"
 # define GST_AUDIO_OE(s) G_STRINGIFY(s)"BE"
@@ -284,6 +306,11 @@ void           gst_audio_format_fill_silence     (const GstAudioFormatInfo *info
 # define GST_AUDIO_OE(s) G_STRINGIFY(s)"LE"
 #endif
 
+/**
+ * GST_AUDIO_FORMATS_ALL:
+ *
+ * List of all audio formats, for use in template caps strings.
+ */
 #define GST_AUDIO_FORMATS_ALL " { S8, U8, " \
     "S16LE, S16BE, U16LE, U16BE, " \
     "S24_32LE, S24_32BE, U24_32LE, U24_32BE, " \

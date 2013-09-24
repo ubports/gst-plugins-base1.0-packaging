@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -443,6 +443,8 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
   const GValue *format;
   const GstAudioFormatInfo *in_info, *out_info = NULL;
   GstAudioFormatFlags in_flags, out_flags = 0;
+  gint in_depth, out_depth = -1;
+  gint i, len;
 
   in_format = gst_structure_get_string (ins, "format");
   if (!in_format)
@@ -451,6 +453,10 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
   format = gst_structure_get_value (outs, "format");
   /* should not happen */
   if (format == NULL)
+    return;
+
+  /* nothing to fixate? */
+  if (!GST_VALUE_HOLDS_LIST (format))
     return;
 
   in_info =
@@ -462,77 +468,76 @@ gst_audio_convert_fixate_format (GstBaseTransform * base, GstStructure * ins,
   in_flags &= ~(GST_AUDIO_FORMAT_FLAG_UNPACK);
   in_flags &= ~(GST_AUDIO_FORMAT_FLAG_SIGNED);
 
-  if (GST_VALUE_HOLDS_LIST (format)) {
-    gint i, len;
+  in_depth = GST_AUDIO_FORMAT_INFO_DEPTH (in_info);
 
-    len = gst_value_list_get_size (format);
-    for (i = 0; i < len; i++) {
-      const GValue *val;
-      const gchar *fname;
+  len = gst_value_list_get_size (format);
+  for (i = 0; i < len; i++) {
+    const GstAudioFormatInfo *t_info;
+    GstAudioFormatFlags t_flags;
+    gboolean t_flags_better;
+    const GValue *val;
+    const gchar *fname;
+    gint t_depth;
 
-      val = gst_value_list_get_value (format, i);
-      if (G_VALUE_HOLDS_STRING (val)) {
-        const GstAudioFormatInfo *t_info;
-        GstAudioFormatFlags t_flags;
+    val = gst_value_list_get_value (format, i);
+    if (!G_VALUE_HOLDS_STRING (val))
+      continue;
 
-        fname = g_value_get_string (val);
-        t_info =
-            gst_audio_format_get_info (gst_audio_format_from_string (fname));
-        if (!t_info)
-          continue;
-        /* accept input format immediately */
-        if (strcmp (fname, in_format) == 0) {
-          out_info = t_info;
-          break;
-        }
+    fname = g_value_get_string (val);
+    t_info = gst_audio_format_get_info (gst_audio_format_from_string (fname));
+    if (!t_info)
+      continue;
 
-        t_flags = GST_AUDIO_FORMAT_INFO_FLAGS (t_info);
-        t_flags &= ~(GST_AUDIO_FORMAT_FLAG_UNPACK);
-        t_flags &= ~(GST_AUDIO_FORMAT_FLAG_SIGNED);
-
-        if (GST_AUDIO_FORMAT_INFO_DEPTH (t_info) ==
-            GST_AUDIO_FORMAT_INFO_DEPTH (in_info) && (!out_info
-                || GST_AUDIO_FORMAT_INFO_DEPTH (out_info) !=
-                GST_AUDIO_FORMAT_INFO_DEPTH (in_info)
-                || (t_flags == in_flags && out_flags != in_flags))) {
-          /* Prefer to use the first format that has the same depth with the same
-           * flags, and if none with the same flags exist use the first other one
-           * that has the same depth */
-          out_info = t_info;
-          out_flags = t_flags;
-        } else if (GST_AUDIO_FORMAT_INFO_DEPTH (t_info) >=
-            GST_AUDIO_FORMAT_INFO_DEPTH (in_info) && (!out_info
-                || GST_AUDIO_FORMAT_INFO_DEPTH (in_info) >
-                GST_AUDIO_FORMAT_INFO_DEPTH (out_info)
-                || (GST_AUDIO_FORMAT_INFO_DEPTH (out_info) >=
-                    GST_AUDIO_FORMAT_INFO_DEPTH (in_info) && t_flags == in_flags
-                    && out_flags != in_flags))) {
-          /* Otherwise use the first format that has a higher depth with the same flags,
-           * if none with the same flags exist use the first other one that has a higher
-           * depth */
-          out_info = t_info;
-          out_flags = t_flags;
-        } else if (!out_info
-            || (GST_AUDIO_FORMAT_INFO_DEPTH (t_info) >
-                GST_AUDIO_FORMAT_INFO_DEPTH (out_info)
-                && GST_AUDIO_FORMAT_INFO_DEPTH (out_info) <
-                GST_AUDIO_FORMAT_INFO_DEPTH (in_info)) || (t_flags == in_flags
-                && out_flags != in_flags
-                && GST_AUDIO_FORMAT_INFO_DEPTH (out_info) ==
-                GST_AUDIO_FORMAT_INFO_DEPTH (t_info))) {
-          /* Else get at least the one with the highest depth, ideally with the same flags */
-          out_info = t_info;
-          out_flags = t_flags;
-        }
-      }
+    /* accept input format immediately */
+    if (strcmp (fname, in_format) == 0) {
+      out_info = t_info;
+      break;
     }
-    if (out_info)
-      gst_structure_set (outs, "format", G_TYPE_STRING,
-          GST_AUDIO_FORMAT_INFO_NAME (out_info), NULL);
-  } else {
-    /* nothing to fixate */
-    return;
+
+    t_flags = GST_AUDIO_FORMAT_INFO_FLAGS (t_info);
+    t_flags &= ~(GST_AUDIO_FORMAT_FLAG_UNPACK);
+    t_flags &= ~(GST_AUDIO_FORMAT_FLAG_SIGNED);
+
+    t_depth = GST_AUDIO_FORMAT_INFO_DEPTH (t_info);
+
+    /* Any output format is better than no output format at all */
+    if (!out_info) {
+      out_info = t_info;
+      out_depth = t_depth;
+      out_flags = t_flags;
+      continue;
+    }
+
+    t_flags_better = (t_flags == in_flags && out_flags != in_flags);
+
+    if (t_depth == in_depth && (out_depth != in_depth || t_flags_better)) {
+      /* Prefer to use the first format that has the same depth with the same
+       * flags, and if none with the same flags exist use the first other one
+       * that has the same depth */
+      out_info = t_info;
+      out_depth = t_depth;
+      out_flags = t_flags;
+    } else if (t_depth >= in_depth && (in_depth > out_depth
+            || (out_depth >= in_depth && t_flags_better))) {
+      /* Otherwise use the first format that has a higher depth with the same flags,
+       * if none with the same flags exist use the first other one that has a higher
+       * depth */
+      out_info = t_info;
+      out_depth = t_depth;
+      out_flags = t_flags;
+    } else if ((t_depth > out_depth && out_depth < in_depth)
+        || (t_flags_better && out_depth == t_depth)) {
+      /* Else get at least the one with the highest depth, ideally with the same flags */
+      out_info = t_info;
+      out_depth = t_depth;
+      out_flags = t_flags;
+    }
+
   }
+
+  if (out_info)
+    gst_structure_set (outs, "format", G_TYPE_STRING,
+        GST_AUDIO_FORMAT_INFO_NAME (out_info), NULL);
 }
 
 static void

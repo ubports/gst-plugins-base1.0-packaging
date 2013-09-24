@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -40,6 +40,12 @@
 #include "gsttageditingprivate.h"
 #include <stdlib.h>
 #include <string.h>
+
+#include "id3v2.h"
+
+#ifndef GST_DISABLE_GST_DEBUG
+#define GST_CAT_DEFAULT id3v2_ensure_debug_category()
+#endif
 
 static const gchar genres[] =
     "Blues\000Classic Rock\000Country\000Dance\000Disco\000Funk\000Grunge\000"
@@ -104,6 +110,9 @@ static const GstTagEntryMatch tag_matches[] = {
   {GST_TAG_ARTIST_SORTNAME, "TSOP"},
   {GST_TAG_ALBUM_SORTNAME, "TSOA"},
   {GST_TAG_TITLE_SORTNAME, "TSOT"},
+  {GST_TAG_PUBLISHER, "TPUB"},
+  {GST_TAG_INTERPRETED_BY, "TPE4"},
+  {GST_TAG_MUSICAL_KEY, "TKEY"},
   {NULL, NULL}
 };
 
@@ -129,7 +138,7 @@ gst_tag_from_id3_tag (const gchar * id3_tag)
     i++;
   }
 
-  GST_INFO ("Cannot map ID3v2 tag '%c%c%c%c' to GStreamer tag",
+  GST_FIXME ("Cannot map ID3v2 tag '%c%c%c%c' to GStreamer tag",
       id3_tag[0], id3_tag[1], id3_tag[2], id3_tag[3]);
 
   return NULL;
@@ -193,7 +202,7 @@ gst_tag_from_id3_user_tag (const gchar * type, const gchar * id3_user_tag)
     }
   }
 
-  GST_INFO ("Cannot map ID3v2 user tag '%s' of type '%s' to GStreamer tag",
+  GST_FIXME ("Cannot map ID3v2 user tag '%s' of type '%s' to GStreamer tag",
       id3_user_tag, type);
 
   return NULL;

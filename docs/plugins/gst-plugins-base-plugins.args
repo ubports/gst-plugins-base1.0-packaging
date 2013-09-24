@@ -1369,6 +1369,36 @@
 </ARG>
 
 <ARG>
+<NAME>GstPlayBin::audio-stream-combiner</NAME>
+<TYPE>GstElement*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Audio stream combiner</NICK>
+<BLURB>Current audio stream combiner (NULL = input-selector).</BLURB>
+<DEFAULT></DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstPlayBin::text-stream-combiner</NAME>
+<TYPE>GstElement*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Text stream combiner</NICK>
+<BLURB>Current text stream combiner (NULL = input-selector).</BLURB>
+<DEFAULT></DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstPlayBin::video-stream-combiner</NAME>
+<TYPE>GstElement*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Video stream combiner</NICK>
+<BLURB>Current video stream combiner (NULL = input-selector).</BLURB>
+<DEFAULT></DEFAULT>
+</ARG>
+
+<ARG>
 <NAME>GstAudiorate::add</NAME>
 <TYPE>guint64</TYPE>
 <RANGE></RANGE>
@@ -1975,7 +2005,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Add Borders</NICK>
 <BLURB>Add black borders if necessary to keep the display aspect ratio.</BLURB>
-<DEFAULT>FALSE</DEFAULT>
+<DEFAULT>TRUE</DEFAULT>
 </ARG>
 
 <ARG>
@@ -3594,7 +3624,7 @@
 <RANGE></RANGE>
 <FLAGS>rw</FLAGS>
 <NICK>Emit signals</NICK>
-<BLURB>Emit new-preroll, new-buffer and new-buffer-list signals.</BLURB>
+<BLURB>Emit new-preroll and new-sample signals.</BLURB>
 <DEFAULT>FALSE</DEFAULT>
 </ARG>
 
@@ -3729,6 +3759,16 @@
 </ARG>
 
 <ARG>
+<NAME>GstAppSrc::current-level-bytes</NAME>
+<TYPE>guint64</TYPE>
+<RANGE></RANGE>
+<FLAGS>r</FLAGS>
+<NICK>Current Level Bytes</NICK>
+<BLURB>The number of currently queued bytes.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
 <NAME>GstAudioResample::filter-length</NAME>
 <TYPE>gint</TYPE>
 <RANGE>>= 0</RANGE>
@@ -3746,6 +3786,26 @@
 <NICK>Quality</NICK>
 <BLURB>Resample quality with 0 being the lowest and 10 being the best.</BLURB>
 <DEFAULT>4</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstAudioResample::sinc-filter-auto-threshold</NAME>
+<TYPE>guint</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Sinc filter auto mode threshold</NICK>
+<BLURB>Memory usage threshold to use if sinc filter mode is AUTO, given in bytes.</BLURB>
+<DEFAULT>1048576</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstAudioResample::sinc-filter-mode</NAME>
+<TYPE>SpeexResamplerSincFilterMode</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Sinc filter table mode</NICK>
+<BLURB>What sinc filter table mode to use.</BLURB>
+<DEFAULT>Use full table if table size below threshold</DEFAULT>
 </ARG>
 
 <ARG>

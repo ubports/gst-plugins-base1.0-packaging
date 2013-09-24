@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 
@@ -23,6 +23,9 @@
 #define __GST_TAG_TAG_H__
 
 #include <gst/gst.h>
+#include <gst/tag/gsttagdemux.h>
+#include <gst/tag/gsttagmux.h>
+#include <gst/tag/xmpwriter.h>
 
 G_BEGIN_DECLS
 
@@ -78,6 +81,21 @@ G_BEGIN_DECLS
  * Annodex CMML clip element tag
  */
 #define GST_TAG_CMML_CLIP "cmml-clip"
+/**
+ * GST_TAG_MUSICAL_KEY:
+ *
+ * Musical key in which the sound starts. It is represented as a string
+ * with a maximum length of three characters. The ground keys are
+ * represented with "A","B","C","D","E", "F" and "G" and halfkeys
+ * represented with "b" and "#". Minor is represented as "m" (e.g. "Dbm").
+ * Off key is represented with an "o" only.
+ * This notation might be extended in the future to support non-minor/major
+ * keys.
+ *
+ * Since: 1.2
+ */
+#define GST_TAG_MUSICAL_KEY                   "musical-key"
+
 
 /* CDDA tags */
 

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtspdefs</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtspconnection.html" title="gstrtspconnection">
 <link rel="next" href="gst-plugins-base-libs-gstrtspextension.html" title="gstrtspextension">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -59,6 +59,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-header-allow-multiple" title="gst_rtsp_header_allow_multiple ()">gst_rtsp_header_allow_multiple</a>      (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> field</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-status-as-text" title="gst_rtsp_status_as_text ()">gst_rtsp_status_as_text</a>             (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPStatusCode" title="enum GstRTSPStatusCode"><span class="type">GstRTSPStatusCode</span></a> code</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-options-as-text" title="gst_rtsp_options_as_text ()">gst_rtsp_options_as_text</a>            (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a> options</code></em>);
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="returnvalue">GstRTSPMethod</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-options-from-text" title="gst_rtsp_options_from_text ()">gst_rtsp_options_from_text</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *options</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="returnvalue">GstRTSPHeaderField</span></a>  <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-find-header-field" title="gst_rtsp_find_header_field ()">gst_rtsp_find_header_field</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>);
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="returnvalue">GstRTSPMethod</span></a>       <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-find-method" title="gst_rtsp_find_method ()">gst_rtsp_find_method</a>                (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *method</code></em>);
 </pre>
@@ -80,8 +81,11 @@ Last reviewed on 2007-07-24 (0.10.14)
 Macro that checks the return value of <em class="parameter"><code>stmt</code></em> and jumps to <em class="parameter"><code>label</code></em> when it does
 not equal <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>stmt</code></em> :</span></p></td>
@@ -114,8 +118,11 @@ Strongest available authentication method
 <p>
 The possible events for the connection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-EV-READ:CAPS"></a><span class="term"><code class="literal">GST_RTSP_EV_READ</code></span></p></td>
@@ -159,8 +166,11 @@ The possible events for the connection.
 <p>
 Result codes from the RTSP functions.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-OK:CAPS"></a><span class="term"><code class="literal">GST_RTSP_OK</code></span></p></td>
@@ -267,8 +277,11 @@ Result codes from the RTSP functions.
 <p>
 The possible network families.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-FAM-NONE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_FAM_NONE</code></span></p></td>
@@ -303,8 +316,11 @@ The possible network families.
 <p>
 The different RTSP states.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-STATE-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STATE_INVALID</code></span></p></td>
@@ -351,8 +367,11 @@ The different RTSP states.
 <p>
 The supported RTSP versions.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-VERSION-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_VERSION_INVALID</code></span></p></td>
@@ -395,8 +414,11 @@ The supported RTSP versions.
 <p>
 The different supported RTSP methods.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_INVALID</code></span></p></td>
@@ -483,8 +505,11 @@ The different supported RTSP methods.
 <p>
 Authentication methods, ordered by strength
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-RTSP-AUTH-NONE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_AUTH_NONE</code></span></p></td>
@@ -618,6 +643,346 @@ Authentication methods, ordered by strength
 <p>
 Enumeration of rtsp header fields
 </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="GST-RTSP-HDR-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_INVALID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ACCEPT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ACCEPT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ACCEPT-ENCODING:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ACCEPT_ENCODING</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ACCEPT-LANGUAGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ACCEPT_LANGUAGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ALLOW:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ALLOW</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-AUTHORIZATION:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_AUTHORIZATION</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-BANDWIDTH:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_BANDWIDTH</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-BLOCKSIZE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_BLOCKSIZE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CACHE-CONTROL:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CACHE_CONTROL</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONFERENCE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONFERENCE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONNECTION:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONNECTION</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-BASE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_BASE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-ENCODING:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_ENCODING</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-LANGUAGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_LANGUAGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-LENGTH:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_LENGTH</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-LOCATION:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_LOCATION</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CONTENT-TYPE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CONTENT_TYPE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CSEQ:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CSEQ</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-DATE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_DATE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-EXPIRES:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_EXPIRES</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-FROM:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_FROM</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-IF-MODIFIED-SINCE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_IF_MODIFIED_SINCE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-LAST-MODIFIED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_LAST_MODIFIED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-PROXY-AUTHENTICATE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_PROXY_AUTHENTICATE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-PROXY-REQUIRE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_PROXY_REQUIRE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-PUBLIC:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_PUBLIC</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-RANGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_RANGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REFERER:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REFERER</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REQUIRE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REQUIRE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-RETRY-AFTER:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_RETRY_AFTER</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-RTP-INFO:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_RTP_INFO</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SCALE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SCALE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SESSION:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SESSION</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SERVER:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SERVER</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SPEED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SPEED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-TRANSPORT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_TRANSPORT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-UNSUPPORTED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_UNSUPPORTED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-USER-AGENT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_USER_AGENT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-VIA:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_VIA</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-WWW-AUTHENTICATE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_WWW_AUTHENTICATE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CLIENT-CHALLENGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CLIENT_CHALLENGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REAL-CHALLENGE1:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REAL_CHALLENGE1</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REAL-CHALLENGE2:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REAL_CHALLENGE2</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REAL-CHALLENGE3:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REAL_CHALLENGE3</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SUBSCRIBE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SUBSCRIBE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ALERT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ALERT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-CLIENT-ID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_CLIENT_ID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-COMPANY-ID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_COMPANY_ID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-GUID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_GUID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-REGION-DATA:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_REGION_DATA</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-MAX-ASM-WIDTH:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_MAX_ASM_WIDTH</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-LANGUAGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_LANGUAGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-PLAYER-START-TIME:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_PLAYER_START_TIME</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-LOCATION:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_LOCATION</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ETAG:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ETAG</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-IF-MATCH:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_IF_MATCH</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-ACCEPT-CHARSET:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_ACCEPT_CHARSET</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-SUPPORTED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_SUPPORTED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-VARY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_VARY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-ACCELERATE-STREAMING:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_ACCELERATE_STREAMING</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-ACCEPT-AUTHENT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_ACCEPT_AUTHENT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-ACCEPT-PROXY-AUTHENT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_ACCEPT_PROXY_AUTHENT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-BROADCAST-ID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_BROADCAST_ID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-BURST-STREAMING:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_BURST_STREAMING</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-NOTICE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_NOTICE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PLAYER-LAG-TIME:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PLAYER_LAG_TIME</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PLAYLIST:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PLAYLIST</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PLAYLIST-CHANGE-NOTICE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PLAYLIST_CHANGE_NOTICE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PLAYLIST-GEN-ID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PLAYLIST_GEN_ID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PLAYLIST-SEEK-ID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PLAYLIST_SEEK_ID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PROXY-CLIENT-AGENT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PROXY_CLIENT_AGENT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-PROXY-CLIENT-VERB:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_PROXY_CLIENT_VERB</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-RECEDING-PLAYLISTCHANGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_RECEDING_PLAYLISTCHANGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-RTP-INFO:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_RTP_INFO</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-STARTUPPROFILE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_STARTUPPROFILE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-TIMESTAMP:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_TIMESTAMP</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-AUTHENTICATION-INFO:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_AUTHENTICATION_INFO</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-HOST:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_HOST</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-PRAGMA:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_PRAGMA</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-SERVER-IP-ADDRESS:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_SERVER_IP_ADDRESS</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-X-SESSIONCOOKIE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_X_SESSIONCOOKIE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-RTCP-INTERVAL:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_RTCP_INTERVAL</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-HDR-LAST:CAPS"></a><span class="term"><code class="literal">GST_RTSP_HDR_LAST</code></span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -673,6 +1038,194 @@ Enumeration of rtsp header fields
 <p>
 Enumeration of rtsp status codes
 </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="GST-RTSP-STS-INVALID:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_INVALID</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-CONTINUE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_CONTINUE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-OK:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_OK</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-CREATED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_CREATED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-LOW-ON-STORAGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_LOW_ON_STORAGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-MULTIPLE-CHOICES:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_MULTIPLE_CHOICES</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-MOVED-PERMANENTLY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_MOVED_PERMANENTLY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-MOVE-TEMPORARILY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_MOVE_TEMPORARILY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-SEE-OTHER:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_SEE_OTHER</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-NOT-MODIFIED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_NOT_MODIFIED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-USE-PROXY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_USE_PROXY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-BAD-REQUEST:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_BAD_REQUEST</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-UNAUTHORIZED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_UNAUTHORIZED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-PAYMENT-REQUIRED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_PAYMENT_REQUIRED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-FORBIDDEN:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_FORBIDDEN</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-NOT-FOUND:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_NOT_FOUND</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-METHOD-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_METHOD_NOT_ALLOWED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-NOT-ACCEPTABLE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_NOT_ACCEPTABLE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-PROXY-AUTH-REQUIRED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_PROXY_AUTH_REQUIRED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-REQUEST-TIMEOUT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_REQUEST_TIMEOUT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-GONE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_GONE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-LENGTH-REQUIRED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_LENGTH_REQUIRED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-PRECONDITION-FAILED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_PRECONDITION_FAILED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-REQUEST-ENTITY-TOO-LARGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_REQUEST_ENTITY_TOO_LARGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-REQUEST-URI-TOO-LARGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_REQUEST_URI_TOO_LARGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-UNSUPPORTED-MEDIA-TYPE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_UNSUPPORTED_MEDIA_TYPE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-PARAMETER-NOT-UNDERSTOOD:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_PARAMETER_NOT_UNDERSTOOD</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-CONFERENCE-NOT-FOUND:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_CONFERENCE_NOT_FOUND</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-NOT-ENOUGH-BANDWIDTH:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_NOT_ENOUGH_BANDWIDTH</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-SESSION-NOT-FOUND:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_SESSION_NOT_FOUND</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-METHOD-NOT-VALID-IN-THIS-STATE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_METHOD_NOT_VALID_IN_THIS_STATE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-HEADER-FIELD-NOT-VALID-FOR-RESOURCE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_HEADER_FIELD_NOT_VALID_FOR_RESOURCE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-INVALID-RANGE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_INVALID_RANGE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-PARAMETER-IS-READONLY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_PARAMETER_IS_READONLY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-AGGREGATE-OPERATION-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_AGGREGATE_OPERATION_NOT_ALLOWED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-ONLY-AGGREGATE-OPERATION-ALLOWED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_ONLY_AGGREGATE_OPERATION_ALLOWED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-UNSUPPORTED-TRANSPORT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_UNSUPPORTED_TRANSPORT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-DESTINATION-UNREACHABLE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_DESTINATION_UNREACHABLE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-INTERNAL-SERVER-ERROR:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_INTERNAL_SERVER_ERROR</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-NOT-IMPLEMENTED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_NOT_IMPLEMENTED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-BAD-GATEWAY:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_BAD_GATEWAY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-SERVICE-UNAVAILABLE:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_SERVICE_UNAVAILABLE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-GATEWAY-TIMEOUT:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_GATEWAY_TIMEOUT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-RTSP-VERSION-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_RTSP_VERSION_NOT_SUPPORTED</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="GST-RTSP-STS-OPTION-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">GST_RTSP_STS_OPTION_NOT_SUPPORTED</code></span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -681,8 +1234,11 @@ Enumeration of rtsp status codes
 <p>
 Convert <em class="parameter"><code>result</code></em> in a human readable string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
@@ -703,8 +1259,11 @@ Convert <em class="parameter"><code>result</code></em> in a human readable strin
 <p>
 Convert <em class="parameter"><code>method</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>method</code></em> :</span></p></td>
@@ -725,8 +1284,11 @@ Convert <em class="parameter"><code>method</code></em> to a string.
 <p>
 Convert <em class="parameter"><code>version</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>version</code></em> :</span></p></td>
@@ -747,8 +1309,11 @@ Convert <em class="parameter"><code>version</code></em> to a string.
 <p>
 Convert <em class="parameter"><code>field</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
@@ -769,8 +1334,11 @@ Convert <em class="parameter"><code>field</code></em> to a string.
 <p>
 Check whether <em class="parameter"><code>field</code></em> may appear multiple times in a message.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>field</code></em> :</span></p></td>
@@ -792,8 +1360,11 @@ Check whether <em class="parameter"><code>field</code></em> may appear multiple 
 <p>
 Convert <em class="parameter"><code>code</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>code</code></em> :</span></p></td>
@@ -814,8 +1385,11 @@ Convert <em class="parameter"><code>code</code></em> to a string.
 <p>
 Convert <em class="parameter"><code>options</code></em> to a string.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>options</code></em> :</span></p></td>
@@ -831,13 +1405,43 @@ Convert <em class="parameter"><code>options</code></em> to a string.
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-rtsp-options-from-text"></a><h3>gst_rtsp_options_from_text ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="returnvalue">GstRTSPMethod</span></a>       gst_rtsp_options_from_text          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *options</code></em>);</pre>
+<p>
+Convert the comma separated list <em class="parameter"><code>options</code></em> to a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a> bitwise or
+of methods. This functions is the reverse of <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#gst-rtsp-options-as-text" title="gst_rtsp_options_as_text ()"><code class="function">gst_rtsp_options_as_text()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>options</code></em> :</span></p></td>
+<td>a comma separated list of options</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.1.1</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-rtsp-find-header-field"></a><h3>gst_rtsp_find_header_field ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="returnvalue">GstRTSPHeaderField</span></a>  gst_rtsp_find_header_field          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>);</pre>
 <p>
 Convert <em class="parameter"><code>header</code></em> to a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>header</code></em> :</span></p></td>
@@ -845,7 +1449,7 @@ Convert <em class="parameter"><code>header</code></em> to a <a class="link" href
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> for <em class="parameter"><code>header</code></em> or <span class="type">GST_RTSP_HDR_INVALID</span> if the
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> for <em class="parameter"><code>header</code></em> or <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-HDR-INVALID:CAPS"><span class="type">GST_RTSP_HDR_INVALID</span></a> if the
 header field is unknown.</td>
 </tr>
 </tbody>
@@ -858,8 +1462,11 @@ header field is unknown.</td>
 <p>
 Convert <em class="parameter"><code>method</code></em> to a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>method</code></em> :</span></p></td>
@@ -881,6 +1488,6 @@ gstrtspurl, gstrtspconnection
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

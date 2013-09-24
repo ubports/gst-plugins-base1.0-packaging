@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_PB_UTILS_CODEC_UTILS_H__
@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 /* AAC */
 
 guint         gst_codec_utils_aac_get_sample_rate_from_index (guint sr_idx);
+gint          gst_codec_utils_aac_get_index_from_sample_rate (guint rate);
 
 const gchar * gst_codec_utils_aac_get_profile (const guint8 * audio_config, guint len);
 

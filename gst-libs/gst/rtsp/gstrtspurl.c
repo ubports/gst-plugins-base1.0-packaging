@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /*
  * Unless otherwise indicated, Source Code is licensed under MIT license.
@@ -67,7 +67,16 @@ static const struct
         GST_RTSP_LOWER_TRANS_UDP_MCAST}, {
   "rtspu", GST_RTSP_LOWER_TRANS_UDP | GST_RTSP_LOWER_TRANS_UDP_MCAST}, {
   "rtspt", GST_RTSP_LOWER_TRANS_TCP}, {
-  "rtsph", GST_RTSP_LOWER_TRANS_HTTP | GST_RTSP_LOWER_TRANS_TCP}
+  "rtsph", GST_RTSP_LOWER_TRANS_HTTP | GST_RTSP_LOWER_TRANS_TCP}, {
+  "rtsps", GST_RTSP_LOWER_TRANS_TCP | GST_RTSP_LOWER_TRANS_UDP |
+        GST_RTSP_LOWER_TRANS_UDP_MCAST | GST_RTSP_LOWER_TRANS_TLS}, {
+  "rtspsu",
+        GST_RTSP_LOWER_TRANS_UDP | GST_RTSP_LOWER_TRANS_UDP_MCAST |
+        GST_RTSP_LOWER_TRANS_TLS}, {
+  "rtspst", GST_RTSP_LOWER_TRANS_TCP | GST_RTSP_LOWER_TRANS_TLS}, {
+  "rtspsh",
+        GST_RTSP_LOWER_TRANS_HTTP | GST_RTSP_LOWER_TRANS_TCP |
+        GST_RTSP_LOWER_TRANS_TLS}
 };
 
 /* format is rtsp[u]://[user:passwd@]host[:port]/abspath[?query] where host
@@ -184,7 +193,10 @@ gst_rtsp_url_parse (const gchar * urlstr, GstRTSPUrl ** url)
       res->abspath = g_strndup (p, delim - p);
     p = delim;
   } else {
-    res->abspath = g_strdup ("/");
+    /* IQinVision IQeye 1080p fails if a path '/' is provided
+     * and RTSP does not mandate that a non-zero-length path
+     * must be used */
+    res->abspath = g_strdup ("");
   }
 
   if (p && *p == '?')

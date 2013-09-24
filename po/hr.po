@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2012-04-16 04:19+0200\n"
 "Last-Translator: Tomislav Krznar <tomislav.krznar@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -76,6 +76,10 @@ msgid "Internal data stream error."
 msgstr "Greška unutarnjeg niza podataka."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Nedostaje element „%s” - provjerite vašu GStreamer instalaciju."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Potreban je priključak %s za reprodukciju ovog niza, ali nije instaliran."
@@ -86,9 +90,9 @@ msgstr "Ne mogu odrediti vrstu niza"
 msgid "This appears to be a text file"
 msgstr "Ovo izgleda kao tekstualna datoteka"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Nedostaje element „%s” - provjerite vašu GStreamer instalaciju."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Ne mogu stvoriti element „decodebin”."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -161,11 +165,186 @@ msgstr "Izvorni element nije ispravan."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Greška pri slanju podataka u „%s:%d”."
 
+msgid "Can't record audio fast enough"
+msgstr "Ne mogu dovoljno brzo snimati zvuk"
+
 msgid "This CD has no audio tracks"
 msgstr "Ovaj CD nema zvučne pjesme"
 
-msgid "Can't record audio fast enough"
-msgstr "Ne mogu dovoljno brzo snimati zvuk"
+msgid "ID3 tag"
+msgstr "ID3 oznaka"
+
+msgid "APE tag"
+msgstr "APE oznaka"
+
+msgid "ICY internet radio"
+msgstr "ICY internetski radio"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Speech"
+
+msgid "CYUV Lossless"
+msgstr "CYUV Lossless"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Lossless MSZH"
+
+msgid "Run-length encoding"
+msgstr "Run-length kodiranje"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer oblik titlova"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami oblik titlova"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate oblik titlova"
+
+msgid "Sami subtitle format"
+msgstr "Sami oblik titlova"
+
+msgid "TMPlayer subtitle format"
+msgstr "TMPlayer oblik titlova"
+
+msgid "Kate subtitle format"
+msgstr "Kate oblik titlova"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "Nekomprimirani YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Uncompressed Gray Image"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "Nekomprimirani pakirani YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "Nekomprimirani ravninski YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "Nekomprimirani ravninski YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Nekomprimirani paletizirani %d-bitni %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Nekomprimirani paletizirani %d-bitni %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 inačica %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "Nekomprimirani YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Sirovi %d-bitni PCM zvuk"
+
+msgid "Audio CD source"
+msgstr "Audio CD izvor"
+
+msgid "DVD source"
+msgstr "DVD izvor"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Real Time Streaming Protocol (RTSP) izvor"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Izvor Microsoft Media Server (MMS) protokola"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "Izvor %s protokola"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s video RTP uklonitelj opterećenja"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s audio RTP uklonitelj opterećenja"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "%s RTP uklonitelj opterećenja"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s demultipleksor"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s dekoder"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s video RTP opteretitelj"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s audio RTP opteretitelj"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s RTP opteretitelj"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s multipleksor"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s koder"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "GStreamer element %s"
+
+msgid "Unknown source element"
+msgstr "Nepoznat element izvora"
+
+msgid "Unknown sink element"
+msgstr "Nepoznat element prijamnika"
+
+msgid "Unknown element"
+msgstr "Nepoznat element"
+
+msgid "Unknown decoder element"
+msgstr "Nepoznat element dekodera"
+
+msgid "Unknown encoder element"
+msgstr "Nepoznat element kodera"
+
+msgid "Plugin or element of unknown type"
+msgstr "Priključak ili element nepoznate vrste"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Nisam uspio čitati oznaku: nema dovoljno podataka"
@@ -327,168 +506,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3 oznaka"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "APE oznaka"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "ICY internetski radio"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows Media Speech"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "CYUV Lossless"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Lossless MSZH"
-
-msgid "Run-length encoding"
-msgstr "Run-length kodiranje"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "TMPlayer oblik titlova"
-
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sami oblik titlova"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Kate oblik titlova"
-
-msgid "Sami subtitle format"
-msgstr "Sami oblik titlova"
-
-msgid "TMPlayer subtitle format"
-msgstr "TMPlayer oblik titlova"
-
-msgid "Kate subtitle format"
-msgstr "Kate oblik titlova"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "Nekomprimirani YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Uncompressed Gray Image"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "Nekomprimirani YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Nekomprimirani paletizirani %d-bitni %s"
-
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 inačica %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "Nekomprimirani YUV"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Sirovi %d-bitni PCM zvuk"
-
-msgid "Audio CD source"
-msgstr "Audio CD izvor"
-
-msgid "DVD source"
-msgstr "DVD izvor"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Real Time Streaming Protocol (RTSP) izvor"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Izvor Microsoft Media Server (MMS) protokola"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "Izvor %s protokola"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s video RTP uklonitelj opterećenja"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s audio RTP uklonitelj opterećenja"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "%s RTP uklonitelj opterećenja"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s demultipleksor"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s dekoder"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s video RTP opteretitelj"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s audio RTP opteretitelj"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s RTP opteretitelj"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s multipleksor"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s koder"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "GStreamer element %s"
-
-msgid "Unknown source element"
-msgstr "Nepoznat element izvora"
-
-msgid "Unknown sink element"
-msgstr "Nepoznat element prijamnika"
-
-msgid "Unknown element"
-msgstr "Nepoznat element"
-
-msgid "Unknown decoder element"
-msgstr "Nepoznat element dekodera"
-
-msgid "Unknown encoder element"
-msgstr "Nepoznat element kodera"
-
-msgid "Plugin or element of unknown type"
-msgstr "Priključak ili element nepoznate vrste"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "Nekomprimirani YUV"
 
 #~ msgid "Master"
 #~ msgstr "Glavni"
@@ -541,9 +589,6 @@ msgstr "Priključak ili element nepoznate vrste"
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "Još ne mogu reproducirati RTSP nizove."
 
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Ne mogu stvoriti element „decodebin”."
-
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "
 #~ "file or some other type of text file, or the media file was not "
@@ -580,14 +625,8 @@ msgstr "Priključak ili element nepoznate vrste"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Spajanje na %s:%d odbijeno."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "Nekomprimirani ravninski YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "Nekomprimirani ravninski YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "Nekomprimirani pakirani YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "Nekomprimirani pakirani YUV 4:1:0"

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>audioresample</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-audiorate.html" title="audiorate">
 <link rel="next" href="gst-plugins-base-plugins-audiotestsrc.html" title="audiotestsrc">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -60,6 +60,8 @@
 <pre class="synopsis">
   "<a class="link" href="gst-plugins-base-plugins-audioresample.html#GstAudioResample--filter-length" title='The "filter-length" property'>filter-length</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-audioresample.html#GstAudioResample--quality" title='The "quality" property'>quality</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct
+  "<a class="link" href="gst-plugins-base-plugins-audioresample.html#GstAudioResample--sinc-filter-auto-threshold" title='The "sinc-filter-auto-threshold" property'>sinc-filter-auto-threshold</a>" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-audioresample.html#GstAudioResample--sinc-filter-mode" title='The "sinc-filter-mode" property'>sinc-filter-mode</a>"         <span class="type">SpeexResamplerSincFilterMode</span>  : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -69,9 +71,18 @@ audioresample resamples raw audio buffers to different sample rates using
 a configurable windowing function to enhance quality.
 </p>
 <p>
+By default, the resampler uses a reduced sinc table, with cubic interpolation filling in
+the gaps. This ensures that the table does not become too big. However, the interpolation
+increases the CPU usage considerably. As an alternative, a full sinc table can be used.
+Doing so can drastically reduce CPU usage (4x faster with 44.1 -&gt; 48 kHz conversions for
+example), at the cost of increased memory consumption, plus the sinc table takes longer
+to initialize when the element is created. A third mode exists, which uses the full table
+unless said table would become too large, in which case the interpolated one is used instead.
+</p>
+<p>
 </p>
 <div class="refsect2">
-<a name="idp7555664"></a><h3>Example launch line</h3>
+<a name="id-1.2.9.6.4.1"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -90,9 +101,12 @@ To create the Ogg/Vorbis file refer to the documentation of vorbisenc.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idm13040"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.9.6.5.1"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -113,9 +127,12 @@ To create the Ogg/Vorbis file refer to the documentation of vorbisenc.
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp6981568"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.9.6.5.2"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -135,8 +152,11 @@ To create the Ogg/Vorbis file refer to the documentation of vorbisenc.
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -188,10 +208,24 @@ Opaque data structure.
 <p>Allowed values: [0,10]</p>
 <p>Default value: 4</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstAudioResample--sinc-filter-auto-threshold"></a><h3>The <code class="literal">"sinc-filter-auto-threshold"</code> property</h3>
+<pre class="programlisting">  "sinc-filter-auto-threshold" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>Memory usage threshold to use if sinc filter mode is AUTO, given in bytes.</p>
+<p>Default value: 1048576</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstAudioResample--sinc-filter-mode"></a><h3>The <code class="literal">"sinc-filter-mode"</code> property</h3>
+<pre class="programlisting">  "sinc-filter-mode"         <span class="type">SpeexResamplerSincFilterMode</span>  : Read / Write</pre>
+<p>What sinc filter table mode to use.</p>
+<p>Default value: Use full table if table size below threshold</p>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

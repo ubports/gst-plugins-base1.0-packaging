@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -60,9 +60,8 @@ gint _decode_bin_compare_factories_func (gconstpointer p1, gconstpointer p2);
 typedef struct _GstURIDecodeBin GstURIDecodeBin;
 typedef struct _GstURIDecodeBinClass GstURIDecodeBinClass;
 
-#define GST_URI_DECODE_BIN_GET_LOCK(dec) (((GstURIDecodeBin*)(dec))->lock)
-#define GST_URI_DECODE_BIN_LOCK(dec) (g_mutex_lock(GST_URI_DECODE_BIN_GET_LOCK(dec)))
-#define GST_URI_DECODE_BIN_UNLOCK(dec) (g_mutex_unlock(GST_URI_DECODE_BIN_GET_LOCK(dec)))
+#define GST_URI_DECODE_BIN_LOCK(dec) (g_mutex_lock(&((GstURIDecodeBin*)(dec))->lock))
+#define GST_URI_DECODE_BIN_UNLOCK(dec) (g_mutex_unlock(&((GstURIDecodeBin*)(dec))->lock))
 
 typedef struct _GstURIDecodeBinStream
 {
@@ -79,9 +78,9 @@ struct _GstURIDecodeBin
 {
   GstBin parent_instance;
 
-  GMutex *lock;                 /* lock for constructing */
+  GMutex lock;                  /* lock for constructing */
 
-  GMutex *factories_lock;
+  GMutex factories_lock;
   guint32 factories_cookie;
   GList *factories;             /* factories we can use for selecting elements */
 
@@ -138,6 +137,10 @@ struct _GstURIDecodeBinClass
   /* signal fired to select from the proposed list of factories */
     GstAutoplugSelectResult (*autoplug_select) (GstElement * element,
       GstPad * pad, GstCaps * caps, GstElementFactory * factory);
+  /* signal fired when a autoplugged element that is not linked downstream
+   * or exposed wants to query something */
+    gboolean (*autoplug_query) (GstElement * element, GstPad * pad,
+      GstQuery * query);
 
   /* emitted when all data is decoded */
   void (*drained) (GstElement * element);
@@ -160,8 +163,9 @@ enum
   SIGNAL_AUTOPLUG_CONTINUE,
   SIGNAL_AUTOPLUG_FACTORIES,
   SIGNAL_AUTOPLUG_SELECT,
-  SIGNAL_DRAINED,
   SIGNAL_AUTOPLUG_SORT,
+  SIGNAL_AUTOPLUG_QUERY,
+  SIGNAL_DRAINED,
   SIGNAL_SOURCE_SETUP,
   LAST_SIGNAL
 };
@@ -228,6 +232,22 @@ _gst_boolean_accumulator (GSignalInvocationHint * ihint,
 
   /* stop emission if FALSE */
   return myboolean;
+}
+
+static gboolean
+_gst_boolean_or_accumulator (GSignalInvocationHint * ihint,
+    GValue * return_accu, const GValue * handler_return, gpointer dummy)
+{
+  gboolean myboolean;
+  gboolean retboolean;
+
+  myboolean = g_value_get_boolean (handler_return);
+  retboolean = g_value_get_boolean (return_accu);
+
+  if (!(ihint->run_type & G_SIGNAL_RUN_CLEANUP))
+    g_value_set_boolean (return_accu, myboolean || retboolean);
+
+  return TRUE;
 }
 
 static gboolean
@@ -310,12 +330,12 @@ gst_uri_decode_bin_autoplug_factories (GstElement * element, GstPad * pad,
   GST_DEBUG_OBJECT (element, "finding factories");
 
   /* return all compatible factories for caps */
-  g_mutex_lock (dec->factories_lock);
+  g_mutex_lock (&dec->factories_lock);
   gst_uri_decode_bin_update_factories_list (dec);
   list =
       gst_element_factory_list_filter (dec->factories, caps, GST_PAD_SINK,
-      FALSE);
-  g_mutex_unlock (dec->factories_lock);
+      gst_caps_is_fixed (caps));
+  g_mutex_unlock (&dec->factories_lock);
 
   result = g_value_array_new (g_list_length (list));
   for (tmp = list; tmp; tmp = tmp->next) {
@@ -349,6 +369,14 @@ gst_uri_decode_bin_autoplug_select (GstElement * element, GstPad * pad,
 
   /* Try factory. */
   return GST_AUTOPLUG_SELECT_TRY;
+}
+
+static gboolean
+gst_uri_decode_bin_autoplug_query (GstElement * element, GstPad * pad,
+    GstQuery * query)
+{
+  /* No query handled here */
+  return FALSE;
 }
 
 static void
@@ -613,6 +641,27 @@ gst_uri_decode_bin_class_init (GstURIDecodeBinClass * klass)
       GST_TYPE_ELEMENT_FACTORY);
 
   /**
+   * GstDecodeBin::autoplug-query:
+   * @bin: The decodebin.
+   * @child: The child element doing the query
+   * @pad: The #GstPad.
+   * @query: The #GstQuery.
+   *
+   * This signal is emitted whenever an autoplugged element that is
+   * not linked downstream yet and not exposed does a query. It can
+   * be used to tell the element about the downstream supported caps
+   * for example.
+   *
+   * Returns: #TRUE if the query was handled, #FALSE otherwise.
+   */
+  gst_uri_decode_bin_signals[SIGNAL_AUTOPLUG_QUERY] =
+      g_signal_new ("autoplug-query", G_TYPE_FROM_CLASS (klass),
+      G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstURIDecodeBinClass, autoplug_query),
+      _gst_boolean_or_accumulator, NULL, g_cclosure_marshal_generic,
+      G_TYPE_BOOLEAN, 3, GST_TYPE_PAD, GST_TYPE_ELEMENT,
+      GST_TYPE_QUERY | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
    * GstURIDecodeBin::drained:
    *
    * This signal is emitted when the data for the current uri is played.
@@ -661,15 +710,16 @@ gst_uri_decode_bin_class_init (GstURIDecodeBinClass * klass)
   klass->autoplug_sort = GST_DEBUG_FUNCPTR (gst_uri_decode_bin_autoplug_sort);
   klass->autoplug_select =
       GST_DEBUG_FUNCPTR (gst_uri_decode_bin_autoplug_select);
+  klass->autoplug_query = GST_DEBUG_FUNCPTR (gst_uri_decode_bin_autoplug_query);
 }
 
 static void
 gst_uri_decode_bin_init (GstURIDecodeBin * dec)
 {
   /* first filter out the interesting element factories */
-  dec->factories_lock = g_mutex_new ();
+  g_mutex_init (&dec->factories_lock);
 
-  dec->lock = g_mutex_new ();
+  g_mutex_init (&dec->lock);
 
   dec->uri = g_strdup (DEFAULT_PROP_URI);
   dec->connection_speed = DEFAULT_CONNECTION_SPEED;
@@ -692,8 +742,8 @@ gst_uri_decode_bin_finalize (GObject * obj)
   GstURIDecodeBin *dec = GST_URI_DECODE_BIN (obj);
 
   remove_decoders (dec, TRUE);
-  g_mutex_free (dec->lock);
-  g_mutex_free (dec->factories_lock);
+  g_mutex_clear (&dec->lock);
+  g_mutex_clear (&dec->factories_lock);
   g_free (dec->uri);
   g_free (dec->encoding);
   if (dec->factories)
@@ -1183,14 +1233,6 @@ static const gchar *queue_uris[] = { "cdda://", NULL };
 /* blacklisted URIs, we know they will always fail. */
 static const gchar *blacklisted_uris[] = { NULL };
 
-/* mime types that we don't consider to be media types */
-#if 0
-static const gchar *no_media_mimes[] = {
-  "application/x-executable", "application/x-bzip", "application/x-gzip",
-  "application/zip", "application/x-compress", NULL
-};
-#endif
-
 /* media types we can download */
 static const gchar *download_media[] = {
   "video/quicktime", "video/mj2", "audio/x-m4a", "application/x-3gp",
@@ -1200,7 +1242,6 @@ static const gchar *download_media[] = {
 #define IS_STREAM_URI(uri)          (array_has_uri_value (stream_uris, uri))
 #define IS_QUEUE_URI(uri)           (array_has_uri_value (queue_uris, uri))
 #define IS_BLACKLISTED_URI(uri)     (array_has_uri_value (blacklisted_uris, uri))
-#define IS_NO_MEDIA_MIME(mime)      (array_has_value (no_media_mimes, mime))
 #define IS_DOWNLOAD_MEDIA(media)    (array_has_value (download_media, media))
 
 /*
@@ -1212,6 +1253,9 @@ gen_source_element (GstURIDecodeBin * decoder)
   GObjectClass *source_class;
   GstElement *source;
   GParamSpec *pspec;
+  GstQuery *query;
+  GstSchedulingFlags flags;
+  GError *err = NULL;
 
   if (!decoder->uri)
     goto no_uri;
@@ -1225,13 +1269,20 @@ gen_source_element (GstURIDecodeBin * decoder)
     goto uri_blacklisted;
 
   source =
-      gst_element_make_from_uri (GST_URI_SRC, decoder->uri, "source", NULL);
+      gst_element_make_from_uri (GST_URI_SRC, decoder->uri, "source", &err);
   if (!source)
     goto no_source;
 
   GST_LOG_OBJECT (decoder, "found source type %s", G_OBJECT_TYPE_NAME (source));
 
-  decoder->is_stream = IS_STREAM_URI (decoder->uri);
+  query = gst_query_new_scheduling ();
+  if (gst_element_query (source, query)) {
+    gst_query_parse_scheduling (query, &flags, NULL, NULL, NULL);
+    decoder->is_stream = flags & GST_SCHEDULING_FLAG_BANDWIDTH_LIMITED;
+  } else
+    decoder->is_stream = IS_STREAM_URI (decoder->uri);
+  gst_query_unref (query);
+
   GST_LOG_OBJECT (decoder, "source is stream: %d", decoder->is_stream);
 
   decoder->need_queue = IS_QUEUE_URI (decoder->uri);
@@ -1307,6 +1358,7 @@ invalid_uri:
   {
     GST_ELEMENT_ERROR (decoder, RESOURCE, NOT_FOUND,
         (_("Invalid URI \"%s\"."), decoder->uri), (NULL));
+    g_clear_error (&err);
     return NULL;
   }
 uri_blacklisted:
@@ -1317,23 +1369,29 @@ uri_blacklisted:
   }
 no_source:
   {
-    gchar *prot = gst_uri_get_protocol (decoder->uri);
-
     /* whoops, could not create the source element, dig a little deeper to
      * figure out what might be wrong. */
-    if (prot) {
-      GstMessage *msg;
+    if (err != NULL && err->code == GST_URI_ERROR_UNSUPPORTED_PROTOCOL) {
+      gchar *prot;
 
-      msg =
-          gst_missing_uri_source_message_new (GST_ELEMENT_CAST (decoder), prot);
-      gst_element_post_message (GST_ELEMENT_CAST (decoder), msg);
+      prot = gst_uri_get_protocol (decoder->uri);
+      if (prot == NULL)
+        goto invalid_uri;
+
+      gst_element_post_message (GST_ELEMENT_CAST (decoder),
+          gst_missing_uri_source_message_new (GST_ELEMENT (decoder), prot));
 
       GST_ELEMENT_ERROR (decoder, CORE, MISSING_PLUGIN,
           (_("No URI handler implemented for \"%s\"."), prot), (NULL));
-      g_free (prot);
-    } else
-      goto invalid_uri;
 
+      g_free (prot);
+    } else {
+      GST_ELEMENT_ERROR (decoder, RESOURCE, NOT_FOUND,
+          ("%s", (err) ? err->message : "URI was not accepted by any element"),
+          ("No element accepted URI '%s'", decoder->uri));
+    }
+
+    g_clear_error (&err);
     return NULL;
   }
 }
@@ -1584,7 +1642,7 @@ remove_decoders (GstURIDecodeBin * bin, gboolean force)
 }
 
 static void
-proxy_unknown_type_signal (GstElement * element, GstPad * pad, GstCaps * caps,
+proxy_unknown_type_signal (GstElement * decodebin, GstPad * pad, GstCaps * caps,
     GstURIDecodeBin * dec)
 {
   GST_DEBUG_OBJECT (dec, "unknown-type signaled");
@@ -1594,7 +1652,7 @@ proxy_unknown_type_signal (GstElement * element, GstPad * pad, GstCaps * caps,
 }
 
 static gboolean
-proxy_autoplug_continue_signal (GstElement * element, GstPad * pad,
+proxy_autoplug_continue_signal (GstElement * decodebin, GstPad * pad,
     GstCaps * caps, GstURIDecodeBin * dec)
 {
   gboolean result;
@@ -1609,7 +1667,7 @@ proxy_autoplug_continue_signal (GstElement * element, GstPad * pad,
 }
 
 static GValueArray *
-proxy_autoplug_factories_signal (GstElement * element, GstPad * pad,
+proxy_autoplug_factories_signal (GstElement * decodebin, GstPad * pad,
     GstCaps * caps, GstURIDecodeBin * dec)
 {
   GValueArray *result;
@@ -1624,7 +1682,7 @@ proxy_autoplug_factories_signal (GstElement * element, GstPad * pad,
 }
 
 static GValueArray *
-proxy_autoplug_sort_signal (GstElement * element, GstPad * pad,
+proxy_autoplug_sort_signal (GstElement * decodebin, GstPad * pad,
     GstCaps * caps, GValueArray * factories, GstURIDecodeBin * dec)
 {
   GValueArray *result;
@@ -1639,7 +1697,7 @@ proxy_autoplug_sort_signal (GstElement * element, GstPad * pad,
 }
 
 static GstAutoplugSelectResult
-proxy_autoplug_select_signal (GstElement * element, GstPad * pad,
+proxy_autoplug_select_signal (GstElement * decodebin, GstPad * pad,
     GstCaps * caps, GstElementFactory * factory, GstURIDecodeBin * dec)
 {
   GstAutoplugSelectResult result;
@@ -1653,8 +1711,23 @@ proxy_autoplug_select_signal (GstElement * element, GstPad * pad,
   return result;
 }
 
+static gboolean
+proxy_autoplug_query_signal (GstElement * decodebin, GstPad * pad,
+    GstElement * element, GstQuery * query, GstURIDecodeBin * dec)
+{
+  gboolean ret = FALSE;
+
+  g_signal_emit (dec,
+      gst_uri_decode_bin_signals[SIGNAL_AUTOPLUG_QUERY], 0, pad, element, query,
+      &ret);
+
+  GST_DEBUG_OBJECT (dec, "autoplug-query returned %d", ret);
+
+  return ret;
+}
+
 static void
-proxy_drained_signal (GstElement * element, GstURIDecodeBin * dec)
+proxy_drained_signal (GstElement * decodebin, GstURIDecodeBin * dec)
 {
   GST_DEBUG_OBJECT (dec, "drained signaled");
 
@@ -1698,6 +1771,8 @@ make_decoder (GstURIDecodeBin * decoder)
         G_CALLBACK (proxy_autoplug_sort_signal), decoder);
     g_signal_connect (decodebin, "autoplug-select",
         G_CALLBACK (proxy_autoplug_select_signal), decoder);
+    g_signal_connect (decodebin, "autoplug-query",
+        G_CALLBACK (proxy_autoplug_query_signal), decoder);
     g_signal_connect (decodebin, "drained",
         G_CALLBACK (proxy_drained_signal), decoder);
 
@@ -2257,8 +2332,7 @@ handle_redirect_message (GstURIDecodeBin * dec, GstMessage * msg)
   value_list_append_structure_list (&new_list, &new_structure, l_good);
   value_list_append_structure_list (&new_list, &new_structure, l_neutral);
   value_list_append_structure_list (&new_list, &new_structure, l_bad);
-  gst_structure_set_value (new_structure, "locations", &new_list);
-  g_value_unset (&new_list);
+  gst_structure_take_value (new_structure, "locations", &new_list);
 
   g_list_free (l_good);
   g_list_free (l_neutral);

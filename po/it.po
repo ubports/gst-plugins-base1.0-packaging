@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.28.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2010-04-28 14:27+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -78,6 +78,12 @@ msgid "Internal data stream error."
 msgstr "Errore interno nel flusso di dati."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr ""
+"Risulta mancante l'elemento «%s» - verificare la propria installazione di "
+"GStreamer."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "Per riprodurre questo stream è richiesto un plugin %s, che però non risulta "
@@ -89,11 +95,9 @@ msgstr "Impossibile determinare il tipo di stream"
 msgid "This appears to be a text file"
 msgstr "Questo sembra essere un file di testo"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr ""
-"Risulta mancante l'elemento «%s» - verificare la propria installazione di "
-"GStreamer."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Impossibile creare l'elemento «decodebin»."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -165,12 +169,214 @@ msgstr "L'elemento sorgente non è valido."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Errore durante l'invio dei dati a \"%s:%d\"."
 
-msgid "This CD has no audio tracks"
-msgstr "Questo CD non presenta alcuna traccia audio"
-
 # una parafrasi, ma mi pare non perda...  -Luca
 msgid "Can't record audio fast enough"
 msgstr "Impossibile registrare l'audio a velocità adeguata"
+
+msgid "This CD has no audio tracks"
+msgstr "Questo CD non presenta alcuna traccia audio"
+
+msgid "ID3 tag"
+msgstr "Tag ID3"
+
+msgid "APE tag"
+msgstr "Tag APE"
+
+msgid "ICY internet radio"
+msgstr "Radio internet ICY"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "ALAC (Apple Lossless Audio)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "FLAC (Free Lossless Audio Codec)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "TTA (Lossless True Audio)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Speech"
+
+msgid "CYUV Lossless"
+msgstr "CYUV senza perdita"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "MSZH senza perdita"
+
+# cfr http://en.wikipedia.org/wiki/Run_length_encoding
+msgid "Run-length encoding"
+msgstr "RLE (Run-Length Encoding)"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Sottotitoli formato TMPlayer"
+
+# grazie San Google
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sottotitoli formato SAMI"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Sottotitoli formato Kate"
+
+# grazie San Google
+msgid "Sami subtitle format"
+msgstr "Sottotitoli formato SAMI"
+
+msgid "TMPlayer subtitle format"
+msgstr "Sottotitoli formato TMPlayer"
+
+msgid "Kate subtitle format"
+msgstr "Sottotitoli formato Kate"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "YUV non compresso"
+
+# non ho trovato info utili...
+# Copiato il messaggio originale solo per arrivare a 100 per cento
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Uncompressed Gray Image"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "YUV 4:2:2 packed non compresso"
+
+# cfr http://en.wikipedia.org/wiki/YUV
+#     http://support.microsoft.com/kb/281188/it
+#     http://support.microsoft.com/kb/294880/it (traduz automatica) :-(
+#     http://www.benis.it/dvd/agg3.htm
+#
+# Dal secondo e terzo, evinco YUV compresso o planare sarebbero
+# buone abbreviazioni, ma tengo planare/packed + compresso/noncompresso
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "YUV 4:2:0 planare non compresso"
+
+# cfr http://en.wikipedia.org/wiki/YUV
+#     http://support.microsoft.com/kb/281188/it
+#     http://support.microsoft.com/kb/294880/it (traduz automatica) :-(
+#     http://www.benis.it/dvd/agg3.htm
+#
+# Dal secondo e terzo, evinco YUV compresso o planare sarebbero
+# buone abbreviazioni, ma tengo planare/packed + compresso/noncompresso
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "YUV 4:2:0 planare non compresso"
+
+# %s è qualcosa come gli YUV dei precedenti
+#
+# Non so perché, ma senza X$ non lo dava buono....
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "%2$s %1$d-bit con tavolozza non compresso"
+
+# %s è qualcosa come gli YUV dei precedenti
+#
+# Non so perché, ma senza X$ non lo dava buono....
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "%2$s %1$d-bit con tavolozza non compresso"
+
+# o MPEG-4 DivX ?
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 versione %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "YUV non compresso"
+
+# o audio grezzo ?
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Audio raw PCM %d-bit"
+
+msgid "Audio CD source"
+msgstr "Sorgente CD audio"
+
+msgid "DVD source"
+msgstr "Sorgente DVD"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Sorgente RTSP (Real Time Streaming Protocol)"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Sorgente protocollo MMS (Microsoft Media Server)"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "Sorgente protocollo %s"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "Depayloader RTP %s video"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "Depayloader RTP %s audio"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "Depayloader RTP %s"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "Demuxer %s"
+
+#, c-format
+msgid "%s decoder"
+msgstr "Decoder %s"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "Payloader RTP %s video"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "Payloader RTP %s audio"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "Payloader RTP %s"
+
+#, c-format
+msgid "%s muxer"
+msgstr "Muxer %s"
+
+#, c-format
+msgid "%s encoder"
+msgstr "Encoder %s"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "Elemento GStreamer %s"
+
+msgid "Unknown source element"
+msgstr "Elemento sorgente sconosciuto"
+
+msgid "Unknown sink element"
+msgstr "Elemento sink sconosciuto"
+
+msgid "Unknown element"
+msgstr "Elemento sconosciuto"
+
+msgid "Unknown decoder element"
+msgstr "Elemendo di decodifica sconosciuto"
+
+msgid "Unknown encoder element"
+msgstr "Elemento di codifica sconosciuto"
+
+msgid "Plugin or element of unknown type"
+msgstr "Plugin o elemento di tipo sconosciuto"
 
 # dati non sufficienti... mah
 msgid "Failed to read tag: not enough data"
@@ -333,178 +539,37 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "Tag ID3"
+msgid "musical-key"
+msgstr ""
 
-msgid "APE tag"
-msgstr "Tag APE"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-msgid "ICY internet radio"
-msgstr "Radio internet ICY"
+msgid "Buffering..."
+msgstr ""
 
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "ALAC (Apple Lossless Audio)"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "FLAC (Free Lossless Audio Codec)"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "Lossless True Audio (TTA)"
-msgstr "TTA (Lossless True Audio)"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Windows Media Speech"
-msgstr "Windows Media Speech"
+msgid "Enable gapless playback"
+msgstr ""
 
-msgid "CYUV Lossless"
-msgstr "CYUV senza perdita"
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "MSZH senza perdita"
-
-# cfr http://en.wikipedia.org/wiki/Run_length_encoding
-msgid "Run-length encoding"
-msgstr "RLE (Run-Length Encoding)"
-
-msgid "Subtitle"
+msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
 #, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "Sottotitoli formato TMPlayer"
-
-# grazie San Google
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sottotitoli formato SAMI"
-
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Sottotitoli formato Kate"
-
-# grazie San Google
-msgid "Sami subtitle format"
-msgstr "Sottotitoli formato SAMI"
-
-msgid "TMPlayer subtitle format"
-msgstr "Sottotitoli formato TMPlayer"
-
-msgid "Kate subtitle format"
-msgstr "Sottotitoli formato Kate"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "YUV non compresso"
-
-# non ho trovato info utili...
-# Copiato il messaggio originale solo per arrivare a 100 per cento
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Uncompressed Gray Image"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "YUV non compresso"
-
-# %s è qualcosa come gli YUV dei precedenti
-#
-# Non so perché, ma senza X$ non lo dava buono....
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "%2$s %1$d-bit con tavolozza non compresso"
-
-# o MPEG-4 DivX ?
-#, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 versione %d"
-
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "YUV non compresso"
-
-# o audio grezzo ?
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Audio raw PCM %d-bit"
-
-msgid "Audio CD source"
-msgstr "Sorgente CD audio"
-
-msgid "DVD source"
-msgstr "Sorgente DVD"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Sorgente RTSP (Real Time Streaming Protocol)"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Sorgente protocollo MMS (Microsoft Media Server)"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "Sorgente protocollo %s"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "Depayloader RTP %s video"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "Depayloader RTP %s audio"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "Depayloader RTP %s"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "Demuxer %s"
-
-#, c-format
-msgid "%s decoder"
-msgstr "Decoder %s"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "Payloader RTP %s video"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "Payloader RTP %s audio"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "Payloader RTP %s"
-
-#, c-format
-msgid "%s muxer"
-msgstr "Muxer %s"
-
-#, c-format
-msgid "%s encoder"
-msgstr "Encoder %s"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "Elemento GStreamer %s"
-
-msgid "Unknown source element"
-msgstr "Elemento sorgente sconosciuto"
-
-msgid "Unknown sink element"
-msgstr "Elemento sink sconosciuto"
-
-msgid "Unknown element"
-msgstr "Elemento sconosciuto"
-
-msgid "Unknown decoder element"
-msgstr "Elemendo di decodifica sconosciuto"
-
-msgid "Unknown encoder element"
-msgstr "Elemento di codifica sconosciuto"
-
-msgid "Plugin or element of unknown type"
-msgstr "Plugin o elemento di tipo sconosciuto"
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "YUV non compresso"
 
 #~ msgid "Master"
 #~ msgstr "Principale"
@@ -542,21 +607,8 @@ msgstr "Plugin o elemento di tipo sconosciuto"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Connessione a %s:%d rifiutata."
 
-# cfr http://en.wikipedia.org/wiki/YUV
-#     http://support.microsoft.com/kb/281188/it
-#     http://support.microsoft.com/kb/294880/it (traduz automatica) :-(
-#     http://www.benis.it/dvd/agg3.htm
-#
-# Dal secondo e terzo, evinco YUV compresso o planare sarebbero
-# buone abbreviazioni, ma tengo planare/packed + compresso/noncompresso
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "YUV 4:2:0 planare non compresso"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "YVU 4:2:0 planare non compresso"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "YUV 4:2:2 packed non compresso"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "YUV 4:1:0 packed non compresso"
@@ -605,9 +657,6 @@ msgstr "Plugin o elemento di tipo sconosciuto"
 
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "Non è ancora possibile riprodurre gli stream RTSP."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Impossibile creare l'elemento «decodebin»."
 
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "

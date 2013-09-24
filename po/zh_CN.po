@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.21.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2009-01-14 12:41+0800\n"
 "Last-Translator: Ji ZhengYu <zhengyuji@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -70,6 +70,10 @@ msgid "Internal data stream error."
 msgstr "内部数据流错误。"
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "未找到组件‘%s’－请检查您的 GStreamer 安装情况。"
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr "播放此数据流需要 %s 插件，但它未安装。"
 
@@ -80,9 +84,9 @@ msgstr "无法创建“typefind”组件。"
 msgid "This appears to be a text file"
 msgstr "此文件是个文本文件"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "未找到组件‘%s’－请检查您的 GStreamer 安装情况。"
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "无法创建“decodebin”组件。"
 
 #, fuzzy, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -159,11 +163,186 @@ msgstr "无效的源组件。"
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "发送数据至“%s:%d”时出错。"
 
+msgid "Can't record audio fast enough"
+msgstr "无法足够快的录音"
+
 msgid "This CD has no audio tracks"
 msgstr "此 CD 无音轨"
 
-msgid "Can't record audio fast enough"
-msgstr "无法足够快的录音"
+msgid "ID3 tag"
+msgstr "ID3 标识"
+
+msgid "APE tag"
+msgstr "APE 标识"
+
+msgid "ICY internet radio"
+msgstr "ICY 网络电台"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple 无损音频(ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "自由无损音频编码(FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "无损高保真音频(TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media 语音"
+
+msgid "CYUV Lossless"
+msgstr "CYUV 无损"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "无损 MSZH"
+
+msgid "Run-length encoding"
+msgstr "Run-length 编码"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "TMPlayer 字幕格式"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Sami 字幕格式"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Kate 字幕格式"
+
+msgid "Sami subtitle format"
+msgstr "Sami 字幕格式"
+
+msgid "TMPlayer subtitle format"
+msgstr "TMPlayer 字幕格式"
+
+msgid "Kate subtitle format"
+msgstr "Kate 字幕格式"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "未压缩的 YUV"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "未压缩的灰度图像"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "未压缩的 packed YUV 4:2:2"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "未压缩的 planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "未压缩的 planar YUV 4:2:0"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "未压缩的 palettized %d-位 %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "未压缩的 palettized %d-位 %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 版本 %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "未压缩的 YUV"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "原始 %d-位 PCM 音频"
+
+msgid "Audio CD source"
+msgstr "音频 CD 源"
+
+msgid "DVD source"
+msgstr "DVD 源"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "实时流协议(RTSP)源"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Microsoft 媒体服务协议(MMS)源"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "%s 协议源"
+
+#, fuzzy, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s 视频 RTP 去负载器"
+
+#, fuzzy, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s 音频 RTP 去负载器"
+
+#, fuzzy, c-format
+msgid "%s RTP depayloader"
+msgstr "%s RTP 去负载器"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s 多路分配器"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s 解码器"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s 视频 RTP 负载器"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s 音频 RTP 负载器"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s RTP 负载器"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s 混音器"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s 编码器"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "GStreamer 组件 %s"
+
+msgid "Unknown source element"
+msgstr "未知源组件"
+
+msgid "Unknown sink element"
+msgstr "未知消音组件"
+
+msgid "Unknown element"
+msgstr "未知组件"
+
+msgid "Unknown decoder element"
+msgstr "未知的解码组件"
+
+msgid "Unknown encoder element"
+msgstr "未知的编码组件"
+
+msgid "Plugin or element of unknown type"
+msgstr "未知类型的插件或组件"
 
 msgid "Failed to read tag: not enough data"
 msgstr "无法读取标签: 数据不足"
@@ -325,168 +504,33 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "ID3 标识"
-
-msgid "APE tag"
-msgstr "APE 标识"
-
-msgid "ICY internet radio"
-msgstr "ICY 网络电台"
-
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple 无损音频(ALAC)"
-
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "自由无损音频编码(FLAC)"
-
-msgid "Lossless True Audio (TTA)"
-msgstr "无损高保真音频(TTA)"
-
-msgid "Windows Media Speech"
-msgstr "Windows Media 语音"
-
-msgid "CYUV Lossless"
-msgstr "CYUV 无损"
-
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "无损 MSZH"
-
-msgid "Run-length encoding"
-msgstr "Run-length 编码"
-
-msgid "Subtitle"
+msgid "musical-key"
 msgstr ""
 
-#, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "TMPlayer 字幕格式"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Sami 字幕格式"
+msgid "Buffering..."
+msgstr ""
 
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Kate 字幕格式"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Sami subtitle format"
-msgstr "Sami 字幕格式"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "TMPlayer subtitle format"
-msgstr "TMPlayer 字幕格式"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Kate subtitle format"
-msgstr "Kate 字幕格式"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "未压缩的 YUV"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "未压缩的灰度图像"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "未压缩的 YUV"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "未压缩的 palettized %d-位 %s"
+msgid "Enable gapless playback"
+msgstr ""
 
 #, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 版本 %d"
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "未压缩的 YUV"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "原始 %d-位 PCM 音频"
-
-msgid "Audio CD source"
-msgstr "音频 CD 源"
-
-msgid "DVD source"
-msgstr "DVD 源"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "实时流协议(RTSP)源"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Microsoft 媒体服务协议(MMS)源"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "%s 协议源"
-
-#, fuzzy, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s 视频 RTP 去负载器"
-
-#, fuzzy, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s 音频 RTP 去负载器"
-
-#, fuzzy, c-format
-msgid "%s RTP depayloader"
-msgstr "%s RTP 去负载器"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s 多路分配器"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s 解码器"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s 视频 RTP 负载器"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s 音频 RTP 负载器"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s RTP 负载器"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s 混音器"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s 编码器"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "GStreamer 组件 %s"
-
-msgid "Unknown source element"
-msgstr "未知源组件"
-
-msgid "Unknown sink element"
-msgstr "未知消音组件"
-
-msgid "Unknown element"
-msgstr "未知组件"
-
-msgid "Unknown decoder element"
-msgstr "未知的解码组件"
-
-msgid "Unknown encoder element"
-msgstr "未知的编码组件"
-
-msgid "Plugin or element of unknown type"
-msgstr "未知类型的插件或组件"
+msgid "You must provide at least one filename or URI to play."
+msgstr ""
 
 #~ msgid "Master"
 #~ msgstr "主音量"
@@ -539,9 +583,6 @@ msgstr "未知类型的插件或组件"
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "RTSP 流尚不能播放。"
 
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "无法创建“decodebin”组件。"
-
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "
 #~ "file or some other type of text file, or the media file was not "
@@ -583,14 +624,8 @@ msgstr "未知类型的插件或组件"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "拒绝连接至 %s:%d。"
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "未压缩的 planar YUV 4:2:0"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "未压缩的 planar YVU 4:2:0"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "未压缩的 packed YUV 4:2:2"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "未压缩的 packed YUV 4:1:0"

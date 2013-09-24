@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -107,7 +107,6 @@
 #include <gst/gst-i18n-plugin.h>
 
 #include "gstmultihandlesink.h"
-#include "gsttcp-marshal.h"
 
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -459,7 +458,7 @@ gst_multi_handle_sink_class_init (GstMultiHandleSinkClass * klass)
       g_signal_new ("clear", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (GstMultiHandleSinkClass, clear), NULL, NULL,
-      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+      g_cclosure_marshal_generic, G_TYPE_NONE, 0);
 
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&sinktemplate));
@@ -655,6 +654,12 @@ gst_multi_handle_sink_add_full (GstMultiHandleSink * sink,
   gchar debug[30];
   GstMultiHandleSinkClass *mhsinkclass =
       GST_MULTI_HANDLE_SINK_GET_CLASS (mhsink);
+
+  if (!sink->running) {
+    g_warning ("Element %s must be set to READY, PAUSED or PLAYING state "
+        "before clients can be added", GST_OBJECT_NAME (sink));
+    return;
+  }
 
   mhsinkclass->handle_debug (handle, debug);
   GST_DEBUG_OBJECT (sink, "%s adding client, sync_method %d, "

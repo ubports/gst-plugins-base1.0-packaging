@@ -3,18 +3,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudiocdsrc</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
-<link rel="prev" href="gst-plugins-base-libs-gstaudio.html" title="gstaudio">
+<link rel="prev" href="gst-plugins-base-libs-gstaudiometa.html" title="gstaudiometa">
 <link rel="next" href="gst-plugins-base-libs-gstaudioclock.html" title="gstaudioclock">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="gst-plugins-base-libs-gstaudio.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstaudiometa.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GStreamer Base Plugins 1.0 Library Reference Manual</th>
@@ -92,7 +92,7 @@ timestamping.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp6427216"></a><h3>Using GstAudioCdSrc-based elements in applications</h3>
+<a name="id-1.2.6.5.7.2.2"></a><h3>Using GstAudioCdSrc-based elements in applications</h3>
 <p>
 GstAudioCdSrc registers two <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a>s of its own, namely
 the "track" format and the "sector" format. Applications will usually
@@ -118,7 +118,7 @@ issue a seek command in track format to change between tracks, rather than
 setting a new cdda://n+1 URI on playbin (as setting a new URI on playbin
 involves closing and re-opening the CD device, which is much much slower).
 </p>
-<div class="refsect2"><a name="idp5493936"></a></div>
+<div class="refsect2"><a name="id-1.2.6.5.7.2.2.6"></a></div>
 <p>
 CDDA sources will automatically emit a number of tags, details about which
 can be found in the libgsttag documentation. Those tags are:
@@ -131,7 +131,7 @@ among others.
 </p>
 <hr>
 <div class="refsect2">
-<a name="idp5499056"></a><h3>Tracks and Table of Contents (TOC)</h3>
+<a name="id-1.2.6.5.7.2.3"></a><h3>Tracks and Table of Contents (TOC)</h3>
 <p>
 Applications will be informed of the available tracks via a TOC message
 on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a>. The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="type">GstToc</span></a> will contain a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstTocEntry"><span class="type">GstTocEntry</span></a> for
@@ -176,8 +176,11 @@ The track entries in the TOC will be sorted by track number.
 <p>
 Audio CD source base class.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><span class="type">GstPushSrcClass</span> <em class="structfield"><code><a name="GstAudioCdSrcClass.pushsrc-class"></a>pushsrc_class</code></em>;</span></p></td>
@@ -228,8 +231,11 @@ This structure is only for use by sub-classed in connection with
 Applications will be informed of the available tracks via a TOC message
 on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a> instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstAudioCdSrcTrack.is-audio"></a>is_audio</code></em>;</span></p></td>
@@ -266,8 +272,11 @@ on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/h
 Mode in which the CD audio source operates. Influences timestamping,
 EOS handling and seeking.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-AUDIO-CD-SRC-MODE-NORMAL:CAPS"></a><span class="term"><code class="literal">GST_AUDIO_CD_SRC_MODE_NORMAL</code></span></p></td>
@@ -293,8 +302,11 @@ available data and audio tracks to the base source class. The caller
 should allocate <em class="parameter"><code>track</code></em> on the stack, the base source will do a shallow
 copy of the structure (and take ownership of the taglist if there is one).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -340,6 +352,6 @@ copy of the structure (and take ownership of the taglist if there is one).
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -191,8 +191,12 @@ gst_tag_register_tags_internal (gpointer unused)
       _("Media (image/video) intended vertical pixel density in ppi"), NULL);
 
   gst_tag_register_static (GST_TAG_ID3V2_FRAME, GST_TAG_FLAG_META,
-      GST_TYPE_BUFFER, _("ID3v2 frame"), _("unparsed id3v2 tag frame"),
+      GST_TYPE_SAMPLE, _("ID3v2 frame"), _("unparsed id3v2 tag frame"),
       gst_tag_merge_use_first);
+
+  gst_tag_register_static (GST_TAG_MUSICAL_KEY, GST_TAG_FLAG_META,
+      G_TYPE_STRING, _("musical-key"), _("Initial key in which the "
+          "sound starts"), gst_tag_merge_use_first);
 
   return NULL;
 }

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstrtspconnection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="next" href="gst-plugins-base-libs-gstrtspdefs.html" title="gstrtspdefs">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -125,6 +125,12 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *id</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-get-send-backlog" title="gst_rtsp_watch_get_send_backlog ()">gst_rtsp_watch_get_send_backlog</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *bytes</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *messages</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()">gst_rtsp_watch_set_send_backlog</a>     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> bytes</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> messages</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -158,8 +164,11 @@ The connection will not yet attempt to connect to <em class="parameter"><code>ur
 <p>
 A copy of <em class="parameter"><code>url</code></em> will be made.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>url</code></em> :</span></p></td>
@@ -193,8 +202,11 @@ Create a new <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#
 socket <em class="parameter"><code>socket</code></em>. The <em class="parameter"><code>initial_buffer</code></em> contains zero terminated data already
 read from <em class="parameter"><code>socket</code></em> which should be used before starting to read new data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>socket</code></em> :</span></p></td>
@@ -237,8 +249,11 @@ read from <em class="parameter"><code>socket</code></em> which should be used be
 Accept a new connection on <em class="parameter"><code>socket</code></em> and create a new <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> for
 handling communication on new socket.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>socket</code></em> :</span></p></td>
@@ -275,8 +290,11 @@ forever. If <em class="parameter"><code>timeout</code></em> contains a valid tim
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -303,8 +321,11 @@ This function can be cancelled with <a class="link" href="gst-plugins-base-libs-
 Close the connected <em class="parameter"><code>conn</code></em>. After this call, the connection is in the same
 state as when it was first created.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -326,8 +347,11 @@ state as when it was first created.
 <p>
 Close and free <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -357,8 +381,11 @@ might block forever.
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -402,8 +429,11 @@ might block forever.
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -451,8 +481,11 @@ with <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CA
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -493,8 +526,11 @@ might block forever.
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -532,8 +568,11 @@ might block forever.
 <p>
 This function can be cancelled with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-flush" title="gst_rtsp_connection_flush ()"><code class="function">gst_rtsp_connection_flush()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -565,8 +604,11 @@ This function can be cancelled with <a class="link" href="gst-plugins-base-libs-
 <p>
 Calculate the next timeout for <em class="parameter"><code>conn</code></em>, storing the result in <em class="parameter"><code>timeout</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -592,8 +634,11 @@ Calculate the next timeout for <em class="parameter"><code>conn</code></em>, sto
 <p>
 Reset the timeout of <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -618,8 +663,11 @@ Start or stop the flushing action on <em class="parameter"><code>conn</code></em
 and future actions on <em class="parameter"><code>conn</code></em> will return <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a> until the connection
 is set to non-flushing mode again.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -649,8 +697,11 @@ is set to non-flushing mode again.
 Configure <em class="parameter"><code>conn</code></em> for authentication mode <em class="parameter"><code>method</code></em> with <em class="parameter"><code>user</code></em> and <em class="parameter"><code>pass</code></em> as the
 user and password respectively.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -690,8 +741,11 @@ methods <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-AU
 in the WWW-Authenticate response header and can include realm, domain,
 nonce, opaque, stale, algorithm, qop as per RFC2617.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -717,8 +771,11 @@ nonce, opaque, stale, algorithm, qop as per RFC2617.
 <p>
 Clear the list of authentication directives stored in <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
@@ -734,8 +791,11 @@ Clear the list of authentication directives stored in <em class="parameter"><cod
 <p>
 Configure <em class="parameter"><code>conn</code></em> to use the specified DSCP value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -762,8 +822,11 @@ Configure <em class="parameter"><code>conn</code></em> to use the specified DSCP
 <p>
 Set the IP address of the server.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -784,8 +847,11 @@ Set the IP address of the server.
 <p>
 Retrieve the IP address of the other end of <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -807,8 +873,11 @@ connection is closed.</td>
 <p>
 Retrieve the URL of the other end of <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -832,8 +901,11 @@ connection is freed.</td>
 Set the HTTP tunneling state of the connection. This must be configured before
 the <em class="parameter"><code>conn</code></em> is connected.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -854,8 +926,11 @@ the <em class="parameter"><code>conn</code></em> is connected.
 <p>
 Get the tunneling state of the connection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -876,8 +951,11 @@ Get the tunneling state of the connection.
 <p>
 Get the tunnel session id the connection.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -909,8 +987,11 @@ After this call, <em class="parameter"><code>conn2</code></em> cannot be used an
 If <em class="parameter"><code>conn2</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> then only the base64 decoding context will be setup for
 <em class="parameter"><code>conn</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -939,8 +1020,11 @@ By setting the HTTP mode to <a href="http://library.gnome.org/devel/glib/unstabl
 messages in addition to the RTSP messages. It will also disable the
 automatic handling of setting up an HTTP tunnel.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -964,8 +1048,11 @@ automatic handling of setting up an HTTP tunnel.
 <p>
 Set the proxy host and port.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -1001,8 +1088,11 @@ Set the proxy host and port.
 <p>
 Get the file descriptor for writing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -1048,8 +1138,11 @@ operations.
 <p>
 Callback functions from a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="GstRTSPWatchFuncs.message-received"></a>message_received</code></em> ()</span></p></td>
@@ -1108,8 +1201,11 @@ maincontext with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.h
 <p>
 <em class="parameter"><code>conn</code></em> must exist for the entire lifetime of the watch.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
@@ -1145,8 +1241,11 @@ communication. Free with <a class="link" href="gst-plugins-base-libs-gstrtspconn
 Decreases the reference count of <em class="parameter"><code>watch</code></em> by one. If the resulting reference
 count is zero the watch and associated memory will be destroyed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
@@ -1162,8 +1261,11 @@ count is zero the watch and associated memory will be destroyed.
 <p>
 Adds a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> to a context so that it will be executed within that context.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
@@ -1189,8 +1291,11 @@ Adds a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTS
 Reset <em class="parameter"><code>watch</code></em>, this is usually called after <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-do-tunnel" title="gst_rtsp_connection_do_tunnel ()"><code class="function">gst_rtsp_connection_do_tunnel()</code></a>
 when the file descriptors of the connection might have changed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
@@ -1212,8 +1317,11 @@ immediately, it will be queued for transmission in <em class="parameter"><code>w
 <em class="parameter"><code>id</code></em> will be non-zero and used as the ID argument in the message_sent
 callback.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
@@ -1256,8 +1364,16 @@ callback.
 <p>
 This function will take ownership of <em class="parameter"><code>data</code></em> and <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> it after use.
 </p>
-<div class="variablelist"><table border="0">
+<p>
+If the amount of queued data exceeds the limits set with
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()"><code class="function">gst_rtsp_watch_set_send_backlog()</code></a>, this function will return
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
@@ -1266,7 +1382,8 @@ This function will take ownership of <em class="parameter"><code>data</code></em
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>the data to queue</td>
+<td>the data to queue. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
@@ -1281,10 +1398,83 @@ This function will take ownership of <em class="parameter"><code>data</code></em
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</td>
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success. <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a> when the backlog limits
+are reached.</td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-watch-get-send-backlog"></a><h3>gst_rtsp_watch_get_send_backlog ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_rtsp_watch_get_send_backlog     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *bytes</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *messages</code></em>);</pre>
+<p>
+Get the maximum amount of bytes and messages that will be queued in <em class="parameter"><code>watch</code></em>.
+See <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()"><code class="function">gst_rtsp_watch_set_send_backlog()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>bytes</code></em> :</span></p></td>
+<td>maximum bytes. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>messages</code></em> :</span></p></td>
+<td>maximum messages. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.1.1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-watch-set-send-backlog"></a><h3>gst_rtsp_watch_set_send_backlog ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                gst_rtsp_watch_set_send_backlog     (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> bytes</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> messages</code></em>);</pre>
+<p>
+Set the maximum amount of bytes and messages that will be queued in <em class="parameter"><code>watch</code></em>.
+When the maximum amounts are exceeded, <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-write-data" title="gst_rtsp_watch_write_data ()"><code class="function">gst_rtsp_watch_write_data()</code></a> and
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-send-message" title="gst_rtsp_watch_send_message ()"><code class="function">gst_rtsp_watch_send_message()</code></a> will return <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a>.
+</p>
+<p>
+A value of 0 for <em class="parameter"><code>bytes</code></em> or <em class="parameter"><code>messages</code></em> means no limits.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>watch</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>bytes</code></em> :</span></p></td>
+<td>maximum bytes</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>messages</code></em> :</span></p></td>
+<td>maximum messages</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.1.1</p>
 </div>
 </div>
 <div class="refsect1">
@@ -1294,6 +1484,6 @@ gstrtspurl
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /* Super-primitive SSA parser - we just want the text and ignore
@@ -83,8 +83,6 @@ gst_ssa_parse_init (GstSsaParse * parse)
       GST_DEBUG_FUNCPTR (gst_ssa_parse_src_event));
   gst_element_add_pad (GST_ELEMENT (parse), parse->srcpad);
   gst_pad_use_fixed_caps (parse->srcpad);
-  gst_pad_set_caps (parse->srcpad,
-      gst_static_pad_template_get_caps (&src_templ));
 
   parse->ini = NULL;
   parse->framed = FALSE;

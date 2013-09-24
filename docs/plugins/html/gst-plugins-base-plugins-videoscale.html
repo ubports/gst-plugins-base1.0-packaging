@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>videoscale</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-videorate.html" title="videorate">
 <link rel="next" href="gst-plugins-base-plugins-videotestsrc.html" title="videotestsrc">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -84,7 +84,7 @@ pipeline.
 <p>
 </p>
 <div class="refsect2">
-<a name="idp15757040"></a><h3>Example pipelines</h3>
+<a name="id-1.2.38.6.4.1"></a><h3>Example pipelines</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -120,9 +120,12 @@ Last reviewed on 2006-03-02 (0.10.4)
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp15761328"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.38.6.6.1"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -143,9 +146,12 @@ Last reviewed on 2006-03-02 (0.10.4)
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp15768800"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.38.6.6.2"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -163,10 +169,17 @@ Last reviewed on 2006-03-02 (0.10.4)
 <td><p><span class="term">details</span></p></td>
 <td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, RGB15, ARGB64, AYUV64, NV12 }, width=(int)[ 1, 32767 ], height=(int)[ 1, 32767 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
+<tr>
+<td><p><span class="term"></span></p></td>
+<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, RGB15, ARGB64, AYUV64, NV12 }, width=(int)[ 1, 32767 ], height=(int)[ 1, 32767 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+</tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -183,6 +196,10 @@ Last reviewed on 2006-03-02 (0.10.4)
 <tr>
 <td><p><span class="term">details</span></p></td>
 <td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, RGB15, ARGB64, AYUV64, NV12 }, width=(int)[ 1, 32767 ], height=(int)[ 1, 32767 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+</tr>
+<tr>
+<td><p><span class="term"></span></p></td>
+<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, RGB15, ARGB64, AYUV64, NV12 }, width=(int)[ 1, 32767 ], height=(int)[ 1, 32767 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 </tbody>
 </table></div>
@@ -213,8 +230,11 @@ Opaque data structure
 <p>
 The videoscale method to use.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="GST-VIDEO-SCALE-NEAREST:CAPS"></a><span class="term"><code class="literal">GST_VIDEO_SCALE_NEAREST</code></span></p></td>
@@ -253,7 +273,7 @@ The videoscale method to use.
 <a name="GstVideoScale--add-borders"></a><h3>The <code class="literal">"add-borders"</code> property</h3>
 <pre class="programlisting">  "add-borders"              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write</pre>
 <p>Add black borders if necessary to keep the display aspect ratio.</p>
-<p>Default value: FALSE</p>
+<p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -294,6 +314,6 @@ videorate, videoconvert
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

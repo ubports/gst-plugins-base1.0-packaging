@@ -13,19 +13,16 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_VIDEO_FRAME_H__
 #define __GST_VIDEO_FRAME_H__
 
-#include <gst/gst.h>
-#include <gst/video/video-info.h>
+#include <gst/video/video-enumtypes.h>
 
 G_BEGIN_DECLS
-
-#include <gst/video/video-enumtypes.h>
 
 typedef struct _GstVideoFrame GstVideoFrame;
 
@@ -48,6 +45,10 @@ typedef enum {
   GST_VIDEO_FRAME_FLAG_RFF          = (1 << 2),
   GST_VIDEO_FRAME_FLAG_ONEFIELD     = (1 << 3)
 } GstVideoFrameFlags;
+
+/* circular dependency, need to include this after defining the enums */
+#include <gst/video/video-format.h>
+#include <gst/video/video-info.h>
 
 /**
  * GstVideoFrame:

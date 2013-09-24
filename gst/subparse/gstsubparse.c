@@ -15,8 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1415,6 +1415,7 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
   GstFlowReturn ret = GST_FLOW_OK;
   GstCaps *caps = NULL;
   gchar *line, *subtitle;
+  gboolean need_tags = FALSE;
 
   if (self->first_buffer) {
     GstMapInfo map;
@@ -1439,7 +1440,19 @@ handle_buffer (GstSubParse * self, GstBuffer * buf)
       return GST_FLOW_EOS;
     }
     gst_caps_unref (caps);
+    need_tags = TRUE;
+  }
 
+  /* Push newsegment if needed */
+  if (self->need_segment) {
+    GST_LOG_OBJECT (self, "pushing newsegment event with %" GST_SEGMENT_FORMAT,
+        &self->segment);
+
+    gst_pad_push_event (self->srcpad, gst_event_new_segment (&self->segment));
+    self->need_segment = FALSE;
+  }
+
+  if (need_tags) {
     /* push tags */
     if (self->subtitle_codec != NULL) {
       GstTagList *tags;
@@ -1515,15 +1528,6 @@ gst_sub_parse_chain (GstPad * sinkpad, GstObject * parent, GstBuffer * buf)
   GstSubParse *self;
 
   self = GST_SUBPARSE (parent);
-
-  /* Push newsegment if needed */
-  if (self->need_segment) {
-    GST_LOG_OBJECT (self, "pushing newsegment event with %" GST_SEGMENT_FORMAT,
-        &self->segment);
-
-    gst_pad_push_event (self->srcpad, gst_event_new_segment (&self->segment));
-    self->need_segment = FALSE;
-  }
 
   ret = handle_buffer (self, buf);
 

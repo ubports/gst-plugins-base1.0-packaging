@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>textoverlay</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-tcpserversink.html" title="tcpserversink">
 <link rel="next" href="gst-plugins-base-plugins-textrender.html" title="textrender">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -65,11 +65,11 @@
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--shaded-background" title='The "shaded-background" property'>shaded-background</a>"        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--text" title='The "text" property'>text</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--valign" title='The "valign" property'>valign</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Write
-  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--wrap-mode" title='The "wrap-mode" property'>wrap-mode</a>"                <span class="type">GstTextOverlayWrapMode</span>  : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--wrap-mode" title='The "wrap-mode" property'>wrap-mode</a>"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayWrapMode"><span class="type">GstTextOverlayWrapMode</span></a>  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--xpad" title='The "xpad" property'>xpad</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--ypad" title='The "ypad" property'>ypad</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--halignment" title='The "halignment" property'>halignment</a>"               <span class="type">GstTextOverlayHAlign</span>  : Read / Write
-  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--valignment" title='The "valignment" property'>valignment</a>"               <span class="type">GstTextOverlayVAlign</span>  : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--halignment" title='The "halignment" property'>halignment</a>"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayHAlign"><span class="type">GstTextOverlayHAlign</span></a>  : Read / Write
+  "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--valignment" title='The "valignment" property'>valignment</a>"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayVAlign"><span class="type">GstTextOverlayVAlign</span></a>  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--line-alignment" title='The "line-alignment" property'>line-alignment</a>"           <span class="type">GstTextOverlayLineAlign</span>  : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--silent" title='The "silent" property'>silent</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay--wait-text" title='The "wait-text" property'>wait-text</a>"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
@@ -85,9 +85,12 @@
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="idp14165120"></a><h3>Element Information</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.30.6.2.1"></a><h3>Element Information</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">plugin</span></p></td>
@@ -108,9 +111,12 @@
 </div>
 <hr>
 <div class="refsect2">
-<a name="idp14172528"></a><h3>Element Pads</h3>
-<div class="variablelist"><table border="0">
+<a name="id-1.2.30.6.2.2"></a><h3>Element Pads</h3>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -130,8 +136,11 @@
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -151,8 +160,11 @@
 </tr>
 </tbody>
 </table></div>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term">name</span></p></td>
@@ -239,7 +251,7 @@
 <hr>
 <div class="refsect2">
 <a name="GstTextOverlay--wrap-mode"></a><h3>The <code class="literal">"wrap-mode"</code> property</h3>
-<pre class="programlisting">  "wrap-mode"                <span class="type">GstTextOverlayWrapMode</span>  : Read / Write</pre>
+<pre class="programlisting">  "wrap-mode"                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayWrapMode"><span class="type">GstTextOverlayWrapMode</span></a>  : Read / Write</pre>
 <p>Whether to wrap the text and if so how.</p>
 <p>Default value: wordchar</p>
 </div>
@@ -262,14 +274,14 @@
 <hr>
 <div class="refsect2">
 <a name="GstTextOverlay--halignment"></a><h3>The <code class="literal">"halignment"</code> property</h3>
-<pre class="programlisting">  "halignment"               <span class="type">GstTextOverlayHAlign</span>  : Read / Write</pre>
+<pre class="programlisting">  "halignment"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayHAlign"><span class="type">GstTextOverlayHAlign</span></a>  : Read / Write</pre>
 <p>Horizontal alignment of the text.</p>
 <p>Default value: center</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstTextOverlay--valignment"></a><h3>The <code class="literal">"valignment"</code> property</h3>
-<pre class="programlisting">  "valignment"               <span class="type">GstTextOverlayVAlign</span>  : Read / Write</pre>
+<pre class="programlisting">  "valignment"               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-textoverlay.html#GstTextOverlayVAlign"><span class="type">GstTextOverlayVAlign</span></a>  : Read / Write</pre>
 <p>Vertical alignment of the text.</p>
 <p>Default value: baseline</p>
 </div>
@@ -335,6 +347,6 @@
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

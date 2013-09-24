@@ -1,18 +1,19 @@
 # Brazilian Portuguese translation of gst-plugins-base.
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
+# Copyright (C) 2008-2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gst-plugins-base package.
-# Fabrício Godoy <skarllot@gmail.com>, 2008-2011.
+# Fabrício Godoy <skarllot@gmail.com>, 2008-2013.
 #
 # PCM -> PCM
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base-0.10.31.2\n"
+"Project-Id-Version: gst-plugins-base-1.0.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
-"PO-Revision-Date: 2011-01-08 01:02-0300\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
+"PO-Revision-Date: 2013-08-20 00:39-0300\n"
 "Last-Translator: Fabrício Godoy <skarllot@gmail.com>\n"
-"Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>\n"
+"Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
+"net>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr "Não foi possível abrir o dispositivo para reprodução em estéreo."
 
 #, c-format
 msgid "Could not open device for playback in %d-channel mode."
-msgstr "Não foi possível abrir o dispositivo para reprodução com %d canal(is)."
+msgstr "Não foi possível abrir o dispositivo para reprodução com %d canais."
 
 msgid ""
 "Could not open audio device for playback. Device is being used by another "
@@ -50,7 +51,7 @@ msgstr "Não foi possível abrir o dispositivo para gravação em estéreo."
 
 #, c-format
 msgid "Could not open device for recording in %d-channel mode"
-msgstr "Não foi possível abrir o dispositivo para gravação com %d canal(is)."
+msgstr "Não foi possível abrir o dispositivo para gravação com %d canais."
 
 msgid ""
 "Could not open audio device for recording. Device is being used by another "
@@ -78,6 +79,11 @@ msgid "Internal data stream error."
 msgstr "Erro interno no fluxo de dados."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr ""
+"O elemento \"%s\" está faltando, verifique a instalação do seu GStreamer."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 "O plug-in %s é necessário para reproduzir este fluxo, mas não está instalado."
@@ -88,10 +94,9 @@ msgstr "Não foi possível determinar o tipo de fluxo"
 msgid "This appears to be a text file"
 msgstr "Este parece ser um arquivo de texto"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr ""
-"O elemento \"%s\" está faltando, verifique a instalação do seu GStreamer."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Não foi possível criar o elemento \"decodebin\"."
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -164,180 +169,11 @@ msgstr "O elemente de origem é inválido."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Erro ao enviar dados para \"%s:%d\"."
 
-msgid "This CD has no audio tracks"
-msgstr "Este CD não tem trilhas de áudio"
-
 msgid "Can't record audio fast enough"
 msgstr "Não é possível gravar o áudio rápido suficiente"
 
-msgid "Failed to read tag: not enough data"
-msgstr "Falha ao ler etiqueta: dados insuficientes"
-
-msgid "track ID"
-msgstr "ident. da trilha"
-
-msgid "MusicBrainz track ID"
-msgstr "ident. da trilha no MusicBrainz"
-
-msgid "artist ID"
-msgstr "ident. do artista"
-
-msgid "MusicBrainz artist ID"
-msgstr "ident. do artista no MusicBrainz"
-
-msgid "album ID"
-msgstr "ident. do álbum"
-
-msgid "MusicBrainz album ID"
-msgstr "ident. do álbum no MusicBrainz"
-
-msgid "album artist ID"
-msgstr "ident. do artista do álbum"
-
-msgid "MusicBrainz album artist ID"
-msgstr "ident. do artista do álbum no MusicBrainz"
-
-msgid "track TRM ID"
-msgstr "ident. da trilha TRM"
-
-msgid "MusicBrainz TRM ID"
-msgstr "ident. da trilha TRM no MusicBrainz"
-
-msgid "capturing shutter speed"
-msgstr "velocidade do obturador ao capturar"
-
-msgid "Shutter speed used when capturing an image, in seconds"
-msgstr "Velocidade do obturador usada ao capturar uma imagem, em segundos"
-
-msgid "capturing focal ratio"
-msgstr "taxa focal ao capturar"
-
-msgid "Focal ratio (f-number) used when capturing the image"
-msgstr "Taxa focal usada ao capturar a imagem, f-number"
-
-msgid "capturing focal length"
-msgstr "distância focal ao capturar"
-
-msgid "Focal length of the lens used capturing the image, in mm"
-msgstr "Distância focal das lentes usada ao capturar a imagem, em mm"
-
-msgid "capturing digital zoom ratio"
-msgstr "taxa de zoom digital ao capturar"
-
-msgid "Digital zoom ratio used when capturing an image"
-msgstr "Taxa de zoom digital usada ao capturar uma imagem"
-
-msgid "capturing iso speed"
-msgstr "velocidade ISO ao capturar"
-
-msgid "The ISO speed used when capturing an image"
-msgstr "A velocidade ISO usada ao capturar uma imagem"
-
-msgid "capturing exposure program"
-msgstr "programa de exposição ao capturar"
-
-msgid "The exposure program used when capturing an image"
-msgstr "O programa de exposição usado ao capturar uma imagem"
-
-msgid "capturing exposure mode"
-msgstr "modo de exposição ao capturar"
-
-msgid "The exposure mode used when capturing an image"
-msgstr "O modo de exposição usado ao capturar uma imagem"
-
-#, fuzzy
-msgid "capturing exposure compensation"
-msgstr "modo de exposição ao capturar"
-
-#, fuzzy
-msgid "The exposure compensation used when capturing an image"
-msgstr "O modo de exposição usado ao capturar uma imagem"
-
-msgid "capturing scene capture type"
-msgstr "tipo de captura de cena ao capturar"
-
-msgid "The scene capture mode used when capturing an image"
-msgstr "O modo de captura de cena usado ao capturar uma imagem"
-
-msgid "capturing gain adjustment"
-msgstr "ajuste de ganho ao capturar"
-
-msgid "The overall gain adjustment applied on an image"
-msgstr "O ajuste de ganho geral aplicado na imagem"
-
-msgid "capturing white balance"
-msgstr "balanço de branco ao capturar"
-
-msgid "The white balance mode set when capturing an image"
-msgstr "O modo de balanço de branco definido ao capturar uma imagem"
-
-msgid "capturing contrast"
-msgstr "contraste ao capturar"
-
-msgid "The direction of contrast processing applied when capturing an image"
-msgstr ""
-"O procedimento de processamento de contraste aplicado ao capturar uma imagem"
-
-msgid "capturing saturation"
-msgstr "saturação ao capturar"
-
-msgid "The direction of saturation processing applied when capturing an image"
-msgstr ""
-"O procedimento de processamento de saturação aplicado ao capturar uma imagem"
-
-msgid "capturing sharpness"
-msgstr "nitidez ao capturar"
-
-msgid "The direction of sharpness processing applied when capturing an image"
-msgstr ""
-"O procedimento de processamento de nitidez aplicado ao capturar uma imagem"
-
-msgid "capturing flash fired"
-msgstr "disparar flash ao capturar"
-
-msgid "If the flash fired while capturing an image"
-msgstr "Define se o flash é disparado ao capturar uma imagem"
-
-msgid "capturing flash mode"
-msgstr "modo de flash ao capturar"
-
-msgid "The selected flash mode while capturing an image"
-msgstr "O modo de flash selecionado ao capturar uma imagem"
-
-msgid "capturing metering mode"
-msgstr "modo de medição de luz ao capturar"
-
-msgid ""
-"The metering mode used while determining exposure for capturing an image"
-msgstr ""
-"O modo de medição de luz usado ao determinar a exposição para captura de uma "
-"imagem"
-
-msgid "capturing source"
-msgstr "fonte ao capturar"
-
-msgid "The source or type of device used for the capture"
-msgstr "A fonte ou tipo de dispositivo usado para a captura"
-
-msgid "image horizontal ppi"
-msgstr "PPI horizontal da imagem"
-
-msgid "Media (image/video) intended horizontal pixel density in ppi"
-msgstr ""
-"Densidade de pixels horizontais desejado para a mídia (imagem/vídeo), em PPI"
-
-msgid "image vertical ppi"
-msgstr "PPI vertical da imagem"
-
-msgid "Media (image/video) intended vertical pixel density in ppi"
-msgstr ""
-"Densidade de pixels verticais desejado para a mídia (imagem/vídeo), em PPI"
-
-msgid "ID3v2 frame"
-msgstr ""
-
-msgid "unparsed id3v2 tag frame"
-msgstr ""
+msgid "This CD has no audio tracks"
+msgstr "Este CD não tem trilhas de áudio"
 
 msgid "ID3 tag"
 msgstr "Etiqueta ID3"
@@ -373,19 +209,16 @@ msgid "Run-length encoding"
 msgstr "Codificação Run-length"
 
 msgid "Subtitle"
-msgstr ""
+msgstr "Legenda"
 
-#, fuzzy
 msgid "MPL2 subtitle format"
-msgstr "Formato de legendas TMPlayer"
+msgstr "Formato de legendas MPL2"
 
-#, fuzzy
 msgid "DKS subtitle format"
-msgstr "Formato de legendas Sami"
+msgstr "Formato de legendas DKS"
 
-#, fuzzy
 msgid "QTtext subtitle format"
-msgstr "Formato de legendas Kate"
+msgstr "Formato de legendas QTtext"
 
 msgid "Sami subtitle format"
 msgstr "Formato de legendas Sami"
@@ -396,33 +229,42 @@ msgstr "Formato de legendas TMPlayer"
 msgid "Kate subtitle format"
 msgstr "Formato de legendas Kate"
 
-#, fuzzy
 msgid "Uncompressed video"
-msgstr "YUV sem compressão"
+msgstr "Vídeo sem compressão"
 
-#, fuzzy
 msgid "Uncompressed gray"
-msgstr "Imagem Monocromática Sem Compressão"
+msgstr "Arquivo monocromático sem compressão"
 
 #, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "YUV sem compressão"
+msgid "Uncompressed packed YUV %s"
+msgstr "YUV 4:2:2 empacotado sem compressão"
 
 #, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "%2$s de %1$d bits com paletas sem compressão"
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "YUV 4:2:0 plano sem compressão"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "YUV 4:2:0 plano sem compressão"
+
+#, fuzzy, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "%1$s de %2$d bits %3$s sem compressão"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "%1$s de %2$d bits %3$s sem compressão"
 
 #, c-format
 msgid "DivX MPEG-4 Version %d"
 msgstr "DivX MPEG-4 Versão %d"
 
-#, fuzzy
 msgid "Uncompressed audio"
-msgstr "YUV sem compressão"
+msgstr "Áudio sem compressão"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Raw %d-bit %s audio"
-msgstr "Áudio PCM Raw de %d bits"
+msgstr "Áudio Raw de %d bits %s"
 
 msgid "Audio CD source"
 msgstr "Origem: CD de áudio"
@@ -502,6 +344,204 @@ msgstr "Elemento codificador desconhecido"
 msgid "Plugin or element of unknown type"
 msgstr "Elemento ou plug-in de tipo desconhecido"
 
+msgid "Failed to read tag: not enough data"
+msgstr "Falha ao ler etiqueta: dados insuficientes"
+
+msgid "track ID"
+msgstr "ident. da trilha"
+
+msgid "MusicBrainz track ID"
+msgstr "ident. da trilha no MusicBrainz"
+
+msgid "artist ID"
+msgstr "ident. do artista"
+
+msgid "MusicBrainz artist ID"
+msgstr "ident. do artista no MusicBrainz"
+
+msgid "album ID"
+msgstr "ident. do álbum"
+
+msgid "MusicBrainz album ID"
+msgstr "ident. do álbum no MusicBrainz"
+
+msgid "album artist ID"
+msgstr "ident. do artista do álbum"
+
+msgid "MusicBrainz album artist ID"
+msgstr "ident. do artista do álbum no MusicBrainz"
+
+msgid "track TRM ID"
+msgstr "ident. da trilha TRM"
+
+msgid "MusicBrainz TRM ID"
+msgstr "ident. da trilha TRM no MusicBrainz"
+
+msgid "capturing shutter speed"
+msgstr "velocidade do obturador ao capturar"
+
+msgid "Shutter speed used when capturing an image, in seconds"
+msgstr "Velocidade do obturador utilizada ao capturar uma imagem, em segundos"
+
+msgid "capturing focal ratio"
+msgstr "taxa focal ao capturar"
+
+msgid "Focal ratio (f-number) used when capturing the image"
+msgstr "Taxa focal utilizada ao capturar a imagem, f-number"
+
+msgid "capturing focal length"
+msgstr "distância focal ao capturar"
+
+msgid "Focal length of the lens used capturing the image, in mm"
+msgstr "Distância focal das lentes utilizada ao capturar a imagem, em mm"
+
+msgid "capturing digital zoom ratio"
+msgstr "taxa de zoom digital ao capturar"
+
+msgid "Digital zoom ratio used when capturing an image"
+msgstr "Taxa de zoom digital utilizada ao capturar uma imagem"
+
+msgid "capturing iso speed"
+msgstr "velocidade ISO ao capturar"
+
+msgid "The ISO speed used when capturing an image"
+msgstr "A velocidade ISO utilizada ao capturar uma imagem"
+
+msgid "capturing exposure program"
+msgstr "programa de exposição ao capturar"
+
+msgid "The exposure program used when capturing an image"
+msgstr "O programa de exposição utilizado ao capturar uma imagem"
+
+msgid "capturing exposure mode"
+msgstr "modo de exposição ao capturar"
+
+msgid "The exposure mode used when capturing an image"
+msgstr "O modo de exposição utilizado ao capturar uma imagem"
+
+msgid "capturing exposure compensation"
+msgstr "equilíbrio de exposição ao capturar"
+
+msgid "The exposure compensation used when capturing an image"
+msgstr "O equilíbrio de exposição utilizado ao capturar uma imagem"
+
+msgid "capturing scene capture type"
+msgstr "tipo de captura de cena ao capturar"
+
+msgid "The scene capture mode used when capturing an image"
+msgstr "O modo de captura de cena utilizado ao capturar uma imagem"
+
+msgid "capturing gain adjustment"
+msgstr "ajuste de ganho ao capturar"
+
+msgid "The overall gain adjustment applied on an image"
+msgstr "O ajuste de ganho geral aplicado na imagem"
+
+msgid "capturing white balance"
+msgstr "balanço de branco ao capturar"
+
+msgid "The white balance mode set when capturing an image"
+msgstr "O modo de balanço de branco definido ao capturar uma imagem"
+
+msgid "capturing contrast"
+msgstr "contraste ao capturar"
+
+msgid "The direction of contrast processing applied when capturing an image"
+msgstr ""
+"O procedimento de processamento de contraste aplicado ao capturar uma imagem"
+
+msgid "capturing saturation"
+msgstr "saturação ao capturar"
+
+msgid "The direction of saturation processing applied when capturing an image"
+msgstr ""
+"O procedimento de processamento de saturação aplicado ao capturar uma imagem"
+
+msgid "capturing sharpness"
+msgstr "nitidez ao capturar"
+
+msgid "The direction of sharpness processing applied when capturing an image"
+msgstr ""
+"O procedimento de processamento de nitidez aplicado ao capturar uma imagem"
+
+msgid "capturing flash fired"
+msgstr "disparar flash ao capturar"
+
+msgid "If the flash fired while capturing an image"
+msgstr "Define se o flash é disparado ao capturar uma imagem"
+
+msgid "capturing flash mode"
+msgstr "modo de flash ao capturar"
+
+msgid "The selected flash mode while capturing an image"
+msgstr "O modo de flash selecionado ao capturar uma imagem"
+
+msgid "capturing metering mode"
+msgstr "modo de medição de luz ao capturar"
+
+msgid ""
+"The metering mode used while determining exposure for capturing an image"
+msgstr ""
+"O modo de medição de luz utilizado ao determinar a exposição para captura de "
+"uma imagem"
+
+msgid "capturing source"
+msgstr "fonte ao capturar"
+
+msgid "The source or type of device used for the capture"
+msgstr "A fonte ou tipo de dispositivo utilizado para a captura"
+
+msgid "image horizontal ppi"
+msgstr "PPI horizontal da imagem"
+
+msgid "Media (image/video) intended horizontal pixel density in ppi"
+msgstr ""
+"Densidade de pixels horizontais desejado para a mídia (imagem/vídeo), em PPI"
+
+msgid "image vertical ppi"
+msgstr "PPI vertical da imagem"
+
+msgid "Media (image/video) intended vertical pixel density in ppi"
+msgstr ""
+"Densidade de pixels verticais desejado para a mídia (imagem/vídeo), em PPI"
+
+msgid "ID3v2 frame"
+msgstr "quadro ID3v2"
+
+msgid "unparsed id3v2 tag frame"
+msgstr "quadro com etiqueta ID3v2 sem análise"
+
+msgid "musical-key"
+msgstr ""
+
+msgid "Initial key in which the sound starts"
+msgstr ""
+
+msgid "Buffering..."
+msgstr ""
+
+msgid "Print version information and exit"
+msgstr ""
+
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
+
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
+
+msgid "Enable gapless playback"
+msgstr ""
+
+#, c-format
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
+
+msgid "You must provide at least one filename or URI to play."
+msgstr ""
+
+#~ msgid "Uncompressed %s YUV %s"
+#~ msgstr "%2$s YUV %1$s sem compressão"
+
 #~ msgid "Master"
 #~ msgstr "Principal"
 
@@ -535,17 +575,63 @@ msgstr "Elemento ou plug-in de tipo desconhecido"
 #~ msgid "Capture"
 #~ msgstr "Captura"
 
+#~ msgid "Could not open vfs file \"%s\" for writing: %s."
+#~ msgstr "Não foi possível abrir o arquivo VFS \"%s\" para escrita: %s."
+
+#~ msgid "No filename given"
+#~ msgstr "Não foi fornecido um nome de arquivo"
+
+#~ msgid "Could not close vfs file \"%s\"."
+#~ msgstr "Não foi possível fechar o arquivo VFS \"%s\"."
+
+#~ msgid "Error while writing to file \"%s\"."
+#~ msgstr "Erro ao gravar no arquivo \"%s\"."
+
+#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
+#~ msgstr "O URI \"%s\" para legenda é inválido, legendas desabilitadas."
+
+#~ msgid "RTSP streams cannot be played yet."
+#~ msgstr "Os fluxos RTSP ainda não podem ser reproduzidos."
+
+#~ msgid ""
+#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
+#~ "file or some other type of text file, or the media file was not "
+#~ "recognized."
+#~ msgstr ""
+#~ "Apenas um fluxo de legendas foi detectado. Ou você está carregando um "
+#~ "arquivo de legenda ou algum outro tipo de arquivo de texto, ou o arquivo "
+#~ "de mídia não é reconhecido."
+
+#~ msgid ""
+#~ "You do not have a decoder installed to handle this file. You might need "
+#~ "to install the necessary plugins."
+#~ msgstr ""
+#~ "Você não tem um decodificador instalado para manipular este arquivo. Você "
+#~ "deveria instalar os plug-ins necessários."
+
+#~ msgid "This is not a media file"
+#~ msgstr "Este não é um arquivo de mídia"
+
+#~ msgid "A subtitle stream was detected, but no video stream."
+#~ msgstr "Um fluxo de legenda foi detectado, mas nenhum fluxo de vídeo."
+
+#~ msgid "Both autovideosink and xvimagesink elements are missing."
+#~ msgstr "Os elementos autovideosink e xvimagesink estão faltando."
+
+#~ msgid "Both autoaudiosink and alsasink elements are missing."
+#~ msgstr "Os elementos autoaudiosink e alsasink estão faltando."
+
+#~ msgid "Error while sending gdp header data to \"%s:%d\"."
+#~ msgstr "Erro ao enviar o cabeçalho de dados GDP para \"%s:%d\"."
+
+#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
+#~ msgstr "Erro ao enviar codificação de dados GDP para \"%s:%d\"."
+
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "A conexão para %s:%d foi recusada."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "YUV 4:2:0 plano sem compressão"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "YVU 4:2:0 plano sem compressão"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "YUV 4:2:2 empacotado sem compressão"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "YUV 4:1:0 empacotado sem compressão"
@@ -577,55 +663,6 @@ msgstr "Elemento ou plug-in de tipo desconhecido"
 #~ msgid "Raw floating-point audio"
 #~ msgstr "Áudio Raw de ponto-flutuante"
 
-#~ msgid "Could not open vfs file \"%s\" for writing: %s."
-#~ msgstr "Não foi possível abrir o arquivo VFS \"%s\" para escrita: %s."
-
-#~ msgid "No filename given"
-#~ msgstr "Não foi fornecido um nome de arquivo"
-
-#~ msgid "Could not close vfs file \"%s\"."
-#~ msgstr "Não foi possível fechar o arquivo VFS \"%s\"."
-
-#~ msgid "Error while writing to file \"%s\"."
-#~ msgstr "Erro ao gravar no arquivo \"%s\"."
-
-#~ msgid "Invalid subtitle URI \"%s\", subtitles disabled."
-#~ msgstr "O URI \"%s\" para legenda é inválido, legendas desabilitadas."
-
-#~ msgid "RTSP streams cannot be played yet."
-#~ msgstr "Os fluxos RTSP ainda não podem ser reproduzidos."
-
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Não foi possível criar o elemento \"decodebin\"."
-
-#~ msgid ""
-#~ "Only a subtitle stream was detected. Either you are loading a subtitle "
-#~ "file or some other type of text file, or the media file was not "
-#~ "recognized."
-#~ msgstr ""
-#~ "Apenas um fluxo de legendas foi detectado. Ou você está carregando um "
-#~ "arquivo de legenda ou algum outro tipo de arquivo de texto, ou o arquivo "
-#~ "de mídia não é reconhecido."
-
-#~ msgid ""
-#~ "You do not have a decoder installed to handle this file. You might need "
-#~ "to install the necessary plugins."
-#~ msgstr ""
-#~ "Você não tem um decodificador instalado para manipular este arquivo. Você "
-#~ "deveria instalar os plug-ins necessários."
-
-#~ msgid "This is not a media file"
-#~ msgstr "Este não é um arquivo de mídia"
-
-#~ msgid "A subtitle stream was detected, but no video stream."
-#~ msgstr "Um fluxo de legenda foi detectado, mas nenhum fluxo de vídeo."
-
-#~ msgid "Both autovideosink and xvimagesink elements are missing."
-#~ msgstr "Os elementos autovideosink e xvimagesink estão faltando."
-
-#~ msgid "Both autoaudiosink and alsasink elements are missing."
-#~ msgstr "Os elementos autoaudiosink e alsasink estão faltando."
-
 #~ msgid "No device specified."
 #~ msgstr "Nenhum dispositivo especificado."
 
@@ -637,12 +674,6 @@ msgstr "Elemento ou plug-in de tipo desconhecido"
 
 #~ msgid "Could not open device \"%s\" for reading and writing."
 #~ msgstr "Não foi possível abrir o dispositivo \"%s\" para leitura e escrita."
-
-#~ msgid "Error while sending gdp header data to \"%s:%d\"."
-#~ msgstr "Erro ao enviar o cabeçalho de dados GDP para \"%s:%d\"."
-
-#~ msgid "Error while sending gdp payload data to \"%s:%d\"."
-#~ msgstr "Erro ao enviar codificação de dados GDP para \"%s:%d\"."
 
 #~ msgid "Could not create \"decodebin2\" element."
 #~ msgstr "Não foi possível criar o elemento \"decodebin2\"."

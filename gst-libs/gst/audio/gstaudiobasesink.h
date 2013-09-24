@@ -16,8 +16,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /* a base class for audio sinks.
@@ -46,13 +46,14 @@
  * the methods in GstBaseSink and this class.
  */
 
+#ifndef __GST_AUDIO_AUDIO_H__
+#include <gst/audio/audio.h>
+#endif
+
 #ifndef __GST_AUDIO_BASE_SINK_H__
 #define __GST_AUDIO_BASE_SINK_H__
 
-#include <gst/gst.h>
 #include <gst/base/gstbasesink.h>
-#include "gstaudioringbuffer.h"
-#include "gstaudioclock.h"
 
 G_BEGIN_DECLS
 

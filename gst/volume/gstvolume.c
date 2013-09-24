@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -718,7 +718,7 @@ volume_transform_ip (GstBaseTransform * base, GstBuffer * outbuf)
   GstAudioFilter *filter = GST_AUDIO_FILTER_CAST (base);
   GstVolume *self = GST_VOLUME (base);
   GstMapInfo map;
-  GstControlBinding *mute_cb, *volume_cb;
+  GstClockTime ts;
 
   if (G_UNLIKELY (!self->negotiated))
     goto not_negotiated;
@@ -728,64 +728,64 @@ volume_transform_ip (GstBaseTransform * base, GstBuffer * outbuf)
     return GST_FLOW_OK;
 
   gst_buffer_map (outbuf, &map, GST_MAP_READWRITE);
+  ts = GST_BUFFER_TIMESTAMP (outbuf);
+  ts = gst_segment_to_stream_time (&base->segment, GST_FORMAT_TIME, ts);
 
-  mute_cb = gst_object_get_control_binding (GST_OBJECT (self), "mute");
-  volume_cb = gst_object_get_control_binding (GST_OBJECT (self), "volume");
+  if (GST_CLOCK_TIME_IS_VALID (ts)) {
+    GstControlBinding *mute_cb, *volume_cb;
 
-  if (mute_cb || (volume_cb && !self->current_mute)) {
-    gint rate = GST_AUDIO_INFO_RATE (&filter->info);
-    gint width = GST_AUDIO_FORMAT_INFO_WIDTH (filter->info.finfo) / 8;
-    gint channels = GST_AUDIO_INFO_CHANNELS (&filter->info);
-    guint nsamples = map.size / (width * channels);
-    GstClockTime interval = gst_util_uint64_scale_int (1, GST_SECOND, rate);
-    GstClockTime ts = GST_BUFFER_TIMESTAMP (outbuf);
-    gboolean use_mutes = FALSE;
+    mute_cb = gst_object_get_control_binding (GST_OBJECT (self), "mute");
+    volume_cb = gst_object_get_control_binding (GST_OBJECT (self), "volume");
 
-    ts = gst_segment_to_stream_time (&base->segment, GST_FORMAT_TIME, ts);
+    if (mute_cb || (volume_cb && !self->current_mute)) {
+      gint rate = GST_AUDIO_INFO_RATE (&filter->info);
+      gint width = GST_AUDIO_FORMAT_INFO_WIDTH (filter->info.finfo) / 8;
+      gint channels = GST_AUDIO_INFO_CHANNELS (&filter->info);
+      guint nsamples = map.size / (width * channels);
+      GstClockTime interval = gst_util_uint64_scale_int (1, GST_SECOND, rate);
+      gboolean have_mutes = FALSE;
+      gboolean have_volumes = FALSE;
 
-    if (self->mutes_count < nsamples && mute_cb) {
-      self->mutes = g_realloc (self->mutes, sizeof (gboolean) * nsamples);
-      self->mutes_count = nsamples;
+      if (self->mutes_count < nsamples && mute_cb) {
+        self->mutes = g_realloc (self->mutes, sizeof (gboolean) * nsamples);
+        self->mutes_count = nsamples;
+      }
+
+      if (self->volumes_count < nsamples) {
+        self->volumes = g_realloc (self->volumes, sizeof (gdouble) * nsamples);
+        self->volumes_count = nsamples;
+      }
+
+      if (volume_cb) {
+        have_volumes =
+            gst_control_binding_get_value_array (volume_cb, ts, interval,
+            nsamples, (gpointer) self->volumes);
+        gst_object_replace ((GstObject **) & volume_cb, NULL);
+      }
+      if (!have_volumes) {
+        volume_orc_memset_f64 (self->volumes, self->current_volume, nsamples);
+      }
+
+      if (mute_cb) {
+        have_mutes = gst_control_binding_get_value_array (mute_cb, ts, interval,
+            nsamples, (gpointer) self->mutes);
+        gst_object_replace ((GstObject **) & mute_cb, NULL);
+      }
+      if (have_mutes) {
+        volume_orc_prepare_volumes (self->volumes, self->mutes, nsamples);
+      } else {
+        g_free (self->mutes);
+        self->mutes = NULL;
+        self->mutes_count = 0;
+      }
+
+      self->process_controlled (self, map.data, self->volumes, channels,
+          map.size);
+
+      goto done;
+    } else if (volume_cb) {
+      gst_object_unref (volume_cb);
     }
-
-    if (self->volumes_count < nsamples) {
-      self->volumes = g_realloc (self->volumes, sizeof (gdouble) * nsamples);
-      self->volumes_count = nsamples;
-    }
-
-    if (mute_cb) {
-      if (!gst_control_binding_get_value_array (mute_cb, ts, interval,
-              nsamples, (gpointer) self->mutes))
-        goto controller_failure;
-
-      gst_object_replace ((GstObject **) & mute_cb, NULL);
-      use_mutes = TRUE;
-    } else {
-      g_free (self->mutes);
-      self->mutes = NULL;
-      self->mutes_count = 0;
-    }
-
-    if (volume_cb) {
-      if (!gst_control_binding_get_value_array (volume_cb, ts, interval,
-              nsamples, (gpointer) self->volumes))
-        goto controller_failure;
-
-      gst_object_replace ((GstObject **) & volume_cb, NULL);
-    } else {
-      volume_orc_memset_f64 (self->volumes, self->current_volume, nsamples);
-    }
-
-    if (use_mutes) {
-      volume_orc_prepare_volumes (self->volumes, self->mutes, nsamples);
-    }
-
-    self->process_controlled (self, map.data, self->volumes, channels,
-        map.size);
-
-    goto done;
-  } else if (volume_cb) {
-    gst_object_unref (volume_cb);
   }
 
   if (self->current_volume == 0.0 || self->current_mute) {
@@ -806,18 +806,6 @@ not_negotiated:
     GST_ELEMENT_ERROR (self, CORE, NEGOTIATION,
         ("No format was negotiated"), (NULL));
     return GST_FLOW_NOT_NEGOTIATED;
-  }
-controller_failure:
-  {
-    if (mute_cb)
-      gst_object_unref (mute_cb);
-    if (volume_cb)
-      gst_object_unref (volume_cb);
-
-    GST_ELEMENT_ERROR (self, CORE, FAILED,
-        ("Failed to get values from controller"), (NULL));
-    gst_buffer_unmap (outbuf, &map);
-    return GST_FLOW_ERROR;
   }
 }
 

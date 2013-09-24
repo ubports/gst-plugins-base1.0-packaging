@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -424,7 +424,7 @@ gst_missing_plugin_message_get_installer_detail (GstMessage * msg)
 
   /* FIXME: use gst_installer_detail_new() here too */
   str = g_string_new (GST_DETAIL_STRING_MARKER "|");
-  g_string_append_printf (str, "%u.%u|", GST_VERSION_MAJOR, GST_VERSION_MINOR);
+  g_string_append_printf (str, "%s|", GST_API_VERSION);
 
   progname = (const gchar *) g_get_prgname ();
   if (progname) {
@@ -616,7 +616,7 @@ gst_installer_detail_new (gchar * description, const gchar * type,
   GString *s;
 
   s = g_string_new (GST_DETAIL_STRING_MARKER "|");
-  g_string_append_printf (s, "%u.%u|", GST_VERSION_MAJOR, GST_VERSION_MINOR);
+  g_string_append_printf (s, "%s|", GST_API_VERSION);
 
   progname = (const gchar *) g_get_prgname ();
   if (progname) {

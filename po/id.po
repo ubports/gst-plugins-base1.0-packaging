@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-08-28 14:36+0100\n"
+"POT-Creation-Date: 2013-09-19 10:10+0200\n"
 "PO-Revision-Date: 2012-01-28 11:31+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
@@ -74,6 +74,10 @@ msgid "Internal data stream error."
 msgstr "Galat arus data internal."
 
 #, c-format
+msgid "Missing element '%s' - check your GStreamer installation."
+msgstr "Elemen '%s' hilang - cek instalasi GStreamer anda."
+
+#, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr "Plugin %s dibutuhkan untuk memutar arus ini, tapi tidak diinstal."
 
@@ -83,9 +87,9 @@ msgstr "Tak dapat menentukan tipe arus"
 msgid "This appears to be a text file"
 msgstr "Ini kelihatannya merupakan berkas teks"
 
-#, c-format
-msgid "Missing element '%s' - check your GStreamer installation."
-msgstr "Elemen '%s' hilang - cek instalasi GStreamer anda."
+#, fuzzy
+msgid "Could not create \"uridecodebin\" element."
+msgstr "Tak dapat membuat elemen \"decodebin\""
 
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
@@ -157,11 +161,186 @@ msgstr "Elemen sumber tidak sah."
 msgid "Error while sending data to \"%s:%d\"."
 msgstr "Galat ketika mengirim data ke \"%s:%d\"."
 
+msgid "Can't record audio fast enough"
+msgstr "Tak dapat merekam audio cukup cepat"
+
 msgid "This CD has no audio tracks"
 msgstr "CD ini tidak memiliki jalur audio"
 
-msgid "Can't record audio fast enough"
-msgstr "Tak dapat merekam audio cukup cepat"
+msgid "ID3 tag"
+msgstr "Tag ID3"
+
+msgid "APE tag"
+msgstr "Tag APE"
+
+msgid "ICY internet radio"
+msgstr "Radio internet ICY"
+
+msgid "Apple Lossless Audio (ALAC)"
+msgstr "Apple Lossless Audio (ALAC)"
+
+msgid "Free Lossless Audio Codec (FLAC)"
+msgstr "Free Lossless Audio Codec (FLAC)"
+
+msgid "Lossless True Audio (TTA)"
+msgstr "Lossless True Audio (TTA)"
+
+msgid "Windows Media Speech"
+msgstr "Windows Media Speech"
+
+msgid "CYUV Lossless"
+msgstr "CYUV Lossless"
+
+msgid "FFMpeg v1"
+msgstr "FFMpeg v1"
+
+msgid "Lossless MSZH"
+msgstr "Lossless MSZH"
+
+msgid "Run-length encoding"
+msgstr "Penyandian sepanjang-jalan"
+
+msgid "Subtitle"
+msgstr ""
+
+#, fuzzy
+msgid "MPL2 subtitle format"
+msgstr "Format subjudul TMPlayer"
+
+#, fuzzy
+msgid "DKS subtitle format"
+msgstr "Format subjudul Sami"
+
+#, fuzzy
+msgid "QTtext subtitle format"
+msgstr "Format subjudul Kate"
+
+msgid "Sami subtitle format"
+msgstr "Format subjudul Sami"
+
+msgid "TMPlayer subtitle format"
+msgstr "Format subjudul TMPlayer"
+
+msgid "Kate subtitle format"
+msgstr "Format subjudul Kate"
+
+#, fuzzy
+msgid "Uncompressed video"
+msgstr "YUV tak dikompresi"
+
+#, fuzzy
+msgid "Uncompressed gray"
+msgstr "Citra Abu-abu Tak Dikompres"
+
+#, fuzzy, c-format
+msgid "Uncompressed packed YUV %s"
+msgstr "YUV 4:2:2 terkemas tak dikompresi"
+
+#, fuzzy, c-format
+msgid "Uncompressed semi-planar YUV %s"
+msgstr "YUV 4:2:0 planar tak dikompresi"
+
+#, fuzzy, c-format
+msgid "Uncompressed planar YUV %s"
+msgstr "YUV 4:2:0 planar tak dikompresi"
+
+#, c-format
+msgid "Uncompressed palettized %d-bit %s"
+msgstr "Terpalet dan tak dikompresi dari %d-bit %s"
+
+#, fuzzy, c-format
+msgid "Uncompressed %d-bit %s"
+msgstr "Terpalet dan tak dikompresi dari %d-bit %s"
+
+#, c-format
+msgid "DivX MPEG-4 Version %d"
+msgstr "DivX MPEG-4 Versi %d"
+
+#, fuzzy
+msgid "Uncompressed audio"
+msgstr "YUV tak dikompresi"
+
+#, fuzzy, c-format
+msgid "Raw %d-bit %s audio"
+msgstr "Audio PCM %d-bita mentah"
+
+msgid "Audio CD source"
+msgstr "Sumber CD audio"
+
+msgid "DVD source"
+msgstr "Sumber DVD"
+
+msgid "Real Time Streaming Protocol (RTSP) source"
+msgstr "Sumber Real Time Streaming Protocol (RTSP)"
+
+msgid "Microsoft Media Server (MMS) protocol source"
+msgstr "Sumber protokol Microsoft Media Server (MMS)"
+
+#, c-format
+msgid "%s protocol source"
+msgstr "%s sumber protokol"
+
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr "%s video RTP depayloader"
+
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr "%s audio RTP depayloader"
+
+#, c-format
+msgid "%s RTP depayloader"
+msgstr "%s RTP depayloader"
+
+#, c-format
+msgid "%s demuxer"
+msgstr "%s demuxer"
+
+#, c-format
+msgid "%s decoder"
+msgstr "%s pengawasandi"
+
+#, c-format
+msgid "%s video RTP payloader"
+msgstr "%s video RTP payloader"
+
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr "%s audio RTP payloader"
+
+#, c-format
+msgid "%s RTP payloader"
+msgstr "%s RTP payloader"
+
+#, c-format
+msgid "%s muxer"
+msgstr "%s muxer"
+
+#, c-format
+msgid "%s encoder"
+msgstr "%s penyandi"
+
+#, c-format
+msgid "GStreamer element %s"
+msgstr "Elemen GStreamer %s"
+
+msgid "Unknown source element"
+msgstr "Elemen sumber tak diketahui"
+
+msgid "Unknown sink element"
+msgstr "Elemen tenggelam tak diketahui"
+
+msgid "Unknown element"
+msgstr "Elemen tak diketahui"
+
+msgid "Unknown decoder element"
+msgstr "Elemen pengawasandi tak diketahui"
+
+msgid "Unknown encoder element"
+msgstr "Elemen penyandi tak diketahui"
+
+msgid "Plugin or element of unknown type"
+msgstr "Plugin atau elemen dari tipe yang tak diketahui"
 
 msgid "Failed to read tag: not enough data"
 msgstr "Gagal membaca tanda: tak cukup data"
@@ -325,168 +504,33 @@ msgstr ""
 msgid "unparsed id3v2 tag frame"
 msgstr ""
 
-msgid "ID3 tag"
-msgstr "Tag ID3"
-
-msgid "APE tag"
-msgstr "Tag APE"
-
-msgid "ICY internet radio"
-msgstr "Radio internet ICY"
-
-msgid "Apple Lossless Audio (ALAC)"
-msgstr "Apple Lossless Audio (ALAC)"
-
-msgid "Free Lossless Audio Codec (FLAC)"
-msgstr "Free Lossless Audio Codec (FLAC)"
-
-msgid "Lossless True Audio (TTA)"
-msgstr "Lossless True Audio (TTA)"
-
-msgid "Windows Media Speech"
-msgstr "Windows Media Speech"
-
-msgid "CYUV Lossless"
-msgstr "CYUV Lossless"
-
-msgid "FFMpeg v1"
-msgstr "FFMpeg v1"
-
-msgid "Lossless MSZH"
-msgstr "Lossless MSZH"
-
-msgid "Run-length encoding"
-msgstr "Penyandian sepanjang-jalan"
-
-msgid "Subtitle"
+msgid "musical-key"
 msgstr ""
 
-#, fuzzy
-msgid "MPL2 subtitle format"
-msgstr "Format subjudul TMPlayer"
+msgid "Initial key in which the sound starts"
+msgstr ""
 
-#, fuzzy
-msgid "DKS subtitle format"
-msgstr "Format subjudul Sami"
+msgid "Buffering..."
+msgstr ""
 
-#, fuzzy
-msgid "QTtext subtitle format"
-msgstr "Format subjudul Kate"
+msgid "Print version information and exit"
+msgstr ""
 
-msgid "Sami subtitle format"
-msgstr "Format subjudul Sami"
+msgid "Video sink to use (default is autovideosink)"
+msgstr ""
 
-msgid "TMPlayer subtitle format"
-msgstr "Format subjudul TMPlayer"
+msgid "Audio sink to use (default is autoaudiosink)"
+msgstr ""
 
-msgid "Kate subtitle format"
-msgstr "Format subjudul Kate"
-
-#, fuzzy
-msgid "Uncompressed video"
-msgstr "YUV tak dikompresi"
-
-#, fuzzy
-msgid "Uncompressed gray"
-msgstr "Citra Abu-abu Tak Dikompres"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s YUV %s"
-msgstr "YUV tak dikompresi"
-
-#, fuzzy, c-format
-msgid "Uncompressed %s%d-bit %s"
-msgstr "Terpalet dan tak dikompresi dari %d-bit %s"
+msgid "Enable gapless playback"
+msgstr ""
 
 #, c-format
-msgid "DivX MPEG-4 Version %d"
-msgstr "DivX MPEG-4 Versi %d"
+msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
+msgstr ""
 
-#, fuzzy
-msgid "Uncompressed audio"
-msgstr "YUV tak dikompresi"
-
-#, fuzzy, c-format
-msgid "Raw %d-bit %s audio"
-msgstr "Audio PCM %d-bita mentah"
-
-msgid "Audio CD source"
-msgstr "Sumber CD audio"
-
-msgid "DVD source"
-msgstr "Sumber DVD"
-
-msgid "Real Time Streaming Protocol (RTSP) source"
-msgstr "Sumber Real Time Streaming Protocol (RTSP)"
-
-msgid "Microsoft Media Server (MMS) protocol source"
-msgstr "Sumber protokol Microsoft Media Server (MMS)"
-
-#, c-format
-msgid "%s protocol source"
-msgstr "%s sumber protokol"
-
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr "%s video RTP depayloader"
-
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr "%s audio RTP depayloader"
-
-#, c-format
-msgid "%s RTP depayloader"
-msgstr "%s RTP depayloader"
-
-#, c-format
-msgid "%s demuxer"
-msgstr "%s demuxer"
-
-#, c-format
-msgid "%s decoder"
-msgstr "%s pengawasandi"
-
-#, c-format
-msgid "%s video RTP payloader"
-msgstr "%s video RTP payloader"
-
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr "%s audio RTP payloader"
-
-#, c-format
-msgid "%s RTP payloader"
-msgstr "%s RTP payloader"
-
-#, c-format
-msgid "%s muxer"
-msgstr "%s muxer"
-
-#, c-format
-msgid "%s encoder"
-msgstr "%s penyandi"
-
-#, c-format
-msgid "GStreamer element %s"
-msgstr "Elemen GStreamer %s"
-
-msgid "Unknown source element"
-msgstr "Elemen sumber tak diketahui"
-
-msgid "Unknown sink element"
-msgstr "Elemen tenggelam tak diketahui"
-
-msgid "Unknown element"
-msgstr "Elemen tak diketahui"
-
-msgid "Unknown decoder element"
-msgstr "Elemen pengawasandi tak diketahui"
-
-msgid "Unknown encoder element"
-msgstr "Elemen penyandi tak diketahui"
-
-msgid "Plugin or element of unknown type"
-msgstr "Plugin atau elemen dari tipe yang tak diketahui"
+msgid "You must provide at least one filename or URI to play."
+msgstr ""
 
 #~ msgid "Master"
 #~ msgstr "Utama"
@@ -539,9 +583,6 @@ msgstr "Plugin atau elemen dari tipe yang tak diketahui"
 #~ msgid "RTSP streams cannot be played yet."
 #~ msgstr "Arus RTSP belum dapat dimainkan."
 
-#~ msgid "Could not create \"decodebin\" element."
-#~ msgstr "Tak dapat membuat elemen \"decodebin\""
-
 #~ msgid ""
 #~ "Only a subtitle stream was detected. Either you are loading a subtitle "
 #~ "file or some other type of text file, or the media file was not "
@@ -578,14 +619,8 @@ msgstr "Plugin atau elemen dari tipe yang tak diketahui"
 #~ msgid "Connection to %s:%d refused."
 #~ msgstr "Koneksi ke %s:%d ditolak."
 
-#~ msgid "Uncompressed planar YUV 4:2:0"
-#~ msgstr "YUV 4:2:0 planar tak dikompresi"
-
 #~ msgid "Uncompressed planar YVU 4:2:0"
 #~ msgstr "YVU 4:2:0 planar tak dikompresi"
-
-#~ msgid "Uncompressed packed YUV 4:2:2"
-#~ msgstr "YUV 4:2:2 terkemas tak dikompresi"
 
 #~ msgid "Uncompressed packed YUV 4:1:0"
 #~ msgstr "YUV 4:1:0 terkemas tak dikompresi"

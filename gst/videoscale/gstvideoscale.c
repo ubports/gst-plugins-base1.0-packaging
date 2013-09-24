@@ -14,8 +14,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 /**
@@ -90,7 +90,7 @@ GST_DEBUG_CATEGORY (video_scale_debug);
 GST_DEBUG_CATEGORY_STATIC (GST_CAT_PERFORMANCE);
 
 #define DEFAULT_PROP_METHOD       GST_VIDEO_SCALE_BILINEAR
-#define DEFAULT_PROP_ADD_BORDERS  FALSE
+#define DEFAULT_PROP_ADD_BORDERS  TRUE
 #define DEFAULT_PROP_SHARPNESS    1.0
 #define DEFAULT_PROP_SHARPEN      0.0
 #define DEFAULT_PROP_DITHER       FALSE
@@ -131,7 +131,8 @@ enum
 
 
 static GstStaticCaps gst_video_scale_format_caps =
-GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS));
+    GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS) ";"
+    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY", GST_VIDEO_FORMATS));
 
 #define GST_TYPE_VIDEO_SCALE_METHOD (gst_video_scale_method_get_type())
 static GType
@@ -202,6 +203,9 @@ static void gst_video_scale_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
 static void gst_video_scale_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
+
+static GstFlowReturn do_scale (GstVideoFilter * filter, VSImage dest[4],
+    VSImage src[4]);
 
 #define gst_video_scale_parent_class parent_class
 G_DEFINE_TYPE (GstVideoScale, gst_video_scale, GST_TYPE_VIDEO_FILTER);
@@ -407,7 +411,7 @@ get_formats_filter (GstVideoScaleMethod method)
     case GST_VIDEO_SCALE_4TAP:
     {
       static GstStaticCaps fourtap_filter =
-          GST_STATIC_CAPS ("video/x-raw,"
+          GST_STATIC_CAPS ("video/x-raw(ANY),"
           "format = (string) { RGBx, xRGB, BGRx, xBGR, RGBA, "
           "ARGB, BGRA, ABGR, AYUV, ARGB64, AYUV64, "
           "RGB, BGR, v308, YUY2, YVYU, UYVY, "
@@ -418,7 +422,7 @@ get_formats_filter (GstVideoScaleMethod method)
     case GST_VIDEO_SCALE_LANCZOS:
     {
       static GstStaticCaps lanczos_filter =
-          GST_STATIC_CAPS ("video/x-raw,"
+          GST_STATIC_CAPS ("video/x-raw(ANY),"
           "format = (string) { RGBx, xRGB, BGRx, xBGR, RGBA, "
           "ARGB, BGRA, ABGR, AYUV, ARGB64, AYUV64, "
           "I420, YV12, Y444, Y42B, Y41B }");
@@ -439,6 +443,7 @@ gst_video_scale_transform_caps (GstBaseTransform * trans,
   GstVideoScaleMethod method;
   GstCaps *ret, *mfilter;
   GstStructure *structure;
+  GstCapsFeatures *features;
   gint i, n;
 
   GST_DEBUG_OBJECT (trans,
@@ -450,6 +455,8 @@ gst_video_scale_transform_caps (GstBaseTransform * trans,
   GST_OBJECT_UNLOCK (videoscale);
 
   /* filter the supported formats */
+  /* FIXME: Ideally we would still allow passthrough for the color formats
+   * that are unsupported by the selected method */
   if ((mfilter = get_formats_filter (method))) {
     caps = gst_caps_intersect_full (caps, mfilter, GST_CAPS_INTERSECT_FIRST);
     gst_caps_unref (mfilter);
@@ -461,24 +468,32 @@ gst_video_scale_transform_caps (GstBaseTransform * trans,
   n = gst_caps_get_size (caps);
   for (i = 0; i < n; i++) {
     structure = gst_caps_get_structure (caps, i);
+    features = gst_caps_get_features (caps, i);
 
     /* If this is already expressed by the existing caps
      * skip this structure */
-    if (i > 0 && gst_caps_is_subset_structure (ret, structure))
+    if (i > 0 && gst_caps_is_subset_structure_full (ret, structure, features))
       continue;
 
     /* make copy */
     structure = gst_structure_copy (structure);
-    gst_structure_set (structure,
-        "width", GST_TYPE_INT_RANGE, 1, G_MAXINT,
-        "height", GST_TYPE_INT_RANGE, 1, G_MAXINT, NULL);
 
-    /* if pixel aspect ratio, make a range of it */
-    if (gst_structure_has_field (structure, "pixel-aspect-ratio")) {
-      gst_structure_set (structure, "pixel-aspect-ratio",
-          GST_TYPE_FRACTION_RANGE, 1, G_MAXINT, G_MAXINT, 1, NULL);
+    /* If the features are non-sysmem we can only do passthrough */
+    if (!gst_caps_features_is_any (features)
+        && gst_caps_features_is_equal (features,
+            GST_CAPS_FEATURES_MEMORY_SYSTEM_MEMORY)) {
+      gst_structure_set (structure, "width", GST_TYPE_INT_RANGE, 1, G_MAXINT,
+          "height", GST_TYPE_INT_RANGE, 1, G_MAXINT, NULL);
+
+      /* if pixel aspect ratio, make a range of it */
+      if (gst_structure_has_field (structure, "pixel-aspect-ratio")) {
+        gst_structure_set (structure, "pixel-aspect-ratio",
+            GST_TYPE_FRACTION_RANGE, 1, G_MAXINT, G_MAXINT, 1, NULL);
+      }
     }
-    gst_caps_append_structure (ret, structure);
+
+    gst_caps_append_structure_full (ret, structure,
+        gst_caps_features_copy (features));
   }
 
   if (filter) {
@@ -1003,7 +1018,7 @@ done:
 
 static void
 gst_video_scale_setup_vs_image (VSImage * image, GstVideoFrame * frame,
-    gint component, gint b_w, gint b_h)
+    gint component, gint b_w, gint b_h, gboolean interlaced, gint field)
 {
   GstVideoFormat format;
   gint width, height;
@@ -1018,6 +1033,11 @@ gst_video_scale_setup_vs_image (VSImage * image, GstVideoFrame * frame,
       component, MAX (1, width - b_w));
   image->height = GST_VIDEO_FORMAT_INFO_SCALE_HEIGHT (frame->info.finfo,
       component, MAX (1, height - b_h));
+
+  if (interlaced) {
+    image->real_height /= 2;
+    image->height /= 2;
+  }
 
   image->border_top = (image->real_height - image->height) / 2;
   image->border_bottom = image->real_height - image->height - image->border_top;
@@ -1036,12 +1056,19 @@ gst_video_scale_setup_vs_image (VSImage * image, GstVideoFrame * frame,
     image->border_right = image->real_width - image->width - image->border_left;
   }
 
-  image->real_pixels = frame->data[component];
-  image->stride = frame->info.stride[component];
+  image->real_pixels = GST_VIDEO_FRAME_PLANE_DATA (frame, component);
+  image->stride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, component);
+
+  if (interlaced) {
+    if (field == 1)
+      image->real_pixels += image->stride;
+    image->stride *= 2;
+  }
 
   image->pixels =
       image->real_pixels + image->border_top * image->stride +
       image->border_left * GST_VIDEO_FRAME_COMP_PSTRIDE (frame, component);
+
 }
 
 static const guint8 *
@@ -1112,11 +1139,39 @@ gst_video_scale_transform_frame (GstVideoFilter * filter,
   GstFlowReturn ret = GST_FLOW_OK;
   VSImage dest[4] = { {NULL,}, };
   VSImage src[4] = { {NULL,}, };
+  gint i;
+  gboolean interlaced;
+
+  interlaced = GST_VIDEO_FRAME_IS_INTERLACED (in_frame);
+
+  for (i = 0; i < GST_VIDEO_FRAME_N_PLANES (in_frame); i++) {
+    gst_video_scale_setup_vs_image (&src[i], in_frame, i, 0, 0, interlaced, 0);
+    gst_video_scale_setup_vs_image (&dest[i], out_frame, i,
+        videoscale->borders_w, videoscale->borders_h, interlaced, 0);
+  }
+  ret = do_scale (filter, dest, src);
+
+  if (interlaced) {
+    for (i = 0; i < GST_VIDEO_FRAME_N_PLANES (in_frame); i++) {
+      gst_video_scale_setup_vs_image (&src[i], in_frame, i, 0, 0, interlaced,
+          1);
+      gst_video_scale_setup_vs_image (&dest[i], out_frame, i,
+          videoscale->borders_w, videoscale->borders_h, interlaced, 1);
+    }
+    ret = do_scale (filter, dest, src);
+  }
+  return ret;
+}
+
+static GstFlowReturn
+do_scale (GstVideoFilter * filter, VSImage dest[4], VSImage src[4])
+{
+  GstVideoScale *videoscale = GST_VIDEO_SCALE (filter);
+  GstFlowReturn ret = GST_FLOW_OK;
   gint method;
   const guint8 *black;
-  gboolean add_borders;
   GstVideoFormat format;
-  gint i;
+  gboolean add_borders;
 
   GST_OBJECT_LOCK (videoscale);
   method = videoscale->method;
@@ -1132,12 +1187,6 @@ gst_video_scale_transform_frame (GstVideoFilter * filter,
   if (method == GST_VIDEO_SCALE_4TAP &&
       (filter->in_info.width < 4 || filter->in_info.height < 4)) {
     method = GST_VIDEO_SCALE_BILINEAR;
-  }
-
-  for (i = 0; i < GST_VIDEO_FRAME_N_PLANES (in_frame); i++) {
-    gst_video_scale_setup_vs_image (&src[i], in_frame, i, 0, 0);
-    gst_video_scale_setup_vs_image (&dest[i], out_frame, i,
-        videoscale->borders_w, videoscale->borders_h);
   }
 
   GST_CAT_DEBUG_OBJECT (GST_CAT_PERFORMANCE, filter,

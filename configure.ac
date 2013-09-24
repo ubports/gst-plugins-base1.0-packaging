@@ -1,18 +1,16 @@
-AC_PREREQ(2.62)
+AC_PREREQ([2.68])
 
 dnl please read gstreamer/docs/random/autotools before changing this file
 
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT(GStreamer Base Plug-ins, 1.0.10,
-    http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer,
-    gst-plugins-base)
+AC_INIT([GStreamer Base Plug-ins],[1.1.90],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
 
 AG_GST_INIT
 
 dnl initialize automake
-AM_INIT_AUTOMAKE([-Wno-portability 1.11 no-dist-gzip dist-xz tar-ustar])
+AM_INIT_AUTOMAKE([-Wno-portability 1.11 no-dist-gzip dist-xz tar-ustar subdir-objects])
 
 dnl define PACKAGE_VERSION_* variables
 AS_VERSION
@@ -49,11 +47,19 @@ dnl - library source changed -> increment REVISION
 dnl - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
 dnl - interfaces added -> increment AGE
 dnl - interfaces removed -> AGE = 0
+dnl
+dnl Keep CURRENT as MINOR * 100 + MICRO
+dnl Ex : 1.0.0 => 0
+dnl      1.0.3 => 3
+dnl      1.1.0 => 100
+dnl      1.2.5 => 205
+dnl      1.10.9 (who knows) => 1009
+dnl
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 9, 0, 9)
+AS_LIBTOOL(GST, 190, 0, 190)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=1.0.5
+GST_REQ=1.1.90
 
 dnl *** autotools stuff ****
 
@@ -88,8 +94,7 @@ AG_GST_PKG_CONFIG_PATH
 
 dnl let distro override plugin install helper path
 AC_ARG_WITH(install-plugins-helper,
-  AC_HELP_STRING([--with-install-plugins-helper],
-    [specify path of helper script to call to install plugins]),
+  AS_HELP_STRING([--with-install-plugins-helper],[specify path of helper script to call to install plugins]),
   [
     case "${withval}" in
       yes) AC_MSG_ERROR(bad value ${withval} for --with-install-plugins-helper) ;;
@@ -140,7 +145,7 @@ AC_PROG_CXX
 dnl CXX may be set to some default even if no c++ compiler is available
 dnl (thanks autotools!), so just try to compile some c++ code to make sure
 AC_LANG_PUSH([C++])
-AC_TRY_COMPILE([ class Foo { int bar; };], , working_cxx=yes, working_cxx=no)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ class Foo { int bar; };]], [[]])],[working_cxx=yes],[working_cxx=no])
 AC_LANG_POP([C++])
 AC_MSG_NOTICE([working c++ compiler found: $working_cxx])
 AM_CONDITIONAL(HAVE_CXX, test "x$working_cxx" = "xyes")
@@ -153,8 +158,7 @@ GOBJECT_INTROSPECTION_CHECK([1.31.1])
 
 dnl check for documentation tools
 GTK_DOC_CHECK([1.12])
-AS_PATH_PYTHON([2.1])
-AG_GST_PLUGIN_DOCS([1.3],[2.1])
+AG_GST_PLUGIN_DOCS([1.12])
 
 dnl *** checks for libraries ***
 
@@ -178,6 +182,24 @@ AM_CONDITIONAL(HAVE_SYS_SOCKET_H, test "x$HAVE_SYS_SOCKET_H" = "xyes")
 
 dnl used in gst-libs/gst/pbutils and associated unit test
 AC_CHECK_HEADERS([process.h sys/types.h sys/wait.h sys/stat.h], [], [], [AC_INCLUDES_DEFAULT])
+
+dnl checks for ARM NEON support
+dnl this instruction set is used by the speex resampler code
+AC_MSG_CHECKING(for ARM NEON support in current arch/CFLAGS)
+AC_LINK_IFELSE([
+AC_LANG_PROGRAM([[
+  #include <arm_neon.h>
+  int32x4_t testfunc(int16_t *a, int16_t *b) {
+      return vmull_s16(vld1_s16(a), vld1_s16(b));
+  }
+]])],
+[
+  AC_DEFINE(HAVE_ARM_NEON,[],[ARM NEON support is enabled])
+  AC_MSG_RESULT(yes)
+],
+[
+  AC_MSG_RESULT(no)
+])
 
 dnl also, Windows does not have long long
 AX_CREATE_STDINT_H
@@ -219,7 +241,7 @@ dnl GLib
 GLIB_REQ=2.32
 AG_GST_GLIB_CHECK([$GLIB_REQ])
 
-ORC_CHECK([0.4.16])
+ORC_CHECK([0.4.18])
 
 dnl checks for gstreamer
 dnl uninstalled is selected preferentially -- see pkg-config(1)
@@ -288,16 +310,15 @@ AM_CONDITIONAL(HAVE_LINUX_JOYSTICK_HEADERS, test "x$HAVE_LINUX_JOYSTICK_HEADERS"
 dnl Check for -Bsymbolic-functions linker flag used to avoid
 dnl intra-library PLT jumps, if available.
 AC_ARG_ENABLE(Bsymbolic,
-              [AC_HELP_STRING([--disable-Bsymbolic],
-                              [avoid linking with -Bsymbolic])],,
+              [AS_HELP_STRING([--disable-Bsymbolic],[avoid linking with -Bsymbolic])],,
               [SAVED_LDFLAGS="${LDFLAGS}"
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                LDFLAGS=-Wl,-Bsymbolic-functions
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[int main (void) { return 0; }]])],[
                            AC_MSG_RESULT(yes)
-                           enable_Bsymbolic=yes,
+                           enable_Bsymbolic=yes],[
                            AC_MSG_RESULT(no)
-                           enable_Bsymbolic=no)
+                           enable_Bsymbolic=no])
                LDFLAGS="${SAVED_LDFLAGS}"])
 
 
@@ -389,6 +410,9 @@ case $ac_cv_audioresample_format in
     AC_SUBST(AUDIORESAMPLE_FORMAT_AUTO)
 esac
 
+dnl Check for mmap (needed by allocators library)
+AC_CHECK_FUNC([mmap], [AC_DEFINE(HAVE_MMAP, 1, [Defined if mmap is supported])])
+
 dnl *** plug-ins to include ***
 
 dnl these are all the gst plug-ins, compilable without additional libs
@@ -412,7 +436,7 @@ AG_GST_CHECK_PLUGIN(volume)
 
 dnl iso-codes is optional, used by libgsttag
 AC_ARG_ENABLE(iso-codes,
-AC_HELP_STRING([--enable-iso-codes],[use iso-codes if installed]),
+AS_HELP_STRING([--enable-iso-codes],[use iso-codes if installed]),
 [case "${enableval}" in
   yes) enable_iso_codes=yes ;;
   no)  enable_iso_codes=no ;;
@@ -659,11 +683,6 @@ dnl *** ogg ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_OGG, true)
 AG_GST_CHECK_FEATURE(OGG, [Xiph Ogg library], ogg, [
   AG_GST_PKG_CHECK_MODULES(OGG, ogg >= 1.0)
-  if test $HAVE_OGG = no
-  then
-    XIPH_PATH_OGG(HAVE_OGG="yes", HAVE_OGG="no")
-    AS_SCRUB_INCLUDE(OGG_CFLAGS)
-  fi
 ])
 
 dnl *** pango ***
@@ -679,15 +698,9 @@ AG_GST_CHECK_FEATURE(THEORA, [Xiph Theora video codec], theora, [
 ])
 
 dnl *** vorbis ***
-dnl AM_PATH_VORBIS only takes two options
 translit(dnm, m, l) AM_CONDITIONAL(USE_VORBIS, true)
 AG_GST_CHECK_FEATURE(VORBIS, [Xiph Vorbis audio codec], vorbis, [
   AG_GST_PKG_CHECK_MODULES(VORBIS, vorbis >= 1.0 vorbisenc >= 1.0)
-  if test $HAVE_VORBIS = no
-  then
-    XIPH_PATH_VORBIS(HAVE_VORBIS="yes", HAVE_VORBIS="no")
-    AS_SCRUB_INCLUDE(VORBIS_CFLAGS)
-  fi
 ])
 
 if test "x$HAVE_VORBIS" = "xyes"; then
@@ -806,6 +819,8 @@ AC_SUBST(GST_PLUGIN_LDFLAGS)
 
 dnl *** output files ***
 
+$MKDIR_P tests/check/orc
+
 AC_CONFIG_FILES(
 Makefile
 gst-plugins-base.spec
@@ -840,6 +855,7 @@ ext/theora/Makefile
 ext/vorbis/Makefile
 gst-libs/Makefile
 gst-libs/gst/Makefile
+gst-libs/gst/allocators/Makefile
 gst-libs/gst/audio/Makefile
 gst-libs/gst/app/Makefile
 gst-libs/gst/fft/Makefile
@@ -853,6 +869,8 @@ gst-libs/gst/pbutils/gstpluginsbaseversion.h
 gst-libs/gst/video/Makefile
 tools/Makefile
 pkgconfig/Makefile
+pkgconfig/gstreamer-allocators.pc
+pkgconfig/gstreamer-allocators-uninstalled.pc
 pkgconfig/gstreamer-audio.pc
 pkgconfig/gstreamer-audio-uninstalled.pc
 pkgconfig/gstreamer-app.pc
