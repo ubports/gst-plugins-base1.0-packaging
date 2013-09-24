@@ -2273,12 +2273,8 @@ When -1 is given as <em class="parameter"><code>idx</code></em>, the bandwidth i
 <td>an index</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bwtype</code></em> :</span></p></td>
-<td>the bandwidth modifier type</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>bandwidth</code></em> :</span></p></td>
-<td>the bandwidth in kilobits per second</td>
+<td><p><span class="term"><em class="parameter"><code>bw</code></em> :</span></p></td>
+<td>the bandwidth</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -2295,7 +2291,7 @@ When -1 is given as <em class="parameter"><code>idx</code></em>, the bandwidth i
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> *bw</code></em>);</pre>
 <p>
-Replace the bandwidth information in <em class="parameter"><code>msg</code></em> at index <em class="parameter"><code>idx</code></em> with <em class="parameter"><code>bwtype</code></em> and <em class="parameter"><code>bandwidth</code></em>.
+Replace the bandwidth information in <em class="parameter"><code>msg</code></em> at index <em class="parameter"><code>idx</code></em> with <em class="parameter"><code>bw</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -2313,12 +2309,8 @@ Replace the bandwidth information in <em class="parameter"><code>msg</code></em>
 <td>the bandwidth index</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bwtype</code></em> :</span></p></td>
-<td>the bandwidth modifier type</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>bandwidth</code></em> :</span></p></td>
-<td>the bandwidth in kilobits per second</td>
+<td><p><span class="term"><em class="parameter"><code>bw</code></em> :</span></p></td>
+<td>the bandwidth</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -2995,8 +2987,11 @@ When -1 is given as <em class="parameter"><code>idx</code></em>, the attribute i
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>idx</code></em> :</span></p></td>
-<td>an index
-<em class="parameter"><code>attribute</code></em> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a>
+<td>an index</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attr</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a>
 </td>
 </tr>
 <tr>
@@ -3014,7 +3009,7 @@ When -1 is given as <em class="parameter"><code>idx</code></em>, the attribute i
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
                                                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a> *attr</code></em>);</pre>
 <p>
-Replace the attribute in <em class="parameter"><code>msg</code></em> at index <em class="parameter"><code>idx</code></em> with <em class="parameter"><code>attribute</code></em>.
+Replace the attribute in <em class="parameter"><code>msg</code></em> at index <em class="parameter"><code>idx</code></em> with <em class="parameter"><code>attr</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -3032,7 +3027,7 @@ Replace the attribute in <em class="parameter"><code>msg</code></em> at index <e
 <td>the index</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>attr</code></em> :</span></p></td>
 <td>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a>
 </td>
 </tr>

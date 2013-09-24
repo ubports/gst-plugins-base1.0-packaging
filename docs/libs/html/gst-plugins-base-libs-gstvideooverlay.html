@@ -225,10 +225,10 @@ prepare-window-handle message is handled, because most GUI toolkits and
 windowing systems are not thread-safe at all and a lot of care would be
 required to co-ordinate the toolkit and window system calls of the
 different threads (Gtk+ users please note: prior to Gtk+ 2.18
-<a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
+<a href="http://library.gnome.org/devel/gdk3/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a> was just a simple structure access, so generally fine to do
 within the bus sync handler; this macro was changed to a function call in
 Gtk+ 2.18 and later, which is likely to cause problems when called from a
-sync handler; see below for a better approach without <a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
+sync handler; see below for a better approach without <a href="http://library.gnome.org/devel/gdk3/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS"><code class="function">GDK_WINDOW_XID()</code></a>
 used in the callback).
 </p>
 </div>
@@ -379,13 +379,13 @@ used in the callback).
   <span class="gtkdoc slc">// drawing onto the parent widget.</span>
   <span class="gtkdoc slc">// This is here just for pedagogical purposes, GDK_WINDOW_XID will call</span>
   <span class="gtkdoc slc">// it as well in newer Gtk versions</span>
-  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="/usr/share/gtk-doc/html/gdk2/gdk2-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
+  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk2-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
     <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Message-Logging.html#g-error">g_error</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Couldn't create native window needed for GstVideoOverlay!&quot;</span><span class="gtkdoc opt">);</span>
 <span class="gtkdoc ppc">#endif</span>
 
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
   <span class="gtkdoc opt">{</span>
-    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="/usr/share/gtk-doc/html/gdk2/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
+    gulong xid <span class="gtkdoc opt">=</span> <span class="function"><a href="http://library.gnome.org/devel/gdk3/gdk2-X-Window-System-Interaction.html#GDK-WINDOW-XID:CAPS">GDK_WINDOW_XID</a></span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-get-window">gtk_widget_get_window</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">));</span>
     video_window_handle <span class="gtkdoc opt">=</span> xid<span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
 <span class="gtkdoc ppc">#endif</span>
