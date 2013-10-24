@@ -19,7 +19,7 @@ LDFLAGS += -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
 DEB_MAKE_CHECK_TARGET = check || true
 
 # upstream version with epoch
-gst_version := $(shell echo $(DEB_VERSION) | cut -d '-' -f 1)
+gst_version := $(shell dpkg-parsechangelog | sed -n 's/Version: //p' | cut -d '-' -f 1)
 gst_major := 1
 gst_minor := 0
 gst_abi := $(gst_major).$(gst_minor)
