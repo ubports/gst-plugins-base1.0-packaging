@@ -55,7 +55,7 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          iso-codes
-Conflicts: totem-gstreamer (<= 2.17.92-0ubuntu1),
+Breaks: totem-gstreamer (<= 2.17.92-0ubuntu1)
 Suggests: libvisual-0.4-plugins,
           gstreamer-codec-install | gnome-codec-install
 Description: GStreamer libraries from the "base" set
