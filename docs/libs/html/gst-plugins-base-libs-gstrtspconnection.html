@@ -108,6 +108,13 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/gio/unstable/GSocket.html"><span class="returnvalue">GSocket</span></a> *           <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-read-socket" title="gst_rtsp_connection_get_read_socket ()">gst_rtsp_connection_get_read_socket</a> (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
 <a href="http://library.gnome.org/devel/gio/unstable/GSocket.html"><span class="returnvalue">GSocket</span></a> *           <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-write-socket" title="gst_rtsp_connection_get_write_socket ()">gst_rtsp_connection_get_write_socket</a>
                                                         (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
+<a href="http://library.gnome.org/devel/gio/unstable/GTlsConnection.html"><span class="returnvalue">GTlsConnection</span></a> *    <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls" title="gst_rtsp_connection_get_tls ()">gst_rtsp_connection_get_tls</a>         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-validation-flags" title="gst_rtsp_connection_set_tls_validation_flags ()">gst_rtsp_connection_set_tls_validation_flags</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/gio-TLS-Overview.html#GTlsCertificateFlags"><span class="type">GTlsCertificateFlags</span></a> flags</code></em>);
+<a href="http://library.gnome.org/devel/gio/unstable/gio-TLS-Overview.html#GTlsCertificateFlags"><span class="returnvalue">GTlsCertificateFlags</span></a> <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-validation-flags" title="gst_rtsp_connection_get_tls_validation_flags ()">gst_rtsp_connection_get_tls_validation_flags</a>
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);
                     <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch">GstRTSPWatch</a>;
                     <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatchFuncs" title="GstRTSPWatchFuncs">GstRTSPWatchFuncs</a>;
 <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="returnvalue">GstRTSPWatch</span></a> *      <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-new" title="gst_rtsp_watch_new ()">gst_rtsp_watch_new</a>                  (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
@@ -1106,6 +1113,110 @@ descriptor remains valid until the connection is closed.</td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-get-tls"></a><h3>gst_rtsp_connection_get_tls ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/GTlsConnection.html"><span class="returnvalue">GTlsConnection</span></a> *    gst_rtsp_connection_get_tls         (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Get the TLS connection of <em class="parameter"><code>conn</code></em>.
+</p>
+<p>
+For client side this will return the <a href="http://library.gnome.org/devel/gio/unstable/GTlsClientConnection.html"><span class="type">GTlsClientConnection</span></a> when connected
+over TLS.
+</p>
+<p>
+For server side connections, this function will create a GTlsServerConnection
+when called the first time and will return that same connection on subsequent
+calls. The server is then responsible for configuring the TLS connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting, or NULL to ignore.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the TLS connection for <em class="parameter"><code>conn</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-set-tls-validation-flags"></a><h3>gst_rtsp_connection_set_tls_validation_flags ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gst_rtsp_connection_set_tls_validation_flags
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/gio-TLS-Overview.html#GTlsCertificateFlags"><span class="type">GTlsCertificateFlags</span></a> flags</code></em>);</pre>
+<p>
+Sets the TLS validation flags to be used to verify the peer
+certificate when a TLS connection is established.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td>the validation flags.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the validation flags are set correctly, or FALSE if
+<em class="parameter"><code>conn</code></em> is NULL or is not a TLS connection.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2.1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-get-tls-validation-flags"></a><h3>gst_rtsp_connection_get_tls_validation_flags ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/gio-TLS-Overview.html#GTlsCertificateFlags"><span class="returnvalue">GTlsCertificateFlags</span></a> gst_rtsp_connection_get_tls_validation_flags
+                                                        (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
+<p>
+Gets the TLS validation flags used to verify the peer certificate
+when a TLS connection is established.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the validationg flags.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2.1</p>
 </div>
 <hr>
 <div class="refsect2">

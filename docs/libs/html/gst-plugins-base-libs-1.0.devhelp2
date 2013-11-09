@@ -654,6 +654,9 @@
     <keyword type="function" name="gst_rtsp_connection_set_proxy ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-proxy"/>
     <keyword type="function" name="gst_rtsp_connection_get_read_socket ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-read-socket"/>
     <keyword type="function" name="gst_rtsp_connection_get_write_socket ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-write-socket"/>
+    <keyword type="function" name="gst_rtsp_connection_get_tls ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls" since="1.2"/>
+    <keyword type="function" name="gst_rtsp_connection_set_tls_validation_flags ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-validation-flags" since="1.2.1"/>
+    <keyword type="function" name="gst_rtsp_connection_get_tls_validation_flags ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-validation-flags" since="1.2.1"/>
     <keyword type="struct" name="GstRTSPWatch" link="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch"/>
     <keyword type="struct" name="GstRTSPWatchFuncs" link="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatchFuncs"/>
     <keyword type="function" name="gst_rtsp_watch_new ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-new"/>

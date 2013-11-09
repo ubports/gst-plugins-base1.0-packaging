@@ -915,6 +915,9 @@
 <ANCHOR id="gst-rtsp-connection-set-proxy" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-proxy">
 <ANCHOR id="gst-rtsp-connection-get-read-socket" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-read-socket">
 <ANCHOR id="gst-rtsp-connection-get-write-socket" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-write-socket">
+<ANCHOR id="gst-rtsp-connection-get-tls" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls">
+<ANCHOR id="gst-rtsp-connection-set-tls-validation-flags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-validation-flags">
+<ANCHOR id="gst-rtsp-connection-get-tls-validation-flags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-validation-flags">
 <ANCHOR id="GstRTSPWatch" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch">
 <ANCHOR id="GstRTSPWatchFuncs" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatchFuncs">
 <ANCHOR id="gst-rtsp-watch-new" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-new">
@@ -2311,12 +2314,12 @@
 <ANCHOR id="GstVideoCodecState" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState">
 <ANCHOR id="gst-video-codec-state-ref" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-state-ref">
 <ANCHOR id="gst-video-codec-state-unref" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-state-unref">
-<ANCHOR id="annotation-glossterm-type" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-type">
-<ANCHOR id="annotation-glossterm-allow-none" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-allow-none">
-<ANCHOR id="annotation-glossterm-scope async" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-scope async">
-<ANCHOR id="annotation-glossterm-out" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-out">
-<ANCHOR id="annotation-glossterm-closure" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-closure">
-<ANCHOR id="annotation-glossterm-transfer none" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-transfer none">
-<ANCHOR id="annotation-glossterm-array" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-array">
-<ANCHOR id="annotation-glossterm-transfer full" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-transfer full">
 <ANCHOR id="annotation-glossterm-element-type" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-element-type">
+<ANCHOR id="annotation-glossterm-allow-none" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-allow-none">
+<ANCHOR id="annotation-glossterm-transfer none" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-transfer none">
+<ANCHOR id="annotation-glossterm-transfer full" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-transfer full">
+<ANCHOR id="annotation-glossterm-out" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-out">
+<ANCHOR id="annotation-glossterm-type" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-type">
+<ANCHOR id="annotation-glossterm-scope async" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-scope async">
+<ANCHOR id="annotation-glossterm-closure" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-closure">
+<ANCHOR id="annotation-glossterm-array" href="gst-plugins-base-libs-1.0/annotation-glossary.html#annotation-glossterm-array">
