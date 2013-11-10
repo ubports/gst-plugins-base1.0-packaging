@@ -2,6 +2,8 @@ gst-plugins-base1.0 (1.2.1-2) unstable; urgency=low
 
   * debian/gstreamer-plugins-base-apps.install:
     + Include new gst-play-1.0 tool.
+  * debian/gstreamer-plugins-base-apps.manpages:
+    + Ship the manpages for gst-discoverer-1.0 and gst-play-1.0.
 
  -- Sebastian Dröge <slomo@debian.org>  Sun, 10 Nov 2013 22:00:37 +0100
 
