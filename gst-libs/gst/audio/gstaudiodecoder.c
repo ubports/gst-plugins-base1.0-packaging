@@ -1094,6 +1094,12 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
     GST_DEBUG_OBJECT (dec, "base_ts now %" GST_TIME_FORMAT, GST_TIME_ARGS (ts));
   }
 
+  /* still no valid ts, track the segment one */
+  if (G_UNLIKELY (!GST_CLOCK_TIME_IS_VALID (priv->base_ts)) &&
+      dec->output_segment.rate > 0.0) {
+    priv->base_ts = dec->output_segment.start;
+  }
+
   /* slightly convoluted approach caters for perfect ts if subclass desires */
   if (GST_CLOCK_TIME_IS_VALID (ts)) {
     if (dec->priv->tolerance > 0) {

@@ -434,8 +434,6 @@ static void gst_video_decoder_reset (GstVideoDecoder * decoder, gboolean full,
 static GstFlowReturn gst_video_decoder_decode_frame (GstVideoDecoder * decoder,
     GstVideoCodecFrame * frame);
 
-static void gst_video_decoder_release_frame (GstVideoDecoder * dec,
-    GstVideoCodecFrame * frame);
 static GstClockTime gst_video_decoder_get_frame_duration (GstVideoDecoder *
     decoder, GstVideoCodecFrame * frame);
 static GstVideoCodecFrame *gst_video_decoder_new_frame (GstVideoDecoder *
@@ -2275,7 +2273,7 @@ gst_video_decoder_prepare_finish_frame (GstVideoDecoder *
     /* if we detected reordered output, then PTS are void,
      * however those were obtained; bogus input, subclass etc */
     if (priv->reordered_output && !seen_none) {
-      GST_DEBUG_OBJECT (decoder, "invaliding PTS");
+      GST_DEBUG_OBJECT (decoder, "invalidating PTS");
       frame->pts = GST_CLOCK_TIME_NONE;
     }
 
@@ -2314,6 +2312,8 @@ gst_video_decoder_prepare_finish_frame (GstVideoDecoder *
           GST_TIME_FORMAT ")",
           GST_TIME_ARGS (frame->pts), GST_TIME_ARGS (priv->last_timestamp_out));
       priv->reordered_output = TRUE;
+      /* make it a bit less weird downstream */
+      frame->pts = priv->last_timestamp_out;
     }
   }
 
@@ -2329,18 +2329,31 @@ no_output_buffer:
   }
 }
 
-static void
+/**
+ * gst_video_decoder_release_frame:
+ * @dec: a #GstVideoDecoder
+ * @frame: (transfer full): the #GstVideoCodecFrame to release
+ *
+ * Similar to gst_video_decoder_drop_frame(), but simply releases @frame
+ * without any processing other than removing it from list of pending frames,
+ * after which it is considered finished and released.
+ *
+ * Since: 1.2.2
+ */
+void
 gst_video_decoder_release_frame (GstVideoDecoder * dec,
     GstVideoCodecFrame * frame)
 {
   GList *link;
 
   /* unref once from the list */
+  GST_VIDEO_DECODER_STREAM_LOCK (dec);
   link = g_list_find (dec->priv->frames, frame);
   if (link) {
     gst_video_codec_frame_unref (frame);
     dec->priv->frames = g_list_delete_link (dec->priv->frames, link);
   }
+  GST_VIDEO_DECODER_STREAM_UNLOCK (dec);
 
   /* unref because this function takes ownership */
   gst_video_codec_frame_unref (frame);

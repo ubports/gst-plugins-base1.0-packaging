@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.2.1\n"
+"Project-Id-Version: gst-plugins-base 1.2.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-11-09 12:14+0100\n"
+"POT-Creation-Date: 2013-12-26 17:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,26 +91,26 @@ msgstr ""
 #: gst/playback/gstplaysink.c:1706 gst/playback/gstplaysink.c:2269
 #: gst/playback/gstplaysink.c:2318 gst/playback/gstplaysink.c:2333
 #: gst/playback/gstplaysink.c:2358 gst/playback/gstplaysink.c:2390
-#: gst/playback/gstplaysink.c:2520 gst/playback/gstplaysink.c:2892
-#: gst/playback/gstplaysink.c:2901 gst/playback/gstplaysink.c:2910
-#: gst/playback/gstplaysink.c:2919 gst/playback/gstplaysink.c:4116
+#: gst/playback/gstplaysink.c:2520 gst/playback/gstplaysink.c:2894
+#: gst/playback/gstplaysink.c:2903 gst/playback/gstplaysink.c:2912
+#: gst/playback/gstplaysink.c:2921 gst/playback/gstplaysink.c:4118
 #: gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117
-#: gst/playback/gsturidecodebin.c:1448
+#: gst/playback/gsturidecodebin.c:1461
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1776
+#: gst/playback/gstdecodebin2.c:1808
 #, c-format
 msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1783
+#: gst/playback/gstdecodebin2.c:1815
 msgid "Could not determine type of stream"
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:2450
+#: gst/playback/gstdecodebin2.c:2482
 msgid "This appears to be a text file"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 msgid "The autoaudiosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2995 gst/playback/gstplaysink.c:3000
+#: gst/playback/gstplaysink.c:2997 gst/playback/gstplaysink.c:3002
 msgid "Can't play a text file without video or visualizations."
 msgstr ""
 
@@ -181,25 +181,25 @@ msgstr ""
 msgid "No decoder available for type '%s'."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1354
+#: gst/playback/gsturidecodebin.c:1367
 msgid "No URI specified to play from."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1360
+#: gst/playback/gsturidecodebin.c:1373
 #, c-format
 msgid "Invalid URI \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1367
+#: gst/playback/gsturidecodebin.c:1380
 msgid "This stream type cannot be played yet."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1385
+#: gst/playback/gsturidecodebin.c:1398
 #, c-format
 msgid "No URI handler implemented for \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:2238
+#: gst/playback/gsturidecodebin.c:2251
 msgid "Source element is invalid."
 msgstr ""
 

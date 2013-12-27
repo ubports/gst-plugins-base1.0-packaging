@@ -1430,6 +1430,7 @@
     <keyword type="function" name="gst_video_decoder_get_buffer_pool ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-buffer-pool"/>
     <keyword type="function" name="gst_video_decoder_drop_frame ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-drop-frame"/>
     <keyword type="function" name="gst_video_decoder_finish_frame ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-finish-frame"/>
+    <keyword type="function" name="gst_video_decoder_release_frame ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-release-frame" since="1.2.2"/>
     <keyword type="function" name="gst_video_decoder_negotiate ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-negotiate"/>
     <keyword type="function" name="gst_video_decoder_get_frame ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-frame"/>
     <keyword type="function" name="gst_video_decoder_get_frames ()" link="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-get-frames"/>
