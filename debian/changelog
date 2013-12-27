@@ -1,3 +1,11 @@
+gst-plugins-base1.0 (1.2.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new 1.2.2 API additions.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 27 Dec 2013 10:57:30 +0100
+
 gst-plugins-base1.0 (1.2.1-2) unstable; urgency=low
 
   * debian/gstreamer-plugins-base-apps.install:

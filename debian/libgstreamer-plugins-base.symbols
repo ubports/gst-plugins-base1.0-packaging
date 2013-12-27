@@ -917,6 +917,7 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_decoder_have_frame@Base 1.0.0
  gst_video_decoder_merge_tags@Base 1.0.0
  gst_video_decoder_negotiate@Base 1.0.0
+ gst_video_decoder_release_frame@Base 1.2.2
  gst_video_decoder_set_estimate_rate@Base 1.0.0
  gst_video_decoder_set_latency@Base 1.0.0
  gst_video_decoder_set_max_errors@Base 1.0.0
