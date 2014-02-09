@@ -3,6 +3,9 @@ gst-plugins-base1.0 (1.2.3-1) unstable; urgency=medium
   * New upstream bugfix release:
     + debian/libgstreamer-plugins-base.symbols:
       - Add new symbol.
+  * debian/rules:
+    + Run libtoolize in autoreconf. Drop ltmain-as-needed patch
+      and use dh_autoreconf --as-needed.
 
  -- Sebastian Dröge <slomo@debian.org>  Sun, 09 Feb 2014 11:14:56 +0100
 
