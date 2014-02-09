@@ -1,3 +1,11 @@
+gst-plugins-base1.0 (1.2.3-1) unstable; urgency=medium
+
+  * New upstream bugfix release:
+    + debian/libgstreamer-plugins-base.symbols:
+      - Add new symbol.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sun, 09 Feb 2014 11:14:56 +0100
+
 gst-plugins-base1.0 (1.2.2-1) unstable; urgency=medium
 
   * New upstream bugfix release:
