@@ -104,6 +104,7 @@ check_PROGRAMS = \
 	libs/libsabi \
 	libs/audio \
 	libs/audiocdsrc \
+	libs/audiodecoder \
 	libs/discoverer \
 	libs/fft \
 	libs/navigation \
@@ -114,6 +115,7 @@ check_PROGRAMS = \
 	libs/sdp \
 	libs/tag \
 	libs/video \
+	libs/videodecoder \
 	libs/xmpwriter \
 	$(cxx_checks) \
 	$(check_orc) \
@@ -194,6 +196,16 @@ libs_audio_CFLAGS = \
 	$(AM_CFLAGS)
 
 libs_audio_LDADD = \
+	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+	$(GST_BASE_LIBS) \
+	$(LDADD)
+
+libs_audiodecoder_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(GST_BASE_CFLAGS) \
+	$(AM_CFLAGS)
+
+libs_audiodecoder_LDADD = \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
@@ -419,6 +431,16 @@ libs_video_CFLAGS = \
 	$(AM_CFLAGS)
 
 libs_video_LDADD = \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(GST_BASE_LIBS) \
+	$(LDADD)
+
+libs_videodecoder_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(GST_BASE_CFLAGS) \
+	$(AM_CFLAGS)
+
+libs_videodecoder_LDADD = \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
