@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.2.2\n"
+"Project-Id-Version: gst-plugins-base 1.2.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2013-12-26 17:36+0100\n"
+"POT-Creation-Date: 2014-02-08 11:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Could not read CD."
 msgstr ""
 
-#: ext/ogg/gstoggdemux.c:4559
+#: ext/ogg/gstoggdemux.c:4610
 msgid "Internal data stream error."
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Error while sending data to \"%s:%d\"."
 msgstr ""
 
-#: gst-libs/gst/audio/gstaudiobasesrc.c:854
+#: gst-libs/gst/audio/gstaudiobasesrc.c:860
 msgid "Can't record audio fast enough"
 msgstr ""
 
