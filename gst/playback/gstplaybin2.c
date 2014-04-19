@@ -3009,7 +3009,9 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
 
   playbin = group->playbin;
 
-  caps = gst_pad_query_caps (pad, NULL);
+  caps = gst_pad_get_current_caps (pad);
+  if (!caps)
+    caps = gst_pad_query_caps (pad, NULL);
   s = gst_caps_get_structure (caps, 0);
   name = gst_structure_get_name (s);
 
@@ -3284,6 +3286,13 @@ pad_removed_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   if (!(peer = g_object_get_data (G_OBJECT (pad), "playbin.sinkpad")))
     goto not_linked;
 
+  /* unlink the pad now (can fail, the pad is unlinked before it's removed) */
+  gst_pad_unlink (pad, peer);
+
+  /* get combiner */
+  combiner = GST_ELEMENT_CAST (gst_pad_get_parent (peer));
+  g_assert (combiner != NULL);
+
   if ((combine = g_object_get_data (G_OBJECT (peer), "playbin.combine"))) {
     if (combine->has_tags) {
       gulong notify_tags_handler;
@@ -3328,17 +3337,6 @@ pad_removed_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
     }
   }
 
-  /* unlink the pad now (can fail, the pad is unlinked before it's removed) */
-  gst_pad_unlink (pad, peer);
-
-  /* get combiner, this can be NULL when the element is removing the pads
-   * because it's being disposed. */
-  combiner = GST_ELEMENT_CAST (gst_pad_get_parent (peer));
-  if (!combiner) {
-    gst_object_unref (peer);
-    goto no_combiner;
-  }
-
   /* release the pad to the combiner, this will make the combiner choose a new
    * pad. */
   gst_element_release_request_pad (combiner, peer);
@@ -3357,11 +3355,6 @@ exit:
 not_linked:
   {
     GST_DEBUG_OBJECT (playbin, "pad not linked");
-    goto exit;
-  }
-no_combiner:
-  {
-    GST_DEBUG_OBJECT (playbin, "combiner not found");
     goto exit;
   }
 }
@@ -3839,6 +3832,7 @@ create_decoders_list (GList * factory_list, GSequence * avelements)
 {
   GList *dec_list = NULL, *tmp;
   GList *ave_list = NULL;
+  GList *ave_free_list = NULL;
   GstAVElement *ave, *best_ave;
 
   g_return_val_if_fail (factory_list != NULL, NULL);
@@ -3848,9 +3842,11 @@ create_decoders_list (GList * factory_list, GSequence * avelements)
     GstElementFactory *factory = (GstElementFactory *) tmp->data;
 
     /* if there are parsers or sink elements, add them first */
-    if (!gst_element_factory_list_is_type (factory,
-            GST_ELEMENT_FACTORY_TYPE_DECODER)) {
-      dec_list = g_list_prepend (dec_list, factory);
+    if (gst_element_factory_list_is_type (factory,
+            GST_ELEMENT_FACTORY_TYPE_PARSER) ||
+        gst_element_factory_list_is_type (factory,
+            GST_ELEMENT_FACTORY_TYPE_SINK)) {
+      dec_list = g_list_prepend (dec_list, gst_object_ref (factory));
     } else {
       GSequenceIter *seq_iter;
 
@@ -3865,7 +3861,10 @@ create_decoders_list (GList * factory_list, GSequence * avelements)
         /* There's at least raw */
         ave->n_comm_cf = 1;
 
-        dec_list = g_list_prepend (dec_list, factory);
+        ave_list = g_list_prepend (ave_list, ave);
+
+        /* We need to free these later */
+        ave_free_list = g_list_prepend (ave_free_list, ave);
         continue;
       }
 
@@ -3899,9 +3898,14 @@ create_decoders_list (GList * factory_list, GSequence * avelements)
   ave_list = g_list_sort (ave_list, (GCompareFunc) avelement_compare);
   for (tmp = ave_list; tmp; tmp = tmp->next) {
     ave = (GstAVElement *) tmp->data;
-    dec_list = g_list_prepend (dec_list, ave->dec);
+    dec_list = g_list_prepend (dec_list, gst_object_ref (ave->dec));
   }
   g_list_free (ave_list);
+  gst_plugin_feature_list_free (factory_list);
+
+  for (tmp = ave_free_list; tmp; tmp = tmp->next)
+    g_slice_free (GstAVElement, tmp->data);
+  g_list_free (ave_free_list);
 
   dec_list = g_list_reverse (dec_list);
 
@@ -5523,6 +5527,12 @@ gst_play_bin_change_state (GstElement * element, GstStateChange transition)
           l = l->next;
         }
       }
+
+      if (playbin->source) {
+        gst_object_unref (playbin->source);
+        playbin->source = NULL;
+      }
+
       GST_OBJECT_UNLOCK (playbin);
       break;
     }
