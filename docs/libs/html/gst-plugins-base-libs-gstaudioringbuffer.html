@@ -346,7 +346,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudioringbuffer.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.6.16.8.2"></a><p>
+<a name="id-1.2.6.15.8.2"></a><p>
 This object is the base class for audio ringbuffers used by the base
 audio source and sink classes.
 </p>
@@ -358,7 +358,6 @@ abstraction for DMA based ringbuffers as well as a pure software
 implementations.
 </p>
 </div>
-<p>Last reviewed on 2006-02-02 (0.10.4)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudioringbuffer.functions_details"></a><h2>Functions</h2>
@@ -374,7 +373,7 @@ called to fill the memory at <em class="parameter"><code>data</code></em>
  with <em class="parameter"><code>len</code></em>
  bytes of samples.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -441,7 +440,7 @@ gst_audio_ring_buffer_set_callback (<em class="parameter"><code><a class="link" 
 will be called every time a segment has been written to a device.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.7.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.7.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -478,7 +477,7 @@ gst_audio_ring_buffer_acquire (<em class="parameter"><code><a class="link" href=
 in the data pointer of the ring buffer with a valid <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a>
 to which samples can be written.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -500,7 +499,7 @@ to which samples can be written.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.8.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be acquired, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -513,7 +512,7 @@ to which samples can be written.</p>
 gst_audio_ring_buffer_release (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Free the resources of the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -528,7 +527,7 @@ gst_audio_ring_buffer_release (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.9.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be released, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -541,7 +540,7 @@ gst_audio_ring_buffer_release (<em class="parameter"><code><a class="link" href=
 gst_audio_ring_buffer_is_acquired (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Check if the ringbuffer is acquired and ready to use.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -556,7 +555,7 @@ gst_audio_ring_buffer_is_acquired (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.10.6"></a><h4>Returns</h4>
 <p> TRUE if the ringbuffer is acquired, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -572,7 +571,7 @@ gst_audio_ring_buffer_activate (<em class="parameter"><code><a class="link" href
  to start or stop pulling data.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.11.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.11.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -594,7 +593,7 @@ gst_audio_ring_buffer_activate (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.11.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.11.7"></a><h4>Returns</h4>
 <p> TRUE if the device could be activated in the requested mode,
 FALSE on error.</p>
 <p></p>
@@ -609,7 +608,7 @@ gst_audio_ring_buffer_is_active (<em class="parameter"><code><a class="link" hre
  is activated.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.12.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -624,7 +623,7 @@ gst_audio_ring_buffer_is_active (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.12.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.12.7"></a><h4>Returns</h4>
 <p> TRUE if the device is active.</p>
 <p></p>
 </div>
@@ -636,7 +635,7 @@ gst_audio_ring_buffer_is_active (<em class="parameter"><code><a class="link" hre
 gst_audio_ring_buffer_start (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Start processing samples from the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -651,7 +650,7 @@ gst_audio_ring_buffer_start (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.13.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.13.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be started, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -664,7 +663,7 @@ gst_audio_ring_buffer_start (<em class="parameter"><code><a class="link" href="g
 gst_audio_ring_buffer_pause (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Pause processing samples from the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -679,7 +678,7 @@ gst_audio_ring_buffer_pause (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.14.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.14.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be paused, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -692,7 +691,7 @@ gst_audio_ring_buffer_pause (<em class="parameter"><code><a class="link" href="g
 gst_audio_ring_buffer_stop (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Stop processing samples from the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.15.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -707,7 +706,7 @@ gst_audio_ring_buffer_stop (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.15.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.15.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be stopped, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -727,7 +726,7 @@ ringbuffer to the device but still not played.</p>
 <p>For capture ringbuffers this is the amount of samples in the device that are
 not yet transfered to the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.16.7"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.16.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -742,7 +741,7 @@ not yet transfered to the ringbuffer.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.16.8"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.16.8"></a><h4>Returns</h4>
 <p> The number of samples queued in the audio device.</p>
 <p>MT safe.</p>
 <p></p>
@@ -757,7 +756,7 @@ gst_audio_ring_buffer_samples_done (<em class="parameter"><code><a class="link" 
 since it was last started. This does not include the number of samples not
 yet processed (see <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-delay" title="gst_audio_ring_buffer_delay ()"><code class="function">gst_audio_ring_buffer_delay()</code></a>).</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -772,7 +771,7 @@ yet processed (see <a class="link" href="gst-plugins-base-libs-gstaudioringbuffe
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.17.6"></a><h4>Returns</h4>
 <p> The number of samples processed by the ringbuffer.</p>
 <p>MT safe.</p>
 <p></p>
@@ -792,7 +791,7 @@ sample position of the ringbuffer.</p>
 <p>This function will also clear the buffer with silence.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.18.7"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.18.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -854,7 +853,7 @@ interrupted, one can resume the processing by passing the previously returned
  value back to this function.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.19.10"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.19.10"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -896,7 +895,7 @@ interrupted, one can resume the processing by passing the previously returned
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.19.11"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.19.11"></a><h4>Returns</h4>
 <p> The number of samples written to the ringbuffer or -1 on error. The
 number of samples written can be less than <em class="parameter"><code>out_samples</code></em>
 when <em class="parameter"><code>buf</code></em>
@@ -921,7 +920,7 @@ gst_audio_ring_buffer_convert (<em class="parameter"><code><a class="link" href=
 will be put in <em class="parameter"><code>dest_val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.20.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -958,7 +957,7 @@ will be put in <em class="parameter"><code>dest_val</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.20.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion succeeded.</p>
 <p></p>
 </div>
@@ -975,7 +974,7 @@ gst_audio_ring_buffer_prepare_read (<em class="parameter"><code><a class="link" 
 
 can be found. This function is mostly used by subclasses.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.21.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1007,7 +1006,7 @@ can be found. This function is mostly used by subclasses.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.21.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.21.6"></a><h4>Returns</h4>
 <p> FALSE if the buffer is not started.</p>
 <p>MT safe.</p>
 <p></p>
@@ -1023,7 +1022,7 @@ gst_audio_ring_buffer_read (<em class="parameter"><code><a class="link" href="gs
                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>,
                             <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>);</pre>
 <p>Read <em class="parameter"><code>len</code></em>
- samples from the ringbuffer into the memory pointed 
+ samples from the ringbuffer into the memory pointed
 to by <em class="parameter"><code>data</code></em>
 .
 The first sample should be read from position <em class="parameter"><code>sample</code></em>
@@ -1035,7 +1034,7 @@ although it is recommended.</p>
 <p><em class="parameter"><code>timestamp</code></em>
  will return the timestamp associated with the data returned.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.22.7"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.22.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1072,7 +1071,7 @@ although it is recommended.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.22.8"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.22.8"></a><h4>Returns</h4>
 <p> The number of samples read from the ringbuffer or -1 on
 error.</p>
 <p>MT safe.</p>
@@ -1089,7 +1088,7 @@ gst_audio_ring_buffer_clear (<em class="parameter"><code><a class="link" href="g
 This function is used by subclasses.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.23.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.23.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1119,7 +1118,7 @@ gst_audio_ring_buffer_clear_all (<em class="parameter"><code><a class="link" hre
 <p>Fill the ringbuffer with silence.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.24.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.24.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1140,12 +1139,12 @@ gst_audio_ring_buffer_clear_all (<em class="parameter"><code><a class="link" hre
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_audio_ring_buffer_advance (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> advance</code></em>);</pre>
-<p>Subclasses should call this function to notify the fact that 
+<p>Subclasses should call this function to notify the fact that
 <em class="parameter"><code>advance</code></em>
  segments are now processed by the device.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.25.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.25.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1175,7 +1174,7 @@ gst_audio_ring_buffer_close_device (<em class="parameter"><code><a class="link" 
 <p>Close the audio device associated with the ring buffer. The ring buffer
 should already have been released via <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-release" title="gst_audio_ring_buffer_release ()"><code class="function">gst_audio_ring_buffer_release()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1190,7 +1189,7 @@ should already have been released via <a class="link" href="gst-plugins-base-lib
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.26.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be closed, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -1205,7 +1204,7 @@ gst_audio_ring_buffer_open_device (<em class="parameter"><code><a class="link" h
 setup on the device. You must open the device before acquiring the ring
 buffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.27.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1220,7 +1219,7 @@ buffer.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.27.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.27.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be opened, FALSE on error.</p>
 <p>MT safe.</p>
 <p></p>
@@ -1233,7 +1232,7 @@ buffer.</p>
 gst_audio_ring_buffer_device_is_open (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Checks the status of the device associated with the ring buffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1248,7 +1247,7 @@ gst_audio_ring_buffer_device_is_open (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.28.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.28.6"></a><h4>Returns</h4>
 <p> TRUE if the device was open, FALSE if it was closed.</p>
 <p>MT safe.</p>
 <p></p>
@@ -1261,10 +1260,10 @@ gst_audio_ring_buffer_device_is_open (<em class="parameter"><code><a class="link
 gst_audio_ring_buffer_may_start (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                  <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allowed</code></em>);</pre>
 <p>Tell the ringbuffer that it is allowed to start playback when
-the ringbuffer is filled with samples. </p>
+the ringbuffer is filled with samples.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.29.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.29.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1296,7 +1295,7 @@ gst_audio_ring_buffer_parse_caps (<em class="parameter"><code><a class="link" hr
  into <em class="parameter"><code>spec</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1318,7 +1317,7 @@ gst_audio_ring_buffer_parse_caps (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.30.6"></a><h4>Returns</h4>
 <p> TRUE if the caps could be parsed.</p>
 <p></p>
 </div>
@@ -1332,7 +1331,7 @@ gst_audio_ring_buffer_set_flushing (<em class="parameter"><code><a class="link" 
 <p>Set the ringbuffer to flushing mode or normal mode.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.31.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.31.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1363,7 +1362,7 @@ gst_audio_ring_buffer_is_flushing (<em class="parameter"><code><a class="link" h
  is flushing.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.32.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.32.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1378,7 +1377,7 @@ gst_audio_ring_buffer_is_flushing (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.32.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.15.9.32.7"></a><h4>Returns</h4>
 <p> TRUE if the device is flushing.</p>
 <p></p>
 </div>
@@ -1393,7 +1392,7 @@ gst_audio_ring_buffer_set_channel_positions
 <p>Tell the ringbuffer about the device's channel positions. This must
 be called in when the ringbuffer is acquired.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.9.33.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.15.9.33.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1447,7 +1446,7 @@ gst_audio_ring_buffer_set_timestamp (<em class="parameter"><code><a class="link"
 </pre>
 <p>The ringbuffer base class structure.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.10.2.5"></a><h4>Members</h4>
+<a name="id-1.2.6.15.10.2.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1554,7 +1553,7 @@ gst_audio_ring_buffer_set_timestamp (<em class="parameter"><code><a class="link"
 </pre>
 <p>The vmethods that subclasses can override to implement the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.10.3.5"></a><h4>Members</h4>
+<a name="id-1.2.6.15.10.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1664,7 +1663,7 @@ consumed segments in the device.</p></td>
 </pre>
 <p>The structure containing the format specification of the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.10.4.5"></a><h4>Members</h4>
+<a name="id-1.2.6.15.10.4.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1722,7 +1721,7 @@ defaults to segtotal</p></td>
 <a name="GstAudioRingBufferState"></a><h3>enum GstAudioRingBufferState</h3>
 <p>The state of the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.10.5.4"></a><h4>Members</h4>
+<a name="id-1.2.6.15.10.5.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1769,7 +1768,7 @@ defaults to segtotal</p></td>
 <a name="GstAudioRingBufferFormatType"></a><h3>enum GstAudioRingBufferFormatType</h3>
 <p>The format of the samples in the ringbuffer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.10.6.4"></a><h4>Members</h4>
+<a name="id-1.2.6.15.10.6.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">

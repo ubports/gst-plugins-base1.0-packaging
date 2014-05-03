@@ -45,14 +45,14 @@
 <tbody>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc--location" title="The “location” property">location</a></td>
+<a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc--file" title="The “file” property">file</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc--file" title="The “file” property">file</a></td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc--location" title="The “location” property">location</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 </tbody>
@@ -218,19 +218,18 @@ web server using the http protocol.
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosrc.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
+<a name="GstGioSrc--file"></a><h3>The <code class="literal">“file”</code> property</h3>
+<pre class="programlisting">  “file”                     <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</pre>
+<p><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to read from.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstGioSrc--location"></a><h3>The <code class="literal">“location”</code> property</h3>
 <pre class="programlisting">  “location”                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>URI location to read from.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstGioSrc--file"></a><h3>The <code class="literal">“file”</code> property</h3>
-<pre class="programlisting">  “file”                     <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</pre>
-<p><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to read from.</p>
-<p>Flags: Read / Write</p>
-<p class="since">Since 0.10.20</p>
 </div>
 </div>
 <div class="refsect1">

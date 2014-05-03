@@ -253,7 +253,6 @@ recommended.</p>
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-end-of-stream" title="gst_app_src_end_of_stream ()"><code class="function">gst_app_src_end_of_stream()</code></a> or emit the end-of-stream action signal. After
 this call, no more buffers can be pushed into appsrc until a flushing seek
 happened or the state of the appsrc has gone through READY.</p>
-<p>Last reviewed on 2008-12-17 (0.10.10)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-appsrc.functions_details"></a><h2>Functions</h2>
@@ -753,9 +752,9 @@ space becomes available in the queue.</p>
 <div class="refsect3">
 <a name="id-1.2.5.4.8.16.7"></a><h4>Returns</h4>
 <p> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the buffer was successfuly queued.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-FLUSHING:CAPS"><span class="type">GST_FLOW_FLUSHING</span></a> when <em class="parameter"><code>appsrc</code></em>
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
 is not PAUSED or PLAYING.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-EOS:CAPS"><span class="type">GST_FLOW_EOS</span></a> when EOS occured.</p>
+<span class="type">GST_FLOW_EOS</span> when EOS occured.</p>
 <p></p>
 </div>
 </div>
@@ -784,7 +783,7 @@ element is the last buffer of the stream.</p>
 <div class="refsect3">
 <a name="id-1.2.5.4.8.17.6"></a><h4>Returns</h4>
 <p> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the EOS was successfuly queued.
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-FLUSHING:CAPS"><span class="type">GST_FLOW_FLUSHING</span></a> when <em class="parameter"><code>appsrc</code></em>
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
 is not PAUSED or PLAYING.</p>
 <p></p>
 </div>

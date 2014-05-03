@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base-1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-04-18 11:32+0200\n"
+"POT-Creation-Date: 2014-05-03 17:46+0200\n"
 "PO-Revision-Date: 2013-12-29 17:33-0300\n"
 "Last-Translator: Fabrício Godoy <skarllot@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
@@ -526,6 +526,9 @@ msgstr "Nota ou acorde inicial da música"
 msgid "Buffering..."
 msgstr "Preenchendo buffer..."
 
+msgid "Clock lost, selecting a new one\n"
+msgstr ""
+
 msgid "Print version information and exit"
 msgstr "Exibe informações de versão e sai"
 
@@ -539,6 +542,18 @@ msgstr ""
 
 msgid "Enable gapless playback"
 msgstr "Ativar reprodução sem intervalos"
+
+msgid "Shuffle playlist"
+msgstr ""
+
+msgid "Interactive control via keyboard"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Playlist file containing input media files"
+msgstr ""
 
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."

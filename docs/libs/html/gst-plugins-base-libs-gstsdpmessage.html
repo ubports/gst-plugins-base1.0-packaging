@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-sdp.html" title="SDP Library">
 <link rel="prev" href="gstreamer-sdp.html" title="SDP Library">
-<link rel="next" href="gstreamer-tag.html" title="Tag Support Library">
+<link rel="next" href="gstreamer-mikey.html" title="MIKEY Library">
 <meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,7 +21,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-sdp.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="gstreamer-sdp.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gstreamer-tag.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gstreamer-mikey.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-libs-gstsdpmessage"></a><div class="titlepage"></div>
@@ -1046,7 +1046,6 @@ The GstSDPMessage helper functions makes it easy to parse and create SDP
 messages.
 </p>
 </div>
-<p>Last reviewed on 2007-07-24 (0.10.14)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstsdpmessage.functions_details"></a><h2>Functions</h2>
@@ -1252,7 +1251,7 @@ gst_sdp_time_set (<em class="parameter"><code><a class="link" href="gst-plugins-
 <tr>
 <td class="parameter_name"><p>repeat</p></td>
 <td class="parameter_description"><p> the repeat times. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -1586,8 +1585,8 @@ gst_sdp_message_parse_buffer (<em class="parameter"><code>const <span class="typ
 <tbody>
 <tr>
 <td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the start of the buffer</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p> the start of the buffer. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
@@ -1686,8 +1685,7 @@ gst_sdp_message_as_uri (<em class="parameter"><code>const <a href="http://librar
 <p>Creates a uri from <em class="parameter"><code>msg</code></em>
  with the given <em class="parameter"><code>scheme</code></em>
 . The uri has the format:</p>
-<p> <em class="parameter"><code>scheme</code></em>
-:///[<span class="type">type</span>=value *[&amp;type=value]]</p>
+<p> @scheme:///[<span class="type">type</span>=value *[&amp;type=value]]</p>
 <p> Where each value is url encoded.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.8.19.7"></a><h4>Parameters</h4>
@@ -3143,7 +3141,7 @@ gst_sdp_message_add_time (<em class="parameter"><code><a class="link" href="gst-
 <tr>
 <td class="parameter_name"><p>repeat</p></td>
 <td class="parameter_description"><p> the repeat times. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -3938,7 +3936,7 @@ gst_sdp_media_new (<em class="parameter"><code><a class="link" href="gst-plugins
 <tbody><tr>
 <td class="parameter_name"><p>media</p></td>
 <td class="parameter_description"><p> pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a>. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
 </tr></tbody>
 </table></div>
 </div>

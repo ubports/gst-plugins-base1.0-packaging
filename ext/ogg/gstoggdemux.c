@@ -31,8 +31,6 @@
  * gst-launch -v filesrc location=test.ogg ! oggdemux ! vorbisdec ! audioconvert ! alsasink
  * ]| Decodes the vorbis audio stored inside an ogg container.
  * </refsect2>
- *
- * Last reviewed on 2006-12-30 (0.10.5)
  */
 
 
@@ -259,7 +257,7 @@ gst_ogg_pad_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
       gint64 total_time = -1;
 
       gst_query_parse_duration (query, &format, NULL);
-      /* can only get position in time */
+      /* can only get duration in time */
       if (format != GST_FORMAT_TIME)
         goto wrong_format;
 
@@ -523,6 +521,8 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
 
   GST_DEBUG_OBJECT (ogg,
       "%p streaming to peer serial %08x", pad, pad->map.serialno);
+
+  gst_ogg_stream_update_stats (&pad->map, packet);
 
   if (pad->map.is_ogm) {
     const guint8 *data;
@@ -2996,7 +2996,7 @@ gst_ogg_demux_do_seek (GstOggDemux * ogg, GstSegment * segment,
   for (i = 0; i < chain->streams->len; i++) {
     GstOggPad *pad = g_array_index (chain->streams, GstOggPad *, i);
     if (!pad) {
-      GST_WARNING_OBJECT (ogg, "No pad for serialno %08x", pad->map.serialno);
+      GST_WARNING_OBJECT (ogg, "No pad at index %d", i);
       pending--;
       continue;
     }
@@ -4514,7 +4514,6 @@ gst_ogg_demux_loop (GstOggPad * pad)
 {
   GstOggDemux *ogg;
   GstFlowReturn ret;
-  GstEvent *event;
 
   ogg = GST_OGG_DEMUX (GST_OBJECT_PARENT (pad));
 
@@ -4532,14 +4531,10 @@ gst_ogg_demux_loop (GstOggPad * pad)
 
     GST_OBJECT_LOCK (ogg);
     ogg->running = TRUE;
-    event = ogg->event;
-    ogg->event = NULL;
     GST_OBJECT_UNLOCK (ogg);
 
     /* and seek to configured positions without FLUSH */
-    res = gst_ogg_demux_perform_seek_pull (ogg, event);
-    if (event)
-      gst_event_unref (event);
+    res = gst_ogg_demux_perform_seek_pull (ogg, NULL);
 
     if (!res)
       goto seek_failed;

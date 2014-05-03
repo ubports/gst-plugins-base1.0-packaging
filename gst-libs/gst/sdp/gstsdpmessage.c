@@ -50,8 +50,6 @@
  * messages.
  * </para>
  * </refsect2>
- *
- * Last reviewed on 2007-07-24 (0.10.14)
  */
 
 #ifdef HAVE_CONFIG_H
@@ -695,7 +693,7 @@ static const gchar hex[16] = "0123456789ABCDEF";
  *
  * Creates a uri from @msg with the given @scheme. The uri has the format:
  *
- *  @scheme:///[#type=value *[&type=value]]
+ *  \@scheme:///[#type=value *[&type=value]]
  *
  *  Where each value is url encoded.
  *
@@ -1190,7 +1188,7 @@ gst_sdp_message_add_bandwidth (GstSDPMessage * msg, const gchar * bwtype,
  * @t: a #GstSDPTime
  * @start: the start time
  * @stop: the stop time
- * @repeat: (array): the repeat times
+ * @repeat: (array zero-terminated=1): the repeat times
  *
  * Set time information @start, @stop and @repeat in @t.
  *
@@ -1311,7 +1309,7 @@ DEFINE_ARRAY_REMOVE (time, times, GstSDPTime, FREE_TIME);
  * @msg: a #GstSDPMessage
  * @start: the start time
  * @stop: the stop time
- * @repeat: (array): the repeat times
+ * @repeat: (array zero-terminated=1): the repeat times
  *
  * Add time information @start and @stop to @msg.
  *
@@ -1386,7 +1384,7 @@ DEFINE_ARRAY_LEN (zones);
  *
  * Returns: a #GstSDPZone.
  */
-DEFINE_ARRAY_GETTER (zone, zones, const GstSDPZone);
+DEFINE_ARRAY_GETTER (zone, zones, GstSDPZone);
 
 #define DUP_ZONE(v, val) memcpy (v, val, sizeof (GstSDPZone))
 #define FREE_ZONE(v) gst_sdp_zone_clear(v)
@@ -1549,7 +1547,7 @@ DEFINE_ARRAY_LEN (attributes);
  *
  * Returns: the #GstSDPAttribute at position @idx.
  */
-DEFINE_ARRAY_GETTER (attribute, attributes, const GstSDPAttribute);
+DEFINE_ARRAY_GETTER (attribute, attributes, GstSDPAttribute);
 
 /**
  * gst_sdp_message_get_attribute_val_n:
@@ -1684,7 +1682,7 @@ DEFINE_ARRAY_LEN (medias);
  *
  * Returns: a #GstSDPMedia.
  */
-DEFINE_ARRAY_GETTER (media, medias, const GstSDPMedia);
+DEFINE_ARRAY_GETTER (media, medias, GstSDPMedia);
 
 /**
  * gst_sdp_message_add_media:
@@ -1717,7 +1715,7 @@ gst_sdp_message_add_media (GstSDPMessage * msg, GstSDPMedia * media)
 
 /**
  * gst_sdp_media_new:
- * @media: (out): pointer to new #GstSDPMedia
+ * @media: (out) (transfer full): pointer to new #GstSDPMedia
  *
  * Allocate a new GstSDPMedia and store the result in @media.
  *
@@ -2796,8 +2794,10 @@ gst_sdp_parse_line (SDPContext * c, gchar type, gchar * buffer)
   gchar str[8192];
   gchar *p = buffer;
 
-#define READ_STRING(field) read_string (str, sizeof (str), &p); REPLACE_STRING (field, str)
-#define READ_UINT(field) read_string (str, sizeof (str), &p); field = strtoul (str, NULL, 10)
+#define READ_STRING(field) \
+  do { read_string (str, sizeof (str), &p); REPLACE_STRING (field, str); } while (0)
+#define READ_UINT(field) \
+  do { read_string (str, sizeof (str), &p); field = strtoul (str, NULL, 10); } while (0)
 
   switch (type) {
     case 'v':
@@ -2877,6 +2877,13 @@ gst_sdp_parse_line (SDPContext * c, gchar type, gchar * buffer)
     case 't':
       break;
     case 'k':
+      read_string_del (str, sizeof (str), ':', &p);
+      if (*p != '\0')
+        p++;
+      if (c->state == SDP_SESSION)
+        gst_sdp_message_set_key (c->msg, str, p);
+      else
+        gst_sdp_media_set_key (c->media, str, p);
       break;
     case 'a':
       read_string_del (str, sizeof (str), ':', &p);
@@ -2927,7 +2934,7 @@ gst_sdp_parse_line (SDPContext * c, gchar type, gchar * buffer)
 
 /**
  * gst_sdp_message_parse_buffer:
- * @data: the start of the buffer
+ * @data: (array length=size): the start of the buffer
  * @size: the size of the buffer
  * @msg: the result #GstSDPMessage
  *

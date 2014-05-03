@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
-<link rel="prev" href="gst-plugins-base-libs-gstaudiomixerutils.html" title="gstaudiomixerutils">
+<link rel="prev" href="gst-plugins-base-libs-gstaudiofilter.html" title="gstaudiofilter">
 <link rel="next" href="gst-plugins-base-libs-gstaudiosrc.html" title="gstaudiosrc">
 <meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -20,7 +20,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-libs-gstaudiomixerutils.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstaudiofilter.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstaudiosrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -95,7 +95,7 @@ subclasses to implement a set of simple functions:</p>
 </tr>
 <tr>
 <td><p><span class="term"><code class="function">delay()</code></span></p></td>
-<td><p>Get the number of samples written but not yet played 
+<td><p>Get the number of samples written but not yet played
     by the device.</p></td>
 </tr>
 <tr>
@@ -111,7 +111,6 @@ subclasses to implement a set of simple functions:</p>
 <p>All scheduling of samples and timestamps is done in this base class
 together with <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink"><span class="type">GstAudioBaseSink</span></a> using a default implementation of a
 <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> that uses threads.</p>
-<p>Last reviewed on 2006-09-27 (0.10.12)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudiosink.functions_details"></a><h2>Functions</h2>
@@ -149,7 +148,7 @@ together with <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#
 </pre>
 <p><a class="link" href="gst-plugins-base-libs-gstaudiosink.html#GstAudioSink"><span class="type">GstAudioSink</span></a> class. Override the vmethods to implement functionality.</p>
 <div class="refsect3">
-<a name="id-1.2.6.11.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.6.10.9.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">

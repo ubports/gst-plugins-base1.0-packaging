@@ -43,11 +43,6 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScaleMethod" title="enum GstVideoScaleMethod"><span class="type">GstVideoScaleMethod</span></a></td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScale--method" title="The “method” property">method</a></td>
-<td class="property_flags">Read / Write</td>
-</tr>
-<tr>
 <td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScale--add-borders" title="The “add-borders” property">add-borders</a></td>
 <td class="property_flags">Read / Write</td>
@@ -61,6 +56,11 @@
 <td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScale--envelope" title="The “envelope” property">envelope</a></td>
 <td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScaleMethod" title="enum GstVideoScaleMethod"><span class="type">GstVideoScaleMethod</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScale--method" title="The “method” property">method</a></td>
+<td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
@@ -143,11 +143,10 @@ To create the test Ogg/Theora file refer to the documentation of theoraenc.
  Decode an Ogg/Theora and display the video using xvimagesink with a width
 of 50.
 </div>
-<p>Last reviewed on 2006-03-02 (0.10.4)</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.38.7.5.1.1"></a><h3>Element Information</h3>
+<a name="id-1.2.38.7.5.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -173,7 +172,7 @@ of 50.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.38.7.5.1.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.38.7.5.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -294,14 +293,6 @@ of 50.
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videoscale.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="GstVideoScale--method"></a><h3>The <code class="literal">“method”</code> property</h3>
-<pre class="programlisting">  “method”                   <a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScaleMethod" title="enum GstVideoScaleMethod"><span class="type">GstVideoScaleMethod</span></a></pre>
-<p>method.</p>
-<p>Flags: Read / Write</p>
-<p>Default value: Bilinear</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="GstVideoScale--add-borders"></a><h3>The <code class="literal">“add-borders”</code> property</h3>
 <pre class="programlisting">  “add-borders”              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Add black borders if necessary to keep the display aspect ratio.</p>
@@ -324,6 +315,14 @@ of 50.
 <p>Flags: Read / Write / Construct</p>
 <p>Allowed values: [1,5]</p>
 <p>Default value: 2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoScale--method"></a><h3>The <code class="literal">“method”</code> property</h3>
+<pre class="programlisting">  “method”                   <a class="link" href="gst-plugins-base-plugins-videoscale.html#GstVideoScaleMethod" title="enum GstVideoScaleMethod"><span class="type">GstVideoScaleMethod</span></a></pre>
+<p>method.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: Bilinear</p>
 </div>
 <hr>
 <div class="refsect2">

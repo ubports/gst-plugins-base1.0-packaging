@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT([GStreamer Base Plug-ins],[1.2.4],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
+AC_INIT([GStreamer Base Plug-ins],[1.3.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
 
 AG_GST_INIT
 
@@ -56,10 +56,10 @@ dnl      1.2.5 => 205
 dnl      1.10.9 (who knows) => 1009
 dnl
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 204, 0, 204)
+AS_LIBTOOL(GST, 301, 0, 301)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=1.2.0
+GST_REQ=1.3.1
 
 dnl *** autotools stuff ****
 
@@ -274,22 +274,47 @@ AM_CONDITIONAL(HAVE_GTK, test "x$HAVE_GTK" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_X11, test "x$HAVE_GTK_X11" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_QUARTZ, test "x$HAVE_GTK_QUARTZ" = "xyes")
 
+HAVE_QT=no
+HAVE_QT_MOC=no
 dnl QT is optional and only used in examples
-PKG_CHECK_MODULES(QT, QtGui >= 4.6, [
-  HAVE_QT_GV=yes
+PKG_CHECK_MODULES(QT, Qt5Gui Qt5Widgets, [
   HAVE_QT=yes
 ], [
-  HAVE_QT_GV=no
-  PKG_CHECK_MODULES(QT, QtGui >= 4.0, HAVE_QT=yes, HAVE_QT=no)
+  HAVE_QT=no
 ])
 if test "x$HAVE_QT" = "xyes"; then
-  AC_MSG_CHECKING([Qt moc])
-  QT4_MOC=`$PKG_CONFIG --variable=moc_location QtGui`
-  AC_MSG_RESULT($QT4_MOC)
-  AC_SUBST(QT4_MOC)
+  AC_CHECK_TOOL(QT_MOC, moc)
+  AC_MSG_CHECKING([for Qt5 moc])
+  mocversion=`$QT_MOC -v 2>&1`
+  mocversiongrep=`echo $mocversion | grep "Qt 5\|moc 5"`
+  if test x"$mocversiongrep" != x"$mocversion"; then
+    AC_MSG_RESULT([no])
+    # moc was not the qt5 one, try with moc-qt5
+    AC_CHECK_TOOL(QT_MOC, moc-qt5)
+    AC_MSG_CHECKING([for Qt5 moc-qt5])
+    mocversion=`$QT_MOC -v 2>&1`
+    mocversiongrep=`echo $mocversion | grep "Qt 5\|moc 5"`
+    if test x"$mocversiongrep" != x"$mocversion"; then
+      AC_CHECK_TOOL(QTCHOOSER, qtchooser)
+      AC_MSG_CHECKING([for qtchooser])
+      qt5tooldir=`QT_SELECT=qt5 qtchooser -print-env | grep QTTOOLDIR | cut -d '=' -f 2 | cut -d \" -f 2`
+      mocversion=`$qt5tooldir/moc -v 2>&1`
+      mocversiongrep=`echo $mocversion | grep "Qt 5\|moc 5"`
+      if test x"$mocversiongrep" != x"$mocversion"; then
+        # no valid moc found
+        QT_MOC="no"
+      else
+        QT_MOC=$qt5tooldir/moc
+      fi
+    else
+      QT_MOC=$QT_MOC
+    fi
+  fi
+  AC_SUBST(QT_MOC)
+  AC_MSG_RESULT([$QT_MOC])
 fi
 AM_CONDITIONAL(HAVE_QT, test "x$HAVE_QT" = "xyes")
-AM_CONDITIONAL(HAVE_QT_GV, test "x$HAVE_QT_GV" = "xyes")
+AM_CONDITIONAL(HAVE_QT_MOC, test "x$HAVE_QT_MOC" != "xno")
 
 dnl chck for linux headers needed by the joystick seek example
 AC_COMPILE_IFELSE(

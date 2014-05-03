@@ -193,6 +193,10 @@
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta">GstVideoRegionOfInterestMeta</a></td>
 </tr>
 <tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GST-BUFFER-POOL-OPTION-VIDEO-GL-TEXTURE-UPLOAD-META:CAPS" title="GST_BUFFER_POOL_OPTION_VIDEO_GL_TEXTURE_UPLOAD_META">GST_BUFFER_POOL_OPTION_VIDEO_GL_TEXTURE_UPLOAD_META</a></td>
+</tr>
+<tr>
 <td class="datatype_keyword">struct</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta">GstVideoGLTextureUploadMeta</a></td>
 </tr>
@@ -228,7 +232,7 @@ gst_video_meta_map (<em class="parameter"><code><a class="link" href="gst-plugin
  and return a pointer to the
 first byte of the plane and the stride of the plane.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -273,7 +277,7 @@ first byte of the plane and the stride of the plane.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.2.6"></a><h4>Returns</h4>
 <p> TRUE if the map operation was successful.</p>
 <p></p>
 </div>
@@ -287,7 +291,7 @@ gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plug
                       <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>);</pre>
 <p>Unmap a previously mapped plane with <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map" title="gst_video_meta_map ()"><code class="function">gst_video_meta_map()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -314,7 +318,7 @@ gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plug
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.3.6"></a><h4>Returns</h4>
 <p> TRUE if the memory was successfully unmapped.</p>
 <p></p>
 </div>
@@ -343,7 +347,7 @@ default offsets and strides for <em class="parameter"><code>format</code></em>
 <p>This function calculates the default offsets and strides and then calls
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-meta-full" title="gst_buffer_add_video_meta_full ()"><code class="function">gst_buffer_add_video_meta_full()</code></a> with them.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.5.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.5.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -380,7 +384,7 @@ default offsets and strides for <em class="parameter"><code>format</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.5.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.5.7"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
 <p></p>
@@ -401,7 +405,7 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
 <p>Attaches GstVideoMeta metadata to <em class="parameter"><code>buffer</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -453,7 +457,7 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.6.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
 <p></p>
@@ -477,7 +481,7 @@ gst_buffer_get_video_meta_id (<em class="parameter"><code><a href="http://gstrea
 <p>Buffers can contain multiple <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> metadata items when dealing with
 multiview buffers.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.8.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.8.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -499,7 +503,7 @@ multiview buffers.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.8.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.8.7"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> with <em class="parameter"><code>id</code></em>
 or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is no such metadata
 on <em class="parameter"><code>buffer</code></em>
@@ -534,7 +538,7 @@ gst_buffer_add_video_region_of_interest_meta
  with the given
 parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -576,7 +580,7 @@ parameters.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.11.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
 <p></p>
@@ -597,7 +601,7 @@ gst_buffer_add_video_region_of_interest_meta_id
  with the given
 parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.12.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.12.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -639,7 +643,7 @@ parameters.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.12.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.12.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
 <p></p>
@@ -663,7 +667,7 @@ gst_buffer_get_video_region_of_interest_meta_id
 <p>Buffers can contain multiple <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> metadata items if
 multiple regions of interests are marked on a frame.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.14.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.14.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -685,7 +689,7 @@ multiple regions of interests are marked on a frame.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.14.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.14.7"></a><h4>Returns</h4>
 <p> the <span class="type">GstVideoeRegionOfInterestMeta</span> with <em class="parameter"><code>id</code></em>
 or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is
 no such metadata on <em class="parameter"><code>buffer</code></em>
@@ -717,7 +721,7 @@ gst_buffer_add_video_gl_texture_upload_meta
  with the given
 parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -757,7 +761,7 @@ parameters.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.16.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.16.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
 <p></p>
@@ -778,7 +782,7 @@ gst_video_gl_texture_upload_meta_upload
                                 <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> texture_id[4]</code></em>);</pre>
 <p>Uploads the buffer which owns the meta to a specific texture ID.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.18.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.4.8.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -800,7 +804,7 @@ gst_video_gl_texture_upload_meta_upload
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.4.8.18.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.4.8.18.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if uploading succeeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
 <p></p>
 </div>
@@ -832,7 +836,7 @@ gst_video_gl_texture_upload_meta_upload
 </pre>
 <p>Extra buffer metadata describing image properties</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.9.2.5"></a><h4>Members</h4>
+<a name="id-1.2.15.4.9.2.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -919,7 +923,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 <p>Extra data passed to a video transform <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMeta.html#GstMetaTransformFunction"><span class="type">GstMetaTransformFunction</span></a> such as:
 "gst-video-scale".</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.15.4.9.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -955,7 +959,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 </pre>
 <p>Extra buffer metadata describing image cropping.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.9.4.5"></a><h4>Members</h4>
+<a name="id-1.2.15.4.9.4.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1010,7 +1014,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 </pre>
 <p>Extra buffer metadata describing an image region of interest</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.9.5.5"></a><h4>Members</h4>
+<a name="id-1.2.15.4.9.5.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1064,6 +1068,18 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 </div>
 <hr>
 <div class="refsect2">
+<a name="GST-BUFFER-POOL-OPTION-VIDEO-GL-TEXTURE-UPLOAD-META:CAPS"></a><h3>GST_BUFFER_POOL_OPTION_VIDEO_GL_TEXTURE_UPLOAD_META</h3>
+<pre class="programlisting">#define GST_BUFFER_POOL_OPTION_VIDEO_GL_TEXTURE_UPLOAD_META "GstBufferPoolOptionVideoGLTextureUploadMeta"
+</pre>
+<p>An option that can be activated on a bufferpool to request gl texture upload
+meta on buffers from the pool.</p>
+<p>When this option is enabled on the bufferpool,
+<em class="parameter"><code>GST_BUFFER_POOL_OPTION_VIDEO_META</code></em>
+ should also be enabled.</p>
+<p class="since">Since 1.2.2</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstVideoGLTextureUploadMeta"></a><h3>struct GstVideoGLTextureUploadMeta</h3>
 <pre class="programlisting">struct GstVideoGLTextureUploadMeta {
   GstMeta       meta;
@@ -1078,7 +1094,7 @@ ID. The caller of <a class="link" href="gst-plugins-base-libs-gstvideometa.html#
 have OpenGL set up and call this from a thread where it is valid
 to upload something to an OpenGL texture.</p>
 <div class="refsect3">
-<a name="id-1.2.14.4.9.6.5"></a><h4>Members</h4>
+<a name="id-1.2.15.4.9.7.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">

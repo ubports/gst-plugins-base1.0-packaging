@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-04-18 11:32+0200\n"
+"POT-Creation-Date: 2014-05-03 17:46+0200\n"
 "PO-Revision-Date: 2012-04-16 04:19+0200\n"
 "Last-Translator: Tomislav Krznar <tomislav.krznar@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -518,6 +518,9 @@ msgstr ""
 msgid "Buffering..."
 msgstr ""
 
+msgid "Clock lost, selecting a new one\n"
+msgstr ""
+
 msgid "Print version information and exit"
 msgstr ""
 
@@ -528,6 +531,18 @@ msgid "Audio sink to use (default is autoaudiosink)"
 msgstr ""
 
 msgid "Enable gapless playback"
+msgstr ""
+
+msgid "Shuffle playlist"
+msgstr ""
+
+msgid "Interactive control via keyboard"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Playlist file containing input media files"
 msgstr ""
 
 #, c-format

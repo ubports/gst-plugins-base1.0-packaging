@@ -131,7 +131,6 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtspurl.description"></a><h2>Description</h2>
 <p>Provides helper functions to handle RTSP urls.</p>
-<p>Last reviewed on 2007-07-25 (0.10.14)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtspurl.functions_details"></a><h2>Functions</h2>
@@ -356,8 +355,9 @@ will usually be the empty string.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.10.9.8.8.8"></a><h4>Returns</h4>
-<p> a string vector. <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> after usage.</p>
-<p></p>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated array of URL components. Free with
+<a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> when no longer needed. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 </div>
