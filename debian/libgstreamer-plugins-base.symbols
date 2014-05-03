@@ -237,6 +237,11 @@ libgstpbutils-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_codec_utils_h264_get_level@Base 1.0.0
  gst_codec_utils_h264_get_level_idc@Base 1.0.0
  gst_codec_utils_h264_get_profile@Base 1.0.0
+ gst_codec_utils_h265_caps_set_level_tier_and_profile@Base 1.3.1
+ gst_codec_utils_h265_get_level@Base 1.3.1
+ gst_codec_utils_h265_get_level_idc@Base 1.3.1
+ gst_codec_utils_h265_get_profile@Base 1.3.1
+ gst_codec_utils_h265_get_tier@Base 1.3.1
  gst_codec_utils_mpeg4video_caps_set_level_and_profile@Base 1.0.0
  gst_codec_utils_mpeg4video_get_level@Base 1.0.0
  gst_codec_utils_mpeg4video_get_profile@Base 1.0.0
@@ -535,6 +540,7 @@ libgstrtsp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_rtsp_connection_get_read_socket@Base 1.0.0
  gst_rtsp_connection_get_remember_session_id@Base 1.2.0
  gst_rtsp_connection_get_tls@Base 1.2.0
+ gst_rtsp_connection_get_tls_database@Base 1.3.1
  gst_rtsp_connection_get_tls_validation_flags@Base 1.2.1
  gst_rtsp_connection_get_tunnelid@Base 1.0.0
  gst_rtsp_connection_get_url@Base 1.0.0
@@ -553,6 +559,7 @@ libgstrtsp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_rtsp_connection_set_proxy@Base 1.0.0
  gst_rtsp_connection_set_qos_dscp@Base 1.0.0
  gst_rtsp_connection_set_remember_session_id@Base 1.2.0
+ gst_rtsp_connection_set_tls_database@Base 1.3.1
  gst_rtsp_connection_set_tls_validation_flags@Base 1.2.1
  gst_rtsp_connection_set_tunneled@Base 1.0.0
  gst_rtsp_connection_write@Base 1.0.0
@@ -617,6 +624,7 @@ libgstrtsp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_rtsp_transport_as_text@Base 1.0.0
  gst_rtsp_transport_free@Base 1.0.0
  gst_rtsp_transport_get_manager@Base 1.0.0
+ gst_rtsp_transport_get_media_type@Base 1.3.1
  gst_rtsp_transport_get_mime@Base 1.0.0
  gst_rtsp_transport_init@Base 1.0.0
  gst_rtsp_transport_new@Base 1.0.0
@@ -636,10 +644,56 @@ libgstrtsp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_rtsp_watch_new@Base 1.0.0
  gst_rtsp_watch_reset@Base 1.0.0
  gst_rtsp_watch_send_message@Base 1.0.0
+ gst_rtsp_watch_set_flushing@Base 1.3.1
  gst_rtsp_watch_set_send_backlog@Base 1.2.0
  gst_rtsp_watch_unref@Base 1.0.0
+ gst_rtsp_watch_wait_backlog@Base 1.3.1
  gst_rtsp_watch_write_data@Base 1.0.0
 libgstsdp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
+ gst_mikey_message_add_cs_srtp@Base 1.3.1
+ gst_mikey_message_add_payload@Base 1.3.1
+ gst_mikey_message_add_pke@Base 1.3.1
+ gst_mikey_message_add_rand@Base 1.3.1
+ gst_mikey_message_add_rand_len@Base 1.3.1
+ gst_mikey_message_add_t@Base 1.3.1
+ gst_mikey_message_add_t_now_ntp_utc@Base 1.3.1
+ gst_mikey_message_find_payload@Base 1.3.1
+ gst_mikey_message_free@Base 1.3.1
+ gst_mikey_message_get_cs_srtp@Base 1.3.1
+ gst_mikey_message_get_n_cs@Base 1.3.1
+ gst_mikey_message_get_n_payloads@Base 1.3.1
+ gst_mikey_message_get_payload@Base 1.3.1
+ gst_mikey_message_insert_cs_srtp@Base 1.3.1
+ gst_mikey_message_insert_payload@Base 1.3.1
+ gst_mikey_message_new@Base 1.3.1
+ gst_mikey_message_new_from_bytes@Base 1.3.1
+ gst_mikey_message_new_from_data@Base 1.3.1
+ gst_mikey_message_remove_cs_srtp@Base 1.3.1
+ gst_mikey_message_remove_payload@Base 1.3.1
+ gst_mikey_message_replace_cs_srtp@Base 1.3.1
+ gst_mikey_message_replace_payload@Base 1.3.1
+ gst_mikey_message_set_info@Base 1.3.1
+ gst_mikey_message_to_bytes@Base 1.3.1
+ gst_mikey_payload_copy@Base 1.3.1
+ gst_mikey_payload_free@Base 1.3.1
+ gst_mikey_payload_kemac_add_sub@Base 1.3.1
+ gst_mikey_payload_kemac_get_n_sub@Base 1.3.1
+ gst_mikey_payload_kemac_get_sub@Base 1.3.1
+ gst_mikey_payload_kemac_remove_sub@Base 1.3.1
+ gst_mikey_payload_kemac_set@Base 1.3.1
+ gst_mikey_payload_key_data_set_interval@Base 1.3.1
+ gst_mikey_payload_key_data_set_key@Base 1.3.1
+ gst_mikey_payload_key_data_set_salt@Base 1.3.1
+ gst_mikey_payload_key_data_set_spi@Base 1.3.1
+ gst_mikey_payload_new@Base 1.3.1
+ gst_mikey_payload_pke_set@Base 1.3.1
+ gst_mikey_payload_rand_set@Base 1.3.1
+ gst_mikey_payload_sp_add_param@Base 1.3.1
+ gst_mikey_payload_sp_get_n_params@Base 1.3.1
+ gst_mikey_payload_sp_get_param@Base 1.3.1
+ gst_mikey_payload_sp_remove_param@Base 1.3.1
+ gst_mikey_payload_sp_set@Base 1.3.1
+ gst_mikey_payload_t_set@Base 1.3.1
  gst_sdp_address_is_multicast@Base 1.0.0
  gst_sdp_attribute_clear@Base 1.2.0
  gst_sdp_attribute_set@Base 1.2.0
@@ -910,9 +964,11 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_decoder_get_latency@Base 1.0.0
  gst_video_decoder_get_max_decode_time@Base 1.0.0
  gst_video_decoder_get_max_errors@Base 1.0.0
+ gst_video_decoder_get_needs_format@Base 1.3.1
  gst_video_decoder_get_oldest_frame@Base 1.0.0
  gst_video_decoder_get_output_state@Base 1.0.0
  gst_video_decoder_get_packetized@Base 1.0.0
+ gst_video_decoder_get_pending_frame_size@Base 1.3.1
  gst_video_decoder_get_qos_proportion@Base 1.0.3
  gst_video_decoder_get_type@Base 1.0.0
  gst_video_decoder_have_frame@Base 1.0.0
@@ -922,6 +978,7 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_decoder_set_estimate_rate@Base 1.0.0
  gst_video_decoder_set_latency@Base 1.0.0
  gst_video_decoder_set_max_errors@Base 1.0.0
+ gst_video_decoder_set_needs_format@Base 1.3.1
  gst_video_decoder_set_output_state@Base 1.0.0
  gst_video_decoder_set_packetized@Base 1.0.0
  gst_video_encoder_allocate_output_buffer@Base 1.0.0
@@ -1026,4 +1083,7 @@ libgstvideo-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_video_region_of_interest_meta_get_info@Base 1.2.0
  gst_video_sink_center_rect@Base 1.0.0
  gst_video_sink_get_type@Base 1.0.0
+ gst_video_tile_get_index@Base 1.3.1
+ gst_video_tile_mode_get_type@Base 1.3.1
+ gst_video_tile_type_get_type@Base 1.3.1
  gst_video_transfer_function_get_type@Base 1.0.0
