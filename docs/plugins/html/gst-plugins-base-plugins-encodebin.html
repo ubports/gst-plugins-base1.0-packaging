@@ -55,6 +55,11 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type"><span class="type">GstEncodeBinFlags</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--flags" title="The “flags” property">flags</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--profile" title="The “profile” property">profile</a></td>
@@ -73,11 +78,6 @@
 <tr>
 <td class="property_type"><span class="type">guint64</span></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-time-max" title="The “queue-time-max” property">queue-time-max</a></td>
-<td class="property_flags">Read / Write</td>
-</tr>
-<tr>
-<td class="property_type"><span class="type">GstEncodeBinFlags</span></td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--flags" title="The “flags” property">flags</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 </tbody>
@@ -368,6 +368,13 @@ user a way to install the missing element.
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstEncodeBin--flags"></a><h3>The <code class="literal">“flags”</code> property</h3>
+<pre class="programlisting">  “flags”                    <span class="type">GstEncodeBinFlags</span></pre>
+<p>Control the behaviour of encodebin.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstEncodeBin--profile"></a><h3>The <code class="literal">“profile”</code> property</h3>
 <pre class="programlisting">  “profile”                  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> *</pre>
 <p>The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to use. This property must be set before going
@@ -397,13 +404,6 @@ to <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/h
 <p>Max. amount of data in the queue (in ns, 0=disable).</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 1000000000</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstEncodeBin--flags"></a><h3>The <code class="literal">“flags”</code> property</h3>
-<pre class="programlisting">  “flags”                    <span class="type">GstEncodeBinFlags</span></pre>
-<p>Control the behaviour of encodebin.</p>
-<p>Flags: Read / Write</p>
 </div>
 </div>
 <div class="refsect1">

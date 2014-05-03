@@ -163,6 +163,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="type">GstStructure</span></a> *</td>
+<td class="property_name"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--stats" title="The “stats” property">stats</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
 <td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--timestamp" title="The “timestamp” property">timestamp</a></td>
 <td class="property_flags">Read</td>
@@ -616,7 +622,7 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <div class="refsect2">
 <a name="GstRTPBasePayload--min-ptime"></a><h3>The <code class="literal">“min-ptime”</code> property</h3>
 <pre class="programlisting">  “min-ptime”                <span class="type">gint64</span></pre>
-<p>Minimum duration of the packet data in ns (can't go above MTU).</p>
+<p>Minimum duration of the packet data in ns (can't go above MTU)</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -634,7 +640,21 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <div class="refsect2">
 <a name="GstRTPBasePayload--perfect-rtptime"></a><h3>The <code class="literal">“perfect-rtptime”</code> property</h3>
 <pre class="programlisting">  “perfect-rtptime”          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
-<p>Generate perfect RTP timestamps when possible.</p>
+<p>Try to use the offset fields to generate perfect RTP timestamps. When this
+option is disabled, RTP timestamps are generated from GST_BUFFER_PTS of
+each payloaded buffer. The PTSes of buffers may not necessarily increment
+with the amount of data in each input buffer, consider e.g. the case where
+the buffer arrives from a network which means that the PTS is unrelated to
+the amount of data. Because the RTP timestamps are generated from
+GST_BUFFER_PTS this can result in RTP timestamps that also don't increment
+with the amount of data in the payloaded packet. To circumvent this it is
+possible to set the perfect rtptime option enabled. When this option is
+enabled the payloader will increment the RTP timestamps based on
+GST_BUFFER_OFFSET which relates to the amount of data in each packet
+rather than the GST_BUFFER_PTS of each buffer and therefore the RTP
+timestamps will more closely correlate with the amount of data in each
+buffer. Currently GstRTPBasePayload is limited to handling perfect RTP
+timestamps for audio streams.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: TRUE</p>
 </div>
@@ -644,14 +664,14 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <pre class="programlisting">  “pt”                       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>The payload type of the packets.</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= 128</p>
+<p>Allowed values: &lt;= 127</p>
 <p>Default value: 96</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstRTPBasePayload--ptime-multiple"></a><h3>The <code class="literal">“ptime-multiple”</code> property</h3>
 <pre class="programlisting">  “ptime-multiple”           <span class="type">gint64</span></pre>
-<p>Force buffers to be multiples of this duration in ns (0 disables).</p>
+<p>Force buffers to be multiples of this duration in ns (0 disables)</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
@@ -681,6 +701,65 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <p>The SSRC of the packets (default == random).</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 4294967295</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstRTPBasePayload--stats"></a><h3>The <code class="literal">“stats”</code> property</h3>
+<pre class="programlisting">  “stats”                    <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstStructure.html#GstStructure"><span class="type">GstStructure</span></a> *</pre>
+<p>Various payloader statistics retrieved atomically (and are therefore
+synchroized with each other), these can be used e.g. to generate an
+RTP-Info header. This property return a GstStructure named
+application/x-rtp-payload-stats containing the following fields relating to
+the last processed buffer and current state of the stream being payloaded:</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">clock-rate</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, clock-rate of the
+    stream</p></td>
+</tr>
+<tr>
+<td><p><span class="term">running-time</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"><span class="type">G_TYPE_UINT64</span></a>, running time
+    </p></td>
+</tr>
+<tr>
+<td><p><span class="term">seqnum</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, sequence number, same as
+    <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--seqnum" title="The “seqnum” property"><span class="type">“seqnum”</span></a></p></td>
+</tr>
+<tr>
+<td><p><span class="term">timestamp</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, RTP timestamp, same as
+    <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--timestamp" title="The “timestamp” property"><span class="type">“timestamp”</span></a></p></td>
+</tr>
+<tr>
+<td><p><span class="term">ssrc</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, The SSRC in use
+    </p></td>
+</tr>
+<tr>
+<td><p><span class="term">pt</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, The Payload type in use, same as
+    <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--pt" title="The “pt” property"><span class="type">“pt”</span></a></p></td>
+</tr>
+<tr>
+<td><p><span class="term">seqnum-offset</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, The current offset added to the
+    seqnum</p></td>
+</tr>
+<tr>
+<td><p><span class="term">timestamp-offset</span></p></td>
+<td><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-UINT:CAPS"><span class="type">G_TYPE_UINT</span></a>, The current offset added to the
+    timestamp</p></td>
+</tr>
+</tbody>
+</table></div>
+<p>Flags: Read</p>
 </div>
 <hr>
 <div class="refsect2">

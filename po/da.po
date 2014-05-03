@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-04-18 11:32+0200\n"
+"POT-Creation-Date: 2014-05-03 17:46+0200\n"
 "PO-Revision-Date: 2013-12-08 16:38+0100\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -554,6 +554,9 @@ msgstr "Oprindelig nøgle hvor musikken starter"
 msgid "Buffering..."
 msgstr "Mellemlagrer ..."
 
+msgid "Clock lost, selecting a new one\n"
+msgstr ""
+
 msgid "Print version information and exit"
 msgstr "Vis versionsinformation og afslut"
 
@@ -565,6 +568,18 @@ msgstr "Brud denne lydkanal (standard er autoaudiosink)"
 
 msgid "Enable gapless playback"
 msgstr "Aktiver afspilning uden huller"
+
+msgid "Shuffle playlist"
+msgstr ""
+
+msgid "Interactive control via keyboard"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Playlist file containing input media files"
+msgstr ""
 
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."

@@ -146,7 +146,7 @@ GstStreamVolume requires
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gststreamvolume.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.6.18.10.2"></a><p>
+<a name="id-1.2.6.17.10.2"></a><p>
 This interface is implemented by elements that provide a stream volume. Examples for
 such elements are <span class="type">volume</span> and <span class="type">playbin</span>.
 </p>
@@ -176,7 +176,7 @@ The volume property is defined to be a linear volume factor.
 gst_stream_volume_get_volume (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> format</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.2.4"></a><h4>Parameters</h4>
+<a name="id-1.2.6.17.11.2.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -198,7 +198,7 @@ gst_stream_volume_get_volume (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.2.5"></a><h4>Returns</h4>
+<a name="id-1.2.6.17.11.2.5"></a><h4>Returns</h4>
 <p> The current stream volume as linear factor</p>
 <p></p>
 </div>
@@ -211,7 +211,7 @@ gst_stream_volume_set_volume (<em class="parameter"><code><a class="link" href="
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> format</code></em>,
                               <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.3.4"></a><h4>Parameters</h4>
+<a name="id-1.2.6.17.11.3.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -245,7 +245,7 @@ gst_stream_volume_set_volume (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.4.4"></a><h4>Parameters</h4>
+<a name="id-1.2.6.17.11.4.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -260,7 +260,7 @@ gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.4.5"></a><h4>Returns</h4>
+<a name="id-1.2.6.17.11.4.5"></a><h4>Returns</h4>
 <p> Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the stream is muted</p>
 <p></p>
 </div>
@@ -272,7 +272,7 @@ gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gs
 gst_stream_volume_set_mute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>,
                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> mute</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.5.4"></a><h4>Parameters</h4>
+<a name="id-1.2.6.17.11.5.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -302,7 +302,7 @@ gst_stream_volume_convert_volume (<em class="parameter"><code><a class="link" hr
                                   <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> to</code></em>,
                                   <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.6.4"></a><h4>Parameters</h4>
+<a name="id-1.2.6.17.11.6.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -330,7 +330,7 @@ format that should be converted</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.18.11.6.5"></a><h4>Returns</h4>
+<a name="id-1.2.6.17.11.6.5"></a><h4>Returns</h4>
 <p> the converted volume</p>
 <p></p>
 </div>
@@ -350,7 +350,7 @@ allows to convert between the different representations.</p>
 <p>Formulas to convert from a linear to a cubic or dB volume are
 cbrt(val) and 20 * log10 (val).</p>
 <div class="refsect3">
-<a name="id-1.2.6.18.12.3.5"></a><h4>Members</h4>
+<a name="id-1.2.6.17.12.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">

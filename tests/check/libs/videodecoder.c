@@ -183,12 +183,12 @@ _mysinkpad_event (GstPad * pad, GstObject * parent, GstEvent * event)
 static void
 setup_videodecodertester (void)
 {
-  GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE ("sink",
+  static GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE ("sink",
       GST_PAD_SINK,
       GST_PAD_ALWAYS,
       GST_STATIC_CAPS ("video/x-raw")
       );
-  GstStaticPadTemplate srctemplate = GST_STATIC_PAD_TEMPLATE ("src",
+  static GstStaticPadTemplate srctemplate = GST_STATIC_PAD_TEMPLATE ("src",
       GST_PAD_SRC,
       GST_PAD_ALWAYS,
       GST_STATIC_CAPS ("video/x-test-custom")
@@ -209,6 +209,9 @@ cleanup_videodecodertest (void)
   gst_check_teardown_src_pad (dec);
   gst_check_teardown_sink_pad (dec);
   gst_check_teardown_element (dec);
+
+  g_list_free_full (events, (GDestroyNotify) gst_event_unref);
+  events = NULL;
 }
 
 static GstBuffer *
@@ -245,7 +248,7 @@ send_startup_events (void)
       TEST_VIDEO_WIDTH, "height", G_TYPE_INT, TEST_VIDEO_HEIGHT, "framerate",
       GST_TYPE_FRACTION, TEST_VIDEO_FPS_N, TEST_VIDEO_FPS_D, NULL);
   fail_unless (gst_pad_push_event (mysrcpad, gst_event_new_caps (caps)));
-
+  gst_caps_unref (caps);
 }
 
 #define NUM_BUFFERS 1000
@@ -412,9 +415,7 @@ GST_START_TEST (videodecoder_playback_with_events)
   fail_unless (events_iter == NULL);
 
   g_list_free_full (buffers, (GDestroyNotify) gst_buffer_unref);
-  g_list_free_full (events, (GDestroyNotify) gst_event_unref);
   buffers = NULL;
-  events = NULL;
 
   cleanup_videodecodertest ();
 }

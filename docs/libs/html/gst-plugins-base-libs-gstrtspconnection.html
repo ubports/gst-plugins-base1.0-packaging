@@ -358,6 +358,14 @@
 <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()">gst_rtsp_watch_set_send_backlog</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-wait-backlog" title="gst_rtsp_watch_wait_backlog ()">gst_rtsp_watch_wait_backlog</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -398,7 +406,6 @@
 <a name="gst-plugins-base-libs-gstrtspconnection.description"></a><h2>Description</h2>
 <p>This object manages the RTSP connection to the server. It provides function
 to receive and send bytes and messages.</p>
-<p>Last reviewed on 2007-07-24 (0.10.14)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtspconnection.functions_details"></a><h2>Functions</h2>
@@ -426,7 +433,7 @@ The connection will not yet attempt to connect to <em class="parameter"><code>ur
 <tbody>
 <tr>
 <td class="parameter_name"><p>url</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> </p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -574,7 +581,7 @@ forever. If <em class="parameter"><code>timeout</code></em>
 <tbody>
 <tr>
 <td class="parameter_name"><p>conn</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> </p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -800,7 +807,7 @@ with <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CA
 </tr>
 <tr>
 <td class="parameter_name"><p>revents</p></td>
-<td class="parameter_description"><p>location for result flags </p></td>
+<td class="parameter_description"><p>location for result flags</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1494,9 +1501,9 @@ gst_rtsp_connection_get_write_socket (<em class="parameter"><code>const <a class
 </div>
 <div class="refsect3">
 <a name="id-1.2.10.3.8.30.6"></a><h4>Returns</h4>
-<p> the file descriptor used for writing or NULL on error. The file
-descriptor remains valid until the connection is closed.</p>
-<p></p>
+<p> the file descriptor used for writing or NULL on
+error. The file descriptor remains valid until the connection is closed. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1626,7 +1633,7 @@ gst_rtsp_watch_new (<em class="parameter"><code><a class="link" href="gst-plugin
 called with <em class="parameter"><code>user_data</code></em>
  when activity happened on the watch.</p>
 <p>The new watch is usually created so that it can be attached to a
-maincontext with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-attach" title="gst_rtsp_watch_attach ()"><code class="function">gst_rtsp_watch_attach()</code></a>. </p>
+maincontext with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-attach" title="gst_rtsp_watch_attach ()"><code class="function">gst_rtsp_watch_attach()</code></a>.</p>
 <p><em class="parameter"><code>conn</code></em>
  must exist for the entire lifetime of the watch.</p>
 <div class="refsect3">
@@ -1725,7 +1732,7 @@ gst_rtsp_watch_attach (<em class="parameter"><code><a class="link" href="gst-plu
 </div>
 <div class="refsect3">
 <a name="id-1.2.10.3.8.36.6"></a><h4>Returns</h4>
-<p> the ID (greater than 0) for the watch within the GMainContext. </p>
+<p> the ID (greater than 0) for the watch within the GMainContext.</p>
 <p></p>
 </div>
 </div>
@@ -1868,7 +1875,8 @@ callback.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.8.39.8"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success. <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a> when the backlog limits
-are reached.</p>
+are reached. <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a> when <em class="parameter"><code>watch</code></em>
+was flushing.</p>
 <p></p>
 </div>
 </div>
@@ -1909,7 +1917,7 @@ See <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.1.1</p>
+<p class="since">Since 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1952,7 +1960,59 @@ When the maximum amounts are exceeded, <a class="link" href="gst-plugins-base-li
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.1.1</p>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-watch-wait-backlog"></a><h3>gst_rtsp_watch_wait_backlog ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+gst_rtsp_watch_wait_backlog (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> *timeout</code></em>);</pre>
+<p>Wait until there is place in the backlog queue, <em class="parameter"><code>timeout</code></em>
+ is reached
+or <em class="parameter"><code>watch</code></em>
+ is set to flushing.</p>
+<p>If <em class="parameter"><code>timeout</code></em>
+ is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> this function can block forever. If <em class="parameter"><code>timeout</code></em>
+
+contains a valid timeout, this function will return <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><span class="type">GST_RTSP_ETIMEOUT</span></a>
+after the timeout expired.</p>
+<p>The typically use of this function is when gst_rtsp_watch_write_data
+returns GST_RTSP_ENOMEM. The caller then calls this function to wait for
+free space in the backlog queue and try again.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.8.42.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>watch</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>timeout</p></td>
+<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Date-and-Time-Functions.html#GTimeVal"><span class="type">GTimeVal</span></a> timeout</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.3.8.42.8"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when if there is room in queue.
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><span class="type">GST_RTSP_ETIMEOUT</span></a> when <em class="parameter"><code>timeout</code></em>
+was reached.
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a> when <em class="parameter"><code>watch</code></em>
+is flushing
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINVAL:CAPS"><span class="type">GST_RTSP_EINVAL</span></a> when called with invalid parameters.</p>
+<p></p>
+</div>
+<p class="since">Since 1.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -1986,6 +2046,10 @@ operations.</p>
                                          GstRTSPMessage *message, guint id,
                                          gpointer user_data);
   GstRTSPResult     (*tunnel_lost)      (GstRTSPWatch *watch, gpointer user_data);
+  GstRTSPResult     (*tunnel_http_response) (GstRTSPWatch *watch,
+                                             GstRTSPMessage *request,
+                                             GstRTSPMessage *response,
+                                             gpointer user_data);
 } GstRTSPWatchFuncs;
 </pre>
 <p>Callback functions from a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a>.</p>
@@ -2041,6 +2105,13 @@ callback.</p></td>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstRTSPWatchFuncs.tunnel-lost"></a>tunnel_lost</code></em> ()</p></td>
 <td class="struct_member_description"><p>callback when the post connection of a tunnel is closed.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstRTSPWatchFuncs.tunnel-http-response"></a>tunnel_http_response</code></em> ()</p></td>
+<td class="struct_member_description"><p>callback when an HTTP response to the GET request
+is about to be sent for a tunneled connection. The response can be
+modified in the callback. Since 1.4.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 </tbody>

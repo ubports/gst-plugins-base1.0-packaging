@@ -192,6 +192,9 @@ typedef struct _GstAudioDecoderContext
   gboolean eos;
   gboolean sync;
 
+  gboolean had_output_data;
+  gboolean had_input_data;
+
   /* misc */
   gint delay;
 
@@ -558,6 +561,8 @@ gst_audio_decoder_reset (GstAudioDecoder * dec, gboolean full)
 
     gst_audio_info_init (&dec->priv->ctx.info);
     dec->priv->ctx.max_errors = GST_AUDIO_DECODER_MAX_ERRORS;
+    dec->priv->ctx.had_output_data = FALSE;
+    dec->priv->ctx.had_input_data = FALSE;
   }
 
   g_queue_foreach (&dec->priv->frames, (GFunc) gst_buffer_unref, NULL);
@@ -907,6 +912,8 @@ gst_audio_decoder_push_forward (GstAudioDecoder * dec, GstBuffer * buf)
     g_assert_not_reached ();
     return GST_FLOW_OK;
   }
+
+  ctx->had_output_data = TRUE;
 
   GST_LOG_OBJECT (dec,
       "clipping buffer of size %" G_GSIZE_FORMAT " with ts %" GST_TIME_FORMAT
@@ -1760,6 +1767,8 @@ gst_audio_decoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
 
   GST_AUDIO_DECODER_STREAM_LOCK (dec);
 
+  dec->priv->ctx.had_input_data = TRUE;
+
   if (GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_DISCONT)) {
     gint64 samples, ts;
 
@@ -1824,13 +1833,16 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
 
   caps = gst_pad_get_current_caps (dec->srcpad);
   if (caps && !gst_audio_info_from_caps (&dec->priv->ctx.info, caps))
-    return FALSE;
+    goto caps_error;
+  if (caps)
+    gst_caps_unref (caps);
 
   caps = gst_pad_get_allowed_caps (dec->srcpad);
   if (!caps || gst_caps_is_empty (caps) || gst_caps_is_any (caps))
-    return FALSE;
+    goto caps_error;
 
   /* before fixating, try to use whatever upstream provided */
+  caps = gst_caps_make_writable (caps);
   caps_size = gst_caps_get_size (caps);
   if (dec->priv->ctx.input_caps) {
     GstCaps *sinkcaps = dec->priv->ctx.input_caps;
@@ -1887,7 +1899,7 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
   }
 
   if (!caps || !gst_audio_info_from_caps (&dec->priv->ctx.info, caps))
-    return FALSE;
+    goto caps_error;
 
   GST_INFO_OBJECT (dec,
       "Chose default caps %" GST_PTR_FORMAT " for initial gap", caps);
@@ -1900,6 +1912,13 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
   }
 
   return TRUE;
+
+caps_error:
+  {
+    if (caps)
+      gst_caps_unref (caps);
+    return FALSE;
+  }
 }
 
 static gboolean
@@ -2082,6 +2101,12 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
       GST_AUDIO_DECODER_STREAM_LOCK (dec);
       gst_audio_decoder_drain (dec);
       GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
+
+      if (dec->priv->ctx.had_input_data && !dec->priv->ctx.had_output_data) {
+        GST_ELEMENT_ERROR (dec, STREAM, DECODE,
+            ("No valid frames decoded before end of stream"),
+            ("no valid frames found"));
+      }
 
       /* Forward EOS because no buffer or serialized event will come after
        * EOS and nothing could trigger another _finish_frame() call. */
@@ -2767,9 +2792,10 @@ _gst_audio_decoder_error (GstAudioDecoder * dec, gint weight,
     GST_WARNING_OBJECT (dec, "error: %s", dbg);
   dec->priv->error_count += weight;
   dec->priv->discont = TRUE;
-  if (dec->priv->ctx.max_errors < dec->priv->error_count) {
-    gst_element_message_full (GST_ELEMENT (dec), GST_MESSAGE_ERROR,
-        domain, code, txt, dbg, file, function, line);
+  if (dec->priv->ctx.max_errors >= 0
+      && dec->priv->ctx.max_errors < dec->priv->error_count) {
+    gst_element_message_full (GST_ELEMENT (dec), GST_MESSAGE_ERROR, domain,
+        code, txt, dbg, file, function, line);
     return GST_FLOW_ERROR;
   } else {
     g_free (txt);
@@ -2870,8 +2896,9 @@ gst_audio_decoder_get_delay (GstAudioDecoder * dec)
  * @num: max tolerated errors
  *
  * Sets numbers of tolerated decoder errors, where a tolerated one is then only
- * warned about, but more than tolerated will lead to fatal error.  Default
- * is set to GST_AUDIO_DECODER_MAX_ERRORS.
+ * warned about, but more than tolerated will lead to fatal error. You can set
+ * -1 for never returning fatal errors. Default is set to
+ * GST_AUDIO_DECODER_MAX_ERRORS.
  */
 void
 gst_audio_decoder_set_max_errors (GstAudioDecoder * dec, gint num)
@@ -3175,7 +3202,7 @@ gst_audio_decoder_get_needs_format (GstAudioDecoder * dec)
 {
   gboolean result;
 
-  g_return_val_if_fail (GST_IS_AUDIO_DECODER (dec), 0);
+  g_return_val_if_fail (GST_IS_AUDIO_DECODER (dec), FALSE);
 
   GST_OBJECT_LOCK (dec);
   result = dec->priv->needs_format;

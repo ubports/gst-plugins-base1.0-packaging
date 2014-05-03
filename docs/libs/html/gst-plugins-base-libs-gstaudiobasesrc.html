@@ -183,7 +183,6 @@
 <p>This is the base class for audio sources. Subclasses need to implement the
 ::create_ringbuffer vmethod. This base class will then take care of
 reading samples from the ringbuffer, synchronisation and flushing.</p>
-<p>Last reviewed on 2006-09-27 (0.10.12)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudiobasesrc.functions_details"></a><h2>Functions</h2>
@@ -194,7 +193,7 @@ reading samples from the ringbuffer, synchronisation and flushing.</p>
 <p>Get the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html"><span class="type">GstClock</span></a> of <em class="parameter"><code>obj</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -217,7 +216,7 @@ reading samples from the ringbuffer, synchronisation and flushing.</p>
 <p>Get the source <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> of <em class="parameter"><code>obj</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -238,12 +237,12 @@ reading samples from the ringbuffer, synchronisation and flushing.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="returnvalue">GstAudioRingBuffer</span></a> *
 gst_audio_base_src_create_ringbuffer (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc"><span class="type">GstAudioBaseSrc</span></a> *src</code></em>);</pre>
 <p>Create and return the <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> for <em class="parameter"><code>src</code></em>
-. This function will call the
-::create_ringbuffer vmethod and will set <em class="parameter"><code>src</code></em>
- as the parent of the returned
-buffer (see <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html#gst-object-set-parent"><code class="function">gst_object_set_parent()</code></a>).</p>
+. This function will call
+the ::create_ringbuffer vmethod and will set <em class="parameter"><code>src</code></em>
+ as the parent of the
+returned buffer (see <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html#gst-object-set-parent"><code class="function">gst_object_set_parent()</code></a>).</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -258,7 +257,7 @@ buffer (see <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.13.10.4.6"></a><h4>Returns</h4>
 <p> The new ringbuffer of <em class="parameter"><code>src</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -272,13 +271,13 @@ gst_audio_base_src_set_provide_clock (<em class="parameter"><code><a class="link
                                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> provide</code></em>);</pre>
 <p>Controls whether <em class="parameter"><code>src</code></em>
  will provide a clock or not. If <em class="parameter"><code>provide</code></em>
- is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, 
+ is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>,
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-provide-clock"><code class="function">gst_element_provide_clock()</code></a> will return a clock that reflects the datarate
 of <em class="parameter"><code>src</code></em>
 . If <em class="parameter"><code>provide</code></em>
  is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-provide-clock"><code class="function">gst_element_provide_clock()</code></a> will return NULL.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -309,7 +308,7 @@ gst_audio_base_src_get_provide_clock (<em class="parameter"><code><a class="link
  will provide a clock or not. See also
 gst_audio_base_src_set_provide_clock.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -324,7 +323,7 @@ gst_audio_base_src_set_provide_clock.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.13.10.6.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>src</code></em>
 will provide a clock.</p>
 <p></p>
@@ -338,7 +337,7 @@ gst_audio_base_src_get_slave_method (<em class="parameter"><code><a class="link"
 <p>Get the current slave method used by <em class="parameter"><code>src</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -353,7 +352,7 @@ gst_audio_base_src_get_slave_method (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.13.10.7.6"></a><h4>Returns</h4>
 <p> The current slave method used by <em class="parameter"><code>src</code></em>
 .</p>
 <p></p>
@@ -368,7 +367,7 @@ gst_audio_base_src_set_slave_method (<em class="parameter"><code><a class="link"
 <p>Controls how clock slaving will be performed in <em class="parameter"><code>src</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.10.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.13.10.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -411,7 +410,7 @@ gst_audio_base_src_set_slave_method (<em class="parameter"><code><a class="link"
 <p><a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrc"><span class="type">GstAudioBaseSrc</span></a> class. Override the vmethod to implement
 functionality.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.11.3.5"></a><h4>Members</h4>
+<a name="id-1.2.6.13.11.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -439,7 +438,7 @@ functionality.</p>
 <p>Different possible clock slaving algorithms when the internal audio clock was
 not selected as the pipeline clock.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.11.4.4"></a><h4>Members</h4>
+<a name="id-1.2.6.13.11.4.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -505,7 +504,7 @@ drifts too much.</p>
 <div class="refsect2">
 <a name="GstAudioBaseSrc--buffer-time"></a><h3>The <code class="literal">“buffer-time”</code> property</h3>
 <pre class="programlisting">  “buffer-time”              <span class="type">gint64</span></pre>
-<p>Size of audio buffer in microseconds, this is the maximum amount of data that is buffered in the device and the maximum latency that the source reports.</p>
+<p>Size of audio buffer in microseconds. This is the maximum amount of data that is buffered in the device and the maximum latency that the source reports.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 200000</p>
@@ -514,7 +513,7 @@ drifts too much.</p>
 <div class="refsect2">
 <a name="GstAudioBaseSrc--latency-time"></a><h3>The <code class="literal">“latency-time”</code> property</h3>
 <pre class="programlisting">  “latency-time”             <span class="type">gint64</span></pre>
-<p>The minimum amount of data to read in each iteration in microseconds, this is the minimum latency that the source reports.</p>
+<p>The minimum amount of data to read in each iteration in microseconds. This is the minimum latency that the source reports.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 10000</p>
@@ -531,7 +530,7 @@ drifts too much.</p>
 <div class="refsect2">
 <a name="GstAudioBaseSrc--slave-method"></a><h3>The <code class="literal">“slave-method”</code> property</h3>
 <pre class="programlisting">  “slave-method”             <a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#GstAudioBaseSrcSlaveMethod" title="enum GstAudioBaseSrcSlaveMethod"><span class="type">GstAudioBaseSrcSlaveMethod</span></a></pre>
-<p>Algorithm to use to match the rate of the masterclock.</p>
+<p>Algorithm used to match the rate of the masterclock.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: GST_AUDIO_BASE_SRC_SLAVE_SKEW</p>
 </div>

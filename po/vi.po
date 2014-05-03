@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base-1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-04-18 11:32+0200\n"
+"POT-Creation-Date: 2014-05-03 17:46+0200\n"
 "PO-Revision-Date: 2013-12-11 07:50+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
@@ -522,6 +522,9 @@ msgstr "Khóa khởi tạo trong cái mà âm thanh khởi chạy"
 msgid "Buffering..."
 msgstr "Đang đệm..."
 
+msgid "Clock lost, selecting a new one\n"
+msgstr ""
+
 msgid "Print version information and exit"
 msgstr "In ra thông tin phiên bản và thoát"
 
@@ -533,6 +536,18 @@ msgstr "Bộ chứa âm thanh được dùng (mặc định là autoaudiosink)"
 
 msgid "Enable gapless playback"
 msgstr "Bật phát lại không khe"
+
+msgid "Shuffle playlist"
+msgstr ""
+
+msgid "Interactive control via keyboard"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Playlist file containing input media files"
+msgstr ""
 
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."

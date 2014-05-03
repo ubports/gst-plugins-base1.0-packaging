@@ -125,7 +125,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gsttagid3.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.12.5.6.2"></a><p>
+<a name="id-1.2.13.5.6.2"></a><p>
 Contains various utility functions for plugins to parse or create
 ID3 tags and map ID3v2 identifiers to and from GStreamer identifiers.
 </p>
@@ -140,7 +140,7 @@ gst_tag_id3_genre_count (<em class="parameter"><code><span class="type">void</sp
 <p>Gets the number of ID3v1 genres that can be identified. Winamp genres are 
 included.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.2.5"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.2.5"></a><h4>Returns</h4>
 <p> the number of ID3v1 genres that can be identified</p>
 <p></p>
 </div>
@@ -152,7 +152,7 @@ included.</p>
 gst_tag_id3_genre_get (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> id</code></em>);</pre>
 <p>Gets the ID3v1 genre name for a given ID.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -167,7 +167,7 @@ gst_tag_id3_genre_get (<em class="parameter"><code>const <a href="http://library
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.3.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.3.6"></a><h4>Returns</h4>
 <p> the genre or NULL if no genre is associated with that ID.</p>
 <p></p>
 </div>
@@ -180,7 +180,7 @@ gst_tag_list_new_from_id3v1 (<em class="parameter"><code>const <span class="type
 <p>Parses the data containing an ID3v1 tag and returns a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> from the
 parsed data.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -195,7 +195,7 @@ parsed data.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.4.6"></a><h4>Returns</h4>
 <p> A new tag list or NULL if the data was not an ID3v1 tag.</p>
 <p></p>
 </div>
@@ -207,7 +207,7 @@ parsed data.</p>
 gst_tag_from_id3_tag (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *id3_tag</code></em>);</pre>
 <p>Looks up the GStreamer tag for a ID3v2 tag.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -222,7 +222,7 @@ gst_tag_from_id3_tag (<em class="parameter"><code>const <a href="http://library.
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.5.6"></a><h4>Returns</h4>
 <p> The corresponding GStreamer tag or NULL if none exists.</p>
 <p></p>
 </div>
@@ -236,7 +236,7 @@ gst_tag_from_id3_user_tag (<em class="parameter"><code>const <a href="http://lib
 <p>Looks up the GStreamer tag for an ID3v2 user tag (e.g. description in
 TXXX frame or owner in UFID frame).</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -258,7 +258,7 @@ TXXX frame or owner in UFID frame).</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.6.6"></a><h4>Returns</h4>
 <p> The corresponding GStreamer tag or NULL if none exists.</p>
 <p></p>
 </div>
@@ -270,7 +270,7 @@ TXXX frame or owner in UFID frame).</p>
 gst_tag_to_id3_tag (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *gst_tag</code></em>);</pre>
 <p>Looks up the ID3v2 tag for a GStreamer tag.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -285,7 +285,7 @@ gst_tag_to_id3_tag (<em class="parameter"><code>const <a href="http://library.gn
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.7.6"></a><h4>Returns</h4>
 <p> The corresponding ID3v2 tag or NULL if none exists.</p>
 <p></p>
 </div>
@@ -302,7 +302,7 @@ gst_tag_list_add_id3_image (<em class="parameter"><code><a href="http://gstreame
 to the given tag list. Also see <code class="function">gst_tag_image_data_to_image_sample()</code> for
 more information on image tags in GStreamer.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -336,7 +336,7 @@ the APIC frame (0 = unknown/other)</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.8.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the image was processed, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
 <p></p>
 </div>
@@ -349,7 +349,7 @@ gst_tag_get_id3v2_tag_size (<em class="parameter"><code><a href="http://gstreame
 <p>Determines size of an ID3v2 tag on buffer containing at least ID3v2 header,
 i.e. at least <a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-ID3V2-HEADER-SIZE:CAPS" title="GST_TAG_ID3V2_HEADER_SIZE"><span class="type">GST_TAG_ID3V2_HEADER_SIZE</span></a> (10) bytes;</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -364,7 +364,7 @@ i.e. at least <a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-ID
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.9.6"></a><h4>Returns</h4>
 <p> Size of tag, or 0 if header is invalid or too small.</p>
 <p></p>
 </div>
@@ -377,7 +377,7 @@ gst_tag_list_from_id3v2_tag (<em class="parameter"><code><a href="http://gstream
 <p>Creates a new tag list that contains the information parsed out of a
 ID3 tag.</p>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.5.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -392,7 +392,7 @@ ID3 tag.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.5.7.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.5.7.10.6"></a><h4>Returns</h4>
 <p> A new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a> with all tags that could be extracted from the
 given vorbiscomment buffer or NULL on error.</p>
 <p></p>

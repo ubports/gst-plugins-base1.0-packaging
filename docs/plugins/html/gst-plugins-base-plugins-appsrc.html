@@ -56,6 +56,16 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type"><span class="type">guint64</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--current-level-bytes" title="The “current-level-bytes” property">current-level-bytes</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--emit-signals" title="The “emit-signals” property">emit-signals</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--format" title="The “format” property">format</a></td>
 <td class="property_flags">Read / Write</td>
@@ -81,6 +91,11 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--min-percent" title="The “min-percent” property">min-percent</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type"><span class="type">gint64</span></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--size" title="The “size” property">size</a></td>
 <td class="property_flags">Read / Write</td>
@@ -89,21 +104,6 @@
 <td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-appsrc.html#GstAppStreamType"><span class="type">GstAppStreamType</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--stream-type" title="The “stream-type” property">stream-type</a></td>
 <td class="property_flags">Read / Write</td>
-</tr>
-<tr>
-<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--emit-signals" title="The “emit-signals” property">emit-signals</a></td>
-<td class="property_flags">Read / Write</td>
-</tr>
-<tr>
-<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--min-percent" title="The “min-percent” property">min-percent</a></td>
-<td class="property_flags">Read / Write</td>
-</tr>
-<tr>
-<td class="property_type"><span class="type">guint64</span></td>
-<td class="property_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc--current-level-bytes" title="The “current-level-bytes” property">current-level-bytes</a></td>
-<td class="property_flags">Read</td>
 </tr>
 </tbody>
 </table></div>
@@ -271,6 +271,22 @@ external API functions.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstAppSrc--current-level-bytes"></a><h3>The <code class="literal">“current-level-bytes”</code> property</h3>
+<pre class="programlisting">  “current-level-bytes”      <span class="type">guint64</span></pre>
+<p>The number of currently queued bytes.</p>
+<p>Flags: Read</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstAppSrc--emit-signals"></a><h3>The <code class="literal">“emit-signals”</code> property</h3>
+<pre class="programlisting">  “emit-signals”             <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Emit need-data, enough-data and seek-data signals.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstAppSrc--format"></a><h3>The <code class="literal">“format”</code> property</h3>
 <pre class="programlisting">  “format”                   <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a></pre>
 <p>The format of the segment events and seek.</p>
@@ -313,6 +329,15 @@ external API functions.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstAppSrc--min-percent"></a><h3>The <code class="literal">“min-percent”</code> property</h3>
+<pre class="programlisting">  “min-percent”              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
+<p>Emit need-data when queued bytes drops below this percent of max-bytes.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &lt;= 100</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstAppSrc--size"></a><h3>The <code class="literal">“size”</code> property</h3>
 <pre class="programlisting">  “size”                     <span class="type">gint64</span></pre>
 <p>The size of the data stream in bytes (-1 if unknown).</p>
@@ -327,31 +352,6 @@ external API functions.</p>
 <p>the type of the stream.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: GST_APP_STREAM_TYPE_STREAM</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstAppSrc--emit-signals"></a><h3>The <code class="literal">“emit-signals”</code> property</h3>
-<pre class="programlisting">  “emit-signals”             <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
-<p>Emit need-data, enough-data and seek-data signals.</p>
-<p>Flags: Read / Write</p>
-<p>Default value: TRUE</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstAppSrc--min-percent"></a><h3>The <code class="literal">“min-percent”</code> property</h3>
-<pre class="programlisting">  “min-percent”              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
-<p>Emit need-data when queued bytes drops below this percent of max-bytes.</p>
-<p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= 100</p>
-<p>Default value: 0</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstAppSrc--current-level-bytes"></a><h3>The <code class="literal">“current-level-bytes”</code> property</h3>
-<pre class="programlisting">  “current-level-bytes”      <span class="type">guint64</span></pre>
-<p>The number of currently queued bytes.</p>
-<p>Flags: Read</p>
-<p>Default value: 0</p>
 </div>
 </div>
 <div class="refsect1">

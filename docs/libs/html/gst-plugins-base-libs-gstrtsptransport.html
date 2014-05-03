@@ -143,7 +143,6 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtsptransport.description"></a><h2>Description</h2>
 <p>Provides helper functions to deal with RTSP transport strings.</p>
-<p>Last reviewed on 2007-07-25 (0.10.14)</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtsptransport.functions_details"></a><h2>Functions</h2>
@@ -275,11 +274,17 @@ is invalid.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_transport_get_mime (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransMode" title="enum GstRTSPTransMode"><span class="type">GstRTSPTransMode</span></a> trans</code></em>,
                              <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mime</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">gst_rtsp_transport_get_mime</code> is deprecated and should not be used in newly-written code.</p>
+<p>This functions only deals with the GstRTSPTransMode and only</p>
+</div>
 <p>Get the mime type of the transport mode <em class="parameter"><code>trans</code></em>
 . This mime type is typically
-used to generate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> on buffers.</p>
+used to generate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> events.</p>
+<p>returns the mime type for <a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GST-RTSP-PROFILE-AVP:CAPS"><span class="type">GST_RTSP_PROFILE_AVP</span></a>. Use
+   <code class="function">gst_rtsp_transport_get_media_type()</code> instead.</p>
 <div class="refsect3">
-<a name="id-1.2.10.8.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.8.8.6.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -301,8 +306,8 @@ used to generate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/he
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.8.8.6.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>. </p>
+<a name="id-1.2.10.8.8.6.8"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
 </div>
@@ -446,14 +451,28 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 <tr>
 <td class="enum_member_name"><p><a name="GST-RTSP-PROFILE-AVP:CAPS"></a>GST_RTSP_PROFILE_AVP</p></td>
 <td class="enum_member_description">
-<p>the Audio/Visual profile</p>
+<p>the Audio/Visual profile (RFC 3551)</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GST-RTSP-PROFILE-SAVP:CAPS"></a>GST_RTSP_PROFILE_SAVP</p></td>
 <td class="enum_member_description">
-<p>the secure Audio/Visual profile</p>
+<p>the secure Audio/Visual profile (RFC 3711)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-RTSP-PROFILE-AVPF:CAPS"></a>GST_RTSP_PROFILE_AVPF</p></td>
+<td class="enum_member_description">
+<p>the Audio/Visual profile with feedback (RFC 4585)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-RTSP-PROFILE-SAVPF:CAPS"></a>GST_RTSP_PROFILE_SAVPF</p></td>
+<td class="enum_member_description">
+<p>the secure Audio/Visual profile with feedback (RFC 5124)</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
