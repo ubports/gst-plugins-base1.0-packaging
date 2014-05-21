@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.3.1\n"
+"Project-Id-Version: gst-plugins-base 1.3.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-05-03 17:46+0200\n"
+"POT-Creation-Date: 2014-05-21 11:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,7 +199,7 @@ msgstr ""
 msgid "No URI handler implemented for \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:2271
+#: gst/playback/gsturidecodebin.c:2276
 msgid "Source element is invalid."
 msgstr ""
 
@@ -704,11 +704,11 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
-#: tools/gst-play.c:741
+#: tools/gst-play.c:747
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
-#: tools/gst-play.c:745
+#: tools/gst-play.c:751
 msgid "You must provide at least one filename or URI to play."
 msgstr ""

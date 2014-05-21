@@ -223,10 +223,10 @@
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_video_meta_map (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> *meta</code></em>,
                     <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> plane</code></em>,
-                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>,
+                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>,
                     <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> *data</code></em>,
                     <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *stride</code></em>,
-                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>);</pre>
+                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>);</pre>
 <p>Map the video plane with index <em class="parameter"><code>plane</code></em>
  in <em class="parameter"><code>meta</code></em>
  and return a pointer to the
@@ -252,7 +252,7 @@ first byte of the plane and the stride of the plane.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -288,7 +288,7 @@ first byte of the plane and the stride of the plane.</p>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> *meta</code></em>,
                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> plane</code></em>,
-                      <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>);</pre>
+                      <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> *info</code></em>);</pre>
 <p>Unmap a previously mapped plane with <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map" title="gst_video_meta_map ()"><code class="function">gst_video_meta_map()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.3.5"></a><h4>Parameters</h4>
@@ -311,7 +311,7 @@ gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plug
 </tr>
 <tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>

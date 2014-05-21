@@ -176,10 +176,10 @@ among others.
 <a name="id-1.2.6.5.10.4"></a><h3>Tracks and Table of Contents (TOC)</h3>
 <p>
 Applications will be informed of the available tracks via a TOC message
-on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a>. The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstToc"><span class="type">GstToc</span></a> will contain a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#GstTocEntry"><span class="type">GstTocEntry</span></a> for
+on the pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a>. The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstToc.html"><span class="type">GstToc</span></a> will contain a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstToc.html#GstTocEntry"><span class="type">GstTocEntry</span></a> for
 each track, with information about each track. The duration for each
 track can be retrieved via the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GST-TAG-DURATION:CAPS"><span class="type">GST_TAG_DURATION</span></a> tag from each entry's
-tag list, or calculated via <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstToc.html#gst-toc-entry-get-start-stop-times"><code class="function">gst_toc_entry_get_start_stop_times()</code></a>.
+tag list, or calculated via <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstToc.html#gst-toc-entry-get-start-stop-times"><code class="function">gst_toc_entry_get_start_stop_times()</code></a>.
 The track entries in the TOC will be sorted by track number.
 </p>
 </div>

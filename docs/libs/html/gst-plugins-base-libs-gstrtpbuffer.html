@@ -694,7 +694,7 @@ All RTP header fields will be set to 0/FALSE.</p>
 <a name="gst-rtp-buffer-map"></a><h3>gst_rtp_buffer_map ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_rtp_buffer_map (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
-                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>,
+                    <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a> flags</code></em>,
                     <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>);</pre>
 <p>Map the contents of <em class="parameter"><code>buffer</code></em>
  into <em class="parameter"><code>rtp</code></em>
@@ -715,7 +715,7 @@ gst_rtp_buffer_map (<em class="parameter"><code><a href="http://gstreamer.freede
 </tr>
 <tr>
 <td class="parameter_name"><p>flags</p></td>
-<td class="parameter_description"><p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a></p></td>
+<td class="parameter_description"><p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapFlags"><span class="type">GstMapFlags</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -2240,8 +2240,8 @@ The size of the structure is made public to allow stack allocations.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> <em class="structfield"><code><a name="GstRTPBuffer.map"></a>map</code></em>[4];</p></td>
-<td class="struct_member_description"><p>array of <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
+<td class="struct_member_name"><p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a> <em class="structfield"><code><a name="GstRTPBuffer.map"></a>map</code></em>[4];</p></td>
+<td class="struct_member_description"><p>array of <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html#GstMapInfo"><span class="type">GstMapInfo</span></a></p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 </tbody>

@@ -636,6 +636,7 @@ setup_tunneling (GstRTSPConnection * conn, GTimeVal * timeout, gchar * uri)
   GError *error = NULL;
   GSocketConnection *connection;
   GSocket *socket;
+  gchar *luri = NULL;
 
   memset (&response, 0, sizeof (response));
   gst_rtsp_message_init (&response);
@@ -689,7 +690,7 @@ setup_tunneling (GstRTSPConnection * conn, GTimeVal * timeout, gchar * uri)
   }
 
   gst_rtsp_url_get_port (url, &url_port);
-  uri = g_strdup_printf ("http://%s:%d%s%s%s", url->host, url_port,
+  luri = g_strdup_printf ("http://%s:%d%s%s%s", url->host, url_port,
       url->abspath, url->query ? "?" : "", url->query ? url->query : "");
 
   /* connect to the host/port */
@@ -698,7 +699,7 @@ setup_tunneling (GstRTSPConnection * conn, GTimeVal * timeout, gchar * uri)
         conn->proxy_host, conn->proxy_port, conn->cancellable, &error);
   } else {
     connection = g_socket_client_connect_to_uri (conn->client,
-        uri, 0, conn->cancellable, &error);
+        luri, 0, conn->cancellable, &error);
   }
   if (connection == NULL)
     goto connect_failed;
@@ -720,7 +721,7 @@ setup_tunneling (GstRTSPConnection * conn, GTimeVal * timeout, gchar * uri)
   conn->control_stream = NULL;
 
   /* create the POST request for the write connection */
-  GST_RTSP_CHECK (gst_rtsp_message_new_request (&msg, GST_RTSP_POST, uri),
+  GST_RTSP_CHECK (gst_rtsp_message_new_request (&msg, GST_RTSP_POST, luri),
       no_message);
   msg->type = GST_RTSP_MESSAGE_HTTP_REQUEST;
 
@@ -743,7 +744,7 @@ setup_tunneling (GstRTSPConnection * conn, GTimeVal * timeout, gchar * uri)
 
 exit:
   gst_rtsp_message_unset (&response);
-  g_free (uri);
+  g_free (luri);
 
   return res;
 
@@ -2231,6 +2232,7 @@ gst_rtsp_connection_close (GstRTSPConnection * conn)
   /* these were owned by the stream */
   conn->input_stream = NULL;
   conn->output_stream = NULL;
+  conn->control_stream = NULL;
 
   g_free (conn->remote_ip);
   conn->remote_ip = NULL;
@@ -3129,6 +3131,16 @@ gst_rtsp_source_dispatch_read (GPollableInputStream * stream,
       /* and signal that we lost our tunnel */
       if (watch->funcs.tunnel_lost)
         res = watch->funcs.tunnel_lost (watch, watch->user_data);
+      /* we add read source on the write socket able to detect when client closes get channel in tunneled mode */
+      if (watch->conn->control_stream && !watch->controlsrc) {
+        watch->controlsrc =
+            g_pollable_input_stream_create_source (G_POLLABLE_INPUT_STREAM
+            (watch->conn->control_stream), NULL);
+        g_source_set_callback (watch->controlsrc,
+            (GSourceFunc) gst_rtsp_source_dispatch_read_get_channel, watch,
+            NULL);
+        g_source_add_child_source ((GSource *) watch, watch->controlsrc);
+      }        
       goto read_done;
     } else
       goto eof;
