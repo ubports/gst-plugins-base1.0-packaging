@@ -333,8 +333,8 @@ elements_subparse_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 elements_textoverlay_SOURCES = elements/textoverlay.c
 elements_textoverlay_OBJECTS =  \
 	elements/elements_textoverlay-textoverlay.$(OBJEXT)
-elements_textoverlay_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+elements_textoverlay_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
 elements_textoverlay_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(elements_textoverlay_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -1262,6 +1262,7 @@ VORBIS_CFLAGS = @VORBIS_CFLAGS@
 VORBIS_LIBS = @VORBIS_LIBS@
 WARNING_CFLAGS = @WARNING_CFLAGS@
 WARNING_CXXFLAGS = @WARNING_CXXFLAGS@
+WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
@@ -1680,8 +1681,8 @@ elements_audioresample_LDADD = \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
 
-elements_textoverlay_LDADD = $(GST_BASE_LIBS) -lgstvideo-@GST_API_VERSION@ $(LDADD)
-elements_textoverlay_CFLAGS = $(GST_BASE_CFLAGS) $(AM_CFLAGS)
+elements_textoverlay_LDADD = $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la $(GST_BASE_LIBS) $(LDADD)
+elements_textoverlay_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(AM_CFLAGS)
 elements_volume_LDADD = \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
 	$(GST_CONTROLLER_LIBS) \

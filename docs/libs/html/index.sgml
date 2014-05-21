@@ -1497,6 +1497,7 @@
 <ANCHOR id="gst-discoverer-stream-info-unref" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-unref">
 <ANCHOR id="gst-discoverer-stream-info-list-free" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free">
 <ANCHOR id="gst-discoverer-stream-info-get-stream-type-nick" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-stream-type-nick">
+<ANCHOR id="gst-discoverer-info-get-missing-elements-installer-details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-missing-elements-installer-details">
 <ANCHOR id="gst-discoverer-info-get-audio-streams" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-audio-streams">
 <ANCHOR id="gst-discoverer-info-get-container-streams" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-container-streams">
 <ANCHOR id="gst-discoverer-info-get-streams" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-streams">

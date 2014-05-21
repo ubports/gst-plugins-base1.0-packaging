@@ -1107,7 +1107,7 @@
     <keyword type="function" name="gst_discoverer_discover_uri ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-discover-uri"/>
     <keyword type="function" name="gst_discoverer_discover_uri_async ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-discover-uri-async"/>
     <keyword type="function" name="gst_discoverer_info_get_duration ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-duration"/>
-    <keyword type="function" name="gst_discoverer_info_get_misc ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-misc"/>
+    <keyword type="function" name="gst_discoverer_info_get_misc ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-misc" deprecated=""/>
     <keyword type="function" name="gst_discoverer_info_get_result ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-result"/>
     <keyword type="function" name="gst_discoverer_info_get_stream_info ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-stream-info"/>
     <keyword type="function" name="gst_discoverer_info_get_stream_list ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-stream-list"/>
@@ -1118,7 +1118,7 @@
     <keyword type="macro" name="gst_discoverer_info_ref()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-ref"/>
     <keyword type="macro" name="gst_discoverer_info_unref()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-unref"/>
     <keyword type="function" name="gst_discoverer_stream_info_get_caps ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-caps"/>
-    <keyword type="function" name="gst_discoverer_stream_info_get_misc ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-misc"/>
+    <keyword type="function" name="gst_discoverer_stream_info_get_misc ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-misc" deprecated=""/>
     <keyword type="function" name="gst_discoverer_stream_info_get_next ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-next"/>
     <keyword type="function" name="gst_discoverer_stream_info_get_previous ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-previous"/>
     <keyword type="function" name="gst_discoverer_stream_info_get_tags ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-tags"/>
@@ -1128,6 +1128,7 @@
     <keyword type="macro" name="gst_discoverer_stream_info_unref()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-unref"/>
     <keyword type="function" name="gst_discoverer_stream_info_list_free ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-list-free"/>
     <keyword type="function" name="gst_discoverer_stream_info_get_stream_type_nick ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-stream-info-get-stream-type-nick"/>
+    <keyword type="function" name="gst_discoverer_info_get_missing_elements_installer_details ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-missing-elements-installer-details" since="1.4"/>
     <keyword type="function" name="gst_discoverer_info_get_audio_streams ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-audio-streams"/>
     <keyword type="function" name="gst_discoverer_info_get_container_streams ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-container-streams"/>
     <keyword type="function" name="gst_discoverer_info_get_streams ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-info-get-streams"/>

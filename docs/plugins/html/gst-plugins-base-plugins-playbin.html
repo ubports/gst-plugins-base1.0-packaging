@@ -140,7 +140,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *</td>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--sample" title="The “sample” property">sample</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -250,7 +250,7 @@
 </tr>
 <tr>
 <td class="signal_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a>*</td>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-convert-sample" title="The “convert-sample” signal">convert-sample</a></td>
 <td class="signal_flags">Action</td>
 </tr>
@@ -905,7 +905,7 @@ buffer is disabled. Default 0.</p>
 <hr>
 <div class="refsect2">
 <a name="GstPlayBin--sample"></a><h3>The <code class="literal">“sample”</code> property</h3>
-<pre class="programlisting">  “sample”                   <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> *</pre>
+<pre class="programlisting">  “sample”                   <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *</pre>
 <p>Get the currently rendered or prerolled sample in the video sink.
 The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> in the sample will describe the format of the buffer.</p>
 <p>Flags: Read</p>
@@ -1127,7 +1127,7 @@ to notify your application's main thread.</p>
 <hr>
 <div class="refsect2">
 <a name="GstPlayBin-convert-sample"></a><h3>The <code class="literal">“convert-sample”</code> signal</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="returnvalue">GstSample</span></a>*
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*
 user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin"><span class="type">GstPlayBin</span></a> *playbin,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>    *caps,
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>    user_data)</pre>
@@ -1166,7 +1166,7 @@ equivalent to the <span class="type">“frame”</span> property.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.24.13.5.6"></a><h4>Returns</h4>
-<p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSample.html#GstSample"><span class="type">GstSample</span></a> of the current video frame converted to <span class="type">caps</span>.
+<p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> of the current video frame converted to <span class="type">caps</span>.
 The caps on the sample will describe the final layout of the buffer data.
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current buffer can be retrieved or when the
 conversion failed.</p>

@@ -589,9 +589,9 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 
   /* multicast specific */
   guint  ttl;
-
-  /* UDP specific */
   GstRTSPRange   port;
+
+  /* UDP/TCP specific */
   GstRTSPRange   client_port;
   GstRTSPRange   server_port;
   /* RTP specific */
@@ -670,12 +670,16 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 </tr>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPRange" title="struct GstRTSPRange"><span class="type">GstRTSPRange</span></a> <em class="structfield"><code><a name="GstRTSPTransport.client-port"></a>client_port</code></em>;</p></td>
-<td class="struct_member_description"><p>the client port pair for receiving data</p></td>
+<td class="struct_member_description"><p>the client port pair for receiving data. For TCP
+based transports, applications can use this field to store the
+sender and receiver ports of the client.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPRange" title="struct GstRTSPRange"><span class="type">GstRTSPRange</span></a> <em class="structfield"><code><a name="GstRTSPTransport.server-port"></a>server_port</code></em>;</p></td>
-<td class="struct_member_description"><p>the server port pair for receiving data</p></td>
+<td class="struct_member_description"><p>the server port pair for receiving data. For TCP
+based transports, applications can use this field to store the
+sender and receiver ports of the server.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
