@@ -901,6 +901,7 @@ gst_audio_decoder_push_forward (GstAudioDecoder * dec, GstBuffer * buf)
   GstAudioDecoderPrivate *priv;
   GstAudioDecoderContext *ctx;
   GstFlowReturn ret = GST_FLOW_OK;
+  GstClockTime ts;
 
   klass = GST_AUDIO_DECODER_GET_CLASS (dec);
   priv = dec->priv;
@@ -914,6 +915,7 @@ gst_audio_decoder_push_forward (GstAudioDecoder * dec, GstBuffer * buf)
   }
 
   ctx->had_output_data = TRUE;
+  ts = GST_BUFFER_TIMESTAMP (buf);
 
   GST_LOG_OBJECT (dec,
       "clipping buffer of size %" G_GSIZE_FORMAT " with ts %" GST_TIME_FORMAT
@@ -926,6 +928,12 @@ gst_audio_decoder_push_forward (GstAudioDecoder * dec, GstBuffer * buf)
       ctx->info.bpf);
   if (G_UNLIKELY (!buf)) {
     GST_DEBUG_OBJECT (dec, "no data after clipping to segment");
+    if (dec->output_segment.rate >= 0) {
+      if (ts >= dec->output_segment.stop)
+        ret = GST_FLOW_EOS;
+    } else if (ts < dec->output_segment.start) {
+      ret = GST_FLOW_EOS;
+    }
     goto exit;
   }
 
@@ -1165,16 +1173,21 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
 
   /* frame and ts book-keeping */
   if (G_UNLIKELY (frames < 0)) {
-    if (G_UNLIKELY (-frames - 1 > priv->frames.length))
-      goto overflow;
-    frames = priv->frames.length + frames + 1;
+    if (G_UNLIKELY (-frames - 1 > priv->frames.length)) {
+      GST_ELEMENT_WARNING (dec, STREAM, ENCODE,
+          ("received more decoded frames %d than provided %d", frames,
+              priv->frames.length), (NULL));
+      frames = 0;
+    } else {
+      frames = priv->frames.length + frames + 1;
+    }
   } else if (G_UNLIKELY (frames > priv->frames.length)) {
     if (G_LIKELY (!priv->force)) {
-      /* no way we can let this pass */
-      g_assert_not_reached ();
-      /* really no way */
-      goto overflow;
+      GST_ELEMENT_WARNING (dec, STREAM, ENCODE,
+          ("received more decoded frames %d than provided %d", frames,
+              priv->frames.length), (NULL));
     }
+    frames = priv->frames.length;
   }
 
   if (G_LIKELY (priv->frames.length))
@@ -1280,16 +1293,6 @@ wrong_buffer:
         ("buffer size %" G_GSIZE_FORMAT " not a multiple of %d", size,
             ctx->info.bpf));
     gst_buffer_unref (buf);
-    ret = GST_FLOW_ERROR;
-    goto exit;
-  }
-overflow:
-  {
-    GST_ELEMENT_ERROR (dec, STREAM, ENCODE,
-        ("received more decoded frames %d than provided %d", frames,
-            priv->frames.length), (NULL));
-    if (buf)
-      gst_buffer_unref (buf);
     ret = GST_FLOW_ERROR;
     goto exit;
   }
@@ -1992,6 +1995,24 @@ not_negotiated:
   }
 }
 
+static GList *
+_flush_events (GstPad * pad, GList * events)
+{
+  GList *tmp;
+
+  for (tmp = events; tmp; tmp = tmp->next) {
+    if (GST_EVENT_TYPE (tmp->data) == GST_EVENT_EOS ||
+        GST_EVENT_TYPE (tmp->data) == GST_EVENT_SEGMENT ||
+        !GST_EVENT_IS_STICKY (tmp->data)) {
+      gst_event_unref (tmp->data);
+    } else {
+      gst_pad_store_sticky_event (pad, GST_EVENT_CAST (tmp->data));
+    }
+  }
+
+  return NULL;
+}
+
 static gboolean
 gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
 {
@@ -2087,9 +2108,8 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
       /* prepare for fresh start */
       gst_audio_decoder_flush (dec, TRUE);
 
-      g_list_foreach (dec->priv->pending_events, (GFunc) gst_event_unref, NULL);
-      g_list_free (dec->priv->pending_events);
-      dec->priv->pending_events = NULL;
+      dec->priv->pending_events = _flush_events (dec->srcpad,
+          dec->priv->pending_events);
       GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
 
       /* Forward FLUSH_STOP, it is expected to be forwarded immediately
