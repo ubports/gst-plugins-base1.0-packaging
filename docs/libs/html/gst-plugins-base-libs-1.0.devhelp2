@@ -98,6 +98,7 @@
         <sub name="GstVideoEncoder" link="gst-plugins-base-libs-GstVideoEncoder.html"/>
         <sub name="GstVideoPool" link="gst-plugins-base-libs-GstVideoPool.html"/>
         <sub name="gstvideoutils" link="gst-plugins-base-libs-gstvideoutils.html"/>
+        <sub name="gstnavigation" link="gst-plugins-base-libs-gstnavigation.html"/>
       </sub>
     </sub>
     <sub name="Object Hierarchy" link="gstreamer-libs-hierarchy.html"/>
@@ -1596,5 +1597,41 @@
     <keyword type="struct" name="struct GstVideoCodecFrame" link="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame"/>
     <keyword type="enum" name="enum GstVideoCodecFrameFlags" link="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrameFlags"/>
     <keyword type="struct" name="struct GstVideoCodecState" link="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState"/>
+    <keyword type="function" name="gst_navigation_send_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-send-event"/>
+    <keyword type="function" name="gst_navigation_send_key_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-send-key-event"/>
+    <keyword type="function" name="gst_navigation_send_mouse_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-send-mouse-event"/>
+    <keyword type="function" name="gst_navigation_send_command ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-send-command"/>
+    <keyword type="function" name="gst_navigation_event_parse_command ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-event-parse-command"/>
+    <keyword type="function" name="gst_navigation_event_parse_key_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-event-parse-key-event"/>
+    <keyword type="function" name="gst_navigation_event_parse_mouse_button_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-event-parse-mouse-button-event"/>
+    <keyword type="function" name="gst_navigation_event_parse_mouse_move_event ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-event-parse-mouse-move-event"/>
+    <keyword type="function" name="gst_navigation_message_get_type ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-get-type"/>
+    <keyword type="function" name="gst_navigation_message_new_angles_changed ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-new-angles-changed"/>
+    <keyword type="function" name="gst_navigation_message_new_commands_changed ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-new-commands-changed"/>
+    <keyword type="function" name="gst_navigation_message_new_mouse_over ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-new-mouse-over"/>
+    <keyword type="function" name="gst_navigation_message_parse_mouse_over ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-parse-mouse-over"/>
+    <keyword type="function" name="gst_navigation_message_parse_angles_changed ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-message-parse-angles-changed"/>
+    <keyword type="function" name="gst_navigation_query_new_angles ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-new-angles"/>
+    <keyword type="function" name="gst_navigation_query_get_type ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-get-type"/>
+    <keyword type="function" name="gst_navigation_query_new_commands ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-new-commands"/>
+    <keyword type="function" name="gst_navigation_query_parse_angles ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-parse-angles"/>
+    <keyword type="function" name="gst_navigation_query_parse_commands_length ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-parse-commands-length"/>
+    <keyword type="function" name="gst_navigation_query_parse_commands_nth ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-parse-commands-nth"/>
+    <keyword type="function" name="gst_navigation_query_set_angles ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-set-angles"/>
+    <keyword type="function" name="gst_navigation_query_set_commands ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-set-commands"/>
+    <keyword type="function" name="gst_navigation_query_set_commandsv ()" link="gst-plugins-base-libs-gstnavigation.html#gst-navigation-query-set-commandsv"/>
+    <keyword type="struct" name="GstNavigation" link="gst-plugins-base-libs-gstnavigation.html#GstNavigation-struct"/>
+    <keyword type="struct" name="struct GstNavigationInterface" link="gst-plugins-base-libs-gstnavigation.html#GstNavigationInterface"/>
+    <keyword type="enum" name="enum GstNavigationCommand" link="gst-plugins-base-libs-gstnavigation.html#GstNavigationCommand"/>
+    <keyword type="enum" name="enum GstNavigationEventType" link="gst-plugins-base-libs-gstnavigation.html#GstNavigationEventType"/>
+    <keyword type="enum" name="enum GstNavigationMessageType" link="gst-plugins-base-libs-gstnavigation.html#GstNavigationMessageType"/>
+    <keyword type="enum" name="enum GstNavigationQueryType" link="gst-plugins-base-libs-gstnavigation.html#GstNavigationQueryType"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_ANGLE_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-ANGLE-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_AUDIO_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-AUDIO-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_CHAPTER_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-CHAPTER-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_ROOT_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-ROOT-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_SUBPICTURE_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-SUBPICTURE-MENU:CAPS"/>
+    <keyword type="macro" name="GST_NAVIGATION_COMMAND_DVD_TITLE_MENU" link="gst-plugins-base-libs-gstnavigation.html#GST-NAVIGATION-COMMAND-DVD-TITLE-MENU:CAPS"/>
   </functions>
 </book>

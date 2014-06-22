@@ -978,6 +978,25 @@ gst_video_decoder_drain_out (GstVideoDecoder * dec, gboolean at_eos)
   return ret;
 }
 
+static GList *
+_flush_events (GstPad * pad, GList * events)
+{
+  GList *tmp;
+
+  for (tmp = events; tmp; tmp = tmp->next) {
+    if (GST_EVENT_TYPE (tmp->data) == GST_EVENT_EOS ||
+        GST_EVENT_TYPE (tmp->data) == GST_EVENT_SEGMENT ||
+        !GST_EVENT_IS_STICKY (tmp->data)) {
+      gst_event_unref (tmp->data);
+    } else {
+      gst_pad_store_sticky_event (pad, GST_EVENT_CAST (tmp->data));
+    }
+  }
+  g_list_free (events);
+
+  return NULL;
+}
+
 static gboolean
 gst_video_decoder_sink_event_default (GstVideoDecoder * decoder,
     GstEvent * event)
@@ -1128,7 +1147,17 @@ gst_video_decoder_sink_event_default (GstVideoDecoder * decoder,
     }
     case GST_EVENT_FLUSH_STOP:
     {
+      GList *l;
+
       GST_VIDEO_DECODER_STREAM_LOCK (decoder);
+      for (l = priv->frames; l; l = l->next) {
+        GstVideoCodecFrame *frame = l->data;
+
+        frame->events = _flush_events (decoder->srcpad, frame->events);
+      }
+      priv->current_frame_events = _flush_events (decoder->srcpad,
+          decoder->priv->current_frame_events);
+
       /* well, this is kind of worse than a DISCONT */
       gst_video_decoder_flush (decoder, TRUE);
       GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
@@ -2051,7 +2080,7 @@ gst_video_decoder_chain_reverse (GstVideoDecoder * dec, GstBuffer * buf)
     GST_DEBUG_OBJECT (dec, "received discont");
 
     /* parse and decode stuff in the gather and parse queues */
-    gst_video_decoder_flush_parse (dec, FALSE);
+    result = gst_video_decoder_flush_parse (dec, FALSE);
   }
 
   if (G_LIKELY (buf)) {
@@ -2721,6 +2750,12 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
         GST_TIME_ARGS (start), GST_TIME_ARGS (stop),
         GST_TIME_ARGS (segment->start),
         GST_TIME_ARGS (segment->stop), GST_TIME_ARGS (segment->time));
+    if (segment->rate >= 0) {
+      if (GST_BUFFER_PTS (buf) >= segment->stop)
+        ret = GST_FLOW_EOS;
+    } else if (GST_BUFFER_PTS (buf) < segment->start) {
+      ret = GST_FLOW_EOS;
+    }
     gst_buffer_unref (buf);
     goto done;
   }

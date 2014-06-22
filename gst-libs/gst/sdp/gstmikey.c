@@ -1271,8 +1271,7 @@ gst_mikey_message_add_t_now_ntp_utc (GstMIKEYMessage * msg)
 
   /* convert clock time to NTP time. upper 32 bits should contain the seconds
    * and the lower 32 bits, the fractions of a second. */
-  ntptime = gst_util_uint64_scale (now, (G_GINT64_CONSTANT (1) << 32),
-      GST_USECOND);
+  ntptime = gst_util_uint64_scale (now, (G_GINT64_CONSTANT (1) << 32), 1000000);
   /* conversion from UNIX timestamp (seconds since 1970) to NTP (seconds
    * since 1900). */
   ntptime += (G_GUINT64_CONSTANT (2208988800) << 32);
@@ -1301,8 +1300,10 @@ gst_mikey_message_add_rand (GstMIKEYMessage * msg, guint8 len,
   g_return_val_if_fail (len != 0 && rand != NULL, FALSE);
 
   p = gst_mikey_payload_new (GST_MIKEY_PT_RAND);
-  if (!gst_mikey_payload_rand_set (p, len, rand))
+  if (!gst_mikey_payload_rand_set (p, len, rand)) {
+    gst_mikey_payload_free (p);
     return FALSE;
+  }
 
   return gst_mikey_message_insert_payload (msg, -1, p);
 }
