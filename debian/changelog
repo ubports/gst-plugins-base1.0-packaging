@@ -1,8 +1,15 @@
-gst-plugins-base1.0 (1.3.2-2) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.3.3-1) experimental; urgency=medium
 
   * debian/control.in:
     + Add Recommends on gstreamer1.0-plugins-base for the
       library package (Closes: #749153).
+  * debian/rules:
+    + Run autopoint during autoreconf too.
+  * New upstream development release:
+    + debian/rules:
+      - Build-depend on GStreamer core >= 1.3.3.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
 
  -- Sebastian Dröge <slomo@debian.org>  Sun, 25 May 2014 17:11:24 +0200
 
