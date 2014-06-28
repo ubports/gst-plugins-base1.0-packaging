@@ -1,3 +1,13 @@
+gst-plugins-base1.0 (1.3.90-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/rules:
+      - Build-depend on GStreamer core >= 1.3.90.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sat, 28 Jun 2014 11:31:13 +0200
+
 gst-plugins-base1.0 (1.3.3-1) experimental; urgency=medium
 
   * debian/control.in:
