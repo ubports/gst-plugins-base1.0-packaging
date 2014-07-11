@@ -1138,7 +1138,6 @@
 <ANCHOR id="gst-mikey-message-new" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new">
 <ANCHOR id="gst-mikey-message-new-from-bytes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-bytes">
 <ANCHOR id="gst-mikey-message-new-from-data" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-data">
-<ANCHOR id="gst-mikey-message-free" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-free">
 <ANCHOR id="gst-mikey-message-to-bytes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-to-bytes">
 <ANCHOR id="gst-mikey-message-set-info" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-set-info">
 <ANCHOR id="gst-mikey-message-get-n-cs" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-n-cs">
@@ -1154,11 +1153,8 @@
 <ANCHOR id="gst-mikey-message-remove-payload" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-remove-payload">
 <ANCHOR id="gst-mikey-message-replace-payload" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-replace-payload">
 <ANCHOR id="gst-mikey-message-add-payload" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-payload">
-<ANCHOR id="GstMIKEYPayloadClearFunc" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#GstMIKEYPayloadClearFunc">
-<ANCHOR id="GstMIKEYPayloadCopyFunc" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#GstMIKEYPayloadCopyFunc">
 <ANCHOR id="gst-mikey-payload-new" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-new">
 <ANCHOR id="gst-mikey-payload-copy" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-copy">
-<ANCHOR id="gst-mikey-payload-free" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-free">
 <ANCHOR id="gst-mikey-payload-kemac-set" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-kemac-set">
 <ANCHOR id="gst-mikey-payload-pke-set" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-pke-set">
 <ANCHOR id="gst-mikey-message-add-pke" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-pke">
