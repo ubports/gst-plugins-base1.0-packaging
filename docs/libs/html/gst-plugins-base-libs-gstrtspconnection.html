@@ -1973,12 +1973,12 @@ gst_rtsp_watch_wait_backlog (<em class="parameter"><code><a class="link" href="g
 or <em class="parameter"><code>watch</code></em>
  is set to flushing.</p>
 <p>If <em class="parameter"><code>timeout</code></em>
- is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> this function can block forever. If <em class="parameter"><code>timeout</code></em>
+ is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> this function can block forever. If <em class="parameter"><code>timeout</code></em>
 
-contains a valid timeout, this function will return <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><span class="type">GST_RTSP_ETIMEOUT</span></a>
+contains a valid timeout, this function will return <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><code class="literal">GST_RTSP_ETIMEOUT</code></a>
 after the timeout expired.</p>
 <p>The typically use of this function is when gst_rtsp_watch_write_data
-returns GST_RTSP_ENOMEM. The caller then calls this function to wait for
+returns <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><code class="literal">GST_RTSP_ENOMEM</code></a>. The caller then calls this function to wait for
 free space in the backlog queue and try again.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.8.42.7"></a><h4>Parameters</h4>
@@ -2004,12 +2004,12 @@ free space in the backlog queue and try again.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.10.3.8.42.8"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when if there is room in queue.
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><span class="type">GST_RTSP_ETIMEOUT</span></a> when <em class="parameter"><code>timeout</code></em>
+<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><code class="literal">GST_RTSP_OK</code></a> when if there is room in queue.
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><code class="literal">GST_RTSP_ETIMEOUT</code></a> when <em class="parameter"><code>timeout</code></em>
 was reached.
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a> when <em class="parameter"><code>watch</code></em>
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><code class="literal">GST_RTSP_EINTR</code></a> when <em class="parameter"><code>watch</code></em>
 is flushing
-<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINVAL:CAPS"><span class="type">GST_RTSP_EINVAL</span></a> when called with invalid parameters.</p>
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINVAL:CAPS"><code class="literal">GST_RTSP_EINVAL</code></a> when called with invalid parameters.</p>
 <p></p>
 </div>
 <p class="since">Since 1.4</p>

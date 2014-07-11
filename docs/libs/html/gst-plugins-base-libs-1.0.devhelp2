@@ -890,44 +890,40 @@
     <keyword type="struct" name="GstSDPMedia" link="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia"/>
     <keyword type="struct" name="GstSDPMessage" link="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage"/>
     <keyword type="" name="" link="gst-plugins-base-libs-gstmikey.html#id-1.2.12.3.7.2"/>
-    <keyword type="function" name="gst_mikey_message_new ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new"/>
-    <keyword type="function" name="gst_mikey_message_new_from_bytes ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-bytes"/>
-    <keyword type="function" name="gst_mikey_message_new_from_data ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-data"/>
-    <keyword type="function" name="gst_mikey_message_free ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-free"/>
-    <keyword type="function" name="gst_mikey_message_to_bytes ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-to-bytes"/>
-    <keyword type="function" name="gst_mikey_message_set_info ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-set-info"/>
-    <keyword type="function" name="gst_mikey_message_get_n_cs ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-n-cs"/>
-    <keyword type="function" name="gst_mikey_message_get_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-cs-srtp"/>
-    <keyword type="function" name="gst_mikey_message_insert_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-insert-cs-srtp"/>
-    <keyword type="function" name="gst_mikey_message_remove_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-remove-cs-srtp"/>
-    <keyword type="function" name="gst_mikey_message_replace_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-replace-cs-srtp"/>
-    <keyword type="function" name="gst_mikey_message_add_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-cs-srtp"/>
-    <keyword type="function" name="gst_mikey_message_get_n_payloads ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-n-payloads"/>
-    <keyword type="function" name="gst_mikey_message_get_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-payload"/>
-    <keyword type="function" name="gst_mikey_message_find_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-find-payload"/>
-    <keyword type="function" name="gst_mikey_message_insert_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-insert-payload"/>
-    <keyword type="function" name="gst_mikey_message_remove_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-remove-payload"/>
-    <keyword type="function" name="gst_mikey_message_replace_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-replace-payload"/>
-    <keyword type="function" name="gst_mikey_message_add_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-payload"/>
-    <keyword type="function" name="GstMIKEYPayloadClearFunc ()" link="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayloadClearFunc"/>
-    <keyword type="function" name="GstMIKEYPayloadCopyFunc ()" link="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayloadCopyFunc"/>
-    <keyword type="function" name="gst_mikey_payload_new ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-new"/>
-    <keyword type="function" name="gst_mikey_payload_copy ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-copy"/>
-    <keyword type="function" name="gst_mikey_payload_free ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-free"/>
-    <keyword type="function" name="gst_mikey_payload_kemac_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-kemac-set"/>
-    <keyword type="function" name="gst_mikey_payload_pke_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-pke-set"/>
-    <keyword type="function" name="gst_mikey_message_add_pke ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-pke"/>
-    <keyword type="function" name="gst_mikey_payload_t_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-t-set"/>
-    <keyword type="function" name="gst_mikey_message_add_t ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-t"/>
-    <keyword type="function" name="gst_mikey_message_add_t_now_ntp_utc ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-t-now-ntp-utc"/>
-    <keyword type="function" name="gst_mikey_payload_rand_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-rand-set"/>
-    <keyword type="function" name="gst_mikey_message_add_rand ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-rand"/>
-    <keyword type="function" name="gst_mikey_message_add_rand_len ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-rand-len"/>
-    <keyword type="function" name="gst_mikey_payload_sp_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-set"/>
-    <keyword type="function" name="gst_mikey_payload_sp_get_n_params ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-get-n-params"/>
-    <keyword type="function" name="gst_mikey_payload_sp_get_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-get-param"/>
-    <keyword type="function" name="gst_mikey_payload_sp_add_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-add-param"/>
-    <keyword type="function" name="gst_mikey_payload_sp_remove_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-remove-param"/>
+    <keyword type="function" name="gst_mikey_message_new ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_new_from_bytes ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-bytes" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_new_from_data ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-new-from-data" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_to_bytes ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-to-bytes" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_set_info ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-set-info" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_get_n_cs ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-n-cs" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_get_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-cs-srtp" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_insert_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-insert-cs-srtp" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_remove_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-remove-cs-srtp" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_replace_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-replace-cs-srtp" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_cs_srtp ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-cs-srtp" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_get_n_payloads ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-n-payloads" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_get_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-get-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_find_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-find-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_insert_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-insert-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_remove_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-remove-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_replace_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-replace-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_payload ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-payload" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_new ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-new" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_copy ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-copy" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_kemac_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-kemac-set" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_pke_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-pke-set" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_pke ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-pke" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_t_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-t-set" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_t ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-t" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_t_now_ntp_utc ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-t-now-ntp-utc" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_rand_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-rand-set" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_rand ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-rand" since="1.4"/>
+    <keyword type="function" name="gst_mikey_message_add_rand_len ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-message-add-rand-len" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_sp_set ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-set" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_sp_get_n_params ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-get-n-params" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_sp_get_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-get-param" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_sp_add_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-add-param" since="1.4"/>
+    <keyword type="function" name="gst_mikey_payload_sp_remove_param ()" link="gst-plugins-base-libs-gstmikey.html#gst-mikey-payload-sp-remove-param" since="1.4"/>
     <keyword type="macro" name="GST_MIKEY_VERSION" link="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-VERSION:CAPS"/>
     <keyword type="enum" name="enum GstMIKEYType" link="gst-plugins-base-libs-gstmikey.html#GstMIKEYType"/>
     <keyword type="struct" name="struct GstMIKEYMessage" link="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage"/>
@@ -1353,7 +1349,7 @@
     <keyword type="macro" name="GST_VIDEO_FRAME_COMP_PLANE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-COMP-PLANE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_FRAME_COMP_PSTRIDE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-COMP-PSTRIDE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_FRAME_COMP_POFFSET()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-COMP-POFFSET:CAPS"/>
-    <keyword type="function" name="gst_video_tile_get_index ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-tile-get-index"/>
+    <keyword type="function" name="gst_video_tile_get_index ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-tile-get-index" since="1.4"/>
     <keyword type="macro" name="GST_VIDEO_TILE_MAKE_MODE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-MAKE-MODE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_TILE_MODE_TYPE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-MODE-TYPE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_TILE_MODE_IS_INDEXED()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-MODE-IS-INDEXED:CAPS"/>
