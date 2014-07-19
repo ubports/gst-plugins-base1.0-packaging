@@ -1165,7 +1165,8 @@
     <keyword type="signal" name="The “starting” signal" link="gst-plugins-base-libs-gstdiscoverer.html#GstDiscoverer-starting"/>
     <keyword type="" name="" link="gst-plugins-base-libs-encoding-profile.html#id-1.2.14.10.13.2"/>
     <keyword type="" name="Example: Creating a profile" link="gst-plugins-base-libs-encoding-profile.html#id-1.2.14.10.13.3"/>
-    <keyword type="" name="Example: Listing categories, targets and profiles" link="gst-plugins-base-libs-encoding-profile.html#id-1.2.14.10.13.4"/>
+    <keyword type="" name="Example: Using an encoder preset with a profile" link="gst-plugins-base-libs-encoding-profile.html#id-1.2.14.10.13.4"/>
+    <keyword type="" name="Example: Listing categories, targets and profiles" link="gst-plugins-base-libs-encoding-profile.html#id-1.2.14.10.13.5"/>
     <keyword type="macro" name="gst_encoding_profile_unref()" link="gst-plugins-base-libs-encoding-profile.html#gst-encoding-profile-unref"/>
     <keyword type="macro" name="gst_encoding_profile_ref()" link="gst-plugins-base-libs-encoding-profile.html#gst-encoding-profile-ref"/>
     <keyword type="function" name="gst_encoding_profile_find ()" link="gst-plugins-base-libs-encoding-profile.html#gst-encoding-profile-find"/>
