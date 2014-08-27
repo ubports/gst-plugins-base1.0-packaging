@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtsptransport.html" title="gstrtsptransport">
 <link rel="next" href="gstreamer-sdp.html" title="SDP Library">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstrtspurl.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstrtspurl.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstrtspurl.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-rtsp.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -119,11 +118,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstrtspurl.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtspurl.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/rtsp/gstrtspurl.h&gt;
 </pre>
@@ -143,7 +137,7 @@ gst_rtsp_url_parse (<em class="parameter"><code>const <a href="http://library.gn
  into a newly allocated <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a>. Free after usage
 with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-free" title="gst_rtsp_url_free ()"><code class="function">gst_rtsp_url_free()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -165,7 +159,7 @@ with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-fr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.2.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="type">GstRTSPResult</span></a>.</p>
 <p></p>
 </div>
@@ -178,7 +172,7 @@ gst_rtsp_url_copy (<em class="parameter"><code>const <a class="link" href="gst-p
 <p>Make a copy of <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -193,7 +187,7 @@ gst_rtsp_url_copy (<em class="parameter"><code>const <a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.3.6"></a><h4>Returns</h4>
 <p> a copy of <em class="parameter"><code>url</code></em>
 . Free with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-free" title="gst_rtsp_url_free ()"><code class="function">gst_rtsp_url_free()</code></a> after usage.</p>
 <p></p>
@@ -207,7 +201,7 @@ gst_rtsp_url_free (<em class="parameter"><code><a class="link" href="gst-plugins
 <p>Free the memory used by <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -230,7 +224,7 @@ gst_rtsp_url_get_request_uri (<em class="parameter"><code>const <a class="link" 
 <p>Get a newly allocated string describing the request URI for <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -245,7 +239,7 @@ gst_rtsp_url_get_request_uri (<em class="parameter"><code>const <a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.5.6"></a><h4>Returns</h4>
 <p> a string with the request URI. <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
 <p></p>
 </div>
@@ -260,7 +254,7 @@ gst_rtsp_url_set_port (<em class="parameter"><code><a class="link" href="gst-plu
  to <em class="parameter"><code>port</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -282,7 +276,7 @@ gst_rtsp_url_set_port (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.6.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -296,7 +290,7 @@ gst_rtsp_url_get_port (<em class="parameter"><code>const <a class="link" href="g
 <p>Get the port number of <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -318,7 +312,7 @@ gst_rtsp_url_get_port (<em class="parameter"><code>const <a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.7.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -339,7 +333,7 @@ unescaped to NUL, as that would prematurely terminate the string.</p>
 <p>Also note that since paths usually start with a slash, the first component
 will usually be the empty string.</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.8.7"></a><h4>Parameters</h4>
+<a name="id-1.2.10.9.7.8.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -354,7 +348,7 @@ will usually be the empty string.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.8.8"></a><h4>Returns</h4>
+<a name="id-1.2.10.9.7.8.8"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated array of URL components. Free with
 <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> when no longer needed. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -385,7 +379,7 @@ will usually be the empty string.</p>
 </pre>
 <p>This structure contains the result of a parsed RTSP URL</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.10.9.8.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -441,6 +435,6 @@ will usually be the empty string.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

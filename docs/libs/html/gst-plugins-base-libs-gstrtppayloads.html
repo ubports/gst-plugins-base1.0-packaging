@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtcpbuffer.html" title="gstrtcpbuffer">
 <link rel="next" href="gst-plugins-base-libs-gstrtphdrext.html" title="gstrtphdrext">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstrtppayloads.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstrtppayloads.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstrtppayloads.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-rtp.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -83,11 +82,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstrtppayloads.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtppayloads.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/rtp/gstrtppayload.h&gt;
 </pre>
@@ -95,7 +89,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstrtppayloads.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.9.8.7.2"></a><p>
+<a name="id-1.2.9.8.6.2"></a><p>
 The GstRTPPayloads helper functions makes it easy to deal with static and dynamic
 payloads. Its main purpose is to retrieve properties such as the default clock-rate 
 and get session bandwidth information.
@@ -111,7 +105,7 @@ and get session bandwidth information.
 <p>Check if <em class="parameter"><code>pt</code></em>
  is a dynamic payload type.</p>
 <div class="refsect3">
-<a name="id-1.2.9.8.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.8.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -142,7 +136,7 @@ types specified with <em class="parameter"><code>media</code></em>
 <p>The search for <em class="parameter"><code>encoding_name</code></em>
  will be performed in a case insensitve way.</p>
 <div class="refsect3">
-<a name="id-1.2.9.8.8.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.8.7.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -164,7 +158,7 @@ types specified with <em class="parameter"><code>media</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.8.8.3.7"></a><h4>Returns</h4>
+<a name="id-1.2.9.8.7.3.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstrtppayloads.html#GstRTPPayloadInfo" title="struct GstRTPPayloadInfo"><span class="type">GstRTPPayloadInfo</span></a> or NULL when no info could be found.</p>
 <p></p>
 </div>
@@ -180,7 +174,7 @@ mostly used to get the default clock-rate and bandwidth for static payload
 types specified with <em class="parameter"><code>payload_type</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.8.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.8.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -195,7 +189,7 @@ types specified with <em class="parameter"><code>payload_type</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.8.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.8.7.4.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstrtppayloads.html#GstRTPPayloadInfo" title="struct GstRTPPayloadInfo"><span class="type">GstRTPPayloadInfo</span></a> or NULL when no info could be found.</p>
 <p></p>
 </div>
@@ -215,7 +209,7 @@ unassigned: 20-23,</p>
 unassigned: 24, 27, 29, 30, 35-71, 77-95
 Reserved for RTCP conflict avoidance: 72-76</p>
 <div class="refsect3">
-<a name="id-1.2.9.8.9.2.7"></a><h4>Members</h4>
+<a name="id-1.2.9.8.8.2.7"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -423,7 +417,7 @@ Reserved for RTCP conflict avoidance: 72-76</p>
 </pre>
 <p>Structure holding default payload type information.</p>
 <div class="refsect3">
-<a name="id-1.2.9.8.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.9.8.8.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -476,6 +470,6 @@ channels. NULL = not applicable.</p></td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

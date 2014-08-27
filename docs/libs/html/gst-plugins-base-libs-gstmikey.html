@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-mikey.html" title="MIKEY Library">
 <link rel="prev" href="gstreamer-mikey.html" title="MIKEY Library">
 <link rel="next" href="gstreamer-tag.html" title="Tag Support Library">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstmikey.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstmikey.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstmikey.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-mikey.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -403,11 +402,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstmikey.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstmikey.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/sdp/gstmikey.h&gt;
 </pre>
@@ -415,7 +409,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstmikey.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.12.3.7.2"></a><p>
+<a name="id-1.2.12.3.6.2"></a><p>
 The GstMIKEY helper functions makes it easy to parse and create MIKEY
 messages.
 </p>
@@ -429,7 +423,7 @@ messages.
 gst_mikey_message_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Make a new MIKEY message.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.2.5"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.2.5"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> on success</p>
 <p></p>
 </div>
@@ -445,7 +439,7 @@ gst_mikey_message_new_from_bytes (<em class="parameter"><code><a href="http://li
 <p>Make a new <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> from <em class="parameter"><code>bytes</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -472,7 +466,7 @@ gst_mikey_message_new_from_bytes (<em class="parameter"><code><a href="http://li
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.3.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a></p>
 <p></p>
 </div>
@@ -492,7 +486,7 @@ gst_mikey_message_new_from_data (<em class="parameter"><code><a href="http://lib
  contains the
 parameters to decrypt and verify the data.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -525,7 +519,7 @@ parameters to decrypt and verify the data.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.4.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when parsing failed and
 <em class="parameter"><code>error</code></em>
 will be set.</p>
@@ -543,7 +537,7 @@ gst_mikey_message_to_bytes (<em class="parameter"><code><a class="link" href="gs
 <p>Convert <em class="parameter"><code>msg</code></em>
  to a <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -570,7 +564,7 @@ gst_mikey_message_to_bytes (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.5.6"></a><h4>Returns</h4>
 <p> a new <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> for <em class="parameter"><code>msg</code></em>
 .</p>
 <p></p>
@@ -591,7 +585,7 @@ gst_mikey_message_set_info (<em class="parameter"><code><a class="link" href="gs
 <p>Set the information in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -638,7 +632,7 @@ gst_mikey_message_set_info (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.6.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -652,7 +646,7 @@ gst_mikey_message_get_n_cs (<em class="parameter"><code>const <a class="link" hr
 <p>Get the number of crypto sessions in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -667,7 +661,7 @@ gst_mikey_message_get_n_cs (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.7.6"></a><h4>Returns</h4>
 <p> the number of crypto sessions</p>
 <p></p>
 </div>
@@ -683,7 +677,7 @@ gst_mikey_message_get_cs_srtp (<em class="parameter"><code>const <a class="link"
  at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -705,7 +699,7 @@ gst_mikey_message_get_cs_srtp (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.8.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMapSRTP" title="GstMIKEYMapSRTP"><span class="type">GstMIKEYMapSRTP</span></a></p>
 <p></p>
 </div>
@@ -724,7 +718,7 @@ gst_mikey_message_insert_cs_srtp (<em class="parameter"><code><a class="link" hr
 <p>When <em class="parameter"><code>idx</code></em>
  is -1, the policy will be appended.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.9.6"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.9.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -751,7 +745,7 @@ gst_mikey_message_insert_cs_srtp (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.9.7"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.9.7"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -766,7 +760,7 @@ gst_mikey_message_remove_cs_srtp (<em class="parameter"><code><a class="link" hr
 <p>Remove the SRTP policy at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -788,7 +782,7 @@ gst_mikey_message_remove_cs_srtp (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.10.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -806,7 +800,7 @@ gst_mikey_message_replace_cs_srtp (<em class="parameter"><code><a class="link" h
  with <em class="parameter"><code>map</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -833,7 +827,7 @@ gst_mikey_message_replace_cs_srtp (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.11.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -850,7 +844,7 @@ gst_mikey_message_add_cs_srtp (<em class="parameter"><code><a class="link" href=
 <p>Add a Crypto policy for SRTP to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.12.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.12.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -883,7 +877,7 @@ gst_mikey_message_add_cs_srtp (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.12.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.12.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -897,7 +891,7 @@ gst_mikey_message_get_n_payloads (<em class="parameter"><code>const <a class="li
 <p>Get the number of payloads in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -912,7 +906,7 @@ gst_mikey_message_get_n_payloads (<em class="parameter"><code>const <a class="li
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.13.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.13.6"></a><h4>Returns</h4>
 <p> the number of payloads in <em class="parameter"><code>msg</code></em>
 </p>
 <p></p>
@@ -929,7 +923,7 @@ gst_mikey_message_get_payload (<em class="parameter"><code>const <a class="link"
  in <em class="parameter"><code>msg</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -951,7 +945,7 @@ gst_mikey_message_get_payload (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.14.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.14.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> at <em class="parameter"><code>idx</code></em>
 . The payload
 remains valid for as long as it is part of <em class="parameter"><code>msg</code></em>
@@ -972,7 +966,7 @@ gst_mikey_message_find_payload (<em class="parameter"><code>const <a class="link
  in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.15.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -999,7 +993,7 @@ gst_mikey_message_find_payload (<em class="parameter"><code>const <a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.15.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.15.6"></a><h4>Returns</h4>
 <p> the <em class="parameter"><code>nth</code></em>
 <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> of <em class="parameter"><code>type</code></em>
 .</p>
@@ -1022,7 +1016,7 @@ gst_mikey_message_insert_payload (<em class="parameter"><code><a class="link" hr
 will be appended to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1049,7 +1043,7 @@ will be appended to <em class="parameter"><code>msg</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.16.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.16.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1065,7 +1059,7 @@ gst_mikey_message_remove_payload (<em class="parameter"><code><a class="link" hr
  at <em class="parameter"><code>idx</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1087,7 +1081,7 @@ gst_mikey_message_remove_payload (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.17.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1105,7 +1099,7 @@ gst_mikey_message_replace_payload (<em class="parameter"><code><a class="link" h
  with <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.18.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1132,7 +1126,7 @@ gst_mikey_message_replace_payload (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.18.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.18.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1147,7 +1141,7 @@ gst_mikey_message_add_payload (<em class="parameter"><code><a class="link" href=
 <p>Add a new payload to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.19.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.19.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1169,7 +1163,7 @@ gst_mikey_message_add_payload (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.19.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.19.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1183,7 +1177,7 @@ gst_mikey_payload_new (<em class="parameter"><code><a class="link" href="gst-plu
 <p>Make a new <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> with <em class="parameter"><code>type</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.20.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1198,9 +1192,9 @@ gst_mikey_payload_new (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.20.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure. </p>
-<p><span class="annotation">[nullable]</span></p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 <p class="since">Since 1.4</p>
 </div>
@@ -1211,7 +1205,7 @@ gst_mikey_payload_new (<em class="parameter"><code><a class="link" href="gst-plu
 gst_mikey_payload_copy (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *buf</code></em>);</pre>
 <p>Create a copy of the given payload.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.21.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1226,7 +1220,7 @@ gst_mikey_payload_copy (<em class="parameter"><code>const <a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.21.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.21.6"></a><h4>Returns</h4>
 <p> a new copy of <em class="parameter"><code>payload</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -1244,7 +1238,7 @@ gst_mikey_payload_kemac_set (<em class="parameter"><code><a class="link" href="g
  should point to a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-KEMAC:CAPS"><code class="literal">GST_MIKEY_PT_KEMAC</code></a>
 payload.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1271,7 +1265,7 @@ payload.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.22.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1290,7 +1284,7 @@ gst_mikey_payload_pke_set (<em class="parameter"><code><a class="link" href="gst
  must be of type
 <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-PKE:CAPS"><code class="literal">GST_MIKEY_PT_PKE</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1323,7 +1317,7 @@ gst_mikey_payload_pke_set (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.23.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1340,7 +1334,7 @@ gst_mikey_message_add_pke (<em class="parameter"><code><a class="link" href="gst
 <p>Add a new PKE payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1373,7 +1367,7 @@ gst_mikey_message_add_pke (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.24.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1389,7 +1383,7 @@ gst_mikey_payload_t_set (<em class="parameter"><code><a class="link" href="gst-p
 <p>Set the timestamp in a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-T:CAPS"><code class="literal">GST_MIKEY_PT_T</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1416,7 +1410,7 @@ gst_mikey_payload_t_set (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.25.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.25.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1432,7 +1426,7 @@ gst_mikey_message_add_t (<em class="parameter"><code><a class="link" href="gst-p
 <p>Add a new T payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1460,7 +1454,7 @@ gst_mikey_message_add_t (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.26.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1475,7 +1469,7 @@ gst_mikey_message_add_t_now_ntp_utc (<em class="parameter"><code><a class="link"
  that contains the current time
 in NTP-UTC format.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.27.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1490,7 +1484,7 @@ in NTP-UTC format.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.27.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.27.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1506,7 +1500,7 @@ gst_mikey_payload_rand_set (<em class="parameter"><code><a class="link" href="gs
 <p>Set the random values in a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-RAND:CAPS"><code class="literal">GST_MIKEY_PT_RAND</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1534,7 +1528,7 @@ gst_mikey_payload_rand_set (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.28.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.28.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1550,7 +1544,7 @@ gst_mikey_message_add_rand (<em class="parameter"><code><a class="link" href="gs
 <p>Add a new RAND payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.29.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.29.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1578,7 +1572,7 @@ gst_mikey_message_add_rand (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.29.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.29.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1594,7 +1588,7 @@ gst_mikey_message_add_rand_len (<em class="parameter"><code><a class="link" href
  with <em class="parameter"><code>len</code></em>
  random bytes.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1616,7 +1610,7 @@ gst_mikey_message_add_rand_len (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.30.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1632,7 +1626,7 @@ gst_mikey_payload_sp_set (<em class="parameter"><code><a class="link" href="gst-
 <p>Set the Security Policy parameters for <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.31.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.31.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1659,7 +1653,7 @@ gst_mikey_payload_sp_set (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.31.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.31.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1674,7 +1668,7 @@ gst_mikey_payload_sp_get_n_params (<em class="parameter"><code>const <a class="l
 <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.32.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.32.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1689,7 +1683,7 @@ gst_mikey_payload_sp_get_n_params (<em class="parameter"><code>const <a class="l
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.32.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.32.6"></a><h4>Returns</h4>
 <p> the number of parameters in <em class="parameter"><code>payload</code></em>
 </p>
 <p></p>
@@ -1707,7 +1701,7 @@ gst_mikey_payload_sp_get_param (<em class="parameter"><code>const <a class="link
 at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.33.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.33.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1729,7 +1723,7 @@ at <em class="parameter"><code>idx</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.33.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.33.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayloadSPParam" title="GstMIKEYPayloadSPParam"><span class="type">GstMIKEYPayloadSPParam</span></a> at <em class="parameter"><code>idx</code></em>
 in <em class="parameter"><code>payload</code></em>
 </p>
@@ -1752,7 +1746,7 @@ gst_mikey_payload_sp_add_param (<em class="parameter"><code><a class="link" href
 and <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.34.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.34.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1785,7 +1779,7 @@ bytes of data. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.34.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.34.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1802,7 +1796,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
  at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.35.5"></a><h4>Parameters</h4>
+<a name="id-1.2.12.3.7.35.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1824,7 +1818,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.12.3.8.35.6"></a><h4>Returns</h4>
+<a name="id-1.2.12.3.7.35.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success</p>
 <p></p>
 </div>
@@ -1844,7 +1838,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 <a name="GstMIKEYType"></a><h3>enum GstMIKEYType</h3>
 <p>Different MIKEY data types.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.3.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.3.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1930,7 +1924,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 </pre>
 <p>Structure holding the information of the MIKEY message</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.4.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.4.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1993,7 +1987,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 <a name="GstMIKEYPRFFunc"></a><h3>enum GstMIKEYPRFFunc</h3>
 <p>The PRF function that has been/will be used for key derivation</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.5.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.5.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2016,7 +2010,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 <p>Specifies the method of uniquely mapping Crypto Sessions to the security
 protocol sessions.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.6.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.6.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2042,7 +2036,7 @@ protocol sessions.</p>
 </pre>
 <p>The Security policy Map item for SRTP</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.7.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.7.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2075,7 +2069,7 @@ protocol sessions.</p>
 <a name="GstMIKEYPayloadType"></a><h3>enum GstMIKEYPayloadType</h3>
 <p>Different MIKEY Payload types.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.8.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.8.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2204,7 +2198,7 @@ protocol sessions.</p>
 </pre>
 <p>Hold the common fields for all payloads</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.9.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.9.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2236,7 +2230,7 @@ protocol sessions.</p>
 <a name="GstMIKEYEncAlg"></a><h3>enum GstMIKEYEncAlg</h3>
 <p>The encryption algorithm used to encrypt the Encr data field</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.10.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.10.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2274,7 +2268,7 @@ protocol sessions.</p>
 <a name="GstMIKEYMacAlg"></a><h3>enum GstMIKEYMacAlg</h3>
 <p>Specifies the authentication algorithm used</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.11.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.11.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2313,7 +2307,7 @@ protocol sessions.</p>
 </pre>
 <p>A structure holding the KEMAC payload</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.12.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.12.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2350,7 +2344,7 @@ protocol sessions.</p>
 <a name="GstMIKEYCacheType"></a><h3>enum GstMIKEYCacheType</h3>
 <p>The different cache types</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.13.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.13.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2400,7 +2394,7 @@ used in the public-key transport to protect the data in the Key data
 transport payload.  The encryption algorithm used is implicit from
 the certificate/public key used.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.14.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.14.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2438,7 +2432,7 @@ the certificate/public key used.</p>
 <a name="GstMIKEYTSType"></a><h3>enum GstMIKEYTSType</h3>
 <p>Specifies the timestamp type.</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.15.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.15.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2483,7 +2477,7 @@ the certificate/public key used.</p>
 </pre>
 <p>The timestamp payload carries the timestamp information</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.16.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.16.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2522,7 +2516,7 @@ the certificate/public key used.</p>
 </pre>
 <p>The RAND payload consists of a (pseudo-)random bit-string</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.17.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.17.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2555,7 +2549,7 @@ the certificate/public key used.</p>
 <a name="GstMIKEYSecProto"></a><h3>enum GstMIKEYSecProto</h3>
 <p>Specifies the security protocol</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.18.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.18.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2575,7 +2569,7 @@ the certificate/public key used.</p>
 <a name="GstMIKEYSecSRTP"></a><h3>enum GstMIKEYSecSRTP</h3>
 <p>This policy specifies the parameters for SRTP and SRTCP</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.19.4"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.19.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2692,7 +2686,7 @@ the certificate/public key used.</p>
 <p>The Security Policy payload defines a set of policies that apply to a
 specific security protocol</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.20.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.20.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2735,7 +2729,7 @@ specific security protocol</p>
 </pre>
 <p>A Type/Length/Value field for security paramaters</p>
 <div class="refsect3">
-<a name="id-1.2.12.3.9.21.5"></a><h4>Members</h4>
+<a name="id-1.2.12.3.8.21.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -2767,6 +2761,6 @@ specific security protocol</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

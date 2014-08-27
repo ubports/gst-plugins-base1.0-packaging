@@ -8,17 +8,17 @@
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-playbin.html" title="playbin">
 <link rel="next" href="gst-plugins-base-plugins-streamsynchronizer.html" title="streamsynchronizer">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-playsink.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-playsink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-playsink.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-playsink.properties" class="shortcut">Properties</a></span><span id="nav_signals"> <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-playsink.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-playsink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-playsink.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-playsink.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-playsink.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -358,7 +358,7 @@ GstPlaySink implements
 <a name="GstPlaySink--audio-sink"></a><h3>The <code class="literal">“audio-sink”</code> property</h3>
 <pre class="programlisting">  “audio-sink”               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used audio sink element. NULL will use the default sink. playsink
-must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
+must be in <code class="literal">GST_STATE_NULL</code></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -400,7 +400,7 @@ the audio go behind the video.</p>
 <a name="GstPlaySink--sample"></a><h3>The <code class="literal">“sample”</code> property</h3>
 <pre class="programlisting">  “sample”                   <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *</pre>
 <p>Get the currently rendered or prerolled sample in the video sink.
-The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> in the sample will describe the format of the buffer.</p>
+The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> in the sample will describe the format of the buffer.</p>
 <p>Flags: Read</p>
 </div>
 <hr>
@@ -432,7 +432,7 @@ The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/
 <a name="GstPlaySink--text-sink"></a><h3>The <code class="literal">“text-sink”</code> property</h3>
 <pre class="programlisting">  “text-sink”                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used text sink element. NULL will use the default sink. playsink
-must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
+must be in <code class="literal">GST_STATE_NULL</code></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -440,7 +440,7 @@ must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst
 <a name="GstPlaySink--video-sink"></a><h3>The <code class="literal">“video-sink”</code> property</h3>
 <pre class="programlisting">  “video-sink”               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used video sink element. NULL will use the default sink. playsink
-must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
+must be in <code class="literal">GST_STATE_NULL</code></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -466,7 +466,7 @@ must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst
 <pre class="programlisting">  “audio-filter”             <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the audio filter element/bin to use. Will apply on a best-effort basis
 unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
+<code class="literal">GST_STATE_NULL</code></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -475,7 +475,7 @@ unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
 <pre class="programlisting">  “video-filter”             <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the video filter element/bin to use. Will apply on a best-effort basis
 unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
+<code class="literal">GST_STATE_NULL</code></p>
 <p>Flags: Read / Write</p>
 </div>
 </div>
@@ -485,7 +485,7 @@ unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
 <a name="GstPlaySink-convert-sample"></a><h3>The <code class="literal">“convert-sample”</code> signal</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*
 user_function (<a class="link" href="gst-plugins-base-plugins-playsink.html#GstPlaySink"><span class="type">GstPlaySink</span></a> *playsink,
-               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>     *caps,
+               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a>     *caps,
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>     user_data)</pre>
 <p>Action signal to retrieve the currently playing video sample in the format
 specified by <em class="parameter"><code>caps</code></em>
@@ -570,6 +570,6 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playsink.html#GstP
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

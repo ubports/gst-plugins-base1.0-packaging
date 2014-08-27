@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html" title="gstpbutilsmissingplugins">
 <link rel="next" href="gst-plugins-base-libs-gstdiscoverer.html" title="gstdiscoverer">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstpbutilsinstallplugins.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstpbutilsinstallplugins.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstpbutilsinstallplugins.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-base-utils.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -134,11 +133,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstpbutilsinstallplugins.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstpbutilsinstallplugins.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/pbutils/install-plugins.h&gt;
 </pre>
@@ -146,7 +140,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstpbutilsinstallplugins.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.14.8.7.2"></a><h3>Overview</h3>
+<a name="id-1.2.14.8.6.2"></a><h3>Overview</h3>
 <p>
 Using this API, applications can request the installation of missing
 GStreamer plugins. These may be missing decoders/demuxers or encoders/muxers
@@ -492,7 +486,7 @@ complex with additional fields, e.g.
 <code class="literal">audio/mpeg,mpegversion=(int){2,4}</code>, so they will not
 always exactly match the caps wanted by the application. It is up to the
 installer to deal with this (either by doing proper caps intersection using
-the GStreamer <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> API, or by only taking into account the media type).
+the GStreamer <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> API, or by only taking into account the media type).
 </p>
 <p>
 Another potential source of problems are plugins such as ladspa or
@@ -513,7 +507,7 @@ to handle (but usually not relevant for playback applications).
 external plugin installer program has returned. You only need to provide
 a callback function if you are using the asynchronous interface.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -560,7 +554,7 @@ application via the provided API, such as <a class="link" href="gst-plugins-base
 one go (as might be required if there is a demuxer for a certain format
 installed but no suitable video decoder and no suitable audio decoder).</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.3.8"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.3.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -577,7 +571,7 @@ of installer string details (see below). </p></td>
 <tr>
 <td class="parameter_name"><p>ctx</p></td>
 <td class="parameter_description"><p> a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>func</p></td>
@@ -594,7 +588,7 @@ when called, or NULL. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.3.9"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.3.9"></a><h4>Returns</h4>
 <p> result code whether an external installer could be started</p>
 <p></p>
 </div>
@@ -613,7 +607,7 @@ thread and marshal the result back asynchronously into the main thread
 using the other non-GLib main loop. You should almost always use
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-async" title="gst_install_plugins_async ()"><code class="function">gst_install_plugins_async()</code></a> instead of this function.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.4.6"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.4.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -630,13 +624,13 @@ of installer string details. </p></td>
 <tr>
 <td class="parameter_name"><p>ctx</p></td>
 <td class="parameter_description"><p> a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>, or NULL. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.4.7"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.4.7"></a><h4>Returns</h4>
 <p> the result of the installation.</p>
 <p></p>
 </div>
@@ -651,7 +645,7 @@ with a status code.  This function returns English strings and
 should not be used for user messages. It is here only to assist
 in debugging.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -666,7 +660,7 @@ in debugging.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.5.6"></a><h4>Returns</h4>
 <p> a descriptive string for the status code in <em class="parameter"><code>ret</code></em>
 </p>
 <p></p>
@@ -681,7 +675,7 @@ gst_install_plugins_installation_in_progress
 <p>Checks whether plugin installation (initiated by this application only)
 is currently in progress.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.6.5"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.6.5"></a><h4>Returns</h4>
 <p> TRUE if plugin installation is in progress, otherwise FALSE</p>
 <p></p>
 </div>
@@ -696,7 +690,7 @@ current environment. This currently only checks whether the helper script
 that is to be provided by the distribution or operating system vendor
 exists.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.7.5"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.7.5"></a><h4>Returns</h4>
 <p> TRUE if plugin installation is likely to be supported.</p>
 <p></p>
 </div>
@@ -708,7 +702,7 @@ exists.</p>
 gst_install_plugins_context_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Creates a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.8.5"></a><h4>Returns</h4>
+<a name="id-1.2.14.8.7.8.5"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>. Free with
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-free" title="gst_install_plugins_context_free ()"><code class="function">gst_install_plugins_context_free()</code></a> when no longer needed</p>
 <p></p>
@@ -721,7 +715,7 @@ gst_install_plugins_context_new (<em class="parameter"><code><span class="type">
 gst_install_plugins_context_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>);</pre>
 <p>Frees a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -763,7 +757,7 @@ window like this:</p>
 ...
 </pre>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.10.8"></a><h4>Parameters</h4>
+<a name="id-1.2.14.8.7.10.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -796,7 +790,7 @@ window like this:</p>
 <p>These codes indicate success or failure of starting an external installer
 program and to what extent the requested plugins could be installed.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.9.2.5"></a><h4>Members</h4>
+<a name="id-1.2.14.8.8.2.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -909,6 +903,6 @@ API to set details on it.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>
