@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiobasesrc.html" title="gstaudiobasesrc">
 <link rel="next" href="gst-plugins-base-libs-gstaudioringbuffer.html" title="gstaudioringbuffer">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstaudiochannels.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstaudiochannels.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstaudiochannels.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -119,11 +118,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstaudiochannels.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudiochannels.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/audio/audio-channels.h&gt;
 </pre>
@@ -154,7 +148,7 @@ gst_audio_channel_positions_to_mask (<em class="parameter"><code>const <a class=
  is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> it additionally checks if the channels are
 in the order required by GStreamer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -186,7 +180,7 @@ in the order required by GStreamer.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.3.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.3.7"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the channel positions are valid and could be converted.</p>
 <p></p>
 </div>
@@ -208,7 +202,7 @@ If <em class="parameter"><code>channel_mask</code></em>
  is set to 0, it is considered as 'not present' for purpose
 of conversion.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -236,7 +230,7 @@ of conversion.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.4.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if channel and channel mask are valid and could be converted</p>
 <p></p>
 </div>
@@ -252,7 +246,7 @@ gst_audio_channel_positions_to_valid_order
  from any order to
 the GStreamer channel order.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -275,7 +269,7 @@ reorder to. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.5.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the channel positions are valid and reordering
 was successful.</p>
 <p></p>
@@ -296,7 +290,7 @@ gst_audio_check_valid_channel_positions
  is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> it additionally
 checks if the channels are in the order required by GStreamer.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -324,7 +318,7 @@ to check. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.6.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the channel positions are valid.</p>
 <p></p>
 </div>
@@ -333,7 +327,7 @@ to check. </p></td>
 <div class="refsect2">
 <a name="gst-audio-buffer-reorder-channels"></a><h3>gst_audio_buffer_reorder_channels ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_audio_buffer_reorder_channels (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+gst_audio_buffer_reorder_channels (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                    <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> format</code></em>,
                                    <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> channels</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *from</code></em>,
@@ -349,7 +343,7 @@ positions and the same positions, only in a different order.
 <em class="parameter"><code>buffer</code></em>
  must be writable.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -386,7 +380,7 @@ positions and the same positions, only in a different order.
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.7.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the reordering was possible.</p>
 <p></p>
 </div>
@@ -410,7 +404,7 @@ positions <em class="parameter"><code>to</code></em>
  must contain the same number of
 positions and the same positions, only in a different order.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -453,7 +447,7 @@ the memory. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.8.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the reordering was possible.</p>
 <p></p>
 </div>
@@ -479,7 +473,7 @@ different order.</p>
  can be used for reordering by assigning
 channel i of the input to channel reorder_map[i] of the output.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.9.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.14.7.9.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -511,7 +505,7 @@ channel i of the input to channel reorder_map[i] of the output.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.14.8.9.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.14.7.9.7"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the channel positions are valid and reordering
 is possible.</p>
 <p></p>
@@ -545,7 +539,7 @@ This is expressed in caps by having a channel mask with no bits set.</p>
 This implicitely means that this is a stereo stream with a front left and front right
 channel.</p>
 <div class="refsect3">
-<a name="id-1.2.6.14.9.2.8"></a><h4>Members</h4>
+<a name="id-1.2.6.14.8.2.8"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -781,6 +775,6 @@ channel.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

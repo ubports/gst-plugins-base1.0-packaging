@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gstreamer-audio.html" title="Audio Library">
 <link rel="next" href="gst-plugins-base-libs-gstaudiometa.html" title="gstaudiometa">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstaudio.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstaudio.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstaudio.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-audio.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -74,7 +73,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-to-caps" title="gst_audio_info_to_caps ()">gst_audio_info_to_caps</a> <span class="c_punctuation">()</span>
@@ -378,7 +377,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="returnvalue">GstBuffer</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-buffer-clip" title="gst_audio_buffer_clip ()">gst_audio_buffer_clip</a> <span class="c_punctuation">()</span>
@@ -459,11 +458,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstaudio.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudio.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/audio/audio.h&gt;
 </pre>
@@ -490,7 +484,7 @@ The samples from source have each channel interleaved
 and will be packed into <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -542,7 +536,7 @@ interleaved. <em class="parameter"><code>dest</code></em>
  *
 channels * size(unpack_format) bytes.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -582,7 +576,7 @@ gst_audio_info_init (<em class="parameter"><code><a class="link" href="gst-plugi
 <p>Initialize <em class="parameter"><code>info</code></em>
  with default values.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -602,12 +596,12 @@ gst_audio_info_init (<em class="parameter"><code><a class="link" href="gst-plugi
 <a name="gst-audio-info-from-caps"></a><h3>gst_audio_info_from_caps ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_info_from_caps (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
-                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
+                          <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
 <p>Parse <em class="parameter"><code>caps</code></em>
  and update <em class="parameter"><code>info</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -622,14 +616,14 @@ gst_audio_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
 </tr>
 <tr>
 <td class="parameter_name"><p>caps</p></td>
-<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.5.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>caps</code></em>
 could be parsed</p>
 <p></p>
@@ -638,12 +632,12 @@ could be parsed</p>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-info-to-caps"></a><h3>gst_audio_info_to_caps ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
 gst_audio_info_to_caps (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);</pre>
 <p>Convert the values of <em class="parameter"><code>info</code></em>
- into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a>.</p>
+ into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -658,8 +652,8 @@ gst_audio_info_to_caps (<em class="parameter"><code>const <a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.6.6"></a><h4>Returns</h4>
-<p> the new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> containing the
+<a name="id-1.2.6.3.7.6.6"></a><h4>Returns</h4>
+<p> the new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> containing the
 info of <em class="parameter"><code>info</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -679,7 +673,7 @@ GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw audio, GST_FORMAT_DEFAULT corresponds to audio frames.  This
 function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -718,7 +712,7 @@ function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.7.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion was successful.</p>
 <p></p>
 </div>
@@ -731,7 +725,7 @@ gst_audio_format_get_info (<em class="parameter"><code><a class="link" href="gst
 <p>Get the <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormatInfo" title="struct GstAudioFormatInfo"><span class="type">GstAudioFormatInfo</span></a> for <em class="parameter"><code>format</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -746,7 +740,7 @@ gst_audio_format_get_info (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.8.6"></a><h4>Returns</h4>
 <p> The <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormatInfo" title="struct GstAudioFormatInfo"><span class="type">GstAudioFormatInfo</span></a> for <em class="parameter"><code>format</code></em>
 .</p>
 <p></p>
@@ -759,7 +753,7 @@ gst_audio_format_get_info (<em class="parameter"><code><a class="link" href="gst
 gst_audio_info_copy (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>);</pre>
 <p>Copy a GstAudioInfo structure.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -774,7 +768,7 @@ gst_audio_info_copy (<em class="parameter"><code>const <a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.9.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a>. free with gst_audio_info_free.</p>
 <p></p>
 </div>
@@ -787,7 +781,7 @@ gst_audio_info_free (<em class="parameter"><code><a class="link" href="gst-plugi
 <p>Free a GstAudioInfo structure previously allocated with <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-new" title="gst_audio_info_new ()"><code class="function">gst_audio_info_new()</code></a>
 or <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-copy" title="gst_audio_info_copy ()"><code class="function">gst_audio_info_copy()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -810,7 +804,7 @@ gst_audio_info_new (<em class="parameter"><code><span class="type">void</span></
 <p>Allocate a new <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> that is also initialized with
 <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-init" title="gst_audio_info_init ()"><code class="function">gst_audio_info_init()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.11.5"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.11.5"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a>. free with <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-free" title="gst_audio_info_free ()"><code class="function">gst_audio_info_free()</code></a>.</p>
 <p></p>
 </div>
@@ -831,7 +825,7 @@ gst_audio_info_set_format (<em class="parameter"><code><a class="link" href="gst
 <p>Note: This initializes <em class="parameter"><code>info</code></em>
  first, no values are preserved.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.12.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -876,7 +870,7 @@ gst_audio_info_is_equal (<em class="parameter"><code>const <a class="link" href=
                          <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *other</code></em>);</pre>
 <p>Compares two <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> and returns whether they are equal or not</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -898,7 +892,7 @@ gst_audio_info_is_equal (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.13.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.13.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>info</code></em>
 and <em class="parameter"><code>other</code></em>
 are equal, else <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
@@ -916,7 +910,7 @@ gst_audio_format_build_integer (<em class="parameter"><code><a href="http://libr
                                 <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> depth</code></em>);</pre>
 <p>Construct a <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> with given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -949,7 +943,7 @@ gst_audio_format_build_integer (<em class="parameter"><code><a href="http://libr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.14.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.14.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> or GST_AUDIO_FORMAT_UNKNOWN when no audio format
 exists with the given parameters.</p>
 <p></p>
@@ -967,7 +961,7 @@ gst_audio_format_fill_silence (<em class="parameter"><code>const <a class="link"
  with silence samples for <em class="parameter"><code>info</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.15.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1003,7 +997,7 @@ gst_audio_format_from_string (<em class="parameter"><code>const <a href="http://
 <p>Convert the <em class="parameter"><code>format</code></em>
  string to its <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1018,7 +1012,7 @@ gst_audio_format_from_string (<em class="parameter"><code>const <a href="http://
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.16.6"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.16.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> for <em class="parameter"><code>format</code></em>
 or GST_AUDIO_FORMAT_UNKNOWN when the
 string is not a known format.</p>
@@ -1219,7 +1213,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
  and <em class="parameter"><code>rate</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.48.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.48.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1249,7 +1243,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
  and sample <em class="parameter"><code>rate</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.49.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.49.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1279,7 +1273,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 <p>Turns audio format string <em class="parameter"><code>s</code></em>
  into the format string for native endianness.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.50.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.50.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1302,7 +1296,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 <p>Turns audio format string <em class="parameter"><code>s</code></em>
  into the format string for other endianness.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.51.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.51.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1323,7 +1317,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 <pre class="programlisting">#define             GST_AUDIO_CAPS_MAKE(format)</pre>
 <p>Generic caps string for audio, for use in pad templates.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.52.5"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.52.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1342,17 +1336,17 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 <hr>
 <div class="refsect2">
 <a name="gst-audio-buffer-clip"></a><h3>gst_audio_buffer_clip ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="returnvalue">GstBuffer</span></a> *
-gst_audio_buffer_clip (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>,
-                       <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSegment.html#GstSegment"><span class="type">GstSegment</span></a> *segment</code></em>,
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="returnvalue">GstBuffer</span></a> *
+gst_audio_buffer_clip (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>,
+                       <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSegment.html"><span class="type">GstSegment</span></a> *segment</code></em>,
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rate</code></em>,
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> bpf</code></em>);</pre>
-<p>Clip the buffer to the given <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstSegment.html#GstSegment"><code class="literal">GstSegment</code></a>.</p>
+<p>Clip the buffer to the given <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSegment.html"><code class="literal">GstSegment</code></a>.</p>
 <p>After calling this function the caller does not own a reference to
 <em class="parameter"><code>buffer</code></em>
  anymore.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.53.6"></a><h4>Parameters</h4>
+<a name="id-1.2.6.3.7.53.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1367,7 +1361,7 @@ gst_audio_buffer_clip (<em class="parameter"><code><a href="http://gstreamer.fre
 </tr>
 <tr>
 <td class="parameter_name"><p>segment</p></td>
-<td class="parameter_description"><p>Segment in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GST-FORMAT-TIME:CAPS"><code class="literal">GST_FORMAT_TIME</code></a> or <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GST-FORMAT-DEFAULT:CAPS"><code class="literal">GST_FORMAT_DEFAULT</code></a> to which
+<td class="parameter_description"><p>Segment in <code class="literal">GST_FORMAT_TIME</code> or <code class="literal">GST_FORMAT_DEFAULT</code> to which
 the buffer should be clipped.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -1388,7 +1382,7 @@ the buffer should be clipped.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.3.8.53.7"></a><h4>Returns</h4>
+<a name="id-1.2.6.3.7.53.7"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the buffer is completely outside the configured segment,
 otherwise the clipped buffer is returned.</p>
 <p>If the buffer has no timestamp, it is assumed to be inside the segment and
@@ -1403,7 +1397,7 @@ is not clipped. </p>
 <a name="GstAudioFlags"></a><h3>enum GstAudioFlags</h3>
 <p>Extra audio flags</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.2.4"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.2.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1435,7 +1429,7 @@ is not clipped. </p>
 <a name="GstAudioFormat"></a><h3>enum GstAudioFormat</h3>
 <p>Enum value describing the most common audio formats.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.3.4"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.3.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1774,7 +1768,7 @@ is not clipped. </p>
 <a name="GstAudioFormatFlags"></a><h3>enum GstAudioFormatFlags</h3>
 <p>The different audio flags that a format info can have.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.4.4"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.4.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1842,7 +1836,7 @@ is not clipped. </p>
 </pre>
 <p>Information for an audio format.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.5.5"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.5.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1928,7 +1922,7 @@ is not clipped. </p>
 in from GstCaps with <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-from-caps" title="gst_audio_info_from_caps ()"><code class="function">gst_audio_info_from_caps()</code></a>.</p>
 <p>Use the provided macros to access the info in this structure.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.6.6"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.6.6"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1982,7 +1976,7 @@ sample * <em class="parameter"><code>channels</code></em>
 <a name="GstAudioLayout"></a><h3>enum GstAudioLayout</h3>
 <p>Layout of the audio samples for the different channels.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.7.4"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.7.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2013,7 +2007,7 @@ sample * <em class="parameter"><code>channels</code></em>
 <a name="GstAudioPackFlags"></a><h3>enum GstAudioPackFlags</h3>
 <p>The different flags that can be used when packing and unpacking.</p>
 <div class="refsect3">
-<a name="id-1.2.6.3.9.8.4"></a><h4>Members</h4>
+<a name="id-1.2.6.3.8.8.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2091,6 +2085,6 @@ sample * <em class="parameter"><code>channels</code></em>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

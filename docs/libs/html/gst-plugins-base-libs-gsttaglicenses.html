@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="prev" href="gst-plugins-base-libs-gsttaglanguagecodes.html" title="gsttaglanguagecodes">
 <link rel="next" href="gstreamer-base-utils.html" title="Base Utils Library">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gsttaglicenses.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gsttaglicenses.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gsttaglicenses.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-tag.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -108,11 +107,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gsttaglicenses.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gsttaglicenses.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/tag/tag.h&gt;
 </pre>
@@ -133,7 +127,7 @@ gst_tag_get_license_flags (<em class="parameter"><code>const <a href="http://lib
 <p>Get the flags of a license, which describe most of the features of
 a license in their most general form.</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -149,7 +143,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.2.6"></a><h4>Returns</h4>
 <p> the flags of the license, or 0 if the license is unknown</p>
 <p></p>
 </div>
@@ -162,7 +156,7 @@ gst_tag_get_license_nick (<em class="parameter"><code>const <a href="http://libr
 <p>Get the nick name of a license, which is a short (untranslated) string
 such as e.g. "CC BY-NC-ND 2.0 UK".</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -178,7 +172,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.3.6"></a><h4>Returns</h4>
 <p> the nick name of the license, or NULL if the license is unknown</p>
 <p></p>
 </div>
@@ -191,7 +185,7 @@ gst_tag_get_license_title (<em class="parameter"><code>const <a href="http://lib
 <p>Get the title of a license, which is a short translated description
 of the license's features (generally not very pretty though).</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -207,7 +201,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.4.6"></a><h4>Returns</h4>
 <p> the title of the license, or NULL if the license is unknown or
 no title is available.</p>
 <p></p>
@@ -221,7 +215,7 @@ gst_tag_get_license_description (<em class="parameter"><code>const <a href="http
 <p>Get the description of a license, which is a translated description
 of the license's main features.</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -237,7 +231,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.5.6"></a><h4>Returns</h4>
 <p> the description of the license, or NULL if the license is unknown
 or a description is not available.</p>
 <p></p>
@@ -255,7 +249,7 @@ for which no code exists and which is thus represented as "scotland".</p>
 dk, es, fi, fr, hr, hu, il, in, it, jp, kr, mk, mt, mx, my, nl, pe, pl,
 pt, scotland, se, si, tw, uk, us, za.</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.6.6"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.6.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -271,7 +265,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.6.7"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.6.7"></a><h4>Returns</h4>
 <p> the jurisdiction code of the license, or NULL if the license is
 unknown or is not specific to a particular jurisdiction.</p>
 <p></p>
@@ -284,7 +278,7 @@ unknown or is not specific to a particular jurisdiction.</p>
 gst_tag_get_license_version (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *license_ref</code></em>);</pre>
 <p>Get the version of a license.</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.13.12.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -300,7 +294,7 @@ e.g. "http://creativecommons.org/licenses/by-nc-nd/2.0/"</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.7.6"></a><h4>Returns</h4>
 <p> the version of the license, or NULL if the license is not known or
 has no version</p>
 <p></p>
@@ -316,7 +310,7 @@ useful for UIs to build a list of available licenses for tagging purposes
 (e.g. to tag an audio track appropriately in a video or audio editor, or
 an image in a camera application).</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.8.8.5"></a><h4>Returns</h4>
+<a name="id-1.2.13.12.7.8.5"></a><h4>Returns</h4>
 <p> NULL-terminated array of license strings. Free
 with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> when no longer needed. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -329,7 +323,7 @@ with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-F
 <a name="GstTagLicenseFlags"></a><h3>enum GstTagLicenseFlags</h3>
 <p>See http://creativecommons.org/ns for more information.</p>
 <div class="refsect3">
-<a name="id-1.2.13.12.9.2.4"></a><h4>Members</h4>
+<a name="id-1.2.13.12.8.2.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -460,11 +454,11 @@ with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-F
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gsttaglicenses.see-also"></a><h2>See Also</h2>
-<p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstTagList.html#GstTagList"><span class="type">GstTagList</span></a></p>
+<p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a></p>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>
