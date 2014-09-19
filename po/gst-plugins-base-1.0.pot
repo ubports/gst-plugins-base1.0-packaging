@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.4.1\n"
+"Project-Id-Version: gst-plugins-base 1.4.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-08-27 14:24+0300\n"
+"POT-Creation-Date: 2014-09-19 10:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,14 +86,15 @@ msgstr ""
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/encoding/gstencodebin.c:1487 gst/playback/gstplaybin2.c:3099
-#: gst/playback/gstplaysink.c:1481 gst/playback/gstplaysink.c:1498
-#: gst/playback/gstplaysink.c:1840 gst/playback/gstplaysink.c:2420
-#: gst/playback/gstplaysink.c:2469 gst/playback/gstplaysink.c:2484
-#: gst/playback/gstplaysink.c:2509 gst/playback/gstplaysink.c:2541
-#: gst/playback/gstplaysink.c:2693 gst/playback/gstplaysink.c:3084
-#: gst/playback/gstplaysink.c:3093 gst/playback/gstplaysink.c:3102
-#: gst/playback/gstplaysink.c:3111 gst/playback/gstplaysink.c:4317
+#: gst/encoding/gstencodebin.c:1487 gst/playback/gstplaybin2.c:3148
+#: gst/playback/gstplaysink.c:1483 gst/playback/gstplaysink.c:1500
+#: gst/playback/gstplaysink.c:1834 gst/playback/gstplaysink.c:1863
+#: gst/playback/gstplaysink.c:2443 gst/playback/gstplaysink.c:2492
+#: gst/playback/gstplaysink.c:2507 gst/playback/gstplaysink.c:2532
+#: gst/playback/gstplaysink.c:2564 gst/playback/gstplaysink.c:2709
+#: gst/playback/gstplaysink.c:2737 gst/playback/gstplaysink.c:3128
+#: gst/playback/gstplaysink.c:3137 gst/playback/gstplaysink.c:3146
+#: gst/playback/gstplaysink.c:3155 gst/playback/gstplaysink.c:4361
 #: gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117
 #: gst/playback/gsturidecodebin.c:1479
@@ -114,65 +115,65 @@ msgstr ""
 msgid "This appears to be a text file"
 msgstr ""
 
-#: gst/playback/gstplaybin2.c:5164
+#: gst/playback/gstplaybin2.c:5213
 msgid "Could not create \"uridecodebin\" element."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1939
+#: gst/playback/gstplaysink.c:1962
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1943
+#: gst/playback/gstplaysink.c:1966
 msgid "The autovideosink element is missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1948
+#: gst/playback/gstplaysink.c:1971
 #, c-format
 msgid "Configured videosink %s is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1952
+#: gst/playback/gstplaysink.c:1975
 #, c-format
 msgid "Both autovideosink and %s elements are not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1956
+#: gst/playback/gstplaysink.c:1979
 msgid "The autovideosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2457
+#: gst/playback/gstplaysink.c:2480
 msgid "Custom text sink element is not usable."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2818
+#: gst/playback/gstplaysink.c:2862
 msgid "No volume control found"
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2848
+#: gst/playback/gstplaysink.c:2892
 #, c-format
 msgid "Both autoaudiosink and %s elements are missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2852
+#: gst/playback/gstplaysink.c:2896
 msgid "The autoaudiosink element is missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2857
+#: gst/playback/gstplaysink.c:2901
 #, c-format
 msgid "Configured audiosink %s is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2861
+#: gst/playback/gstplaysink.c:2905
 #, c-format
 msgid "Both autoaudiosink and %s elements are not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2865
+#: gst/playback/gstplaysink.c:2909
 msgid "The autoaudiosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:3187 gst/playback/gstplaysink.c:3192
+#: gst/playback/gstplaysink.c:3231 gst/playback/gstplaysink.c:3236
 msgid "Can't play a text file without video or visualizations."
 msgstr ""
 
@@ -212,7 +213,7 @@ msgstr ""
 msgid "Can't record audio fast enough"
 msgstr ""
 
-#: gst-libs/gst/audio/gstaudiocdsrc.c:1654
+#: gst-libs/gst/audio/gstaudiocdsrc.c:1655
 msgid "This CD has no audio tracks"
 msgstr ""
 
