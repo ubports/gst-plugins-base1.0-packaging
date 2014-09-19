@@ -310,9 +310,11 @@ static void gst_base_text_overlay_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
 static void gst_base_text_overlay_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
+
 static void
 gst_base_text_overlay_adjust_values_with_fontdesc (GstBaseTextOverlay * overlay,
     PangoFontDescription * desc);
+static gboolean gst_base_text_overlay_can_handle_caps (GstCaps * incaps);
 
 GType
 gst_base_text_overlay_get_type (void)
@@ -717,6 +719,9 @@ gst_base_text_overlay_negotiate (GstBaseTextOverlay * overlay, GstCaps * caps)
   gboolean caps_has_meta = TRUE;
   gboolean ret;
   GstCapsFeatures *f;
+  GstCaps *original_caps;
+  gboolean original_has_meta = FALSE;
+  gboolean allocation_ret = TRUE;
 
   GST_DEBUG_OBJECT (overlay, "performing negotiation");
 
@@ -727,6 +732,8 @@ gst_base_text_overlay_negotiate (GstBaseTextOverlay * overlay, GstCaps * caps)
 
   if (!caps || gst_caps_is_empty (caps))
     goto no_format;
+
+  original_caps = caps;
 
   /* Try to use the overlay meta if possible */
   f = gst_caps_get_features (caps, 0);
@@ -763,29 +770,51 @@ gst_base_text_overlay_negotiate (GstBaseTextOverlay * overlay, GstCaps * caps)
       gst_caps_unref (overlay_caps);
       caps_has_meta = FALSE;
     }
-
+  } else {
+    original_has_meta = TRUE;
   }
   GST_DEBUG_OBJECT (overlay, "Using caps %" GST_PTR_FORMAT, caps);
   ret = gst_pad_set_caps (overlay->srcpad, caps);
 
   if (ret) {
     /* find supported meta */
-    query = gst_query_new_allocation (caps, TRUE);
+    query = gst_query_new_allocation (caps, FALSE);
 
     if (!gst_pad_peer_query (overlay->srcpad, query)) {
       /* no problem, we use the query defaults */
       GST_DEBUG_OBJECT (overlay, "ALLOCATION query failed");
+      allocation_ret = FALSE;
     }
 
     if (caps_has_meta && gst_query_find_allocation_meta (query,
             GST_VIDEO_OVERLAY_COMPOSITION_META_API_TYPE, NULL))
       attach = TRUE;
 
-    overlay->attach_compo_to_buffer = attach;
     gst_query_unref (query);
-  } else {
-    overlay->attach_compo_to_buffer = FALSE;
   }
+
+  overlay->attach_compo_to_buffer = attach;
+
+  if (!allocation_ret && overlay->video_flushing) {
+    ret = FALSE;
+  } else if (original_caps && !original_has_meta && !attach) {
+    if (caps_has_meta) {
+      /* Some elements (fakesink) claim to accept the meta on caps but won't
+         put it in the allocation query result, this leads below
+         check to fail. Prevent this by removing the meta from caps */
+      gst_caps_unref (caps);
+      caps = gst_caps_ref (original_caps);
+      ret = gst_pad_set_caps (overlay->srcpad, caps);
+      if (ret && !gst_base_text_overlay_can_handle_caps (caps))
+        ret = FALSE;
+    }
+  }
+
+  if (!ret) {
+    GST_DEBUG_OBJECT (overlay, "negotiation failed, schedule reconfigure");
+    gst_pad_mark_reconfigure (overlay->srcpad);
+  }
+
   gst_caps_unref (caps);
 
   return ret;
@@ -826,10 +855,10 @@ gst_base_text_overlay_setcaps (GstBaseTextOverlay * overlay, GstCaps * caps)
   overlay->width = GST_VIDEO_INFO_WIDTH (&info);
   overlay->height = GST_VIDEO_INFO_HEIGHT (&info);
 
-  GST_BASE_TEXT_OVERLAY_LOCK (overlay);
-  g_mutex_lock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
   ret = gst_base_text_overlay_negotiate (overlay, caps);
 
+  GST_BASE_TEXT_OVERLAY_LOCK (overlay);
+  g_mutex_lock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
   if (!overlay->attach_compo_to_buffer &&
       !gst_base_text_overlay_can_handle_caps (caps)) {
     GST_DEBUG_OBJECT (overlay, "unsupported caps %" GST_PTR_FORMAT, caps);
@@ -2334,22 +2363,14 @@ gst_base_text_overlay_video_chain (GstPad * pad, GstObject * parent,
    * duration (we only use those estimated values internally though, we
    * don't want to set bogus values on the buffer itself) */
   if (stop == -1) {
-    GstCaps *caps;
-    GstStructure *s;
-    gint fps_num, fps_denom;
-
-    /* FIXME, store this in setcaps */
-    caps = gst_pad_get_current_caps (pad);
-    s = gst_caps_get_structure (caps, 0);
-    if (gst_structure_get_fraction (s, "framerate", &fps_num, &fps_denom) &&
-        fps_num && fps_denom) {
+    if (overlay->info.fps_n && overlay->info.fps_d) {
       GST_DEBUG_OBJECT (overlay, "estimating duration based on framerate");
-      stop = start + gst_util_uint64_scale_int (GST_SECOND, fps_denom, fps_num);
+      stop = start + gst_util_uint64_scale_int (GST_SECOND,
+          overlay->info.fps_d, overlay->info.fps_n);
     } else {
       GST_LOG_OBJECT (overlay, "no duration, assuming minimal duration");
       stop = start + 1;         /* we need to assume some interval */
     }
-    gst_caps_unref (caps);
   }
 
   gst_object_sync_values (GST_OBJECT (overlay), GST_BUFFER_TIMESTAMP (buffer));

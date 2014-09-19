@@ -1004,13 +1004,12 @@ _flush_events (GstPad * pad, GList * events)
   GList *tmp;
 
   for (tmp = events; tmp; tmp = tmp->next) {
-    if (GST_EVENT_TYPE (tmp->data) == GST_EVENT_EOS ||
-        GST_EVENT_TYPE (tmp->data) == GST_EVENT_SEGMENT ||
-        !GST_EVENT_IS_STICKY (tmp->data)) {
-      gst_event_unref (tmp->data);
-    } else {
+    if (GST_EVENT_TYPE (tmp->data) != GST_EVENT_EOS &&
+        GST_EVENT_TYPE (tmp->data) != GST_EVENT_SEGMENT &&
+        GST_EVENT_IS_STICKY (tmp->data)) {
       gst_pad_store_sticky_event (pad, GST_EVENT_CAST (tmp->data));
     }
+    gst_event_unref (tmp->data);
   }
   g_list_free (events);
 
@@ -3261,6 +3260,10 @@ gst_video_decoder_decide_allocation_default (GstVideoDecoder * decoder,
   return TRUE;
 
 config_failed:
+  if (allocator)
+    gst_object_unref (allocator);
+  if (pool)
+    gst_object_unref (pool);
   GST_ELEMENT_ERROR (decoder, RESOURCE, SETTINGS,
       ("Failed to configure the buffer pool"),
       ("Configuration is most likely invalid, please report this issue."));
