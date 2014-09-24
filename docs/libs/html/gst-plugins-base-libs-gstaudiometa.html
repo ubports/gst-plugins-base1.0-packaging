@@ -95,10 +95,10 @@ meta as well as extracting it.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstaudiometa.html#GstAudioDownmixMeta" title="struct GstAudioDownmixMeta"><span class="returnvalue">GstAudioDownmixMeta</span></a> *
 gst_buffer_add_audio_downmix_meta (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *from_position</code></em>,
-                                   <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> from_channels</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> from_channels</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *to_position</code></em>,
-                                   <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> to_channels</code></em>,
-                                   <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> **matrix</code></em>);</pre>
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> to_channels</code></em>,
+                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> **matrix</code></em>);</pre>
 <p>Attaches <a class="link" href="gst-plugins-base-libs-gstaudiometa.html#GstAudioDownmixMeta" title="struct GstAudioDownmixMeta"><span class="type">GstAudioDownmixMeta</span></a> metadata to <em class="parameter"><code>buffer</code></em>
  with the given parameters.</p>
 <p><em class="parameter"><code>matrix</code></em>
@@ -173,7 +173,7 @@ the destination. </p></td>
 gst_buffer_get_audio_downmix_meta_for_channels
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *to_position</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> to_channels</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> to_channels</code></em>);</pre>
 <p>Find the <a class="link" href="gst-plugins-base-libs-gstaudiometa.html#GstAudioDownmixMeta" title="struct GstAudioDownmixMeta"><span class="type">GstAudioDownmixMeta</span></a> on <em class="parameter"><code>buffer</code></em>
  for the given destination
 channel positions.</p>
@@ -263,17 +263,17 @@ of the results.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstAudioDownmixMeta.from-channels"></a>from_channels</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstAudioDownmixMeta.from-channels"></a>from_channels</code></em>;</p></td>
 <td class="struct_member_description"><p>the number of channels of the source</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstAudioDownmixMeta.to-channels"></a>to_channels</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstAudioDownmixMeta.to-channels"></a>to_channels</code></em>;</p></td>
 <td class="struct_member_description"><p>the number of channels of the destination</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> **<em class="structfield"><code><a name="GstAudioDownmixMeta.matrix"></a>matrix</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> **<em class="structfield"><code><a name="GstAudioDownmixMeta.matrix"></a>matrix</code></em>;</p></td>
 <td class="struct_member_description"><p>the matrix coefficients.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

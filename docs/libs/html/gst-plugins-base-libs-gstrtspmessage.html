@@ -413,7 +413,7 @@ gst_rtsp_message_get_type (<em class="parameter"><code><a class="link" href="gst
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_new_request (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> **msg</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a> method</code></em>,
-                              <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                              <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
 <p>Create a new <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> with <em class="parameter"><code>method</code></em>
  and <em class="parameter"><code>uri</code></em>
  and store the result
@@ -458,7 +458,7 @@ request message in <em class="parameter"><code>msg</code></em>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_init_request (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a> method</code></em>,
-                               <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
 <p>Initialize <em class="parameter"><code>msg</code></em>
  as a request message with <em class="parameter"><code>method</code></em>
  and <em class="parameter"><code>uri</code></em>
@@ -504,14 +504,14 @@ again, use <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-r
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_parse_request (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPMethod" title="enum GstRTSPMethod"><span class="type">GstRTSPMethod</span></a> *method</code></em>,
-                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **uri</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **uri</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPVersion" title="enum GstRTSPVersion"><span class="type">GstRTSPVersion</span></a> *version</code></em>);</pre>
 <p>Parse the request message <em class="parameter"><code>msg</code></em>
  and store the values <em class="parameter"><code>method</code></em>
 , <em class="parameter"><code>uri</code></em>
  and
 <em class="parameter"><code>version</code></em>
-. The result locations can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if one is not interested in its
+. The result locations can be <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if one is not interested in its
 value.</p>
 <p><em class="parameter"><code>uri</code></em>
  remains valid for as long as <em class="parameter"><code>msg</code></em>
@@ -560,7 +560,7 @@ value.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_new_response (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> **msg</code></em>,
                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPStatusCode" title="enum GstRTSPStatusCode"><span class="type">GstRTSPStatusCode</span></a> code</code></em>,
-                               <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
+                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
                                <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *request</code></em>);</pre>
 <p>Create a new response <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> with <em class="parameter"><code>code</code></em>
  and <em class="parameter"><code>reason</code></em>
@@ -568,10 +568,10 @@ gst_rtsp_message_new_response (<em class="parameter"><code><a class="link" href=
 result message in <em class="parameter"><code>msg</code></em>
 . Free with <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-free" title="gst_rtsp_message_free ()"><code class="function">gst_rtsp_message_free()</code></a>.</p>
 <p>When <em class="parameter"><code>reason</code></em>
- is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the default reason for <em class="parameter"><code>code</code></em>
+ is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the default reason for <em class="parameter"><code>code</code></em>
  will be used.</p>
 <p>When <em class="parameter"><code>request</code></em>
- is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the relevant headers will be copied to the new
+ is not <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the relevant headers will be copied to the new
 response message.</p>
 <div class="refsect3">
 <a name="id-1.2.10.6.7.10.7"></a><h4>Parameters</h4>
@@ -594,12 +594,12 @@ response message.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>reason</p></td>
-<td class="parameter_description"><p> the status reason or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> the status reason or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>request</p></td>
-<td class="parameter_description"><p> the request that triggered the response or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> the request that triggered the response or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -617,17 +617,17 @@ response message.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_init_response (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPStatusCode" title="enum GstRTSPStatusCode"><span class="type">GstRTSPStatusCode</span></a> code</code></em>,
-                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *request</code></em>);</pre>
 <p>Initialize <em class="parameter"><code>msg</code></em>
  with <em class="parameter"><code>code</code></em>
  and <em class="parameter"><code>reason</code></em>
 .</p>
 <p>When <em class="parameter"><code>reason</code></em>
- is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the default reason for <em class="parameter"><code>code</code></em>
+ is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the default reason for <em class="parameter"><code>code</code></em>
  will be used.</p>
 <p>When <em class="parameter"><code>request</code></em>
- is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the relevant headers will be copied to the new
+ is not <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>, the relevant headers will be copied to the new
 response message.</p>
 <div class="refsect3">
 <a name="id-1.2.10.6.7.11.7"></a><h4>Parameters</h4>
@@ -650,12 +650,12 @@ response message.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>reason</p></td>
-<td class="parameter_description"><p> the status reason or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> the status reason or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>request</p></td>
-<td class="parameter_description"><p> the request that triggered the response or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> the request that triggered the response or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -673,14 +673,14 @@ response message.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_parse_response (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                                  <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPStatusCode" title="enum GstRTSPStatusCode"><span class="type">GstRTSPStatusCode</span></a> *code</code></em>,
-                                 <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **reason</code></em>,
+                                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **reason</code></em>,
                                  <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPVersion" title="enum GstRTSPVersion"><span class="type">GstRTSPVersion</span></a> *version</code></em>);</pre>
 <p>Parse the response message <em class="parameter"><code>msg</code></em>
  and store the values <em class="parameter"><code>code</code></em>
 , <em class="parameter"><code>reason</code></em>
  and
 <em class="parameter"><code>version</code></em>
-. The result locations can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if one is not interested in its
+. The result locations can be <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if one is not interested in its
 value.</p>
 <p><em class="parameter"><code>reason</code></em>
  remains valid for as long as <em class="parameter"><code>msg</code></em>
@@ -840,7 +840,7 @@ gst_rtsp_message_parse_data (<em class="parameter"><code><a class="link" href="g
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_add_header (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                              <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> field</code></em>,
-                             <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+                             <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
 <p>Add a header with key <em class="parameter"><code>field</code></em>
  and <em class="parameter"><code>value</code></em>
  to <em class="parameter"><code>msg</code></em>
@@ -886,7 +886,7 @@ of <em class="parameter"><code>value</code></em>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_take_header (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> field</code></em>,
-                              <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
 <p>Add a header with key <em class="parameter"><code>field</code></em>
  and <em class="parameter"><code>value</code></em>
  to <em class="parameter"><code>msg</code></em>
@@ -932,7 +932,7 @@ ownership of <em class="parameter"><code>value</code></em>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_remove_header (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> field</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> indx</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> indx</code></em>);</pre>
 <p>Remove the <em class="parameter"><code>indx</code></em>
  header with key <em class="parameter"><code>field</code></em>
  from <em class="parameter"><code>msg</code></em>
@@ -978,8 +978,8 @@ headers will be removed.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_get_header (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                              <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a> field</code></em>,
-                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value</code></em>,
-                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> indx</code></em>);</pre>
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> indx</code></em>);</pre>
 <p>Get the <em class="parameter"><code>indx</code></em>
  header value with key <em class="parameter"><code>field</code></em>
  from <em class="parameter"><code>msg</code></em>
@@ -1032,9 +1032,9 @@ was not found.</p>
 <a name="gst-rtsp-message-append-headers"></a><h3>gst_rtsp_message_append_headers ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_append_headers (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                                 <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *str</code></em>);</pre>
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *str</code></em>);</pre>
 <p>Append the currently configured headers in <em class="parameter"><code>msg</code></em>
- to the <a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> <em class="parameter"><code>str</code></em>
+ to the <a href="https://developer.gnome.org/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> <em class="parameter"><code>str</code></em>
  suitable
 for transmission.</p>
 <div class="refsect3">
@@ -1071,7 +1071,7 @@ for transmission.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                            <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
-                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
 <p>Set the body of <em class="parameter"><code>msg</code></em>
  to a copy of <em class="parameter"><code>data</code></em>
 .</p>
@@ -1115,7 +1115,7 @@ gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                             <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                            <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
 <p>Set the body of <em class="parameter"><code>msg</code></em>
  to <em class="parameter"><code>data</code></em>
  and <em class="parameter"><code>size</code></em>
@@ -1162,7 +1162,7 @@ gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gs
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_get_body (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                            <em class="parameter"><code><span class="type">guint8</span> **data</code></em>,
-                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
 <p>Get the body of <em class="parameter"><code>msg</code></em>
 . <em class="parameter"><code>data</code></em>
  remains valid for as long as <em class="parameter"><code>msg</code></em>
@@ -1208,13 +1208,13 @@ unchanged.</p>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_steal_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
                              <em class="parameter"><code><span class="type">guint8</span> **data</code></em>,
-                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
 <p>Take the body of <em class="parameter"><code>msg</code></em>
  and store it in <em class="parameter"><code>data</code></em>
  and <em class="parameter"><code>size</code></em>
 . After this method,
 the body and size of <em class="parameter"><code>msg</code></em>
- will be set to <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> and 0 respectively.</p>
+ will be set to <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> and 0 respectively.</p>
 <div class="refsect3">
 <a name="id-1.2.10.6.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">

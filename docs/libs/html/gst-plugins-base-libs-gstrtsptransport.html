@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#gst-rtsp-transport-as-text" title="gst_rtsp_transport_as_text ()">gst_rtsp_transport_as_text</a> <span class="c_punctuation">()</span>
@@ -199,7 +199,7 @@ gst_rtsp_transport_init (<em class="parameter"><code><a class="link" href="gst-p
 <div class="refsect2">
 <a name="gst-rtsp-transport-parse"></a><h3>gst_rtsp_transport_parse ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
-gst_rtsp_transport_parse (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
+gst_rtsp_transport_parse (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>,
                           <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransport" title="struct GstRTSPTransport"><span class="type">GstRTSPTransport</span></a> *transport</code></em>);</pre>
 <p>Parse the RTSP transport string <em class="parameter"><code>str</code></em>
  into <em class="parameter"><code>transport</code></em>
@@ -235,7 +235,7 @@ gst_rtsp_transport_parse (<em class="parameter"><code>const <a href="http://libr
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-transport-as-text"></a><h3>gst_rtsp_transport_as_text ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gst_rtsp_transport_as_text (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransport" title="struct GstRTSPTransport"><span class="type">GstRTSPTransport</span></a> *transport</code></em>);</pre>
 <p>Convert <em class="parameter"><code>transport</code></em>
  into a string that can be used to signal the transport in
@@ -257,7 +257,7 @@ an RTSP SETUP response.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.10.8.7.5.6"></a><h4>Returns</h4>
-<p> a string describing the RTSP transport or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> when the transport
+<p> a string describing the RTSP transport or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> when the transport
 is invalid.</p>
 <p></p>
 </div>
@@ -267,7 +267,7 @@ is invalid.</p>
 <a name="gst-rtsp-transport-get-mime"></a><h3>gst_rtsp_transport_get_mime ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_transport_get_mime (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransMode" title="enum GstRTSPTransMode"><span class="type">GstRTSPTransMode</span></a> trans</code></em>,
-                             <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mime</code></em>);</pre>
+                             <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mime</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">gst_rtsp_transport_get_mime</code> is deprecated and should not be used in newly-written code.</p>
 <p>This functions only deals with the GstRTSPTransMode and only
@@ -310,15 +310,15 @@ used to generate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/he
 <a name="gst-rtsp-transport-get-manager"></a><h3>gst_rtsp_transport_get_manager ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_transport_get_manager (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsptransport.html#GstRTSPTransMode" title="enum GstRTSPTransMode"><span class="type">GstRTSPTransMode</span></a> trans</code></em>,
-                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **manager</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> option</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **manager</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> option</code></em>);</pre>
 <p>Get the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> that can handle the buffers transported over <em class="parameter"><code>trans</code></em>
 .</p>
 <p>It is possible that there are several managers available, use <em class="parameter"><code>option</code></em>
  to
 selected one.</p>
 <p><em class="parameter"><code>manager</code></em>
- will contain an element name or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> when no manager is
+ will contain an element name or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> when no manager is
 needed/available for <em class="parameter"><code>trans</code></em>
 .</p>
 <div class="refsect3">
@@ -493,12 +493,12 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstRTSPRange.min"></a>min</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstRTSPRange.min"></a>min</code></em>;</p></td>
 <td class="struct_member_description"><p>minimum value of the range</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstRTSPRange.max"></a>max</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GstRTSPRange.max"></a>max</code></em>;</p></td>
 <td class="struct_member_description"><p>maximum value of the range</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -618,32 +618,32 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPTransport.destination"></a>destination</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPTransport.destination"></a>destination</code></em>;</p></td>
 <td class="struct_member_description"><p>the destination ip/hostname</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPTransport.source"></a>source</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPTransport.source"></a>source</code></em>;</p></td>
 <td class="struct_member_description"><p>the source ip/hostname</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.layers"></a>layers</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.layers"></a>layers</code></em>;</p></td>
 <td class="struct_member_description"><p>the number of layers</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.mode-play"></a>mode_play</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.mode-play"></a>mode_play</code></em>;</p></td>
 <td class="struct_member_description"><p>if play mode was selected</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.mode-record"></a>mode_record</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.mode-record"></a>mode_record</code></em>;</p></td>
 <td class="struct_member_description"><p>if record mode was selected</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.append"></a>append</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="GstRTSPTransport.append"></a>append</code></em>;</p></td>
 <td class="struct_member_description"><p>is append mode was selected</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -653,7 +653,7 @@ gst_rtsp_transport_free (<em class="parameter"><code><a class="link" href="gst-p
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.ttl"></a>ttl</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.ttl"></a>ttl</code></em>;</p></td>
 <td class="struct_member_description"><p>the time to live for multicast UDP</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -677,7 +677,7 @@ sender and receiver ports of the server.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.ssrc"></a>ssrc</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTransport.ssrc"></a>ssrc</code></em>;</p></td>
 <td class="struct_member_description"><p>the ssrc that the sender/receiver will use</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

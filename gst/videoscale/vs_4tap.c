@@ -213,7 +213,7 @@ vs_image_scale_4tap_Y (const VSImage * dest, const VSImage * src,
   k = 0;
   for (i = 0; i < 4; i++) {
     xacc = 0;
-    vs_scanline_resample_4tap_Y (tmpbuf + i * dest->width,
+    vs_scanline_resample_4tap_Y (tmpbuf + i * dest->stride,
         src->pixels + CLAMP (i, 0, src->height - 1) * src->stride, dest->width,
         src->width, &xacc, x_increment);
   }
@@ -228,16 +228,16 @@ vs_image_scale_4tap_Y (const VSImage * dest, const VSImage * src,
       k++;
       if (k + 3 < src->height) {
         xacc = 0;
-        vs_scanline_resample_4tap_Y (tmpbuf + ((k + 3) & 3) * dest->width,
+        vs_scanline_resample_4tap_Y (tmpbuf + ((k + 3) & 3) * dest->stride,
             src->pixels + (k + 3) * src->stride,
             dest->width, src->width, &xacc, x_increment);
       }
     }
 
-    t0 = tmpbuf + (CLAMP (j - 1, 0, src->height - 1) & 3) * dest->width;
-    t1 = tmpbuf + (CLAMP (j, 0, src->height - 1) & 3) * dest->width;
-    t2 = tmpbuf + (CLAMP (j + 1, 0, src->height - 1) & 3) * dest->width;
-    t3 = tmpbuf + (CLAMP (j + 2, 0, src->height - 1) & 3) * dest->width;
+    t0 = tmpbuf + (CLAMP (j - 1, 0, src->height - 1) & 3) * dest->stride;
+    t1 = tmpbuf + (CLAMP (j, 0, src->height - 1) & 3) * dest->stride;
+    t2 = tmpbuf + (CLAMP (j + 1, 0, src->height - 1) & 3) * dest->stride;
+    t3 = tmpbuf + (CLAMP (j + 2, 0, src->height - 1) & 3) * dest->stride;
     vs_scanline_merge_4tap_Y (dest->pixels + i * dest->stride,
         t0, t1, t2, t3, dest->width, yacc & 0xffff);
 
