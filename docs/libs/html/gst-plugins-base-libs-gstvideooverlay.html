@@ -84,7 +84,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-render-rectangle" title="gst_video_overlay_set_render_rectangle ()">gst_video_overlay_set_render_rectangle</a> <span class="c_punctuation">()</span>
@@ -92,7 +92,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#gst-is-video-overlay-prepare-window-handle-message" title="gst_is_video_overlay_prepare_window_handle_message ()">gst_is_video_overlay_prepare_window_handle_message</a> <span class="c_punctuation">()</span>
@@ -122,7 +122,7 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideooverlay.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/GTypeModule.html">GInterface</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> GstVideoOverlay
 </pre>
 </div>
@@ -421,7 +421,7 @@ used in the callback).
    overlay <span class="gtkdoc opt">=</span> <span class="function">GST_VIDEO_OVERLAY</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#GST-MESSAGE-SRC:CAPS">GST_MESSAGE_SRC</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">));</span>
    <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle">gst_video_overlay_set_window_handle</a></span> <span class="gtkdoc opt">(</span>overlay<span class="gtkdoc opt">,</span> video_window_handle<span class="gtkdoc opt">);</span>
  <span class="gtkdoc opt">}</span> <span class="keyword">else</span> <span class="gtkdoc opt">{</span>
-   <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Message-Logging.html#g-warning">g_warning</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Should have obtained video_window_handle by now!&quot;</span><span class="gtkdoc opt">);</span>
+   <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Message-Logging.html#g-warning">g_warning</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Should have obtained video_window_handle by now!&quot;</span><span class="gtkdoc opt">);</span>
  <span class="gtkdoc opt">}</span>
 
  <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-unref">gst_message_unref</a></span> <span class="gtkdoc opt">(</span>message<span class="gtkdoc opt">);</span>
@@ -437,7 +437,7 @@ used in the callback).
   <span class="gtkdoc slc">// This is here just for pedagogical purposes, GDK_WINDOW_XID will call</span>
   <span class="gtkdoc slc">// it as well in newer Gtk versions</span>
   <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://developer.gnome.org/gdk2/gdk3-Windows.html#gdk-window-ensure-native">gdk_window_ensure_native</a></span> <span class="gtkdoc opt">(</span>widget<span class="gtkdoc opt">-&gt;</span>window<span class="gtkdoc opt">))</span>
-    <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Message-Logging.html#g-error">g_error</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Couldn't create native window needed for GstVideoOverlay!&quot;</span><span class="gtkdoc opt">);</span>
+    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Message-Logging.html#g-error">g_error</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Couldn't create native window needed for GstVideoOverlay!&quot;</span><span class="gtkdoc opt">);</span>
 <span class="gtkdoc ppc">#endif</span>
 
 <span class="gtkdoc ppc">#ifdef GDK_WINDOWING_X11</span>
@@ -463,8 +463,8 @@ used in the callback).
   app_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWindow.html#gtk-window-new">gtk_window_new</a></span> <span class="gtkdoc opt">(</span>GTK_WINDOW_TOPLEVEL<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   video_window <span class="gtkdoc opt">=</span> <span class="function"><a href="http://developer.gnome.org/gtk2/GtkDrawingArea.html#gtk-drawing-area-new">gtk_drawing_area_new</a></span> <span class="gtkdoc opt">();</span>
-  <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-connect">g_signal_connect</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> <span class="string">&quot;realize&quot;</span><span class="gtkdoc opt">,</span>
-      <span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Closures.html#G-CALLBACK:CAPS">G_CALLBACK</a></span> <span class="gtkdoc opt">(</span>video_widget_realize_cb<span class="gtkdoc opt">),</span> NULL<span class="gtkdoc opt">);</span>
+  <span class="function"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#g-signal-connect">g_signal_connect</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> <span class="string">&quot;realize&quot;</span><span class="gtkdoc opt">,</span>
+      <span class="function"><a href="https://developer.gnome.org/gobject/unstable/gobject-Closures.html#G-CALLBACK:CAPS">G_CALLBACK</a></span> <span class="gtkdoc opt">(</span>video_widget_realize_cb<span class="gtkdoc opt">),</span> NULL<span class="gtkdoc opt">);</span>
   <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-set-double-buffered">gtk_widget_set_double_buffered</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">,</span> FALSE<span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// usually the video_window will not be directly embedded into the</span>
@@ -481,7 +481,7 @@ used in the callback).
   <span class="function"><a href="http://developer.gnome.org/gtk2/GtkWidget.html#gtk-widget-realize">gtk_widget_realize</a></span> <span class="gtkdoc opt">(</span>video_window<span class="gtkdoc opt">);</span>
 
   <span class="gtkdoc slc">// we should have the XID/HWND now</span>
-  <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Testing.html#g-assert">g_assert</a></span> <span class="gtkdoc opt">(</span>video_window_handle <span class="gtkdoc opt">!=</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
+  <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Testing.html#g-assert">g_assert</a></span> <span class="gtkdoc opt">(</span>video_window_handle <span class="gtkdoc opt">!=</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
   <span class="gtkdoc opt">...</span>
   <span class="gtkdoc slc">// set up sync handler for setting the xid once the pipeline is started</span>
   bus <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPipeline.html#gst-pipeline-get-bus">gst_pipeline_get_bus</a></span> <span class="gtkdoc opt">(</span><span class="function">GST_PIPELINE</span> <span class="gtkdoc opt">(</span>pipeline<span class="gtkdoc opt">));</span>
@@ -572,8 +572,8 @@ used in the callback).
 
 <span class="gtkdoc kwb">int</span> <span class="function">main</span><span class="gtkdoc opt">(</span><span class="gtkdoc kwb">int</span> argc<span class="gtkdoc opt">,</span> <span class="gtkdoc kwb">char</span> <span class="gtkdoc opt">*</span>argv<span class="gtkdoc opt">[])</span>
 <span class="gtkdoc opt">{</span>
-  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-supported">g_thread_supported</a></span> <span class="gtkdoc opt">())</span>
-    <span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-init">g_thread_init</a></span> <span class="gtkdoc opt">(</span>NULL<span class="gtkdoc opt">);</span>
+  <span class="keyword">if</span> <span class="gtkdoc opt">(!</span><span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-supported">g_thread_supported</a></span> <span class="gtkdoc opt">())</span>
+    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-init">g_thread_init</a></span> <span class="gtkdoc opt">(</span>NULL<span class="gtkdoc opt">);</span>
 
   <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-Gst.html#gst-init">gst_init</a></span> <span class="gtkdoc opt">(&amp;</span>argc<span class="gtkdoc opt">, &amp;</span>argv<span class="gtkdoc opt">);</span>
   QApplication <span class="function">app</span><span class="gtkdoc opt">(</span>argc<span class="gtkdoc opt">,</span> argv<span class="gtkdoc opt">);</span>
@@ -745,7 +745,7 @@ in the drawable even if the pipeline is PAUSED.</p>
 <a name="gst-video-overlay-handle-events"></a><h3>gst_video_overlay_handle_events ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_video_overlay_handle_events (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> *overlay</code></em>,
-                                 <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> handle_events</code></em>);</pre>
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> handle_events</code></em>);</pre>
 <p>Tell an overlay that it should handle events from the window system. These
 events are forwarded upstream as navigation events. In some window system,
 events are not propagated in the window hierarchy if a client is listening
@@ -767,7 +767,7 @@ from the <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVid
 </tr>
 <tr>
 <td class="parameter_name"><p>handle_events</p></td>
-<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> indicating if events should be handled or not.</p></td>
+<td class="parameter_description"><p>a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> indicating if events should be handled or not.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -777,13 +777,13 @@ from the <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVid
 <hr>
 <div class="refsect2">
 <a name="gst-video-overlay-set-render-rectangle"></a><h3>gst_video_overlay_set_render_rectangle ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_video_overlay_set_render_rectangle
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> *overlay</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
 <p>Configure a subregion as a video target within the window set by
 <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle" title="gst_video_overlay_set_window_handle ()"><code class="function">gst_video_overlay_set_window_handle()</code></a>. If this is not used or not supported
 the video will fill the area of the window set as the overlay to 100%.
@@ -834,14 +834,14 @@ do not support subwindows.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.15.11.9.7.7"></a><h4>Returns</h4>
-<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not supported by the sink.</p>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not supported by the sink.</p>
 <p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-is-video-overlay-prepare-window-handle-message"></a><h3>gst_is_video_overlay_prepare_window_handle_message ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_is_video_overlay_prepare_window_handle_message
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html"><span class="type">GstMessage</span></a> *msg</code></em>);</pre>
 <p>Convenience function to check if the given message is a
@@ -905,7 +905,7 @@ is a "prepare-window-handle" message</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstVideoOverlayInterface.iface"></a>iface</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="GstVideoOverlayInterface.iface"></a>iface</code></em>;</p></td>
 <td class="struct_member_description"><p>parent interface type.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
