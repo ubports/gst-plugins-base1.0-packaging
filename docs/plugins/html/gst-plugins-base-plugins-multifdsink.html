@@ -154,7 +154,7 @@ initially receives.</p>
 each descriptor removed, the <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-client-removed" title="The “client-removed” signal"><span class="type">“client-removed”</span></a> signal will be called. The
 <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-client-removed" title="The “client-removed” signal"><span class="type">“client-removed”</span></a> signal can also be fired when multifdsink decides that a
 client is not active anymore or, depending on the value of the
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--recover-policy"><span class="type">“recover-policy”</span></a> property, if the client is reading too slowly.
+<span class="type">“recover-policy”</span> property, if the client is reading too slowly.
 In all cases, multifdsink will never close a file descriptor itself.
 The user of multifdsink is responsible for closing all file descriptors.
 This can for example be done in response to the <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-client-fd-removed" title="The “client-fd-removed” signal"><span class="type">“client-fd-removed”</span></a> signal.
@@ -167,7 +167,7 @@ the <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSi
 separate thread to send the buffers to the clients. This ensures that no
 client write can block the pipeline and that clients can read with different
 speeds.</p>
-<p>When adding a client to multifdsink, the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--sync-method"><span class="type">“sync-method”</span></a> property will define
+<p>When adding a client to multifdsink, the <span class="type">“sync-method”</span> property will define
 which buffer in the queued buffers will be sent first to the client. Clients 
 can be sent the most recent buffer (which might not be decodable by the 
 client if it is not a keyframe), the next keyframe received in 
@@ -175,7 +175,7 @@ multifdsink (which can take some time depending on the keyframe rate), or the
 last received keyframe (which will cause a simple burst-on-connect). 
 Multifdsink will always keep at least one keyframe in its internal buffers
 when the sync-mode is set to latest-keyframe.</p>
-<p>There are additional values for the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--sync-method"><span class="type">“sync-method”</span></a>
+<p>There are additional values for the <span class="type">“sync-method”</span>
 property to allow finer control over burst-on-connect behaviour. By selecting
 the 'burst' method a minimum burst size can be chosen, 'burst-keyframe'
 additionally requires that the burst begin with a keyframe, and 
@@ -183,7 +183,7 @@ additionally requires that the burst begin with a keyframe, and
 prefer a minimum burst size even if it requires not starting with a keyframe.</p>
 <p>Multifdsink can be instructed to keep at least a minimum amount of data
 expressed in time or byte units in its internal queues with the 
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--time-min"><span class="type">“time-min”</span></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--bytes-min"><span class="type">“bytes-min”</span></a> properties respectively.
+<span class="type">“time-min”</span> and <span class="type">“bytes-min”</span> properties respectively.
 These properties are useful if the application adds clients with the 
 <a class="link" href="gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink-add-full" title="The “add-full” signal"><span class="type">“add-full”</span></a> signal to make sure that a burst connect can
 actually be honored. </p>
@@ -192,11 +192,11 @@ the rate at which multifdsink receives data. If the client is reading too
 fast, no data will be send to the client until multifdsink receives more
 data. If the client, however, reads too slowly, data for that client will be 
 queued up in multifdsink. Two properties control the amount of data 
-(buffers) that is queued in multifdsink: <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--buffers-max"><span class="type">“buffers-max”</span></a> and 
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--buffers-soft-max"><span class="type">“buffers-soft-max”</span></a>. A client that falls behind by
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--buffers-max"><span class="type">“buffers-max”</span></a> is removed from multifdsink forcibly.</p>
-<p>A client with a lag of at least <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--buffers-soft-max"><span class="type">“buffers-soft-max”</span></a> enters the recovery
-procedure which is controlled with the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-multifdsink.html#GstMultiFdSink--recover-policy"><span class="type">“recover-policy”</span></a> property.
+(buffers) that is queued in multifdsink: <span class="type">“buffers-max”</span> and 
+<span class="type">“buffers-soft-max”</span>. A client that falls behind by
+<span class="type">“buffers-max”</span> is removed from multifdsink forcibly.</p>
+<p>A client with a lag of at least <span class="type">“buffers-soft-max”</span> enters the recovery
+procedure which is controlled with the <span class="type">“recover-policy”</span> property.
 A recover policy of NONE will do nothing, RESYNC_LATEST will send the most recently
 received buffer as the next buffer for the client, RESYNC_SOFT_LIMIT
 positions the client to the soft limit in the buffer queue and
