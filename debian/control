@@ -156,7 +156,6 @@ Depends: gstreamer1.0-alsa (= ${binary:Version}) [linux-any],
          gstreamer1.0-x (= ${binary:Version}),
          libgstreamer-plugins-base1.0-0 (= ${binary:Version}),
          ${misc:Depends}
-Suggests: gstreamer1.0-gnomevfs (= ${binary:Version})
 Description: GStreamer plugins from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do

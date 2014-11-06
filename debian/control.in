@@ -156,7 +156,6 @@ Depends: @GST_PKGNAME@-alsa (= ${binary:Version}) [linux-any],
          @GST_PKGNAME@-x (= ${binary:Version}),
          @GST_PLUGINS_BASE_LIB@ (= ${binary:Version}),
          ${misc:Depends}
-Suggests: @GST_PKGNAME@-gnomevfs (= ${binary:Version})
 Description: GStreamer plugins from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
