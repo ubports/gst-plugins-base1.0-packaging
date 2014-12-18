@@ -5325,6 +5325,35 @@ pva_type_find (GstTypeFind * tf, gpointer private)
     gst_type_find_suggest (tf, GST_TYPE_FIND_NEARLY_CERTAIN, PVA_CAPS);
 }
 
+/*** audio/audible ***/
+
+/* derived from pyaudibletags
+ * http://code.google.com/p/pyaudibletags/source/browse/trunk/pyaudibletags.py
+ */
+static GstStaticCaps aa_caps = GST_STATIC_CAPS ("audio/x-audible");
+
+#define AA_CAPS gst_static_caps_get(&aa_caps)
+
+static void
+aa_type_find (GstTypeFind * tf, gpointer private)
+{
+  const guint8 *data;
+
+  data = gst_type_find_peek (tf, 0, 12);
+  if (data == NULL)
+    return;
+
+  if (GST_READ_UINT32_BE (data + 4) == 0x57907536) {
+    guint64 media_len;
+
+    media_len = gst_type_find_get_length (tf);
+    if (media_len > 0 && GST_READ_UINT32_BE (data) == media_len)
+      gst_type_find_suggest (tf, GST_TYPE_FIND_NEARLY_CERTAIN, AA_CAPS);
+    else
+      gst_type_find_suggest (tf, GST_TYPE_FIND_POSSIBLE, AA_CAPS);
+  }
+}
+
 /*** generic typefind for streams that have some data at a specific position***/
 typedef struct
 {
@@ -5646,6 +5675,8 @@ plugin_init (GstPlugin * plugin)
       wavpack_type_find, "wv,wvp", WAVPACK_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "audio/x-wavpack-correction", GST_RANK_SECONDARY,
       wavpack_type_find, "wvc", WAVPACK_CORRECTION_CAPS, NULL, NULL);
+  TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-caf", GST_RANK_SECONDARY,
+      "caf", "caff\000\001", 6, GST_TYPE_FIND_MAXIMUM);
   TYPE_FIND_REGISTER (plugin, "application/postscript", GST_RANK_SECONDARY,
       postscript_type_find, "ps", POSTSCRIPT_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "image/svg+xml", GST_RANK_SECONDARY,
@@ -5720,6 +5751,9 @@ plugin_init (GstPlugin * plugin)
 
   TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-xi", GST_RANK_SECONDARY,
       "xi", "Extended Instrument: ", 21, GST_TYPE_FIND_MAXIMUM);
+
+  TYPE_FIND_REGISTER (plugin, "audio/audible", GST_RANK_MARGINAL,
+      aa_type_find, "aa,aax", AA_CAPS, NULL, NULL);
 
   return TRUE;
 }
