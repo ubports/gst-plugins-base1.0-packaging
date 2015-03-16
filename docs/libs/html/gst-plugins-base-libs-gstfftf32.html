@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-ffft.html" title="FFT Library">
 <link rel="prev" href="gst-plugins-base-libs-gstffts32.html" title="gstffts32">
 <link rel="next" href="gst-plugins-base-libs-gstfftf64.html" title="gstfftf64">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstfftf32.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-gstfftf32.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-gstfftf32.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-ffft.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -103,11 +102,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-gstfftf32.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-gstfftf32.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/fft/gstfftf32.h&gt;
 </pre>
@@ -144,8 +138,8 @@ the magnitude of the frequency data.</p>
 <div class="refsect2">
 <a name="gst-fft-f32-new"></a><h3>gst_fft_f32_new ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="returnvalue">GstFFTF32</span></a> *
-gst_fft_f32_new (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> len</code></em>,
-                 <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> inverse</code></em>);</pre>
+gst_fft_f32_new (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> len</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> inverse</code></em>);</pre>
 <p>This returns a new <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> instance with the given parameters. It makes
 sense to keep one instance for several calls for speed reasons.</p>
 <p><em class="parameter"><code>len</code></em>
@@ -153,7 +147,7 @@ sense to keep one instance for several calls for speed reasons.</p>
 2, 3 and 5. To get the next number with this characteristics use
 <a class="link" href="gst-plugins-base-libs-gstfft.html#gst-fft-next-fast-length" title="gst_fft_next_fast_length ()"><code class="function">gst_fft_next_fast_length()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.2.6"></a><h4>Parameters</h4>
+<a name="id-1.2.7.7.7.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -168,14 +162,14 @@ sense to keep one instance for several calls for speed reasons.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>inverse</p></td>
-<td class="parameter_description"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> instance should be used for the inverse FFT</p></td>
+<td class="parameter_description"><p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> instance should be used for the inverse FFT</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.2.7"></a><h4>Returns</h4>
+<a name="id-1.2.7.7.7.2.7"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> instance.</p>
 <p></p>
 </div>
@@ -185,7 +179,7 @@ sense to keep one instance for several calls for speed reasons.</p>
 <a name="gst-fft-f32-fft"></a><h3>gst_fft_f32_fft ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_fft_f32_fft (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> *self</code></em>,
-                 <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>,
+                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>,
                  <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32Complex" title="struct GstFFTF32Complex"><span class="type">GstFFTF32Complex</span></a> *freqdata</code></em>);</pre>
 <p>This performs the FFT on <em class="parameter"><code>timedata</code></em>
  and puts the result in <em class="parameter"><code>freqdata</code></em>
@@ -199,7 +193,7 @@ allocating the <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFT
 /2 + 1 <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32Complex" title="struct GstFFTF32Complex"><span class="type">GstFFTF32Complex</span></a> frequency
 domain samples.</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.3.7"></a><h4>Parameters</h4>
+<a name="id-1.2.7.7.7.3.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -232,7 +226,7 @@ domain samples.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_fft_f32_inverse_fft (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> *self</code></em>,
                          <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32Complex" title="struct GstFFTF32Complex"><span class="type">GstFFTF32Complex</span></a> *freqdata</code></em>,
-                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>);</pre>
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>);</pre>
 <p>This performs the inverse FFT on <em class="parameter"><code>freqdata</code></em>
  and puts the result in <em class="parameter"><code>timedata</code></em>
 .</p>
@@ -245,7 +239,7 @@ while allocating the <a class="link" href="gst-plugins-base-libs-gstfftf32.html#
  must be large enough to hold <em class="parameter"><code>len</code></em>
  time domain samples.</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.4.7"></a><h4>Parameters</h4>
+<a name="id-1.2.7.7.7.4.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -277,13 +271,13 @@ while allocating the <a class="link" href="gst-plugins-base-libs-gstfftf32.html#
 <a name="gst-fft-f32-window"></a><h3>gst_fft_f32_window ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_fft_f32_window (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstfftf32.html#GstFFTF32" title="GstFFTF32"><span class="type">GstFFTF32</span></a> *self</code></em>,
-                    <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> *timedata</code></em>,
                     <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstfft.html#GstFFTWindow" title="enum GstFFTWindow"><span class="type">GstFFTWindow</span></a> window</code></em>);</pre>
 <p>This calls the window function <em class="parameter"><code>window</code></em>
  on the <em class="parameter"><code>timedata</code></em>
  sample buffer.</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.7.7.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -318,7 +312,7 @@ gst_fft_f32_free (<em class="parameter"><code><a class="link" href="gst-plugins-
 <p>This frees the memory allocated for <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.7.7.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -351,7 +345,7 @@ gst_fft_f32_free (<em class="parameter"><code><a class="link" href="gst-plugins-
 <p>Data type for complex numbers composed of
 32 bit float.</p>
 <div class="refsect3">
-<a name="id-1.2.7.7.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.7.7.8.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -360,12 +354,12 @@ gst_fft_f32_free (<em class="parameter"><code><a class="link" href="gst-plugins-
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> <em class="structfield"><code><a name="GstFFTF32Complex.r"></a>r</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> <em class="structfield"><code><a name="GstFFTF32Complex.r"></a>r</code></em>;</p></td>
 <td class="struct_member_description"><p>Real part</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> <em class="structfield"><code><a name="GstFFTF32Complex.i"></a>i</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gfloat"><span class="type">gfloat</span></a> <em class="structfield"><code><a name="GstFFTF32Complex.i"></a>i</code></em>;</p></td>
 <td class="struct_member_description"><p>Imaginary part</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -377,6 +371,6 @@ gst_fft_f32_free (<em class="parameter"><code><a class="link" href="gst-plugins-
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

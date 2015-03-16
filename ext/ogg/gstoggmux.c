@@ -63,20 +63,6 @@ GST_DEBUG_CATEGORY_STATIC (gst_ogg_mux_debug);
 #define GST_GP_FORMAT "[gp %8" G_GINT64_FORMAT "]"
 #define GST_GP_CAST(_gp) ((gint64) _gp)
 
-typedef enum
-{
-  GST_OGG_FLAG_BOS = GST_ELEMENT_FLAG_LAST,
-  GST_OGG_FLAG_EOS
-}
-GstOggFlag;
-
-/* OggMux signals and args */
-enum
-{
-  /* FILL ME */
-  LAST_SIGNAL
-};
-
 /* set to 0.5 seconds by default */
 #define DEFAULT_MAX_DELAY       G_GINT64_CONSTANT(500000000)
 #define DEFAULT_MAX_PAGE_DELAY  G_GINT64_CONSTANT(500000000)
@@ -228,8 +214,6 @@ gst_ogg_mux_init (GstOggMux * ogg_mux)
   gst_pad_set_event_function (ogg_mux->srcpad, gst_ogg_mux_handle_src_event);
   gst_element_add_pad (GST_ELEMENT (ogg_mux), ogg_mux->srcpad);
 
-  GST_OBJECT_FLAG_SET (GST_ELEMENT (ogg_mux), GST_OGG_FLAG_BOS);
-
   /* seed random number generator for creation of serial numbers */
   srand (time (NULL));
 
@@ -316,7 +300,7 @@ gst_ogg_mux_sink_event (GstCollectPads * pads, GstCollectData * pad,
   GstOggMux *ogg_mux = GST_OGG_MUX (user_data);
   GstOggPadData *ogg_pad = (GstOggPadData *) pad;
 
-  GST_DEBUG_OBJECT (pad, "Got %s event", GST_EVENT_TYPE_NAME (event));
+  GST_DEBUG_OBJECT (pad->pad, "Got %s event", GST_EVENT_TYPE_NAME (event));
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_SEGMENT:
@@ -642,14 +626,14 @@ gst_ogg_mux_dequeue_page (GstOggMux * mux, GstFlowReturn * flowret)
       }
     } else {
       /* We then need to check for a non-negative granulepos */
-      int i;
       gboolean valid = FALSE;
+      GList *l;
 
-      for (i = 0; i < pad->pagebuffers->length; i++) {
-        buf = g_queue_peek_nth (pad->pagebuffers, i);
+      for (l = pad->pagebuffers->head; l != NULL; l = l->next) {
+        buf = l->data;
         /* Here we check the OFFSET_END, which is actually temporarily the
          * granulepos value for this buffer */
-        if (GST_BUFFER_OFFSET_END (buf) != -1) {
+        if (GST_BUFFER_OFFSET_END_IS_VALID (buf)) {
           valid = TRUE;
           break;
         }
@@ -816,7 +800,7 @@ static GstBuffer *
 gst_ogg_mux_decorate_buffer (GstOggMux * ogg_mux, GstOggPadData * pad,
     GstBuffer * buf)
 {
-  GstClockTime time;
+  GstClockTime time, end_time;
   gint64 duration, granule, limit;
   GstClockTime next_time;
   GstClockTimeDiff diff;
@@ -864,6 +848,25 @@ gst_ogg_mux_decorate_buffer (GstOggMux * ogg_mux, GstOggPadData * pad,
     GST_WARNING_OBJECT (pad->collect.pad,
         "failed to determine packet duration");
     goto no_granule;
+  }
+
+  /* The last packet may have clipped samples. We need to test against
+   * the segment to ensure we do not use a granpos that encompasses those.
+   */
+  end_time =
+      gst_ogg_stream_granule_to_time (&pad->map, pad->next_granule + duration);
+  if (end_time > pad->segment.stop
+      && !GST_CLOCK_TIME_IS_VALID (gst_segment_to_running_time (&pad->segment,
+              GST_FORMAT_TIME, pad->segment.start + end_time))) {
+    gint64 actual_duration =
+        gst_util_uint64_scale_round (pad->segment.stop - time,
+        pad->map.granulerate_n,
+        GST_SECOND * pad->map.granulerate_d);
+    GST_INFO_OBJECT (ogg_mux,
+        "Got clipped last packet of duration %" G_GINT64_FORMAT " (%"
+        G_GINT64_FORMAT " clipped)", actual_duration,
+        duration - actual_duration);
+    duration = actual_duration;
   }
 
   GST_LOG_OBJECT (pad->collect.pad, "buffer ts %" GST_TIME_FORMAT
@@ -1976,7 +1979,7 @@ all_pads_eos (GstCollectPads * pads)
     GST_DEBUG_OBJECT (oggpad->collect.pad,
         "oggpad %p eos %d", oggpad, oggpad->eos);
 
-    if (oggpad->eos == FALSE)
+    if (!oggpad->eos)
       return FALSE;
 
     walk = g_slist_next (walk);

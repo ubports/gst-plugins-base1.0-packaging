@@ -84,7 +84,8 @@ noinst_PROGRAMS = $(am__EXEEXT_2) $(am__EXEEXT_3) \
 	audio-trickplay$(EXEEXT) playbin-text$(EXEEXT) \
 	position-formats$(EXEEXT) stress-playbin$(EXEEXT) \
 	test-scale$(EXEEXT) test-box$(EXEEXT) \
-	test-effect-switch$(EXEEXT)
+	test-effect-switch$(EXEEXT) test-overlay-blending$(EXEEXT) \
+	test-reverseplay$(EXEEXT)
 subdir = tests/icles
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -108,7 +109,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -227,6 +227,25 @@ test_effect_switch_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(test_effect_switch_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+am_test_overlay_blending_OBJECTS =  \
+	test_overlay_blending-test-overlay-blending.$(OBJEXT)
+test_overlay_blending_OBJECTS = $(am_test_overlay_blending_OBJECTS)
+test_overlay_blending_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+test_overlay_blending_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(test_overlay_blending_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am_test_reverseplay_OBJECTS =  \
+	test_reverseplay-test-reverseplay.$(OBJEXT)
+test_reverseplay_OBJECTS = $(am_test_reverseplay_OBJECTS)
+test_reverseplay_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+test_reverseplay_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(test_reverseplay_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 am_test_scale_OBJECTS = test_scale-test-scale.$(OBJEXT)
 test_scale_OBJECTS = $(am_test_scale_OBJECTS)
 test_scale_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -294,6 +313,7 @@ SOURCES = $(audio_trickplay_SOURCES) $(input_selector_test_SOURCES) \
 	$(position_formats_SOURCES) $(stress_playbin_SOURCES) \
 	$(stress_videooverlay_SOURCES) $(test_box_SOURCES) \
 	$(test_colorkey_SOURCES) $(test_effect_switch_SOURCES) \
+	$(test_overlay_blending_SOURCES) $(test_reverseplay_SOURCES) \
 	$(test_scale_SOURCES) $(test_textoverlay_SOURCES) \
 	$(test_videooverlay_SOURCES)
 DIST_SOURCES = $(audio_trickplay_SOURCES) \
@@ -303,7 +323,8 @@ DIST_SOURCES = $(audio_trickplay_SOURCES) \
 	$(stress_playbin_SOURCES) \
 	$(am__stress_videooverlay_SOURCES_DIST) $(test_box_SOURCES) \
 	$(am__test_colorkey_SOURCES_DIST) \
-	$(test_effect_switch_SOURCES) $(test_scale_SOURCES) \
+	$(test_effect_switch_SOURCES) $(test_overlay_blending_SOURCES) \
+	$(test_reverseplay_SOURCES) $(test_scale_SOURCES) \
 	$(am__test_textoverlay_SOURCES_DIST) \
 	$(am__test_videooverlay_SOURCES_DIST)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
@@ -431,6 +452,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -460,6 +483,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -487,7 +512,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -591,13 +615,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -719,12 +742,24 @@ stress_playbin_LDADD = $(GST_LIBS) $(LIBM)
 test_effect_switch_SOURCES = test-effect-switch.c
 test_effect_switch_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
 test_effect_switch_LDADD = $(GST_LIBS)
+test_overlay_blending_SOURCES = test-overlay-blending.c
+test_overlay_blending_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(GST_CFLAGS) $(GIO_CFLAGS)
+
+test_overlay_blending_LDADD = \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
+	$(GST_LIBS) $(GIO_LIBS) $(LIBM)
+
 test_scale_SOURCES = test-scale.c
 test_scale_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
 test_scale_LDADD = $(GST_LIBS) $(LIBM)
 test_box_SOURCES = test-box.c
 test_box_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
 test_box_LDADD = $(GST_LIBS) $(LIBM)
+test_reverseplay_SOURCES = test-reverseplay.c
+test_reverseplay_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
+test_reverseplay_LDADD = $(GST_LIBS) $(LIBM)
 all: all-recursive
 
 .SUFFIXES:
@@ -809,6 +844,14 @@ test-effect-switch$(EXEEXT): $(test_effect_switch_OBJECTS) $(test_effect_switch_
 	@rm -f test-effect-switch$(EXEEXT)
 	$(AM_V_CCLD)$(test_effect_switch_LINK) $(test_effect_switch_OBJECTS) $(test_effect_switch_LDADD) $(LIBS)
 
+test-overlay-blending$(EXEEXT): $(test_overlay_blending_OBJECTS) $(test_overlay_blending_DEPENDENCIES) $(EXTRA_test_overlay_blending_DEPENDENCIES) 
+	@rm -f test-overlay-blending$(EXEEXT)
+	$(AM_V_CCLD)$(test_overlay_blending_LINK) $(test_overlay_blending_OBJECTS) $(test_overlay_blending_LDADD) $(LIBS)
+
+test-reverseplay$(EXEEXT): $(test_reverseplay_OBJECTS) $(test_reverseplay_DEPENDENCIES) $(EXTRA_test_reverseplay_DEPENDENCIES) 
+	@rm -f test-reverseplay$(EXEEXT)
+	$(AM_V_CCLD)$(test_reverseplay_LINK) $(test_reverseplay_OBJECTS) $(test_reverseplay_LDADD) $(LIBS)
+
 test-scale$(EXEEXT): $(test_scale_OBJECTS) $(test_scale_DEPENDENCIES) $(EXTRA_test_scale_DEPENDENCIES) 
 	@rm -f test-scale$(EXEEXT)
 	$(AM_V_CCLD)$(test_scale_LINK) $(test_scale_OBJECTS) $(test_scale_LDADD) $(LIBS)
@@ -837,6 +880,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_box-test-box.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_colorkey-test-colorkey.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_effect_switch-test-effect-switch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_overlay_blending-test-overlay-blending.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_reverseplay-test-reverseplay.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_scale-test-scale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_textoverlay-test-textoverlay.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_videooverlay-test-videooverlay.Po@am__quote@
@@ -1004,6 +1049,34 @@ test_effect_switch-test-effect-switch.obj: test-effect-switch.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-effect-switch.c' object='test_effect_switch-test-effect-switch.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_effect_switch_CFLAGS) $(CFLAGS) -c -o test_effect_switch-test-effect-switch.obj `if test -f 'test-effect-switch.c'; then $(CYGPATH_W) 'test-effect-switch.c'; else $(CYGPATH_W) '$(srcdir)/test-effect-switch.c'; fi`
+
+test_overlay_blending-test-overlay-blending.o: test-overlay-blending.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_overlay_blending_CFLAGS) $(CFLAGS) -MT test_overlay_blending-test-overlay-blending.o -MD -MP -MF $(DEPDIR)/test_overlay_blending-test-overlay-blending.Tpo -c -o test_overlay_blending-test-overlay-blending.o `test -f 'test-overlay-blending.c' || echo '$(srcdir)/'`test-overlay-blending.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_overlay_blending-test-overlay-blending.Tpo $(DEPDIR)/test_overlay_blending-test-overlay-blending.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-overlay-blending.c' object='test_overlay_blending-test-overlay-blending.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_overlay_blending_CFLAGS) $(CFLAGS) -c -o test_overlay_blending-test-overlay-blending.o `test -f 'test-overlay-blending.c' || echo '$(srcdir)/'`test-overlay-blending.c
+
+test_overlay_blending-test-overlay-blending.obj: test-overlay-blending.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_overlay_blending_CFLAGS) $(CFLAGS) -MT test_overlay_blending-test-overlay-blending.obj -MD -MP -MF $(DEPDIR)/test_overlay_blending-test-overlay-blending.Tpo -c -o test_overlay_blending-test-overlay-blending.obj `if test -f 'test-overlay-blending.c'; then $(CYGPATH_W) 'test-overlay-blending.c'; else $(CYGPATH_W) '$(srcdir)/test-overlay-blending.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_overlay_blending-test-overlay-blending.Tpo $(DEPDIR)/test_overlay_blending-test-overlay-blending.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-overlay-blending.c' object='test_overlay_blending-test-overlay-blending.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_overlay_blending_CFLAGS) $(CFLAGS) -c -o test_overlay_blending-test-overlay-blending.obj `if test -f 'test-overlay-blending.c'; then $(CYGPATH_W) 'test-overlay-blending.c'; else $(CYGPATH_W) '$(srcdir)/test-overlay-blending.c'; fi`
+
+test_reverseplay-test-reverseplay.o: test-reverseplay.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_reverseplay_CFLAGS) $(CFLAGS) -MT test_reverseplay-test-reverseplay.o -MD -MP -MF $(DEPDIR)/test_reverseplay-test-reverseplay.Tpo -c -o test_reverseplay-test-reverseplay.o `test -f 'test-reverseplay.c' || echo '$(srcdir)/'`test-reverseplay.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_reverseplay-test-reverseplay.Tpo $(DEPDIR)/test_reverseplay-test-reverseplay.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-reverseplay.c' object='test_reverseplay-test-reverseplay.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_reverseplay_CFLAGS) $(CFLAGS) -c -o test_reverseplay-test-reverseplay.o `test -f 'test-reverseplay.c' || echo '$(srcdir)/'`test-reverseplay.c
+
+test_reverseplay-test-reverseplay.obj: test-reverseplay.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_reverseplay_CFLAGS) $(CFLAGS) -MT test_reverseplay-test-reverseplay.obj -MD -MP -MF $(DEPDIR)/test_reverseplay-test-reverseplay.Tpo -c -o test_reverseplay-test-reverseplay.obj `if test -f 'test-reverseplay.c'; then $(CYGPATH_W) 'test-reverseplay.c'; else $(CYGPATH_W) '$(srcdir)/test-reverseplay.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_reverseplay-test-reverseplay.Tpo $(DEPDIR)/test_reverseplay-test-reverseplay.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-reverseplay.c' object='test_reverseplay-test-reverseplay.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_reverseplay_CFLAGS) $(CFLAGS) -c -o test_reverseplay-test-reverseplay.obj `if test -f 'test-reverseplay.c'; then $(CYGPATH_W) 'test-reverseplay.c'; else $(CYGPATH_W) '$(srcdir)/test-reverseplay.c'; fi`
 
 test_scale-test-scale.o: test-scale.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_scale_CFLAGS) $(CFLAGS) -MT test_scale-test-scale.o -MD -MP -MF $(DEPDIR)/test_scale-test-scale.Tpo -c -o test_scale-test-scale.o `test -f 'test-scale.c' || echo '$(srcdir)/'`test-scale.c

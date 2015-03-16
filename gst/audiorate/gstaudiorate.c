@@ -337,10 +337,19 @@ gst_audio_rate_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
       res = gst_pad_push_event (audiorate->srcpad, event);
       break;
     case GST_EVENT_GAP:
-      /* no gaps after audiorate, ignore the event */
+    {
+      /* Fill until end of gap */
+      GstClockTime timestamp, duration;
+      gst_event_parse_gap (event, &timestamp, &duration);
       gst_event_unref (event);
+      if (GST_CLOCK_TIME_IS_VALID (timestamp)) {
+        if (GST_CLOCK_TIME_IS_VALID (duration))
+          timestamp += duration;
+        gst_audio_rate_fill_to_time (audiorate, timestamp);
+      }
       res = TRUE;
       break;
+    }
     default:
       res = gst_pad_event_default (pad, parent, event);
       break;
@@ -445,7 +454,7 @@ gst_audio_rate_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
      * buffer in that segment, which is the offset expressed in DEFAULT units.
      */
     /* convert first timestamp of segment to sample position */
-    pos = gst_util_uint64_scale_int (audiorate->src_segment.start,
+    pos = gst_util_uint64_scale_int_round (audiorate->src_segment.start,
         GST_AUDIO_INFO_RATE (&audiorate->info), GST_SECOND);
 
     GST_DEBUG_OBJECT (audiorate, "resync to offset %" G_GINT64_FORMAT, pos);
@@ -454,12 +463,13 @@ gst_audio_rate_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
     audiorate->discont = TRUE;
 
     audiorate->next_offset = pos;
-    audiorate->next_ts = gst_util_uint64_scale_int (audiorate->next_offset,
-        GST_SECOND, GST_AUDIO_INFO_RATE (&audiorate->info));
+    audiorate->next_ts =
+        gst_util_uint64_scale_int_round (audiorate->next_offset, GST_SECOND,
+        GST_AUDIO_INFO_RATE (&audiorate->info));
 
     if (audiorate->skip_to_first && GST_BUFFER_TIMESTAMP_IS_VALID (buf)) {
       GST_DEBUG_OBJECT (audiorate, "but skipping to first buffer instead");
-      pos = gst_util_uint64_scale_int (GST_BUFFER_TIMESTAMP (buf),
+      pos = gst_util_uint64_scale_int_round (GST_BUFFER_TIMESTAMP (buf),
           GST_AUDIO_INFO_RATE (&audiorate->info), GST_SECOND);
       GST_DEBUG_OBJECT (audiorate, "so resync to offset %" G_GINT64_FORMAT,
           pos);
@@ -539,10 +549,11 @@ gst_audio_rate_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
        * offset to get duration. Necessary complexity to get 'perfect' 
        * streams */
       GST_BUFFER_TIMESTAMP (fill) = audiorate->next_ts;
-      audiorate->next_ts = gst_util_uint64_scale_int (audiorate->next_offset,
-          GST_SECOND, rate);
-      GST_BUFFER_DURATION (fill) = audiorate->next_ts -
-          GST_BUFFER_TIMESTAMP (fill);
+      audiorate->next_ts =
+          gst_util_uint64_scale_int_round (audiorate->next_offset, GST_SECOND,
+          rate);
+      GST_BUFFER_DURATION (fill) =
+          audiorate->next_ts - GST_BUFFER_TIMESTAMP (fill);
 
       /* we created this buffer to fill a gap */
       GST_BUFFER_FLAG_SET (fill, GST_BUFFER_FLAG_GAP);
@@ -621,7 +632,7 @@ send:
   GST_BUFFER_OFFSET_END (buf) = in_offset_end;
 
   GST_BUFFER_TIMESTAMP (buf) = audiorate->next_ts;
-  audiorate->next_ts = gst_util_uint64_scale_int (in_offset_end,
+  audiorate->next_ts = gst_util_uint64_scale_int_round (in_offset_end,
       GST_SECOND, rate);
   GST_BUFFER_DURATION (buf) = audiorate->next_ts - GST_BUFFER_TIMESTAMP (buf);
 

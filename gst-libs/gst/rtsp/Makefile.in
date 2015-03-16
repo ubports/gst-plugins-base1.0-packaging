@@ -114,7 +114,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -177,8 +176,7 @@ am_libgstrtsp_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstrtsp_@GST_API_VERSION@_la-gstrtspdefs.lo \
 	libgstrtsp_@GST_API_VERSION@_la-gstrtspextension.lo \
 	libgstrtsp_@GST_API_VERSION@_la-gstrtsprange.lo
-am__objects_1 = libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo \
-	libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.lo
+am__objects_1 = libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.lo
 nodist_libgstrtsp_@GST_API_VERSION@_la_OBJECTS = $(am__objects_1)
 libgstrtsp_@GST_API_VERSION@_la_OBJECTS =  \
 	$(am_libgstrtsp_@GST_API_VERSION@_la_OBJECTS) \
@@ -315,6 +313,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -344,6 +344,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -371,7 +373,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -475,13 +476,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -562,8 +562,8 @@ libgstrtspinclude_HEADERS = \
 #gstrtspextreal.h    
 #gstrtspextwms.h     
 lib_LTLIBRARIES = libgstrtsp-@GST_API_VERSION@.la
-built_sources = gstrtsp-marshal.c gstrtsp-enumtypes.c
-built_headers = gstrtsp-marshal.h gstrtsp-enumtypes.h
+built_sources = gstrtsp-enumtypes.c
+built_headers = gstrtsp-enumtypes.h
 libgstrtsp_@GST_API_VERSION@_la_SOURCES = gstrtsptransport.c \
 					 gstrtspurl.c \
 					 gstrtspmessage.c    \
@@ -581,7 +581,6 @@ libgstrtsp_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_C
 libgstrtsp_@GST_API_VERSION@_la_LIBADD = $(GST_LIBS) $(GIO_LIBS) $(LIBM)
 libgstrtsp_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS) $(WIN32_LIBS)
 BUILT_SOURCES = $(built_headers) $(built_sources)
-EXTRA_DIST = gstrtsp-marshal.list
 CLEANFILES = $(BUILT_SOURCES) $(am__append_1)
 glib_gen_prefix = __gst_rtsp
 glib_enum_define = gst_rtsp
@@ -686,7 +685,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtspconnection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtspdefs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtspextension.Plo@am__quote@
@@ -767,13 +765,6 @@ libgstrtsp_@GST_API_VERSION@_la-gstrtsprange.lo: gstrtsprange.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstrtsprange.c' object='libgstrtsp_@GST_API_VERSION@_la-gstrtsprange.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstrtsp_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstrtsp_@GST_API_VERSION@_la-gstrtsprange.lo `test -f 'gstrtsprange.c' || echo '$(srcdir)/'`gstrtsprange.c
-
-libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo: gstrtsp-marshal.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstrtsp_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo -MD -MP -MF $(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.Tpo -c -o libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo `test -f 'gstrtsp-marshal.c' || echo '$(srcdir)/'`gstrtsp-marshal.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.Tpo $(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstrtsp-marshal.c' object='libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstrtsp_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstrtsp_@GST_API_VERSION@_la-gstrtsp-marshal.lo `test -f 'gstrtsp-marshal.c' || echo '$(srcdir)/'`gstrtsp-marshal.c
 
 libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.lo: gstrtsp-enumtypes.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstrtsp_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.lo -MD -MP -MF $(DEPDIR)/libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.Tpo -c -o libgstrtsp_@GST_API_VERSION@_la-gstrtsp-enumtypes.lo `test -f 'gstrtsp-enumtypes.c' || echo '$(srcdir)/'`gstrtsp-enumtypes.c

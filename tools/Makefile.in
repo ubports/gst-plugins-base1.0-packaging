@@ -80,7 +80,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-bin_PROGRAMS = gst-discoverer-@GST_API_VERSION@$(EXEEXT) \
+bin_PROGRAMS = gst-device-monitor-@GST_API_VERSION@$(EXEEXT) \
+	gst-discoverer-@GST_API_VERSION@$(EXEEXT) \
 	gst-play-@GST_API_VERSION@$(EXEEXT)
 subdir = tools
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -105,7 +106,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -128,13 +128,13 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_gst_discoverer_@GST_API_VERSION@_OBJECTS =  \
-	gst-discoverer.$(OBJEXT)
-gst_discoverer_@GST_API_VERSION@_OBJECTS =  \
-	$(am_gst_discoverer_@GST_API_VERSION@_OBJECTS)
-gst_discoverer_@GST_API_VERSION@_LDADD = $(LDADD)
+am_gst_device_monitor_@GST_API_VERSION@_OBJECTS =  \
+	gst-device-monitor.$(OBJEXT)
+gst_device_monitor_@GST_API_VERSION@_OBJECTS =  \
+	$(am_gst_device_monitor_@GST_API_VERSION@_OBJECTS)
+gst_device_monitor_@GST_API_VERSION@_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-gst_discoverer_@GST_API_VERSION@_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
+gst_device_monitor_@GST_API_VERSION@_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
@@ -144,6 +144,17 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_gst_discoverer_@GST_API_VERSION@_OBJECTS =  \
+	gst-discoverer.$(OBJEXT)
+gst_discoverer_@GST_API_VERSION@_OBJECTS =  \
+	$(am_gst_discoverer_@GST_API_VERSION@_OBJECTS)
+gst_discoverer_@GST_API_VERSION@_LDADD = $(LDADD)
+gst_discoverer_@GST_API_VERSION@_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_gst_play_@GST_API_VERSION@_OBJECTS = gst-play.$(OBJEXT) \
 	gst-play-kb.$(OBJEXT)
 gst_play_@GST_API_VERSION@_OBJECTS =  \
@@ -189,9 +200,11 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES) \
+SOURCES = $(gst_device_monitor_@GST_API_VERSION@_SOURCES) \
+	$(gst_discoverer_@GST_API_VERSION@_SOURCES) \
 	$(gst_play_@GST_API_VERSION@_SOURCES)
-DIST_SOURCES = $(gst_discoverer_@GST_API_VERSION@_SOURCES) \
+DIST_SOURCES = $(gst_device_monitor_@GST_API_VERSION@_SOURCES) \
+	$(gst_discoverer_@GST_API_VERSION@_SOURCES) \
 	$(gst_play_@GST_API_VERSION@_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -308,6 +321,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -337,6 +352,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -364,7 +381,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -468,13 +484,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -540,9 +555,11 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 man_MANS = \
+	gst-device-monitor-@GST_API_VERSION@.1 \
 	gst-discoverer-@GST_API_VERSION@.1 \
 	gst-play-@GST_API_VERSION@.1	
 
+gst_device_monitor_@GST_API_VERSION@_SOURCES = gst-device-monitor.c
 gst_discoverer_@GST_API_VERSION@_SOURCES = gst-discoverer.c
 gst_play_@GST_API_VERSION@_SOURCES = gst-play.c gst-play-kb.c gst-play-kb.h
 noinst_HEADERS = gst-play-kb.h
@@ -639,6 +656,10 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+gst-device-monitor-@GST_API_VERSION@$(EXEEXT): $(gst_device_monitor_@GST_API_VERSION@_OBJECTS) $(gst_device_monitor_@GST_API_VERSION@_DEPENDENCIES) $(EXTRA_gst_device_monitor_@GST_API_VERSION@_DEPENDENCIES) 
+	@rm -f gst-device-monitor-@GST_API_VERSION@$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(gst_device_monitor_@GST_API_VERSION@_OBJECTS) $(gst_device_monitor_@GST_API_VERSION@_LDADD) $(LIBS)
+
 gst-discoverer-@GST_API_VERSION@$(EXEEXT): $(gst_discoverer_@GST_API_VERSION@_OBJECTS) $(gst_discoverer_@GST_API_VERSION@_DEPENDENCIES) $(EXTRA_gst_discoverer_@GST_API_VERSION@_DEPENDENCIES) 
 	@rm -f gst-discoverer-@GST_API_VERSION@$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(gst_discoverer_@GST_API_VERSION@_OBJECTS) $(gst_discoverer_@GST_API_VERSION@_LDADD) $(LIBS)
@@ -653,6 +674,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-device-monitor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-discoverer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-play-kb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gst-play.Po@am__quote@

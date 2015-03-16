@@ -418,7 +418,7 @@ theora_handle_type_packet (GstTheoraDec * dec)
   }
   /* theora has:
    *
-   *  width/height : dimension of the encoded frame 
+   *  width/height : dimension of the encoded frame
    *  pic_width/pic_height : dimension of the visible part
    *  pic_x/pic_y : offset in encoded frame where visible part starts
    */
@@ -507,6 +507,8 @@ theora_handle_type_packet (GstTheoraDec * dec)
       break;
   }
 
+  dec->uncropped_info = state->info;
+
   gst_video_decoder_negotiate (GST_VIDEO_DECODER (dec));
 
   dec->have_header = TRUE;
@@ -556,6 +558,62 @@ header_read_error:
     GST_ELEMENT_ERROR (GST_ELEMENT (dec), STREAM, DECODE,
         (NULL), ("couldn't read header packet"));
     return GST_FLOW_ERROR;
+  }
+}
+
+#define MIN_NUM_HEADERS 3
+static GstFlowReturn
+theoradec_handle_header_caps (GstTheoraDec * dec)
+{
+  GstFlowReturn result = GST_CUSTOM_FLOW_DROP;
+  GstCaps *caps;
+  GstStructure *s = NULL;
+  const GValue *array = NULL;
+
+  GST_DEBUG_OBJECT (dec, "Looking for Theora headers in caps");
+  caps = gst_pad_get_current_caps (GST_VIDEO_DECODER_SINK_PAD (dec));
+  if (caps)
+    s = gst_caps_get_structure (caps, 0);
+  if (s)
+    array = gst_structure_get_value (s, "streamheader");
+
+  if (caps)
+    gst_caps_unref (caps);
+
+  if (array && (gst_value_array_get_size (array) >= MIN_NUM_HEADERS)) {
+    const GValue *value = NULL;
+    GstBuffer *buf = NULL;
+    gint i = 0;
+
+    while (result == GST_CUSTOM_FLOW_DROP
+        && i < gst_value_array_get_size (array)) {
+      value = gst_value_array_get_value (array, i);
+      buf = gst_value_get_buffer (value);
+      if (!buf)
+        goto null_buffer;
+      GST_LOG_OBJECT (dec, "Submitting header packet");
+      result = theora_dec_decode_buffer (dec, buf, NULL);
+      i++;
+    }
+  } else
+    goto array_error;
+
+done:
+  return (result !=
+      GST_CUSTOM_FLOW_DROP ? GST_FLOW_NOT_NEGOTIATED : GST_FLOW_OK);
+
+  /* ERRORS */
+array_error:
+  {
+    GST_WARNING_OBJECT (dec, "streamheader array not found");
+    result = GST_FLOW_ERROR;
+    goto done;
+  }
+null_buffer:
+  {
+    GST_WARNING_OBJECT (dec, "streamheader with null buffer received");
+    result = GST_FLOW_ERROR;
+    goto done;
   }
 }
 
@@ -638,7 +696,7 @@ theora_handle_image (GstTheoraDec * dec, th_ycbcr_buffer buf,
   GST_CAT_TRACE_OBJECT (GST_CAT_PERFORMANCE, dec,
       "doing unavoidable video frame copy");
 
-  if (G_UNLIKELY (!gst_video_frame_map (&vframe, &dec->output_state->info,
+  if (G_UNLIKELY (!gst_video_frame_map (&vframe, &dec->uncropped_info,
               frame->output_buffer, GST_MAP_WRITE)))
     goto invalid_frame;
 
@@ -683,10 +741,13 @@ theora_handle_data_packet (GstTheoraDec * dec, ogg_packet * packet,
   GstFlowReturn result;
   ogg_int64_t gp;
 
-  if (G_UNLIKELY (!dec->have_header))
-    goto not_initialized;
+  if (G_UNLIKELY (!dec->have_header)) {
+    result = theoradec_handle_header_caps (dec);
+    if (result != GST_FLOW_OK)
+      goto not_initialized;
+  }
 
-  /* the second most significant bit of the first data byte is cleared 
+  /* the second most significant bit of the first data byte is cleared
    * for keyframes. We can only check it if it's not a zero-length packet. */
   keyframe = packet->bytes && ((packet->packet[0] & 0x40) == 0);
   if (G_UNLIKELY (keyframe)) {
@@ -782,19 +843,15 @@ theora_dec_decode_buffer (GstTheoraDec * dec, GstBuffer * buf,
   /* switch depending on packet type. A zero byte packet is always a data
    * packet; we don't dereference it in that case. */
   if (packet.bytes && packet.packet[0] & 0x80) {
+    /* header packets are not meant to be displayed - return FLOW_DROP */
     if (dec->have_header) {
       GST_WARNING_OBJECT (GST_OBJECT (dec), "Ignoring header");
-      GST_VIDEO_CODEC_FRAME_FLAG_SET (frame,
-          GST_VIDEO_CODEC_FRAME_FLAG_DECODE_ONLY);
       result = GST_CUSTOM_FLOW_DROP;
       goto done;
     }
-    result = theora_handle_header_packet (dec, &packet);
-    /* header packets are not meant to be displayed */
-    /* FIXME : This is a temporary hack. The proper fix would be to
-     * not call _finish_frame() for these types of packets */
-    GST_VIDEO_CODEC_FRAME_FLAG_SET (frame,
-        GST_VIDEO_CODEC_FRAME_FLAG_DECODE_ONLY);
+    if ((result = theora_handle_header_packet (dec, &packet)) != GST_FLOW_OK)
+      goto done;
+    result = GST_CUSTOM_FLOW_DROP;
   } else {
     result = theora_handle_data_packet (dec, &packet, frame);
   }
@@ -857,14 +914,18 @@ theora_dec_decide_allocation (GstVideoDecoder * decoder, GstQuery * query)
   }
 
   if (dec->can_crop) {
-    GstVideoInfo info = state->info;
+    GstVideoInfo *info = &dec->uncropped_info;
     GstCaps *caps;
 
-    /* Calculate uncropped size */
-    gst_video_info_set_format (&info, info.finfo->format, dec->info.frame_width,
+    GST_LOG_OBJECT (decoder, "Using GstVideoCropMeta, uncropped wxh = %dx%d",
+        info->width, info->height);
+
+    gst_video_info_set_format (info, info->finfo->format, dec->info.frame_width,
         dec->info.frame_height);
-    size = MAX (size, info.size);
-    caps = gst_video_info_to_caps (&info);
+
+    /* Calculate uncropped size */
+    size = MAX (size, info->size);
+    caps = gst_video_info_to_caps (info);
     gst_buffer_pool_config_set_params (config, caps, size, min, max);
     gst_caps_unref (caps);
   }

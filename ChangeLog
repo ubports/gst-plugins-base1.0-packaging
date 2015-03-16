@@ -1,9 +1,522 @@
-=== release 1.3.3 ===
+=== release 1.4.0 ===
 
-2014-06-22  Sebastian Dröge <slomo@coaxion.net>
+2014-07-19  Sebastian Dröge <slomo@coaxion.net>
 
 	* configure.ac:
-	  releasing 1.3.3
+	  releasing 1.4.0
+
+2014-07-18 21:19:03 -0400  Youness Alaoui <kakaroto@kakaroto.homelinux.net>
+
+	* gst-libs/gst/app/gstappsrc.c:
+	  appsrc: Fix memory leak with callback notify not being called in dispose
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733386
+
+2014-07-19 12:29:56 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* po/af.po:
+	* po/az.po:
+	* po/bg.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_GB.po:
+	* po/eo.po:
+	* po/es.po:
+	* po/eu.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/gl.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/lt.po:
+	* po/lv.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/or.po:
+	* po/pl.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	  po: Update translations
+
+2014-07-18 16:01:23 +0530  Nirbheek Chauhan <nirbheek@centricular.com>
+
+	* gst-libs/gst/pbutils/encoding-profile.c:
+	  encoding-profile: Add example for using encoder presets with profiles
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733349
+
+2014-07-18 15:46:05 +0530  Nirbheek Chauhan <nirbheek@centricular.com>
+
+	* gst-libs/gst/pbutils/encoding-profile.c:
+	  encoding-profile: Fix typos and old API in docs
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733349
+
+2014-07-17 14:36:16 +0100  Tim-Philipp Müller <tim@centricular.com>
+
+	* sys/xvimage/xvimagesink.c:
+	  xvimagesink: fix property description string
+	  Spotted by Josep Torra.
+
+2014-07-15 16:56:30 +0200  Piotr Drąg <piotrdrag@gmail.com>
+
+	* po/POTFILES.in:
+	  po: update POTFILES
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733207
+
+2014-07-12 10:33:30 +0530  Arun Raghavan <arun@accosted.net>
+
+	* gst/playback/gstplaysink.c:
+	  playsink: Fix filter property getter
+	  The switch-case set was incomplete.
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733012
+
+=== release 1.3.91 ===
+
+2014-07-11 11:21:29 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* ChangeLog:
+	* NEWS:
+	* RELEASE:
+	* configure.ac:
+	* docs/plugins/inspect/plugin-adder.xml:
+	* docs/plugins/inspect/plugin-alsa.xml:
+	* docs/plugins/inspect/plugin-app.xml:
+	* docs/plugins/inspect/plugin-audioconvert.xml:
+	* docs/plugins/inspect/plugin-audiorate.xml:
+	* docs/plugins/inspect/plugin-audioresample.xml:
+	* docs/plugins/inspect/plugin-audiotestsrc.xml:
+	* docs/plugins/inspect/plugin-cdparanoia.xml:
+	* docs/plugins/inspect/plugin-encoding.xml:
+	* docs/plugins/inspect/plugin-gio.xml:
+	* docs/plugins/inspect/plugin-ivorbisdec.xml:
+	* docs/plugins/inspect/plugin-libvisual.xml:
+	* docs/plugins/inspect/plugin-ogg.xml:
+	* docs/plugins/inspect/plugin-pango.xml:
+	* docs/plugins/inspect/plugin-playback.xml:
+	* docs/plugins/inspect/plugin-subparse.xml:
+	* docs/plugins/inspect/plugin-tcp.xml:
+	* docs/plugins/inspect/plugin-theora.xml:
+	* docs/plugins/inspect/plugin-typefindfunctions.xml:
+	* docs/plugins/inspect/plugin-videoconvert.xml:
+	* docs/plugins/inspect/plugin-videorate.xml:
+	* docs/plugins/inspect/plugin-videoscale.xml:
+	* docs/plugins/inspect/plugin-videotestsrc.xml:
+	* docs/plugins/inspect/plugin-volume.xml:
+	* docs/plugins/inspect/plugin-vorbis.xml:
+	* docs/plugins/inspect/plugin-ximagesink.xml:
+	* docs/plugins/inspect/plugin-xvimagesink.xml:
+	* gst-plugins-base.doap:
+	* win32/common/_stdint.h:
+	* win32/common/config.h:
+	  Release 1.3.91
+
+2014-07-11 11:21:05 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* po/af.po:
+	* po/az.po:
+	* po/bg.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_GB.po:
+	* po/eo.po:
+	* po/es.po:
+	* po/eu.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/gl.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/lt.po:
+	* po/lv.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/or.po:
+	* po/pl.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	  Update .po files
+
+2014-07-11 10:13:03 +0200  Edward Hervey <bilboed@bilboed.com>
+
+	* configure.ac:
+	* ext/libvisual/plugin.c:
+	* ext/libvisual/visual.c:
+	  libvisual: Remove < 0.4 support
+	  And remove the version guards that went along with it
+	  https://bugzilla.gnome.org/show_bug.cgi?id=733046
+
+2014-07-10 18:17:47 -0400  Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
+	* gst-libs/gst/allocators/gstdmabuf.c:
+	  dmabuf: Ensure _get_fd() works even for shared memory
+	  Fixes regression introduced by:
+	  commit b60888fd4bcacd42bb4e27fa938272d6e72c5c32
+	  Author: Michael Olbrich <m.olbrich@pengutronix.de>
+	  Date:   Tue May 20 11:18:56 2014 +0200
+	  dmabuf: share the mapping with shared copies of the memory
+	  https://bugzilla.gnome.org/show_bug.cgi?id=730441
+
+2014-07-11 08:51:58 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* po/vi.po:
+	  po: Update translations
+
+2014-07-03 13:46:08 -0700  Evan Nemerson <evan@nemerson.com>
+
+	* gst-libs/gst/sdp/sdp.h:
+	  sdp: add gstmikey.h to sdp.h
+	  https://bugzilla.gnome.org/show_bug.cgi?id=732709
+
+2014-07-03 18:32:02 +0200  Sebastian Rasmussen <sebrn@axis.com>
+
+	* gst-libs/gst/riff/riff-read.c:
+	  riff: Print invalid fourcc in error message in hex
+	  Previously this was printed as characters which caused later processing
+	  of the error message to sometimes warn about non-UTF-8 characters.
+	  Fixes https://bugzilla.gnome.org/show_bug.cgi?id=732697
+
+2014-06-20 18:02:31 +0200  Gwenole Beauchesne <gwenole.beauchesne@intel.com>
+
+	* gst-libs/gst/video/gstvideodecoder.c:
+	  videodecoder: parse any source data that is still available.
+	  Fix gst_video_decoder_parse_available() to really parse any pending
+	  source data that is still available in the adapter. This is a memory
+	  optimization to avoid expansion of video packed added to the adapter,
+	  but also a fix to EOS condition when the subclass parse() function
+	  ultimately only needed to call into gvd_have_frame() and no additional
+	  source bytes were consumed, i.e. gvd_add_to_frame() is not called.
+	  This situation can occur when decoding H.264 streams in byte-stream/nal
+	  mode for instance. A decoder always requires the next NAL unit to be
+	  parsed so that to determine picture boundaries. When a new picture is
+	  found, no byte is consumed (i.e. gvd_add_to_frame() is not called)
+	  but gvd_have_frame() is called (i.e. priv->current_frame is gone).
+	  Also make sure to avoid infinite loops caused by incorrect subclass
+	  parse() implementations. This can occur when no byte gets consumed
+	  and no appropriate indication (GST_VIDEO_DECODER_FLOW_NEED_DATA) is
+	  returned.
+	  https://bugzilla.gnome.org/show_bug.cgi?id=731974
+	  Signed-off-by: Gwenole Beauchesne <gwenole.beauchesne@intel.com>
+
+2014-07-02 15:50:23 +0200  Wim Taymans <wtaymans@redhat.com>
+
+	* tests/examples/dynamic/codec-select.c:
+	  tests: codec-select: fix compilation
+
+2014-07-02 15:49:38 +0200  Wim Taymans <wtaymans@redhat.com>
+
+	* gst-libs/gst/sdp/gstmikey.h:
+	  mikey: add more Since markers for new methods
+
+2014-07-02 15:38:41 +0200  Wim Taymans <wtaymans@redhat.com>
+
+	* gst-libs/gst/sdp/gstmikey.c:
+	* gst-libs/gst/sdp/gstmikey.h:
+	* tests/check/libs/mikey.c:
+	* win32/common/libgstsdp.def:
+	  mikey: make message and payload mini-objects
+	  Make the MIKEY message and payload objects miniobjects so that they have
+	  a GType and are refcounted.
+	  We can reuse the dispose method to clear our payload objects.
+	  Add some annotations.
+	  Implement a copy function for the MIKEY message.
+	  Fix the unit test.
+	  Fixes https://bugzilla.gnome.org/show_bug.cgi?id=732589
+
+2014-07-02 00:21:00 +0200  Sebastian Rasmussen <sebras@hotmail.com>
+
+	* tests/examples/dynamic/codec-select.c:
+	  tests: codec-select: Plug element name memory leak
+	  https://bugzilla.gnome.org/show_bug.cgi?id=732593
+
+2014-07-01 16:14:43 -0700  Evan Nemerson <evan@nemerson.com>
+
+	* gst-libs/gst/pbutils/gstdiscoverer-types.c:
+	* gst-libs/gst/rtsp/gstrtspconnection.c:
+	* gst-libs/gst/rtsp/gstrtsptransport.c:
+	* gst-libs/gst/sdp/gstmikey.c:
+	* gst-libs/gst/video/gstvideodecoder.c:
+	* gst-libs/gst/video/video-tile.c:
+	  docs: Assorted documentation and introspection fixes for new 1.4 API
+	  https://bugzilla.gnome.org/show_bug.cgi?id=732595
+
+2014-07-01 16:19:22 +0200  Wim Taymans <wtaymans@redhat.com>
+
+	* gst-libs/gst/rtsp/gstrtspconnection.c:
+	* tests/check/libs/rtspconnection.c:
+	  rtspconnection: also allow POST before GET
+	  Don't only allow GET and then POST request to setup tunneling over HTTP
+	  but also allow POST and then GET.
+	  Fixes https://bugzilla.gnome.org/show_bug.cgi?id=732459
+
+2014-06-28 17:08:06 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* ext/libvisual/gstaudiovisualizer.c:
+	* ext/libvisual/gstaudiovisualizer.h:
+	  libvisual: Rename get_type() function to prevent conflicts with static linking
+	  https://bugzilla.gnome.org/show_bug.cgi?id=728443
+
+=== release 1.3.90 ===
+
+2014-06-28 11:01:13 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* ChangeLog:
+	* NEWS:
+	* RELEASE:
+	* configure.ac:
+	* docs/plugins/gst-plugins-base-plugins.hierarchy:
+	* docs/plugins/inspect/plugin-adder.xml:
+	* docs/plugins/inspect/plugin-alsa.xml:
+	* docs/plugins/inspect/plugin-app.xml:
+	* docs/plugins/inspect/plugin-audioconvert.xml:
+	* docs/plugins/inspect/plugin-audiorate.xml:
+	* docs/plugins/inspect/plugin-audioresample.xml:
+	* docs/plugins/inspect/plugin-audiotestsrc.xml:
+	* docs/plugins/inspect/plugin-cdparanoia.xml:
+	* docs/plugins/inspect/plugin-encoding.xml:
+	* docs/plugins/inspect/plugin-gio.xml:
+	* docs/plugins/inspect/plugin-ivorbisdec.xml:
+	* docs/plugins/inspect/plugin-libvisual.xml:
+	* docs/plugins/inspect/plugin-ogg.xml:
+	* docs/plugins/inspect/plugin-pango.xml:
+	* docs/plugins/inspect/plugin-playback.xml:
+	* docs/plugins/inspect/plugin-subparse.xml:
+	* docs/plugins/inspect/plugin-tcp.xml:
+	* docs/plugins/inspect/plugin-theora.xml:
+	* docs/plugins/inspect/plugin-typefindfunctions.xml:
+	* docs/plugins/inspect/plugin-videoconvert.xml:
+	* docs/plugins/inspect/plugin-videorate.xml:
+	* docs/plugins/inspect/plugin-videoscale.xml:
+	* docs/plugins/inspect/plugin-videotestsrc.xml:
+	* docs/plugins/inspect/plugin-volume.xml:
+	* docs/plugins/inspect/plugin-vorbis.xml:
+	* docs/plugins/inspect/plugin-ximagesink.xml:
+	* docs/plugins/inspect/plugin-xvimagesink.xml:
+	* gst-plugins-base.doap:
+	* win32/common/_stdint.h:
+	* win32/common/config.h:
+	  Release 1.3.90
+
+2014-06-28 10:56:36 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* po/af.po:
+	* po/az.po:
+	* po/bg.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_GB.po:
+	* po/eo.po:
+	* po/es.po:
+	* po/eu.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/gl.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/lt.po:
+	* po/lv.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/or.po:
+	* po/pl.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	  Update .po files
+
+2014-06-27 14:24:10 -0300  Thiago Santos <ts.santos@sisa.samsung.com>
+
+	* gst/playback/gstplaysinkconvertbin.c:
+	  playsinkconvertbin: fix caps leak
+	  Let go the reference to the converter caps after using it
+
+2014-06-27 10:41:55 +0100  Tim-Philipp Müller <tim@centricular.com>
+
+	* tools/.gitignore:
+	* tools/Makefile.am:
+	* tools/gst-device-monitor-1.0.1:
+	* tools/gst-device-monitor.c:
+	  tools: add gst-device-monitor-1.0 utility
+	  Just shows devices with basic info and exits. Or will
+	  wait for more devices to show up or be removed with
+	  the --follow option. It's also possible to pass filters
+	  as command line arguments in the form DEVICE_CLASSES
+	  or DEVICE_CLASSES:CAPS.
+
+2014-06-26 16:18:05 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* gst-libs/gst/audio/streamvolume.h:
+	* gst-libs/gst/tag/xmpwriter.h:
+	  libs: There is no G_TYPE_CHECK_INTERFACE_TYPE and G_TYPE_CHECK_INTERFACE_CAST
+	  Remove the macros that used them, nobody could've used them anyway.
+
+2014-06-26 11:35:43 +0200  Gwenole Beauchesne <gwenole.beauchesne@intel.com>
+
+	* gst-libs/gst/pbutils/codec-utils.c:
+	  pbutils: handle more H.264 profiles and levels.
+	  Recognize H.264 Level 5.2, as exposed by modern 2160p30+ streams,
+	  i.e. commonly known as 4K. Also add initial support for handling
+	  Annex.G (SVC) profiles.
+	  https://bugzilla.gnome.org/show_bug.cgi?id=732269
+	  Signed-off-by: Gwenole Beauchesne <gwenole.beauchesne@intel.com>
+
+2014-06-26 04:27:31 +1000  Jan Schmidt <jan@centricular.com>
+
+	* gst/typefind/gsttypefindfunctions.c:
+	  typefind: Bump iso mp4 typefinder to PRIMARY. Add mp4 extension hint.
+	  Fixes a problem with at least one file being detected incorrectly as
+	  DTS because there's DTS packets early enough in the file.
+
+2014-06-23 01:02:22 +0100  Tim-Philipp Müller <tim@centricular.com>
+
+	* tests/check/libs/rtpbasedepayload.c:
+	  tests: fix vararg handling in rtpbasedepayload unit test
+	  Makes it pass on 32-bit systems.
+
+2014-06-23 00:33:18 +0100  Tim-Philipp Müller <tim@centricular.com>
+
+	* tests/check/libs/rtpbasepayload.c:
+	  tests: fix vararg handling in rtpbasepayload unit test
+	  Makes it pass on 32-bit systems.
+
+2014-06-22 20:42:13 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* gst/playback/gstplaysinkconvertbin.c:
+	  playsinkconvertbin: Filter out ANY capsfeatures from the converter caps
+	  We can't convert to ANY capsfeatures, they are only there so that we
+	  can passthrough whatever downstream can support... but we definitely
+	  don't want to return them to upstream.
+
+2014-06-22 19:36:14 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* configure.ac:
+	  Back to development
+
+=== release 1.3.3 ===
+
+2014-06-22 18:07:57 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* ChangeLog:
+	* NEWS:
+	* RELEASE:
+	* configure.ac:
+	* docs/plugins/inspect/plugin-adder.xml:
+	* docs/plugins/inspect/plugin-alsa.xml:
+	* docs/plugins/inspect/plugin-app.xml:
+	* docs/plugins/inspect/plugin-audioconvert.xml:
+	* docs/plugins/inspect/plugin-audiorate.xml:
+	* docs/plugins/inspect/plugin-audioresample.xml:
+	* docs/plugins/inspect/plugin-audiotestsrc.xml:
+	* docs/plugins/inspect/plugin-cdparanoia.xml:
+	* docs/plugins/inspect/plugin-encoding.xml:
+	* docs/plugins/inspect/plugin-gio.xml:
+	* docs/plugins/inspect/plugin-ivorbisdec.xml:
+	* docs/plugins/inspect/plugin-libvisual.xml:
+	* docs/plugins/inspect/plugin-ogg.xml:
+	* docs/plugins/inspect/plugin-pango.xml:
+	* docs/plugins/inspect/plugin-playback.xml:
+	* docs/plugins/inspect/plugin-subparse.xml:
+	* docs/plugins/inspect/plugin-tcp.xml:
+	* docs/plugins/inspect/plugin-theora.xml:
+	* docs/plugins/inspect/plugin-typefindfunctions.xml:
+	* docs/plugins/inspect/plugin-videoconvert.xml:
+	* docs/plugins/inspect/plugin-videorate.xml:
+	* docs/plugins/inspect/plugin-videoscale.xml:
+	* docs/plugins/inspect/plugin-videotestsrc.xml:
+	* docs/plugins/inspect/plugin-volume.xml:
+	* docs/plugins/inspect/plugin-vorbis.xml:
+	* docs/plugins/inspect/plugin-ximagesink.xml:
+	* docs/plugins/inspect/plugin-xvimagesink.xml:
+	* gst-plugins-base.doap:
+	* win32/common/_stdint.h:
+	* win32/common/config.h:
+	  Release 1.3.3
+
+2014-06-22 17:25:42 +0200  Sebastian Dröge <sebastian@centricular.com>
+
+	* po/af.po:
+	* po/az.po:
+	* po/bg.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_GB.po:
+	* po/eo.po:
+	* po/es.po:
+	* po/eu.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/gl.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/lt.po:
+	* po/lv.po:
+	* po/nb.po:
+	* po/nl.po:
+	* po/or.po:
+	* po/pl.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	  Update .po files
 
 2014-06-22 14:23:32 +0200  Sebastian Dröge <sebastian@centricular.com>
 

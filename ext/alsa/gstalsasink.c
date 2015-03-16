@@ -52,6 +52,10 @@
 #include <gst/audio/gstaudioiec61937.h>
 #include <gst/gst-i18n-plugin.h>
 
+#ifndef ESTRPIPE
+#define ESTRPIPE EPIPE
+#endif
+
 #define DEFAULT_DEVICE		"default"
 #define DEFAULT_DEVICE_NAME	""
 #define DEFAULT_CARD_NAME	""
@@ -982,7 +986,7 @@ gst_alsasink_close (GstAudioSink * asink)
 static gint
 xrun_recovery (GstAlsaSink * alsa, snd_pcm_t * handle, gint err)
 {
-  GST_DEBUG_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (-err));
+  GST_WARNING_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (-err));
 
   if (err == -EPIPE) {          /* under-run */
     err = snd_pcm_prepare (handle);

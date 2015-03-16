@@ -42,6 +42,7 @@ G_BEGIN_DECLS
   (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_VIDEO_DECODER))
 #define GST_IS_VIDEO_DECODER_CLASS(obj) \
   (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_VIDEO_DECODER))
+#define GST_VIDEO_DECODER_CAST(obj) ((GstVideoDecoder *)(obj))
 
 /**
  * GST_VIDEO_DECODER_SINK_NAME:
@@ -214,7 +215,12 @@ struct _GstVideoDecoder
  * @handle_frame:   Provides input data frame to subclass.
  * @finish:         Optional.
  *                  Called to request subclass to dispatch any pending remaining
- *                  data (e.g. at EOS).
+ *                  data at EOS. Sub-classes can refuse to decode new data after.
+ * @drain:	    Optional.
+ *                  Called to request subclass to decode any data it can at this
+ *                  point, but that more data may arrive after. (e.g. at segment end).
+ *                  Sub-classes should be prepared to handle new data afterward,
+ *                  or seamless segment processing will break. Since: 1.6
  * @sink_event:     Optional.
  *                  Event handler on the sink pad. This function should return
  *                  TRUE if the event was handled and should be discarded
@@ -254,6 +260,11 @@ struct _GstVideoDecoder
  *                  return TRUE if the query could be performed. Subclasses
  *                  should chain up to the parent implementation to invoke the
  *                  default handler. Since 1.4
+ * @getcaps:        Optional.
+ *                  Allows for a custom sink getcaps implementation.
+ *                  If not implemented, default returns
+ *                  gst_video_decoder_proxy_getcaps
+ *                  applied to sink template caps.
  *
  * Subclasses can override any of the available virtual methods or not, as
  * needed. At minimum @handle_frame needs to be overridden, and @set_format
@@ -310,9 +321,13 @@ struct _GstVideoDecoderClass
   gboolean      (*src_query)      (GstVideoDecoder *decoder,
 				   GstQuery *query);
 
+  GstCaps*      (*getcaps)        (GstVideoDecoder *decoder,
+                                   GstCaps *filter);
+
+  GstFlowReturn (*drain)          (GstVideoDecoder *decoder);
 
   /*< private >*/
-  void         *padding[GST_PADDING_LARGE-3];
+  void         *padding[GST_PADDING_LARGE-5];
 };
 
 GType    gst_video_decoder_get_type (void);
@@ -395,6 +410,11 @@ void             gst_video_decoder_release_frame (GstVideoDecoder * dec,
 void             gst_video_decoder_merge_tags (GstVideoDecoder *decoder,
                                                const GstTagList *tags,
                                                GstTagMergeMode mode);
+
+GstCaps *        gst_video_decoder_proxy_getcaps (GstVideoDecoder * decoder,
+						  GstCaps         * caps,
+                                                  GstCaps         * filter);
+
 
 G_END_DECLS
 

@@ -101,6 +101,15 @@ GstInstallPluginsContext * gst_install_plugins_context_new (void);
 
 void   gst_install_plugins_context_free    (GstInstallPluginsContext * ctx);
 
+void   gst_install_plugins_context_set_confirm_search (GstInstallPluginsContext * ctx,
+                                                       gboolean                   confirm_search);
+
+void   gst_install_plugins_context_set_desktop_id (GstInstallPluginsContext * ctx,
+                                                   const gchar              * desktop_id);
+
+void   gst_install_plugins_context_set_startup_notification_id (GstInstallPluginsContext * ctx,
+                                                                const gchar              * startup_id);
+
 void   gst_install_plugins_context_set_xid (GstInstallPluginsContext * ctx,
                                             guint                      xid);
 

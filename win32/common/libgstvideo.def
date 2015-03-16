@@ -71,15 +71,24 @@ EXPORTS
 	gst_video_codec_state_get_type
 	gst_video_codec_state_ref
 	gst_video_codec_state_unref
+	gst_video_color_matrix_get_Kr_Kb
 	gst_video_color_matrix_get_type
+	gst_video_color_primaries_get_info
 	gst_video_color_primaries_get_type
 	gst_video_color_range_get_type
 	gst_video_color_range_offsets
+	gst_video_color_transfer_decode
+	gst_video_color_transfer_encode
 	gst_video_colorimetry_from_string
 	gst_video_colorimetry_matches
 	gst_video_colorimetry_to_string
 	gst_video_convert_sample
 	gst_video_convert_sample_async
+	gst_video_converter_frame
+	gst_video_converter_free
+	gst_video_converter_get_config
+	gst_video_converter_new
+	gst_video_converter_set_config
 	gst_video_crop_meta_api_get_type
 	gst_video_crop_meta_get_info
 	gst_video_decoder_add_to_frame
@@ -105,6 +114,7 @@ EXPORTS
 	gst_video_decoder_have_frame
 	gst_video_decoder_merge_tags
 	gst_video_decoder_negotiate
+	gst_video_decoder_proxy_getcaps
 	gst_video_decoder_release_frame
 	gst_video_decoder_set_estimate_rate
 	gst_video_decoder_set_latency
@@ -112,6 +122,11 @@ EXPORTS
 	gst_video_decoder_set_needs_format
 	gst_video_decoder_set_output_state
 	gst_video_decoder_set_packetized
+	gst_video_dither_flags_get_type
+	gst_video_dither_free
+	gst_video_dither_line
+	gst_video_dither_method_get_type
+	gst_video_dither_new
 	gst_video_encoder_allocate_output_buffer
 	gst_video_encoder_allocate_output_frame
 	gst_video_encoder_finish_frame
@@ -154,6 +169,7 @@ EXPORTS
 	gst_video_gl_texture_upload_meta_api_get_type
 	gst_video_gl_texture_upload_meta_get_info
 	gst_video_gl_texture_upload_meta_upload
+	gst_video_guess_framerate
 	gst_video_info_align
 	gst_video_info_convert
 	gst_video_info_from_caps
@@ -212,6 +228,17 @@ EXPORTS
 	gst_video_pack_flags_get_type
 	gst_video_region_of_interest_meta_api_get_type
 	gst_video_region_of_interest_meta_get_info
+	gst_video_resampler_clear
+	gst_video_resampler_flags_get_type
+	gst_video_resampler_init
+	gst_video_resampler_method_get_type
+	gst_video_scaler_2d
+	gst_video_scaler_combine_packed_YUV
+	gst_video_scaler_free
+	gst_video_scaler_get_coeff
+	gst_video_scaler_horizontal
+	gst_video_scaler_new
+	gst_video_scaler_vertical
 	gst_video_sink_center_rect
 	gst_video_sink_get_type
 	gst_video_tile_get_index

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.32.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-06-22 17:22+0200\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2011-04-28 09:19+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -85,11 +85,6 @@ msgstr "Erreur interne de flux de données."
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr "Élément « %s » manquant, contrôlez votre installation de GStreamer."
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-"Un greffon %s est requis pour lire ce flux, mais il n'est pas installé."
 
 msgid "Could not determine type of stream"
 msgstr "Impossible de déterminer le type de flux"
@@ -536,13 +531,18 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
+msgid "Print version information and exit"
+msgstr ""
+
+msgid ""
+"Don't exit after showing the initial device list, but wait for devices to "
+"added/removed."
+msgstr ""
+
 msgid "Buffering..."
 msgstr ""
 
 msgid "Clock lost, selecting a new one\n"
-msgstr ""
-
-msgid "Print version information and exit"
 msgstr ""
 
 msgid "Video sink to use (default is autovideosink)"
@@ -566,12 +566,19 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
 msgid "You must provide at least one filename or URI to play."
 msgstr ""
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr ""
+#~ "Un greffon %s est requis pour lire ce flux, mais il n'est pas installé."
 
 #, fuzzy
 #~ msgid "Uncompressed %s YUV %s"

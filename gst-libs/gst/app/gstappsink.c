@@ -571,20 +571,36 @@ gst_app_sink_event (GstBaseSink * sink, GstEvent * event)
       g_queue_push_tail (priv->queue, gst_event_ref (event));
       g_mutex_unlock (&priv->mutex);
       break;
-    case GST_EVENT_EOS:
+    case GST_EVENT_EOS:{
+      gboolean emit = TRUE;
+
       g_mutex_lock (&priv->mutex);
       GST_DEBUG_OBJECT (appsink, "receiving EOS");
       priv->is_eos = TRUE;
       g_cond_signal (&priv->cond);
       g_mutex_unlock (&priv->mutex);
 
-      /* emit EOS now */
-      if (priv->callbacks.eos)
-        priv->callbacks.eos (appsink, priv->user_data);
-      else
-        g_signal_emit (appsink, gst_app_sink_signals[SIGNAL_EOS], 0);
+      g_mutex_lock (&priv->mutex);
+      /* wait until all buffers are consumed or we're flushing.
+       * Otherwise we might signal EOS before all buffers are
+       * consumed, which is a bit confusing for the application
+       */
+      while (priv->num_buffers > 0 && !priv->flushing)
+        g_cond_wait (&priv->cond, &priv->mutex);
+      if (priv->flushing)
+        emit = FALSE;
+      g_mutex_unlock (&priv->mutex);
+
+      if (emit) {
+        /* emit EOS now */
+        if (priv->callbacks.eos)
+          priv->callbacks.eos (appsink, priv->user_data);
+        else
+          g_signal_emit (appsink, gst_app_sink_signals[SIGNAL_EOS], 0);
+      }
 
       break;
+    }
     case GST_EVENT_FLUSH_START:
       /* we don't have to do anything here, the base class will call unlock
        * which will make sure we exit the _render method */
@@ -1093,7 +1109,8 @@ gst_app_sink_get_drop (GstAppSink * appsink)
  * This function blocks until a preroll sample or EOS is received or the appsink
  * element is set to the READY/NULL state.
  *
- * Returns: a #GstBuffer or NULL when the appsink is stopped or EOS.
+ * Returns: (transfer full): a #GstSample or NULL when the appsink is stopped or EOS.
+ *          Call gst_sample_unref() after usage.
  */
 GstSample *
 gst_app_sink_pull_preroll (GstAppSink * appsink)
@@ -1161,7 +1178,8 @@ not_started:
  * If an EOS event was received before any buffers, this function returns
  * %NULL. Use gst_app_sink_is_eos () to check for the EOS condition.
  *
- * Returns: a #GstBuffer or NULL when the appsink is stopped or EOS.
+ * Returns: (transfer full): a #GstSample or NULL when the appsink is stopped or EOS.
+ *          Call gst_sample_unref() after usage.
  */
 
 GstSample *

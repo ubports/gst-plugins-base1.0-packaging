@@ -56,10 +56,14 @@ static GQuark _colorspace_quark;
 #define gst_video_convert_parent_class parent_class
 G_DEFINE_TYPE (GstVideoConvert, gst_video_convert, GST_TYPE_VIDEO_FILTER);
 
+#define DEFAULT_PROP_DITHER      GST_VIDEO_DITHER_BAYER
+#define DEFAULT_PROP_DITHER_QUANTIZATION 1
+
 enum
 {
   PROP_0,
-  PROP_DITHER
+  PROP_DITHER,
+  PROP_DITHER_QUANTIZATION
 };
 
 #define CSP_VIDEO_CAPS GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS_ALL) ";" \
@@ -89,24 +93,6 @@ static gboolean gst_video_convert_set_info (GstVideoFilter * filter,
     GstVideoInfo * out_info);
 static GstFlowReturn gst_video_convert_transform_frame (GstVideoFilter * filter,
     GstVideoFrame * in_frame, GstVideoFrame * out_frame);
-
-static GType
-dither_method_get_type (void)
-{
-  static GType gtype = 0;
-
-  if (gtype == 0) {
-    static const GEnumValue values[] = {
-      {DITHER_NONE, "No dithering (default)", "none"},
-      {DITHER_VERTERR, "Vertical error propogation", "verterr"},
-      {DITHER_HALFTONE, "Half-tone", "halftone"},
-      {0, NULL, NULL}
-    };
-
-    gtype = g_enum_register_static ("GstVideoConvertDitherMethod", values);
-  }
-  return gtype;
-}
 
 /* copies the given caps */
 static GstCaps *
@@ -419,7 +405,7 @@ gst_video_convert_set_info (GstVideoFilter * filter,
   space = GST_VIDEO_CONVERT_CAST (filter);
 
   if (space->convert) {
-    videoconvert_convert_free (space->convert);
+    gst_video_converter_free (space->convert);
     space->convert = NULL;
   }
 
@@ -436,7 +422,13 @@ gst_video_convert_set_info (GstVideoFilter * filter,
   if (in_info->interlace_mode != out_info->interlace_mode)
     goto format_mismatch;
 
-  space->convert = videoconvert_convert_new (in_info, out_info);
+
+  space->convert = gst_video_converter_new (in_info, out_info,
+      gst_structure_new ("GstVideoConvertConfig",
+          GST_VIDEO_CONVERTER_OPT_DITHER_METHOD, GST_TYPE_VIDEO_DITHER_METHOD,
+          space->dither,
+          GST_VIDEO_CONVERTER_OPT_DITHER_QUANTIZATION, G_TYPE_UINT,
+          space->dither_quantization, NULL));
   if (space->convert == NULL)
     goto no_convert;
 
@@ -464,7 +456,7 @@ gst_video_convert_finalize (GObject * obj)
   GstVideoConvert *space = GST_VIDEO_CONVERT (obj);
 
   if (space->convert) {
-    videoconvert_convert_free (space->convert);
+    gst_video_converter_free (space->convert);
   }
 
   G_OBJECT_CLASS (parent_class)->finalize (obj);
@@ -511,13 +503,19 @@ gst_video_convert_class_init (GstVideoConvertClass * klass)
 
   g_object_class_install_property (gobject_class, PROP_DITHER,
       g_param_spec_enum ("dither", "Dither", "Apply dithering while converting",
-          dither_method_get_type (), DITHER_NONE,
+          gst_video_dither_method_get_type (), DEFAULT_PROP_DITHER,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_class, PROP_DITHER_QUANTIZATION,
+      g_param_spec_uint ("dither-quantization", "Dither Quantize",
+          "Quantizer to use", 0, G_MAXUINT, DEFAULT_PROP_DITHER_QUANTIZATION,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
 gst_video_convert_init (GstVideoConvert * space)
 {
+  space->dither = DEFAULT_PROP_DITHER;
+  space->dither_quantization = DEFAULT_PROP_DITHER_QUANTIZATION;
 }
 
 void
@@ -531,6 +529,9 @@ gst_video_convert_set_property (GObject * object, guint property_id,
   switch (property_id) {
     case PROP_DITHER:
       csp->dither = g_value_get_enum (value);
+      break;
+    case PROP_DITHER_QUANTIZATION:
+      csp->dither_quantization = g_value_get_uint (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -549,6 +550,9 @@ gst_video_convert_get_property (GObject * object, guint property_id,
   switch (property_id) {
     case PROP_DITHER:
       g_value_set_enum (value, csp->dither);
+      break;
+    case PROP_DITHER_QUANTIZATION:
+      g_value_set_uint (value, csp->dither_quantization);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -569,9 +573,7 @@ gst_video_convert_transform_frame (GstVideoFilter * filter,
       GST_VIDEO_INFO_NAME (&filter->in_info),
       GST_VIDEO_INFO_NAME (&filter->out_info));
 
-  videoconvert_convert_set_dither (space->convert, space->dither);
-
-  videoconvert_convert_convert (space->convert, out_frame, in_frame);
+  gst_video_converter_frame (space->convert, in_frame, out_frame);
 
   return GST_FLOW_OK;
 }

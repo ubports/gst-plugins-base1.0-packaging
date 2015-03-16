@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.21.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-06-22 17:22+0200\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2009-01-14 12:41+0800\n"
 "Last-Translator: Ji ZhengYu <zhengyuji@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -72,10 +72,6 @@ msgstr "内部数据流错误。"
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr "未找到组件‘%s’－请检查您的 GStreamer 安装情况。"
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr "播放此数据流需要 %s 插件，但它未安装。"
 
 #, fuzzy
 msgid "Could not determine type of stream"
@@ -513,13 +509,18 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
+msgid "Print version information and exit"
+msgstr ""
+
+msgid ""
+"Don't exit after showing the initial device list, but wait for devices to "
+"added/removed."
+msgstr ""
+
 msgid "Buffering..."
 msgstr ""
 
 msgid "Clock lost, selecting a new one\n"
-msgstr ""
-
-msgid "Print version information and exit"
 msgstr ""
 
 msgid "Video sink to use (default is autovideosink)"
@@ -543,12 +544,18 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
 msgid "You must provide at least one filename or URI to play."
 msgstr ""
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr "播放此数据流需要 %s 插件，但它未安装。"
 
 #~ msgid "Master"
 #~ msgstr "主音量"

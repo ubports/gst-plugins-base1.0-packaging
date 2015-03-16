@@ -1336,3 +1336,55 @@ gst_video_test_src_spokes (GstVideoTestSrc * v, GstVideoFrame * frame)
     videotestsrc_convert_tmpline (p, frame, j);
   }
 }
+
+void
+gst_video_test_src_gradient (GstVideoTestSrc * v, GstVideoFrame * frame)
+{
+  int i;
+  int j;
+  paintinfo pi = PAINT_INFO_INIT;
+  paintinfo *p = &pi;
+  struct vts_color_struct color;
+  int w = frame->info.width, h = frame->info.height;
+
+  videotestsrc_setup_paintinfo (v, p, w, h);
+
+  color = p->colors[COLOR_BLACK];
+  p->color = &color;
+
+  for (j = 0; j < h; j++) {
+    int y = j * 255.0 / h;
+    for (i = 0; i < w; i++) {
+      p->tmpline_u8[i] = y;
+    }
+    videotestsrc_blend_line (v, p->tmpline, p->tmpline_u8,
+        &p->foreground_color, &p->background_color, w);
+    videotestsrc_convert_tmpline (p, frame, j);
+  }
+}
+
+void
+gst_video_test_src_colors (GstVideoTestSrc * v, GstVideoFrame * frame)
+{
+  int i;
+  int j;
+  paintinfo pi = PAINT_INFO_INIT;
+  paintinfo *p = &pi;
+  struct vts_color_struct color;
+  int w = frame->info.width, h = frame->info.height;
+
+  videotestsrc_setup_paintinfo (v, p, w, h);
+
+  color = p->colors[COLOR_BLACK];
+  p->color = &color;
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      p->tmpline[i * 4 + 0] = 0xff;
+      p->tmpline[i * 4 + 1] = ((i * 4096) / w) % 256;
+      p->tmpline[i * 4 + 2] = (((j * 16) / h) << 4) | ((i * 16) / w);
+      p->tmpline[i * 4 + 3] = ((j * 4096) / h) % 256;
+    }
+    videotestsrc_convert_tmpline (p, frame, j);
+  }
+}

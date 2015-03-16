@@ -8,16 +8,16 @@
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-videoconvert.html" title="videoconvert">
 <link rel="next" href="gst-plugins-base-plugins-giosrc.html" title="giosrc">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-giosink.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-giosink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-giosink.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties"> <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-giosink.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-giosink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-giosink.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-giosink.properties" class="shortcut">Properties</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -45,13 +45,13 @@
 <tbody>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</td>
+<a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosink.html#GstGioSink--file" title="The “file” property">file</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-giosink.html#GstGioSink--location" title="The “location” property">location</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -73,8 +73,8 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
         <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
             <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
                 <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSink.html">GstBaseSink</a>
@@ -94,9 +94,9 @@ GstGioSink implements
 by an URI. This location can be specified using any protocol supported by
 the GIO library or it's VFS backends. Common protocols are 'file', 'ftp',
 or 'smb'.</p>
-<p>If the URI or <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> already exists giosink will post a message of
-type <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstMessage.html#GST-MESSAGE-ELEMENT:CAPS"><code class="literal">GST_MESSAGE_ELEMENT</code></a> with name "file-exists" on the bus. The message
-also contains the <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
+<p>If the URI or <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> already exists giosink will post a message of
+type <code class="literal">GST_MESSAGE_ELEMENT</code> with name "file-exists" on the bus. The message
+also contains the <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
 Applications can use the "file-exists" message to notify the user about
 the problem and to set a different target location or to remove the
 existing file. Note that right after the "file-exists" message a normal
@@ -222,14 +222,14 @@ it in the home directory of user foo.
 <a name="gst-plugins-base-plugins-giosink.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstGioSink--file"></a><h3>The <code class="literal">“file”</code> property</h3>
-<pre class="programlisting">  “file”                     <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</pre>
-<p><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to write to.</p>
+<pre class="programlisting">  “file”                     <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> *</pre>
+<p><a href="https://developer.gnome.org/gio/unstable/GFile.html"><code class="literal">GFile</code></a> to write to.</p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstGioSink--location"></a><h3>The <code class="literal">“location”</code> property</h3>
-<pre class="programlisting">  “location”                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “location”                 <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>URI location to write to.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
@@ -237,11 +237,11 @@ it in the home directory of user foo.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.see-also"></a><h2>See Also</h2>
-<p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-plugins/html/gstreamer-plugins-filesink.html#GstFileSink"><span class="type">GstFileSink</span></a>, <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-gnomevfssink.html#GstGnomeVFSSink"><span class="type">GstGnomeVFSSink</span></a>, <a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc"><span class="type">GstGioSrc</span></a></p>
+<p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-plugins/html/gstreamer-plugins-filesink.html#GstFileSink"><span class="type">GstFileSink</span></a>, <span class="type">GstGnomeVFSSink</span>, <a class="link" href="gst-plugins-base-plugins-giosrc.html#GstGioSrc"><span class="type">GstGioSrc</span></a></p>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

@@ -235,7 +235,8 @@ gst_riff_parse_file_header (GstElement * element,
     goto too_small;
 
   tag = GST_READ_UINT32_LE (info.data);
-  if (tag != GST_RIFF_TAG_RIFF && tag != GST_RIFF_TAG_AVF0)
+  if (tag != GST_RIFF_TAG_RIFF && tag != GST_RIFF_TAG_AVF0
+      && tag != GST_RIFF_TAG_RF64)
     goto not_riff;
 
   *doctype = GST_READ_UINT32_LE (info.data + 8);
@@ -258,8 +259,7 @@ too_small:
 not_riff:
   {
     GST_ELEMENT_ERROR (element, STREAM, WRONG_TYPE, (NULL),
-        ("Stream is no RIFF stream: %" GST_FOURCC_FORMAT,
-            GST_FOURCC_ARGS (tag)));
+        ("Stream is no RIFF stream: 0x%" G_GINT32_MODIFIER "x", tag));
     gst_buffer_unmap (buf, &info);
     gst_buffer_unref (buf);
     return FALSE;

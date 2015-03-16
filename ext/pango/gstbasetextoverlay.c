@@ -89,7 +89,6 @@
  *  - use proper strides and offset for I420
  *  - if text is wider than the video picture, it does not get
  *    clipped properly during blitting (if wrapping is disabled)
- *  - make 'shading_value' a property (or enum:  light/normal/dark/verydark)?
  */
 
 GST_DEBUG_CATEGORY (pango_debug);
@@ -114,9 +113,7 @@ GST_DEBUG_CATEGORY (pango_debug);
 #define DEFAULT_PROP_VERTICAL_RENDER  FALSE
 #define DEFAULT_PROP_COLOR      0xffffffff
 #define DEFAULT_PROP_OUTLINE_COLOR 0xff000000
-
-/* make a property of me */
-#define DEFAULT_SHADING_VALUE    -80
+#define DEFAULT_PROP_SHADING_VALUE    80
 
 #define MINIMUM_OUTLINE_OFFSET 1.0
 #define DEFAULT_SCALE_BASIS    640
@@ -126,6 +123,7 @@ enum
   PROP_0,
   PROP_TEXT,
   PROP_SHADING,
+  PROP_SHADING_VALUE,
   PROP_HALIGNMENT,
   PROP_VALIGNMENT,
   PROP_XPAD,
@@ -310,9 +308,11 @@ static void gst_base_text_overlay_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
 static void gst_base_text_overlay_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
+
 static void
 gst_base_text_overlay_adjust_values_with_fontdesc (GstBaseTextOverlay * overlay,
     PangoFontDescription * desc);
+static gboolean gst_base_text_overlay_can_handle_caps (GstCaps * incaps);
 
 GType
 gst_base_text_overlay_get_type (void)
@@ -401,6 +401,11 @@ gst_base_text_overlay_class_init (GstBaseTextOverlayClass * klass)
       g_param_spec_boolean ("shaded-background", "shaded background",
           "Whether to shade the background under the text area",
           DEFAULT_PROP_SHADING, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (G_OBJECT_CLASS (klass), PROP_SHADING_VALUE,
+      g_param_spec_uint ("shading-value", "background shading value",
+          "Shading value to apply if shaded-background is true", 1, 255,
+          DEFAULT_PROP_SHADING_VALUE,
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (G_OBJECT_CLASS (klass), PROP_VALIGNMENT,
       g_param_spec_enum ("valignment", "vertical alignment",
           "Vertical alignment of the text", GST_TYPE_BASE_TEXT_OVERLAY_VALIGN,
@@ -456,7 +461,7 @@ gst_base_text_overlay_class_init (GstBaseTextOverlayClass * klass)
           "Pango font description of font to be used for rendering. "
           "See documentation of pango_font_description_from_string "
           "for syntax.", DEFAULT_PROP_FONT_DESC,
-          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   /**
    * GstBaseTextOverlay:color:
    *
@@ -629,7 +634,7 @@ gst_base_text_overlay_init (GstBaseTextOverlay * overlay,
   overlay->wrap_mode = DEFAULT_PROP_WRAP_MODE;
 
   overlay->want_shading = DEFAULT_PROP_SHADING;
-  overlay->shading_value = DEFAULT_SHADING_VALUE;
+  overlay->shading_value = DEFAULT_PROP_SHADING_VALUE;
   overlay->silent = DEFAULT_PROP_SILENT;
   overlay->wait_text = DEFAULT_PROP_WAIT_TEXT;
   overlay->auto_adjust_size = DEFAULT_PROP_AUTO_ADJUST_SIZE;
@@ -708,46 +713,114 @@ gst_base_text_overlay_setcaps_txt (GstBaseTextOverlay * overlay, GstCaps * caps)
   return TRUE;
 }
 
-/* FIXME: upstream nego (e.g. when the video window is resized) */
-
 /* only negotiate/query video overlay composition support for now */
 static gboolean
-gst_base_text_overlay_negotiate (GstBaseTextOverlay * overlay)
+gst_base_text_overlay_negotiate (GstBaseTextOverlay * overlay, GstCaps * caps)
 {
-  GstCaps *target;
   GstQuery *query;
   gboolean attach = FALSE;
+  gboolean caps_has_meta = TRUE;
+  gboolean ret;
+  GstCapsFeatures *f;
+  GstCaps *original_caps;
+  gboolean original_has_meta = FALSE;
+  gboolean allocation_ret = TRUE;
 
   GST_DEBUG_OBJECT (overlay, "performing negotiation");
 
-  target = gst_pad_get_current_caps (overlay->srcpad);
+  if (!caps)
+    caps = gst_pad_get_current_caps (overlay->video_sinkpad);
+  else
+    gst_caps_ref (caps);
 
-  if (!target || gst_caps_is_empty (target))
+  if (!caps || gst_caps_is_empty (caps))
     goto no_format;
 
-  /* find supported meta */
-  query = gst_query_new_allocation (target, TRUE);
+  original_caps = caps;
 
-  if (!gst_pad_peer_query (overlay->srcpad, query)) {
-    /* no problem, we use the query defaults */
-    GST_DEBUG_OBJECT (overlay, "ALLOCATION query failed");
+  /* Try to use the overlay meta if possible */
+  f = gst_caps_get_features (caps, 0);
+
+  /* if the caps doesn't have the overlay meta, we query if downstream
+   * accepts it before trying the version without the meta
+   * If upstream already is using the meta then we can only use it */
+  if (!f
+      || !gst_caps_features_contains (f,
+          GST_CAPS_FEATURE_META_GST_VIDEO_OVERLAY_COMPOSITION)) {
+    GstCaps *overlay_caps;
+
+    /* In this case we added the meta, but we can work without it
+     * so preserve the original caps so we can use it as a fallback */
+    overlay_caps = gst_caps_copy (caps);
+
+    f = gst_caps_get_features (overlay_caps, 0);
+    gst_caps_features_add (f,
+        GST_CAPS_FEATURE_META_GST_VIDEO_OVERLAY_COMPOSITION);
+
+    ret = gst_pad_peer_query_accept_caps (overlay->srcpad, overlay_caps);
+    GST_DEBUG_OBJECT (overlay, "Downstream accepts the overlay meta: %d", ret);
+    if (ret) {
+      gst_caps_unref (caps);
+      caps = overlay_caps;
+
+    } else {
+      /* fallback to the original */
+      gst_caps_unref (overlay_caps);
+      caps_has_meta = FALSE;
+    }
+  } else {
+    original_has_meta = TRUE;
   }
+  GST_DEBUG_OBJECT (overlay, "Using caps %" GST_PTR_FORMAT, caps);
+  ret = gst_pad_set_caps (overlay->srcpad, caps);
 
-  if (gst_query_find_allocation_meta (query,
-          GST_VIDEO_OVERLAY_COMPOSITION_META_API_TYPE, NULL))
-    attach = TRUE;
+  if (ret) {
+    /* find supported meta */
+    query = gst_query_new_allocation (caps, FALSE);
+
+    if (!gst_pad_peer_query (overlay->srcpad, query)) {
+      /* no problem, we use the query defaults */
+      GST_DEBUG_OBJECT (overlay, "ALLOCATION query failed");
+      allocation_ret = FALSE;
+    }
+
+    if (caps_has_meta && gst_query_find_allocation_meta (query,
+            GST_VIDEO_OVERLAY_COMPOSITION_META_API_TYPE, NULL))
+      attach = TRUE;
+
+    gst_query_unref (query);
+  }
 
   overlay->attach_compo_to_buffer = attach;
 
-  gst_query_unref (query);
-  gst_caps_unref (target);
+  if (!allocation_ret && overlay->video_flushing) {
+    ret = FALSE;
+  } else if (original_caps && !original_has_meta && !attach) {
+    if (caps_has_meta) {
+      /* Some elements (fakesink) claim to accept the meta on caps but won't
+         put it in the allocation query result, this leads below
+         check to fail. Prevent this by removing the meta from caps */
+      gst_caps_unref (caps);
+      caps = gst_caps_ref (original_caps);
+      ret = gst_pad_set_caps (overlay->srcpad, caps);
+      if (ret && !gst_base_text_overlay_can_handle_caps (caps))
+        ret = FALSE;
+    }
+  }
 
-  return TRUE;
+  if (!ret) {
+    GST_DEBUG_OBJECT (overlay, "negotiation failed, schedule reconfigure");
+    gst_pad_mark_reconfigure (overlay->srcpad);
+  }
+
+  gst_caps_unref (caps);
+
+  return ret;
 
 no_format:
   {
-    if (target)
-      gst_caps_unref (target);
+    if (caps)
+      gst_caps_unref (caps);
     return FALSE;
   }
 }
@@ -775,28 +848,29 @@ gst_base_text_overlay_setcaps (GstBaseTextOverlay * overlay, GstCaps * caps)
   if (!gst_video_info_from_caps (&info, caps))
     goto invalid_caps;
 
+  /* Render again if size have changed */
+  if (GST_VIDEO_INFO_WIDTH (&info) != GST_VIDEO_INFO_WIDTH (&overlay->info) ||
+      GST_VIDEO_INFO_HEIGHT (&info) != GST_VIDEO_INFO_HEIGHT (&overlay->info))
+    overlay->need_render = TRUE;
+
   overlay->info = info;
   overlay->format = GST_VIDEO_INFO_FORMAT (&info);
   overlay->width = GST_VIDEO_INFO_WIDTH (&info);
   overlay->height = GST_VIDEO_INFO_HEIGHT (&info);
 
-  ret = gst_pad_set_caps (overlay->srcpad, caps);
+  ret = gst_base_text_overlay_negotiate (overlay, caps);
 
-  if (ret) {
-    GST_BASE_TEXT_OVERLAY_LOCK (overlay);
-    g_mutex_lock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
-    gst_base_text_overlay_negotiate (overlay);
-
-    if (!overlay->attach_compo_to_buffer &&
-        !gst_base_text_overlay_can_handle_caps (caps)) {
-      GST_DEBUG_OBJECT (overlay, "unsupported caps %" GST_PTR_FORMAT, caps);
-      ret = FALSE;
-    }
-
-    gst_base_text_overlay_update_wrap_mode (overlay);
-    g_mutex_unlock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
-    GST_BASE_TEXT_OVERLAY_UNLOCK (overlay);
+  GST_BASE_TEXT_OVERLAY_LOCK (overlay);
+  g_mutex_lock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
+  if (!overlay->attach_compo_to_buffer &&
+      !gst_base_text_overlay_can_handle_caps (caps)) {
+    GST_DEBUG_OBJECT (overlay, "unsupported caps %" GST_PTR_FORMAT, caps);
+    ret = FALSE;
   }
+
+  gst_base_text_overlay_update_wrap_mode (overlay);
+  g_mutex_unlock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
+  GST_BASE_TEXT_OVERLAY_UNLOCK (overlay);
 
   return ret;
 
@@ -904,6 +978,9 @@ gst_base_text_overlay_set_property (GObject * object, guint prop_id,
       g_mutex_unlock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
       overlay->need_render = TRUE;
       break;
+    case PROP_SHADING_VALUE:
+      overlay->shading_value = g_value_get_uint (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -975,6 +1052,23 @@ gst_base_text_overlay_get_property (GObject * object, guint prop_id,
     case PROP_OUTLINE_COLOR:
       g_value_set_uint (value, overlay->outline_color);
       break;
+    case PROP_SHADING_VALUE:
+      g_value_set_uint (value, overlay->shading_value);
+      break;
+    case PROP_FONT_DESC:
+    {
+      const PangoFontDescription *desc;
+
+      g_mutex_lock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
+      desc = pango_layout_get_font_description (overlay->layout);
+      if (!desc)
+        g_value_set_string (value, "");
+      else {
+        g_value_take_string (value, pango_font_description_to_string (desc));
+      }
+      g_mutex_unlock (GST_BASE_TEXT_OVERLAY_GET_CLASS (overlay)->pango_lock);
+      break;
+    }
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1017,59 +1111,18 @@ static gboolean
 gst_base_text_overlay_src_event (GstPad * pad, GstObject * parent,
     GstEvent * event)
 {
-  gboolean ret = FALSE;
-  GstBaseTextOverlay *overlay = NULL;
+  GstBaseTextOverlay *overlay;
+  gboolean ret;
 
   overlay = GST_BASE_TEXT_OVERLAY (parent);
 
-  switch (GST_EVENT_TYPE (event)) {
-    case GST_EVENT_SEEK:{
-      GstSeekFlags flags;
-
-      /* We don't handle seek if we have not text pad */
-      if (!overlay->text_linked) {
-        GST_DEBUG_OBJECT (overlay, "seek received, pushing upstream");
-        ret = gst_pad_push_event (overlay->video_sinkpad, event);
-        goto beach;
-      }
-
-      GST_DEBUG_OBJECT (overlay, "seek received, driving from here");
-
-      gst_event_parse_seek (event, NULL, NULL, &flags, NULL, NULL, NULL, NULL);
-
-      /* Flush downstream, only for flushing seek */
-      if (flags & GST_SEEK_FLAG_FLUSH)
-        gst_pad_push_event (overlay->srcpad, gst_event_new_flush_start ());
-
-      /* Mark ourself as flushing, unblock chains */
-      GST_BASE_TEXT_OVERLAY_LOCK (overlay);
-      overlay->video_flushing = TRUE;
-      overlay->text_flushing = TRUE;
-      gst_base_text_overlay_pop_text (overlay);
-      GST_BASE_TEXT_OVERLAY_UNLOCK (overlay);
-
-      /* Seek on each sink pad */
-      gst_event_ref (event);
-      ret = gst_pad_push_event (overlay->video_sinkpad, event);
-      if (ret) {
-        ret = gst_pad_push_event (overlay->text_sinkpad, event);
-      } else {
-        gst_event_unref (event);
-      }
-      break;
-    }
-    default:
-      if (overlay->text_linked) {
-        gst_event_ref (event);
-        ret = gst_pad_push_event (overlay->video_sinkpad, event);
-        gst_pad_push_event (overlay->text_sinkpad, event);
-      } else {
-        ret = gst_pad_push_event (overlay->video_sinkpad, event);
-      }
-      break;
+  if (overlay->text_linked) {
+    gst_event_ref (event);
+    ret = gst_pad_push_event (overlay->video_sinkpad, event);
+    gst_pad_push_event (overlay->text_sinkpad, event);
+  } else {
+    ret = gst_pad_push_event (overlay->video_sinkpad, event);
   }
-
-beach:
 
   return ret;
 }
@@ -1187,16 +1240,8 @@ gst_base_text_overlay_get_videosink_caps (GstPad * pad,
     GST_DEBUG_OBJECT (pad, "peer caps  %" GST_PTR_FORMAT, peer_caps);
 
     if (gst_caps_is_any (peer_caps)) {
-
       /* if peer returns ANY caps, return filtered src pad template caps */
       caps = gst_caps_copy (gst_pad_get_pad_template_caps (srcpad));
-      if (filter) {
-        GstCaps *intersection = gst_caps_intersect_full (filter, caps,
-            GST_CAPS_INTERSECT_FIRST);
-        gst_caps_unref (caps);
-        caps = intersection;
-      }
-
     } else {
 
       /* duplicate caps which contains the composition into one version with
@@ -1212,14 +1257,13 @@ gst_base_text_overlay_get_videosink_caps (GstPad * pad,
   } else {
     /* no peer, our padtemplate is enough then */
     caps = gst_pad_get_pad_template_caps (pad);
-    if (filter) {
-      GstCaps *intersection;
+  }
 
-      intersection =
-          gst_caps_intersect_full (filter, caps, GST_CAPS_INTERSECT_FIRST);
-      gst_caps_unref (caps);
-      caps = intersection;
-    }
+  if (filter) {
+    GstCaps *intersection = gst_caps_intersect_full (filter, caps,
+        GST_CAPS_INTERSECT_FIRST);
+    gst_caps_unref (caps);
+    caps = intersection;
   }
 
   GST_DEBUG_OBJECT (overlay, "returning  %" GST_PTR_FORMAT, caps);
@@ -1261,12 +1305,6 @@ gst_base_text_overlay_get_src_caps (GstPad * pad, GstBaseTextOverlay * overlay,
 
       /* if peer returns ANY caps, return filtered sink pad template caps */
       caps = gst_caps_copy (gst_pad_get_pad_template_caps (sinkpad));
-      if (filter) {
-        GstCaps *intersection = gst_caps_intersect_full (filter, caps,
-            GST_CAPS_INTERSECT_FIRST);
-        gst_caps_unref (caps);
-        caps = intersection;
-      }
 
     } else {
 
@@ -1283,16 +1321,16 @@ gst_base_text_overlay_get_src_caps (GstPad * pad, GstBaseTextOverlay * overlay,
   } else {
     /* no peer, our padtemplate is enough then */
     caps = gst_pad_get_pad_template_caps (pad);
-    if (filter) {
-      GstCaps *intersection;
-
-      intersection =
-          gst_caps_intersect_full (filter, caps, GST_CAPS_INTERSECT_FIRST);
-      gst_caps_unref (caps);
-      caps = intersection;
-    }
   }
 
+  if (filter) {
+    GstCaps *intersection;
+
+    intersection =
+        gst_caps_intersect_full (filter, caps, GST_CAPS_INTERSECT_FIRST);
+    gst_caps_unref (caps);
+    caps = intersection;
+  }
   GST_DEBUG_OBJECT (overlay, "returning  %" GST_PTR_FORMAT, caps);
 
   return caps;
@@ -1507,9 +1545,6 @@ gst_base_text_overlay_render_pangocairo (GstBaseTextOverlay * overlay,
 
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  if (overlay->want_shading)
-    cairo_paint_with_alpha (cr, overlay->shading_value);
-
   /* apply transformations */
   cairo_set_matrix (cr, &cairo_matrix);
 
@@ -1598,7 +1633,7 @@ gst_base_text_overlay_shade_planar_Y (GstBaseTextOverlay * overlay,
 
   for (i = y0; i < y1; ++i) {
     for (j = x0; j < x1; ++j) {
-      gint y = dest_ptr[(i * dest_stride) + j] + overlay->shading_value;
+      gint y = dest_ptr[(i * dest_stride) + j] - overlay->shading_value;
 
       dest_ptr[(i * dest_stride) + j] = CLAMP (y, 0, 255);
     }
@@ -1633,7 +1668,7 @@ gst_base_text_overlay_shade_packed_Y (GstBaseTextOverlay * overlay,
       gint y_pos;
 
       y_pos = (i * dest_stride) + j * pixel_stride;
-      y = dest_ptr[y_pos] + overlay->shading_value;
+      y = dest_ptr[y_pos] - overlay->shading_value;
 
       dest_ptr[y_pos] = CLAMP (y, 0, 255);
     }
@@ -1658,7 +1693,7 @@ gst_base_text_overlay_shade_xRGB (GstBaseTextOverlay * overlay,
 
       y_pos = (i * 4 * overlay->width) + j * 4;
       for (k = 0; k < 4; k++) {
-        y = dest_ptr[y_pos + k] + overlay->shading_value;
+        y = dest_ptr[y_pos + k] - overlay->shading_value;
         dest_ptr[y_pos + k] = CLAMP (y, 0, 255);
       }
     }
@@ -1674,7 +1709,7 @@ gst_base_text_overlay_shade_rgb24 (GstBaseTextOverlay * overlay,
   gint y, x, stride, shading_val, tmp;
   guint8 *p;
 
-  shading_val = overlay->shading_value;
+  shading_val = -overlay->shading_value;
   stride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, 0);
 
   for (y = y0; y < y1; ++y) {
@@ -1698,7 +1733,7 @@ gst_base_text_overlay_shade_IYU1 (GstBaseTextOverlay * overlay,
   gint y, x, stride, shading_val, tmp;
   guint8 *p;
 
-  shading_val = overlay->shading_value;
+  shading_val = -overlay->shading_value;
   stride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, 0);
 
   /* IYU1: packed 4:1:1 YUV (Cb-Y0-Y1-Cr-Y2-Y3 ...) */
@@ -1734,7 +1769,7 @@ gint x0, gint x1, gint y0, gint y1) \
       gint y, y_pos, k;\
       y_pos = (i * 4 * overlay->width) + j * 4;\
       for (k = OFFSET; k < 3+OFFSET; k++) {\
-        y = dest_ptr[y_pos + k] + overlay->shading_value;\
+        y = dest_ptr[y_pos + k] - overlay->shading_value;\
         dest_ptr[y_pos + k] = CLAMP (y, 0, 255);\
       }\
     }\
@@ -1861,7 +1896,7 @@ gst_base_text_overlay_push_frame (GstBaseTextOverlay * overlay,
     goto done;
 
   if (gst_pad_check_reconfigure (overlay->srcpad))
-    gst_base_text_overlay_negotiate (overlay);
+    gst_base_text_overlay_negotiate (overlay, NULL);
 
   video_frame = gst_buffer_make_writable (video_frame);
 
@@ -2307,22 +2342,14 @@ gst_base_text_overlay_video_chain (GstPad * pad, GstObject * parent,
    * duration (we only use those estimated values internally though, we
    * don't want to set bogus values on the buffer itself) */
   if (stop == -1) {
-    GstCaps *caps;
-    GstStructure *s;
-    gint fps_num, fps_denom;
-
-    /* FIXME, store this in setcaps */
-    caps = gst_pad_get_current_caps (pad);
-    s = gst_caps_get_structure (caps, 0);
-    if (gst_structure_get_fraction (s, "framerate", &fps_num, &fps_denom) &&
-        fps_num && fps_denom) {
+    if (overlay->info.fps_n && overlay->info.fps_d) {
       GST_DEBUG_OBJECT (overlay, "estimating duration based on framerate");
-      stop = start + gst_util_uint64_scale_int (GST_SECOND, fps_denom, fps_num);
+      stop = start + gst_util_uint64_scale_int (GST_SECOND,
+          overlay->info.fps_d, overlay->info.fps_n);
     } else {
       GST_LOG_OBJECT (overlay, "no duration, assuming minimal duration");
       stop = start + 1;         /* we need to assume some interval */
     }
-    gst_caps_unref (caps);
   }
 
   gst_object_sync_values (GST_OBJECT (overlay), GST_BUFFER_TIMESTAMP (buffer));

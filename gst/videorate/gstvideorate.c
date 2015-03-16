@@ -70,6 +70,7 @@
 #endif
 
 #include "gstvideorate.h"
+#include <gst/video/video.h>
 
 GST_DEBUG_CATEGORY_STATIC (video_rate_debug);
 #define GST_CAT_DEFAULT video_rate_debug
@@ -107,14 +108,14 @@ static GstStaticPadTemplate gst_video_rate_src_template =
     GST_STATIC_PAD_TEMPLATE ("src",
     GST_PAD_SRC,
     GST_PAD_ALWAYS,
-    GST_STATIC_CAPS ("video/x-raw;" "image/jpeg;" "image/png")
+    GST_STATIC_CAPS ("video/x-raw(ANY);" "image/jpeg(ANY);" "image/png(ANY)")
     );
 
 static GstStaticPadTemplate gst_video_rate_sink_template =
     GST_STATIC_PAD_TEMPLATE ("sink",
     GST_PAD_SINK,
     GST_PAD_ALWAYS,
-    GST_STATIC_CAPS ("video/x-raw;" "image/jpeg;" "image/png")
+    GST_STATIC_CAPS ("video/x-raw(ANY);" "image/jpeg(ANY);" "image/png(ANY)")
     );
 
 static void gst_video_rate_swap_prev (GstVideoRate * videorate,
@@ -135,6 +136,9 @@ static GstCaps *gst_video_rate_fixate_caps (GstBaseTransform * trans,
 
 static GstFlowReturn gst_video_rate_transform_ip (GstBaseTransform * trans,
     GstBuffer * buf);
+
+static gboolean gst_video_rate_propose_allocation (GstBaseTransform * trans,
+    GstQuery * decide_query, GstQuery * query);
 
 static gboolean gst_video_rate_start (GstBaseTransform * trans);
 static gboolean gst_video_rate_stop (GstBaseTransform * trans);
@@ -170,6 +174,8 @@ gst_video_rate_class_init (GstVideoRateClass * klass)
   base_class->stop = GST_DEBUG_FUNCPTR (gst_video_rate_stop);
   base_class->fixate_caps = GST_DEBUG_FUNCPTR (gst_video_rate_fixate_caps);
   base_class->query = GST_DEBUG_FUNCPTR (gst_video_rate_query);
+  base_class->propose_allocation =
+      GST_DEBUG_FUNCPTR (gst_video_rate_propose_allocation);
 
   g_object_class_install_property (object_class, PROP_IN,
       g_param_spec_uint64 ("in", "In",
@@ -366,6 +372,7 @@ gst_video_rate_transform_caps (GstBaseTransform * trans,
 
     s1 = gst_structure_copy (s);
     s2 = gst_structure_copy (s);
+    s3 = NULL;
 
     if (videorate->drop_only) {
       gint min_num = 0, min_denom = 1;
@@ -428,10 +435,13 @@ gst_video_rate_transform_caps (GstBaseTransform * trans,
           G_MAXINT, 1, NULL);
     }
     if (s1 != NULL)
-      ret = gst_caps_merge_structure (ret, s1);
-    ret = gst_caps_merge_structure (ret, s2);
+      ret = gst_caps_merge_structure_full (ret, s1,
+          gst_caps_features_copy (gst_caps_get_features (caps, i)));
+    ret = gst_caps_merge_structure_full (ret, s2,
+        gst_caps_features_copy (gst_caps_get_features (caps, i)));
     if (s3 != NULL)
-      ret = gst_caps_merge_structure (ret, s3);
+      ret = gst_caps_merge_structure_full (ret, s3,
+          gst_caps_features_copy (gst_caps_get_features (caps, i)));
   }
   if (filter) {
     GstCaps *intersection;
@@ -804,10 +814,12 @@ gst_video_rate_query (GstBaseTransform * trans, GstPadDirection direction,
       gboolean live;
       guint64 latency;
       guint64 avg_period;
+      gboolean drop_only;
       GstPad *peer;
 
       GST_OBJECT_LOCK (videorate);
       avg_period = videorate->average_period_set;
+      drop_only = videorate->drop_only;
       GST_OBJECT_UNLOCK (videorate);
 
       if (avg_period == 0 && (peer = gst_pad_get_peer (otherpad))) {
@@ -818,7 +830,8 @@ gst_video_rate_query (GstBaseTransform * trans, GstPadDirection direction,
               GST_TIME_FORMAT " max %" GST_TIME_FORMAT,
               GST_TIME_ARGS (min), GST_TIME_ARGS (max));
 
-          if (videorate->from_rate_numerator != 0) {
+          /* Drop only has no latency, other modes have one frame latency */
+          if (!drop_only && videorate->from_rate_numerator != 0) {
             /* add latency. We don't really know since we hold on to the frames
              * until we get a next frame, which can be anything. We assume
              * however that this will take from_rate time. */
@@ -854,6 +867,58 @@ gst_video_rate_query (GstBaseTransform * trans, GstPadDirection direction,
           GST_BASE_TRANSFORM_CLASS (parent_class)->query (trans, direction,
           query);
       break;
+  }
+
+  return res;
+}
+
+static gboolean
+gst_video_rate_propose_allocation (GstBaseTransform * trans,
+    GstQuery * decide_query, GstQuery * query)
+{
+  GstBaseTransformClass *klass = GST_BASE_TRANSFORM_CLASS (parent_class);
+  gboolean res;
+
+  /* We should always be passthrough */
+  g_return_val_if_fail (decide_query == NULL, FALSE);
+
+  res = klass->propose_allocation (trans, NULL, query);
+
+  if (res) {
+    guint i = 0;
+    guint n_allocation;
+    guint down_min = 0;
+
+    n_allocation = gst_query_get_n_allocation_pools (query);
+
+    while (i < n_allocation) {
+      GstBufferPool *pool;
+      guint size, min, max;
+
+      gst_query_parse_nth_allocation_pool (query, i, &pool, &size, &min, &max);
+
+      if (min == max) {
+        if (pool)
+          gst_object_unref (pool);
+        gst_query_remove_nth_allocation_pool (query, i);
+        n_allocation--;
+        down_min = MAX (min, down_min);
+        continue;
+      }
+
+      gst_query_set_nth_allocation_pool (query, i, pool, size, min + 1, max);
+      i++;
+    }
+
+    if (n_allocation == 0) {
+      GstCaps *caps;
+      GstVideoInfo info;
+
+      gst_query_parse_allocation (query, &caps, NULL);
+      gst_video_info_from_caps (&info, caps);
+
+      gst_query_add_allocation_pool (query, NULL, info.size, down_min + 1, 0);
+    }
   }
 
   return res;
@@ -982,7 +1047,7 @@ gst_video_rate_transform_ip (GstBaseTransform * trans, GstBuffer * buffer)
   intime = in_ts + videorate->segment.base;
 
   /* we need to have two buffers to compare */
-  if (videorate->prevbuf == NULL) {
+  if (videorate->prevbuf == NULL || videorate->drop_only) {
     gst_video_rate_swap_prev (videorate, buffer, intime);
     videorate->in++;
     if (!GST_CLOCK_TIME_IS_VALID (videorate->next_ts)) {
@@ -995,6 +1060,24 @@ gst_video_rate_transform_ip (GstBaseTransform * trans, GstBuffer * buffer)
       } else {
         videorate->next_ts = videorate->segment.start + videorate->segment.base;
       }
+    }
+
+    /* In drop-only mode we can already decide here if we should output the
+     * current frame or drop it because it's coming earlier than our minimum
+     * allowed frame period. This also keeps latency down to 0 frames
+     */
+    if (videorate->drop_only) {
+      if (intime >= videorate->next_ts) {
+        GstFlowReturn r;
+
+        /* on error the _flush function posted a warning already */
+        if ((r = gst_video_rate_flush_prev (videorate, FALSE)) != GST_FLOW_OK) {
+          res = r;
+          goto done;
+        }
+      }
+      /* No need to keep the buffer around for longer */
+      gst_buffer_replace (&videorate->prevbuf, NULL);
     }
   } else {
     GstClockTime prevtime;
@@ -1129,6 +1212,7 @@ gst_video_rate_set_property (GObject * object,
     guint prop_id, const GValue * value, GParamSpec * pspec)
 {
   GstVideoRate *videorate = GST_VIDEO_RATE (object);
+  gboolean latency_changed = FALSE;
 
   GST_OBJECT_LOCK (videorate);
   switch (prop_id) {
@@ -1141,10 +1225,15 @@ gst_video_rate_set_property (GObject * object,
     case PROP_SKIP_TO_FIRST:
       videorate->skip_to_first = g_value_get_boolean (value);
       break;
-    case PROP_DROP_ONLY:
+    case PROP_DROP_ONLY:{
+      gboolean new_value = g_value_get_boolean (value);
+
+      /* Latency changes if we switch drop-only mode */
+      latency_changed = new_value != videorate->drop_only;
       videorate->drop_only = g_value_get_boolean (value);
       goto reconfigure;
       break;
+    }
     case PROP_AVERAGE_PERIOD:
       videorate->average_period_set = g_value_get_uint64 (value);
       break;
@@ -1162,6 +1251,11 @@ gst_video_rate_set_property (GObject * object,
 reconfigure:
   GST_OBJECT_UNLOCK (videorate);
   gst_base_transform_reconfigure_src (GST_BASE_TRANSFORM (videorate));
+
+  if (latency_changed) {
+    gst_element_post_message (GST_ELEMENT (videorate),
+        gst_message_new_latency (GST_OBJECT (videorate)));
+  }
 }
 
 static void

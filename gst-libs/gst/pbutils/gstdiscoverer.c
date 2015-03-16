@@ -1462,6 +1462,11 @@ handle_current_sync (GstDiscoverer * dc)
     dc->priv->current_info->result = GST_DISCOVERER_TIMEOUT;
   }
 
+  DISCO_LOCK (dc);
+  dc->priv->processing = FALSE;
+  DISCO_UNLOCK (dc);
+
+
   GST_DEBUG ("Done");
 
   g_timer_stop (timer);
@@ -1514,12 +1519,20 @@ discoverer_cleanup (GstDiscoverer * dc)
   GST_DEBUG ("Cleaning up");
 
   gst_bus_set_flushing (dc->priv->bus, TRUE);
+
+  DISCO_LOCK (dc);
+  if (dc->priv->current_error) {
+    g_error_free (dc->priv->current_error);
+    DISCO_UNLOCK (dc);
+    gst_element_set_state ((GstElement *) dc->priv->pipeline, GST_STATE_NULL);
+  } else {
+    DISCO_UNLOCK (dc);
+  }
+
   gst_element_set_state ((GstElement *) dc->priv->pipeline, GST_STATE_READY);
   gst_bus_set_flushing (dc->priv->bus, FALSE);
 
   DISCO_LOCK (dc);
-  if (dc->priv->current_error)
-    g_error_free (dc->priv->current_error);
   dc->priv->current_error = NULL;
   if (dc->priv->current_topology) {
     gst_structure_free (dc->priv->current_topology);

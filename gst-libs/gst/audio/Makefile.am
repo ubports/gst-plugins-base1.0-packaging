@@ -38,6 +38,7 @@ libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	gstaudiometa.c \
 	gstaudiosink.c \
 	gstaudiosrc.c \
+	gstaudioutilsprivate.c \
 	streamvolume.c \
 	gstaudioiec61937.c
 
@@ -65,6 +66,8 @@ libgstaudio_@GST_API_VERSION@include_HEADERS = \
 
 nodist_libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio-enumtypes.h
+
+noinst_HEADERS = gstaudioutilsprivate.h
 
 libgstaudio_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) \
 		$(ORC_CFLAGS)

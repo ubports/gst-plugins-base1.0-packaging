@@ -677,6 +677,10 @@ gst_multi_handle_sink_add_full (GstMultiHandleSink * sink,
   if (clink != NULL)
     goto duplicate;
 
+  /* We do not take ownership of @handle in this function, but we can't take a
+   * reference directly as we don't know the concrete type of the handle.
+   * GstMultiHandleSink relies on the derived class to take a reference for us
+   * in new_client: */
   mhclient = mhsinkclass->new_client (mhsink, handle, sync_method);
 
   /* we can add the handle now */
@@ -1907,7 +1911,7 @@ gst_multi_handle_sink_render (GstBaseSink * bsink, GstBuffer * buf)
   /* if we get IN_CAPS buffers, but the previous buffer was not IN_CAPS,
    * it means we're getting new streamheader buffers, and we should clear
    * the old ones */
-  if (in_caps && sink->previous_buffer_in_caps == FALSE) {
+  if (in_caps && !sink->previous_buffer_in_caps) {
     GST_DEBUG_OBJECT (sink,
         "receiving new HEADER buffers, clearing old streamheader");
     g_slist_foreach (sink->streamheader, (GFunc) gst_mini_object_unref, NULL);

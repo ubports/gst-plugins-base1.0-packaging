@@ -258,7 +258,7 @@ volume_orc_scalarmultiply_f64_ns (double *ORC_RESTRICT d1, double p1, int n)
       static const orc_uint8 bc[] = {
         1, 9, 32, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 115, 99,
         97, 108, 97, 114, 109, 117, 108, 116, 105, 112, 108, 121, 95, 102, 54,
-        52,
+            52,
         95, 110, 115, 11, 8, 8, 18, 8, 214, 0, 0, 24, 2, 0,
       };
       p = orc_program_new_from_static_bytecode (bc);
@@ -291,8 +291,8 @@ volume_orc_scalarmultiply_f64_ns (double *ORC_RESTRICT d1, double p1, int n)
   {
     orc_union64 tmp;
     tmp.f = p1;
-    ex->params[ORC_VAR_P1] = tmp.x2[0];
-    ex->params[ORC_VAR_T1] = tmp.x2[1];
+    ex->params[ORC_VAR_P1] = ((orc_uint64) tmp.i) & 0xffffffff;
+    ex->params[ORC_VAR_T1] = ((orc_uint64) tmp.i) >> 32;
   }
 
   func = c->exec;
@@ -388,7 +388,7 @@ volume_orc_scalarmultiply_f32_ns (float *ORC_RESTRICT d1, float p1, int n)
       static const orc_uint8 bc[] = {
         1, 9, 32, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 115, 99,
         97, 108, 97, 114, 109, 117, 108, 116, 105, 112, 108, 121, 95, 102, 51,
-        50,
+            50,
         95, 110, 115, 11, 4, 4, 17, 4, 202, 0, 0, 24, 2, 0,
       };
       p = orc_program_new_from_static_bytecode (bc);
@@ -512,9 +512,9 @@ volume_orc_process_int32 (gint32 * ORC_RESTRICT d1, int p1, int n)
 #if 1
       static const orc_uint8 bc[] = {
         1, 9, 24, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
-        111, 99, 101, 115, 115, 95, 105, 110, 116, 51, 50, 11, 4, 4, 14, 4,
-        27, 0, 0, 0, 16, 4, 20, 8, 178, 32, 0, 24, 147, 32, 32, 16,
-        169, 0, 32, 2, 0,
+        111, 99, 101, 115, 115, 95, 105, 110, 116, 51, 50, 11, 4, 4, 15, 8,
+        27, 0, 0, 0, 0, 0, 0, 0, 16, 4, 20, 8, 178, 32, 0, 24,
+        147, 32, 32, 16, 169, 0, 32, 2, 0,
       };
       p = orc_program_new_from_static_bytecode (bc);
       orc_program_set_backup_function (p, _backup_volume_orc_process_int32);
@@ -523,7 +523,7 @@ volume_orc_process_int32 (gint32 * ORC_RESTRICT d1, int p1, int n)
       orc_program_set_name (p, "volume_orc_process_int32");
       orc_program_set_backup_function (p, _backup_volume_orc_process_int32);
       orc_program_add_destination (p, 4, "d1");
-      orc_program_add_constant (p, 4, 0x0000001b, "c1");
+      orc_program_add_constant_int64 (p, 8, 0x000000000000001bULL, "c1");
       orc_program_add_parameter (p, 4, "p1");
       orc_program_add_temporary (p, 8, "t1");
 
@@ -638,8 +638,8 @@ volume_orc_process_int32_clamp (gint32 * ORC_RESTRICT d1, int p1, int n)
       static const orc_uint8 bc[] = {
         1, 9, 30, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 105, 110, 116, 51, 50, 95, 99, 108, 97, 109,
-        112, 11, 4, 4, 14, 4, 27, 0, 0, 0, 16, 4, 20, 8, 178, 32,
-        0, 24, 147, 32, 32, 16, 170, 0, 32, 2, 0,
+        112, 11, 4, 4, 15, 8, 27, 0, 0, 0, 0, 0, 0, 0, 16, 4,
+        20, 8, 178, 32, 0, 24, 147, 32, 32, 16, 170, 0, 32, 2, 0,
       };
       p = orc_program_new_from_static_bytecode (bc);
       orc_program_set_backup_function (p,
@@ -650,7 +650,7 @@ volume_orc_process_int32_clamp (gint32 * ORC_RESTRICT d1, int p1, int n)
       orc_program_set_backup_function (p,
           _backup_volume_orc_process_int32_clamp);
       orc_program_add_destination (p, 4, "d1");
-      orc_program_add_constant (p, 4, 0x0000001b, "c1");
+      orc_program_add_constant_int64 (p, 8, 0x000000000000001bULL, "c1");
       orc_program_add_parameter (p, 4, "p1");
       orc_program_add_temporary (p, 8, "t1");
 
@@ -1016,7 +1016,7 @@ volume_orc_process_int8 (gint8 * ORC_RESTRICT d1, int p1, int n)
 #if 1
       static const orc_uint8 bc[] = {
         1, 9, 23, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
-        111, 99, 101, 115, 115, 95, 105, 110, 116, 56, 11, 1, 1, 14, 4, 3,
+        111, 99, 101, 115, 115, 95, 105, 110, 116, 56, 11, 1, 1, 14, 2, 3,
         0, 0, 0, 16, 1, 20, 2, 174, 32, 0, 24, 94, 32, 32, 16, 157,
         0, 32, 2, 0,
       };
@@ -1027,7 +1027,7 @@ volume_orc_process_int8 (gint8 * ORC_RESTRICT d1, int p1, int n)
       orc_program_set_name (p, "volume_orc_process_int8");
       orc_program_set_backup_function (p, _backup_volume_orc_process_int8);
       orc_program_add_destination (p, 1, "d1");
-      orc_program_add_constant (p, 4, 0x00000003, "c1");
+      orc_program_add_constant (p, 2, 0x00000003, "c1");
       orc_program_add_parameter (p, 1, "p1");
       orc_program_add_temporary (p, 2, "t1");
 
@@ -1142,8 +1142,8 @@ volume_orc_process_int8_clamp (gint8 * ORC_RESTRICT d1, int p1, int n)
       static const orc_uint8 bc[] = {
         1, 9, 29, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 105, 110, 116, 56, 95, 99, 108, 97, 109,
-        112,
-        11, 1, 1, 14, 4, 3, 0, 0, 0, 16, 1, 20, 2, 174, 32, 0,
+            112,
+        11, 1, 1, 14, 2, 3, 0, 0, 0, 16, 1, 20, 2, 174, 32, 0,
         24, 94, 32, 32, 16, 159, 0, 32, 2, 0,
       };
       p = orc_program_new_from_static_bytecode (bc);
@@ -1155,7 +1155,7 @@ volume_orc_process_int8_clamp (gint8 * ORC_RESTRICT d1, int p1, int n)
       orc_program_set_backup_function (p,
           _backup_volume_orc_process_int8_clamp);
       orc_program_add_destination (p, 1, "d1");
-      orc_program_add_constant (p, 4, 0x00000003, "c1");
+      orc_program_add_constant (p, 2, 0x00000003, "c1");
       orc_program_add_parameter (p, 1, "p1");
       orc_program_add_temporary (p, 2, "t1");
 
@@ -1284,8 +1284,8 @@ volume_orc_memset_f64 (gdouble * ORC_RESTRICT d1, double p1, int n)
   {
     orc_union64 tmp;
     tmp.f = p1;
-    ex->params[ORC_VAR_P1] = tmp.x2[0];
-    ex->params[ORC_VAR_T1] = tmp.x2[1];
+    ex->params[ORC_VAR_P1] = ((orc_uint64) tmp.i) & 0xffffffff;
+    ex->params[ORC_VAR_T1] = ((orc_uint64) tmp.i) >> 32;
   }
 
   func = c->exec;
@@ -1564,7 +1564,7 @@ volume_orc_process_controlled_f64_1ch (gdouble * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 37, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 102, 54, 52, 95, 49, 99, 104, 11, 8, 8, 12, 8, 8, 214, 0,
         0, 4, 2, 0,
       };
@@ -1714,7 +1714,7 @@ volume_orc_process_controlled_f32_1ch (gfloat * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 37, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 102, 51, 50, 95, 49, 99, 104, 11, 4, 4, 12, 8, 8, 20, 4,
         225, 32, 4, 202, 0, 0, 32, 2, 0,
       };
@@ -1901,7 +1901,7 @@ volume_orc_process_controlled_f32_2ch (gfloat * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 37, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 102, 51, 50, 95, 50, 99, 104, 11, 8, 8, 12, 8, 8, 20, 4,
         20, 8, 225, 32, 4, 194, 33, 32, 32, 21, 1, 202, 0, 0, 33, 2,
         0,
@@ -2064,7 +2064,7 @@ volume_orc_process_controlled_int32_1ch (gint32 * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 39, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 105, 110, 116, 51, 50, 95, 49, 99, 104, 11, 4, 4, 12, 8, 8,
         20, 8, 223, 32, 0, 214, 32, 32, 4, 222, 0, 32, 2, 0,
       };
@@ -2255,7 +2255,7 @@ volume_orc_process_controlled_int16_1ch (gint16 * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 39, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 105, 110, 116, 49, 54, 95, 49, 99, 104, 11, 2, 2, 12, 8, 8,
         20, 4, 20, 4, 153, 32, 0, 211, 32, 32, 225, 33, 4, 202, 32, 32,
         33, 210, 32, 32, 165, 0, 32, 2, 0,
@@ -2508,7 +2508,7 @@ volume_orc_process_controlled_int16_2ch (gint16 * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 39, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 105, 110, 116, 49, 54, 95, 50, 99, 104, 11, 4, 4, 12, 8, 8,
         20, 8, 20, 4, 20, 8, 21, 1, 153, 32, 0, 21, 1, 211, 32, 32,
         225, 33, 4, 194, 34, 33, 33, 21, 1, 202, 34, 34, 32, 21, 1, 210,
@@ -2723,7 +2723,7 @@ volume_orc_process_controlled_int8_1ch (gint8 * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 38, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 105, 110, 116, 56, 95, 49, 99, 104, 11, 1, 1, 12, 8, 8, 20,
         2, 20, 4, 20, 4, 149, 32, 0, 153, 33, 32, 211, 33, 33, 225, 34,
         4, 202, 33, 33, 34, 210, 33, 33, 163, 32, 33, 159, 0, 32, 2, 0,
@@ -2998,7 +2998,7 @@ volume_orc_process_controlled_int8_2ch (gint8 * ORC_RESTRICT d1,
       static const orc_uint8 bc[] = {
         1, 9, 38, 118, 111, 108, 117, 109, 101, 95, 111, 114, 99, 95, 112, 114,
         111, 99, 101, 115, 115, 95, 99, 111, 110, 116, 114, 111, 108, 108, 101,
-        100,
+            100,
         95, 105, 110, 116, 56, 95, 50, 99, 104, 11, 2, 2, 12, 8, 8, 20,
         4, 20, 8, 20, 8, 21, 1, 149, 32, 0, 21, 1, 153, 33, 32, 21,
         1, 211, 33, 33, 225, 32, 4, 194, 34, 32, 32, 21, 1, 202, 33, 33,

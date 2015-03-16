@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-06-22 17:22+0200\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2014-04-20 16:15+0300\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -84,11 +84,6 @@ msgstr "Iekšējās datu plūsmas kļūda."
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr "Trūkst elements “%s” - pārbaudiet savu GStreamer instalāciju."
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-"Nepieciešamas %s spraudnis, lai atskaņotu šo plūsmu, bet tas nav instalēts."
 
 msgid "Could not determine type of stream"
 msgstr "Nevarēja noteikt straumes tipu"
@@ -513,14 +508,19 @@ msgstr "mūzikas-kadrs"
 msgid "Initial key in which the sound starts"
 msgstr "Sākotnējais kadrs, kurā sākas mūzika"
 
+msgid "Print version information and exit"
+msgstr "Parādīt informāciju par versiju un iziet"
+
+msgid ""
+"Don't exit after showing the initial device list, but wait for devices to "
+"added/removed."
+msgstr ""
+
 msgid "Buffering..."
 msgstr "Buferē..."
 
 msgid "Clock lost, selecting a new one\n"
 msgstr ""
-
-msgid "Print version information and exit"
-msgstr "Parādīt informāciju par versiju un iziet"
 
 msgid "Video sink to use (default is autovideosink)"
 msgstr "Izmantojamais video uztvērējs (pēc noklusējuma autovideosink)"
@@ -543,12 +543,20 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr "Lietojums: %s DATNE1|URI1 [DATNE2|URI2] [DATNE3|URI3] ..."
 
 msgid "You must provide at least one filename or URI to play."
 msgstr "Jums jānorāda vismaz viens datnes nosaukums vai atskaņojamais URI."
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr ""
+#~ "Nepieciešamas %s spraudnis, lai atskaņotu šo plūsmu, bet tas nav "
+#~ "instalēts."
 
 #~ msgid "Master"
 #~ msgstr "Galvenais"

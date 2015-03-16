@@ -46,10 +46,6 @@
 GST_DEBUG_CATEGORY_STATIC (type_find_debug);
 #define GST_CAT_DEFAULT type_find_debug
 
-/* so our code stays ready for 0.11 */
-#define gst_type_find_peek(tf,off,len) \
-    ((const guint8 *)gst_type_find_peek((tf),(off),(len)))
-
 /* DataScanCtx: helper for typefind functions that scan through data
  * step-by-step, to avoid doing a peek at each and every offset */
 
@@ -509,8 +505,6 @@ xml_check_first_element_from_data (const guint8 * data, guint length,
 
   /* skip XMLDec in any case if we've got one */
   if (got_xmldec) {
-    if (pos + 5 >= length)
-      return FALSE;
     pos += 5;
     data += 5;
   }
@@ -1255,6 +1249,7 @@ mp3_type_frame_length_from_header (guint32 header, guint * put_layer,
   channels = (mode == 3) ? 1 : 2;
   samplerate = mp3types_freqs[version > 0 ? version - 1 : 0][samplerate];
   if (bitrate == 0) {
+    /* possible freeform mp3 */
     if (layer == 1) {
       length *= 4;
       length += possible_free_framelen;
@@ -1264,6 +1259,11 @@ mp3_type_frame_length_from_header (guint32 header, guint * put_layer,
       bitrate = length * samplerate /
           ((layer == 3 && version != 3) ? 72000 : 144000);
     }
+    /* freeform mp3 should have a higher-than-usually-allowed bitrate */
+    GST_LOG ("calculated bitrate: %u, max usually: %u", bitrate,
+        mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][14]);
+    if (bitrate < mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][14])
+      return 0;
   } else {
     /* calculating */
     bitrate = mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][bitrate];
@@ -2744,7 +2744,7 @@ h265_video_type_find (GstTypeFind * tf, gpointer unused)
           seen_sps = TRUE;
         else if (nut == 34)
           seen_pps = TRUE;
-        else if (nut >= 16 || nut <= 21) {
+        else if (nut >= 16 && nut <= 21) {
           /* BLA, IDR and CRA pictures are belongs to be IRAP picture */
           /* we are not counting the reserved IRAP pictures (22 and 23) to good */
           seen_irap = TRUE;
@@ -3111,6 +3111,12 @@ qt_type_find (GstTypeFind * tf, gpointer unused)
         STRNCMP (&data[4], "ftypavc3", 8) == 0) {
       tip = GST_TYPE_FIND_MAXIMUM;
       variant = "iso-fragmented";
+      break;
+    }
+
+    if (STRNCMP (&data[4], "ftypccff", 8) == 0) {
+      tip = GST_TYPE_FIND_MAXIMUM;
+      variant = "ccff";
       break;
     }
 
@@ -5325,6 +5331,35 @@ pva_type_find (GstTypeFind * tf, gpointer private)
     gst_type_find_suggest (tf, GST_TYPE_FIND_NEARLY_CERTAIN, PVA_CAPS);
 }
 
+/*** audio/audible ***/
+
+/* derived from pyaudibletags
+ * http://code.google.com/p/pyaudibletags/source/browse/trunk/pyaudibletags.py
+ */
+static GstStaticCaps aa_caps = GST_STATIC_CAPS ("audio/x-audible");
+
+#define AA_CAPS gst_static_caps_get(&aa_caps)
+
+static void
+aa_type_find (GstTypeFind * tf, gpointer private)
+{
+  const guint8 *data;
+
+  data = gst_type_find_peek (tf, 0, 12);
+  if (data == NULL)
+    return;
+
+  if (GST_READ_UINT32_BE (data + 4) == 0x57907536) {
+    guint64 media_len;
+
+    media_len = gst_type_find_get_length (tf);
+    if (media_len > 0 && GST_READ_UINT32_BE (data) == media_len)
+      gst_type_find_suggest (tf, GST_TYPE_FIND_NEARLY_CERTAIN, AA_CAPS);
+    else
+      gst_type_find_suggest (tf, GST_TYPE_FIND_POSSIBLE, AA_CAPS);
+  }
+}
+
 /*** generic typefind for streams that have some data at a specific position***/
 typedef struct
 {
@@ -5355,12 +5390,12 @@ sw_data_destroy (GstTypeFindData * sw_data)
 {
   if (G_LIKELY (sw_data->caps != NULL))
     gst_caps_unref (sw_data->caps);
-  g_free (sw_data);
+  g_slice_free (GstTypeFindData, sw_data);
 }
 
 #define TYPE_FIND_REGISTER_START_WITH(plugin,name,rank,ext,_data,_size,_probability)\
 G_BEGIN_DECLS{                                                          \
-  GstTypeFindData *sw_data = g_new (GstTypeFindData, 1);                \
+  GstTypeFindData *sw_data = g_slice_new (GstTypeFindData);             \
   sw_data->data = (const guint8 *)_data;                                \
   sw_data->size = _size;                                                \
   sw_data->probability = _probability;                                  \
@@ -5368,8 +5403,7 @@ G_BEGIN_DECLS{                                                          \
   if (!gst_type_find_register (plugin, name, rank, start_with_type_find,\
                      ext, sw_data->caps, sw_data,                       \
                      (GDestroyNotify) (sw_data_destroy))) {             \
-    gst_caps_unref (sw_data->caps);                                     \
-    g_free (sw_data);                                                   \
+    sw_data_destroy (sw_data);                                          \
   }                                                                     \
 }G_END_DECLS
 
@@ -5390,7 +5424,7 @@ riff_type_find (GstTypeFind * tf, gpointer private)
 
 #define TYPE_FIND_REGISTER_RIFF(plugin,name,rank,ext,_data)             \
 G_BEGIN_DECLS{                                                          \
-  GstTypeFindData *sw_data = g_new (GstTypeFindData, 1);                \
+  GstTypeFindData *sw_data = g_slice_new (GstTypeFindData);             \
   sw_data->data = (gpointer)_data;                                      \
   sw_data->size = 4;                                                    \
   sw_data->probability = GST_TYPE_FIND_MAXIMUM;                         \
@@ -5398,8 +5432,7 @@ G_BEGIN_DECLS{                                                          \
   if (!gst_type_find_register (plugin, name, rank, riff_type_find,      \
                       ext, sw_data->caps, sw_data,                      \
                       (GDestroyNotify) (sw_data_destroy))) {            \
-    gst_caps_unref (sw_data->caps);                                     \
-    g_free (sw_data);                                                   \
+    sw_data_destroy (sw_data);                                          \
   }                                                                     \
 }G_END_DECLS
 
@@ -5498,8 +5531,8 @@ plugin_init (GstPlugin * plugin)
       "m4a", M4A_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "application/x-3gp", GST_RANK_PRIMARY,
       q3gp_type_find, "3gp", Q3GP_CAPS, NULL, NULL);
-  TYPE_FIND_REGISTER (plugin, "video/quicktime", GST_RANK_SECONDARY,
-      qt_type_find, "mov", QT_CAPS, NULL, NULL);
+  TYPE_FIND_REGISTER (plugin, "video/quicktime", GST_RANK_PRIMARY,
+      qt_type_find, "mov,mp4", QT_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "image/x-quicktime", GST_RANK_SECONDARY,
       qtif_type_find, "qif,qtif,qti", QTIF_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "image/jp2", GST_RANK_PRIMARY,
@@ -5646,6 +5679,8 @@ plugin_init (GstPlugin * plugin)
       wavpack_type_find, "wv,wvp", WAVPACK_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "audio/x-wavpack-correction", GST_RANK_SECONDARY,
       wavpack_type_find, "wvc", WAVPACK_CORRECTION_CAPS, NULL, NULL);
+  TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-caf", GST_RANK_SECONDARY,
+      "caf", "caff\000\001", 6, GST_TYPE_FIND_MAXIMUM);
   TYPE_FIND_REGISTER (plugin, "application/postscript", GST_RANK_SECONDARY,
       postscript_type_find, "ps", POSTSCRIPT_CAPS, NULL, NULL);
   TYPE_FIND_REGISTER (plugin, "image/svg+xml", GST_RANK_SECONDARY,
@@ -5720,6 +5755,9 @@ plugin_init (GstPlugin * plugin)
 
   TYPE_FIND_REGISTER_START_WITH (plugin, "audio/x-xi", GST_RANK_SECONDARY,
       "xi", "Extended Instrument: ", 21, GST_TYPE_FIND_MAXIMUM);
+
+  TYPE_FIND_REGISTER (plugin, "audio/audible", GST_RANK_MARGINAL,
+      aa_type_find, "aa,aax", AA_CAPS, NULL, NULL);
 
   return TRUE;
 }

@@ -1782,6 +1782,19 @@ parse_line (guint8 * buffer, GstRTSPMessage * msg)
       next_value++;
     }
 
+    if (field == GST_RTSP_HDR_SESSION) {
+      /* The timeout parameter is only allowed in a session response header
+       * but some clients send it as part of the session request header.
+       * Ignore everything from the semicolon to the end of the line. */
+      next_value = value;
+      while (*next_value != '\0') {
+        if (*next_value == ';') {
+          break;
+        }
+        next_value++;
+      }
+    }
+
     /* trim space */
     if (value != next_value && next_value[-1] == ' ')
       next_value[-1] = '\0';
@@ -2889,25 +2902,43 @@ gst_rtsp_connection_do_tunnel (GstRTSPConnection * conn,
   g_return_val_if_fail (conn != NULL, GST_RTSP_EINVAL);
 
   if (conn2 != NULL) {
-    g_return_val_if_fail (conn->tstate == TUNNEL_STATE_GET, GST_RTSP_EINVAL);
-    g_return_val_if_fail (conn2->tstate == TUNNEL_STATE_POST, GST_RTSP_EINVAL);
+    GstRTSPTunnelState ts1 = conn->tstate;
+    GstRTSPTunnelState ts2 = conn2->tstate;
+
+    g_return_val_if_fail ((ts1 == TUNNEL_STATE_GET && ts2 == TUNNEL_STATE_POST)
+        || (ts1 == TUNNEL_STATE_POST && ts2 == TUNNEL_STATE_GET),
+        GST_RTSP_EINVAL);
     g_return_val_if_fail (!memcmp (conn2->tunnelid, conn->tunnelid,
             TUNNELID_LEN), GST_RTSP_EINVAL);
 
-    /* both connections have socket0 as the read/write socket. start by taking the
-     * socket from conn2 and set it as the socket in conn */
-    conn->socket1 = conn2->socket0;
-    conn->stream1 = conn2->stream0;
-    conn->input_stream = conn2->input_stream;
-    conn->control_stream = g_io_stream_get_input_stream (conn->stream0);
+    /* both connections have socket0 as the read/write socket */
+    if (ts1 == TUNNEL_STATE_GET) {
+      /* conn2 is the HTTP POST channel. take its socket and set it as read
+       * socket in conn */
+      conn->socket1 = conn2->socket0;
+      conn->stream1 = conn2->stream0;
+      conn->input_stream = conn2->input_stream;
+      conn->control_stream = g_io_stream_get_input_stream (conn->stream0);
+      conn2->output_stream = NULL;
+    } else {
+      /* conn2 is the HTTP GET channel. take its socket and set it as write
+       * socket in conn */
+      conn->socket1 = conn->socket0;
+      conn->stream1 = conn->stream0;
+      conn->socket0 = conn2->socket0;
+      conn->stream0 = conn2->stream0;
+      conn->output_stream = conn2->output_stream;
+      conn->control_stream = g_io_stream_get_input_stream (conn->stream0);
+    }
 
     /* clean up some of the state of conn2 */
     g_cancellable_cancel (conn2->cancellable);
     conn2->write_socket = conn2->read_socket = NULL;
     conn2->socket0 = NULL;
     conn2->stream0 = NULL;
+    conn2->socket1 = NULL;
+    conn2->stream1 = NULL;
     conn2->input_stream = NULL;
-    conn2->output_stream = NULL;
     conn2->control_stream = NULL;
     g_cancellable_reset (conn2->cancellable);
 
@@ -3109,8 +3140,10 @@ gst_rtsp_source_dispatch_read (GPollableInputStream * stream,
   if (res == GST_RTSP_EINTR)
     goto done;
   else if (G_UNLIKELY (res == GST_RTSP_EEOF)) {
+    g_mutex_lock (&watch->mutex);
     if (watch->readsrc) {
-      g_source_remove_child_source ((GSource *) watch, watch->readsrc);
+      if (!g_source_is_destroyed ((GSource *) watch))
+        g_source_remove_child_source ((GSource *) watch, watch->readsrc);
       g_source_unref (watch->readsrc);
       watch->readsrc = NULL;
     }
@@ -3121,6 +3154,7 @@ gst_rtsp_source_dispatch_read (GPollableInputStream * stream,
       conn->socket1 = NULL;
       conn->input_stream = NULL;
     }
+    g_mutex_unlock (&watch->mutex);
 
     /* When we are in tunnelled mode, the read socket can be closed and we
      * should be prepared for a new POST method to reopen it */
@@ -3132,6 +3166,7 @@ gst_rtsp_source_dispatch_read (GPollableInputStream * stream,
       if (watch->funcs.tunnel_lost)
         res = watch->funcs.tunnel_lost (watch, watch->user_data);
       /* we add read source on the write socket able to detect when client closes get channel in tunneled mode */
+      g_mutex_lock (&watch->mutex);
       if (watch->conn->control_stream && !watch->controlsrc) {
         watch->controlsrc =
             g_pollable_input_stream_create_source (G_POLLABLE_INPUT_STREAM
@@ -3140,7 +3175,8 @@ gst_rtsp_source_dispatch_read (GPollableInputStream * stream,
             (GSourceFunc) gst_rtsp_source_dispatch_read_get_channel, watch,
             NULL);
         g_source_add_child_source ((GSource *) watch, watch->controlsrc);
-      }        
+      }
+      g_mutex_unlock (&watch->mutex);
       goto read_done;
     } else
       goto eof;
@@ -3270,7 +3306,8 @@ gst_rtsp_source_dispatch_write (GPollableOutputStream * stream,
       rec = g_queue_pop_tail (watch->messages);
       if (rec == NULL) {
         if (watch->writesrc) {
-          g_source_remove_child_source ((GSource *) watch, watch->writesrc);
+          if (!g_source_is_destroyed ((GSource *) watch))
+            g_source_remove_child_source ((GSource *) watch, watch->writesrc);
           g_source_unref (watch->writesrc);
           watch->writesrc = NULL;
           /* we create and add the write source again when we actually have
@@ -3360,6 +3397,9 @@ gst_rtsp_source_finalize (GSource * source)
 {
   GstRTSPWatch *watch = (GstRTSPWatch *) source;
 
+  if (watch->notify)
+    watch->notify (watch->user_data);
+
   build_reset (&watch->builder);
   gst_rtsp_message_unset (&watch->message);
 
@@ -3379,9 +3419,6 @@ gst_rtsp_source_finalize (GSource * source)
     g_source_unref (watch->controlsrc);
 
   g_mutex_clear (&watch->mutex);
-
-  if (watch->notify)
-    watch->notify (watch->user_data);
 }
 
 static GSourceFuncs gst_rtsp_source_funcs = {
@@ -3453,6 +3490,7 @@ gst_rtsp_watch_new (GstRTSPConnection * conn,
 void
 gst_rtsp_watch_reset (GstRTSPWatch * watch)
 {
+  g_mutex_lock (&watch->mutex);
   if (watch->readsrc) {
     g_source_remove_child_source ((GSource *) watch, watch->readsrc);
     g_source_unref (watch->readsrc);
@@ -3495,6 +3533,7 @@ gst_rtsp_watch_reset (GstRTSPWatch * watch)
   } else {
     watch->controlsrc = NULL;
   }
+  g_mutex_unlock (&watch->mutex);
 }
 
 /**
@@ -3753,18 +3792,18 @@ gst_rtsp_watch_send_message (GstRTSPWatch * watch, GstRTSPMessage * message,
  * Wait until there is place in the backlog queue, @timeout is reached
  * or @watch is set to flushing.
  *
- * If @timeout is #NULL this function can block forever. If @timeout
- * contains a valid timeout, this function will return #GST_RTSP_ETIMEOUT
+ * If @timeout is %NULL this function can block forever. If @timeout
+ * contains a valid timeout, this function will return %GST_RTSP_ETIMEOUT
  * after the timeout expired.
  *
  * The typically use of this function is when gst_rtsp_watch_write_data
- * returns GST_RTSP_ENOMEM. The caller then calls this function to wait for
+ * returns %GST_RTSP_ENOMEM. The caller then calls this function to wait for
  * free space in the backlog queue and try again.
  *
- * Returns: #GST_RTSP_OK when if there is room in queue.
- *          #GST_RTSP_ETIMEOUT when @timeout was reached.
- *          #GST_RTSP_EINTR when @watch is flushing
- *          #GST_RTSP_EINVAL when called with invalid parameters.
+ * Returns: %GST_RTSP_OK when if there is room in queue.
+ *          %GST_RTSP_ETIMEOUT when @timeout was reached.
+ *          %GST_RTSP_EINTR when @watch is flushing
+ *          %GST_RTSP_EINVAL when called with invalid parameters.
  *
  * Since: 1.4
  */
@@ -3831,7 +3870,7 @@ gst_rtsp_watch_set_flushing (GstRTSPWatch * watch, gboolean flushing)
   g_mutex_lock (&watch->mutex);
   watch->flushing = flushing;
   g_cond_signal (&watch->queue_not_full);
-  if (flushing == TRUE) {
+  if (flushing) {
     g_queue_foreach (watch->messages, (GFunc) gst_rtsp_rec_free, NULL);
     g_queue_clear (watch->messages);
   }

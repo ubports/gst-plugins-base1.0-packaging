@@ -8,15 +8,14 @@
 <link rel="up" href="gstreamer-app.html" title="App Library">
 <link rel="prev" href="gstreamer-app.html" title="App Library">
 <link rel="next" href="gst-plugins-base-libs-appsink.html" title="appsink">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-appsrc.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-libs-appsrc.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-libs-appsrc.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-app.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -51,7 +50,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-get-caps" title="gst_app_src_get_caps ()">gst_app_src_get_caps</a> <span class="c_punctuation">()</span>
@@ -131,7 +130,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-get-emit-signals" title="gst_app_src_get_emit_signals ()">gst_app_src_get_emit_signals</a> <span class="c_punctuation">()</span>
@@ -166,6 +165,14 @@
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 </td>
 <td class="function_name">
+<a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-push-sample" title="gst_app_src_push_sample ()">gst_app_src_push_sample</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+</td>
+<td class="function_name">
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-end-of-stream" title="gst_app_src_end_of_stream ()">gst_app_src_end_of_stream</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -192,11 +199,6 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="gst-plugins-base-libs-appsrc.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="gst-plugins-base-libs-appsrc.includes"></a><h2>Includes</h2>
 <pre class="synopsis">#include &lt;gst/app/gstappsrc.h&gt;
 </pre>
@@ -212,7 +214,10 @@ methods directly or by using the appsrc action signals.</p>
 describing the format of the data that will be pushed with appsrc. An
 exception to this is when pushing buffers with unknown caps, in which case no
 caps should be set. This is typically true of file-like sources that push raw
-byte buffers.</p>
+byte buffers. If you don't want to explicitly set the caps you can use
+gst_app_src_push_sample, this method get the caps associated with the
+sample and set them on appsrc replacing any previous setted caps if
+different from that of the sample.</p>
 <p>The main way of handing data to the appsrc element is by calling the
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-push-buffer" title="gst_app_src_push_buffer ()"><code class="function">gst_app_src_push_buffer()</code></a> method or by emitting the push-buffer action signal.
 This will put the buffer onto a queue from which appsrc will read from in its
@@ -234,12 +239,12 @@ receiving the seek-data signal, the application should push-buffers from the
 new position.</p>
 <p>These signals allow the application to operate the appsrc in two different
 ways:</p>
-<p>The push model, in which the application repeatedly calls the push-buffer method
-with a new buffer. Optionally, the queue size in the appsrc can be controlled
-with the enough-data and need-data signals by respectively stopping/starting
-the push-buffer calls. This is a typical mode of operation for the
-stream-type "stream" and "seekable". Use this model when implementing various
-network protocols or hardware devices.</p>
+<p>The push model, in which the application repeatedly calls the push-buffer/push-sample 
+method with a new buffer/sample. Optionally, the queue size in the appsrc 
+can be controlled with the enough-data and need-data signals by respectively 
+stopping/starting the push-buffer/push-sample calls. This is a typical 
+mode of operation for the stream-type "stream" and "seekable". Use this 
+model when implementing various network protocols or hardware devices.</p>
 <p>The pull model where the need-data signal triggers the next push-buffer call.
 This mode is typically used in the "random-access" stream-type. Use this
 model for file access or other randomly accessable sources. In this mode, a
@@ -260,7 +265,7 @@ happened or the state of the appsrc has gone through READY.</p>
 <a name="gst-app-src-set-caps"></a><h3>gst_app_src_set_caps ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_app_src_set_caps (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
-                      <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
+                      <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>);</pre>
 <p>Set the capabilities on the appsrc element.  This function takes
 a copy of the caps structure. After calling this method, the source will
 only produce caps that match <em class="parameter"><code>caps</code></em>
@@ -268,7 +273,7 @@ only produce caps that match <em class="parameter"><code>caps</code></em>
  must be fixed and the caps on the
 buffers must match the caps or left NULL.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -293,12 +298,12 @@ buffers must match the caps or left NULL.</p>
 <hr>
 <div class="refsect2">
 <a name="gst-app-src-get-caps"></a><h3>gst_app_src_get_caps ()</h3>
-<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="returnvalue">GstCaps</span></a> *
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
 gst_app_src_get_caps (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>);</pre>
 <p>Get the configured caps on <em class="parameter"><code>appsrc</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -313,8 +318,8 @@ gst_app_src_get_caps (<em class="parameter"><code><a href="http://gstreamer.free
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.3.6"></a><h4>Returns</h4>
-<p> the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#GstCaps"><span class="type">GstCaps</span></a> produced by the source. <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstCaps.html#gst-caps-unref"><code class="function">gst_caps_unref()</code></a> after usage.</p>
+<a name="id-1.2.5.4.7.3.6"></a><h4>Returns</h4>
+<p> the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> produced by the source. <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html#gst-caps-unref"><code class="function">gst_caps_unref()</code></a> after usage.</p>
 <p></p>
 </div>
 </div>
@@ -329,7 +334,7 @@ gst_app_src_get_latency (<em class="parameter"><code><a href="http://gstreamer.f
  and <em class="parameter"><code>max</code></em>
  respectively.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -370,7 +375,7 @@ gst_app_src_set_latency (<em class="parameter"><code><a href="http://gstreamer.f
  is set to -1, the
 default latency calculations for pseudo-live sources will be used.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -406,7 +411,7 @@ gst_app_src_set_size (<em class="parameter"><code><a href="http://gstreamer.free
 <p>Set the size of the stream in bytes. A value of -1 means that the size is
 not known.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -436,7 +441,7 @@ gst_app_src_get_size (<em class="parameter"><code><a href="http://gstreamer.free
 <p>Get the size of the stream in bytes. A value of -1 means that the size is
 not known.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -451,7 +456,7 @@ not known.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.5.4.7.7.6"></a><h4>Returns</h4>
 <p> the size of the stream previously set with <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-size" title="gst_app_src_set_size ()"><code class="function">gst_app_src_set_size()</code></a>;</p>
 <p></p>
 </div>
@@ -467,7 +472,7 @@ gst_app_src_set_stream_type (<em class="parameter"><code><a href="http://gstream
 be connected to.</p>
 <p>A stream_type stream</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.8.6"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.8.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -498,7 +503,7 @@ gst_app_src_get_stream_type (<em class="parameter"><code><a href="http://gstream
 
 with <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-stream-type" title="gst_app_src_set_stream_type ()"><code class="function">gst_app_src_set_stream_type()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -513,7 +518,7 @@ with <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-str
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.5.4.7.9.6"></a><h4>Returns</h4>
 <p> the stream type.</p>
 <p></p>
 </div>
@@ -530,7 +535,7 @@ After the maximum amount of bytes are queued, <em class="parameter"><code>appsrc
  will emit the
 "enough-data" signal.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -560,7 +565,7 @@ gst_app_src_get_max_bytes (<em class="parameter"><code><a href="http://gstreamer
 <p>Get the maximum amount of bytes that can be queued in <em class="parameter"><code>appsrc</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -575,7 +580,7 @@ gst_app_src_get_max_bytes (<em class="parameter"><code><a href="http://gstreamer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.5.4.7.11.6"></a><h4>Returns</h4>
 <p> The maximum amount of bytes that can be queued.</p>
 <p></p>
 </div>
@@ -588,7 +593,7 @@ gst_app_src_get_current_level_bytes (<em class="parameter"><code><a href="http:/
 <p>Get the number of currently queued bytes inside <em class="parameter"><code>appsrc</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.12.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.12.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -603,7 +608,7 @@ gst_app_src_get_current_level_bytes (<em class="parameter"><code><a href="http:/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.12.6"></a><h4>Returns</h4>
+<a name="id-1.2.5.4.7.12.6"></a><h4>Returns</h4>
 <p> The number of currently queued bytes.</p>
 <p></p>
 </div>
@@ -612,11 +617,11 @@ gst_app_src_get_current_level_bytes (<em class="parameter"><code><a href="http:/
 <hr>
 <div class="refsect2">
 <a name="gst-app-src-get-emit-signals"></a><h3>gst_app_src_get_emit_signals ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_app_src_get_emit_signals (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>);</pre>
 <p>Check if appsrc will emit the "new-preroll" and "new-buffer" signals.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -631,8 +636,8 @@ gst_app_src_get_emit_signals (<em class="parameter"><code><a href="http://gstrea
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.13.6"></a><h4>Returns</h4>
-<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>appsrc</code></em>
+<a name="id-1.2.5.4.7.13.6"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>appsrc</code></em>
 is emitting the "new-preroll" and "new-buffer"
 signals.</p>
 <p></p>
@@ -643,12 +648,12 @@ signals.</p>
 <a name="gst-app-src-set-emit-signals"></a><h3>gst_app_src_set_emit_signals ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_app_src_set_emit_signals (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
-                              <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> emit</code></em>);</pre>
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> emit</code></em>);</pre>
 <p>Make appsrc emit the "new-preroll" and "new-buffer" signals. This option is
 by default disabled because signal emission is expensive and unneeded when
 the application prefers to operate in pull mode.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -676,8 +681,8 @@ the application prefers to operate in pull mode.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_app_src_set_callbacks (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
                            <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-appsrc.html#GstAppSrcCallbacks" title="GstAppSrcCallbacks"><span class="type">GstAppSrcCallbacks</span></a> *callbacks</code></em>,
-                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
-                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> notify</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> notify</code></em>);</pre>
 <p>Set callbacks which will be executed when data is needed, enough data has
 been collected or when a seek should be performed.
 This is an alternative to using the signals, it has lower overhead and is thus
@@ -685,7 +690,7 @@ less expensive, but also less flexible.</p>
 <p>If callbacks are installed, no signals will be emitted for performance
 reasons.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.15.6"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.15.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -722,13 +727,13 @@ reasons.</p>
 <a name="gst-app-src-push-buffer"></a><h3>gst_app_src_push_buffer ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 gst_app_src_push_buffer (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
-                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
+                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
 <p>Adds a buffer to the queue of buffers that the appsrc element will
 push to its source pad.  This function takes ownership of the buffer.</p>
 <p>When the block property is TRUE, this function can block until free
 space becomes available in the queue.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.16.6"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.16.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -743,20 +748,65 @@ space becomes available in the queue.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
-<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstBuffer.html#GstBuffer"><span class="type">GstBuffer</span></a> to push. </p></td>
+<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> to push. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.16.7"></a><h4>Returns</h4>
-<p> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the buffer was successfuly queued.
+<a name="id-1.2.5.4.7.16.7"></a><h4>Returns</h4>
+<p> <span class="type">GST_FLOW_OK</span> when the buffer was successfuly queued.
 <span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
 is not PAUSED or PLAYING.
 <span class="type">GST_FLOW_EOS</span> when EOS occured.</p>
 <p></p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-app-src-push-sample"></a><h3>gst_app_src_push_sample ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+gst_app_src_push_sample (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
+                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *sample</code></em>);</pre>
+<p>Extract a buffer from the provided sample and adds it to the queue of 
+buffers that the appsrc element will push to its source pad. Any 
+previous caps setted on appsrc will be replaced by the caps associated 
+with the sample if not equal.</p>
+<p>When the block property is TRUE, this function can block until free
+space becomes available in the queue.</p>
+<div class="refsect3">
+<a name="id-1.2.5.4.7.17.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>appsrc</p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sample</p></td>
+<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> from wich extract buffer to
+push and caps to set. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.4.7.17.7"></a><h4>Returns</h4>
+<p> <span class="type">GST_FLOW_OK</span> when the buffer was successfuly queued.
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
+is not PAUSED or PLAYING.
+<span class="type">GST_FLOW_EOS</span> when EOS occured.</p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -766,7 +816,7 @@ gst_app_src_end_of_stream (<em class="parameter"><code><a href="http://gstreamer
 <p>Indicates to the appsrc element that the last buffer queued in the
 element is the last buffer of the stream.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -781,8 +831,8 @@ element is the last buffer of the stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.8.17.6"></a><h4>Returns</h4>
-<p> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GST-FLOW-OK:CAPS"><span class="type">GST_FLOW_OK</span></a> when the EOS was successfuly queued.
+<a name="id-1.2.5.4.7.18.6"></a><h4>Returns</h4>
+<p> <span class="type">GST_FLOW_OK</span> when the EOS was successfuly queued.
 <span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
 is not PAUSED or PLAYING.</p>
 <p></p>
@@ -795,7 +845,7 @@ is not PAUSED or PLAYING.</p>
 <a name="GstAppStreamType"></a><h3>enum GstAppStreamType</h3>
 <p>The stream type.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.9.2.4"></a><h4>Members</h4>
+<a name="id-1.2.5.4.8.2.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -843,7 +893,7 @@ such as in a local file.</p>
 <p>A set of callbacks that can be installed on the appsrc with
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-set-callbacks" title="gst_app_src_set_callbacks ()"><code class="function">gst_app_src_set_callbacks()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.9.3.5"></a><h4>Members</h4>
+<a name="id-1.2.5.4.8.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -887,6 +937,6 @@ This callback is only called for seekable stream types.</p></td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

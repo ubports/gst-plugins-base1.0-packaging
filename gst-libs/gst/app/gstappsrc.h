@@ -42,6 +42,8 @@ typedef struct _GstAppSrc GstAppSrc;
 typedef struct _GstAppSrcClass GstAppSrcClass;
 typedef struct _GstAppSrcPrivate GstAppSrcPrivate;
 
+/* FIXME 2.0: Make the instance/class struct private */
+
 /**
  * GstAppSrcCallbacks: (skip)
  * @need_data: Called when the appsrc needs more data. A buffer or EOS should be
@@ -107,9 +109,10 @@ struct _GstAppSrcClass
   /* actions */
   GstFlowReturn (*push_buffer)     (GstAppSrc *appsrc, GstBuffer *buffer);
   GstFlowReturn (*end_of_stream)   (GstAppSrc *appsrc);
+  GstFlowReturn (*push_sample)     (GstAppSrc *appsrc, GstSample *sample);
 
   /*< private >*/
-  gpointer     _gst_reserved[GST_PADDING];
+  gpointer     _gst_reserved[GST_PADDING-1];
 };
 
 GType gst_app_src_get_type(void);
@@ -140,6 +143,7 @@ gboolean         gst_app_src_get_emit_signals        (GstAppSrc *appsrc);
 
 GstFlowReturn    gst_app_src_push_buffer             (GstAppSrc *appsrc, GstBuffer *buffer);
 GstFlowReturn    gst_app_src_end_of_stream           (GstAppSrc *appsrc);
+GstFlowReturn    gst_app_src_push_sample             (GstAppSrc *appsrc, GstSample *sample);
 
 void             gst_app_src_set_callbacks           (GstAppSrc * appsrc,
                                                       GstAppSrcCallbacks *callbacks,

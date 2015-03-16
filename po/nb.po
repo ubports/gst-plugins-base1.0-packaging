@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-06-22 17:22+0200\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2014-01-22 17:42+0100\n"
 "Last-Translator: Johnny A. Solbu <johnny@solbu.net>\n"
 "Language-Team: Norwegian Bokmaal <i18n-nb@lister.ping.uio.no>\n"
@@ -79,12 +79,6 @@ msgstr "Intern feil i datastrøm."
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr "Mangler elementet «%s» - kontroller GStreamer-installasjonen."
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-"Et %s-tillegg kreves for å spille av denne strømmen, men det er ikke "
-"installert."
 
 msgid "Could not determine type of stream"
 msgstr "Kunne ikke bestemme type strøm."
@@ -510,14 +504,19 @@ msgstr "musikal-tast"
 msgid "Initial key in which the sound starts"
 msgstr "Innledende tast der lyden begynner"
 
+msgid "Print version information and exit"
+msgstr "Skriv ut versjonsinformasjon og avslutt"
+
+msgid ""
+"Don't exit after showing the initial device list, but wait for devices to "
+"added/removed."
+msgstr ""
+
 msgid "Buffering..."
 msgstr "Bufrer ..."
 
 msgid "Clock lost, selecting a new one\n"
 msgstr ""
-
-msgid "Print version information and exit"
-msgstr "Skriv ut versjonsinformasjon og avslutt"
 
 msgid "Video sink to use (default is autovideosink)"
 msgstr "Video-sink som skal brukes (standard er autovideosink)"
@@ -540,12 +539,20 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr "Bruk: %s FIL1|URI1 [FILE|URI2] [FILE|URI3] ..."
 
 msgid "You must provide at least one filename or URI to play."
 msgstr "Du må ha med minst ett filnavn eller nettadresse å spille."
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr ""
+#~ "Et %s-tillegg kreves for å spille av denne strømmen, men det er ikke "
+#~ "installert."
 
 #~ msgid "Uncompressed %s YUV %s"
 #~ msgstr "Ukomprimert %s YUV %s"

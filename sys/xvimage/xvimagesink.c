@@ -229,7 +229,8 @@ gst_xvimagesink_xvimage_put (GstXvImageSink * xvimagesink, GstBuffer * xvimage)
   GstVideoCropMeta *crop;
   GstVideoRectangle result;
   gboolean draw_border = FALSE;
-  GstVideoRectangle src, dst;
+  GstVideoRectangle src = { 0, };
+  GstVideoRectangle dst = { 0, };
   GstVideoRectangle mem_crop;
   GstXWindow *xwindow;
 
@@ -1129,7 +1130,9 @@ gst_xvimagesink_navigation_send_event (GstNavigation * navigation,
 
   if ((peer = gst_pad_get_peer (GST_VIDEO_SINK_PAD (xvimagesink)))) {
     GstEvent *event;
-    GstVideoRectangle src, dst, result;
+    GstVideoRectangle src = { 0, };
+    GstVideoRectangle dst = { 0, };
+    GstVideoRectangle result;
     gdouble x, y, xscale = 1.0, yscale = 1.0;
     GstXWindow *xwindow;
 
@@ -1987,7 +1990,7 @@ gst_xvimagesink_class_init (GstXvImageSinkClass * klass)
    * unused parts of the video area.
    */
   g_object_class_install_property (gobject_class, PROP_DRAW_BORDERS,
-      g_param_spec_boolean ("draw-borders", "Colorkey",
+      g_param_spec_boolean ("draw-borders", "Draw Borders",
           "Draw black borders to fill unused area in force-aspect-ratio mode",
           TRUE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 

@@ -15,7 +15,6 @@ GObject
       GstElement
         GstAdder
         GstAudioDecoder
-          GstIVorbisDec
           GstVorbisDec
         GstAudioEncoder
           GstVorbisEnc
@@ -108,7 +107,7 @@ GObject
       GstPadTemplate
       GstPlugin
       GstPluginFeature
-        GstDeviceMonitorFactory
+        GstDeviceProviderFactory
         GstElementFactory
         GstTypeFindFactory
       GstRegistry

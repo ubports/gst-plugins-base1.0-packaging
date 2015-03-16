@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT([GStreamer Base Plug-ins],[1.3.3],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
+AC_INIT([GStreamer Base Plug-ins],[1.5.0.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
 
 AG_GST_INIT
 
@@ -56,10 +56,10 @@ dnl      1.2.5 => 205
 dnl      1.10.9 (who knows) => 1009
 dnl
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 303, 0, 303)
+AS_LIBTOOL(GST, 501, 0, 501)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=1.3.3
+GST_REQ=1.5.0.1
 
 dnl *** autotools stuff ****
 
@@ -250,11 +250,12 @@ dnl GLib
 GLIB_REQ=2.32
 AG_GST_GLIB_CHECK([$GLIB_REQ])
 
-ORC_CHECK([0.4.18])
+ORC_CHECK([0.4.23])
 
 dnl checks for gstreamer
 dnl uninstalled is selected preferentially -- see pkg-config(1)
 AG_GST_CHECK_GST($GST_API_VERSION, [$GST_REQ], yes)
+AG_GST_CHECK_GST_NET($GST_API_VERSION, [$GST_REQ], yes)
 AG_GST_CHECK_GST_BASE($GST_API_VERSION, [$GST_REQ], yes)
 AG_GST_CHECK_GST_CONTROLLER($GST_API_VERSION, [$GST_REQ], yes)
 AG_GST_CHECK_GST_CHECK($GST_API_VERSION, [$GST_REQ], no)
@@ -542,34 +543,30 @@ dnl *** X11 ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_X, true)
 AG_GST_CHECK_FEATURE(X, [X libraries and plugins],
                   [ximagesink], [
-  AG_GST_CHECK_X
+  AG_GST_PKG_CHECK_MODULES(X, x11)
 ])
 
 dnl Check for Xv extension
 translit(dnm, m, l) AM_CONDITIONAL(USE_XVIDEO, true)
 AG_GST_CHECK_FEATURE(XVIDEO, [X11 XVideo extensions],
                   [xvimagesink], [
-  AG_GST_CHECK_XV
+  AG_GST_PKG_CHECK_MODULES(XVIDEO, x11 xv)
 ])
 
 dnl check for X Shm
 translit(dnm, m, l) AM_CONDITIONAL(USE_XSHM, true)
-AG_GST_CHECK_FEATURE(XSHM, [X Shared Memory extension], , [
+AG_GST_CHECK_FEATURE(XSHM, [X Shared Memory extension], [ ], [
   if test x$HAVE_X = xyes; then
-    AC_CHECK_LIB(Xext, XShmAttach,
-		 HAVE_XSHM="yes", HAVE_XSHM="no",
-		 $X_LIBS)
-    if test "x$HAVE_XSHM" = "xyes"; then
-      XSHM_LIBS="-lXext"
-    else
-      dnl On AIX, it is in XextSam instead, but we still need -lXext
-      AC_CHECK_LIB(XextSam, XShmAttach,
-		   HAVE_XSHM="yes", HAVE_XSHM="no",
-		   $X_LIBS)
-      if test "x$HAVE_XSHM" = "xyes"; then
-	XSHM_LIBS="-lXext -lXextSam"
-      fi
-    fi
+    PKG_CHECK_MODULES(XSHM, xext, [
+      AC_CHECK_LIB(Xext, XShmAttach, [
+        HAVE_XSHM="yes"
+      ], [
+        HAVE_XSHM="no"
+        XSHM_LIBS=""
+      ], [ $X_LIBS ])
+    ], [
+      HAVE_XSHM="no"
+    ])
   fi
 ], , [
   AC_SUBST(HAVE_XSHM)
@@ -671,16 +668,8 @@ dnl *** libvisual ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_LIBVISUAL, true)
 AG_GST_CHECK_FEATURE(LIBVISUAL, [libvisual visualization library], libvisual, [
   AG_GST_PKG_CHECK_MODULES(LIBVISUAL, libvisual-0.4 >= 0.4.0)
-  if test $HAVE_LIBVISUAL = no
-  then
-    AG_GST_PKG_CHECK_MODULES(LIBVISUAL, libvisual = 0.2.0)
-    if test x$HAVE_LIBVISUAL = xyes; then
-      LIBVIS_PLUGINSDIR="`$PKG_CONFIG --variable=pluginsbasedir libvisual-0.2`"
-    fi
-  else
-    if test x$HAVE_LIBVISUAL = xyes; then
-      LIBVIS_PLUGINSDIR="`$PKG_CONFIG --variable=pluginsbasedir libvisual-0.4`"
-    fi
+  if test x$HAVE_LIBVISUAL = xyes; then
+    LIBVIS_PLUGINSDIR="`$PKG_CONFIG --variable=pluginsbasedir libvisual-0.4`"
   fi
   AC_MSG_NOTICE([libvisual pluginsdir: $LIBVIS_PLUGINSDIR])
   if test x$LIBVIS_PLUGINSDIR != x; then
@@ -712,6 +701,12 @@ dnl *** vorbis ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_VORBIS, true)
 AG_GST_CHECK_FEATURE(VORBIS, [Xiph Vorbis audio codec], vorbis, [
   AG_GST_PKG_CHECK_MODULES(VORBIS, vorbis >= 1.0 vorbisenc >= 1.0)
+])
+
+dnl *** gio-unix-2.0 for tests/check/pipelines/tcp.c ***
+translit(dnm, m, l) AM_CONDITIONAL(USE_GIO_UNIX_2_0, true)
+AG_GST_CHECK_FEATURE(GIO_UNIX_2_0, [glib GIO unix], gio-unix-2.0, [
+  AG_GST_PKG_CHECK_MODULES(GIO_UNIX_2_0, gio-unix-2.0 >= 2.24)
 ])
 
 if test "x$HAVE_VORBIS" = "xyes"; then

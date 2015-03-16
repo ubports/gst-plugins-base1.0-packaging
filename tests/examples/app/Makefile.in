@@ -81,7 +81,8 @@ host_triplet = @host@
 target_triplet = @target@
 noinst_PROGRAMS = appsrc_ex$(EXEEXT) appsrc-stream$(EXEEXT) \
 	appsrc-stream2$(EXEEXT) appsrc-ra$(EXEEXT) \
-	appsrc-seekable$(EXEEXT) appsink-src$(EXEEXT)
+	appsrc-seekable$(EXEEXT) appsink-src$(EXEEXT) \
+	appsink-src2$(EXEEXT)
 subdir = tests/examples/app
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -105,7 +106,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -138,6 +138,13 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 appsink_src_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(appsink_src_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+am_appsink_src2_OBJECTS = appsink_src2-appsink-src2.$(OBJEXT)
+appsink_src2_OBJECTS = $(am_appsink_src2_OBJECTS)
+appsink_src2_DEPENDENCIES = $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+appsink_src2_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(appsink_src2_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am_appsrc_ra_OBJECTS = appsrc_ra-appsrc-ra.$(OBJEXT)
 appsrc_ra_OBJECTS = $(am_appsrc_ra_OBJECTS)
@@ -210,12 +217,14 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(appsink_src_SOURCES) $(appsrc_ra_SOURCES) \
-	$(appsrc_seekable_SOURCES) $(appsrc_stream_SOURCES) \
-	$(appsrc_stream2_SOURCES) $(appsrc_ex_SOURCES)
-DIST_SOURCES = $(appsink_src_SOURCES) $(appsrc_ra_SOURCES) \
-	$(appsrc_seekable_SOURCES) $(appsrc_stream_SOURCES) \
-	$(appsrc_stream2_SOURCES) $(appsrc_ex_SOURCES)
+SOURCES = $(appsink_src_SOURCES) $(appsink_src2_SOURCES) \
+	$(appsrc_ra_SOURCES) $(appsrc_seekable_SOURCES) \
+	$(appsrc_stream_SOURCES) $(appsrc_stream2_SOURCES) \
+	$(appsrc_ex_SOURCES)
+DIST_SOURCES = $(appsink_src_SOURCES) $(appsink_src2_SOURCES) \
+	$(appsrc_ra_SOURCES) $(appsrc_seekable_SOURCES) \
+	$(appsrc_stream_SOURCES) $(appsrc_stream2_SOURCES) \
+	$(appsrc_ex_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -300,6 +309,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -329,6 +340,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -356,7 +369,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -460,13 +472,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -555,6 +566,12 @@ appsink_src_LDADD = \
     $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la \
     $(GST_BASE_LIBS) $(GST_LIBS)
 
+appsink_src2_SOURCES = appsink-src2.c
+appsink_src2_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
+appsink_src2_LDADD = \
+    $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la \
+    $(GST_BASE_LIBS) $(GST_LIBS)
+
 all: all-am
 
 .SUFFIXES:
@@ -603,6 +620,10 @@ appsink-src$(EXEEXT): $(appsink_src_OBJECTS) $(appsink_src_DEPENDENCIES) $(EXTRA
 	@rm -f appsink-src$(EXEEXT)
 	$(AM_V_CCLD)$(appsink_src_LINK) $(appsink_src_OBJECTS) $(appsink_src_LDADD) $(LIBS)
 
+appsink-src2$(EXEEXT): $(appsink_src2_OBJECTS) $(appsink_src2_DEPENDENCIES) $(EXTRA_appsink_src2_DEPENDENCIES) 
+	@rm -f appsink-src2$(EXEEXT)
+	$(AM_V_CCLD)$(appsink_src2_LINK) $(appsink_src2_OBJECTS) $(appsink_src2_LDADD) $(LIBS)
+
 appsrc-ra$(EXEEXT): $(appsrc_ra_OBJECTS) $(appsrc_ra_DEPENDENCIES) $(EXTRA_appsrc_ra_DEPENDENCIES) 
 	@rm -f appsrc-ra$(EXEEXT)
 	$(AM_V_CCLD)$(appsrc_ra_LINK) $(appsrc_ra_OBJECTS) $(appsrc_ra_LDADD) $(LIBS)
@@ -630,6 +651,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/appsink_src-appsink-src.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/appsink_src2-appsink-src2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/appsrc_ex-appsrc_ex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/appsrc_ra-appsrc-ra.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/appsrc_seekable-appsrc-seekable.Po@am__quote@
@@ -673,6 +695,20 @@ appsink_src-appsink-src.obj: appsink-src.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='appsink-src.c' object='appsink_src-appsink-src.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsink_src_CFLAGS) $(CFLAGS) -c -o appsink_src-appsink-src.obj `if test -f 'appsink-src.c'; then $(CYGPATH_W) 'appsink-src.c'; else $(CYGPATH_W) '$(srcdir)/appsink-src.c'; fi`
+
+appsink_src2-appsink-src2.o: appsink-src2.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsink_src2_CFLAGS) $(CFLAGS) -MT appsink_src2-appsink-src2.o -MD -MP -MF $(DEPDIR)/appsink_src2-appsink-src2.Tpo -c -o appsink_src2-appsink-src2.o `test -f 'appsink-src2.c' || echo '$(srcdir)/'`appsink-src2.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/appsink_src2-appsink-src2.Tpo $(DEPDIR)/appsink_src2-appsink-src2.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='appsink-src2.c' object='appsink_src2-appsink-src2.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsink_src2_CFLAGS) $(CFLAGS) -c -o appsink_src2-appsink-src2.o `test -f 'appsink-src2.c' || echo '$(srcdir)/'`appsink-src2.c
+
+appsink_src2-appsink-src2.obj: appsink-src2.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsink_src2_CFLAGS) $(CFLAGS) -MT appsink_src2-appsink-src2.obj -MD -MP -MF $(DEPDIR)/appsink_src2-appsink-src2.Tpo -c -o appsink_src2-appsink-src2.obj `if test -f 'appsink-src2.c'; then $(CYGPATH_W) 'appsink-src2.c'; else $(CYGPATH_W) '$(srcdir)/appsink-src2.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/appsink_src2-appsink-src2.Tpo $(DEPDIR)/appsink_src2-appsink-src2.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='appsink-src2.c' object='appsink_src2-appsink-src2.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsink_src2_CFLAGS) $(CFLAGS) -c -o appsink_src2-appsink-src2.obj `if test -f 'appsink-src2.c'; then $(CYGPATH_W) 'appsink-src2.c'; else $(CYGPATH_W) '$(srcdir)/appsink-src2.c'; fi`
 
 appsrc_ra-appsrc-ra.o: appsrc-ra.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(appsrc_ra_CFLAGS) $(CFLAGS) -MT appsrc_ra-appsrc-ra.o -MD -MP -MF $(DEPDIR)/appsrc_ra-appsrc-ra.Tpo -c -o appsrc_ra-appsrc-ra.o `test -f 'appsrc-ra.c' || echo '$(srcdir)/'`appsrc-ra.c

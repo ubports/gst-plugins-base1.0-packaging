@@ -32,7 +32,7 @@ GST_DEBUG_CATEGORY_STATIC (gst_play_sink_convert_bin_debug);
 
 #define parent_class gst_play_sink_convert_bin_parent_class
 
-static gboolean gst_play_sink_convert_bin_sink_setcaps (GstPlaySinkConvertBin *
+static void gst_play_sink_convert_bin_sink_setcaps (GstPlaySinkConvertBin *
     self, GstCaps * caps);
 
 G_DEFINE_TYPE (GstPlaySinkConvertBin, gst_play_sink_convert_bin, GST_TYPE_BIN);
@@ -250,7 +250,7 @@ gst_play_sink_convert_bin_sink_event (GstPad * pad, GstObject * parent,
       GstCaps *caps;
 
       gst_event_parse_caps (event, &caps);
-      ret = gst_play_sink_convert_bin_sink_setcaps (self, caps);
+      gst_play_sink_convert_bin_sink_setcaps (self, caps);
       break;
     }
     default:
@@ -283,7 +283,7 @@ unblock_proxypad (GstPlaySinkConvertBin * self)
   }
 }
 
-static gboolean
+static void
 gst_play_sink_convert_bin_sink_setcaps (GstPlaySinkConvertBin * self,
     GstCaps * caps)
 {
@@ -292,7 +292,8 @@ gst_play_sink_convert_bin_sink_setcaps (GstPlaySinkConvertBin * self,
   gboolean reconfigure = FALSE;
   gboolean raw;
 
-  GST_DEBUG_OBJECT (self, "setcaps");
+  GST_DEBUG_OBJECT (self, "Setting sink caps %" GST_PTR_FORMAT, caps);
+
   GST_PLAY_SINK_CONVERT_BIN_LOCK (self);
   s = gst_caps_get_structure (caps, 0);
   name = gst_structure_get_name (s);
@@ -338,10 +339,6 @@ gst_play_sink_convert_bin_sink_setcaps (GstPlaySinkConvertBin * self,
   }
 
   GST_PLAY_SINK_CONVERT_BIN_UNLOCK (self);
-
-  GST_DEBUG_OBJECT (self, "Setting sink caps %" GST_PTR_FORMAT, caps);
-
-  return TRUE;
 }
 
 #define GST_PLAY_SINK_CONVERT_BIN_FILTER_CAPS(filter,caps) G_STMT_START {     \
@@ -382,7 +379,29 @@ gst_play_sink_convert_bin_getcaps (GstPad * pad, GstCaps * filter)
        * it doesn't handle the filter caps but we could still convert
        * to these caps */
       if (filter) {
-        downstream_filter = gst_caps_copy (filter);
+        guint i, n;
+
+        downstream_filter = gst_caps_new_empty ();
+
+        /* Intersect raw video caps in the filter caps with the converter
+         * caps. This makes sure that we don't accept raw video that we
+         * can't handle, e.g. because of caps features */
+        n = gst_caps_get_size (filter);
+        for (i = 0; i < n; i++) {
+          GstStructure *s;
+          GstCaps *tmp, *tmp2;
+
+          s = gst_structure_copy (gst_caps_get_structure (filter, i));
+          if (gst_structure_has_name (s,
+                  self->audio ? "audio/x-raw" : "video/x-raw")) {
+            tmp = gst_caps_new_full (s, NULL);
+            tmp2 = gst_caps_intersect (tmp, self->converter_caps);
+            gst_caps_append (downstream_filter, tmp2);
+            gst_caps_unref (tmp);
+          } else {
+            gst_caps_append_structure (downstream_filter, s);
+          }
+        }
         downstream_filter =
             gst_caps_merge (downstream_filter,
             gst_caps_ref (self->converter_caps));
@@ -394,16 +413,37 @@ gst_play_sink_convert_bin_getcaps (GstPad * pad, GstCaps * filter)
       gst_object_unref (peer);
       if (self->converter_caps && is_raw_caps (peer_caps, self->audio)) {
         GstCaps *converter_caps = gst_caps_ref (self->converter_caps);
-        GST_PLAY_SINK_CONVERT_BIN_FILTER_CAPS (filter, converter_caps);
-        ret = gst_caps_merge (peer_caps, converter_caps);
+        GstCapsFeatures *cf;
+        GstStructure *s;
+        guint i, n;
+
+        ret = gst_caps_make_writable (peer_caps);
+
+        /* Filter out ANY capsfeatures from the converter caps. We can't
+         * convert to ANY capsfeatures, they are only there so that we
+         * can passthrough whatever downstream can support... but we
+         * definitely don't want to return them here
+         */
+        n = gst_caps_get_size (converter_caps);
+        for (i = 0; i < n; i++) {
+          s = gst_caps_get_structure (converter_caps, i);
+          cf = gst_caps_get_features (converter_caps, i);
+
+          if (cf && gst_caps_features_is_any (cf))
+            continue;
+          ret =
+              gst_caps_merge_structure_full (ret, gst_structure_copy (s),
+              (cf ? gst_caps_features_copy (cf) : NULL));
+        }
+        gst_caps_unref (converter_caps);
       } else {
         ret = peer_caps;
-        GST_PLAY_SINK_CONVERT_BIN_FILTER_CAPS (filter, ret);
       }
     } else {
       ret = gst_caps_ref (self->converter_caps);
-      GST_PLAY_SINK_CONVERT_BIN_FILTER_CAPS (filter, ret);
     }
+    GST_PLAY_SINK_CONVERT_BIN_FILTER_CAPS (filter, ret);
+
   } else {
     ret = filter ? gst_caps_ref (filter) : gst_caps_new_any ();
   }

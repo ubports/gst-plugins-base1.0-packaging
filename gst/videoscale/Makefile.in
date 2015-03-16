@@ -14,28 +14,6 @@
 
 @SET_MAKE@
 
-#
-# This is a makefile.am fragment to build Orc code.
-#
-# Define ORC_SOURCE and then include this file, such as:
-#
-#  ORC_SOURCE=gstadderorc
-#  include $(top_srcdir)/common/orc.mak
-#
-# This fragment will create tmp-orc.c and gstadderorc.h from
-# gstadderorc.orc.
-#
-# When 'make dist' is run at the top level, or 'make orc-update'
-# in a directory including this fragment, the generated source 
-# files will be copied to $(ORC_SOURCE)-dist.[ch].  These files
-# should be checked in to git, since they are used if Orc is
-# disabled.
-# 
-# Note that this file defines BUILT_SOURCES, so any later usage
-# of BUILT_SOURCES in the Makefile.am that includes this file
-# must use '+='.
-#
-
 
 VPATH = @srcdir@
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
@@ -102,10 +80,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-DIST_COMMON = $(top_srcdir)/common/orc.mak $(srcdir)/Makefile.in \
-	$(srcdir)/Makefile.am $(top_srcdir)/depcomp $(noinst_HEADERS) \
-	README
 subdir = gst/videoscale
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
+	$(top_srcdir)/depcomp $(noinst_HEADERS) README
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/as-auto-alt.m4 \
@@ -126,7 +103,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -179,17 +155,9 @@ LTLIBRARIES = $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libgstvideoscale_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libgstvideoscale_la_OBJECTS = libgstvideoscale_la-gstvideoscale.lo \
-	libgstvideoscale_la-vs_image.lo \
-	libgstvideoscale_la-vs_scanline.lo \
-	libgstvideoscale_la-vs_4tap.lo \
-	libgstvideoscale_la-vs_fill_borders.lo \
-	libgstvideoscale_la-vs_lanczos.lo
-am__objects_1 = libgstvideoscale_la-tmp-orc.lo
-nodist_libgstvideoscale_la_OBJECTS = $(am__objects_1)
-libgstvideoscale_la_OBJECTS = $(am_libgstvideoscale_la_OBJECTS) \
-	$(nodist_libgstvideoscale_la_OBJECTS)
+	$(am__DEPENDENCIES_1)
+am_libgstvideoscale_la_OBJECTS = libgstvideoscale_la-gstvideoscale.lo
+libgstvideoscale_la_OBJECTS = $(am_libgstvideoscale_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -232,8 +200,7 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libgstvideoscale_la_SOURCES) \
-	$(nodist_libgstvideoscale_la_SOURCES)
+SOURCES = $(libgstvideoscale_la_SOURCES)
 DIST_SOURCES = $(libgstvideoscale_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -320,6 +287,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -349,6 +318,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -376,7 +347,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -480,13 +450,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -552,45 +521,22 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 plugin_LTLIBRARIES = libgstvideoscale.la
-ORC_SOURCE = gstvideoscaleorc
-EXTRA_DIST = $(ORC_SOURCE).orc
-ORC_NODIST_SOURCES = tmp-orc.c $(ORC_SOURCE).h
-BUILT_SOURCES = tmp-orc.c $(ORC_SOURCE).h
-orcc_v_gen = $(orcc_v_gen_$(V))
-orcc_v_gen_ = $(orcc_v_gen_$(AM_DEFAULT_VERBOSITY))
-orcc_v_gen_0 = @echo "  ORCC   $@";
-cp_v_gen = $(cp_v_gen_$(V))
-cp_v_gen_ = $(cp_v_gen_$(AM_DEFAULT_VERBOSITY))
-cp_v_gen_0 = @echo "  CP     $@";
-libgstvideoscale_la_SOURCES = \
-	gstvideoscale.c \
-	vs_image.c \
-	vs_scanline.c \
-	vs_4tap.c \
-	vs_fill_borders.c \
-	vs_lanczos.c
-
-nodist_libgstvideoscale_la_SOURCES = $(ORC_NODIST_SOURCES)
-libgstvideoscale_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) $(ORC_CFLAGS)
+libgstvideoscale_la_SOURCES = gstvideoscale.c 
+libgstvideoscale_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
 libgstvideoscale_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstvideoscale_la_LIBADD = \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
-	$(GST_BASE_LIBS) $(GST_LIBS) $(ORC_LIBS) $(LIBM)
+	$(GST_BASE_LIBS) $(GST_LIBS) $(LIBM)
 
 libgstvideoscale_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
 noinst_HEADERS = \
-	gstvideoscale.h \
-	vs_image.h \
-	vs_scanline.h \
-	vs_4tap.h \
-	vs_fill_borders.h
+	gstvideoscale.h
 
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/common/orc.mak $(am__configure_deps)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -611,7 +557,6 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
 	esac;
-$(top_srcdir)/common/orc.mak:
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
@@ -667,12 +612,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-gstvideoscale.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-tmp-orc.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-vs_4tap.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-vs_fill_borders.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-vs_image.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-vs_lanczos.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideoscale_la-vs_scanline.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -704,48 +643,6 @@ libgstvideoscale_la-gstvideoscale.lo: gstvideoscale.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstvideoscale.c' object='libgstvideoscale_la-gstvideoscale.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-gstvideoscale.lo `test -f 'gstvideoscale.c' || echo '$(srcdir)/'`gstvideoscale.c
-
-libgstvideoscale_la-vs_image.lo: vs_image.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-vs_image.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-vs_image.Tpo -c -o libgstvideoscale_la-vs_image.lo `test -f 'vs_image.c' || echo '$(srcdir)/'`vs_image.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-vs_image.Tpo $(DEPDIR)/libgstvideoscale_la-vs_image.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vs_image.c' object='libgstvideoscale_la-vs_image.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-vs_image.lo `test -f 'vs_image.c' || echo '$(srcdir)/'`vs_image.c
-
-libgstvideoscale_la-vs_scanline.lo: vs_scanline.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-vs_scanline.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-vs_scanline.Tpo -c -o libgstvideoscale_la-vs_scanline.lo `test -f 'vs_scanline.c' || echo '$(srcdir)/'`vs_scanline.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-vs_scanline.Tpo $(DEPDIR)/libgstvideoscale_la-vs_scanline.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vs_scanline.c' object='libgstvideoscale_la-vs_scanline.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-vs_scanline.lo `test -f 'vs_scanline.c' || echo '$(srcdir)/'`vs_scanline.c
-
-libgstvideoscale_la-vs_4tap.lo: vs_4tap.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-vs_4tap.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-vs_4tap.Tpo -c -o libgstvideoscale_la-vs_4tap.lo `test -f 'vs_4tap.c' || echo '$(srcdir)/'`vs_4tap.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-vs_4tap.Tpo $(DEPDIR)/libgstvideoscale_la-vs_4tap.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vs_4tap.c' object='libgstvideoscale_la-vs_4tap.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-vs_4tap.lo `test -f 'vs_4tap.c' || echo '$(srcdir)/'`vs_4tap.c
-
-libgstvideoscale_la-vs_fill_borders.lo: vs_fill_borders.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-vs_fill_borders.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-vs_fill_borders.Tpo -c -o libgstvideoscale_la-vs_fill_borders.lo `test -f 'vs_fill_borders.c' || echo '$(srcdir)/'`vs_fill_borders.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-vs_fill_borders.Tpo $(DEPDIR)/libgstvideoscale_la-vs_fill_borders.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vs_fill_borders.c' object='libgstvideoscale_la-vs_fill_borders.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-vs_fill_borders.lo `test -f 'vs_fill_borders.c' || echo '$(srcdir)/'`vs_fill_borders.c
-
-libgstvideoscale_la-vs_lanczos.lo: vs_lanczos.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-vs_lanczos.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-vs_lanczos.Tpo -c -o libgstvideoscale_la-vs_lanczos.lo `test -f 'vs_lanczos.c' || echo '$(srcdir)/'`vs_lanczos.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-vs_lanczos.Tpo $(DEPDIR)/libgstvideoscale_la-vs_lanczos.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vs_lanczos.c' object='libgstvideoscale_la-vs_lanczos.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-vs_lanczos.lo `test -f 'vs_lanczos.c' || echo '$(srcdir)/'`vs_lanczos.c
-
-libgstvideoscale_la-tmp-orc.lo: tmp-orc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -MT libgstvideoscale_la-tmp-orc.lo -MD -MP -MF $(DEPDIR)/libgstvideoscale_la-tmp-orc.Tpo -c -o libgstvideoscale_la-tmp-orc.lo `test -f 'tmp-orc.c' || echo '$(srcdir)/'`tmp-orc.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideoscale_la-tmp-orc.Tpo $(DEPDIR)/libgstvideoscale_la-tmp-orc.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tmp-orc.c' object='libgstvideoscale_la-tmp-orc.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstvideoscale_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideoscale_la_CFLAGS) $(CFLAGS) -c -o libgstvideoscale_la-tmp-orc.lo `test -f 'tmp-orc.c' || echo '$(srcdir)/'`tmp-orc.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -835,19 +732,14 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	$(MAKE) $(AM_MAKEFLAGS) \
-	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
-	  dist-hook
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs:
 	for dir in "$(DESTDIR)$(plugindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -877,11 +769,10 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-local \
-	clean-pluginLTLIBRARIES mostlyclean-am
+clean-am: clean-generic clean-libtool clean-pluginLTLIBRARIES \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -949,68 +840,30 @@ ps-am:
 
 uninstall-am: uninstall-pluginLTLIBRARIES
 
-.MAKE: all check install install-am install-strip
+.MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-local clean-pluginLTLIBRARIES \
-	cscopelist-am ctags ctags-am dist-hook distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-pluginLTLIBRARIES \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am \
+	clean-libtool clean-pluginLTLIBRARIES cscopelist-am ctags \
+	ctags-am distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-pluginLTLIBRARIES install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
 	uninstall-pluginLTLIBRARIES
 
-
-orc-update: tmp-orc.c $(ORC_SOURCE).h
-	$(top_srcdir)/common/gst-indent tmp-orc.c
-	cp tmp-orc.c $(srcdir)/$(ORC_SOURCE)-dist.c
-	cp $(ORC_SOURCE).h $(srcdir)/$(ORC_SOURCE)-dist.h
-
-@HAVE_ORCC_TRUE@tmp-orc.c: $(srcdir)/$(ORC_SOURCE).orc
-@HAVE_ORCC_TRUE@	$(orcc_v_gen)$(ORCC) $(ORCC_FLAGS) --implementation --include glib.h -o tmp-orc.c $(srcdir)/$(ORC_SOURCE).orc
-
-@HAVE_ORCC_TRUE@$(ORC_SOURCE).h: $(srcdir)/$(ORC_SOURCE).orc
-@HAVE_ORCC_TRUE@	$(orcc_v_gen)$(ORCC) $(ORCC_FLAGS) --header --include glib.h -o $(ORC_SOURCE).h $(srcdir)/$(ORC_SOURCE).orc
-@HAVE_ORCC_FALSE@tmp-orc.c: $(srcdir)/$(ORC_SOURCE).orc $(srcdir)/$(ORC_SOURCE)-dist.c
-@HAVE_ORCC_FALSE@	$(cp_v_gen)cp $(srcdir)/$(ORC_SOURCE)-dist.c tmp-orc.c
-
-@HAVE_ORCC_FALSE@$(ORC_SOURCE).h: $(srcdir)/$(ORC_SOURCE).orc $(srcdir)/$(ORC_SOURCE)-dist.c
-@HAVE_ORCC_FALSE@	$(cp_v_gen)cp $(srcdir)/$(ORC_SOURCE)-dist.h $(ORC_SOURCE).h
-
-clean-local: clean-orc
-.PHONY: clean-orc
-clean-orc:
-	rm -f tmp-orc.c $(ORC_SOURCE).h
-
-dist-hook: dist-hook-orc
-.PHONY: dist-hook-orc
-
-# we try and copy updated orc -dist files below, but don't fail if it
-# doesn't work as the srcdir might not be writable
-dist-hook-orc: tmp-orc.c $(ORC_SOURCE).h
-	$(top_srcdir)/common/gst-indent tmp-orc.c
-	rm -f tmp-orc.c~
-	cmp -s tmp-orc.c $(srcdir)/$(ORC_SOURCE)-dist.c || \
-	  cp tmp-orc.c $(srcdir)/$(ORC_SOURCE)-dist.c || true
-	cmp -s $(ORC_SOURCE).h $(srcdir)/$(ORC_SOURCE)-dist.h || \
-	  cp $(ORC_SOURCE).h $(srcdir)/$(ORC_SOURCE)-dist.h || true
-	cp -p tmp-orc.c $(distdir)/$(ORC_SOURCE)-dist.c
-	cp -p $(ORC_SOURCE).h $(distdir)/$(ORC_SOURCE)-dist.h
 
 Android.mk: Makefile.am $(BUILT_SOURCES)
 	androgenizer \
 	-:PROJECT libgstvideoscale -:SHARED libgstvideoscale \
 	 -:TAGS eng debug \
          -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstvideoscale_la_SOURCES) \
-	 	   $(nodist_libgstvideoscale_la_SOURCES) \
+	 -:SOURCES $(libgstvideoscale_la_SOURCES)
 	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstvideoscale_la_CFLAGS) \
 	 -:LDFLAGS $(libgstvideoscale_la_LDFLAGS) \
 	           $(libgstvideoscale_la_LIBADD) \

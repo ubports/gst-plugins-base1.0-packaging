@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-0.8.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-06-22 17:22+0200\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2004-03-19 18:29+0200\n"
 "Last-Translator: Metin Amiroff <metin@karegen.com>\n"
 "Language-Team: Azerbaijani <translation-team-az@lists.sourceforge.net>\n"
@@ -82,10 +82,6 @@ msgstr ""
 
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
-msgstr ""
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
 msgstr ""
 
 #, fuzzy
@@ -513,13 +509,18 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
+msgid "Print version information and exit"
+msgstr ""
+
+msgid ""
+"Don't exit after showing the initial device list, but wait for devices to "
+"added/removed."
+msgstr ""
+
 msgid "Buffering..."
 msgstr ""
 
 msgid "Clock lost, selecting a new one\n"
-msgstr ""
-
-msgid "Print version information and exit"
 msgstr ""
 
 msgid "Video sink to use (default is autovideosink)"
@@ -541,6 +542,9 @@ msgid "Volume"
 msgstr "Səs"
 
 msgid "Playlist file containing input media files"
+msgstr ""
+
+msgid "Do not print any output (apart from errors)"
 msgstr ""
 
 #, c-format

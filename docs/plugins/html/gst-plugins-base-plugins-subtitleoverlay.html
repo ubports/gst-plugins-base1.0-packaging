@@ -7,23 +7,23 @@
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-streamsynchronizer.html" title="streamsynchronizer">
-<link rel="next" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<link rel="next" href="gst-plugins-base-plugins-socketsrc.html" title="socketsrc">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-subtitleoverlay.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-subtitleoverlay.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces"> <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-subtitleoverlay.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties"> <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-subtitleoverlay.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-subtitleoverlay.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-subtitleoverlay.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-subtitleoverlay.properties" class="shortcut">Properties</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="gst-plugins-base-plugins-streamsynchronizer.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-socketsrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-subtitleoverlay"></a><div class="titlepage"></div>
@@ -45,18 +45,18 @@
 <tbody>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--font-desc" title="The “font-desc” property">font-desc</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--silent" title="The “silent” property">silent</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--subtitle-encoding" title="The “subtitle-encoding” property">subtitle-encoding</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -78,8 +78,8 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-subtitleoverlay.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
         <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
             <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
                 <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBin.html">GstBin</a>
@@ -235,7 +235,7 @@ DVD subpicture subtitles.</p>
 <a name="gst-plugins-base-plugins-subtitleoverlay.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstSubtitleOverlay--font-desc"></a><h3>The <code class="literal">“font-desc”</code> property</h3>
-<pre class="programlisting">  “font-desc”                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “font-desc”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Pango font description of font to be used for subtitle rendering.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
@@ -243,7 +243,7 @@ DVD subpicture subtitles.</p>
 <hr>
 <div class="refsect2">
 <a name="GstSubtitleOverlay--silent"></a><h3>The <code class="literal">“silent”</code> property</h3>
-<pre class="programlisting">  “silent”                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<pre class="programlisting">  “silent”                   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Whether to show subtitles.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
@@ -251,7 +251,7 @@ DVD subpicture subtitles.</p>
 <hr>
 <div class="refsect2">
 <a name="GstSubtitleOverlay--subtitle-encoding"></a><h3>The <code class="literal">“subtitle-encoding”</code> property</h3>
-<pre class="programlisting">  “subtitle-encoding”        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “subtitle-encoding”        <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Encoding to assume if input subtitles are not in UTF-8 encoding. If not set, the GST_SUBTITLE_ENCODING environment variable will be checked for an encoding to use. If that is not set either, ISO-8859-15 will be assumed.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
@@ -260,6 +260,6 @@ DVD subpicture subtitles.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.21</div>
 </body>
 </html>

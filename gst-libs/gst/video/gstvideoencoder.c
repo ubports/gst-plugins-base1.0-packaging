@@ -117,6 +117,7 @@
 #include <gst/video/video.h>
 #include "gstvideoencoder.h"
 #include "gstvideoutils.h"
+#include "gstvideoutilsprivate.h"
 
 #include <gst/video/gstvideometa.h>
 #include <gst/video/gstvideopool.h>
@@ -137,8 +138,6 @@ struct _GstVideoEncoderPrivate
 
   /* FIXME : (and introduce a context ?) */
   gboolean drained;
-  gboolean at_eos;
-  gboolean do_caps;
 
   gint64 min_latency;
   gint64 max_latency;
@@ -311,13 +310,12 @@ _flush_events (GstPad * pad, GList * events)
   GList *tmp;
 
   for (tmp = events; tmp; tmp = tmp->next) {
-    if (GST_EVENT_TYPE (tmp->data) == GST_EVENT_EOS ||
-        GST_EVENT_TYPE (tmp->data) == GST_EVENT_SEGMENT ||
-        !GST_EVENT_IS_STICKY (tmp->data)) {
-      gst_event_unref (tmp->data);
-    } else {
+    if (GST_EVENT_TYPE (tmp->data) != GST_EVENT_EOS &&
+        GST_EVENT_TYPE (tmp->data) != GST_EVENT_SEGMENT &&
+        GST_EVENT_IS_STICKY (tmp->data)) {
       gst_pad_store_sticky_event (pad, GST_EVENT_CAST (tmp->data));
     }
+    gst_event_unref (tmp->data);
   }
   g_list_free (events);
 
@@ -364,9 +362,6 @@ gst_video_encoder_reset (GstVideoEncoder * encoder, gboolean hard)
       gst_tag_list_unref (priv->tags);
     priv->tags = NULL;
     priv->tags_changed = FALSE;
-
-    priv->min_latency = 0;
-    priv->max_latency = 0;
 
     g_list_foreach (priv->headers, (GFunc) gst_event_unref, NULL);
     g_list_free (priv->headers);
@@ -455,9 +450,11 @@ gst_video_encoder_init (GstVideoEncoder * encoder, GstVideoEncoderClass * klass)
 
   g_rec_mutex_init (&encoder->stream_lock);
 
-  priv->at_eos = FALSE;
   priv->headers = NULL;
   priv->new_headers = FALSE;
+
+  priv->min_latency = 0;
+  priv->max_latency = 0;
 
   gst_video_encoder_reset (encoder, TRUE);
 }
@@ -631,7 +628,7 @@ gst_video_encoder_setcaps (GstVideoEncoder * encoder, GstCaps * caps)
 
   if (encoder_class->reset) {
     GST_FIXME_OBJECT (encoder, "GstVideoEncoder::reset() is deprecated");
-    ret = encoder_class->reset (encoder, TRUE);
+    encoder_class->reset (encoder, TRUE);
   }
 
   /* and subclass should be ready to configure format at any time around */
@@ -670,82 +667,22 @@ parse_fail:
 /**
  * gst_video_encoder_proxy_getcaps:
  * @enc: a #GstVideoEncoder
- * @caps: initial caps
- * @filter: filter caps
+ * @caps: (allow-none): initial caps
+ * @filter: (allow-none): filter caps
  *
  * Returns caps that express @caps (or sink template caps if @caps == NULL)
  * restricted to resolution/format/... combinations supported by downstream
  * elements (e.g. muxers).
  *
- * Returns: a #GstCaps owned by caller
+ * Returns: (transfer full): a #GstCaps owned by caller
  */
 GstCaps *
 gst_video_encoder_proxy_getcaps (GstVideoEncoder * encoder, GstCaps * caps,
     GstCaps * filter)
 {
-  GstCaps *templ_caps;
-  GstCaps *allowed;
-  GstCaps *fcaps, *filter_caps;
-  gint i, j;
-
-  /* Allow downstream to specify width/height/framerate/PAR constraints
-   * and forward them upstream for video converters to handle
-   */
-  templ_caps =
-      caps ? gst_caps_ref (caps) :
-      gst_pad_get_pad_template_caps (encoder->sinkpad);
-  allowed = gst_pad_get_allowed_caps (encoder->srcpad);
-
-  if (!allowed || gst_caps_is_empty (allowed) || gst_caps_is_any (allowed)) {
-    fcaps = templ_caps;
-    goto done;
-  }
-
-  GST_LOG_OBJECT (encoder, "template caps %" GST_PTR_FORMAT, templ_caps);
-  GST_LOG_OBJECT (encoder, "allowed caps %" GST_PTR_FORMAT, allowed);
-
-  filter_caps = gst_caps_new_empty ();
-
-  for (i = 0; i < gst_caps_get_size (templ_caps); i++) {
-    GQuark q_name =
-        gst_structure_get_name_id (gst_caps_get_structure (templ_caps, i));
-
-    for (j = 0; j < gst_caps_get_size (allowed); j++) {
-      const GstStructure *allowed_s = gst_caps_get_structure (allowed, j);
-      const GValue *val;
-      GstStructure *s;
-
-      s = gst_structure_new_id_empty (q_name);
-      if ((val = gst_structure_get_value (allowed_s, "width")))
-        gst_structure_set_value (s, "width", val);
-      if ((val = gst_structure_get_value (allowed_s, "height")))
-        gst_structure_set_value (s, "height", val);
-      if ((val = gst_structure_get_value (allowed_s, "framerate")))
-        gst_structure_set_value (s, "framerate", val);
-      if ((val = gst_structure_get_value (allowed_s, "pixel-aspect-ratio")))
-        gst_structure_set_value (s, "pixel-aspect-ratio", val);
-
-      filter_caps = gst_caps_merge_structure (filter_caps, s);
-    }
-  }
-
-  fcaps = gst_caps_intersect (filter_caps, templ_caps);
-  gst_caps_unref (filter_caps);
-  gst_caps_unref (templ_caps);
-
-  if (filter) {
-    GST_LOG_OBJECT (encoder, "intersecting with %" GST_PTR_FORMAT, filter);
-    filter_caps = gst_caps_intersect (fcaps, filter);
-    gst_caps_unref (fcaps);
-    fcaps = filter_caps;
-  }
-
-done:
-  gst_caps_replace (&allowed, NULL);
-
-  GST_LOG_OBJECT (encoder, "proxy caps %" GST_PTR_FORMAT, fcaps);
-
-  return fcaps;
+  return __gst_video_element_proxy_getcaps (GST_ELEMENT_CAST (encoder),
+      GST_VIDEO_ENCODER_SINK_PAD (encoder),
+      GST_VIDEO_ENCODER_SRC_PAD (encoder), caps, filter);
 }
 
 static GstCaps *
@@ -981,8 +918,8 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
       GstCaps *caps;
 
       gst_event_parse_caps (event, &caps);
-      ret = TRUE;
-      encoder->priv->do_caps = TRUE;
+      ret = gst_video_encoder_setcaps (encoder, caps);
+
       gst_event_unref (event);
       event = NULL;
       break;
@@ -992,7 +929,6 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
       GstFlowReturn flow_ret;
 
       GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
-      encoder->priv->at_eos = TRUE;
 
       if (encoder_class->finish) {
         flow_ret = encoder_class->finish (encoder);
@@ -1034,8 +970,6 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
         GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
         break;
       }
-
-      encoder->priv->at_eos = FALSE;
 
       encoder->input_segment = segment;
       ret = TRUE;
@@ -1265,11 +1199,11 @@ gst_video_encoder_src_query_default (GstVideoEncoder * enc, GstQuery * query)
 
         GST_OBJECT_LOCK (enc);
         min_latency += priv->min_latency;
-        if (enc->priv->max_latency == GST_CLOCK_TIME_NONE) {
+        if (max_latency == GST_CLOCK_TIME_NONE
+            || enc->priv->max_latency == GST_CLOCK_TIME_NONE)
           max_latency = GST_CLOCK_TIME_NONE;
-        } else if (max_latency != GST_CLOCK_TIME_NONE) {
+        else
           max_latency += enc->priv->max_latency;
-        }
         GST_OBJECT_UNLOCK (enc);
 
         gst_query_set_latency (query, live, min_latency, max_latency);
@@ -1353,18 +1287,6 @@ gst_video_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 
   g_return_val_if_fail (klass->handle_frame != NULL, GST_FLOW_ERROR);
 
-  if (G_UNLIKELY (encoder->priv->do_caps)) {
-    GstCaps *caps = gst_pad_get_current_caps (encoder->sinkpad);
-    if (!caps)
-      goto not_negotiated;
-    if (!gst_video_encoder_setcaps (encoder, caps)) {
-      gst_caps_unref (caps);
-      goto not_negotiated;
-    }
-    gst_caps_unref (caps);
-    encoder->priv->do_caps = FALSE;
-  }
-
   if (!encoder->priv->input_state)
     goto not_negotiated;
 
@@ -1378,11 +1300,6 @@ gst_video_encoder_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
       ", DTS %" GST_TIME_FORMAT ", duration %" GST_TIME_FORMAT,
       gst_buffer_get_size (buf), GST_TIME_ARGS (pts),
       GST_TIME_ARGS (GST_BUFFER_DTS (buf)), GST_TIME_ARGS (duration));
-
-  if (priv->at_eos) {
-    ret = GST_FLOW_EOS;
-    goto done;
-  }
 
   start = pts;
   if (GST_CLOCK_TIME_IS_VALID (duration))
@@ -1494,12 +1411,13 @@ gst_video_encoder_change_state (GstElement * element, GstStateChange transition)
         goto open_failed;
       break;
     case GST_STATE_CHANGE_READY_TO_PAUSED:
-      /* Initialize device/library if needed */
-      if (encoder_class->start && !encoder_class->start (encoder))
-        goto start_failed;
       GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
       gst_video_encoder_reset (encoder, TRUE);
       GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+
+      /* Initialize device/library if needed */
+      if (encoder_class->start && !encoder_class->start (encoder))
+        goto start_failed;
       break;
     default:
       break;
@@ -1508,13 +1426,20 @@ gst_video_encoder_change_state (GstElement * element, GstStateChange transition)
   ret = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
 
   switch (transition) {
-    case GST_STATE_CHANGE_PAUSED_TO_READY:
+    case GST_STATE_CHANGE_PAUSED_TO_READY:{
+      gboolean stopped = TRUE;
+
+      if (encoder_class->stop)
+        stopped = encoder_class->stop (encoder);
+
       GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
       gst_video_encoder_reset (encoder, TRUE);
       GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
-      if (encoder_class->stop && !encoder_class->stop (encoder))
+
+      if (!stopped)
         goto stop_failed;
       break;
+    }
     case GST_STATE_CHANGE_READY_TO_NULL:
       /* close device/library if needed */
       if (encoder_class->close && !encoder_class->close (encoder))
@@ -1981,11 +1906,9 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   if (GST_VIDEO_CODEC_FRAME_IS_SYNC_POINT (frame)) {
     priv->distance_from_sync = 0;
     GST_BUFFER_FLAG_UNSET (frame->output_buffer, GST_BUFFER_FLAG_DELTA_UNIT);
-    /* For keyframes, DTS = PTS */
+    /* For keyframes, DTS = PTS, if encoder doesn't decide otherwise */
     if (!GST_CLOCK_TIME_IS_VALID (frame->dts)) {
       frame->dts = frame->pts;
-    } else if (GST_CLOCK_TIME_IS_VALID (frame->pts) && frame->pts != frame->dts) {
-      GST_WARNING_OBJECT (encoder, "keyframe PTS != DTS");
     }
   } else {
     GST_BUFFER_FLAG_SET (frame->output_buffer, GST_BUFFER_FLAG_DELTA_UNIT);
@@ -2105,6 +2028,7 @@ done:
   /* ERRORS */
 no_output_state:
   {
+    gst_video_encoder_release_frame (encoder, frame);
     GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
     GST_ERROR_OBJECT (encoder, "Output state was not configured");
     return GST_FLOW_ERROR;
