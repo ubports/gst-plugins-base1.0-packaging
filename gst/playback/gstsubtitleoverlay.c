@@ -239,7 +239,7 @@ _is_video_pad (GstPad * pad, gboolean * hw_accelerated)
     caps = gst_pad_query_caps (pad, NULL);
   }
 
-  for (i = 0; i < gst_caps_get_size (caps) && ret == FALSE; i++) {
+  for (i = 0; i < gst_caps_get_size (caps) && !ret; i++) {
     name = gst_structure_get_name (gst_caps_get_structure (caps, i));
     if (g_str_equal (name, "video/x-raw")) {
       ret = TRUE;
@@ -1778,12 +1778,15 @@ gst_subtitle_overlay_subtitle_sink_chain (GstPad * pad, GstObject * parent,
 static GstCaps *
 gst_subtitle_overlay_subtitle_sink_getcaps (GstPad * pad, GstCaps * filter)
 {
-  GstCaps *ret;
+  GstCaps *ret, *subcaps;
 
-  if (filter)
-    ret = gst_caps_ref (filter);
-  else
-    ret = gst_caps_new_any ();
+  subcaps = gst_subtitle_overlay_create_factory_caps ();
+  if (filter) {
+    ret = gst_caps_intersect_full (filter, subcaps, GST_CAPS_INTERSECT_FIRST);
+    gst_caps_unref (subcaps);
+  } else {
+    ret = subcaps;
+  }
 
   return ret;
 }
@@ -1793,7 +1796,7 @@ gst_subtitle_overlay_subtitle_sink_setcaps (GstSubtitleOverlay * self,
     GstCaps * caps)
 {
   gboolean ret = TRUE;
-  GstPad *target = NULL;;
+  GstPad *target = NULL;
 
   GST_DEBUG_OBJECT (self, "Setting caps: %" GST_PTR_FORMAT, caps);
 

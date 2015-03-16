@@ -501,7 +501,7 @@ way. Here is how to extract the percentage information from the message:
   <span class="keyword">case</span> GST_MESSAGE_BUFFERING<span class="gtkdoc opt">: {</span>
     gint percent <span class="gtkdoc opt">=</span> <span class="number">0</span><span class="gtkdoc opt">;</span>
     <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-parse-buffering">gst_message_parse_buffering</a></span> <span class="gtkdoc opt">(</span>msg<span class="gtkdoc opt">, &amp;</span>percent<span class="gtkdoc opt">);</span>
-    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
+    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
     <span class="keyword">break</span><span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
   <span class="gtkdoc opt">...</span>

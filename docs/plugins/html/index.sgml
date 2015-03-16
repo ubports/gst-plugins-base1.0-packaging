@@ -41,6 +41,7 @@
 <ANCHOR id="GstAppSrc-need-data" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-need-data">
 <ANCHOR id="GstAppSrc-push-buffer" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-buffer">
 <ANCHOR id="GstAppSrc-seek-data" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data">
+<ANCHOR id="GstAppSrc-push-sample" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample">
 <ANCHOR id="gst-plugins-base-plugins-appsink" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html">
 <ANCHOR id="gst-plugins-base-plugins-appsink.properties" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#gst-plugins-base-plugins-appsink.properties">
 <ANCHOR id="gst-plugins-base-plugins-appsink.signals" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#gst-plugins-base-plugins-appsink.signals">
@@ -483,6 +484,12 @@
 <ANCHOR id="GstSubtitleOverlay--font-desc" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--font-desc">
 <ANCHOR id="GstSubtitleOverlay--silent" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--silent">
 <ANCHOR id="GstSubtitleOverlay--subtitle-encoding" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--subtitle-encoding">
+<ANCHOR id="gst-plugins-base-plugins-socketsrc" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html">
+<ANCHOR id="gst-plugins-base-plugins-socketsrc.other" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html#gst-plugins-base-plugins-socketsrc.other">
+<ANCHOR id="gst-plugins-base-plugins-socketsrc.description" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html#gst-plugins-base-plugins-socketsrc.description">
+<ANCHOR id="gst-plugins-base-plugins-socketsrc.functions_details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html#gst-plugins-base-plugins-socketsrc.functions_details">
+<ANCHOR id="gst-plugins-base-plugins-socketsrc.other_details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html#gst-plugins-base-plugins-socketsrc.other_details">
+<ANCHOR id="GstSocketSrc" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-socketsrc.html#GstSocketSrc">
 <ANCHOR id="gst-plugins-base-plugins-tcpclientsrc" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpclientsrc.html">
 <ANCHOR id="gst-plugins-base-plugins-tcpclientsrc.properties" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpclientsrc.html#gst-plugins-base-plugins-tcpclientsrc.properties">
 <ANCHOR id="GstTCPClientSrc" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc">

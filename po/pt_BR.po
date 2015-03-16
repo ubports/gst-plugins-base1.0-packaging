@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base-1.2.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-12-18 12:05+0100\n"
+"POT-Creation-Date: 2015-03-16 19:31+0100\n"
 "PO-Revision-Date: 2013-12-29 17:33-0300\n"
 "Last-Translator: Fabrício Godoy <skarllot@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
@@ -86,11 +86,6 @@ msgstr "Erro interno no fluxo de dados."
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr ""
 "O elemento \"%s\" está faltando, verifique a instalação do seu GStreamer."
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-"O plug-in %s é necessário para reproduzir este fluxo, mas não está instalado."
 
 msgid "Could not determine type of stream"
 msgstr "Não foi possível determinar o tipo de fluxo"
@@ -560,12 +555,20 @@ msgstr ""
 msgid "Playlist file containing input media files"
 msgstr ""
 
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr "Uso: %s ARQ1|URI1 [ARQ2|URI2] [ARQ3|URI3] ..."
 
 msgid "You must provide at least one filename or URI to play."
 msgstr "Você deve fornecer ao menos um nome de arquivo ou URI para reproduzir."
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr ""
+#~ "O plug-in %s é necessário para reproduzir este fluxo, mas não está "
+#~ "instalado."
 
 #~ msgid "Uncompressed %s YUV %s"
 #~ msgstr "%2$s YUV %1$s sem compressão"

@@ -1375,8 +1375,10 @@ for the missing element</p></td>
 <p> An array of strings
 containing informations about how to install the various missing elements
 for <em class="parameter"><code>info</code></em>
-to be usable. Free with <a href="https://developer.gnome.org/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></p>
+to be usable. If you wish to use the strings after the life-time
+of <em class="parameter"><code>info</code></em>
+, you will need to copy them. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></p>
 </div>
 <p class="since">Since 1.4</p>
 </div>

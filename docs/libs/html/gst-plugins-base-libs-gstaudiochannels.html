@@ -200,7 +200,10 @@ gst_audio_channel_positions_from_mask (<em class="parameter"><code><a href="http
  entries ensured by caller).
 If <em class="parameter"><code>channel_mask</code></em>
  is set to 0, it is considered as 'not present' for purpose
-of conversion.</p>
+of conversion.
+A partially valid <em class="parameter"><code>channel_mask</code></em>
+ with less bits set than the number
+of channels is considered valid.</p>
 <div class="refsect3">
 <a name="id-1.2.6.14.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">

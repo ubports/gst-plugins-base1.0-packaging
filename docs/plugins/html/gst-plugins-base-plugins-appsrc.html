@@ -142,6 +142,11 @@
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data" title="The “seek-data” signal">seek-data</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
+<tr>
+<td class="signal_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a></td>
+<td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample" title="The “push-sample” signal">push-sample</a></td>
+<td class="signal_flags">Action</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -529,6 +534,43 @@ user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstApp
 <p></p>
 </div>
 <p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstAppSrc-push-sample"></a><h3>The <code class="literal">“push-sample”</code> signal</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
+               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *arg1,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
+<p>
+</p>
+<div class="refsect3">
+<a name="id-1.2.3.13.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>gstappsrc</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.3.13.7.6"></a><h4>Returns</h4>
+<p></p>
+</div>
+<p>Flags: Action</p>
 </div>
 </div>
 </div>

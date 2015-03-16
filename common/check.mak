@@ -46,7 +46,8 @@ LOOPS ?= 10
 
 # valgrind any given test by running make test.valgrind
 %.valgrind: %
-	@$(TESTS_ENVIRONMENT)					\
+	@valgrind_log=$(subst /,-,$*-valgrind.log);		\
+	$(TESTS_ENVIRONMENT)					\
 	CK_DEFAULT_TIMEOUT=360					\
 	G_SLICE=always-malloc					\
 	$(LIBTOOL) --mode=execute				\
@@ -55,12 +56,12 @@ LOOPS ?= 10
 	--tool=memcheck --leak-check=full --trace-children=yes	\
 	--show-possibly-lost=no                                 \
 	--leak-resolution=high --num-callers=20			\
-	./$* 2>&1 | tee valgrind.log
-	@if grep "==" valgrind.log > /dev/null 2>&1; then	\
-	    rm valgrind.log;					\
+	./$* 2>&1 | tee $$valgrind_log ;			\
+	if grep "==" $$valgrind_log > /dev/null 2>&1; then	\
+	    rm $$valgrind_log;					\
 	    exit 1;						\
-	fi
-	@rm valgrind.log
+	fi ;							\
+	rm $$valgrind_log
 
 # valgrind any given test and generate suppressions for it
 %.valgrind.gen-suppressions: %
@@ -150,19 +151,13 @@ forever: $(TESTS)
 # valgrind all tests
 valgrind: $(TESTS)
 	@echo "Valgrinding tests ..."
-	@failed=0;							\
+	@failed=0; valgrind_targets="";					\
 	for t in $(filter-out $(VALGRIND_TESTS_DISABLE),$(TESTS)); do	\
-		$(MAKE) $$t.valgrind;					\
-		if test "$$?" -ne 0; then                               \
-			echo "Valgrind error for test $$t";		\
-			failed=`expr $$failed + 1`;			\
-			whicht="$$whicht $$t";				\
-		fi;							\
+	  valgrind_targets="$$valgrind_targets $$t.valgrind";		\
 	done;								\
-	if test "$$failed" -ne 0; then					\
-		echo "$$failed tests had leaks or errors under valgrind:";	\
-		echo "$$whicht";					\
-		false;							\
+	if ! $(MAKE) $$valgrind_targets ; then				\
+	  echo "Some tests had leaks or errors under valgrind";		\
+	  false;							\
 	fi
 
 # valgrind all tests until failure
@@ -215,6 +210,9 @@ inspect:
 	  do echo Inspecting $$e;					\
 	     $(GST_INSPECT) $$e > /dev/null 2>&1; done
 
+# build all tests
+build-checks: $(TESTS)
+
 help:
 	@echo
 	@echo "make check                         -- run all checks"
@@ -237,6 +235,7 @@ help:
 	@echo "make (dir)/(test).valgrind.gen-suppressions -- generate suppressions"
 	@echo "                                               and save to suppressions.log"
 	@echo "make inspect                       -- inspect all plugin features"
+	@echo "make build-checks                  -- build all checks (but don't run them)"
 	@echo
 	@echo
 	@echo "Additionally, you can use the GST_CHECKS environment variable to"

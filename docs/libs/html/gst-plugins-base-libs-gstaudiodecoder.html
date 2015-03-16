@@ -1491,6 +1491,9 @@ of the usual CODEC/AUDIO_CODEC tags.</p>
 
   gboolean      (*propose_allocation) (GstAudioDecoder *dec,
                                        GstQuery * query);
+
+  GstCaps *     (*getcaps)            (GstAudioDecoder * dec,
+                                       GstCaps * filter);
 };
 </pre>
 <p>Subclasses can override any of the available virtual methods or not, as
@@ -1619,6 +1622,15 @@ invoke the default handler.</p></td>
 Propose buffer allocation parameters for upstream elements.
 Subclasses should chain up to the parent implementation to
 invoke the default handler.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.getcaps"></a>getcaps</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Allows for a custom sink getcaps implementation.
+If not implemented,
+default returns gst_audio_decoder_proxy_getcaps
+applied to sink template caps.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 </tbody>

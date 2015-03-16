@@ -188,6 +188,38 @@
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 </td>
 <td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-add-header-by-name" title="gst_rtsp_message_add_header_by_name ()">gst_rtsp_message_add_header_by_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-take-header-by-name" title="gst_rtsp_message_take_header_by_name ()">gst_rtsp_message_take_header_by_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-remove-header-by-name" title="gst_rtsp_message_remove_header_by_name ()">gst_rtsp_message_remove_header_by_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-get-header-by-name" title="gst_rtsp_message_get_header_by_name ()">gst_rtsp_message_get_header_by_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+</td>
+<td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-append-headers" title="gst_rtsp_message_append_headers ()">gst_rtsp_message_append_headers</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -1029,6 +1061,205 @@ was not found.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-rtsp-message-add-header-by-name"></a><h3>gst_rtsp_message_add_header_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+gst_rtsp_message_add_header_by_name (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
+                                     <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>,
+                                     <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+<p>Add a header with key <em class="parameter"><code>header</code></em>
+ and <em class="parameter"><code>value</code></em>
+ to <em class="parameter"><code>msg</code></em>
+. This function takes a copy
+of <em class="parameter"><code>value</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.20.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>header</p></td>
+<td class="parameter_description"><p> header string. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> the value of the header. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.20.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="type">GstRTSPResult</span></a>.</p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-message-take-header-by-name"></a><h3>gst_rtsp_message_take_header_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+gst_rtsp_message_take_header_by_name (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
+                                      <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>,
+                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+<p>Add a header with key <em class="parameter"><code>header</code></em>
+ and <em class="parameter"><code>value</code></em>
+ to <em class="parameter"><code>msg</code></em>
+. This function takes
+ownership of <em class="parameter"><code>value</code></em>
+, but not of <em class="parameter"><code>header</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.21.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>header</p></td>
+<td class="parameter_description"><p> a header string. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> the value of the header. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.21.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="type">GstRTSPResult</span></a>.</p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-message-remove-header-by-name"></a><h3>gst_rtsp_message_remove_header_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+gst_rtsp_message_remove_header_by_name
+                               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> index</code></em>);</pre>
+<p>Remove the <em class="parameter"><code>index</code></em>
+ header with key <em class="parameter"><code>header</code></em>
+ from <em class="parameter"><code>msg</code></em>
+. If <em class="parameter"><code>index</code></em>
+ equals -1,
+all matching headers will be removed.</p>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.22.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>header</p></td>
+<td class="parameter_description"><p>the header string</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>index</p></td>
+<td class="parameter_description"><p>the index of the header</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.22.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="type">GstRTSPResult</span></a></p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-message-get-header-by-name"></a><h3>gst_rtsp_message_get_header_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
+gst_rtsp_message_get_header_by_name (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
+                                     <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *header</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **value</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> index</code></em>);</pre>
+<p>Get the <em class="parameter"><code>index</code></em>
+ header value with key <em class="parameter"><code>header</code></em>
+ from <em class="parameter"><code>msg</code></em>
+. The result in <em class="parameter"><code>value</code></em>
+
+stays valid as long as it remains present in <em class="parameter"><code>msg</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.23.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>header</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPHeaderField" title="enum GstRTSPHeaderField"><span class="type">GstRTSPHeaderField</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> pointer to hold the result. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>index</p></td>
+<td class="parameter_description"><p>the index of the header</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.6.7.23.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when <em class="parameter"><code>field</code></em>
+was found, <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOTIMPL:CAPS"><span class="type">GST_RTSP_ENOTIMPL</span></a> if the key
+was not found.</p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-rtsp-message-append-headers"></a><h3>gst_rtsp_message_append_headers ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_append_headers (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
@@ -1038,7 +1269,7 @@ gst_rtsp_message_append_headers (<em class="parameter"><code>const <a class="lin
  suitable
 for transmission.</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1060,7 +1291,7 @@ for transmission.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.24.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -1076,7 +1307,7 @@ gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst
  to a copy of <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1104,7 +1335,7 @@ gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.21.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.25.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -1123,7 +1354,7 @@ gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gs
 <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1151,7 +1382,7 @@ gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.26.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -1169,7 +1400,7 @@ gst_rtsp_message_get_body (<em class="parameter"><code>const <a class="link" hre
  is valid and
 unchanged.</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1197,7 +1428,7 @@ unchanged.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.27.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -1216,7 +1447,7 @@ gst_rtsp_message_steal_body (<em class="parameter"><code><a class="link" href="g
 the body and size of <em class="parameter"><code>msg</code></em>
  will be set to <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> and 0 respectively.</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1244,7 +1475,7 @@ the body and size of <em class="parameter"><code>msg</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.28.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>
@@ -1257,7 +1488,7 @@ gst_rtsp_message_dump (<em class="parameter"><code><a class="link" href="gst-plu
 <p>Dump the contents of <em class="parameter"><code>msg</code></em>
  to stdout.</p>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.6.7.29.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1272,7 +1503,7 @@ gst_rtsp_message_dump (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.6.7.25.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.6.7.29.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 <p></p>
 </div>

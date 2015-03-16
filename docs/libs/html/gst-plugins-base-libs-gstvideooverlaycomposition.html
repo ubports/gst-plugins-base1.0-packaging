@@ -1376,7 +1376,7 @@ gst_video_overlay_rectangle_set_global_alpha
 <p>Sets the global alpha value associated with a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>. Per-
 pixel alpha values are multiplied with this value. Valid
 values: 0 &lt;= global_alpha &lt;= 1; 1 to deactivate.</p>
-<p> # <em class="parameter"><code>rectangle</code></em>
+<p><em class="parameter"><code>rectangle</code></em>
  must be writable, meaning its refcount must be 1. You can
 make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> writable using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
@@ -1389,11 +1389,18 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <col class="parameters_description">
 <col width="200px" class="parameters_annotations">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="parameter_name"><p>rectangle</p></td>
 <td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a></p></td>
 <td class="parameter_annotations"> </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="parameter_name"><p>global_alpha</p></td>
+<td class="parameter_description"><p>Global alpha value (0 to 1.0)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
 </table></div>
 </div>
 </div>

@@ -4,8 +4,8 @@
 %define gst_minver  0.11.0
 
 Name: 		%{gstreamer}-plugins-base
-Version: 	1.4.5
-Release: 	1.gst
+Version: 	1.5.0.1
+Release: 	0.20150316.185339.gst
 Summary: 	GStreamer streaming media framework plug-ins
 
 Group: 		Applications/Multimedia
@@ -81,8 +81,10 @@ rm -rf $RPM_BUILD_ROOT
 # helper programs
 %{_bindir}/gst-discoverer-%{majorminor}
 %{_bindir}/gst-play-%{majorminor}
+%{_bindir}/gst-device-monitor-%{majorminor}
 %{_mandir}/man1/gst-discoverer-%{majorminor}*
 %{_mandir}/man1/gst-play-%{majorminor}*
+%{_mandir}/man1/gst-device-monitor-%{majorminor}*
 
 # libraries
 %{_libdir}/libgstaudio-%{majorminor}.so.*

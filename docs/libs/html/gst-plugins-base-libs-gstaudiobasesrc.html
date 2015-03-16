@@ -504,7 +504,7 @@ drifts too much.</p>
 <div class="refsect2">
 <a name="GstAudioBaseSrc--buffer-time"></a><h3>The <code class="literal">“buffer-time”</code> property</h3>
 <pre class="programlisting">  “buffer-time”              <span class="type">gint64</span></pre>
-<p>Size of audio buffer in microseconds. This is the maximum amount of data that is buffered in the device and the maximum latency that the source reports.</p>
+<p>Size of audio buffer in microseconds. This is the maximum amount of data that is buffered in the device and the maximum latency that the source reports. This value might be ignored by the element if necessary; see "actual-buffer-time".</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 200000</p>
@@ -513,7 +513,7 @@ drifts too much.</p>
 <div class="refsect2">
 <a name="GstAudioBaseSrc--latency-time"></a><h3>The <code class="literal">“latency-time”</code> property</h3>
 <pre class="programlisting">  “latency-time”             <span class="type">gint64</span></pre>
-<p>The minimum amount of data to read in each iteration in microseconds. This is the minimum latency that the source reports.</p>
+<p>The minimum amount of data to read in each iteration in microseconds. This is the minimum latency that the source reports. This value might be ignored by the element if necessary; see "actual-latency-time".</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 10000</p>

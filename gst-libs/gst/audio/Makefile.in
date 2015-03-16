@@ -114,7 +114,8 @@ target_triplet = @target@
 DIST_COMMON = $(top_srcdir)/common/orc.mak \
 	$(top_srcdir)/common/gst-glib-gen.mak $(srcdir)/Makefile.in \
 	$(srcdir)/Makefile.am $(top_srcdir)/depcomp \
-	$(libgstaudio_@GST_API_VERSION@include_HEADERS) TODO
+	$(libgstaudio_@GST_API_VERSION@include_HEADERS) \
+	$(noinst_HEADERS) TODO
 @HAVE_INTROSPECTION_TRUE@am__append_1 = $(BUILT_GIRSOURCES) $(typelibs_DATA)
 subdir = gst-libs/gst/audio
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -137,7 +138,6 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gst-platform.m4 \
 	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
 	$(top_srcdir)/common/m4/gst-plugindir.m4 \
-	$(top_srcdir)/common/m4/gst-x11.m4 \
 	$(top_srcdir)/common/m4/gst.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
@@ -210,6 +210,7 @@ am_libgstaudio_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstaudio_@GST_API_VERSION@_la-gstaudiometa.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudiosink.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudiosrc.lo \
+	libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo \
 	libgstaudio_@GST_API_VERSION@_la-streamvolume.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudioiec61937.lo
 am__objects_1 = libgstaudio_@GST_API_VERSION@_la-audio-enumtypes.lo
@@ -272,8 +273,27 @@ am__can_run_installinfo = \
   esac
 DATA = $(gir_DATA) $(typelibs_DATA)
 HEADERS = $(libgstaudio_@GST_API_VERSION@include_HEADERS) \
-	$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS)
+	$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS) \
+	$(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
+# Read a list of newline-separated strings from the standard input,
+# and print each of them once, without duplicates.  Input order is
+# *not* preserved.
+am__uniquify_input = $(AWK) '\
+  BEGIN { nonempty = 0; } \
+  { items[$$0] = 1; nonempty = 1; } \
+  END { if (nonempty) { for (i in items) print i; }; } \
+'
+# Make sure the list of sources is unique.  This is necessary because,
+# e.g., the same source file might be shared among _SOURCES variables
+# for different programs/libraries.
+am__define_uniq_tagged_files = \
+  list='$(am__tagged_files)'; \
+  unique=`for i in $$list; do \
+    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+  done | $(am__uniquify_input)`
+ETAGS = etags
+CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -334,6 +354,8 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIO_CFLAGS = @GIO_CFLAGS@
 GIO_LDFLAGS = @GIO_LDFLAGS@
 GIO_LIBS = @GIO_LIBS@
+GIO_UNIX_2_0_CFLAGS = @GIO_UNIX_2_0_CFLAGS@
+GIO_UNIX_2_0_LIBS = @GIO_UNIX_2_0_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
@@ -363,6 +385,8 @@ GST_LIBVERSION = @GST_LIBVERSION@
 GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
 GST_LICENSE = @GST_LICENSE@
 GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
+GST_NET_CFLAGS = @GST_NET_CFLAGS@
+GST_NET_LIBS = @GST_NET_LIBS@
 GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
 GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
 GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
@@ -390,7 +414,6 @@ GTK_QUARTZ_LIBS = @GTK_QUARTZ_LIBS@
 GTK_X11_CFLAGS = @GTK_X11_CFLAGS@
 GTK_X11_LIBS = @GTK_X11_LIBS@
 HAVE_CDPARANOIA = @HAVE_CDPARANOIA@
-HAVE_X = @HAVE_X@
 HAVE_XSHM = @HAVE_XSHM@
 HAVE_ZLIB = @HAVE_ZLIB@
 HTML_DIR = @HTML_DIR@
@@ -494,13 +517,12 @@ WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-XMKMF = @XMKMF@
+XSHM_CFLAGS = @XSHM_CFLAGS@
 XSHM_LIBS = @XSHM_LIBS@
+XVIDEO_CFLAGS = @XVIDEO_CFLAGS@
 XVIDEO_LIBS = @XVIDEO_LIBS@
 X_CFLAGS = @X_CFLAGS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 abs_builddir = @abs_builddir@
@@ -610,6 +632,7 @@ libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	gstaudiometa.c \
 	gstaudiosink.c \
 	gstaudiosrc.c \
+	gstaudioutilsprivate.c \
 	streamvolume.c \
 	gstaudioiec61937.c
 
@@ -637,6 +660,7 @@ libgstaudio_@GST_API_VERSION@include_HEADERS = \
 nodist_libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio-enumtypes.h
 
+noinst_HEADERS = gstaudioutilsprivate.h
 libgstaudio_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) \
 		$(ORC_CFLAGS)
 
@@ -760,6 +784,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudiosink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudiosrc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-streamvolume.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-tmp-orc.Plo@am__quote@
 
@@ -892,6 +917,13 @@ libgstaudio_@GST_API_VERSION@_la-gstaudiosrc.lo: gstaudiosrc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-gstaudiosrc.lo `test -f 'gstaudiosrc.c' || echo '$(srcdir)/'`gstaudiosrc.c
 
+libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo: gstaudioutilsprivate.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo `test -f 'gstaudioutilsprivate.c' || echo '$(srcdir)/'`gstaudioutilsprivate.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstaudioutilsprivate.c' object='libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-gstaudioutilsprivate.lo `test -f 'gstaudioutilsprivate.c' || echo '$(srcdir)/'`gstaudioutilsprivate.c
+
 libgstaudio_@GST_API_VERSION@_la-streamvolume.lo: streamvolume.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-streamvolume.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-streamvolume.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-streamvolume.lo `test -f 'streamvolume.c' || echo '$(srcdir)/'`streamvolume.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-streamvolume.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-streamvolume.Plo
@@ -1009,12 +1041,58 @@ uninstall-nodist_libgstaudio_@GST_API_VERSION@includeHEADERS:
 	@list='$(nodist_libgstaudio_@GST_API_VERSION@include_HEADERS)'; test -n "$(libgstaudio_@GST_API_VERSION@includedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(libgstaudio_@GST_API_VERSION@includedir)'; $(am__uninstall_files_from_dir)
-tags TAGS:
 
-ctags CTAGS:
+ID: $(am__tagged_files)
+	$(am__define_uniq_tagged_files); mkid -fID $$unique
+tags: tags-am
+TAGS: tags
 
-cscope cscopelist:
+tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
+	set x; \
+	here=`pwd`; \
+	$(am__define_uniq_tagged_files); \
+	shift; \
+	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
+	  test -n "$$unique" || unique=$$empty_fix; \
+	  if test $$# -gt 0; then \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      "$$@" $$unique; \
+	  else \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      $$unique; \
+	  fi; \
+	fi
+ctags: ctags-am
 
+CTAGS: ctags
+ctags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
+	$(am__define_uniq_tagged_files); \
+	test -z "$(CTAGS_ARGS)$$unique" \
+	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
+	     $$unique
+
+GTAGS:
+	here=`$(am__cd) $(top_builddir) && pwd` \
+	  && $(am__cd) $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) "$$here"
+cscopelist: cscopelist-am
+
+cscopelist-am: $(am__tagged_files)
+	list='$(am__tagged_files)'; \
+	case "$(srcdir)" in \
+	  [\\/]* | ?:[\\/]*) sdir="$(srcdir)" ;; \
+	  *) sdir=$(subdir)/$(srcdir) ;; \
+	esac; \
+	for i in $$list; do \
+	  if test -f "$$i"; then \
+	    echo "$(subdir)/$$i"; \
+	  else \
+	    echo "$$sdir/$$i"; \
+	  fi; \
+	done >> $(top_builddir)/cscope.files
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -1098,7 +1176,8 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-tags
 
 dvi: dvi-am
 
@@ -1168,14 +1247,15 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 
 .MAKE: all check install install-am install-strip
 
-.PHONY: all all-am check check-am clean clean-generic \
+.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-local cscopelist-am \
-	ctags-am dist-hook distclean distclean-compile \
-	distclean-generic distclean-libtool distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-girDATA install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
+	ctags ctags-am dist-hook distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-girDATA install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES \
 	install-libgstaudio_@GST_API_VERSION@includeHEADERS \
 	install-man \
 	install-nodist_libgstaudio_@GST_API_VERSION@includeHEADERS \
@@ -1184,7 +1264,7 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags-am uninstall uninstall-am uninstall-girDATA \
+	tags tags-am uninstall uninstall-am uninstall-girDATA \
 	uninstall-libLTLIBRARIES \
 	uninstall-libgstaudio_@GST_API_VERSION@includeHEADERS \
 	uninstall-nodist_libgstaudio_@GST_API_VERSION@includeHEADERS \

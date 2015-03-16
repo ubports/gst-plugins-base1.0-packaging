@@ -1782,6 +1782,19 @@ parse_line (guint8 * buffer, GstRTSPMessage * msg)
       next_value++;
     }
 
+    if (field == GST_RTSP_HDR_SESSION) {
+      /* The timeout parameter is only allowed in a session response header
+       * but some clients send it as part of the session request header.
+       * Ignore everything from the semicolon to the end of the line. */
+      next_value = value;
+      while (*next_value != '\0') {
+        if (*next_value == ';') {
+          break;
+        }
+        next_value++;
+      }
+    }
+
     /* trim space */
     if (value != next_value && next_value[-1] == ' ')
       next_value[-1] = '\0';
@@ -3857,7 +3870,7 @@ gst_rtsp_watch_set_flushing (GstRTSPWatch * watch, gboolean flushing)
   g_mutex_lock (&watch->mutex);
   watch->flushing = flushing;
   g_cond_signal (&watch->queue_not_full);
-  if (flushing == TRUE) {
+  if (flushing) {
     g_queue_foreach (watch->messages, (GFunc) gst_rtsp_rec_free, NULL);
     g_queue_clear (watch->messages);
   }

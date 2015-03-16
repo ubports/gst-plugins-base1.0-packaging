@@ -725,8 +725,7 @@ gst_alsasrc_open (GstAudioSrc * asrc)
   alsa = GST_ALSA_SRC (asrc);
 
   CHECK (snd_pcm_open (&alsa->handle, alsa->device, SND_PCM_STREAM_CAPTURE,
-          (alsa->driver_timestamps == TRUE) ? 0 : SND_PCM_NONBLOCK),
-      open_error);
+          (alsa->driver_timestamps) ? 0 : SND_PCM_NONBLOCK), open_error);
 
   return TRUE;
 
@@ -791,7 +790,8 @@ gst_alsasrc_prepare (GstAudioSrc * asrc, GstAudioRingBufferSpec * spec)
     if (chmap && chmap->channels == alsa->channels) {
       GstAudioChannelPosition pos[8];
       if (alsa_chmap_to_channel_positions (chmap, pos))
-	gst_audio_ring_buffer_set_channel_positions (GST_AUDIO_BASE_SRC (alsa)->ringbuffer, pos);
+        gst_audio_ring_buffer_set_channel_positions (GST_AUDIO_BASE_SRC
+            (alsa)->ringbuffer, pos);
     }
     free (chmap);
   }
@@ -865,13 +865,13 @@ gst_alsasrc_close (GstAudioSrc * asrc)
 static gint
 xrun_recovery (GstAlsaSrc * alsa, snd_pcm_t * handle, gint err)
 {
-  GST_DEBUG_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (err));
+  GST_WARNING_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (-err));
 
   if (err == -EPIPE) {          /* under-run */
     err = snd_pcm_prepare (handle);
     if (err < 0)
       GST_WARNING_OBJECT (alsa,
-          "Can't recovery from underrun, prepare failed: %s",
+          "Can't recover from underrun, prepare failed: %s",
           snd_strerror (err));
     return 0;
   } else if (err == -ESTRPIPE) {
@@ -882,7 +882,7 @@ xrun_recovery (GstAlsaSrc * alsa, snd_pcm_t * handle, gint err)
       err = snd_pcm_prepare (handle);
       if (err < 0)
         GST_WARNING_OBJECT (alsa,
-            "Can't recovery from suspend, prepare failed: %s",
+            "Can't recover from suspend, prepare failed: %s",
             snd_strerror (err));
     }
     return 0;

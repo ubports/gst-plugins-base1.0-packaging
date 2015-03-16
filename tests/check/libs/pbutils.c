@@ -266,7 +266,7 @@ static const gchar *caps_strings[] = {
   "audio/x-wms", "audio/x-voxware", "audio/x-xi", "video/sp5x", "video/vivo",
   "video/x-4xm", "video/x-apple-video", "video/x-camtasia",
   "video/x-cdxa", "video/x-cinepak", "video/x-cirrus-logic-accupak",
-  "video/x-compressed-yuv", "video/x-dirac", "subpicture/x-dvd",
+  "video/x-compressed-yuv", "subpicture/x-dvd",
   "video/x-ffv", "video/x-flash-screen", "video/x-flash-video",
   "video/x-h261", "video/x-huffyuv", "video/x-intel-h263", "video/x-jpeg",
   "video/x-mjpeg", "video/x-mjpeg-b", "video/mpegts", "video/x-mng",
@@ -310,6 +310,8 @@ static const gchar *caps_strings[] = {
   "video/mpeg, mpegversion=(int)4, systemstream=(boolean)FALSE",
   "video/mpeg, mpegversion=(int)99, systemstream=(boolean)TRUE",
   "video/mpeg, mpegversion=(int)99, systemstream=(boolean)FALSE",
+  "video/mpeg, mpegversion=(int)4, systemstream=(boolean)FALSE, profile=main",
+  "video/mpeg, mpegversion=(int)4, systemstream=(boolean)FALSE, profile=adsfad",
   "video/mpeg",
   "video/x-indeo, indeoversion=(int)3",
   "video/x-indeo, indeoversion=(int)5",
@@ -324,6 +326,12 @@ static const gchar *caps_strings[] = {
   "audio/x-wma, wmaversion=(int)3",
   "audio/x-wma, wmaversion=(int)99",
   "audio/x-wma",
+  "video/x-dirac",
+  "video/x-dirac, profile=(string)vc2-low-delay",
+  "video/x-dirac, profile=(string)vc2-simple",
+  "video/x-dirac, profile=(string)vc2-main",
+  "video/x-dirac, profile=(string)main",
+  "video/x-dirac, profile=(string)czvja",
   "video/x-divx, divxversion=(int)3",
   "video/x-divx, divxversion=(int)4",
   "video/x-divx, divxversion=(int)5",
@@ -333,10 +341,16 @@ static const gchar *caps_strings[] = {
   "video/x-svq, svqversion=(int)3",
   "video/x-svq, svqversion=(int)99",
   "video/x-svq",
+  "video/x-h265, profile=(string)main",
+  "video/x-h265, profile=(string)xafasdf",
+  "video/x-h265",
   "video/x-h264, variant=(string)itu",
   "video/x-h264, variant=(string)videosoft",
   "video/x-h264, variant=(string)foobar",
   "video/x-h264",
+  "video/x-h264, profile=(string)foobar",
+  "video/x-h264, profile=(string)high-4:4:4-intra",
+  "video/x-h264, profile=(string)high",
   "video/x-h263, variant=(string)itu",
   "video/x-h263, variant=(string)lead",
   "video/x-h263, variant=(string)microsoft",
@@ -406,14 +420,17 @@ GST_START_TEST (test_pb_utils_get_codec_description)
     desc = gst_pb_utils_get_codec_description (caps);
     fail_unless (desc != NULL);
     GST_LOG (" - codec   : %s", desc);
+    fail_unless (g_utf8_validate (desc, -1, NULL));
     g_free (desc);
     desc = gst_pb_utils_get_decoder_description (caps);
     fail_unless (desc != NULL);
     GST_LOG (" - decoder : %s", desc);
+    fail_unless (g_utf8_validate (desc, -1, NULL));
     g_free (desc);
     desc = gst_pb_utils_get_encoder_description (caps);
     fail_unless (desc != NULL);
     GST_LOG (" - encoder : %s", desc);
+    fail_unless (g_utf8_validate (desc, -1, NULL));
     g_free (desc);
     gst_caps_unref (caps);
   }

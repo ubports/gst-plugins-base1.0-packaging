@@ -89,6 +89,10 @@
         <sub name="gstvideometa" link="gst-plugins-base-libs-gstvideometa.html"/>
         <sub name="gstvideooverlaycomposition" link="gst-plugins-base-libs-gstvideooverlaycomposition.html"/>
         <sub name="gstvideofilter" link="gst-plugins-base-libs-gstvideofilter.html"/>
+        <sub name="GstVideoDither" link="gst-plugins-base-libs-GstVideoDither.html"/>
+        <sub name="GstVideoChroma" link="gst-plugins-base-libs-GstVideoChroma.html"/>
+        <sub name="GstVideoResampler" link="gst-plugins-base-libs-GstVideoResampler.html"/>
+        <sub name="GstVideoScaler" link="gst-plugins-base-libs-GstVideoScaler.html"/>
         <sub name="gstvideosink" link="gst-plugins-base-libs-gstvideosink.html"/>
         <sub name="gstcolorbalance" link="gst-plugins-base-libs-gstcolorbalance.html"/>
         <sub name="gstcolorbalancechannel" link="gst-plugins-base-libs-gstcolorbalancechannel.html"/>
@@ -125,6 +129,7 @@
     <keyword type="function" name="gst_app_src_set_emit_signals ()" link="gst-plugins-base-libs-appsrc.html#gst-app-src-set-emit-signals"/>
     <keyword type="function" name="gst_app_src_set_callbacks ()" link="gst-plugins-base-libs-appsrc.html#gst-app-src-set-callbacks"/>
     <keyword type="function" name="gst_app_src_push_buffer ()" link="gst-plugins-base-libs-appsrc.html#gst-app-src-push-buffer"/>
+    <keyword type="function" name="gst_app_src_push_sample ()" link="gst-plugins-base-libs-appsrc.html#gst-app-src-push-sample" since="1.6"/>
     <keyword type="function" name="gst_app_src_end_of_stream ()" link="gst-plugins-base-libs-appsrc.html#gst-app-src-end-of-stream"/>
     <keyword type="enum" name="enum GstAppStreamType" link="gst-plugins-base-libs-appsrc.html#GstAppStreamType"/>
     <keyword type="struct" name="GstAppSrcCallbacks" link="gst-plugins-base-libs-appsrc.html#GstAppSrcCallbacks"/>
@@ -716,6 +721,10 @@
     <keyword type="function" name="gst_rtsp_message_take_header ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-take-header"/>
     <keyword type="function" name="gst_rtsp_message_remove_header ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-remove-header"/>
     <keyword type="function" name="gst_rtsp_message_get_header ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-get-header"/>
+    <keyword type="function" name="gst_rtsp_message_add_header_by_name ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-add-header-by-name" since="1.6"/>
+    <keyword type="function" name="gst_rtsp_message_take_header_by_name ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-take-header-by-name" since="1.6"/>
+    <keyword type="function" name="gst_rtsp_message_remove_header_by_name ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-remove-header-by-name" since="1.6"/>
+    <keyword type="function" name="gst_rtsp_message_get_header_by_name ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-get-header-by-name" since="1.6"/>
     <keyword type="function" name="gst_rtsp_message_append_headers ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-append-headers"/>
     <keyword type="function" name="gst_rtsp_message_set_body ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-set-body"/>
     <keyword type="function" name="gst_rtsp_message_take_body ()" link="gst-plugins-base-libs-gstrtspmessage.html#gst-rtsp-message-take-body"/>
@@ -1096,6 +1105,9 @@
     <keyword type="function" name="gst_install_plugins_context_new ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-new"/>
     <keyword type="function" name="gst_install_plugins_context_free ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-free"/>
     <keyword type="function" name="gst_install_plugins_context_set_xid ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-set-xid"/>
+    <keyword type="function" name="gst_install_plugins_context_set_confirm_search ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-set-confirm-search" since="1.6"/>
+    <keyword type="function" name="gst_install_plugins_context_set_desktop_id ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-set-desktop-id" since="1.6"/>
+    <keyword type="function" name="gst_install_plugins_context_set_startup_notification_id ()" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-set-startup-notification-id" since="1.6"/>
     <keyword type="enum" name="enum GstInstallPluginsReturn" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsReturn"/>
     <keyword type="struct" name="GstInstallPluginsContext" link="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext"/>
     <keyword type="function" name="gst_discoverer_new ()" link="gst-plugins-base-libs-gstdiscoverer.html#gst-discoverer-new"/>
@@ -1226,6 +1238,7 @@
     <keyword type="property" name="The “restriction-caps” property" link="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile--restriction-caps"/>
     <keyword type="" name="" link="gst-plugins-base-libs-gstvideo.html#id-1.2.15.3.6.2"/>
     <keyword type="function" name="gst_video_calculate_display_ratio ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-calculate-display-ratio"/>
+    <keyword type="function" name="gst_video_guess_framerate ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-guess-framerate" since="1.6"/>
     <keyword type="function" name="GstVideoConvertSampleCallback ()" link="gst-plugins-base-libs-gstvideo.html#GstVideoConvertSampleCallback"/>
     <keyword type="function" name="gst_video_convert_sample ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample"/>
     <keyword type="function" name="gst_video_convert_sample_async ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-convert-sample-async"/>
@@ -1237,8 +1250,6 @@
     <keyword type="function" name="gst_video_event_new_upstream_force_key_unit ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-event-new-upstream-force-key-unit"/>
     <keyword type="function" name="gst_video_event_parse_upstream_force_key_unit ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-event-parse-upstream-force-key-unit"/>
     <keyword type="function" name="gst_video_event_is_force_key_unit ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-event-is-force-key-unit"/>
-    <keyword type="function" name="gst_video_chroma_from_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-chroma-from-string"/>
-    <keyword type="function" name="gst_video_chroma_to_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-chroma-to-string"/>
     <keyword type="function" name="GstVideoFormatUnpack ()" link="gst-plugins-base-libs-gstvideo.html#GstVideoFormatUnpack"/>
     <keyword type="function" name="GstVideoFormatPack ()" link="gst-plugins-base-libs-gstvideo.html#GstVideoFormatPack"/>
     <keyword type="macro" name="GST_VIDEO_FORMAT_INFO_FORMAT()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-INFO-FORMAT:CAPS"/>
@@ -1277,10 +1288,13 @@
     <keyword type="function" name="gst_video_format_to_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-string"/>
     <keyword type="function" name="gst_video_format_get_info ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-format-get-info"/>
     <keyword type="macro" name="GST_VIDEO_CAPS_MAKE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-CAPS-MAKE:CAPS"/>
+    <keyword type="function" name="gst_video_color_range_offsets ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-range-offsets"/>
+    <keyword type="function" name="gst_video_color_matrix_get_Kr_Kb ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-matrix-get-Kr-Kb" since="1.6"/>
+    <keyword type="function" name="gst_video_color_transfer_decode ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-decode" since="1.6"/>
+    <keyword type="function" name="gst_video_color_transfer_encode ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-encode" since="1.6"/>
     <keyword type="function" name="gst_video_colorimetry_matches ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-matches"/>
     <keyword type="function" name="gst_video_colorimetry_from_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-from-string"/>
     <keyword type="function" name="gst_video_colorimetry_to_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-to-string"/>
-    <keyword type="function" name="gst_video_color_range_offsets ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-range-offsets"/>
     <keyword type="macro" name="GST_VIDEO_INFO_FORMAT()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FORMAT:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_NAME()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-NAME:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_IS_YUV()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-IS-YUV:CAPS"/>
@@ -1357,6 +1371,13 @@
     <keyword type="macro" name="GST_VIDEO_TILE_MAKE_STRIDE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-MAKE-STRIDE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_TILE_X_TILES()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-X-TILES:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_TILE_Y_TILES()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-Y-TILES:CAPS"/>
+    <keyword type="function" name="gst_video_blend ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-blend"/>
+    <keyword type="function" name="gst_video_blend_scale_linear_RGBA ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-blend-scale-linear-RGBA"/>
+    <keyword type="function" name="gst_video_converter_new ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-new" since="1.6"/>
+    <keyword type="function" name="gst_video_converter_free ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-free" since="1.6"/>
+    <keyword type="function" name="gst_video_converter_get_config ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-get-config"/>
+    <keyword type="function" name="gst_video_converter_set_config ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-set-config" since="1.6"/>
+    <keyword type="function" name="gst_video_converter_frame ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-frame" since="1.6"/>
     <keyword type="struct" name="struct GstVideoAlignment" link="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment"/>
     <keyword type="macro" name="GST_META_TAG_VIDEO_STR" link="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-STR:CAPS" since="1.2"/>
     <keyword type="macro" name="GST_META_TAG_VIDEO_ORIENTATION_STR" link="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-ORIENTATION-STR:CAPS" since="1.2"/>
@@ -1366,7 +1387,6 @@
     <keyword type="macro" name="GST_VIDEO_MAX_PLANES" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-PLANES:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_MAX_COMPONENTS" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MAX-COMPONENTS:CAPS"/>
     <keyword type="struct" name="struct GstVideoFormatInfo" link="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo"/>
-    <keyword type="enum" name="enum GstVideoChromaSite" link="gst-plugins-base-libs-gstvideo.html#GstVideoChromaSite"/>
     <keyword type="enum" name="enum GstVideoFormatFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoFormatFlags"/>
     <keyword type="enum" name="enum GstVideoPackFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoPackFlags"/>
     <keyword type="macro" name="GST_VIDEO_SIZE_RANGE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-SIZE-RANGE:CAPS"/>
@@ -1374,8 +1394,8 @@
     <keyword type="macro" name="GST_VIDEO_FORMATS_ALL" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMATS-ALL:CAPS"/>
     <keyword type="enum" name="enum GstVideoColorRange" link="gst-plugins-base-libs-gstvideo.html#GstVideoColorRange"/>
     <keyword type="enum" name="enum GstVideoColorMatrix" link="gst-plugins-base-libs-gstvideo.html#GstVideoColorMatrix"/>
-    <keyword type="enum" name="enum GstVideoTransferFunction" link="gst-plugins-base-libs-gstvideo.html#GstVideoTransferFunction"/>
     <keyword type="enum" name="enum GstVideoColorPrimaries" link="gst-plugins-base-libs-gstvideo.html#GstVideoColorPrimaries"/>
+    <keyword type="enum" name="enum GstVideoTransferFunction" link="gst-plugins-base-libs-gstvideo.html#GstVideoTransferFunction"/>
     <keyword type="struct" name="GstVideoColorimetry" link="gst-plugins-base-libs-gstvideo.html#GstVideoColorimetry"/>
     <keyword type="struct" name="struct GstVideoInfo" link="gst-plugins-base-libs-gstvideo.html#GstVideoInfo"/>
     <keyword type="enum" name="enum GstVideoInterlaceMode" link="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode"/>
@@ -1385,6 +1405,7 @@
     <keyword type="enum" name="enum GstVideoBufferFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoBufferFlags"/>
     <keyword type="enum" name="enum GstVideoTileType" link="gst-plugins-base-libs-gstvideo.html#GstVideoTileType"/>
     <keyword type="enum" name="enum GstVideoTileMode" link="gst-plugins-base-libs-gstvideo.html#GstVideoTileMode"/>
+    <keyword type="struct" name="GstVideoConverter" link="gst-plugins-base-libs-gstvideo.html#GstVideoConverter"/>
     <keyword type="function" name="gst_video_meta_map ()" link="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map"/>
     <keyword type="function" name="gst_video_meta_unmap ()" link="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-unmap"/>
     <keyword type="function" name="gst_video_meta_get_info ()" link="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-get-info"/>
@@ -1447,7 +1468,43 @@
     <keyword type="" name="" link="gst-plugins-base-libs-gstvideofilter.html#id-1.2.15.6.7.2"/>
     <keyword type="struct" name="struct GstVideoFilter" link="gst-plugins-base-libs-gstvideofilter.html#GstVideoFilter-struct"/>
     <keyword type="struct" name="struct GstVideoFilterClass" link="gst-plugins-base-libs-gstvideofilter.html#GstVideoFilterClass"/>
-    <keyword type="" name="" link="gst-plugins-base-libs-gstvideosink.html#id-1.2.15.7.9.2"/>
+    <keyword type="function" name="gst_video_dither_free ()" link="gst-plugins-base-libs-GstVideoDither.html#gst-video-dither-free"/>
+    <keyword type="function" name="gst_video_dither_line ()" link="gst-plugins-base-libs-GstVideoDither.html#gst-video-dither-line"/>
+    <keyword type="function" name="gst_video_dither_new ()" link="gst-plugins-base-libs-GstVideoDither.html#gst-video-dither-new"/>
+    <keyword type="struct" name="GstVideoDither" link="gst-plugins-base-libs-GstVideoDither.html#GstVideoDither"/>
+    <keyword type="enum" name="enum GstVideoDitherFlags" link="gst-plugins-base-libs-GstVideoDither.html#GstVideoDitherFlags"/>
+    <keyword type="enum" name="enum GstVideoDitherMethod" link="gst-plugins-base-libs-GstVideoDither.html#GstVideoDitherMethod"/>
+    <keyword type="function" name="gst_video_chroma_from_string ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-from-string"/>
+    <keyword type="function" name="gst_video_chroma_to_string ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-to-string"/>
+    <keyword type="function" name="gst_video_chroma_resample ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-resample"/>
+    <keyword type="function" name="gst_video_chroma_resample_free ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-resample-free"/>
+    <keyword type="function" name="gst_video_chroma_resample_get_info ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-resample-get-info"/>
+    <keyword type="function" name="gst_video_chroma_resample_new ()" link="gst-plugins-base-libs-GstVideoChroma.html#gst-video-chroma-resample-new"/>
+    <keyword type="enum" name="enum GstVideoChromaSite" link="gst-plugins-base-libs-GstVideoChroma.html#GstVideoChromaSite"/>
+    <keyword type="enum" name="enum GstVideoChromaFlags" link="gst-plugins-base-libs-GstVideoChroma.html#GstVideoChromaFlags"/>
+    <keyword type="enum" name="enum GstVideoChromaMethod" link="gst-plugins-base-libs-GstVideoChroma.html#GstVideoChromaMethod"/>
+    <keyword type="struct" name="GstVideoChromaResample" link="gst-plugins-base-libs-GstVideoChroma.html#GstVideoChromaResample"/>
+    <keyword type="function" name="gst_video_resampler_clear ()" link="gst-plugins-base-libs-GstVideoResampler.html#gst-video-resampler-clear" since="1.6"/>
+    <keyword type="function" name="gst_video_resampler_init ()" link="gst-plugins-base-libs-GstVideoResampler.html#gst-video-resampler-init"/>
+    <keyword type="struct" name="struct GstVideoResampler" link="gst-plugins-base-libs-GstVideoResampler.html#GstVideoResampler" since="1.6"/>
+    <keyword type="enum" name="enum GstVideoResamplerFlags" link="gst-plugins-base-libs-GstVideoResampler.html#GstVideoResamplerFlags" since="1.6"/>
+    <keyword type="enum" name="enum GstVideoResamplerMethod" link="gst-plugins-base-libs-GstVideoResampler.html#GstVideoResamplerMethod" since="1.6"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_CUBIC_B" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-CUBIC-B:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_CUBIC_C" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-CUBIC-C:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_ENVELOPE" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-ENVELOPE:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_MAX_TAPS" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-MAX-TAPS:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_SHARPEN" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-SHARPEN:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_RESAMPLER_OPT_SHARPNESS" link="gst-plugins-base-libs-GstVideoResampler.html#GST-VIDEO-RESAMPLER-OPT-SHARPNESS:CAPS"/>
+    <keyword type="function" name="gst_video_scaler_2d ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-2d"/>
+    <keyword type="function" name="gst_video_scaler_combine_packed_YUV ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-combine-packed-YUV" since="1.6"/>
+    <keyword type="function" name="gst_video_scaler_free ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-free"/>
+    <keyword type="function" name="gst_video_scaler_get_coeff ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-get-coeff"/>
+    <keyword type="function" name="gst_video_scaler_horizontal ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-horizontal"/>
+    <keyword type="function" name="gst_video_scaler_new ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-new"/>
+    <keyword type="function" name="gst_video_scaler_vertical ()" link="gst-plugins-base-libs-GstVideoScaler.html#gst-video-scaler-vertical"/>
+    <keyword type="struct" name="GstVideoScaler" link="gst-plugins-base-libs-GstVideoScaler.html#GstVideoScaler"/>
+    <keyword type="enum" name="enum GstVideoScalerFlags" link="gst-plugins-base-libs-GstVideoScaler.html#GstVideoScalerFlags"/>
+    <keyword type="" name="" link="gst-plugins-base-libs-gstvideosink.html#id-1.2.15.11.9.2"/>
     <keyword type="macro" name="GST_VIDEO_SINK_HEIGHT()" link="gst-plugins-base-libs-gstvideosink.html#GST-VIDEO-SINK-HEIGHT:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_SINK_PAD()" link="gst-plugins-base-libs-gstvideosink.html#GST-VIDEO-SINK-PAD:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_SINK_WIDTH()" link="gst-plugins-base-libs-gstvideosink.html#GST-VIDEO-SINK-WIDTH:CAPS"/>
@@ -1456,7 +1513,7 @@
     <keyword type="struct" name="struct GstVideoSinkClass" link="gst-plugins-base-libs-gstvideosink.html#GstVideoSinkClass"/>
     <keyword type="struct" name="struct GstVideoRectangle" link="gst-plugins-base-libs-gstvideosink.html#GstVideoRectangle"/>
     <keyword type="property" name="The “show-preroll-frame” property" link="gst-plugins-base-libs-gstvideosink.html#GstVideoSink--show-preroll-frame"/>
-    <keyword type="" name="" link="gst-plugins-base-libs-gstcolorbalance.html#id-1.2.15.8.9.2"/>
+    <keyword type="" name="" link="gst-plugins-base-libs-gstcolorbalance.html#id-1.2.15.12.9.2"/>
     <keyword type="function" name="gst_color_balance_list_channels ()" link="gst-plugins-base-libs-gstcolorbalance.html#gst-color-balance-list-channels"/>
     <keyword type="function" name="gst_color_balance_get_value ()" link="gst-plugins-base-libs-gstcolorbalance.html#gst-color-balance-get-value"/>
     <keyword type="function" name="gst_color_balance_set_value ()" link="gst-plugins-base-libs-gstcolorbalance.html#gst-color-balance-set-value"/>
@@ -1466,7 +1523,7 @@
     <keyword type="struct" name="struct GstColorBalanceInterface" link="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceInterface"/>
     <keyword type="enum" name="enum GstColorBalanceType" link="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceType"/>
     <keyword type="signal" name="The “value-changed” signal" link="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance-value-changed"/>
-    <keyword type="" name="" link="gst-plugins-base-libs-gstcolorbalancechannel.html#id-1.2.15.9.8.2"/>
+    <keyword type="" name="" link="gst-plugins-base-libs-gstcolorbalancechannel.html#id-1.2.15.13.8.2"/>
     <keyword type="struct" name="struct GstColorBalanceChannel" link="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel-struct"/>
     <keyword type="struct" name="struct GstColorBalanceChannelClass" link="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannelClass"/>
     <keyword type="signal" name="The “value-changed” signal" link="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel-value-changed"/>
@@ -1480,10 +1537,10 @@
     <keyword type="function" name="gst_video_orientation_set_vflip ()" link="gst-plugins-base-libs-gstvideoorientation.html#gst-video-orientation-set-vflip"/>
     <keyword type="struct" name="GstVideoOrientation" link="gst-plugins-base-libs-gstvideoorientation.html#GstVideoOrientation-struct"/>
     <keyword type="struct" name="struct GstVideoOrientationInterface" link="gst-plugins-base-libs-gstvideoorientation.html#GstVideoOrientationInterface"/>
-    <keyword type="" name="" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.11.8.2"/>
-    <keyword type="" name="Two basic usage scenarios" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.11.8.3"/>
-    <keyword type="" name="GstVideoOverlay and Gtk+" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.11.8.4"/>
-    <keyword type="" name="GstVideoOverlay and Qt" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.11.8.5"/>
+    <keyword type="" name="" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.15.8.2"/>
+    <keyword type="" name="Two basic usage scenarios" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.15.8.3"/>
+    <keyword type="" name="GstVideoOverlay and Gtk+" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.15.8.4"/>
+    <keyword type="" name="GstVideoOverlay and Qt" link="gst-plugins-base-libs-gstvideooverlay.html#id-1.2.15.15.8.5"/>
     <keyword type="function" name="gst_video_overlay_got_window_handle ()" link="gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-got-window-handle"/>
     <keyword type="function" name="gst_video_overlay_set_window_handle ()" link="gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-set-window-handle"/>
     <keyword type="function" name="gst_video_overlay_prepare_window_handle ()" link="gst-plugins-base-libs-gstvideooverlay.html#gst-video-overlay-prepare-window-handle"/>

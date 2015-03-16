@@ -165,6 +165,14 @@
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 </td>
 <td class="function_name">
+<a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-push-sample" title="gst_app_src_push_sample ()">gst_app_src_push_sample</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+</td>
+<td class="function_name">
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-end-of-stream" title="gst_app_src_end_of_stream ()">gst_app_src_end_of_stream</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -206,7 +214,10 @@ methods directly or by using the appsrc action signals.</p>
 describing the format of the data that will be pushed with appsrc. An
 exception to this is when pushing buffers with unknown caps, in which case no
 caps should be set. This is typically true of file-like sources that push raw
-byte buffers.</p>
+byte buffers. If you don't want to explicitly set the caps you can use
+gst_app_src_push_sample, this method get the caps associated with the
+sample and set them on appsrc replacing any previous setted caps if
+different from that of the sample.</p>
 <p>The main way of handing data to the appsrc element is by calling the
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-push-buffer" title="gst_app_src_push_buffer ()"><code class="function">gst_app_src_push_buffer()</code></a> method or by emitting the push-buffer action signal.
 This will put the buffer onto a queue from which appsrc will read from in its
@@ -228,12 +239,12 @@ receiving the seek-data signal, the application should push-buffers from the
 new position.</p>
 <p>These signals allow the application to operate the appsrc in two different
 ways:</p>
-<p>The push model, in which the application repeatedly calls the push-buffer method
-with a new buffer. Optionally, the queue size in the appsrc can be controlled
-with the enough-data and need-data signals by respectively stopping/starting
-the push-buffer calls. This is a typical mode of operation for the
-stream-type "stream" and "seekable". Use this model when implementing various
-network protocols or hardware devices.</p>
+<p>The push model, in which the application repeatedly calls the push-buffer/push-sample 
+method with a new buffer/sample. Optionally, the queue size in the appsrc 
+can be controlled with the enough-data and need-data signals by respectively 
+stopping/starting the push-buffer/push-sample calls. This is a typical 
+mode of operation for the stream-type "stream" and "seekable". Use this 
+model when implementing various network protocols or hardware devices.</p>
 <p>The pull model where the need-data signal triggers the next push-buffer call.
 This mode is typically used in the "random-access" stream-type. Use this
 model for file access or other randomly accessable sources. In this mode, a
@@ -754,13 +765,58 @@ is not PAUSED or PLAYING.
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-app-src-push-sample"></a><h3>gst_app_src_push_sample ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+gst_app_src_push_sample (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>,
+                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *sample</code></em>);</pre>
+<p>Extract a buffer from the provided sample and adds it to the queue of 
+buffers that the appsrc element will push to its source pad. Any 
+previous caps setted on appsrc will be replaced by the caps associated 
+with the sample if not equal.</p>
+<p>When the block property is TRUE, this function can block until free
+space becomes available in the queue.</p>
+<div class="refsect3">
+<a name="id-1.2.5.4.7.17.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>appsrc</p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sample</p></td>
+<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> from wich extract buffer to
+push and caps to set. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.4.7.17.7"></a><h4>Returns</h4>
+<p> <span class="type">GST_FLOW_OK</span> when the buffer was successfuly queued.
+<span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
+is not PAUSED or PLAYING.
+<span class="type">GST_FLOW_EOS</span> when EOS occured.</p>
+<p></p>
+</div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-app-src-end-of-stream"></a><h3>gst_app_src_end_of_stream ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 gst_app_src_end_of_stream (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *appsrc</code></em>);</pre>
 <p>Indicates to the appsrc element that the last buffer queued in the
 element is the last buffer of the stream.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.5.4.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -775,7 +831,7 @@ element is the last buffer of the stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.5.4.7.18.6"></a><h4>Returns</h4>
 <p> <span class="type">GST_FLOW_OK</span> when the EOS was successfuly queued.
 <span class="type">GST_FLOW_FLUSHING</span> when <em class="parameter"><code>appsrc</code></em>
 is not PAUSED or PLAYING.</p>

@@ -703,7 +703,7 @@ gst_rtp_buffer_get_extension_data (GstRTPBuffer * rtp, guint16 * bits,
 }
 
 /**
- * gst_rtp_buffer_get_extension_bytes:
+ * gst_rtp_buffer_get_extension_bytes: (rename-to gst_rtp_buffer_get_extension_data)
  * @rtp: the RTP packet
  * @bits: (out): location for header bits
  *
@@ -718,8 +718,6 @@ gst_rtp_buffer_get_extension_data (GstRTPBuffer * rtp, guint16 * bits,
  *
  * Returns: (transfer full): A new #GBytes if an extension header was present
  * and %NULL otherwise.
- *
- * Rename to: gst_rtp_buffer_get_extension_data
  *
  * Since: 1.2
  */
@@ -1148,7 +1146,7 @@ gst_rtp_buffer_get_payload (GstRTPBuffer * rtp)
 }
 
 /**
- * gst_rtp_buffer_get_payload_bytes:
+ * gst_rtp_buffer_get_payload_bytes: (rename-to gst_rtp_buffer_get_payload)
  * @rtp: the RTP packet
  *
  * Similar to gst_rtp_buffer_get_payload, but more suitable for language
@@ -1156,8 +1154,6 @@ gst_rtp_buffer_get_payload (GstRTPBuffer * rtp)
  * containing the payload data in @rtp.
  *
  * Returns: (transfer full): A new #GBytes containing the payload data in @rtp.
- *
- * Rename to: gst_rtp_buffer_get_payload
  *
  * Since: 1.2
  */
@@ -1216,6 +1212,11 @@ gst_rtp_buffer_default_clock_rate (guint8 payload_type)
 gint
 gst_rtp_buffer_compare_seqnum (guint16 seqnum1, guint16 seqnum2)
 {
+  /* See http://en.wikipedia.org/wiki/Serial_number_arithmetic
+   * for an explanation why this does the right thing even for
+   * wraparounds, under the assumption that the difference is
+   * never bigger than 2**15 sequence numbers
+   */
   return (gint16) (seqnum2 - seqnum1);
 }
 
@@ -1520,7 +1521,7 @@ gst_rtp_buffer_add_extension_onebyte_header (GstRTPBuffer * rtp, guint8 id,
 
 
 static guint
-get_twobytes_header_end_offset (guint8 * pdata, guint wordlen)
+get_twobytes_header_end_offset (const guint8 * pdata, guint wordlen)
 {
   guint offset = 0;
   guint bytelen = wordlen * 4;
