@@ -502,7 +502,6 @@ gst_audio_decoder_init (GstAudioDecoder * dec, GstAudioDecoderClass * klass)
       GST_DEBUG_FUNCPTR (gst_audio_decoder_src_event));
   gst_pad_set_query_function (dec->srcpad,
       GST_DEBUG_FUNCPTR (gst_audio_decoder_src_query));
-  gst_pad_use_fixed_caps (dec->srcpad);
   gst_element_add_pad (GST_ELEMENT (dec), dec->srcpad);
   GST_DEBUG_OBJECT (dec, "srcpad created");
 
@@ -2130,6 +2129,8 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
 
       /* Forward EOS because no buffer or serialized event will come after
        * EOS and nothing could trigger another _finish_frame() call. */
+      if (dec->priv->pending_events)
+        send_pending_events (dec);
       ret = gst_audio_decoder_push_event (dec, event);
       break;
 
