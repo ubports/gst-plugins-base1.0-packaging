@@ -1181,7 +1181,7 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 	@touch $@
 
 @HAVE_INTROSPECTION_TRUE@GstPbutils-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstpbutils-@GST_API_VERSION@.la
-@HAVE_INTROSPECTION_TRUE@	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
+@HAVE_INTROSPECTION_TRUE@	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
 @HAVE_INTROSPECTION_TRUE@		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstPbutils \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
@@ -1227,22 +1227,6 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		--includedir="$(top_builddir)/gst-libs/gst/video/" \
 @HAVE_INTROSPECTION_TRUE@		--includedir="$(top_builddir)/gst-libs/gst/audio/" \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer -:PROJECT libgstpbutils -:SHARED libgstpbutils-@GST_API_VERSION@ \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstpbutils_@GST_API_VERSION@_la_SOURCES) \
-	           $(nodist_libgstpbutils_@GST_API_VERSION@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) \
-	 -:LDFLAGS $(libgstpbutils_@GST_API_VERSION@_la_LDFLAGS) \
-	           $(libgstpbutils_@GST_API_VERSION@_la_LIBADD) \
-	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/pbutils \
-	 -:HEADERS $(libgstpbutils_@GST_API_VERSION@include_HEADERS) \
-	           $(nodist_libgstpbutils_@GST_API_VERSION@include_HEADERS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

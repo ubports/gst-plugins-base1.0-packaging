@@ -152,8 +152,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(plugindir)"
 LTLIBRARIES = $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libgstapp_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la
+libgstapp_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1)
 am_libgstapp_la_OBJECTS = libgstapp_la-gstapp.lo
 libgstapp_la_OBJECTS = $(am_libgstapp_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -519,8 +519,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 plugin_LTLIBRARIES = libgstapp.la
 libgstapp_la_SOURCES = gstapp.c
-libgstapp_la_CFLAGS = $(GST_CFLAGS) $(GST_BASE_CFLAGS) $(GST_PLUGINS_BASE_CFLAGS)
-libgstapp_la_LIBADD = $(GST_BASE_LIBS) $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la
+libgstapp_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
+libgstapp_la_LIBADD = $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la $(GST_BASE_LIBS)
 libgstapp_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstapp_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
 all: all-am
@@ -848,20 +848,6 @@ uninstall-am: uninstall-pluginLTLIBRARIES
 	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
 	uninstall-pluginLTLIBRARIES
 
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer \
-	-:PROJECT libgstapp -:SHARED libgstapp \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstapp_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstapp_la_CFLAGS) \
-	 -:LDFLAGS $(libgstapp_la_LDFLAGS) \
-	           $(libgstapp_la_LIBADD) \
-	           -ldl \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-		       LOCAL_MODULE_PATH:='$$(TARGET_OUT)/lib/gstreamer-0.10' \
-	> $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -47,6 +47,9 @@
 /* The GIO modules directory. */
 #undef GIO_MODULE_DIR
 
+/* The GIO install prefix. */
+#undef GIO_PREFIX
+
 /* major/minor version */
 #undef GST_API_VERSION
 

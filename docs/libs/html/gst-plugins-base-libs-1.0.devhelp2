@@ -1293,6 +1293,7 @@
     <keyword type="function" name="gst_video_color_transfer_decode ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-decode" since="1.6"/>
     <keyword type="function" name="gst_video_color_transfer_encode ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-encode" since="1.6"/>
     <keyword type="function" name="gst_video_colorimetry_matches ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-matches"/>
+    <keyword type="function" name="gst_video_colorimetry_is_equal ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-is-equal" since="1.6"/>
     <keyword type="function" name="gst_video_colorimetry_from_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-from-string"/>
     <keyword type="function" name="gst_video_colorimetry_to_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-to-string"/>
     <keyword type="macro" name="GST_VIDEO_INFO_FORMAT()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FORMAT:CAPS"/>
@@ -1328,6 +1329,8 @@
     <keyword type="macro" name="GST_VIDEO_INFO_COMP_PLANE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PLANE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_COMP_PSTRIDE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PSTRIDE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_COMP_POFFSET()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-POFFSET:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_INFO_CHROMA_SITE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-CHROMA-SITE:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_INFO_COLORIMETRY()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COLORIMETRY:CAPS"/>
     <keyword type="function" name="gst_video_info_init ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-init"/>
     <keyword type="function" name="gst_video_info_set_format ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format"/>
     <keyword type="function" name="gst_video_info_from_caps ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps"/>

@@ -28,8 +28,8 @@
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch -v videotestsrc pattern=snow ! ximagesink
- * ]| Shows random noise in an X window.
+ * gst-launch-1.0 -v videotestsrc pattern=snow ! video/x-raw,width=1280,height=720 ! autovideosink
+ * ]| Shows random noise in a video window.
  * </refsect2>
  */
 
@@ -74,8 +74,7 @@ enum
   PROP_YOFFSET,
   PROP_FOREGROUND_COLOR,
   PROP_BACKGROUND_COLOR,
-  PROP_HORIZONTAL_SPEED,
-  PROP_LAST
+  PROP_HORIZONTAL_SPEED
 };
 
 

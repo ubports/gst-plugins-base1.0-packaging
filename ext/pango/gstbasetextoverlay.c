@@ -22,55 +22,6 @@
  * Boston, MA 02110-1301, USA.
  */
 
-/**
- * SECTION:element-textoverlay
- * @see_also: #GstTextRender, #GstClockOverlay, #GstTimeOverlay, #GstSubParse
- *
- * This plugin renders text on top of a video stream. This can be either
- * static text or text from buffers received on the text sink pad, e.g.
- * as produced by the subparse element. If the text sink pad is not linked,
- * the text set via the "text" property will be rendered. If the text sink
- * pad is linked, text will be rendered as it is received on that pad,
- * honouring and matching the buffer timestamps of both input streams.
- *
- * The text can contain newline characters and text wrapping is enabled by
- * default.
- *
- * <refsect2>
- * <title>Example launch lines</title>
- * |[
- * gst-launch -v videotestsrc ! textoverlay text="Room A" valign=top halign=left ! xvimagesink
- * ]| Here is a simple pipeline that displays a static text in the top left
- * corner of the video picture
- * |[
- * gst-launch -v filesrc location=subtitles.srt ! subparse ! txt.   videotestsrc ! timeoverlay ! textoverlay name=txt shaded-background=yes ! xvimagesink
- * ]| Here is another pipeline that displays subtitles from an .srt subtitle
- * file, centered at the bottom of the picture and with a rectangular shading
- * around the text in the background:
- * <para>
- * If you do not have such a subtitle file, create one looking like this
- * in a text editor:
- * |[
- * 1
- * 00:00:03,000 --> 00:00:05,000
- * Hello? (3-5s)
- *
- * 2
- * 00:00:08,000 --> 00:00:13,000
- * Yes, this is a subtitle. Don&apos;t
- * you like it? (8-13s)
- *
- * 3
- * 00:00:18,826 --> 00:01:02,886
- * Uh? What are you talking about?
- * I don&apos;t understand  (18-62s)
- * ]|
- * </para>
- * </refsect2>
- */
-
-/* FIXME: alloc segment as part of instance struct */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -670,11 +621,11 @@ gst_base_text_overlay_update_wrap_mode (GstBaseTextOverlay * overlay)
       }
     } else {
       width =
-          (overlay->use_vertical_render ? overlay->height : overlay->width) *
-          PANGO_SCALE;
+          ((overlay->use_vertical_render ? overlay->height : overlay->width) -
+          overlay->deltax) * PANGO_SCALE;
     }
 
-    GST_DEBUG_OBJECT (overlay, "Set layout width %d", overlay->width);
+    GST_DEBUG_OBJECT (overlay, "Set layout width %d", width);
     GST_DEBUG_OBJECT (overlay, "Set wrap mode    %d", overlay->wrap_mode);
     pango_layout_set_width (overlay->layout, width);
     pango_layout_set_wrap (overlay->layout, (PangoWrapMode) overlay->wrap_mode);
@@ -2273,7 +2224,9 @@ gst_base_text_overlay_text_chain (GstPad * pad, GstObject * parent,
     if (GST_BUFFER_TIMESTAMP_IS_VALID (buffer))
       overlay->text_segment.position = clip_start;
 
-    overlay->text_buffer = buffer;
+    overlay->text_buffer = buffer;      /* pass ownership of @buffer */
+    buffer = NULL;
+
     /* That's a new text buffer we need to render */
     overlay->need_render = TRUE;
 
@@ -2284,6 +2237,8 @@ gst_base_text_overlay_text_chain (GstPad * pad, GstObject * parent,
   GST_BASE_TEXT_OVERLAY_UNLOCK (overlay);
 
 beach:
+  if (buffer)
+    gst_buffer_unref (buffer);
 
   return ret;
 }

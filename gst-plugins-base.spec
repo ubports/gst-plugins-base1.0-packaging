@@ -5,7 +5,7 @@
 
 Name: 		%{gstreamer}-plugins-base
 Version: 	1.5.0.1
-Release: 	0.20150316.185339.gst
+Release: 	0.20150513.125519.gst
 Summary: 	GStreamer streaming media framework plug-ins
 
 Group: 		Applications/Multimedia

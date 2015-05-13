@@ -23574,6 +23574,13 @@ cat >>confdefs.h <<_ACEOF
 #define GIO_LIBDIR "$GIO_LIBDIR"
 _ACEOF
 
+  GIO_PREFIX="`$PKG_CONFIG --variable=prefix gio-2.0`"
+
+cat >>confdefs.h <<_ACEOF
+#define GIO_PREFIX "$GIO_PREFIX"
+_ACEOF
+
+
 
 
 
@@ -24281,7 +24288,7 @@ GST_PREFIX="`$PKG_CONFIG --variable=prefix gstreamer-$GST_API_VERSION`"
 
 HAVE_GTK=no
 HAVE_GTK_X11=no
-GTK_REQ=3.0.0
+GTK_REQ=3.10
 if test "x$BUILD_EXAMPLES" = "xyes"; then
 
 pkg_failed=no

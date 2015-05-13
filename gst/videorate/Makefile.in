@@ -153,9 +153,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(plugindir)"
 LTLIBRARIES = $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libgstvideorate_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la
+libgstvideorate_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libgstvideorate_la_OBJECTS = libgstvideorate_la-gstvideorate.lo
 libgstvideorate_la_OBJECTS = $(am_libgstvideorate_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -523,10 +522,12 @@ top_srcdir = @top_srcdir@
 noinst_HEADERS = gstvideorate.h
 plugin_LTLIBRARIES = libgstvideorate.la
 libgstvideorate_la_SOURCES = gstvideorate.c
-libgstvideorate_la_CFLAGS = $(GST_CFLAGS) $(GST_BASE_CFLAGS) $(GST_PLUGINS_BASE_CFLAGS)
+libgstvideorate_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
 libgstvideorate_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-libgstvideorate_la_LIBADD = $(GST_LIBS) $(GST_BASE_LIBS) \
-	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la
+libgstvideorate_la_LIBADD = \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
+	$(GST_BASE_LIBS) \
+	$(GST_LIBS)
 
 libgstvideorate_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
 all: all-am
@@ -854,20 +855,6 @@ uninstall-am: uninstall-pluginLTLIBRARIES
 	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
 	uninstall-pluginLTLIBRARIES
 
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer \
-	-:PROJECT libgstvideorate -:SHARED libgstvideorate \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstvideorate_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstvideorate_la_CFLAGS) \
-	 -:LDFLAGS $(libgstvideorate_la_LDFLAGS) \
-	           $(libgstvideorate_la_LIBADD) \
-	           -ldl \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-		       LOCAL_MODULE_PATH:='$$(TARGET_OUT)/lib/gstreamer-0.10' \
-	> $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

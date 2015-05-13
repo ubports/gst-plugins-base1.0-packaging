@@ -1634,6 +1634,7 @@
 <ANCHOR id="gst-video-color-transfer-decode" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-decode">
 <ANCHOR id="gst-video-color-transfer-encode" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-color-transfer-encode">
 <ANCHOR id="gst-video-colorimetry-matches" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-matches">
+<ANCHOR id="gst-video-colorimetry-is-equal" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-is-equal">
 <ANCHOR id="gst-video-colorimetry-from-string" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-from-string">
 <ANCHOR id="gst-video-colorimetry-to-string" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-colorimetry-to-string">
 <ANCHOR id="GST-VIDEO-INFO-FORMAT:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-FORMAT:CAPS">
@@ -1669,6 +1670,8 @@
 <ANCHOR id="GST-VIDEO-INFO-COMP-PLANE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PLANE:CAPS">
 <ANCHOR id="GST-VIDEO-INFO-COMP-PSTRIDE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-PSTRIDE:CAPS">
 <ANCHOR id="GST-VIDEO-INFO-COMP-POFFSET:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-POFFSET:CAPS">
+<ANCHOR id="GST-VIDEO-INFO-CHROMA-SITE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-CHROMA-SITE:CAPS">
+<ANCHOR id="GST-VIDEO-INFO-COLORIMETRY:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COLORIMETRY:CAPS">
 <ANCHOR id="gst-video-info-init" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-init">
 <ANCHOR id="gst-video-info-set-format" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format">
 <ANCHOR id="gst-video-info-from-caps" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps">

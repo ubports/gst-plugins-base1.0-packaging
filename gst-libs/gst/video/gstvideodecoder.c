@@ -909,7 +909,7 @@ gst_video_decoder_push_event (GstVideoDecoder * decoder, GstEvent * event)
       GST_VIDEO_DECODER_STREAM_LOCK (decoder);
       decoder->output_segment = segment;
       decoder->priv->in_out_segment_sync =
-          (memcmp (&decoder->input_segment, &segment, sizeof (segment)) == 0);
+          gst_segment_is_equal (&decoder->input_segment, &segment);
       decoder->priv->last_timestamp_out = GST_CLOCK_TIME_NONE;
       GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
       break;
@@ -1027,6 +1027,94 @@ _flush_events (GstPad * pad, GList * events)
   return NULL;
 }
 
+/* Must be called holding the GST_VIDEO_DECODER_STREAM_LOCK */
+static gboolean
+gst_video_decoder_negotiate_default_caps (GstVideoDecoder * decoder)
+{
+  GstCaps *caps;
+  GstVideoCodecState *state;
+  GstVideoInfo info;
+  gint i;
+  gint caps_size;
+  GstStructure *structure;
+
+  caps = gst_pad_get_allowed_caps (decoder->srcpad);
+  if (!caps || gst_caps_is_empty (caps) || gst_caps_is_any (caps))
+    goto caps_error;
+
+  /* before fixating, try to use whatever upstream provided */
+  caps = gst_caps_make_writable (caps);
+  caps_size = gst_caps_get_size (caps);
+  if (decoder->priv->input_state && decoder->priv->input_state->caps) {
+    GstCaps *sinkcaps = decoder->priv->input_state->caps;
+    GstStructure *structure = gst_caps_get_structure (sinkcaps, 0);
+    gint width, height;
+    gint par_n, par_d;
+    gint fps_n, fps_d;
+
+    if (gst_structure_get_int (structure, "width", &width)) {
+      for (i = 0; i < caps_size; i++) {
+        gst_structure_set (gst_caps_get_structure (caps, i), "width",
+            G_TYPE_INT, width, NULL);
+      }
+    }
+
+    if (gst_structure_get_int (structure, "height", &height)) {
+      for (i = 0; i < caps_size; i++) {
+        gst_structure_set (gst_caps_get_structure (caps, i), "height",
+            G_TYPE_INT, height, NULL);
+      }
+    }
+
+    if (gst_structure_get_fraction (structure, "framerate", &fps_n, &fps_d)) {
+      for (i = 0; i < caps_size; i++) {
+        gst_structure_set (gst_caps_get_structure (caps, i), "framerate",
+            GST_TYPE_FRACTION, fps_n, fps_d, NULL);
+      }
+    }
+
+    if (gst_structure_get_fraction (structure, "pixel-aspect-ratio", &par_n,
+            &par_d)) {
+      for (i = 0; i < caps_size; i++) {
+        gst_structure_set (gst_caps_get_structure (caps, i),
+            "pixel-aspect-ratio", GST_TYPE_FRACTION, par_n, par_d, NULL);
+      }
+    }
+  }
+
+  for (i = 0; i < caps_size; i++) {
+    structure = gst_caps_get_structure (caps, i);
+    /* Random 1280x720@30 for fixation */
+    gst_structure_fixate_field_nearest_int (structure, "width", 1280);
+    gst_structure_fixate_field_nearest_int (structure, "height", 720);
+    gst_structure_fixate_field_nearest_fraction (structure,
+        "pixel-aspect-ratio", 1, 1);
+    gst_structure_fixate_field_nearest_fraction (structure, "framerate", 30, 1);
+  }
+  caps = gst_caps_fixate (caps);
+  structure = gst_caps_get_structure (caps, 0);
+
+  if (!caps || !gst_video_info_from_caps (&info, caps))
+    goto caps_error;
+
+  GST_INFO_OBJECT (decoder,
+      "Chose default caps %" GST_PTR_FORMAT " for initial gap", caps);
+  state =
+      gst_video_decoder_set_output_state (decoder, info.finfo->format,
+      info.width, info.height, decoder->priv->input_state);
+  gst_video_codec_state_unref (state);
+  gst_caps_unref (caps);
+
+  return TRUE;
+
+caps_error:
+  {
+    if (caps)
+      gst_caps_unref (caps);
+    return FALSE;
+  }
+}
+
 static gboolean
 gst_video_decoder_sink_event_default (GstVideoDecoder * decoder,
     GstEvent * event)
@@ -1071,6 +1159,25 @@ gst_video_decoder_sink_event_default (GstVideoDecoder * decoder,
       event = NULL;
       break;
     }
+    case GST_EVENT_SEGMENT_DONE:
+    {
+      GstFlowReturn flow_ret = GST_FLOW_OK;
+
+      flow_ret = gst_video_decoder_drain_out (decoder, TRUE);
+      ret = (flow_ret == GST_FLOW_OK);
+
+      /* Forward SEGMENT_DONE immediately. This is required
+       * because no buffer or serialized event might come
+       * after SEGMENT_DONE and nothing could trigger another
+       * _finish_frame() call.
+       *
+       * The subclass can override this behaviour by overriding
+       * the ::sink_event() vfunc and not chaining up to the
+       * parent class' ::sink_event() until a later time.
+       */
+      forward_immediate = TRUE;
+      break;
+    }
     case GST_EVENT_EOS:
     {
       GstFlowReturn flow_ret = GST_FLOW_OK;
@@ -1099,9 +1206,33 @@ gst_video_decoder_sink_event_default (GstVideoDecoder * decoder,
     case GST_EVENT_GAP:
     {
       GstFlowReturn flow_ret = GST_FLOW_OK;
+      gboolean needs_reconfigure = FALSE;
 
       flow_ret = gst_video_decoder_drain_out (decoder, FALSE);
       ret = (flow_ret == GST_FLOW_OK);
+
+      /* Ensure we have caps before forwarding the event */
+      GST_VIDEO_DECODER_STREAM_LOCK (decoder);
+      if (!decoder->priv->output_state) {
+        if (!gst_video_decoder_negotiate_default_caps (decoder)) {
+          GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
+          GST_ELEMENT_ERROR (decoder, STREAM, FORMAT, (NULL),
+              ("Decoder output not negotiated before GAP event."));
+          forward_immediate = TRUE;
+          break;
+        }
+        needs_reconfigure = TRUE;
+      }
+
+      needs_reconfigure = gst_pad_check_reconfigure (decoder->srcpad)
+          || needs_reconfigure;
+      if (decoder->priv->output_state_changed || needs_reconfigure) {
+        if (!gst_video_decoder_negotiate_unlocked (decoder)) {
+          GST_WARNING_OBJECT (decoder, "Failed to negotiate with downstream");
+          gst_pad_mark_reconfigure (decoder->srcpad);
+        }
+      }
+      GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
 
       /* Forward GAP immediately. Everything is drained after
        * the GAP event and we can forward this event immediately
@@ -2093,7 +2224,7 @@ gst_video_decoder_flush_parse (GstVideoDecoder * dec, gboolean at_eos)
           if (segment.format == GST_FORMAT_TIME) {
             dec->output_segment = segment;
             dec->priv->in_out_segment_sync =
-                (memcmp (&dec->input_segment, &segment, sizeof (segment)) == 0);
+                gst_segment_is_equal (&dec->input_segment, &segment);
           }
         }
         dec->priv->pending_events =
@@ -2822,23 +2953,33 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
 
   if (GST_CLOCK_TIME_IS_VALID (start) && GST_CLOCK_TIME_IS_VALID (duration)) {
     stop = start + duration;
+  } else if (GST_CLOCK_TIME_IS_VALID (start)
+      && !GST_CLOCK_TIME_IS_VALID (duration)) {
+    /* 2 second frame duration is rather unlikely... but if we don't clip
+     * away buffers that far before the segment we can cause the pipeline to
+     * lockup. This can happen if audio is properly clipped, and thus the
+     * audio sink does not preroll yet but the video sink prerolls because
+     * we already outputted a buffer here... and then queues run full.
+     *
+     * In the worst case we will clip one buffer too many here now if no
+     * framerate is given, no buffer duration is given and the actual
+     * framerate is less than 0.5fps */
+    stop = start + 2 * GST_SECOND;
   }
 
   segment = &decoder->output_segment;
   if (gst_segment_clip (segment, GST_FORMAT_TIME, start, stop, &cstart, &cstop)) {
-
     GST_BUFFER_PTS (buf) = cstart;
 
-    if (stop != GST_CLOCK_TIME_NONE)
+    if (stop != GST_CLOCK_TIME_NONE && GST_CLOCK_TIME_IS_VALID (duration))
       GST_BUFFER_DURATION (buf) = cstop - cstart;
 
     GST_LOG_OBJECT (decoder,
         "accepting buffer inside segment: %" GST_TIME_FORMAT " %"
         GST_TIME_FORMAT " seg %" GST_TIME_FORMAT " to %" GST_TIME_FORMAT
         " time %" GST_TIME_FORMAT,
-        GST_TIME_ARGS (GST_BUFFER_PTS (buf)),
-        GST_TIME_ARGS (GST_BUFFER_PTS (buf) +
-            GST_BUFFER_DURATION (buf)),
+        GST_TIME_ARGS (cstart),
+        GST_TIME_ARGS (cstop),
         GST_TIME_ARGS (segment->start), GST_TIME_ARGS (segment->stop),
         GST_TIME_ARGS (segment->time));
   } else {

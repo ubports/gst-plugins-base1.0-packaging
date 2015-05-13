@@ -206,18 +206,18 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-appsrc.description"></a><h2>Description</h2>
 <p>The appsrc element can be used by applications to insert data into a
-GStreamer pipeline. Unlike most GStreamer elements, Appsrc provides
+GStreamer pipeline. Unlike most GStreamer elements, appsrc provides
 external API functions.</p>
 <p>appsrc can be used by linking with the libgstapp library to access the
 methods directly or by using the appsrc action signals.</p>
-<p>Before operating appsrc, the caps property must be set to a fixed caps
+<p>Before operating appsrc, the caps property must be set to fixed caps
 describing the format of the data that will be pushed with appsrc. An
 exception to this is when pushing buffers with unknown caps, in which case no
 caps should be set. This is typically true of file-like sources that push raw
-byte buffers. If you don't want to explicitly set the caps you can use
-gst_app_src_push_sample, this method get the caps associated with the
-sample and set them on appsrc replacing any previous setted caps if
-different from that of the sample.</p>
+byte buffers. If you don't want to explicitly set the caps, you can use
+gst_app_src_push_sample. This method gets the caps associated with the
+sample and sets them on the appsrc replacing any previously set caps (if
+different from sample's caps).</p>
 <p>The main way of handing data to the appsrc element is by calling the
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-push-buffer" title="gst_app_src_push_buffer ()"><code class="function">gst_app_src_push_buffer()</code></a> method or by emitting the push-buffer action signal.
 This will put the buffer onto a queue from which appsrc will read from in its
@@ -239,25 +239,25 @@ receiving the seek-data signal, the application should push-buffers from the
 new position.</p>
 <p>These signals allow the application to operate the appsrc in two different
 ways:</p>
-<p>The push model, in which the application repeatedly calls the push-buffer/push-sample 
+<p>The push mode, in which the application repeatedly calls the push-buffer/push-sample
 method with a new buffer/sample. Optionally, the queue size in the appsrc 
 can be controlled with the enough-data and need-data signals by respectively 
 stopping/starting the push-buffer/push-sample calls. This is a typical 
 mode of operation for the stream-type "stream" and "seekable". Use this 
-model when implementing various network protocols or hardware devices.</p>
-<p>The pull model where the need-data signal triggers the next push-buffer call.
+mode when implementing various network protocols or hardware devices.</p>
+<p>The pull mode, in which the need-data signal triggers the next push-buffer call.
 This mode is typically used in the "random-access" stream-type. Use this
-model for file access or other randomly accessable sources. In this mode, a
+mode for file access or other randomly accessable sources. In this mode, a
 buffer of exactly the amount of bytes given by the need-data signal should be
 pushed into appsrc.</p>
 <p>In all modes, the size property on appsrc should contain the total stream
 size in bytes. Setting this property is mandatory in the random-access mode.
 For the stream and seekable modes, setting this property is optional but
 recommended.</p>
-<p>When the application is finished pushing data into appsrc, it should call
+<p>When the application has finished pushing data into appsrc, it should call
 <a class="link" href="gst-plugins-base-libs-appsrc.html#gst-app-src-end-of-stream" title="gst_app_src_end_of_stream ()"><code class="function">gst_app_src_end_of_stream()</code></a> or emit the end-of-stream action signal. After
 this call, no more buffers can be pushed into appsrc until a flushing seek
-happened or the state of the appsrc has gone through READY.</p>
+occurs or the state of the appsrc has gone through READY.</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-appsrc.functions_details"></a><h2>Functions</h2>

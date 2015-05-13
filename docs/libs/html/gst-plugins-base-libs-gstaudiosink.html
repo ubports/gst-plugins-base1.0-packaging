@@ -140,7 +140,7 @@ together with <a class="link" href="gst-plugins-base-libs-gstaudiobasesink.html#
   gboolean (*close)     (GstAudioSink *sink);
   /* write samples to the device */
   gint     (*write)     (GstAudioSink *sink, gpointer data, guint length);
-  /* get number of samples queued in the device */
+  /* get number of frames queued in the device */
   guint    (*delay)     (GstAudioSink *sink);
   /* reset the audio device, unblock from a write */
   void     (*reset)     (GstAudioSink *sink);
@@ -189,7 +189,7 @@ This function is also used to check if the device is available.</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioSinkClass.delay"></a>delay</code></em> ()</p></td>
-<td class="struct_member_description"><p>Return how many samples are still in the device. This is used to
+<td class="struct_member_description"><p>Return how many frames are still in the device. This is used to
 drive the synchronisation.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

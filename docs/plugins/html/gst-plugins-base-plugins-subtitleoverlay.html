@@ -105,12 +105,12 @@ DVD subpicture subtitles.</p>
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> <span class="string">&quot;video/x-h264&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> <span class="string">&quot;subpicture/x-dvd&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>h264 <span class="gtkdoc opt">!</span> queue <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> subpicture<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>dvd <span class="gtkdoc opt">!</span> queue <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- This will play back the given Matroska file with h264 video and subpicture subtitles.
+ This will play back the given Matroska file with h264 video and dvd subpicture style subtitles.
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>

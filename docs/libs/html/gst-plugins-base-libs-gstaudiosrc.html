@@ -142,7 +142,7 @@ together with <a class="link" href="gst-plugins-base-libs-gstaudiobasesrc.html#G
   /* read samples from the device */
   guint    (*read)      (GstAudioSrc *src, gpointer data, guint length,
       GstClockTime *timestamp);
-  /* get number of samples queued in the device */
+  /* get number of frames queued in the device */
   guint    (*delay)     (GstAudioSrc *src);
   /* reset the audio device, unblock from a write */
   void     (*reset)     (GstAudioSrc *src);
@@ -191,7 +191,7 @@ functionality.</p>
 </tr>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioSrcClass.delay"></a>delay</code></em> ()</p></td>
-<td class="struct_member_description"><p>the number of samples queued in the device</p></td>
+<td class="struct_member_description"><p>the number of frames queued in the device</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

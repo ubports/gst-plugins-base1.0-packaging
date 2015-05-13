@@ -39,6 +39,7 @@ struct _GstRTPBaseDepayloadPrivate
   GstClockTime npt_stop;
   gdouble play_speed;
   gdouble play_scale;
+  guint clock_base;
 
   gboolean discont;
   GstClockTime pts;
@@ -52,6 +53,7 @@ struct _GstRTPBaseDepayloadPrivate
   gboolean negotiated;
 
   GstCaps *last_caps;
+  GstEvent *segment_event;
 };
 
 /* Filter signals and args */
@@ -92,6 +94,8 @@ static void gst_rtp_base_depayload_class_init (GstRTPBaseDepayloadClass *
     klass);
 static void gst_rtp_base_depayload_init (GstRTPBaseDepayload * rtpbasepayload,
     GstRTPBaseDepayloadClass * klass);
+static GstEvent *create_segment_event (GstRTPBaseDepayload * filter,
+    guint rtptime, GstClockTime position);
 
 GType
 gst_rtp_base_depayload_get_type (void)
@@ -238,6 +242,7 @@ gst_rtp_base_depayload_init (GstRTPBaseDepayload * filter,
   priv->npt_stop = -1;
   priv->play_speed = 1.0;
   priv->play_scale = 1.0;
+  priv->clock_base = -1;
   priv->dts = -1;
   priv->pts = -1;
   priv->duration = -1;
@@ -305,6 +310,12 @@ gst_rtp_base_depayload_setcaps (GstRTPBaseDepayload * filter, GstCaps * caps)
     priv->play_scale = g_value_get_double (value);
   else
     priv->play_scale = 1.0;
+
+  value = gst_structure_get_value (caps_struct, "clock-base");
+  if (value && G_VALUE_HOLDS_UINT (value))
+    priv->clock_base = g_value_get_uint (value);
+  else
+    priv->clock_base = -1;
 
   if (bclass->set_caps) {
     res = bclass->set_caps (filter, caps);
@@ -422,6 +433,13 @@ gst_rtp_base_depayload_chain (GstPad * pad, GstObject * parent, GstBuffer * in)
     }
   }
 
+  /* prepare segment event if needed */
+  if (filter->need_newsegment) {
+    priv->segment_event = create_segment_event (filter, rtptime,
+        GST_BUFFER_PTS (in));
+    filter->need_newsegment = FALSE;
+  }
+
   bclass = GST_RTP_BASE_DEPAYLOAD_GET_CLASS (filter);
 
   if (G_UNLIKELY (bclass->process == NULL))
@@ -487,6 +505,7 @@ gst_rtp_base_depayload_handle_event (GstRTPBaseDepayload * filter,
       gst_segment_init (&filter->segment, GST_FORMAT_UNDEFINED);
       filter->need_newsegment = TRUE;
       filter->priv->next_seqnum = -1;
+      gst_event_replace (&filter->priv->segment_event, NULL);
       break;
     case GST_EVENT_CAPS:
     {
@@ -560,28 +579,59 @@ gst_rtp_base_depayload_handle_sink_event (GstPad * pad, GstObject * parent,
 }
 
 static GstEvent *
-create_segment_event (GstRTPBaseDepayload * filter, GstClockTime position)
+create_segment_event (GstRTPBaseDepayload * filter, guint rtptime,
+    GstClockTime position)
 {
   GstEvent *event;
-  GstClockTime stop;
+  GstClockTime start, stop, running_time;
   GstRTPBaseDepayloadPrivate *priv;
   GstSegment segment;
 
   priv = filter->priv;
 
+  /* determining the start of the segment */
+  start = 0;
+  if (priv->clock_base != -1 && position != -1) {
+    GstClockTime exttime, gap;
+
+    exttime = priv->clock_base;
+    gst_rtp_buffer_ext_timestamp (&exttime, rtptime);
+    gap = gst_util_uint64_scale_int (exttime - priv->clock_base,
+        filter->clock_rate, GST_SECOND);
+
+    /* account for lost packets */
+    if (position > gap) {
+      GST_DEBUG_OBJECT (filter,
+          "Found gap of %" GST_TIME_FORMAT ", adjusting start: %"
+          GST_TIME_FORMAT " = %" GST_TIME_FORMAT " - %" GST_TIME_FORMAT,
+          GST_TIME_ARGS (gap), GST_TIME_ARGS (position - gap),
+          GST_TIME_ARGS (position), GST_TIME_ARGS (gap));
+      start = position - gap;
+    }
+  }
+
+  /* determining the stop of the segment */
+  stop = -1;
   if (priv->npt_stop != -1)
-    stop = priv->npt_stop - priv->npt_start;
-  else
-    stop = -1;
+    stop = start + (priv->npt_stop - priv->npt_start);
+
+  if (position == -1)
+    position = 0;
+
+  running_time = gst_segment_to_running_time (&filter->segment,
+      GST_FORMAT_TIME, start);
 
   gst_segment_init (&segment, GST_FORMAT_TIME);
   segment.rate = priv->play_speed;
   segment.applied_rate = priv->play_scale;
-  segment.start = 0;
+  segment.start = start;
   segment.stop = stop;
   segment.time = priv->npt_start;
   segment.position = position;
+  segment.base = running_time;
 
+  GST_DEBUG_OBJECT (filter, "Creating segment event %" GST_SEGMENT_FORMAT,
+      &segment);
   event = gst_event_new_segment (&segment);
 
   return event;
@@ -647,14 +697,9 @@ gst_rtp_base_depayload_prepare_push (GstRTPBaseDepayload * filter,
   }
 
   /* if this is the first buffer send a NEWSEGMENT */
-  if (G_UNLIKELY (filter->need_newsegment)) {
-    GstEvent *event;
-
-    event = create_segment_event (filter, 0);
-
-    gst_pad_push_event (filter->srcpad, event);
-
-    filter->need_newsegment = FALSE;
+  if (G_UNLIKELY (filter->priv->segment_event)) {
+    gst_pad_push_event (filter->srcpad, filter->priv->segment_event);
+    filter->priv->segment_event = NULL;
     GST_DEBUG_OBJECT (filter, "Pushed newsegment event on this first buffer");
   }
 
@@ -760,9 +805,11 @@ gst_rtp_base_depayload_change_state (GstElement * element,
       priv->npt_stop = -1;
       priv->play_speed = 1.0;
       priv->play_scale = 1.0;
+      priv->clock_base = -1;
       priv->next_seqnum = -1;
       priv->negotiated = FALSE;
       priv->discont = FALSE;
+      gst_event_replace (&filter->priv->segment_event, NULL);
       break;
     case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
       break;

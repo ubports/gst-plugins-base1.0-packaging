@@ -199,18 +199,18 @@
  * <refsect2>
  * <title>Examples</title>
  * |[
- * gst-launch -v playbin uri=file:///path/to/somefile.avi
+ * gst-launch-1.0 -v playbin uri=file:///path/to/somefile.mp4
  * ]| This will play back the given AVI video file, given that the video and
  * audio decoders required to decode the content are installed. Since no
- * special audio sink or video sink is supplied (not possible via gst-launch),
- * playbin will try to find a suitable audio and video sink automatically
- * using the autoaudiosink and autovideosink elements.
+ * special audio sink or video sink is supplied (via playbin's audio-sink or
+ * video-sink properties) playbin will try to find a suitable audio and
+ * video sink automatically using the autoaudiosink and autovideosink elements.
  * |[
- * gst-launch -v playbin uri=cdda://4
+ * gst-launch-1.0 -v playbin uri=cdda://4
  * ]| This will play back track 4 on an audio CD in your disc drive (assuming
  * the drive is detected automatically by the plugin).
  * |[
- * gst-launch -v playbin uri=dvd://
+ * gst-launch-1.0 -v playbin uri=dvd://
  * ]| This will play back the DVD in your disc drive (assuming
  * the drive is detected automatically by the plugin).
  * </refsect2>
@@ -570,8 +570,7 @@ enum
   PROP_RING_BUFFER_MAX_SIZE,
   PROP_FORCE_ASPECT_RATIO,
   PROP_AUDIO_FILTER,
-  PROP_VIDEO_FILTER,
-  PROP_LAST
+  PROP_VIDEO_FILTER
 };
 
 /* signals */
@@ -3148,6 +3147,8 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
 
   playbin = group->playbin;
 
+  GST_PLAY_BIN_SHUTDOWN_LOCK (playbin, shutdown);
+
   caps = gst_pad_get_current_caps (pad);
   if (!caps)
     caps = gst_pad_query_caps (pad, NULL);
@@ -3189,8 +3190,10 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
   }
   /* no combiner found for the media type, don't bother linking it to a
    * combiner. This will leave the pad unlinked and thus ignored. */
-  if (combine == NULL)
+  if (combine == NULL) {
+    GST_PLAY_BIN_SHUTDOWN_UNLOCK (playbin);
     goto unknown_type;
+  }
 
   GST_SOURCE_GROUP_LOCK (group);
   if (combine->combiner == NULL && playbin->have_selector) {
@@ -3235,6 +3238,8 @@ pad_added_cb (GstElement * decodebin, GstPad * pad, GstSourceGroup * group)
       gst_bin_add (GST_BIN_CAST (playbin), combine->combiner);
     }
   }
+
+  GST_PLAY_BIN_SHUTDOWN_UNLOCK (playbin);
 
   if (combine->srcpad == NULL) {
     if (combine->combiner) {
@@ -3385,6 +3390,12 @@ request_pad_failed:
       ("Failed to get request pad from combiner %p.", combine->combiner));
   GST_SOURCE_GROUP_UNLOCK (group);
   goto done;
+shutdown:
+  {
+    GST_DEBUG ("ignoring, we are shutting down. Pad will be left unlinked");
+    /* not going to done as we didn't request the caps */
+    return;
+  }
 }
 
 /* called when a pad is removed from the uridecodebin. We unlink the pad from
@@ -5596,7 +5607,7 @@ gst_play_bin_change_state (GstElement * element, GstStateChange transition)
         break;
     case GST_STATE_CHANGE_READY_TO_NULL:
       /* we go async to PAUSED, so if that fails, we never make it to PAUSED
-       * an no state change PAUSED to READY passes here,
+       * and no state change PAUSED to READY passes here,
        * though it is a nice-to-have ... */
       if (!g_atomic_int_get (&playbin->shutdown)) {
         do_save = TRUE;
@@ -5722,11 +5733,13 @@ failure:
       GstSourceGroup *curr_group;
 
       curr_group = playbin->curr_group;
-      if (curr_group && curr_group->active && curr_group->valid) {
-        /* unlink our pads with the sink */
-        deactivate_group (playbin, curr_group);
+      if (curr_group) {
+        if (curr_group->active && curr_group->valid) {
+          /* unlink our pads with the sink */
+          deactivate_group (playbin, curr_group);
+        }
+        curr_group->valid = FALSE;
       }
-      curr_group->valid = FALSE;
 
       /* Swap current and next group back */
       playbin->curr_group = playbin->next_group;
