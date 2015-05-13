@@ -1,3 +1,9 @@
+gst-plugins-base1.0 (1.5.0.1+git20150513-1) experimental; urgency=medium
+
+  * New upstream GIT snapshot.
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 13 May 2015 13:22:51 +0300
+
 gst-plugins-base1.0 (1.5.0.1+git20150316-1) experimental; urgency=medium
 
   * New upstream GIT snapshot.
