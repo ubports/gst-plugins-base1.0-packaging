@@ -1492,6 +1492,10 @@ of the usual CODEC/AUDIO_CODEC tags.</p>
   gboolean      (*propose_allocation) (GstAudioDecoder *dec,
                                        GstQuery * query);
 
+  gboolean      (*sink_query)         (GstAudioDecoder *dec, GstQuery *query);
+
+  gboolean      (*src_query)          (GstAudioDecoder *dec, GstQuery *query);
+
   GstCaps *     (*getcaps)            (GstAudioDecoder * dec,
                                        GstCaps * filter);
 };
@@ -1622,6 +1626,24 @@ invoke the default handler.</p></td>
 Propose buffer allocation parameters for upstream elements.
 Subclasses should chain up to the parent implementation to
 invoke the default handler.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.sink-query"></a>sink_query</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Query handler on the sink pad. This function should
+return TRUE if the query could be performed. Subclasses
+should chain up to the parent implementation to invoke the
+default handler. Since 1.6</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.src-query"></a>src_query</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Query handler on the source pad. This function should
+return TRUE if the query could be performed. Subclasses
+should chain up to the parent implementation to invoke the
+default handler. Since 1.6</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

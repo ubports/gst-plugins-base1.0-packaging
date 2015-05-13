@@ -101,13 +101,14 @@ unless said table would become too large, in which case the interpolated one is 
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>sine<span class="gtkdoc opt">.</span>ogg <span class="gtkdoc opt">!</span> oggdemux <span class="gtkdoc opt">!</span> vorbisdec <span class="gtkdoc opt">!</span> audioconvert <span class="gtkdoc opt">!</span> audioresample <span class="gtkdoc opt">!</span> audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span> rate<span class="gtkdoc opt">=</span><span class="number">8000</span> <span class="gtkdoc opt">!</span> alsasink</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v uridecodebin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/audio.ogg ! audioconvert ! audioresample ! audio/x-raw, rate=8000 ! autoaudiosink</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- Decode an Ogg/Vorbis downsample to 8Khz and play sound through alsa.
+ Decode an audio file and downsample it to 8Khz and play sound.
 To create the Ogg/Vorbis file refer to the documentation of vorbisenc.
+This assumes there is an audio sink that will accept/handle 8kHz audio.
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>

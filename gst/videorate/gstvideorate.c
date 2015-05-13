@@ -55,13 +55,16 @@
  * <refsect2>
  * <title>Example pipelines</title>
  * |[
- * gst-launch -v filesrc location=videotestsrc.ogg ! oggdemux ! theoradec ! videorate ! video/x-raw,framerate=15/1 ! xvimagesink
- * ]| Decode an Ogg/Theora file and adjust the framerate to 15 fps before playing.
- * To create the test Ogg/Theora file refer to the documentation of theoraenc.
+ * gst-launch-1.0 -v uridecodebin uri=file:///path/to/video.ogg ! videoconvert ! videoscale ! videorate ! video/x-raw,framerate=15/1 ! autovideosink
+ * ]| Decode a video file and adjust the framerate to 15 fps before playing.
+ * To create a test Ogg/Theora file refer to the documentation of theoraenc.
  * |[
- * gst-launch -v v4l2src ! videorate ! video/x-raw,framerate=25/2 ! theoraenc ! oggmux ! filesink location=recording.ogg
+ * gst-launch-1.0 -v v4l2src ! videorate ! video/x-raw,framerate=25/2 ! theoraenc ! oggmux ! filesink location=recording.ogg
  * ]| Capture video from a V4L device, and adjust the stream to 12.5 fps before
  * encoding to Ogg/Theora.
+ * |[
+ * gst-launch-1.0 -v uridecodebin uri=file:///path/to/video.ogg ! videoconvert ! videoscale ! videorate ! video/x-raw,framerate=1/5 ! jpegenc ! multifilesink location=snapshot-%05d.jpg
+ * ]| Decode a video file and save a snapshot every 5 seconds as consecutively numbered jpeg file.
  * </refsect2>
  */
 
@@ -371,6 +374,19 @@ gst_video_rate_transform_caps (GstBaseTransform * trans,
     s = gst_caps_get_structure (caps, i);
 
     s1 = gst_structure_copy (s);
+
+    if (videorate->updating_caps) {
+      GST_INFO_OBJECT (trans,
+          "Only updating caps %" GST_PTR_FORMAT " with framerate" " %d/%d",
+          caps, videorate->to_rate_numerator, videorate->to_rate_denominator);
+
+      gst_structure_set (s1, "framerate", GST_TYPE_FRACTION,
+          videorate->to_rate_numerator, videorate->to_rate_denominator, NULL);
+      ret = gst_caps_merge_structure (ret, s1);
+
+      continue;
+    }
+
     s2 = gst_structure_copy (s);
     s3 = NULL;
 
@@ -550,6 +566,7 @@ gst_video_rate_reset (GstVideoRate * videorate)
   videorate->last_ts = GST_CLOCK_TIME_NONE;
   videorate->discont = TRUE;
   videorate->average = 0;
+  videorate->force_variable_rate = FALSE;
   gst_video_rate_swap_prev (videorate, NULL, 0);
 
   gst_segment_init (&videorate->segment, GST_FORMAT_TIME);
@@ -615,6 +632,8 @@ gst_video_rate_flush_prev (GstVideoRate * videorate, gboolean duplicate)
         videorate->to_rate_denominator * GST_SECOND,
         videorate->to_rate_numerator);
     GST_BUFFER_DURATION (outbuf) = videorate->next_ts - push_ts;
+  } else if (GST_CLOCK_TIME_IS_VALID (GST_BUFFER_DURATION (outbuf))) {
+    videorate->next_ts = GST_BUFFER_PTS (outbuf) + GST_BUFFER_DURATION (outbuf);
   }
 
   /* We do not need to update time in VFR (variable frame rate) mode */
@@ -892,7 +911,7 @@ gst_video_rate_propose_allocation (GstBaseTransform * trans,
     n_allocation = gst_query_get_n_allocation_pools (query);
 
     while (i < n_allocation) {
-      GstBufferPool *pool;
+      GstBufferPool *pool = NULL;
       guint size, min, max;
 
       gst_query_parse_nth_allocation_pool (query, i, &pool, &size, &min, &max);
@@ -907,6 +926,8 @@ gst_video_rate_propose_allocation (GstBaseTransform * trans,
       }
 
       gst_query_set_nth_allocation_pool (query, i, pool, size, min + 1, max);
+      if (pool)
+        gst_object_unref (pool);
       i++;
     }
 
@@ -977,6 +998,55 @@ drop:
   return GST_BASE_TRANSFORM_FLOW_DROPPED;
 }
 
+/* Check if downstream forces variable framerate (0/1) and if
+ * it is the case, use variable framerate ourself
+ * Otherwise compute the framerate from the 2 buffers that we
+ * have already received and make use of it as wanted framerate
+ */
+static void
+gst_video_rate_check_variable_rate (GstVideoRate * videorate,
+    GstBuffer * buffer)
+{
+  GstStructure *st;
+  gint fps_d, fps_n;
+  GstCaps *srcpadcaps, *tmpcaps;
+  GstPad *pad = NULL;
+
+  srcpadcaps =
+      gst_pad_get_current_caps (GST_BASE_TRANSFORM_SRC_PAD (videorate));
+
+  gst_video_guess_framerate (GST_BUFFER_PTS (buffer) -
+      GST_BUFFER_PTS (videorate->prevbuf), &fps_n, &fps_d);
+
+  tmpcaps = gst_caps_copy (srcpadcaps);
+  st = gst_caps_get_structure (tmpcaps, 0);
+  gst_structure_set (st, "framerate", GST_TYPE_FRACTION, fps_n, fps_d, NULL);
+  gst_caps_unref (srcpadcaps);
+
+  pad = gst_pad_get_peer (GST_BASE_TRANSFORM_SRC_PAD (videorate));
+  if (pad && !gst_pad_query_accept_caps (pad, tmpcaps)) {
+    videorate->force_variable_rate = TRUE;
+    GST_DEBUG_OBJECT (videorate, "Downstream forces variable framerate"
+        " respecting it");
+
+    goto done;
+  }
+
+  videorate->to_rate_numerator = fps_n;
+  videorate->to_rate_denominator = fps_d;
+
+  GST_INFO_OBJECT (videorate, "Computed framerate to %d/%d",
+      videorate->to_rate_numerator, videorate->to_rate_denominator);
+
+  videorate->updating_caps = TRUE;
+  gst_base_transform_update_src_caps (GST_BASE_TRANSFORM (videorate), tmpcaps);
+
+done:
+  gst_caps_unref (tmpcaps);
+  if (pad)
+    gst_object_unref (pad);
+}
+
 static GstFlowReturn
 gst_video_rate_transform_ip (GstBaseTransform * trans, GstBuffer * buffer)
 {
@@ -992,6 +1062,11 @@ gst_video_rate_transform_ip (GstBaseTransform * trans, GstBuffer * buffer)
   if (videorate->from_rate_denominator == 0 ||
       videorate->to_rate_denominator == 0)
     goto not_negotiated;
+
+  if (videorate->to_rate_numerator == 0 && videorate->prevbuf &&
+      !videorate->force_variable_rate) {
+    gst_video_rate_check_variable_rate (videorate, buffer);
+  }
 
   GST_OBJECT_LOCK (videorate);
   avg_period = videorate->average_period_set;
@@ -1123,6 +1198,12 @@ gst_video_rate_transform_ip (GstBaseTransform * trans, GstBuffer * buffer)
           GST_TIME_FORMAT " outgoing ts %" GST_TIME_FORMAT,
           GST_TIME_ARGS (diff1), GST_TIME_ARGS (diff2),
           GST_TIME_ARGS (videorate->next_ts));
+
+      if (!GST_BUFFER_DURATION_IS_VALID (videorate->prevbuf) &&
+          intime > prevtime) {
+        /* Make sure that we have a duration for previous buffer */
+        GST_BUFFER_DURATION (videorate->prevbuf) = intime - prevtime;
+      }
 
       /* output first one when its the best */
       if (diff1 <= diff2) {

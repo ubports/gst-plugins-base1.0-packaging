@@ -28,8 +28,8 @@
  * <refsect2>
  * <title>Example pipelines</title>
  * |[
- * gst-launch -v filesrc location=test.ogg ! oggdemux ! vorbisdec ! audioconvert ! alsasink
- * ]| Decodes the vorbis audio stored inside an ogg container.
+ * gst-launch-1.0 -v filesrc location=test.ogg ! oggdemux ! vorbisdec ! audioconvert ! audioresample ! autoaudiosink
+ * ]| Decodes a vorbis audio stream stored inside an ogg container and plays it.
  * </refsect2>
  */
 
@@ -586,6 +586,74 @@ gst_ogg_demux_chain_peer (GstOggPad * pad, ogg_packet * packet,
     GST_DEBUG_OBJECT (ogg, "packet duration %" G_GUINT64_FORMAT, duration);
   }
 
+
+  /* If we get a hole at start, it might be we're catching a stream
+   * partway through. In that case, if the stream has an index, the
+   * index might be mooted. However, as it's totally valid to index
+   * a stream with a hole at start (ie, capturing a live stream and
+   * then index it), we now check whether the index references some
+   * offset beyond the byte length (if known). If this is the case,
+   * we can be reasonably sure we're getting a stream partway, with
+   * its index being now useless since we don't know how many bytes
+   * were skipped, preventing us from patching the index offsets to
+   * match the hole size. */
+  if (!is_header && ogg->check_index_overflow) {
+    GstQuery *query;
+    GstFormat format;
+    int i;
+    gint64 length;
+    gboolean beyond;
+
+    if (ogg->current_chain) {
+      query = gst_query_new_duration (GST_FORMAT_BYTES);
+      if (gst_pad_peer_query (ogg->sinkpad, query)) {
+        gst_query_parse_duration (query, &format, &length);
+        if (format == GST_FORMAT_BYTES && length >= 0) {
+          for (i = 0; i < ogg->current_chain->streams->len; i++) {
+            GstOggPad *ipad =
+                g_array_index (ogg->current_chain->streams, GstOggPad *, i);
+            if (!ipad->map.index)
+              continue;
+            beyond = ipad->map.n_index
+                && ipad->map.index[ipad->map.n_index - 1].offset >= length;
+            if (beyond) {
+              GST_WARNING_OBJECT (pad, "Index offsets beyong byte length");
+              if (ipad->discont) {
+                /* hole - the index is most likely screwed up */
+                GST_WARNING_OBJECT (ogg, "Discarding entire index");
+                g_free (ipad->map.index);
+                ipad->map.index = NULL;
+                ipad->map.n_index = 0;
+              } else {
+                /* no hole - we can just clip the index if needed */
+                GST_WARNING_OBJECT (ogg, "Clipping index");
+                while (ipad->map.n_index > 0
+                    && ipad->map.index[ipad->map.n_index - 1].offset >= length)
+                  ipad->map.n_index--;
+                if (ipad->map.n_index == 0) {
+                  GST_WARNING_OBJECT (ogg, "The entire index was clipped");
+                  g_free (ipad->map.index);
+                  ipad->map.index = NULL;
+                }
+              }
+              /* We can't trust the total time if the index goes beyond */
+              ipad->map.total_time = -1;
+            } else {
+              /* use total time to update the total ogg time */
+              if (ogg->total_time == -1) {
+                ogg->total_time = ipad->map.total_time;
+              } else if (ipad->map.total_time > 0) {
+                ogg->total_time = MAX (ogg->total_time, ipad->map.total_time);
+              }
+            }
+          }
+        }
+      }
+      gst_query_unref (query);
+    }
+    ogg->check_index_overflow = FALSE;
+  }
+
   if (packet->b_o_s) {
     out_timestamp = GST_CLOCK_TIME_NONE;
     out_duration = GST_CLOCK_TIME_NONE;
@@ -919,13 +987,7 @@ gst_ogg_pad_submit_packet (GstOggPad * pad, ogg_packet * packet)
           case GST_OGG_SKELETON_INDEX:
             gst_ogg_map_add_index (&skel_pad->map, &pad->map, packet->packet,
                 packet->bytes);
-
-            /* use total time to update the total ogg time */
-            if (ogg->total_time == -1) {
-              ogg->total_time = skel_pad->map.total_time;
-            } else if (skel_pad->map.total_time > 0) {
-              ogg->total_time = MAX (ogg->total_time, skel_pad->map.total_time);
-            }
+            ogg->check_index_overflow = TRUE;
             break;
           default:
             break;
@@ -1225,8 +1287,9 @@ gst_ogg_demux_setup_first_granule (GstOggDemux * ogg, GstOggPad * pad,
   if (pad->current_granule == -1) {
     ogg_int64_t granpos = ogg_page_granulepos (page);
     if (granpos > 0) {
-      ogg_int64_t granule =
-          gst_ogg_stream_granulepos_to_granule (&pad->map, granpos), duration;
+      gint64 granule =
+          (gint64) gst_ogg_stream_granulepos_to_granule (&pad->map, granpos);
+      gint64 duration;
       int packets = ogg_page_packets (page), n;
       GST_DEBUG_OBJECT (pad,
           "This page completes %d packets, granule %" G_GINT64_FORMAT, packets,
@@ -1462,6 +1525,7 @@ gst_ogg_demux_seek_back_after_push_duration_check_unlock (GstOggDemux * ogg)
         GST_SEEK_TYPE_SET, 1, GST_SEEK_TYPE_SET, GST_CLOCK_TIME_NONE);
   }
   gst_event_replace (&ogg->seek_event, event);
+  gst_event_unref (event);
   GST_PUSH_UNLOCK (ogg);
   g_mutex_lock (&ogg->seek_event_mutex);
   g_cond_broadcast (&ogg->seek_event_cond);
@@ -1792,6 +1856,7 @@ gst_ogg_pad_handle_push_mode_state (GstOggPad * pad, ogg_page * page)
       gst_event_set_seqnum (sevent, ogg->seqnum);
 
       gst_event_replace (&ogg->seek_event, sevent);
+      gst_event_unref (sevent);
       GST_PUSH_UNLOCK (ogg);
       g_mutex_lock (&ogg->seek_event_mutex);
       g_cond_broadcast (&ogg->seek_event_cond);
@@ -2028,7 +2093,6 @@ static GstOggPad *
 gst_ogg_chain_new_stream (GstOggChain * chain, guint32 serialno)
 {
   GstOggPad *ret;
-  GstTagList *list;
   gchar *name;
 
   GST_DEBUG_OBJECT (chain->ogg,
@@ -2049,12 +2113,6 @@ gst_ogg_chain_new_stream (GstOggChain * chain, guint32 serialno)
   ret->map.serialno = serialno;
   if (ogg_stream_init (&ret->map.stream, serialno) != 0)
     goto init_failed;
-
-  /* FIXME: either do something with it or remove it */
-  list = gst_tag_list_new_empty ();
-  gst_tag_list_add (list, GST_TAG_MERGE_REPLACE, GST_TAG_SERIAL, serialno,
-      NULL);
-  gst_tag_list_unref (list);
 
   GST_DEBUG_OBJECT (chain->ogg,
       "created new ogg src %p for stream with serial %08x", ret, serialno);
@@ -3583,6 +3641,7 @@ gst_ogg_demux_get_duration_push (GstOggDemux * ogg, int flags)
   sevent = gst_event_new_seek (1.0, GST_FORMAT_BYTES, flags, GST_SEEK_TYPE_SET,
       position, GST_SEEK_TYPE_SET, ogg->push_byte_length - 1);
   gst_event_replace (&ogg->seek_event, sevent);
+  gst_event_unref (sevent);
   g_mutex_lock (&ogg->seek_event_mutex);
   g_cond_broadcast (&ogg->seek_event_cond);
   g_mutex_unlock (&ogg->seek_event_mutex);
@@ -3793,6 +3852,7 @@ gst_ogg_demux_perform_seek_push (GstOggDemux * ogg, GstEvent * event)
   gst_event_set_seqnum (sevent, gst_event_get_seqnum (event));
 
   gst_event_replace (&ogg->seek_event, sevent);
+  gst_event_unref (sevent);
   GST_PUSH_UNLOCK (ogg);
   g_mutex_lock (&ogg->seek_event_mutex);
   g_cond_broadcast (&ogg->seek_event_cond);
@@ -4541,7 +4601,8 @@ gst_ogg_demux_combine_flows (GstOggDemux * ogg, GstOggPad * pad,
   pad->last_ret = ret;
   pad->is_eos = (ret == GST_FLOW_EOS);
 
-  return gst_flow_combiner_update_flow (ogg->flowcombiner, ret);
+  return gst_flow_combiner_update_pad_flow (ogg->flowcombiner,
+      GST_PAD_CAST (pad), ret);
 }
 
 static GstFlowReturn
@@ -4814,7 +4875,7 @@ gst_ogg_demux_loop_push (GstOggDemux * ogg)
     if (!event)
       continue;
 
-    GST_ERROR ("Pushing event %" GST_PTR_FORMAT, event);
+    GST_DEBUG_OBJECT (ogg->sinkpad, "Pushing event %" GST_PTR_FORMAT, event);
     if (!gst_pad_push_event (ogg->sinkpad, event)) {
       GST_WARNING_OBJECT (ogg, "Failed to push event");
       GST_PUSH_LOCK (ogg);
@@ -4824,7 +4885,7 @@ gst_ogg_demux_loop_push (GstOggDemux * ogg)
       }
       GST_PUSH_UNLOCK (ogg);
     } else {
-      GST_ERROR ("Pushed event ok");
+      GST_DEBUG_OBJECT (ogg->sinkpad, "Pushed event ok");
     }
   }
   gst_object_unref (ogg);

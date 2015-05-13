@@ -298,7 +298,7 @@ struct _GstLineCache
   gpointer need_line_data;
   GDestroyNotify need_line_notify;
 
-  gboolean n_lines;
+  guint n_lines;
   guint stride;
   GstLineCacheAllocLineFunc alloc_line;
   gpointer alloc_line_data;
@@ -566,28 +566,19 @@ get_opt_enum (GstVideoConverter * convert, const gchar * opt, GType type,
   return res;
 }
 
-static const gchar *
-get_opt_str (GstVideoConverter * convert, const gchar * opt, const gchar * def)
-{
-  const gchar *res;
-  if (!(res = gst_structure_get_string (convert->config, opt)))
-    res = def;
-  return res;
-}
-
 #define DEFAULT_OPT_FILL_BORDER TRUE
 #define DEFAULT_OPT_ALPHA_VALUE 1.0
 /* options copy, set, mult */
-#define DEFAULT_OPT_ALPHA_MODE "copy"
+#define DEFAULT_OPT_ALPHA_MODE GST_VIDEO_ALPHA_MODE_COPY
 #define DEFAULT_OPT_BORDER_ARGB 0xff000000
 /* options full, input-only, output-only, none */
-#define DEFAULT_OPT_MATRIX_MODE "full"
+#define DEFAULT_OPT_MATRIX_MODE GST_VIDEO_MATRIX_MODE_FULL
 /* none, remap */
-#define DEFAULT_OPT_GAMMA_MODE "none"
+#define DEFAULT_OPT_GAMMA_MODE GST_VIDEO_GAMMA_MODE_NONE
 /* none, merge-only, fast */
-#define DEFAULT_OPT_PRIMARIES_MODE "none"
+#define DEFAULT_OPT_PRIMARIES_MODE GST_VIDEO_PRIMARIES_MODE_NONE
 /* options full, upsample-only, downsample-only, none */
-#define DEFAULT_OPT_CHROMA_MODE "full"
+#define DEFAULT_OPT_CHROMA_MODE GST_VIDEO_CHROMA_MODE_FULL
 #define DEFAULT_OPT_RESAMPLER_METHOD GST_VIDEO_RESAMPLER_METHOD_CUBIC
 #define DEFAULT_OPT_CHROMA_RESAMPLER_METHOD GST_VIDEO_RESAMPLER_METHOD_LINEAR
 #define DEFAULT_OPT_RESAMPLER_TAPS 0
@@ -598,18 +589,18 @@ get_opt_str (GstVideoConverter * convert, const gchar * opt, const gchar * def)
     GST_VIDEO_CONVERTER_OPT_FILL_BORDER, DEFAULT_OPT_FILL_BORDER)
 #define GET_OPT_ALPHA_VALUE(c) get_opt_double(c, \
     GST_VIDEO_CONVERTER_OPT_ALPHA_VALUE, DEFAULT_OPT_ALPHA_VALUE)
-#define GET_OPT_ALPHA_MODE(c) get_opt_str(c, \
-    GST_VIDEO_CONVERTER_OPT_ALPHA_MODE, DEFAULT_OPT_ALPHA_MODE)
+#define GET_OPT_ALPHA_MODE(c) get_opt_enum(c, \
+    GST_VIDEO_CONVERTER_OPT_ALPHA_MODE, GST_TYPE_VIDEO_ALPHA_MODE, DEFAULT_OPT_ALPHA_MODE)
 #define GET_OPT_BORDER_ARGB(c) get_opt_uint(c, \
     GST_VIDEO_CONVERTER_OPT_BORDER_ARGB, DEFAULT_OPT_BORDER_ARGB)
-#define GET_OPT_MATRIX_MODE(c) get_opt_str(c, \
-    GST_VIDEO_CONVERTER_OPT_MATRIX_MODE, DEFAULT_OPT_MATRIX_MODE)
-#define GET_OPT_GAMMA_MODE(c) get_opt_str(c, \
-    GST_VIDEO_CONVERTER_OPT_GAMMA_MODE, DEFAULT_OPT_GAMMA_MODE)
-#define GET_OPT_PRIMARIES_MODE(c) get_opt_str(c, \
-    GST_VIDEO_CONVERTER_OPT_PRIMARIES_MODE, DEFAULT_OPT_PRIMARIES_MODE)
-#define GET_OPT_CHROMA_MODE(c) get_opt_str(c, \
-    GST_VIDEO_CONVERTER_OPT_CHROMA_MODE, DEFAULT_OPT_CHROMA_MODE)
+#define GET_OPT_MATRIX_MODE(c) get_opt_enum(c, \
+    GST_VIDEO_CONVERTER_OPT_MATRIX_MODE, GST_TYPE_VIDEO_MATRIX_MODE, DEFAULT_OPT_MATRIX_MODE)
+#define GET_OPT_GAMMA_MODE(c) get_opt_enum(c, \
+    GST_VIDEO_CONVERTER_OPT_GAMMA_MODE, GST_TYPE_VIDEO_GAMMA_MODE, DEFAULT_OPT_GAMMA_MODE)
+#define GET_OPT_PRIMARIES_MODE(c) get_opt_enum(c, \
+    GST_VIDEO_CONVERTER_OPT_PRIMARIES_MODE, GST_TYPE_VIDEO_PRIMARIES_MODE, DEFAULT_OPT_PRIMARIES_MODE)
+#define GET_OPT_CHROMA_MODE(c) get_opt_enum(c, \
+    GST_VIDEO_CONVERTER_OPT_CHROMA_MODE, GST_TYPE_VIDEO_CHROMA_MODE, DEFAULT_OPT_CHROMA_MODE)
 #define GET_OPT_RESAMPLER_METHOD(c) get_opt_enum(c, \
     GST_VIDEO_CONVERTER_OPT_RESAMPLER_METHOD, GST_TYPE_VIDEO_RESAMPLER_METHOD, \
     DEFAULT_OPT_RESAMPLER_METHOD)
@@ -624,26 +615,26 @@ get_opt_str (GstVideoConverter * convert, const gchar * opt, const gchar * def)
 #define GET_OPT_DITHER_QUANTIZATION(c) get_opt_uint(c, \
     GST_VIDEO_CONVERTER_OPT_DITHER_QUANTIZATION, DEFAULT_OPT_DITHER_QUANTIZATION)
 
-#define CHECK_ALPHA_COPY(c) (!g_strcmp0(GET_OPT_ALPHA_MODE(c), "copy"))
-#define CHECK_ALPHA_SET(c) (!g_strcmp0(GET_OPT_ALPHA_MODE(c), "set"))
-#define CHECK_ALPHA_MULT(c) (!g_strcmp0(GET_OPT_ALPHA_MODE(c), "mult"))
+#define CHECK_ALPHA_COPY(c) (GET_OPT_ALPHA_MODE(c) == GST_VIDEO_ALPHA_MODE_COPY)
+#define CHECK_ALPHA_SET(c) (GET_OPT_ALPHA_MODE(c) == GST_VIDEO_ALPHA_MODE_SET)
+#define CHECK_ALPHA_MULT(c) (GET_OPT_ALPHA_MODE(c) == GST_VIDEO_ALPHA_MODE_MULT)
 
-#define CHECK_MATRIX_FULL(c) (!g_strcmp0(GET_OPT_MATRIX_MODE(c), "full"))
-#define CHECK_MATRIX_INPUT(c) (!g_strcmp0(GET_OPT_MATRIX_MODE(c), "input-only"))
-#define CHECK_MATRIX_OUTPUT(c) (!g_strcmp0(GET_OPT_MATRIX_MODE(c), "output-only"))
-#define CHECK_MATRIX_NONE(c) (!g_strcmp0(GET_OPT_MATRIX_MODE(c), "none"))
+#define CHECK_MATRIX_FULL(c) (GET_OPT_MATRIX_MODE(c) == GST_VIDEO_MATRIX_MODE_FULL)
+#define CHECK_MATRIX_INPUT(c) (GET_OPT_MATRIX_MODE(c) == GST_VIDEO_MATRIX_MODE_INPUT_ONLY)
+#define CHECK_MATRIX_OUTPUT(c) (GET_OPT_MATRIX_MODE(c) == GST_VIDEO_MATRIX_MODE_OUTPUT_ONLY)
+#define CHECK_MATRIX_NONE(c) (GET_OPT_MATRIX_MODE(c) == GST_VIDEO_MATRIX_MODE_NONE)
 
-#define CHECK_GAMMA_NONE(c) (!g_strcmp0(GET_OPT_GAMMA_MODE(c), "none"))
-#define CHECK_GAMMA_REMAP(c) (!g_strcmp0(GET_OPT_GAMMA_MODE(c), "remap"))
+#define CHECK_GAMMA_NONE(c) (GET_OPT_GAMMA_MODE(c) == GST_VIDEO_GAMMA_MODE_NONE)
+#define CHECK_GAMMA_REMAP(c) (GET_OPT_GAMMA_MODE(c) == GST_VIDEO_GAMMA_MODE_REMAP)
 
-#define CHECK_PRIMARIES_NONE(c) (!g_strcmp0(GET_OPT_PRIMARIES_MODE(c), "none"))
-#define CHECK_PRIMARIES_MERGE(c) (!g_strcmp0(GET_OPT_PRIMARIES_MODE(c), "merge-only"))
-#define CHECK_PRIMARIES_FAST(c) (!g_strcmp0(GET_OPT_PRIMARIES_MODE(c), "fast"))
+#define CHECK_PRIMARIES_NONE(c) (GET_OPT_PRIMARIES_MODE(c) == GST_VIDEO_PRIMARIES_MODE_NONE)
+#define CHECK_PRIMARIES_MERGE(c) (GET_OPT_PRIMARIES_MODE(c) == GST_VIDEO_PRIMARIES_MODE_MERGE_ONLY)
+#define CHECK_PRIMARIES_FAST(c) (GET_OPT_PRIMARIES_MODE(c) == GST_VIDEO_PRIMARIES_MODE_FAST)
 
-#define CHECK_CHROMA_FULL(c) (!g_strcmp0(GET_OPT_CHROMA_MODE(c), "full"))
-#define CHECK_CHROMA_UPSAMPLE(c) (!g_strcmp0(GET_OPT_CHROMA_MODE(c), "upsample-only"))
-#define CHECK_CHROMA_DOWNSAMPLE(c) (!g_strcmp0(GET_OPT_CHROMA_MODE(c), "downsample-only"))
-#define CHECK_CHROMA_NONE(c) (!g_strcmp0(GET_OPT_CHROMA_MODE(c), "none"))
+#define CHECK_CHROMA_FULL(c) (GET_OPT_CHROMA_MODE(c) == GST_VIDEO_CHROMA_MODE_FULL)
+#define CHECK_CHROMA_UPSAMPLE(c) (GET_OPT_CHROMA_MODE(c) == GST_VIDEO_CHROMA_MODE_UPSAMPLE_ONLY)
+#define CHECK_CHROMA_DOWNSAMPLE(c) (GET_OPT_CHROMA_MODE(c) == GST_VIDEO_CHROMA_MODE_DOWNSAMPLE_ONLY)
+#define CHECK_CHROMA_NONE(c) (GET_OPT_CHROMA_MODE(c) == GST_VIDEO_CHROMA_MODE_NONE)
 
 static GstLineCache *
 chain_unpack_line (GstVideoConverter * convert)
@@ -1676,7 +1667,7 @@ convert_mult_alpha_u16 (GstVideoConverter * convert, gpointer pixels,
 
   for (i = 0; i < width; i++) {
     gint a = (p[i * 4] * alpha) / 255;
-    p[i * 4] = CLAMP (a, 0, 255);
+    p[i * 4] = CLAMP (a, 0, 65535);
   }
 }
 
@@ -3705,8 +3696,6 @@ convert_fill_border (GstVideoConverter * convert, GstVideoFrame * dest)
   }
 }
 
-#define GET_TMP_LINE(fl,idx) &fl->data[fl->stride * ((idx) % fl->n_lines)]
-
 static void
 convert_plane_fill (GstVideoConverter * convert,
     const GstVideoFrame * src, GstVideoFrame * dest, gint plane)
@@ -3936,6 +3925,7 @@ get_scale_format (GstVideoFormat format, gint plane)
     case GST_VIDEO_FORMAT_NV12:
     case GST_VIDEO_FORMAT_NV21:
     case GST_VIDEO_FORMAT_NV16:
+    case GST_VIDEO_FORMAT_NV61:
     case GST_VIDEO_FORMAT_NV24:
       res = plane == 0 ? GST_VIDEO_FORMAT_GRAY8 : GST_VIDEO_FORMAT_NV12;
       break;
@@ -3987,7 +3977,7 @@ setup_scale (GstVideoConverter * convert)
 {
   int i, n_planes;
   gint method, cr_method, stride, in_width, in_height, out_width, out_height;
-  guint taps, max_taps = 0;
+  guint taps;
   GstVideoInfo *in_info, *out_info;
   const GstVideoFormatInfo *in_finfo, *out_finfo;
   GstVideoFormat in_format, out_format;
@@ -4087,7 +4077,6 @@ setup_scale (GstVideoConverter * convert)
       convert->fv_scaler[0] =
           gst_video_scaler_new (method, GST_VIDEO_SCALER_FLAG_NONE, taps,
           in_height, out_height, convert->config);
-      gst_video_scaler_get_coeff (convert->fv_scaler[0], 0, NULL, &max_taps);
     } else {
       convert->fv_scaler[0] = NULL;
     }
@@ -4101,7 +4090,6 @@ setup_scale (GstVideoConverter * convert)
     convert->fsplane[0] = 0;
   } else {
     for (i = 0; i < n_planes; i++) {
-      guint n_taps = 0;
       gint comp, n_comp, j, iw, ih, ow, oh, pstride;
       gboolean need_v_scaler, need_h_scaler;
       GstStructure *config;
@@ -4235,12 +4223,10 @@ setup_scale (GstVideoConverter * convert)
       if (need_v_scaler && ih != 0 && oh != 0) {
         convert->fv_scaler[i] = gst_video_scaler_new (resample_method,
             GST_VIDEO_SCALER_FLAG_NONE, taps, ih, oh, config);
-        gst_video_scaler_get_coeff (convert->fv_scaler[i], 0, NULL, &n_taps);
       } else
         convert->fv_scaler[i] = NULL;
 
       gst_structure_free (config);
-      max_taps = MAX (max_taps, n_taps);
       convert->fformat[i] = get_scale_format (in_format, i);
     }
   }
@@ -4535,6 +4521,9 @@ static const VideoTransform transforms[] = {
   {GST_VIDEO_FORMAT_NV16, GST_VIDEO_FORMAT_NV16, TRUE, FALSE, FALSE, TRUE,
       TRUE, FALSE, FALSE, FALSE, 0, 0, convert_scale_planes},
   {GST_VIDEO_FORMAT_NV16, GST_VIDEO_FORMAT_NV24, TRUE, FALSE, FALSE, TRUE,
+      TRUE, FALSE, FALSE, FALSE, 0, 0, convert_scale_planes},
+
+  {GST_VIDEO_FORMAT_NV61, GST_VIDEO_FORMAT_NV61, TRUE, FALSE, FALSE, TRUE,
       TRUE, FALSE, FALSE, FALSE, 0, 0, convert_scale_planes},
 
   {GST_VIDEO_FORMAT_NV24, GST_VIDEO_FORMAT_NV12, TRUE, FALSE, FALSE, TRUE,

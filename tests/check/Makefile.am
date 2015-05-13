@@ -6,7 +6,7 @@ TEST_FILES_DIRECTORY = $(top_srcdir)/tests/files
 REGISTRY_ENVIRONMENT = \
 	GST_REGISTRY_1_0=$(CHECK_REGISTRY)
 
-TESTS_ENVIRONMENT = \
+AM_TESTS_ENVIRONMENT = \
 	CK_DEFAULT_TIMEOUT=120                                  \
 	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
 	$(REGISTRY_ENVIRONMENT)					\
@@ -20,11 +20,11 @@ TESTS_ENVIRONMENT = \
 CLEANFILES = core.* test-registry.*
 
 clean-local: clean-local-check
-	
+
 distclean-local: distclean-local-orc
 
 $(CHECK_REGISTRY):
-	$(TESTS_ENVIRONMENT)
+	$(AM_TESTS_ENVIRONMENT)
 
 # elements to ignore for the state tests
 STATE_IGNORE_ELEMENTS = cdio cdparanoiasrc libvisual_ alsasrc alsasink
@@ -258,10 +258,12 @@ noinst_HEADERS = \
 AM_CFLAGS = -I$(top_srcdir)/gst-libs -I$(top_builddir)/gst-libs \
 	$(GST_CFLAGS) $(GST_CHECK_CFLAGS) \
 	-DGST_TEST_FILES_PATH="\"$(TEST_FILES_DIRECTORY)\"" \
+	-DGST_CHECK_TEST_ENVIRONMENT_BEACON="\"GST_PLUGIN_LOADING_WHITELIST\"" \
 	-UG_DISABLE_ASSERT -UG_DISABLE_CAST_CHECKS
 AM_CXXFLAGS = -I$(top_srcdir)/gst-libs -I$(top_builddir)/gst-libs \
 	$(GST_CXXFLAGS) $(GST_CHECK_CFLAGS) \
 	-DGST_TEST_FILES_PATH="\"$(TEST_FILES_DIRECTORY)\"" \
+	-DGST_CHECK_TEST_ENVIRONMENT_BEACON="\"GST_PLUGIN_LOADING_WHITELIST\"" \
 	-UG_DISABLE_ASSERT -UG_DISABLE_CAST_CHECKS
 LDADD = $(GST_LIBS) $(GST_CHECK_LIBS)
 

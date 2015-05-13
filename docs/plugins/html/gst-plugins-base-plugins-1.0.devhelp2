@@ -82,9 +82,9 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.4"/>
-    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.5.1"/>
-    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.5.2"/>
+    <keyword type="" name="Example launch line" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.5"/>
+    <keyword type="" name="Element Information" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.6.1"/>
+    <keyword type="" name="Element Pads" link="gst-plugins-base-plugins-adder.html#id-1.2.2.8.6.2"/>
     <keyword type="struct" name="struct GstAdder" link="gst-plugins-base-plugins-adder.html#GstAdder-struct"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-adder.html#GstAdder--caps"/>
     <keyword type="" name="Element Information" link="gst-plugins-base-plugins-appsrc.html#id-1.2.3.9.5.1.1"/>

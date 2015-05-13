@@ -962,17 +962,6 @@ uninstall-man: uninstall-man1
 	uninstall-binPROGRAMS uninstall-man uninstall-man1
 
 
-Android.mk: Makefile.am
-	androgenizer -:PROJECT gst-discoverer-@GST_API_VERSION@ \
-	 -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:EXECUTABLE gst-discoverer-@GST_API_VERSION@ -:TAGS eng debug \
-	 -:SOURCES $(gst_discoverer_@GST_API_VERSION@_SOURCES) \
-	 -:CFLAGS $(DEFS) $(AM_CFLAGS) \
-	 -:LDFLAGS -lgstpbutils-@GST_API_VERSION@ -lgstvideo-@GST_API_VERSION@ \
-	 	   $(GST_BASE_LIBS) $(GST_LIBS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@
-
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

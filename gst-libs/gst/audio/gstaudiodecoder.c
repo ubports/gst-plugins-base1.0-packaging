@@ -383,6 +383,10 @@ static gboolean gst_audio_decoder_negotiate_default (GstAudioDecoder * dec);
 static gboolean gst_audio_decoder_negotiate_unlocked (GstAudioDecoder * dec);
 static gboolean gst_audio_decoder_handle_gap (GstAudioDecoder * dec,
     GstEvent * event);
+static gboolean gst_audio_decoder_sink_query_default (GstAudioDecoder * dec,
+    GstQuery * query);
+static gboolean gst_audio_decoder_src_query_default (GstAudioDecoder * dec,
+    GstQuery * query);
 
 static GstElementClass *parent_class = NULL;
 
@@ -470,6 +474,10 @@ gst_audio_decoder_class_init (GstAudioDecoderClass * klass)
       GST_DEBUG_FUNCPTR (gst_audio_decoder_decide_allocation_default);
   audiodecoder_class->negotiate =
       GST_DEBUG_FUNCPTR (gst_audio_decoder_negotiate_default);
+  audiodecoder_class->sink_query =
+      GST_DEBUG_FUNCPTR (gst_audio_decoder_sink_query_default);
+  audiodecoder_class->src_query =
+      GST_DEBUG_FUNCPTR (gst_audio_decoder_src_query_default);
 }
 
 static void
@@ -622,7 +630,7 @@ gst_audio_decoder_push_event (GstAudioDecoder * dec, GstEvent * event)
 
       dec->output_segment = seg;
       dec->priv->in_out_segment_sync =
-          (memcmp (&dec->input_segment, &seg, sizeof (seg)) == 0);
+          gst_segment_is_equal (&dec->input_segment, &seg);
       GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
       break;
     }
@@ -1113,7 +1121,7 @@ apply_pending_events (GstAudioDecoder * dec)
 
         dec->output_segment = seg;
         dec->priv->in_out_segment_sync =
-            (memcmp (&dec->input_segment, &seg, sizeof (seg)) == 0);
+            gst_segment_is_equal (&dec->input_segment, &seg);
         GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
         break;
       }
@@ -1890,12 +1898,6 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
   gint caps_size;
   GstStructure *structure;
 
-  caps = gst_pad_get_current_caps (dec->srcpad);
-  if (caps && !gst_audio_info_from_caps (&dec->priv->ctx.info, caps))
-    goto caps_error;
-  if (caps)
-    gst_caps_unref (caps);
-
   caps = gst_pad_get_allowed_caps (dec->srcpad);
   if (!caps || gst_caps_is_empty (caps) || gst_caps_is_any (caps))
     goto caps_error;
@@ -1964,12 +1966,6 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
       "Chose default caps %" GST_PTR_FORMAT " for initial gap", caps);
   gst_caps_unref (caps);
 
-  if (!gst_audio_decoder_negotiate_unlocked (dec)) {
-    GST_INFO_OBJECT (dec, "Failed to negotiate default caps for initial gap");
-    gst_pad_mark_reconfigure (dec->srcpad);
-    return FALSE;
-  }
-
   return TRUE;
 
 caps_error:
@@ -1985,15 +1981,25 @@ gst_audio_decoder_handle_gap (GstAudioDecoder * dec, GstEvent * event)
 {
   gboolean ret;
   GstClockTime timestamp, duration;
+  gboolean needs_reconfigure = FALSE;
 
   /* Ensure we have caps first */
   GST_AUDIO_DECODER_STREAM_LOCK (dec);
   if (!GST_AUDIO_INFO_IS_VALID (&dec->priv->ctx.info)) {
     if (!gst_audio_decoder_negotiate_default_caps (dec)) {
+      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
       GST_ELEMENT_ERROR (dec, STREAM, FORMAT, (NULL),
           ("Decoder output not negotiated before GAP event."));
-      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
       return FALSE;
+    }
+    needs_reconfigure = TRUE;
+  }
+  needs_reconfigure = gst_pad_check_reconfigure (dec->srcpad)
+      || needs_reconfigure;
+  if (G_UNLIKELY (dec->priv->ctx.output_format_changed || needs_reconfigure)) {
+    if (!gst_audio_decoder_negotiate_unlocked (dec)) {
+      GST_WARNING_OBJECT (dec, "Failed to negotiate with downstream");
+      gst_pad_mark_reconfigure (dec->srcpad);
     }
   }
   GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
@@ -2153,6 +2159,18 @@ gst_audio_decoder_sink_eventfunc (GstAudioDecoder * dec, GstEvent * event)
 
       /* Forward FLUSH_STOP, it is expected to be forwarded immediately
        * and no buffers are queued anyway. */
+      ret = gst_audio_decoder_push_event (dec, event);
+      break;
+
+    case GST_EVENT_SEGMENT_DONE:
+      GST_AUDIO_DECODER_STREAM_LOCK (dec);
+      gst_audio_decoder_drain (dec);
+      GST_AUDIO_DECODER_STREAM_UNLOCK (dec);
+
+      /* Forward SEGMENT_DONE because no buffer or serialized event might come after
+       * SEGMENT_DONE and nothing could trigger another _finish_frame() call. */
+      if (dec->priv->pending_events)
+        send_pending_events (dec);
       ret = gst_audio_decoder_push_event (dec, event);
       break;
 
@@ -2535,15 +2553,11 @@ gst_audio_decoder_sink_getcaps (GstAudioDecoder * decoder, GstCaps * filter)
   return caps;
 }
 
-
 static gboolean
-gst_audio_decoder_sink_query (GstPad * pad, GstObject * parent,
-    GstQuery * query)
+gst_audio_decoder_sink_query_default (GstAudioDecoder * dec, GstQuery * query)
 {
+  GstPad *pad = GST_AUDIO_DECODER_SINK_PAD (dec);
   gboolean res = FALSE;
-  GstAudioDecoder *dec;
-
-  dec = GST_AUDIO_DECODER (parent);
 
   GST_LOG_OBJECT (dec, "handling query: %" GST_PTR_FORMAT, query);
 
@@ -2624,7 +2638,7 @@ gst_audio_decoder_sink_query (GstPad * pad, GstObject * parent,
       /* fall-through */
     }
     default:
-      res = gst_pad_query_default (pad, parent, query);
+      res = gst_pad_query_default (pad, GST_OBJECT_CAST (dec), query);
       break;
   }
 
@@ -2632,17 +2646,34 @@ error:
   return res;
 }
 
+static gboolean
+gst_audio_decoder_sink_query (GstPad * pad, GstObject * parent,
+    GstQuery * query)
+{
+  GstAudioDecoderClass *dec_class;
+  GstAudioDecoder *dec;
+  gboolean ret = FALSE;
+
+  dec = GST_AUDIO_DECODER (parent);
+  dec_class = GST_AUDIO_DECODER_GET_CLASS (dec);
+
+  GST_DEBUG_OBJECT (pad, "received query %" GST_PTR_FORMAT, query);
+
+  if (dec_class->sink_query)
+    ret = dec_class->sink_query (dec, query);
+
+  return ret;
+}
+
 /* FIXME ? are any of these queries (other than latency) a decoder's business ??
  * also, the conversion stuff might seem to make sense, but seems to not mind
  * segment stuff etc at all
  * Supposedly that's backward compatibility ... */
 static gboolean
-gst_audio_decoder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
+gst_audio_decoder_src_query_default (GstAudioDecoder * dec, GstQuery * query)
 {
-  GstAudioDecoder *dec;
+  GstPad *pad = GST_AUDIO_DECODER_SRC_PAD (dec);
   gboolean res = FALSE;
-
-  dec = GST_AUDIO_DECODER (parent);
 
   GST_LOG_OBJECT (dec, "handling query: %" GST_PTR_FORMAT, query);
 
@@ -2652,7 +2683,7 @@ gst_audio_decoder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
       GstFormat format;
 
       /* upstream in any case */
-      if ((res = gst_pad_query_default (pad, parent, query)))
+      if ((res = gst_pad_query_default (pad, GST_OBJECT_CAST (dec), query)))
         break;
 
       gst_query_parse_duration (query, &format, NULL);
@@ -2749,11 +2780,29 @@ gst_audio_decoder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
       break;
     }
     default:
-      res = gst_pad_query_default (pad, parent, query);
+      res = gst_pad_query_default (pad, GST_OBJECT_CAST (dec), query);
       break;
   }
 
   return res;
+}
+
+static gboolean
+gst_audio_decoder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
+{
+  GstAudioDecoder *dec;
+  GstAudioDecoderClass *dec_class;
+  gboolean ret = FALSE;
+
+  dec = GST_AUDIO_DECODER (parent);
+  dec_class = GST_AUDIO_DECODER_GET_CLASS (dec);
+
+  GST_DEBUG_OBJECT (pad, "received query %" GST_PTR_FORMAT, query);
+
+  if (dec_class->src_query)
+    ret = dec_class->src_query (dec, query);
+
+  return ret;
 }
 
 static gboolean
