@@ -1,3 +1,9 @@
+gst-plugins-base1.0 (1.5.1-1) experimental; urgency=medium
+
+  * New unstable upstream release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Sun, 07 Jun 2015 10:20:35 +0200
+
 gst-plugins-base1.0 (1.5.0.1+git20150513-1) experimental; urgency=medium
 
   * New upstream GIT snapshot.
