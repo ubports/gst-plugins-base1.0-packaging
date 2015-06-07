@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.2.1\n"
+"Project-Id-Version: gst-plugins-base 1.4.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-05-13 13:04+0300\n"
-"PO-Revision-Date: 2014-01-22 17:42+0100\n"
+"POT-Creation-Date: 2015-06-07 09:34+0200\n"
+"PO-Revision-Date: 2014-07-22 12:38+0100\n"
 "Last-Translator: Johnny A. Solbu <johnny@solbu.net>\n"
 "Language-Team: Norwegian Bokmaal <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb_NO\n"
@@ -511,12 +511,87 @@ msgid ""
 "Don't exit after showing the initial device list, but wait for devices to "
 "added/removed."
 msgstr ""
+"Ikke avslutt etter å ha vist den første enheteslisten, men vent på at "
+"enheter blir lagt til/fjernet."
+
+#, fuzzy, c-format
+msgid "Volume: %.0f%%"
+msgstr "Volum"
 
 msgid "Buffering..."
 msgstr "Bufrer ..."
 
 msgid "Clock lost, selecting a new one\n"
+msgstr "Klokke tapt, velger en ny\n"
+
+msgid "Reached end of play list."
 msgstr ""
+
+#, c-format
+msgid "Now playing %s\n"
+msgstr ""
+
+#, c-format
+msgid "About to finish, preparing next title: %s"
+msgstr ""
+
+#, c-format
+msgid "Playback rate: %.2f"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Could not change playback rate to %.2f"
+msgstr "Kunne ikke åpne enheten for avspilling i stereo-modus."
+
+msgid "space"
+msgstr ""
+
+msgid "pause/unpause"
+msgstr ""
+
+msgid "q or ESC"
+msgstr ""
+
+msgid "quit"
+msgstr ""
+
+msgid "play next"
+msgstr ""
+
+msgid "play previous"
+msgstr ""
+
+msgid "seek forward"
+msgstr ""
+
+msgid "seek backward"
+msgstr ""
+
+#, fuzzy
+msgid "volume up"
+msgstr "Volum"
+
+msgid "volume down"
+msgstr ""
+
+msgid "increase playback rate"
+msgstr ""
+
+msgid "decrease playback rate"
+msgstr ""
+
+msgid "change playback direction"
+msgstr ""
+
+msgid "enable/disable trick modes"
+msgstr ""
+
+msgid "show keyboard shortcuts"
+msgstr ""
+
+#, fuzzy
+msgid "Interactive mode - keyboard controls:"
+msgstr "Interaktiv kontroll via tastatur"
 
 msgid "Video sink to use (default is autovideosink)"
 msgstr "Video-sink som skal brukes (standard er autovideosink)"
@@ -528,16 +603,17 @@ msgid "Enable gapless playback"
 msgstr "Aktiver sømløs avspilling"
 
 msgid "Shuffle playlist"
-msgstr ""
+msgstr "Stokke spilleliste"
 
-msgid "Interactive control via keyboard"
-msgstr ""
+#, fuzzy
+msgid "Disable interactive control via the keyboard"
+msgstr "Interaktiv kontroll via tastatur"
 
 msgid "Volume"
-msgstr ""
+msgstr "Volum"
 
 msgid "Playlist file containing input media files"
-msgstr ""
+msgstr "Spillelistefil som inneholder inngangsmediefiler"
 
 msgid "Do not print any output (apart from errors)"
 msgstr ""
@@ -548,6 +624,9 @@ msgstr "Bruk: %s FIL1|URI1 [FILE|URI2] [FILE|URI3] ..."
 
 msgid "You must provide at least one filename or URI to play."
 msgstr "Du må ha med minst ett filnavn eller nettadresse å spille."
+
+msgid "Press 'k' to see a list of keyboard shortcuts.\n"
+msgstr ""
 
 #~ msgid "A %s plugin is required to play this stream, but not installed."
 #~ msgstr ""

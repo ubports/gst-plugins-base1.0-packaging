@@ -2,13 +2,13 @@
 # Copyright (C) 2014 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gst-plugins-base package.
 # Danilo Segan <dsegan@gmx.net>, 2004.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011-2014.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base-1.3.2\n"
+"Project-Id-Version: gst-plugins-base-1.4.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-05-13 13:04+0300\n"
-"PO-Revision-Date: 2014-06-18 19:35+0200\n"
+"POT-Creation-Date: 2015-06-07 09:34+0200\n"
+"PO-Revision-Date: 2014-09-13 10:45+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
@@ -510,12 +510,87 @@ msgid ""
 "Don't exit after showing the initial device list, but wait for devices to "
 "added/removed."
 msgstr ""
+"Не излази након показивања почетног списка уређаја, већ чека да уређаји буду "
+"додати/уклоњени."
+
+#, fuzzy, c-format
+msgid "Volume: %.0f%%"
+msgstr "Јачина звука"
 
 msgid "Buffering..."
 msgstr "Смештам у међумеморију..."
 
 msgid "Clock lost, selecting a new one\n"
 msgstr "Сат је изгубљен, бирам нови\n"
+
+msgid "Reached end of play list."
+msgstr ""
+
+#, c-format
+msgid "Now playing %s\n"
+msgstr ""
+
+#, c-format
+msgid "About to finish, preparing next title: %s"
+msgstr ""
+
+#, c-format
+msgid "Playback rate: %.2f"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Could not change playback rate to %.2f"
+msgstr "Не могу да отворим уређај ради пуштања у стерео режиму."
+
+msgid "space"
+msgstr ""
+
+msgid "pause/unpause"
+msgstr ""
+
+msgid "q or ESC"
+msgstr ""
+
+msgid "quit"
+msgstr ""
+
+msgid "play next"
+msgstr ""
+
+msgid "play previous"
+msgstr ""
+
+msgid "seek forward"
+msgstr ""
+
+msgid "seek backward"
+msgstr ""
+
+#, fuzzy
+msgid "volume up"
+msgstr "Јачина звука"
+
+msgid "volume down"
+msgstr ""
+
+msgid "increase playback rate"
+msgstr ""
+
+msgid "decrease playback rate"
+msgstr ""
+
+msgid "change playback direction"
+msgstr ""
+
+msgid "enable/disable trick modes"
+msgstr ""
+
+msgid "show keyboard shortcuts"
+msgstr ""
+
+#, fuzzy
+msgid "Interactive mode - keyboard controls:"
+msgstr "Међудејствено управљање путем тастатуре"
 
 msgid "Video sink to use (default is autovideosink)"
 msgstr "Усаглашавање снимка за коришћење (основно је „autovideosink“)"
@@ -529,7 +604,8 @@ msgstr "Укључује пуштање без застоја"
 msgid "Shuffle playlist"
 msgstr "Меша списак нумера"
 
-msgid "Interactive control via keyboard"
+#, fuzzy
+msgid "Disable interactive control via the keyboard"
 msgstr "Међудејствено управљање путем тастатуре"
 
 msgid "Volume"
@@ -549,6 +625,9 @@ msgstr ""
 msgid "You must provide at least one filename or URI to play."
 msgstr ""
 "Морате да доставите барем један назив датотеке или путању да бисте пустили."
+
+msgid "Press 'k' to see a list of keyboard shortcuts.\n"
+msgstr ""
 
 #~ msgid "A %s plugin is required to play this stream, but not installed."
 #~ msgstr ""

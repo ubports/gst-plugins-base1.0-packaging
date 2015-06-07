@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: videoconvert</title>
+<title>videoconvert: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-encodebin.html" title="encodebin">
 <link rel="next" href="gst-plugins-base-plugins-giosink.html" title="giosink">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,11 +41,53 @@
 <col width="300px" class="properties_name">
 <col width="200px" class="properties_flags">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-GstVideoDither.html#GstVideoDitherMethod"><span class="type">GstVideoDitherMethod</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither" title="The “dither” property">dither</a></td>
 <td class="property_flags">Read / Write</td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GstVideoAlphaMode</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-mode" title="The “alpha-mode” property">alpha-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-value" title="The “alpha-value” property">alpha-value</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GstVideoChromaMode</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-mode" title="The “chroma-mode” property">chroma-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-GstVideoResampler.html#GstVideoResamplerMethod"><span class="type">GstVideoResamplerMethod</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-resampler" title="The “chroma-resampler” property">chroma-resampler</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither-quantization" title="The “dither-quantization” property">dither-quantization</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GstVideoGammaMode</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--gamma-mode" title="The “gamma-mode” property">gamma-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GstVideoMatrixMode</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--matrix-mode" title="The “matrix-mode” property">matrix-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">GstVideoPrimariesMode</span></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--primaries-mode" title="The “primaries-mode” property">primaries-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <a name="GstVideoConvert"></a><div class="refsect1">
@@ -141,11 +183,11 @@ automatically convert the video to a format understood by the video sink.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV61, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32, A420_10LE, A420_10BE, A422_10LE, A422_10BE, A444_10LE, A444_10BE }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV61, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32, A420_10LE, A420_10BE, A422_10LE, A422_10BE, A444_10LE, A444_10BE }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 </tbody>
 </table></div>
@@ -169,11 +211,11 @@ automatically convert the video to a format understood by the video sink.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV61, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32, A420_10LE, A420_10BE, A422_10LE, A422_10BE, A444_10LE, A444_10BE }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+<td> video/x-raw(ANY), format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV61, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32, A420_10LE, A420_10BE, A422_10LE, A422_10BE, A444_10LE, A444_10BE }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 </tbody>
 </table></div>
@@ -184,6 +226,7 @@ automatically convert the video to a format understood by the video sink.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videoconvert.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videoconvert.other_details"></a><h2>Types and Values</h2>
@@ -200,12 +243,76 @@ automatically convert the video to a format understood by the video sink.
 <pre class="programlisting">  “dither”                   <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-GstVideoDither.html#GstVideoDitherMethod"><span class="type">GstVideoDitherMethod</span></a></pre>
 <p>Apply dithering while converting.</p>
 <p>Flags: Read / Write</p>
-<p>Default value: GST_VIDEO_DITHER_NONE</p>
+<p>Default value: GST_VIDEO_DITHER_BAYER</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--alpha-mode"></a><h3>The <code class="literal">“alpha-mode”</code> property</h3>
+<pre class="programlisting">  “alpha-mode”               <span class="type">GstVideoAlphaMode</span></pre>
+<p>Alpha Mode to use.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_ALPHA_MODE_COPY</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--alpha-value"></a><h3>The <code class="literal">“alpha-value”</code> property</h3>
+<pre class="programlisting">  “alpha-value”              <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<p>Alpha Value to use.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,1]</p>
+<p>Default value: 1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--chroma-mode"></a><h3>The <code class="literal">“chroma-mode”</code> property</h3>
+<pre class="programlisting">  “chroma-mode”              <span class="type">GstVideoChromaMode</span></pre>
+<p>Chroma Resampling Mode.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_CHROMA_MODE_FULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--chroma-resampler"></a><h3>The <code class="literal">“chroma-resampler”</code> property</h3>
+<pre class="programlisting">  “chroma-resampler”         <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-GstVideoResampler.html#GstVideoResamplerMethod"><span class="type">GstVideoResamplerMethod</span></a></pre>
+<p>Chroma resampler method.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_RESAMPLER_METHOD_LINEAR</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--dither-quantization"></a><h3>The <code class="literal">“dither-quantization”</code> property</h3>
+<pre class="programlisting">  “dither-quantization”      <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
+<p>Quantizer to use.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--gamma-mode"></a><h3>The <code class="literal">“gamma-mode”</code> property</h3>
+<pre class="programlisting">  “gamma-mode”               <span class="type">GstVideoGammaMode</span></pre>
+<p>Gamma Conversion Mode.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_GAMMA_MODE_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--matrix-mode"></a><h3>The <code class="literal">“matrix-mode”</code> property</h3>
+<pre class="programlisting">  “matrix-mode”              <span class="type">GstVideoMatrixMode</span></pre>
+<p>Matrix Conversion Mode.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_MATRIX_MODE_FULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoConvert--primaries-mode"></a><h3>The <code class="literal">“primaries-mode”</code> property</h3>
+<pre class="programlisting">  “primaries-mode”           <span class="type">GstVideoPrimariesMode</span></pre>
+<p>Primaries Conversion Mode.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_PRIMARIES_MODE_NONE</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>
