@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstaudioringbuffer</title>
+<title>gstaudioringbuffer: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudiochannels.html" title="gstaudiochannels">
 <link rel="next" href="gst-plugins-base-libs-gstaudioiec61937.html" title="gstaudioiec61937">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -502,7 +502,6 @@ to which samples can be written.</p>
 <a name="id-1.2.6.15.9.8.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be acquired, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -530,7 +529,6 @@ gst_audio_ring_buffer_release (<em class="parameter"><code><a class="link" href=
 <a name="id-1.2.6.15.9.9.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be released, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -558,7 +556,6 @@ gst_audio_ring_buffer_is_acquired (<em class="parameter"><code><a class="link" h
 <a name="id-1.2.6.15.9.10.6"></a><h4>Returns</h4>
 <p> TRUE if the ringbuffer is acquired, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -596,7 +593,6 @@ gst_audio_ring_buffer_activate (<em class="parameter"><code><a class="link" href
 <a name="id-1.2.6.15.9.11.7"></a><h4>Returns</h4>
 <p> TRUE if the device could be activated in the requested mode,
 FALSE on error.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -625,7 +621,6 @@ gst_audio_ring_buffer_is_active (<em class="parameter"><code><a class="link" hre
 <div class="refsect3">
 <a name="id-1.2.6.15.9.12.7"></a><h4>Returns</h4>
 <p> TRUE if the device is active.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -653,7 +648,6 @@ gst_audio_ring_buffer_start (<em class="parameter"><code><a class="link" href="g
 <a name="id-1.2.6.15.9.13.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be started, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -681,7 +675,6 @@ gst_audio_ring_buffer_pause (<em class="parameter"><code><a class="link" href="g
 <a name="id-1.2.6.15.9.14.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be paused, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -709,7 +702,6 @@ gst_audio_ring_buffer_stop (<em class="parameter"><code><a class="link" href="gs
 <a name="id-1.2.6.15.9.15.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be stopped, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -744,7 +736,6 @@ not yet transfered to the ringbuffer.</p>
 <a name="id-1.2.6.15.9.16.8"></a><h4>Returns</h4>
 <p> The number of samples queued in the audio device.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -774,7 +765,6 @@ yet processed (see <a class="link" href="gst-plugins-base-libs-gstaudioringbuffe
 <a name="id-1.2.6.15.9.17.6"></a><h4>Returns</h4>
 <p> The number of samples processed by the ringbuffer.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -901,7 +891,6 @@ number of samples written can be less than <em class="parameter"><code>out_sampl
 when <em class="parameter"><code>buf</code></em>
 was interrupted
 with a flush or stop.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -959,7 +948,6 @@ will be put in <em class="parameter"><code>dest_val</code></em>
 <div class="refsect3">
 <a name="id-1.2.6.15.9.20.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion succeeded.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1009,7 +997,6 @@ can be found. This function is mostly used by subclasses.</p>
 <a name="id-1.2.6.15.9.21.6"></a><h4>Returns</h4>
 <p> FALSE if the buffer is not started.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1075,7 +1062,6 @@ although it is recommended.</p>
 <p> The number of samples read from the ringbuffer or -1 on
 error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1192,7 +1178,6 @@ should already have been released via <a class="link" href="gst-plugins-base-lib
 <a name="id-1.2.6.15.9.26.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be closed, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1222,7 +1207,6 @@ buffer.</p>
 <a name="id-1.2.6.15.9.27.6"></a><h4>Returns</h4>
 <p> TRUE if the device could be opened, FALSE on error.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1250,7 +1234,6 @@ gst_audio_ring_buffer_device_is_open (<em class="parameter"><code><a class="link
 <a name="id-1.2.6.15.9.28.6"></a><h4>Returns</h4>
 <p> TRUE if the device was open, FALSE if it was closed.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1319,7 +1302,6 @@ gst_audio_ring_buffer_parse_caps (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.6.15.9.30.6"></a><h4>Returns</h4>
 <p> TRUE if the caps could be parsed.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1379,7 +1361,6 @@ gst_audio_ring_buffer_is_flushing (<em class="parameter"><code><a class="link" h
 <div class="refsect3">
 <a name="id-1.2.6.15.9.32.7"></a><h4>Returns</h4>
 <p> TRUE if the device is flushing.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1871,7 +1852,6 @@ defaults to segtotal</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

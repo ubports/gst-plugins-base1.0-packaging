@@ -4,8 +4,8 @@
 %define gst_minver  0.11.0
 
 Name: 		%{gstreamer}-plugins-base
-Version: 	1.5.0.1
-Release: 	0.20150513.125519.gst
+Version: 	1.5.1
+Release: 	1.gst
 Summary: 	GStreamer streaming media framework plug-ins
 
 Group: 		Applications/Multimedia

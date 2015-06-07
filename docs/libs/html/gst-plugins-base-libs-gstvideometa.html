@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstvideometa</title>
+<title>gstvideometa: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideo.html" title="gstvideo">
 <link rel="next" href="gst-plugins-base-libs-gstvideooverlaycomposition.html" title="gstvideooverlaycomposition">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -79,9 +79,11 @@
 </td>
 </tr>
 <tr>
-<td class="define_keyword">#define</td>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="returnvalue">GstVideoMeta</span></a> *
+</td>
 <td class="function_name">
-<a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-meta" title="gst_buffer_get_video_meta()">gst_buffer_get_video_meta</a><span class="c_punctuation">()</span>
+<a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-get-video-meta" title="gst_buffer_get_video_meta ()">gst_buffer_get_video_meta</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -273,7 +275,6 @@ first byte of the plane and the stride of the plane.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.2.6"></a><h4>Returns</h4>
 <p> TRUE if the map operation was successful.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -314,7 +315,6 @@ gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plug
 <div class="refsect3">
 <a name="id-1.2.15.4.7.3.6"></a><h4>Returns</h4>
 <p> TRUE if the memory was successfully unmapped.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -381,7 +381,6 @@ default offsets and strides for <em class="parameter"><code>format</code></em>
 <a name="id-1.2.15.4.7.5.7"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -454,14 +453,39 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
 <a name="id-1.2.15.4.7.6.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-buffer-get-video-meta"></a><h3>gst_buffer_get_video_meta()</h3>
-<pre class="programlisting">#define gst_buffer_get_video_meta(b) ((GstVideoMeta*)gst_buffer_get_meta((b),GST_VIDEO_META_API_TYPE))
-</pre>
+<a name="gst-buffer-get-video-meta"></a><h3>gst_buffer_get_video_meta ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="returnvalue">GstVideoMeta</span></a> *
+gst_buffer_get_video_meta (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
+<p>Find the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
+ with the lowest <em class="parameter"><code>id</code></em>
+.</p>
+<p>Buffers can contain multiple <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> metadata items when dealing with
+multiview buffers.</p>
+<div class="refsect3">
+<a name="id-1.2.15.4.7.7.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.4.7.7.7"></a><h4>Returns</h4>
+<p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> with lowest id (usually 0) or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there
+is no such metadata on <em class="parameter"><code>buffer</code></em>
+.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -502,7 +526,6 @@ multiview buffers.</p>
 or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is no such metadata
 on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -577,7 +600,6 @@ parameters.</p>
 <a name="id-1.2.15.4.7.11.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -640,7 +662,6 @@ parameters.</p>
 <a name="id-1.2.15.4.7.12.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -688,7 +709,6 @@ multiple regions of interests are marked on a frame.</p>
 or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is
 no such metadata on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -758,7 +778,6 @@ parameters.</p>
 <a name="id-1.2.15.4.7.16.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> on <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -800,7 +819,6 @@ gst_video_gl_texture_upload_meta_upload
 <div class="refsect3">
 <a name="id-1.2.15.4.7.18.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if uploading succeeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -1070,7 +1088,7 @@ meta on buffers from the pool.</p>
 <p>When this option is enabled on the bufferpool,
 <em class="parameter"><code>GST_BUFFER_POOL_OPTION_VIDEO_META</code></em>
  should also be enabled.</p>
-<p class="since">Since 1.2.2</p>
+<p class="since">Since: 1.2.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1123,7 +1141,6 @@ to upload something to an OpenGL texture.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

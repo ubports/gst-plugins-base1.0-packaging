@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstvideo</title>
+<title>gstvideo: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gstreamer-video.html" title="Video Library">
 <link rel="next" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -1211,7 +1211,6 @@ display ratio the video will be rendered with.</p>
 <p> A boolean indicating success and a calculated Display Ratio in the
 dar_n and dar_d parameters.
 The return value is FALSE in the case of integer overflow or other error.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1258,9 +1257,8 @@ match was found, and return <a href="https://developer.gnome.org/glib/unstable/g
 <a name="id-1.2.15.3.7.3.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if a close "standard" framerate was
 recognised, and <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1317,7 +1315,6 @@ gst_video_convert_sample (<em class="parameter"><code><a href="http://gstreamer.
 <a name="id-1.2.15.3.7.5.8"></a><h4>Returns</h4>
 <p> The converted <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if an error happened (in which case <em class="parameter"><code>err</code></em>
 will point to the <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>).</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1441,7 +1438,6 @@ the event ends a still frame sequence.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.8.7"></a><h4>Returns</h4>
 <p> The new GstEvent</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1482,7 +1478,6 @@ event.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.9.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid still-frame event. <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1542,7 +1537,6 @@ handled.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.10.7"></a><h4>Returns</h4>
 <p> The new GstEvent</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1606,7 +1600,6 @@ full description of the downstream force key unit event.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.11.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid downstream force key unit event.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1655,7 +1648,6 @@ new key unit as soon as possible.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.12.8"></a><h4>Returns</h4>
 <p> The new GstEvent</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1708,7 +1700,6 @@ upstream force key unit event.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.13.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid upstream force-key-unit event. <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1736,7 +1727,6 @@ and downstream force key unit events.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.14.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a valid force key unit event</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1848,7 +1838,7 @@ packing.</p>
 <p>Because this function does not have a x coordinate, it is not possible to
 pack pixels starting from an unaligned position. For tiled images this
 means that packing should start from a tile coordinate. For subsampled
-formats this means that a complete pixel need to be packed.</p>
+formats this means that a complete pixel needs to be packed.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.16.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -2163,7 +2153,6 @@ gst_video_format_from_masks (<em class="parameter"><code><a href="https://develo
 <a name="id-1.2.15.3.7.46.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> or GST_VIDEO_FORMAT_UNKNOWN when the parameters to
 not specify a known format.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2192,7 +2181,6 @@ If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-li
 <div class="refsect3">
 <a name="id-1.2.15.3.7.47.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> describing the FOURCC value</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2223,7 +2211,6 @@ no corresponding FOURCC value, 0 is returned.</p>
 <a name="id-1.2.15.3.7.48.6"></a><h4>Returns</h4>
 <p> the FOURCC corresponding to <em class="parameter"><code>format</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2253,7 +2240,6 @@ gst_video_format_from_string (<em class="parameter"><code>const <a href="https:/
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> for <em class="parameter"><code>format</code></em>
 or GST_VIDEO_FORMAT_UNKNOWN when the
 string is not a known format.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2282,7 +2268,6 @@ the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" ti
 <a name="id-1.2.15.3.7.50.6"></a><h4>Returns</h4>
 <p> the name corresponding to <em class="parameter"><code>format</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2311,7 +2296,6 @@ gst_video_format_get_info (<em class="parameter"><code><a class="link" href="gst
 <a name="id-1.2.15.3.7.51.6"></a><h4>Returns</h4>
 <p> The <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormatInfo" title="struct GstVideoFormatInfo"><span class="type">GstVideoFormatInfo</span></a> for <em class="parameter"><code>format</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2478,9 +2462,8 @@ was a YUV color format and <em class="parameter"><code>Kr</code></em>
 and <em class="parameter"><code>Kb</code></em>
 contain valid
 values.</p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2535,9 +2518,8 @@ encode a linear segment in the lower range.</p>
 <a name="id-1.2.15.3.7.55.10"></a><h4>Returns</h4>
 <p> the gamme decoded value of <em class="parameter"><code>val</code></em>
 </p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2590,9 +2572,8 @@ encode a linear segment in the lower range.</p>
 <a name="id-1.2.15.3.7.56.10"></a><h4>Returns</h4>
 <p> the gamme encoded value of <em class="parameter"><code>val</code></em>
 </p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2632,7 +2613,6 @@ string <em class="parameter"><code>color</code></em>
 conveys the same colorimetry info as the color
 information in <em class="parameter"><code>info</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2669,9 +2649,8 @@ gst_video_colorimetry_is_equal (<em class="parameter"><code>const <a class="link
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if <em class="parameter"><code>cinfo</code></em>
 and <em class="parameter"><code>other</code></em>
 are equal.</p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2708,7 +2687,6 @@ values.</p>
 <a name="id-1.2.15.3.7.59.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if <em class="parameter"><code>color</code></em>
 points to valid colorimetry info.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2737,7 +2715,6 @@ gst_video_colorimetry_to_string (<em class="parameter"><code><a class="link" hre
 <a name="id-1.2.15.3.7.60.6"></a><h4>Returns</h4>
 <p> a string representation of <em class="parameter"><code>cinfo</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3057,7 +3034,6 @@ gst_video_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
 <a name="id-1.2.15.3.7.98.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>caps</code></em>
 could be parsed</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3086,7 +3062,6 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 <a name="id-1.2.15.3.7.99.6"></a><h4>Returns</h4>
 <p> a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> containing the info of <em class="parameter"><code>info</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3144,7 +3119,6 @@ function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.100.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion was successful.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3181,7 +3155,6 @@ gst_video_info_is_equal (<em class="parameter"><code>const <a class="link" href=
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>info</code></em>
 and <em class="parameter"><code>other</code></em>
 are equal, else <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3283,7 +3256,6 @@ will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Mac
 <div class="refsect3">
 <a name="id-1.2.15.3.7.103.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3337,7 +3309,6 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 <div class="refsect3">
 <a name="id-1.2.15.3.7.104.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3396,7 +3367,6 @@ gst_video_frame_copy (<em class="parameter"><code><a class="link" href="gst-plug
 <div class="refsect3">
 <a name="id-1.2.15.3.7.106.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3440,7 +3410,6 @@ gst_video_frame_copy_plane (<em class="parameter"><code><a class="link" href="gs
 <div class="refsect3">
 <a name="id-1.2.15.3.7.107.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3649,9 +3618,8 @@ in the tiled image of
 <em class="parameter"><code>x_tiles</code></em>
 by <em class="parameter"><code>y_tiles</code></em>
 .</p>
-<p></p>
 </div>
-<p class="since">Since 1.4</p>
+<p class="since">Since: 1.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3958,9 +3926,8 @@ with <em class="parameter"><code>config</code></em>
 <div class="refsect3">
 <a name="id-1.2.15.3.7.141.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConverter" title="GstVideoConverter"><span class="type">GstVideoConverter</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if conversion is not possible.</p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3984,7 +3951,7 @@ gst_video_converter_free (<em class="parameter"><code><a class="link" href="gst-
 </tr></tbody>
 </table></div>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4013,7 +3980,6 @@ gst_video_converter_get_config (<em class="parameter"><code><a class="link" href
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstStructure.html"><span class="type">GstStructure</span></a> that remains valid for as long as <em class="parameter"><code>convert</code></em>
 is valid
 or until <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-converter-set-config" title="gst_video_converter_set_config ()"><code class="function">gst_video_converter_set_config()</code></a> is called.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4057,9 +4023,8 @@ option and values.</p>
 <a name="id-1.2.15.3.7.144.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> when <em class="parameter"><code>config</code></em>
 could be set.</p>
-<p></p>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4099,7 +4064,7 @@ gst_video_converter_frame (<em class="parameter"><code><a class="link" href="gst
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.6</p>
+<p class="since">Since: 1.6</p>
 </div>
 </div>
 <div class="refsect1">
@@ -4161,7 +4126,7 @@ structure is usually used to configure the bufferpool if it supports the
 <pre class="programlisting">#define GST_META_TAG_VIDEO_STR "video"
 </pre>
 <p>This metadata is relevant for video streams.</p>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4169,7 +4134,7 @@ structure is usually used to configure the bufferpool if it supports the
 <pre class="programlisting">#define GST_META_TAG_VIDEO_ORIENTATION_STR "orientation"
 </pre>
 <p>This metadata stays relevant as long as video orientation is unchanged.</p>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4177,7 +4142,7 @@ structure is usually used to configure the bufferpool if it supports the
 <pre class="programlisting">#define GST_META_TAG_VIDEO_SIZE_STR "size"
 </pre>
 <p>This metadata stays relevant as long as video size is unchanged.</p>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4185,7 +4150,7 @@ structure is usually used to configure the bufferpool if it supports the
 <pre class="programlisting">#define GST_META_TAG_VIDEO_COLORSPACE_STR "colorspace"
 </pre>
 <p>This metadata stays relevant as long as video colorspace is unchanged.</p>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -5760,7 +5725,6 @@ indentify the frame in case of multiview video.</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>
