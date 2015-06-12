@@ -1,7 +1,8 @@
 Source: gst-plugins-base1.0
 Section: libs
 Priority: optional
-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
 Uploaders: Loïc Minier <lool@debian.org>,
            Sebastien Bacher <seb128@debian.org>,
            Sebastian Dröge <slomo@debian.org>,
