@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.4.5\n"
+"Project-Id-Version: gst-plugins-base 1.5.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-12-18 12:05+0100\n"
+"POT-Creation-Date: 2015-06-07 09:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,13 +56,13 @@ msgstr ""
 msgid "Could not open device for recording in %d-channel mode"
 msgstr ""
 
-#: ext/alsa/gstalsasrc.c:738
+#: ext/alsa/gstalsasrc.c:737
 msgid ""
 "Could not open audio device for recording. Device is being used by another "
 "application."
 msgstr ""
 
-#: ext/alsa/gstalsasrc.c:743
+#: ext/alsa/gstalsasrc.c:742
 msgid "Could not open audio device for recording."
 msgstr ""
 
@@ -82,98 +82,93 @@ msgstr ""
 msgid "Could not read CD."
 msgstr ""
 
-#: ext/ogg/gstoggdemux.c:4564
+#: ext/ogg/gstoggdemux.c:4822
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/encoding/gstencodebin.c:1487 gst/playback/gstplaybin2.c:3164
-#: gst/playback/gstplaysink.c:1483 gst/playback/gstplaysink.c:1500
-#: gst/playback/gstplaysink.c:1834 gst/playback/gstplaysink.c:1863
-#: gst/playback/gstplaysink.c:2443 gst/playback/gstplaysink.c:2492
-#: gst/playback/gstplaysink.c:2507 gst/playback/gstplaysink.c:2532
-#: gst/playback/gstplaysink.c:2564 gst/playback/gstplaysink.c:2709
-#: gst/playback/gstplaysink.c:2737 gst/playback/gstplaysink.c:3130
-#: gst/playback/gstplaysink.c:3139 gst/playback/gstplaysink.c:3148
-#: gst/playback/gstplaysink.c:3157 gst/playback/gstplaysink.c:4363
-#: gst/playback/gstplaysinkconvertbin.c:97
+#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3219
+#: gst/playback/gstplaysink.c:1496 gst/playback/gstplaysink.c:1513
+#: gst/playback/gstplaysink.c:1847 gst/playback/gstplaysink.c:1876
+#: gst/playback/gstplaysink.c:2456 gst/playback/gstplaysink.c:2505
+#: gst/playback/gstplaysink.c:2520 gst/playback/gstplaysink.c:2545
+#: gst/playback/gstplaysink.c:2577 gst/playback/gstplaysink.c:2722
+#: gst/playback/gstplaysink.c:2750 gst/playback/gstplaysink.c:3143
+#: gst/playback/gstplaysink.c:3152 gst/playback/gstplaysink.c:3161
+#: gst/playback/gstplaysink.c:3170 gst/playback/gstplaysink.c:3546
+#: gst/playback/gstplaysink.c:4412 gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117
-#: gst/playback/gsturidecodebin.c:1479
+#: gst/playback/gsturidecodebin.c:1490
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1810
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-
-#: gst/playback/gstdecodebin2.c:1817
+#: gst/playback/gstdecodebin2.c:1845
 msgid "Could not determine type of stream"
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:2514
+#: gst/playback/gstdecodebin2.c:2763
 msgid "This appears to be a text file"
 msgstr ""
 
-#: gst/playback/gstplaybin2.c:5227
+#: gst/playback/gstplaybin2.c:5308
 msgid "Could not create \"uridecodebin\" element."
-msgstr ""
-
-#: gst/playback/gstplaysink.c:1962
-#, c-format
-msgid "Both autovideosink and %s elements are missing."
-msgstr ""
-
-#: gst/playback/gstplaysink.c:1966
-msgid "The autovideosink element is missing."
-msgstr ""
-
-#: gst/playback/gstplaysink.c:1971
-#, c-format
-msgid "Configured videosink %s is not working."
 msgstr ""
 
 #: gst/playback/gstplaysink.c:1975
 #, c-format
-msgid "Both autovideosink and %s elements are not working."
+msgid "Both autovideosink and %s elements are missing."
 msgstr ""
 
 #: gst/playback/gstplaysink.c:1979
+msgid "The autovideosink element is missing."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:1984
+#, c-format
+msgid "Configured videosink %s is not working."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:1988
+#, c-format
+msgid "Both autovideosink and %s elements are not working."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:1992
 msgid "The autovideosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2480
+#: gst/playback/gstplaysink.c:2493
 msgid "Custom text sink element is not usable."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2862
+#: gst/playback/gstplaysink.c:2875
 msgid "No volume control found"
-msgstr ""
-
-#: gst/playback/gstplaysink.c:2892
-#, c-format
-msgid "Both autoaudiosink and %s elements are missing."
-msgstr ""
-
-#: gst/playback/gstplaysink.c:2896
-msgid "The autoaudiosink element is missing."
-msgstr ""
-
-#: gst/playback/gstplaysink.c:2901
-#, c-format
-msgid "Configured audiosink %s is not working."
 msgstr ""
 
 #: gst/playback/gstplaysink.c:2905
 #, c-format
-msgid "Both autoaudiosink and %s elements are not working."
+msgid "Both autoaudiosink and %s elements are missing."
 msgstr ""
 
 #: gst/playback/gstplaysink.c:2909
+msgid "The autoaudiosink element is missing."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:2914
+#, c-format
+msgid "Configured audiosink %s is not working."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:2918
+#, c-format
+msgid "Both autoaudiosink and %s elements are not working."
+msgstr ""
+
+#: gst/playback/gstplaysink.c:2922
 msgid "The autoaudiosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:3233 gst/playback/gstplaysink.c:3238
+#: gst/playback/gstplaysink.c:3246 gst/playback/gstplaysink.c:3251
 msgid "Can't play a text file without video or visualizations."
 msgstr ""
 
@@ -182,34 +177,34 @@ msgstr ""
 msgid "No decoder available for type '%s'."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1385
+#: gst/playback/gsturidecodebin.c:1396
 msgid "No URI specified to play from."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1391
+#: gst/playback/gsturidecodebin.c:1402
 #, c-format
 msgid "Invalid URI \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1398
+#: gst/playback/gsturidecodebin.c:1409
 msgid "This stream type cannot be played yet."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:1416
+#: gst/playback/gsturidecodebin.c:1427
 #, c-format
 msgid "No URI handler implemented for \"%s\"."
 msgstr ""
 
-#: gst/playback/gsturidecodebin.c:2285
+#: gst/playback/gsturidecodebin.c:2300
 msgid "Source element is invalid."
 msgstr ""
 
-#: gst/tcp/gsttcpclientsink.c:214
+#: gst/tcp/gsttcpclientsink.c:215
 #, c-format
 msgid "Error while sending data to \"%s:%d\"."
 msgstr ""
 
-#: gst-libs/gst/audio/gstaudiobasesrc.c:860
+#: gst-libs/gst/audio/gstaudiobasesrc.c:863
 msgid "Can't record audio fast enough"
 msgstr ""
 
@@ -247,7 +242,7 @@ msgstr ""
 msgid "Windows Media Speech"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:200
+#: gst-libs/gst/pbutils/descriptions.c:201
 msgid "CYUV Lossless"
 msgstr ""
 
@@ -295,127 +290,127 @@ msgstr ""
 msgid "Kate subtitle format"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:354
-#: gst-libs/gst/pbutils/descriptions.c:357
-#: gst-libs/gst/pbutils/descriptions.c:407
+#: gst-libs/gst/pbutils/descriptions.c:451
+#: gst-libs/gst/pbutils/descriptions.c:454
+#: gst-libs/gst/pbutils/descriptions.c:504
 msgid "Uncompressed video"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:362
+#: gst-libs/gst/pbutils/descriptions.c:459
 msgid "Uncompressed gray"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:385
+#: gst-libs/gst/pbutils/descriptions.c:482
 #, c-format
 msgid "Uncompressed packed YUV %s"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:387
+#: gst-libs/gst/pbutils/descriptions.c:484
 #, c-format
 msgid "Uncompressed semi-planar YUV %s"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:389
+#: gst-libs/gst/pbutils/descriptions.c:486
 #, c-format
 msgid "Uncompressed planar YUV %s"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:400
+#: gst-libs/gst/pbutils/descriptions.c:497
 #, c-format
 msgid "Uncompressed palettized %d-bit %s"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:403
+#: gst-libs/gst/pbutils/descriptions.c:500
 #, c-format
 msgid "Uncompressed %d-bit %s"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:460
+#: gst-libs/gst/pbutils/descriptions.c:582
 #, c-format
 msgid "DivX MPEG-4 Version %d"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:695
+#: gst-libs/gst/pbutils/descriptions.c:829
 msgid "Uncompressed audio"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:701
+#: gst-libs/gst/pbutils/descriptions.c:835
 #, c-format
 msgid "Raw %d-bit %s audio"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:801
+#: gst-libs/gst/pbutils/descriptions.c:935
 msgid "Audio CD source"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:804
+#: gst-libs/gst/pbutils/descriptions.c:938
 msgid "DVD source"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:807
+#: gst-libs/gst/pbutils/descriptions.c:941
 msgid "Real Time Streaming Protocol (RTSP) source"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:811
+#: gst-libs/gst/pbutils/descriptions.c:945
 msgid "Microsoft Media Server (MMS) protocol source"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:819
-#, c-format
-msgid "%s protocol source"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:891
-#, c-format
-msgid "%s video RTP depayloader"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:893
-#, c-format
-msgid "%s audio RTP depayloader"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:895
-#, c-format
-msgid "%s RTP depayloader"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:902
-#, c-format
-msgid "%s demuxer"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:904
-#, c-format
-msgid "%s decoder"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:942
-#, c-format
-msgid "%s video RTP payloader"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:944
-#, c-format
-msgid "%s audio RTP payloader"
-msgstr ""
-
-#: gst-libs/gst/pbutils/descriptions.c:946
-#, c-format
-msgid "%s RTP payloader"
 msgstr ""
 
 #: gst-libs/gst/pbutils/descriptions.c:953
 #, c-format
+msgid "%s protocol source"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1025
+#, c-format
+msgid "%s video RTP depayloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1027
+#, c-format
+msgid "%s audio RTP depayloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1029
+#, c-format
+msgid "%s RTP depayloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1036
+#, c-format
+msgid "%s demuxer"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1038
+#, c-format
+msgid "%s decoder"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1076
+#, c-format
+msgid "%s video RTP payloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1078
+#, c-format
+msgid "%s audio RTP payloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1080
+#, c-format
+msgid "%s RTP payloader"
+msgstr ""
+
+#: gst-libs/gst/pbutils/descriptions.c:1087
+#, c-format
 msgid "%s muxer"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:955
+#: gst-libs/gst/pbutils/descriptions.c:1089
 #, c-format
 msgid "%s encoder"
 msgstr ""
 
-#: gst-libs/gst/pbutils/descriptions.c:987
+#: gst-libs/gst/pbutils/descriptions.c:1121
 #, c-format
 msgid "GStreamer element %s"
 msgstr ""
@@ -665,7 +660,7 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
-#: tools/gst-device-monitor.c:123 tools/gst-play.c:665
+#: tools/gst-device-monitor.c:123 tools/gst-play.c:982
 msgid "Print version information and exit"
 msgstr ""
 
@@ -675,47 +670,149 @@ msgid ""
 "added/removed."
 msgstr ""
 
-#: tools/gst-play.c:219
+#: tools/gst-play.c:236
+#, c-format
+msgid "Volume: %.0f%%"
+msgstr ""
+
+#: tools/gst-play.c:275
 msgid "Buffering..."
 msgstr ""
 
-#: tools/gst-play.c:240
+#: tools/gst-play.c:296
 msgid "Clock lost, selecting a new one\n"
 msgstr ""
 
-#: tools/gst-play.c:667
+#: tools/gst-play.c:326 tools/gst-play.c:372 tools/gst-play.c:691
+#: tools/gst-play.c:905
+msgid "Reached end of play list."
+msgstr ""
+
+#: tools/gst-play.c:505
+#, c-format
+msgid "Now playing %s\n"
+msgstr ""
+
+#: tools/gst-play.c:568
+#, c-format
+msgid "About to finish, preparing next title: %s"
+msgstr ""
+
+#: tools/gst-play.c:787
+#, c-format
+msgid "Playback rate: %.2f"
+msgstr ""
+
+#: tools/gst-play.c:791
+#, c-format
+msgid "Could not change playback rate to %.2f"
+msgstr ""
+
+#: tools/gst-play.c:855
+msgid "space"
+msgstr ""
+
+#: tools/gst-play.c:855
+msgid "pause/unpause"
+msgstr ""
+
+#: tools/gst-play.c:856
+msgid "q or ESC"
+msgstr ""
+
+#: tools/gst-play.c:856
+msgid "quit"
+msgstr ""
+
+#: tools/gst-play.c:857
+msgid "play next"
+msgstr ""
+
+#: tools/gst-play.c:858
+msgid "play previous"
+msgstr ""
+
+#: tools/gst-play.c:859
+msgid "seek forward"
+msgstr ""
+
+#: tools/gst-play.c:860
+msgid "seek backward"
+msgstr ""
+
+#: tools/gst-play.c:861
+msgid "volume up"
+msgstr ""
+
+#: tools/gst-play.c:862
+msgid "volume down"
+msgstr ""
+
+#: tools/gst-play.c:863
+msgid "increase playback rate"
+msgstr ""
+
+#: tools/gst-play.c:864
+msgid "decrease playback rate"
+msgstr ""
+
+#: tools/gst-play.c:865
+msgid "change playback direction"
+msgstr ""
+
+#: tools/gst-play.c:866
+msgid "enable/disable trick modes"
+msgstr ""
+
+#: tools/gst-play.c:867
+msgid "show keyboard shortcuts"
+msgstr ""
+
+#: tools/gst-play.c:870
+msgid "Interactive mode - keyboard controls:"
+msgstr ""
+
+#: tools/gst-play.c:984
 msgid "Video sink to use (default is autovideosink)"
 msgstr ""
 
-#: tools/gst-play.c:669
+#: tools/gst-play.c:986
 msgid "Audio sink to use (default is autoaudiosink)"
 msgstr ""
 
-#: tools/gst-play.c:671
+#: tools/gst-play.c:988
 msgid "Enable gapless playback"
 msgstr ""
 
-#: tools/gst-play.c:673
+#: tools/gst-play.c:990
 msgid "Shuffle playlist"
 msgstr ""
 
-#: tools/gst-play.c:675
-msgid "Interactive control via keyboard"
+#: tools/gst-play.c:993
+msgid "Disable interactive control via the keyboard"
 msgstr ""
 
-#: tools/gst-play.c:677
+#: tools/gst-play.c:995
 msgid "Volume"
 msgstr ""
 
-#: tools/gst-play.c:679
+#: tools/gst-play.c:997
 msgid "Playlist file containing input media files"
 msgstr ""
 
-#: tools/gst-play.c:748
+#: tools/gst-play.c:999
+msgid "Do not print any output (apart from errors)"
+msgstr ""
+
+#: tools/gst-play.c:1068
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
-#: tools/gst-play.c:752
+#: tools/gst-play.c:1072
 msgid "You must provide at least one filename or URI to play."
+msgstr ""
+
+#: tools/gst-play.c:1105
+msgid "Press 'k' to see a list of keyboard shortcuts.\n"
 msgstr ""

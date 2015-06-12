@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstaudiodecoder</title>
+<title>gstaudiodecoder: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudioclock.html" title="gstaudioclock">
 <link rel="next" href="gst-plugins-base-libs-gstaudioencoder.html" title="gstaudioencoder">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -273,6 +273,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-merge-tags" title="gst_audio_decoder_merge_tags ()">gst_audio_decoder_merge_tags</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-proxy-getcaps" title="gst_audio_decoder_proxy_getcaps ()">gst_audio_decoder_proxy_getcaps</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -611,7 +619,6 @@ invalidated by a call to this function.</p>
 <div class="refsect3">
 <a name="id-1.2.6.7.10.5.8"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="type">GstFlowReturn</span></a> that should be escalated to caller (of caller)</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -647,7 +654,6 @@ gst_audio_decoder_set_output_format (<em class="parameter"><code><a class="link"
 <div class="refsect3">
 <a name="id-1.2.6.7.10.6.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -676,7 +682,6 @@ negotiate fails.</p>
 <div class="refsect3">
 <a name="id-1.2.6.7.10.7.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the negotiation succeeded, else <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -784,7 +789,6 @@ gst_audio_decoder_get_audio_info (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.6.7.10.10.5"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> describing the input audio format</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -810,7 +814,6 @@ gst_audio_decoder_get_estimate_rate (<em class="parameter"><code><a class="link"
 <div class="refsect3">
 <a name="id-1.2.6.7.10.11.5"></a><h4>Returns</h4>
 <p> currently configured byte to time conversion setting</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -836,7 +839,6 @@ gst_audio_decoder_get_delay (<em class="parameter"><code><a class="link" href="g
 <div class="refsect3">
 <a name="id-1.2.6.7.10.12.5"></a><h4>Returns</h4>
 <p> currently configured decoder delay</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -864,7 +866,6 @@ gst_audio_decoder_get_drainable (<em class="parameter"><code><a class="link" hre
 <a name="id-1.2.6.7.10.13.6"></a><h4>Returns</h4>
 <p> TRUE if drainable handling is enabled.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -929,7 +930,6 @@ gst_audio_decoder_get_max_errors (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.6.7.10.15.5"></a><h4>Returns</h4>
 <p> currently configured decoder tolerated error count.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -957,7 +957,6 @@ gst_audio_decoder_get_min_latency (<em class="parameter"><code><a class="link" h
 <a name="id-1.2.6.7.10.16.6"></a><h4>Returns</h4>
 <p> aggregation latency.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -985,7 +984,6 @@ gst_audio_decoder_get_needs_format (<em class="parameter"><code><a class="link" 
 <a name="id-1.2.6.7.10.17.6"></a><h4>Returns</h4>
 <p> TRUE if required format handling is enabled.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1049,7 +1047,6 @@ gst_audio_decoder_get_plc (<em class="parameter"><code><a class="link" href="gst
 <a name="id-1.2.6.7.10.19.6"></a><h4>Returns</h4>
 <p> TRUE if packet loss concealment is enabled.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1075,7 +1072,6 @@ gst_audio_decoder_get_plc_aware (<em class="parameter"><code><a class="link" hre
 <div class="refsect3">
 <a name="id-1.2.6.7.10.20.5"></a><h4>Returns</h4>
 <p> currently configured plc handling</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1103,7 +1099,6 @@ gst_audio_decoder_get_tolerance (<em class="parameter"><code><a class="link" hre
 <a name="id-1.2.6.7.10.21.6"></a><h4>Returns</h4>
 <p> decoder audio jitter tolerance threshold.</p>
 <p>MT safe.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1441,6 +1436,52 @@ of the usual CODEC/AUDIO_CODEC tags.</p>
 </table></div>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="gst-audio-decoder-proxy-getcaps"></a><h3>gst_audio_decoder_proxy_getcaps ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
+gst_audio_decoder_proxy_getcaps (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *decoder</code></em>,
+                                 <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
+                                 <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *filter</code></em>);</pre>
+<p>Returns caps that express <em class="parameter"><code>caps</code></em>
+ (or sink template caps if <em class="parameter"><code>caps</code></em>
+ == NULL)
+restricted to rate/channels/... combinations supported by downstream
+elements.</p>
+<div class="refsect3">
+<a name="id-1.2.6.7.10.32.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>decoder</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>caps</p></td>
+<td class="parameter_description"><p> initial caps. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filter</p></td>
+<td class="parameter_description"><p> filter caps. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.6.7.10.32.6"></a><h4>Returns</h4>
+<p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> owned by caller. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudiodecoder.other_details"></a><h2>Types and Values</h2>
@@ -1491,6 +1532,13 @@ of the usual CODEC/AUDIO_CODEC tags.</p>
 
   gboolean      (*propose_allocation) (GstAudioDecoder *dec,
                                        GstQuery * query);
+
+  gboolean      (*sink_query)         (GstAudioDecoder *dec, GstQuery *query);
+
+  gboolean      (*src_query)          (GstAudioDecoder *dec, GstQuery *query);
+
+  GstCaps *     (*getcaps)            (GstAudioDecoder * dec,
+                                       GstCaps * filter);
 };
 </pre>
 <p>Subclasses can override any of the available virtual methods or not, as
@@ -1621,6 +1669,33 @@ Subclasses should chain up to the parent implementation to
 invoke the default handler.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.sink-query"></a>sink_query</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Query handler on the sink pad. This function should
+return TRUE if the query could be performed. Subclasses
+should chain up to the parent implementation to invoke the
+default handler. Since 1.6</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.src-query"></a>src_query</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Query handler on the source pad. This function should
+return TRUE if the query could be performed. Subclasses
+should chain up to the parent implementation to invoke the
+default handler. Since 1.6</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.getcaps"></a>getcaps</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Allows for a custom sink getcaps implementation.
+If not implemented,
+default returns gst_audio_decoder_proxy_getcaps
+applied to sink template caps.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1674,7 +1749,6 @@ invoke the default handler.</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

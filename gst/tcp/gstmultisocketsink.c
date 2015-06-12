@@ -103,6 +103,7 @@
 #endif
 
 #include <gst/gst-i18n-plugin.h>
+#include <gst/net/gstnetcontrolmessagemeta.h>
 
 #include <string.h>
 
@@ -574,7 +575,7 @@ gst_multi_socket_sink_handle_client_read (GstMultiSocketSink * sink,
     GST_DEBUG_OBJECT (sink, "%s client wants us to read", mhclient->debug);
 
     navail = g_socket_get_available_bytes (mhclient->handle.socket);
-    if (navail < 0)
+    if (navail <= 0)
       break;
 
     nread =
@@ -598,6 +599,120 @@ gst_multi_socket_sink_handle_client_read (GstMultiSocketSink * sink,
   g_clear_error (&err);
 
   return ret;
+}
+
+/**
+ * map_memory_output_vector_n:
+ * @buf: The #GstBuffer that should be mapped
+ * @offset: Offset into the buffer that should be mapped
+ * @vectors: (out,array length=num_vectors): an array of #GOutputVector structs to write into
+ * @mapinfo: (out,array length=num_vectors): an array of #GstMapInfo structs to write into
+ * @num_vectors: the number of elements in @vectors to prevent buffer overruns
+ *
+ * Maps a buffer into memory, populating a #GOutputVector to use scatter-gather
+ * I/O to send the data over a socket.  The whole buffer won't be mapped into
+ * memory if it consists of more than @num_vectors #GstMemory s.
+ *
+ * Use #unmap_n_memorys after you are
+ * finished with the mappings.
+ *
+ * Returns: The number of GstMemorys mapped
+ */
+static int
+map_n_memory_output_vector (GstBuffer * buf, size_t offset,
+    GOutputVector * vectors, GstMapInfo * mapinfo, int num_vectors)
+{
+  guint mem_idx, mem_len;
+  gsize mem_skip;
+  size_t maxsize;
+  int i;
+
+  g_return_val_if_fail (num_vectors > 0, 0);
+  memset (vectors, 0, sizeof (GOutputVector) * num_vectors);
+
+  maxsize = gst_buffer_get_size (buf) - offset;
+  if (!gst_buffer_find_memory (buf, offset, maxsize, &mem_idx, &mem_len,
+          &mem_skip))
+    g_error ("Unable to map memory at offset %" G_GSIZE_FORMAT ", buffer "
+        "length is %" G_GSIZE_FORMAT, offset, gst_buffer_get_size (buf));
+
+  for (i = 0; i < mem_len && i < num_vectors; i++) {
+    GstMapInfo map = { 0 };
+    GstMemory *mem = gst_buffer_peek_memory (buf, mem_idx + i);
+    if (!gst_memory_map (mem, &map, GST_MAP_READ))
+      g_error ("Unable to map memory %p.  This should never happen.", mem);
+
+    if (i == 0) {
+      vectors[i].buffer = map.data + mem_skip;
+      vectors[i].size = map.size - mem_skip;
+    } else {
+      vectors[i].buffer = map.data;
+      vectors[i].size = map.size;
+    }
+    mapinfo[i] = map;
+  }
+  return i;
+}
+
+/**
+ * map_n_memory_output_vector:
+ * @buf: The #GstBuffer that should be mapped
+ * @offset: Offset into the buffer that should be mapped
+ * @vectors: (out,array length=num_vectors): an array of #GOutputVector structs to write into
+ * @num_vectors: the number of elements in @vectors to prevent buffer overruns
+ *
+ * Returns: The number of GstMemorys mapped
+ */
+static void
+unmap_n_memorys (GstMapInfo * mapinfo, int num_mappings)
+{
+  int i;
+  g_return_if_fail (num_mappings > 0);
+
+  for (i = 0; i < num_mappings; i++)
+    gst_memory_unmap (mapinfo[i].memory, &mapinfo[i]);
+}
+
+static gsize
+gst_buffer_get_cmsg_list (GstBuffer * buf, GSocketControlMessage ** msgs,
+    gsize msg_space)
+{
+  gpointer iter_state = NULL;
+  GstMeta *meta;
+  gsize msg_count = 0;
+
+  while ((meta = gst_buffer_iterate_meta (buf, &iter_state)) != NULL
+      && msg_count < msg_space) {
+    if (meta->info->api == GST_NET_CONTROL_MESSAGE_META_API_TYPE)
+      msgs[msg_count++] = ((GstNetControlMessageMeta *) meta)->message;
+  }
+
+  return msg_count;
+}
+
+#define CMSG_MAX 255
+
+static gssize
+gst_multi_socket_sink_write (GstMultiSocketSink * sink,
+    GSocket * sock, GstBuffer * buffer, gsize bufoffset,
+    GCancellable * cancellable, GError ** err)
+{
+  GstMapInfo maps[8];
+  GOutputVector vec[8];
+  guint mems_mapped;
+  gssize wrote;
+  GSocketControlMessage *cmsgs[CMSG_MAX];
+  gsize msg_count;
+
+  mems_mapped = map_n_memory_output_vector (buffer, bufoffset, vec, maps, 8);
+
+  msg_count = gst_buffer_get_cmsg_list (buffer, cmsgs, CMSG_MAX);
+
+  wrote =
+      g_socket_send_message (sock, NULL, vec, mems_mapped, cmsgs, msg_count, 0,
+      cancellable, err);
+  unmap_n_memorys (maps, mems_mapped);
+  return wrote;
 }
 
 /* Handle a write on a client,
@@ -644,8 +759,6 @@ gst_multi_socket_sink_handle_client_write (GstMultiSocketSink * sink,
 
   more = TRUE;
   do {
-    gint maxsize;
-
     if (!mhclient->sending) {
       /* client is not working on a buffer */
       if (mhclient->bufpos == -1) {
@@ -725,22 +838,12 @@ gst_multi_socket_sink_handle_client_write (GstMultiSocketSink * sink,
     if (mhclient->sending) {
       gssize wrote;
       GstBuffer *head;
-      GstMapInfo map;
 
       /* pick first buffer from list */
       head = GST_BUFFER (mhclient->sending->data);
 
-      gst_buffer_map (head, &map, GST_MAP_READ);
-      maxsize = map.size - mhclient->bufoffset;
-
-      /* FIXME: specific */
-      /* try to write the complete buffer */
-
-      wrote =
-          g_socket_send (mhclient->handle.socket,
-          (gchar *) map.data + mhclient->bufoffset, maxsize, sink->cancellable,
-          &err);
-      gst_buffer_unmap (head, &map);
+      wrote = gst_multi_socket_sink_write (sink, mhclient->handle.socket, head,
+          mhclient->bufoffset, sink->cancellable, &err);
 
       if (wrote < 0) {
         /* hmm error.. */
@@ -755,7 +858,7 @@ gst_multi_socket_sink_handle_client_write (GstMultiSocketSink * sink,
           goto write_error;
         }
       } else {
-        if (wrote < maxsize) {
+        if (wrote < (gst_buffer_get_size (head) - mhclient->bufoffset)) {
           /* partial write, try again now */
           GST_LOG_OBJECT (sink,
               "partial write on %p of %" G_GSSIZE_FORMAT " bytes",
@@ -1069,7 +1172,8 @@ gst_multi_socket_sink_unlock_stop (GstBaseSink * bsink)
   sink = GST_MULTI_SOCKET_SINK (bsink);
 
   GST_DEBUG_OBJECT (sink, "unset flushing");
-  g_cancellable_reset (sink->cancellable);
+  g_object_unref (sink->cancellable);
+  sink->cancellable = g_cancellable_new ();
 
   return TRUE;
 }

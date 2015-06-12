@@ -3,19 +3,20 @@
  *
  * gstaudiovisualizer.h: base class for audio visualisation elements
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 /**
  * SECTION:gstaudiovisualizer
@@ -63,7 +64,7 @@ static void gst_audio_visualizer_set_property (GObject * object,
     guint prop_id, const GValue * value, GParamSpec * pspec);
 static void gst_audio_visualizer_get_property (GObject * object,
     guint prop_id, GValue * value, GParamSpec * pspec);
-static void gst_audio_visualizer_dispose (GObject * object);
+static void gst_audio_visualizer_finalize (GObject * object);
 
 static gboolean gst_audio_visualizer_src_negotiate (GstAudioVisualizer * scope);
 static gboolean gst_audio_visualizer_src_setcaps (GstAudioVisualizer *
@@ -500,6 +501,9 @@ struct _GstAudioVisualizerPrivate
   GstAllocator *allocator;
   GstAllocationParams params;
   GstQuery *query;
+
+  guint dropped;                /* frames dropped / not dropped */
+  guint processed;
 };
 
 GType
@@ -546,7 +550,7 @@ gst_audio_visualizer_class_init (GstAudioVisualizerClass * klass)
 
   gobject_class->set_property = gst_audio_visualizer_set_property;
   gobject_class->get_property = gst_audio_visualizer_get_property;
-  gobject_class->dispose = gst_audio_visualizer_dispose;
+  gobject_class->finalize = gst_audio_visualizer_finalize;
 
   element_class->change_state =
       GST_DEBUG_FUNCPTR (gst_audio_visualizer_change_state);
@@ -653,7 +657,7 @@ gst_audio_visualizer_get_property (GObject * object, guint prop_id,
 }
 
 static void
-gst_audio_visualizer_dispose (GObject * object)
+gst_audio_visualizer_finalize (GObject * object)
 {
   GstAudioVisualizer *scope = GST_AUDIO_VISUALIZER (object);
 
@@ -670,11 +674,10 @@ gst_audio_visualizer_dispose (GObject * object)
     gst_buffer_unref (scope->tempbuf);
     scope->tempbuf = NULL;
   }
-  if (scope->config_lock.p) {
-    g_mutex_clear (&scope->config_lock);
-    scope->config_lock.p = NULL;
-  }
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+
+  g_mutex_clear (&scope->config_lock);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -686,6 +689,8 @@ gst_audio_visualizer_reset (GstAudioVisualizer * scope)
   GST_OBJECT_LOCK (scope);
   scope->proportion = 1.0;
   scope->earliest_time = -1;
+  scope->priv->dropped = 0;
+  scope->priv->processed = 0;
   GST_OBJECT_UNLOCK (scope);
 }
 
@@ -750,8 +755,8 @@ gst_audio_visualizer_src_setcaps (GstAudioVisualizer * scope, GstCaps * caps)
   gst_video_frame_map (&scope->tempframe, &scope->vinfo, scope->tempbuf,
       GST_MAP_READWRITE);
 
-  if (klass->setup)
-    res = klass->setup (scope);
+  if (klass->setup && !klass->setup (scope))
+    goto setup_failed;
 
   GST_DEBUG_OBJECT (scope, "video: dimension %dx%d, framerate %d/%d",
       GST_VIDEO_INFO_WIDTH (&info), GST_VIDEO_INFO_HEIGHT (&info),
@@ -763,13 +768,21 @@ gst_audio_visualizer_src_setcaps (GstAudioVisualizer * scope, GstCaps * caps)
 
   /* find a pool for the negotiated caps now */
   res = gst_audio_visualizer_do_bufferpool (scope, caps);
+  gst_caps_unref (caps);
 
   return res;
 
   /* ERRORS */
 wrong_caps:
   {
+    gst_caps_unref (caps);
     GST_DEBUG_OBJECT (scope, "error parsing caps");
+    return FALSE;
+  }
+
+setup_failed:
+  {
+    GST_WARNING_OBJECT (scope, "failed to set up");
     return FALSE;
   }
 }
@@ -1087,26 +1100,45 @@ gst_audio_visualizer_chain (GstPad * pad, GstObject * parent,
       ts += gst_util_uint64_scale_int (dist, GST_SECOND, rate);
     }
 
+    /* check for QoS, don't compute buffers that are known to be late */
     if (GST_CLOCK_TIME_IS_VALID (ts)) {
+      GstClockTime earliest_time;
+      gdouble proportion;
       gint64 qostime;
-      gboolean need_skip;
 
       qostime =
           gst_segment_to_running_time (&scope->segment, GST_FORMAT_TIME, ts) +
           scope->frame_duration;
 
       GST_OBJECT_LOCK (scope);
-      /* check for QoS, don't compute buffers that are known to be late */
-      need_skip = scope->earliest_time != -1 && qostime <= scope->earliest_time;
+      earliest_time = scope->earliest_time;
+      proportion = scope->proportion;
       GST_OBJECT_UNLOCK (scope);
 
-      if (need_skip) {
-        GST_WARNING_OBJECT (scope,
+      if (GST_CLOCK_TIME_IS_VALID (earliest_time) && qostime <= earliest_time) {
+        GstClockTime stream_time, jitter;
+        GstMessage *qos_msg;
+
+        GST_DEBUG_OBJECT (scope,
             "QoS: skip ts: %" GST_TIME_FORMAT ", earliest: %" GST_TIME_FORMAT,
-            GST_TIME_ARGS (qostime), GST_TIME_ARGS (scope->earliest_time));
+            GST_TIME_ARGS (qostime), GST_TIME_ARGS (earliest_time));
+
+        ++scope->priv->dropped;
+        stream_time = gst_segment_to_stream_time (&scope->segment,
+            GST_FORMAT_TIME, ts);
+        jitter = GST_CLOCK_DIFF (qostime, earliest_time);
+        qos_msg = gst_message_new_qos (GST_OBJECT (scope), FALSE, qostime,
+            stream_time, ts, GST_BUFFER_DURATION (buffer));
+        gst_message_set_qos_values (qos_msg, jitter, proportion, 1000000);
+        gst_message_set_qos_stats (qos_msg, GST_FORMAT_BUFFERS,
+            scope->priv->processed, scope->priv->dropped);
+        gst_element_post_message (GST_ELEMENT (scope), qos_msg);
+
         goto skip;
       }
     }
+
+    ++scope->priv->processed;
 
     g_mutex_unlock (&scope->config_lock);
     ret = default_prepare_output_buffer (scope, &outbuf);
@@ -1150,6 +1182,8 @@ gst_audio_visualizer_chain (GstPad * pad, GstObject * parent,
     if (klass->render) {
       if (!klass->render (scope, inbuf, &outframe)) {
         ret = GST_FLOW_ERROR;
+        gst_video_frame_unmap (&outframe);
+        goto beach;
       } else {
         /* run various post processing (shading and geometric transformation) */
         /* FIXME: SHADER assumes 32bpp */
@@ -1260,6 +1294,7 @@ gst_audio_visualizer_sink_event (GstPad * pad, GstObject * parent,
 
       gst_event_parse_caps (event, &caps);
       res = gst_audio_visualizer_sink_setcaps (scope, caps);
+      gst_event_unref (event);
       break;
     }
     case GST_EVENT_FLUSH_STOP:

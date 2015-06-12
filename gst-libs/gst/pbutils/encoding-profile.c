@@ -188,6 +188,8 @@ struct _GstEncodingProfile
   gchar *preset_name;
   guint presence;
   GstCaps *restriction;
+  gboolean allow_dynamic_output;
+  gboolean enabled;
 };
 
 struct _GstEncodingProfileClass
@@ -400,6 +402,20 @@ gst_encoding_profile_get_presence (GstEncodingProfile * profile)
 }
 
 /**
+ * gst_encoding_profile_get_enabled:
+ * @profile: a #GstEncodingProfile
+ *
+ * Returns: Whther @profile is enabled or not
+ */
+gboolean
+gst_encoding_profile_is_enabled (GstEncodingProfile * profile)
+{
+  g_return_val_if_fail (GST_IS_ENCODING_PROFILE (profile), FALSE);
+
+  return profile->enabled;
+}
+
+/**
  * gst_encoding_profile_get_restriction:
  * @profile: a #GstEncodingProfile
  *
@@ -465,6 +481,35 @@ gst_encoding_profile_set_format (GstEncodingProfile * profile, GstCaps * format)
 }
 
 /**
+ * gst_encoding_profile_get_allow_dynamic_output:
+ * @profile: a #GstEncodingProfile
+ *
+ * Get whether the format that has been negotiated in at some point can be renegotiated
+ * later during the encoding.
+ */
+gboolean
+gst_encoding_profile_get_allow_dynamic_output (GstEncodingProfile * profile)
+{
+  return profile->allow_dynamic_output;
+}
+
+/**
+ * gst_encoding_profile_set_allow_dynamic_output:
+ * @profile: a #GstEncodingProfile
+ * @allow_dynamic_output: Whether the format that has been negotiated first can be renegotiated
+ * during the encoding
+ *
+ * Sets whether the format that has been negotiated in at some point can be renegotiated
+ * later during the encoding.
+ */
+void
+gst_encoding_profile_set_allow_dynamic_output (GstEncodingProfile * profile,
+    gboolean allow_dynamic_output)
+{
+  profile->allow_dynamic_output = allow_dynamic_output;
+}
+
+/**
  * gst_encoding_profile_set_preset:
  * @profile: a #GstEncodingProfile
  * @preset: the element preset to use
@@ -510,6 +555,22 @@ void
 gst_encoding_profile_set_presence (GstEncodingProfile * profile, guint presence)
 {
   profile->presence = presence;
+}
+
+/**
+ * gst_encoding_profile_set_enabled:
+ * @profile: a #GstEncodingProfile
+ * @enabled: %FALSE to disable #profile, %TRUE to enable it
+ *
+ * Set whether the profile should be used or not.
+ */
+void
+gst_encoding_profile_set_enabled (GstEncodingProfile * profile,
+    gboolean enabled)
+{
+  g_return_if_fail (GST_IS_ENCODING_PROFILE (profile));
+
+  profile->enabled = enabled;
 }
 
 /**
@@ -837,6 +898,8 @@ common_creation (GType objtype, GstCaps * format, const gchar * preset,
     prof->restriction = gst_caps_ref (restriction);
   prof->presence = presence;
   prof->preset_name = NULL;
+  prof->allow_dynamic_output = TRUE;
+  prof->enabled = TRUE;
 
   return prof;
 }

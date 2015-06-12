@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: videorate</title>
+<title>videorate: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-uridecodebin.html" title="uridecodebin">
 <link rel="next" href="gst-plugins-base-plugins-videoscale.html" title="videoscale">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -145,36 +145,47 @@ This can potentially cause performance degradation.
 Note that property notification will happen from the streaming thread, so
 applications should be prepared for this.</p>
 <div class="refsect2">
-<a name="id-1.2.39.7.10"></a><h3>Example pipelines</h3>
+<a name="id-1.2.40.7.10"></a><h3>Example pipelines</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>videotestsrc<span class="gtkdoc opt">.</span>ogg <span class="gtkdoc opt">!</span> oggdemux <span class="gtkdoc opt">!</span> theoradec <span class="gtkdoc opt">!</span> videorate <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>framerate<span class="gtkdoc opt">=</span><span class="number">15</span><span class="gtkdoc opt">/</span><span class="number">1</span> <span class="gtkdoc opt">!</span> xvimagesink</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v uridecodebin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/video.ogg ! videoconvert ! videoscale ! videorate ! video/x-raw,framerate=15/1 ! autovideosink</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- Decode an Ogg/Theora file and adjust the framerate to 15 fps before playing.
-To create the test Ogg/Theora file refer to the documentation of theoraenc.
+ Decode a video file and adjust the framerate to 15 fps before playing.
+To create a test Ogg/Theora file refer to the documentation of theoraenc.
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v v4l2src <span class="gtkdoc opt">!</span> videorate <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>framerate<span class="gtkdoc opt">=</span><span class="number">25</span><span class="gtkdoc opt">/</span><span class="number">2</span> <span class="gtkdoc opt">!</span> theoraenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> filesink location<span class="gtkdoc opt">=</span>recording<span class="gtkdoc opt">.</span>ogg</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v v4l2src <span class="gtkdoc opt">!</span> videorate <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>framerate<span class="gtkdoc opt">=</span><span class="number">25</span><span class="gtkdoc opt">/</span><span class="number">2</span> <span class="gtkdoc opt">!</span> theoraenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> filesink location<span class="gtkdoc opt">=</span>recording<span class="gtkdoc opt">.</span>ogg</pre></td>
       </tr>
     </tbody>
   </table>
 </div>
  Capture video from a V4L device, and adjust the stream to 12.5 fps before
 encoding to Ogg/Theora.
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v uridecodebin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/video.ogg ! videoconvert ! videoscale ! videorate ! video/x-raw,framerate=1/5 ! jpegenc ! multifilesink location=snapshot-%05d.jpg</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ Decode a video file and save a snapshot every 5 seconds as consecutively numbered jpeg file.
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.39.7.11.1"></a><h3>Element Information</h3>
+<a name="id-1.2.40.7.11.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -200,7 +211,7 @@ encoding to Ogg/Theora.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.39.7.11.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.40.7.11.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -221,15 +232,15 @@ encoding to Ogg/Theora.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw</td>
+<td>video/x-raw(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> image/jpeg</td>
+<td> image/jpeg(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> image/png</td>
+<td> image/png(ANY)</td>
 </tr>
 </tbody>
 </table></div>
@@ -253,15 +264,15 @@ encoding to Ogg/Theora.
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw</td>
+<td>video/x-raw(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> image/jpeg</td>
+<td> image/jpeg(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
-<td> image/png</td>
+<td> image/png(ANY)</td>
 </tr>
 </tbody>
 </table></div>
@@ -272,6 +283,7 @@ encoding to Ogg/Theora.
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videorate.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videorate.other_details"></a><h2>Types and Values</h2>
@@ -370,7 +382,6 @@ configured.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

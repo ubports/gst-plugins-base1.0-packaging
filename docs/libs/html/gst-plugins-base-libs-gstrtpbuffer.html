@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstrtpbuffer</title>
+<title>gstrtpbuffer: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtpbasepayload.html" title="gstrtpbasepayload">
 <link rel="next" href="gst-plugins-base-libs-gstrtcpbuffer.html" title="gstrtcpbuffer">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -209,6 +209,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-get-extension-bytes" title="gst_rtp_buffer_get_extension_bytes ()">gst_rtp_buffer_get_extension_bytes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">guint32</span>
 </td>
 <td class="function_name">
@@ -333,6 +341,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-get-payload-len" title="gst_rtp_buffer_get_payload_len ()">gst_rtp_buffer_get_payload_len</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-get-payload-bytes" title="gst_rtp_buffer_get_payload_bytes ()">gst_rtp_buffer_get_payload_bytes</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -542,7 +558,6 @@ function transfers ownership of <em class="parameter"><code>data</code></em>
 <p> A newly allocated buffer with <em class="parameter"><code>data</code></em>
 and of size <em class="parameter"><code>len</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -585,7 +600,6 @@ buffer. </p></td>
 <p> A newly allocated buffer with a copy of <em class="parameter"><code>data</code></em>
 and of size <em class="parameter"><code>len</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -632,7 +646,6 @@ All other RTP header fields will be set to 0/FALSE.</p>
 <a name="id-1.2.9.6.7.5.6"></a><h4>Returns</h4>
 <p> A newly allocated buffer that can hold an RTP packet with given
 parameters.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -680,7 +693,6 @@ All RTP header fields will be set to 0/FALSE.</p>
 <a name="id-1.2.9.6.7.6.6"></a><h4>Returns</h4>
 <p> A newly allocated buffer that can hold an RTP packet of <em class="parameter"><code>packet_len</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -724,7 +736,6 @@ gst_rtp_buffer_map (<em class="parameter"><code><a href="http://gstreamer.freede
 <a name="id-1.2.9.6.7.7.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>buffer</code></em>
 could be mapped.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -777,7 +788,6 @@ An RTP packet can have at most 15 CSRC entries.</p>
 <a name="id-1.2.9.6.7.9.6"></a><h4>Returns</h4>
 <p> The length of an RTP header with <em class="parameter"><code>csrc_count</code></em>
 CSRC entries.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -822,7 +832,6 @@ a padding of <em class="parameter"><code>pad_len</code></em>
 <div class="refsect3">
 <a name="id-1.2.9.6.7.10.6"></a><h4>Returns</h4>
 <p> The total length of an RTP header with given parameters.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -867,7 +876,6 @@ a padding of <em class="parameter"><code>pad_len</code></em>
 <div class="refsect3">
 <a name="id-1.2.9.6.7.11.6"></a><h4>Returns</h4>
 <p> The length of the payload of an RTP packet  with given parameters.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -929,7 +937,6 @@ gst_rtp_buffer_get_packet_len (<em class="parameter"><code><a class="link" href=
 <a name="id-1.2.9.6.7.13.6"></a><h4>Returns</h4>
 <p> The total length of the packet in <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -959,7 +966,6 @@ the fixed header, the CSRC list and the extension header.</p>
 <a name="id-1.2.9.6.7.14.6"></a><h4>Returns</h4>
 <p> The total length of the header in <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -988,7 +994,6 @@ gst_rtp_buffer_get_version (<em class="parameter"><code><a class="link" href="gs
 <a name="id-1.2.9.6.7.15.6"></a><h4>Returns</h4>
 <p> The version of <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1049,7 +1054,6 @@ gst_rtp_buffer_get_padding (<em class="parameter"><code><a class="link" href="gs
 <a name="id-1.2.9.6.7.17.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 has the padding bit set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1145,7 +1149,6 @@ gst_rtp_buffer_get_extension (<em class="parameter"><code><a class="link" href="
 <a name="id-1.2.9.6.7.20.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 has the extension bit set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1201,8 +1204,9 @@ with <em class="parameter"><code>bits</code></em>
 , <em class="parameter"><code>data</code></em>
  and <em class="parameter"><code>wordlen</code></em>
  unchanged.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.22.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.22.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1235,11 +1239,57 @@ in 32 bits words. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.22.7"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.22.8"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 had the extension bit set.</p>
-<p></p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtp-buffer-get-extension-bytes"></a><h3>gst_rtp_buffer_get_extension_bytes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+gst_rtp_buffer_get_extension_bytes (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>,
+                                    <em class="parameter"><code><span class="type">guint16</span> *bits</code></em>);</pre>
+<p>Similar to gst_rtp_buffer_get_extension_data, but more suitable for language
+bindings usage. <em class="parameter"><code>bits</code></em>
+ will contain the extension 16 bits of custom data and
+the extension data (not including the extension header) is placed in a new
+<a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> structure.</p>
+<p>If <em class="parameter"><code>rtp</code></em>
+ did not contain an extension, this function will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, with
+<em class="parameter"><code>bits</code></em>
+ unchanged. If there is an extension header but no extension data then
+an empty <a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> will be returned.</p>
+<p><span class="annotation">[<acronym title="Rename the original symbol's name to SYMBOL."><span class="acronym">rename-to</span></acronym> gst_rtp_buffer_get_extension_data]</span></p>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.23.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>rtp</p></td>
+<td class="parameter_description"><p>the RTP packet</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bits</p></td>
+<td class="parameter_description"><p> location for header bits. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.23.8"></a><h4>Returns</h4>
+<p> A new <a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> if an extension header was present
+and <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1249,7 +1299,7 @@ gst_rtp_buffer_get_ssrc (<em class="parameter"><code><a class="link" href="gst-p
 <p>Get the SSRC of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1264,10 +1314,9 @@ gst_rtp_buffer_get_ssrc (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.24.6"></a><h4>Returns</h4>
 <p> the SSRC of <em class="parameter"><code>buffer</code></em>
 in host order.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1280,7 +1329,7 @@ gst_rtp_buffer_set_ssrc (<em class="parameter"><code><a class="link" href="gst-p
  to <em class="parameter"><code>ssrc</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1310,7 +1359,7 @@ gst_rtp_buffer_get_csrc_count (<em class="parameter"><code><a class="link" href=
 <p>Get the CSRC count of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1325,10 +1374,9 @@ gst_rtp_buffer_get_csrc_count (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.25.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.26.6"></a><h4>Returns</h4>
 <p> the CSRC count of <em class="parameter"><code>buffer</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1341,7 +1389,7 @@ gst_rtp_buffer_get_csrc (<em class="parameter"><code><a class="link" href="gst-p
  in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1363,10 +1411,9 @@ gst_rtp_buffer_get_csrc (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.27.6"></a><h4>Returns</h4>
 <p> the CSRC at index <em class="parameter"><code>idx</code></em>
 in host order.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1381,7 +1428,7 @@ gst_rtp_buffer_set_csrc (<em class="parameter"><code><a class="link" href="gst-p
  to <em class="parameter"><code>csrc</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.27.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1417,7 +1464,7 @@ gst_rtp_buffer_get_marker (<em class="parameter"><code><a class="link" href="gst
 <p>Check if the marker bit is set on the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.29.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1432,10 +1479,9 @@ gst_rtp_buffer_get_marker (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.28.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.29.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 has the marker bit set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1448,7 +1494,7 @@ gst_rtp_buffer_set_marker (<em class="parameter"><code><a class="link" href="gst
  to <em class="parameter"><code>marker</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.29.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1478,7 +1524,7 @@ gst_rtp_buffer_get_payload_type (<em class="parameter"><code><a class="link" hre
 <p>Get the payload type of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.31.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1493,9 +1539,8 @@ gst_rtp_buffer_get_payload_type (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.31.6"></a><h4>Returns</h4>
 <p> The payload type.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1508,7 +1553,7 @@ gst_rtp_buffer_set_payload_type (<em class="parameter"><code><a class="link" hre
  to <em class="parameter"><code>payload_type</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.31.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.32.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1538,7 +1583,7 @@ gst_rtp_buffer_get_seq (<em class="parameter"><code><a class="link" href="gst-pl
 <p>Get the sequence number of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.32.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.33.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1553,9 +1598,8 @@ gst_rtp_buffer_get_seq (<em class="parameter"><code><a class="link" href="gst-pl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.32.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.33.6"></a><h4>Returns</h4>
 <p> The sequence number in host order.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1568,7 +1612,7 @@ gst_rtp_buffer_set_seq (<em class="parameter"><code><a class="link" href="gst-pl
  to <em class="parameter"><code>seq</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.33.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.34.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1598,7 +1642,7 @@ gst_rtp_buffer_get_timestamp (<em class="parameter"><code><a class="link" href="
 <p>Get the timestamp of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.34.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.35.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1613,9 +1657,8 @@ gst_rtp_buffer_get_timestamp (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.34.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.35.6"></a><h4>Returns</h4>
 <p> The timestamp in host order.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1628,7 +1671,7 @@ gst_rtp_buffer_set_timestamp (<em class="parameter"><code><a class="link" href="
  to <em class="parameter"><code>timestamp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.35.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.36.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1661,7 +1704,7 @@ will internally create a subbuffer of <em class="parameter"><code>buffer</code><
  so that a memcpy can be
 avoided.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.36.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.37.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1676,9 +1719,8 @@ avoided.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.36.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.37.6"></a><h4>Returns</h4>
 <p> A new buffer with the data of the payload.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1697,7 +1739,7 @@ If <em class="parameter"><code>len</code></em>
  is -1 the total payload starting from <em class="parameter"><code>offset</code></em>
  is subbuffered.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.37.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.38.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1724,9 +1766,8 @@ If <em class="parameter"><code>len</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.37.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.38.6"></a><h4>Returns</h4>
 <p> A new buffer with the specified data of the payload.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1736,37 +1777,6 @@ If <em class="parameter"><code>len</code></em>
 gst_rtp_buffer_get_payload_len (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>);</pre>
 <p>Get the length of the payload of the RTP packet in <em class="parameter"><code>buffer</code></em>
 .</p>
-<div class="refsect3">
-<a name="id-1.2.9.6.7.38.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>rtp</p></td>
-<td class="parameter_description"><p>the RTP packet</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.9.6.7.38.6"></a><h4>Returns</h4>
-<p> The length of the payload in <em class="parameter"><code>buffer</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtp-buffer-get-payload"></a><h3>gst_rtp_buffer_get_payload ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="returnvalue">gpointer</span></a>
-gst_rtp_buffer_get_payload (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>);</pre>
-<p>Get a pointer to the payload data in <em class="parameter"><code>buffer</code></em>
-. This pointer is valid as long
-as a reference to <em class="parameter"><code>buffer</code></em>
- is held.</p>
 <div class="refsect3">
 <a name="id-1.2.9.6.7.39.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1784,6 +1794,70 @@ as a reference to <em class="parameter"><code>buffer</code></em>
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.6.7.39.6"></a><h4>Returns</h4>
+<p> The length of the payload in <em class="parameter"><code>buffer</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtp-buffer-get-payload-bytes"></a><h3>gst_rtp_buffer_get_payload_bytes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="returnvalue">GBytes</span></a> *
+gst_rtp_buffer_get_payload_bytes (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>);</pre>
+<p>Similar to gst_rtp_buffer_get_payload, but more suitable for language
+bindings usage. The return value is a pointer to a <a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> structure
+containing the payload data in <em class="parameter"><code>rtp</code></em>
+.</p>
+<p><span class="annotation">[<acronym title="Rename the original symbol's name to SYMBOL."><span class="acronym">rename-to</span></acronym> gst_rtp_buffer_get_payload]</span></p>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.40.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>rtp</p></td>
+<td class="parameter_description"><p>the RTP packet</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.40.7"></a><h4>Returns</h4>
+<p> A new <a href="https://developer.gnome.org/glib/unstable/glib-Byte-Arrays.html#GBytes"><span class="type">GBytes</span></a> containing the payload data in <em class="parameter"><code>rtp</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtp-buffer-get-payload"></a><h3>gst_rtp_buffer_get_payload ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="returnvalue">gpointer</span></a>
+gst_rtp_buffer_get_payload (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#GstRTPBuffer" title="struct GstRTPBuffer"><span class="type">GstRTPBuffer</span></a> *rtp</code></em>);</pre>
+<p>Get a pointer to the payload data in <em class="parameter"><code>buffer</code></em>
+. This pointer is valid as long
+as a reference to <em class="parameter"><code>buffer</code></em>
+ is held.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.41.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>rtp</p></td>
+<td class="parameter_description"><p>the RTP packet</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.6.7.41.7"></a><h4>Returns</h4>
 <p> A pointer
 to the payload data in <em class="parameter"><code>buffer</code></em>
 . </p>
@@ -1798,7 +1872,7 @@ gst_rtp_buffer_default_clock_rate (<em class="parameter"><code><span class="type
 <p>Get the default clock-rate for the static payload type <em class="parameter"><code>payload_type</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.40.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.42.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1813,10 +1887,9 @@ gst_rtp_buffer_default_clock_rate (<em class="parameter"><code><span class="type
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.40.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.42.6"></a><h4>Returns</h4>
 <p> the default clock rate or -1 if the payload type is not static or
 the clock-rate is undefined.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1830,7 +1903,7 @@ returns the difference between <em class="parameter"><code>seqnum1</code></em>
  and <em class="parameter"><code>seqnum2</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.41.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.43.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1852,14 +1925,13 @@ returns the difference between <em class="parameter"><code>seqnum1</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.41.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.43.6"></a><h4>Returns</h4>
 <p> a negative value if <em class="parameter"><code>seqnum1</code></em>
 is bigger than <em class="parameter"><code>seqnum2</code></em>
 , 0 if they
 are equal or a positive value if <em class="parameter"><code>seqnum1</code></em>
 is smaller than <em class="parameter"><code>segnum2</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1876,7 +1948,7 @@ method, <em class="parameter"><code>exttimestamp</code></em>
 <p>This function makes sure that the returned value is a constantly increasing
 value even in the case where there is a timestamp wraparound.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.42.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.44.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1898,10 +1970,9 @@ value even in the case where there is a timestamp wraparound.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.42.7"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.44.7"></a><h4>Returns</h4>
 <p> The extended timestamp of <em class="parameter"><code>timestamp</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1917,7 +1988,7 @@ gst_rtp_buffer_set_extension_data (<em class="parameter"><code><a class="link" h
 extension header. If the existing extension data is not large enough, it will
 be made larger.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.43.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.45.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1945,9 +2016,8 @@ the extension, excluding the extension header ( therefore zero is a valid length
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.43.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.45.6"></a><h4>Returns</h4>
 <p> True if done.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1963,7 +2033,7 @@ gst_rtp_buffer_get_extension_onebyte_header
 <p>Parses RFC 5285 style header extensions with a one byte header. It will
 return the nth extension with the requested id.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.44.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.46.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2000,10 +2070,9 @@ return the nth extension with the requested id.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.44.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.46.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 had the requested header extension</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2020,7 +2089,7 @@ gst_rtp_buffer_get_extension_twobytes_header
 <p>Parses RFC 5285 style header extensions with a two bytes header. It will
 return the nth extension with the requested id.</p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.45.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.47.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2062,10 +2131,9 @@ return the nth extension with the requested id.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.45.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.47.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 had the requested header extension</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2085,7 +2153,7 @@ the mecanism described in RFC 5285 or if there is a header extension with
 a two bytes header as described in RFC 5285. In that case, use
 <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-add-extension-twobytes-header" title="gst_rtp_buffer_add_extension_twobytes_header ()"><code class="function">gst_rtp_buffer_add_extension_twobytes_header()</code></a></p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.46.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.48.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2117,9 +2185,8 @@ a two bytes header as described in RFC 5285. In that case, use
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.46.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.48.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if header extension could be added</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2140,7 +2207,7 @@ the mecanism described in RFC 5285 or if there is a header extension with
 a one byte header as described in RFC 5285. In that case, use
 <a class="link" href="gst-plugins-base-libs-gstrtpbuffer.html#gst-rtp-buffer-add-extension-onebyte-header" title="gst_rtp_buffer_add_extension_onebyte_header ()"><code class="function">gst_rtp_buffer_add_extension_onebyte_header()</code></a></p>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.47.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.6.7.49.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2177,9 +2244,8 @@ a one byte header as described in RFC 5285. In that case, use
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.6.7.47.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.6.7.49.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if header extension could be added</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -2254,7 +2320,6 @@ The size of the structure is made public to allow stack allocations.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

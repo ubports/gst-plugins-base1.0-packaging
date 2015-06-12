@@ -24,12 +24,14 @@
  * This element decodes a Vorbis stream to raw float audio.
  * <ulink url="http://www.vorbis.com/">Vorbis</ulink> is a royalty-free
  * audio codec maintained by the <ulink url="http://www.xiph.org/">Xiph.org
- * Foundation</ulink>.
+ * Foundation</ulink>. As it outputs raw float audio you will often need to
+ * put an audioconvert element after it.
+ *
  *
  * <refsect2>
  * <title>Example pipelines</title>
  * |[
- * gst-launch -v filesrc location=sine.ogg ! oggdemux ! vorbisdec ! audioconvert ! alsasink
+ * gst-launch-1.0 -v filesrc location=sine.ogg ! oggdemux ! vorbisdec ! audioconvert ! audioresample ! autoaudiosink
  * ]| Decode an Ogg/Vorbis. To create an Ogg/Vorbis file refer to the documentation of vorbisenc.
  * </refsect2>
  */
@@ -270,7 +272,7 @@ vorbis_handle_type_packet (GstVorbisDec * vd)
 {
   gint res;
 
-  g_assert (vd->initialized == FALSE);
+  g_assert (!vd->initialized);
 
 #ifdef USE_TREMOLO
   if (G_UNLIKELY ((res = vorbis_dsp_init (&vd->vd, &vd->vi))))

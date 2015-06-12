@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstsdpmessage</title>
+<title>gstsdpmessage: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-sdp.html" title="SDP Library">
 <link rel="prev" href="gstreamer-sdp.html" title="SDP Library">
 <link rel="next" href="gstreamer-mikey.html" title="MIKEY Library">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -125,6 +125,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-message-new" title="gst_sdp_message_new ()">gst_sdp_message_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-message-copy" title="gst_sdp_message_copy ()">gst_sdp_message_copy</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -636,6 +644,14 @@
 <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
 </td>
 <td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-copy" title="gst_sdp_media_copy ()">gst_sdp_media_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+</td>
+<td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-init" title="gst_sdp_media_init ()">gst_sdp_media_init</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -1100,9 +1116,8 @@ gst_sdp_connection_set (<em class="parameter"><code><a class="link" href="gst-pl
 <a name="id-1.2.11.3.7.2.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>GST_SDP_OK</code></em>
 .</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1129,9 +1144,8 @@ gst_sdp_connection_clear (<em class="parameter"><code><a class="link" href="gst-
 <a name="id-1.2.11.3.7.3.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>GST_SDP_OK</code></em>
 .</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1172,9 +1186,8 @@ gst_sdp_bandwidth_set (<em class="parameter"><code><a class="link" href="gst-plu
 <div class="refsect3">
 <a name="id-1.2.11.3.7.4.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1201,9 +1214,8 @@ gst_sdp_bandwidth_clear (<em class="parameter"><code><a class="link" href="gst-p
 <div class="refsect3">
 <a name="id-1.2.11.3.7.5.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1253,9 +1265,8 @@ gst_sdp_time_set (<em class="parameter"><code><a class="link" href="gst-plugins-
 <div class="refsect3">
 <a name="id-1.2.11.3.7.6.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1282,9 +1293,8 @@ gst_sdp_time_clear (<em class="parameter"><code><a class="link" href="gst-plugin
 <div class="refsect3">
 <a name="id-1.2.11.3.7.7.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1325,9 +1335,8 @@ gst_sdp_zone_set (<em class="parameter"><code><a class="link" href="gst-plugins-
 <div class="refsect3">
 <a name="id-1.2.11.3.7.8.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1354,9 +1363,8 @@ gst_sdp_zone_clear (<em class="parameter"><code><a class="link" href="gst-plugin
 <div class="refsect3">
 <a name="id-1.2.11.3.7.9.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1399,9 +1407,8 @@ gst_sdp_attribute_set (<em class="parameter"><code><a class="link" href="gst-plu
 <a name="id-1.2.11.3.7.10.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>GST_SDP_OK</code></em>
 .</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1428,9 +1435,8 @@ gst_sdp_attribute_clear (<em class="parameter"><code><a class="link" href="gst-p
 <a name="id-1.2.11.3.7.11.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>GST_SDP_OK</code></em>
 .</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1457,8 +1463,46 @@ gst_sdp_message_new (<em class="parameter"><code><a class="link" href="gst-plugi
 <div class="refsect3">
 <a name="id-1.2.11.3.7.12.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-message-copy"></a><h3>gst_sdp_message_copy ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_message_copy (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
+                      <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> **copy</code></em>);</pre>
+<p>Allocate a new copy of <em class="parameter"><code>msg</code></em>
+ and store the result in <em class="parameter"><code>copy</code></em>
+. The value in
+<em class="parameter"><code>copy</code></em>
+ should be release with gst_sdp_message_free function.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>copy</p></td>
+<td class="parameter_description"><p> pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.13.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a></p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1472,7 +1516,7 @@ allocated on the stack. <a class="link" href="gst-plugins-base-libs-gstsdpmessag
 <p>When this function is invoked on newly allocated data (with malloc or on the
 stack), its contents should be set to 0 before calling this function.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.13.6"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.14.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1487,9 +1531,8 @@ stack), its contents should be set to 0 before calling this function.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.13.7"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.14.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1503,38 +1546,6 @@ gst_sdp_message_uninit (<em class="parameter"><code><a class="link" href="gst-pl
 this function. This function should be used when <em class="parameter"><code>msg</code></em>
  was allocated on the
 stack and initialized with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-message-init" title="gst_sdp_message_init ()"><code class="function">gst_sdp_message_init()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.14.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>msg</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.14.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-message-free"></a><h3>gst_sdp_message_free ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_message_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>);</pre>
-<p>Free all resources allocated by <em class="parameter"><code>msg</code></em>
-. <em class="parameter"><code>msg</code></em>
- should not be used anymore after
-this function. This function should be used when <em class="parameter"><code>msg</code></em>
- was dynamically
-allocated with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-message-new" title="gst_sdp_message_new ()"><code class="function">gst_sdp_message_new()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1553,7 +1564,37 @@ allocated with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gs
 <div class="refsect3">
 <a name="id-1.2.11.3.7.15.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-message-free"></a><h3>gst_sdp_message_free ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_message_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>);</pre>
+<p>Free all resources allocated by <em class="parameter"><code>msg</code></em>
+. <em class="parameter"><code>msg</code></em>
+ should not be used anymore after
+this function. This function should be used when <em class="parameter"><code>msg</code></em>
+ was dynamically
+allocated with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-message-new" title="gst_sdp_message_new ()"><code class="function">gst_sdp_message_new()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.16.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
 </div>
 </div>
 <hr>
@@ -1569,7 +1610,7 @@ gst_sdp_message_parse_buffer (<em class="parameter"><code>const <span class="typ
 <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1596,9 +1637,8 @@ gst_sdp_message_parse_buffer (<em class="parameter"><code>const <span class="typ
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.16.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.17.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1609,7 +1649,7 @@ gst_sdp_message_as_text (<em class="parameter"><code>const <a class="link" href=
 <p>Convert the contents of <em class="parameter"><code>msg</code></em>
  to a text string.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1624,9 +1664,8 @@ gst_sdp_message_as_text (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.18.6"></a><h4>Returns</h4>
 <p> A dynamically allocated string representing the SDP description.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1643,7 +1682,7 @@ gst_sdp_message_parse_uri (<em class="parameter"><code>const <a href="https://de
 <p> where value is url encoded. This looslely resembles
  http://tools.ietf.org/html/draft-fujikawa-sdp-url-01</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.18.8"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.19.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1665,9 +1704,8 @@ gst_sdp_message_parse_uri (<em class="parameter"><code>const <a href="https://de
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.18.9"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.19.9"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1682,7 +1720,7 @@ gst_sdp_message_as_uri (<em class="parameter"><code>const <a href="https://devel
 <p> @scheme:///[<span class="type">type</span>=value *[&amp;type=value]]</p>
 <p> Where each value is url encoded.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.19.7"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.20.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1704,10 +1742,9 @@ gst_sdp_message_as_uri (<em class="parameter"><code>const <a href="https://devel
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.19.8"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.20.8"></a><h4>Returns</h4>
 <p> a uri for <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1720,7 +1757,7 @@ gst_sdp_address_is_multicast (<em class="parameter"><code>const <a href="https:/
 <p>Check if the given <em class="parameter"><code>addr</code></em>
  is a multicast address.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.21.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1747,10 +1784,9 @@ gst_sdp_address_is_multicast (<em class="parameter"><code>const <a href="https:/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.21.6"></a><h4>Returns</h4>
 <p> TRUE when <em class="parameter"><code>addr</code></em>
 is multicast.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1761,7 +1797,7 @@ gst_sdp_message_get_version (<em class="parameter"><code>const <a class="link" h
 <p>Get the version in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1776,9 +1812,8 @@ gst_sdp_message_get_version (<em class="parameter"><code>const <a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.21.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.22.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1790,7 +1825,7 @@ gst_sdp_message_set_version (<em class="parameter"><code><a class="link" href="g
 <p>Set the version in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1812,9 +1847,8 @@ gst_sdp_message_set_version (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.23.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1825,7 +1859,7 @@ gst_sdp_message_get_origin (<em class="parameter"><code>const <a class="link" hr
 <p>Get the origin of <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1840,10 +1874,9 @@ gst_sdp_message_get_origin (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.24.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPOrigin" title="GstSDPOrigin"><span class="type">GstSDPOrigin</span></a>. The result remains valid as long as <em class="parameter"><code>msg</code></em>
 is valid.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1860,7 +1893,7 @@ gst_sdp_message_set_origin (<em class="parameter"><code><a class="link" href="gs
 <p>Configure the SDP origin in <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1907,9 +1940,8 @@ gst_sdp_message_set_origin (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.25.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1920,7 +1952,7 @@ gst_sdp_message_get_session_name (<em class="parameter"><code>const <a class="li
 <p>Get the session name in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1935,9 +1967,8 @@ gst_sdp_message_get_session_name (<em class="parameter"><code>const <a class="li
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.25.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.26.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1949,7 +1980,7 @@ gst_sdp_message_set_session_name (<em class="parameter"><code><a class="link" hr
 <p>Set the session name in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1971,9 +2002,8 @@ gst_sdp_message_set_session_name (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.27.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1984,7 +2014,7 @@ gst_sdp_message_get_information (<em class="parameter"><code>const <a class="lin
 <p>Get the information in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.27.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1999,9 +2029,8 @@ gst_sdp_message_get_information (<em class="parameter"><code>const <a class="lin
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.27.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.28.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2013,7 +2042,7 @@ gst_sdp_message_set_information (<em class="parameter"><code><a class="link" hre
 <p>Set the information in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.29.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2035,9 +2064,8 @@ gst_sdp_message_set_information (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.28.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.29.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2048,7 +2076,7 @@ gst_sdp_message_get_uri (<em class="parameter"><code>const <a class="link" href=
 <p>Get the URI in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.29.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2063,9 +2091,8 @@ gst_sdp_message_get_uri (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.29.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.30.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2077,7 +2104,7 @@ gst_sdp_message_set_uri (<em class="parameter"><code><a class="link" href="gst-p
 <p>Set the URI in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.31.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2099,9 +2126,8 @@ gst_sdp_message_set_uri (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.31.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2112,7 +2138,7 @@ gst_sdp_message_emails_len (<em class="parameter"><code>const <a class="link" hr
 <p>Get the number of emails in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.31.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.32.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2127,10 +2153,9 @@ gst_sdp_message_emails_len (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.31.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.32.6"></a><h4>Returns</h4>
 <p> the number of emails in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2143,7 +2168,7 @@ gst_sdp_message_get_email (<em class="parameter"><code>const <a class="link" hre
  from <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.32.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.33.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2165,10 +2190,9 @@ gst_sdp_message_get_email (<em class="parameter"><code>const <a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.32.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.33.6"></a><h4>Returns</h4>
 <p> the email at position <em class="parameter"><code>idx</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2185,7 +2209,7 @@ gst_sdp_message_insert_email (<em class="parameter"><code><a class="link" href="
 When -1 is given as <em class="parameter"><code>idx</code></em>
 , the email is inserted at the end.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.33.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.34.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2212,11 +2236,10 @@ When -1 is given as <em class="parameter"><code>idx</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.33.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.34.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2228,49 +2251,6 @@ gst_sdp_message_replace_email (<em class="parameter"><code><a class="link" href=
 <p>Replace the email in <em class="parameter"><code>msg</code></em>
  at index <em class="parameter"><code>idx</code></em>
  with <em class="parameter"><code>email</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.34.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>msg</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an email index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>email</p></td>
-<td class="parameter_description"><p>an email</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.34.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-message-remove-email"></a><h3>gst_sdp_message_remove_email ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_message_remove_email (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
-<p>Remove the email in <em class="parameter"><code>msg</code></em>
- at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.35.5"></a><h4>Parameters</h4>
@@ -2291,15 +2271,56 @@ gst_sdp_message_remove_email (<em class="parameter"><code><a class="link" href="
 <td class="parameter_description"><p>an email index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
+<tr>
+<td class="parameter_name"><p>email</p></td>
+<td class="parameter_description"><p>an email</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.35.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-message-remove-email"></a><h3>gst_sdp_message_remove_email ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_message_remove_email (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
+<p>Remove the email in <em class="parameter"><code>msg</code></em>
+ at index <em class="parameter"><code>idx</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.36.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an email index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.36.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2311,7 +2332,7 @@ gst_sdp_message_add_email (<em class="parameter"><code><a class="link" href="gst
  to the list of emails in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.36.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.37.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2333,9 +2354,8 @@ gst_sdp_message_add_email (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.36.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.37.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2346,7 +2366,7 @@ gst_sdp_message_phones_len (<em class="parameter"><code>const <a class="link" hr
 <p>Get the number of phones in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.37.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.38.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2361,10 +2381,9 @@ gst_sdp_message_phones_len (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.37.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.38.6"></a><h4>Returns</h4>
 <p> the number of phones in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2376,48 +2395,6 @@ gst_sdp_message_get_phone (<em class="parameter"><code>const <a class="link" hre
 <p>Get the phone with number <em class="parameter"><code>idx</code></em>
  from <em class="parameter"><code>msg</code></em>
 .</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.38.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>msg</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>a phone index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.38.6"></a><h4>Returns</h4>
-<p> the phone at position <em class="parameter"><code>idx</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-message-insert-phone"></a><h3>gst_sdp_message_insert_phone ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_message_insert_phone (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
-                              <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *phone</code></em>);</pre>
-<p>Insert <em class="parameter"><code>phone</code></em>
- into the array of phone numbers in <em class="parameter"><code>msg</code></em>
- at index <em class="parameter"><code>idx</code></em>
-.
-When -1 is given as <em class="parameter"><code>idx</code></em>
-, the phone is inserted at the end.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.39.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -2437,32 +2414,28 @@ When -1 is given as <em class="parameter"><code>idx</code></em>
 <td class="parameter_description"><p>a phone index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
-<tr>
-<td class="parameter_name"><p>phone</p></td>
-<td class="parameter_description"><p>a phone</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.39.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
+<p> the phone at position <em class="parameter"><code>idx</code></em>
+.</p>
 </div>
-<p class="since">Since 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-sdp-message-replace-phone"></a><h3>gst_sdp_message_replace_phone ()</h3>
+<a name="gst-sdp-message-insert-phone"></a><h3>gst_sdp_message_insert_phone ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_message_replace_phone (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
-                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
-                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *phone</code></em>);</pre>
-<p>Replace the phone number in <em class="parameter"><code>msg</code></em>
+gst_sdp_message_insert_phone (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
+                              <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *phone</code></em>);</pre>
+<p>Insert <em class="parameter"><code>phone</code></em>
+ into the array of phone numbers in <em class="parameter"><code>msg</code></em>
  at index <em class="parameter"><code>idx</code></em>
- with <em class="parameter"><code>phone</code></em>
-.</p>
+.
+When -1 is given as <em class="parameter"><code>idx</code></em>
+, the phone is inserted at the end.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.40.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -2493,9 +2466,52 @@ gst_sdp_message_replace_phone (<em class="parameter"><code><a class="link" href=
 <div class="refsect3">
 <a name="id-1.2.11.3.7.40.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-message-replace-phone"></a><h3>gst_sdp_message_replace_phone ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_message_replace_phone (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a> *msg</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *phone</code></em>);</pre>
+<p>Replace the phone number in <em class="parameter"><code>msg</code></em>
+ at index <em class="parameter"><code>idx</code></em>
+ with <em class="parameter"><code>phone</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.41.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>msg</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMessage" title="GstSDPMessage"><span class="type">GstSDPMessage</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>a phone index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>phone</p></td>
+<td class="parameter_description"><p>a phone</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.41.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2507,7 +2523,7 @@ gst_sdp_message_remove_phone (<em class="parameter"><code><a class="link" href="
  at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.41.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.42.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2529,11 +2545,10 @@ gst_sdp_message_remove_phone (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.41.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.42.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2545,7 +2560,7 @@ gst_sdp_message_add_phone (<em class="parameter"><code><a class="link" href="gst
  to the list of phones in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.42.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.43.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2567,9 +2582,8 @@ gst_sdp_message_add_phone (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.42.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.43.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2580,7 +2594,7 @@ gst_sdp_message_get_connection (<em class="parameter"><code>const <a class="link
 <p>Get the connection of <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.43.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.44.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2595,10 +2609,9 @@ gst_sdp_message_get_connection (<em class="parameter"><code>const <a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.43.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.44.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a>. The result remains valid as long as <em class="parameter"><code>msg</code></em>
 is valid.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2614,7 +2627,7 @@ gst_sdp_message_set_connection (<em class="parameter"><code><a class="link" href
 <p>Configure the SDP connection in <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.44.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.45.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2657,9 +2670,8 @@ gst_sdp_message_set_connection (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.44.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.45.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2670,7 +2682,7 @@ gst_sdp_message_bandwidths_len (<em class="parameter"><code>const <a class="link
 <p>Get the number of bandwidth information in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.45.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.46.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2685,10 +2697,9 @@ gst_sdp_message_bandwidths_len (<em class="parameter"><code>const <a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.45.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.46.6"></a><h4>Returns</h4>
 <p> the number of bandwidth information in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2701,7 +2712,7 @@ gst_sdp_message_get_bandwidth (<em class="parameter"><code>const <a class="link"
  from <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.46.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.47.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2723,9 +2734,8 @@ gst_sdp_message_get_bandwidth (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.46.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.47.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2742,7 +2752,7 @@ at index <em class="parameter"><code>idx</code></em>
 When -1 is given as <em class="parameter"><code>idx</code></em>
 , the bandwidth is inserted at the end.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.47.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.48.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2769,11 +2779,10 @@ When -1 is given as <em class="parameter"><code>idx</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.47.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.48.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2787,7 +2796,7 @@ gst_sdp_message_replace_bandwidth (<em class="parameter"><code><a class="link" h
  with <em class="parameter"><code>bw</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.48.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.49.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2814,11 +2823,10 @@ gst_sdp_message_replace_bandwidth (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.48.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.49.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2830,7 +2838,7 @@ gst_sdp_message_remove_bandwidth (<em class="parameter"><code><a class="link" hr
  at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.49.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.50.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2852,11 +2860,10 @@ gst_sdp_message_remove_bandwidth (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.49.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.50.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2868,7 +2875,7 @@ gst_sdp_message_add_bandwidth (<em class="parameter"><code><a class="link" href=
 <p>Add the specified bandwidth information to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.50.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.51.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2895,9 +2902,8 @@ gst_sdp_message_add_bandwidth (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.50.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.51.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2908,7 +2914,7 @@ gst_sdp_message_times_len (<em class="parameter"><code>const <a class="link" hre
 <p>Get the number of time information entries in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.51.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.52.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2923,10 +2929,9 @@ gst_sdp_message_times_len (<em class="parameter"><code>const <a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.51.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.52.6"></a><h4>Returns</h4>
 <p> the number of time information entries in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2939,7 +2944,7 @@ gst_sdp_message_get_time (<em class="parameter"><code>const <a class="link" href
  from <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.52.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.53.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2961,9 +2966,8 @@ gst_sdp_message_get_time (<em class="parameter"><code>const <a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.52.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.53.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPTime" title="GstSDPTime"><span class="type">GstSDPTime</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2980,7 +2984,7 @@ at index <em class="parameter"><code>idx</code></em>
 When -1 is given as <em class="parameter"><code>idx</code></em>
 , the times are inserted at the end.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.53.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.54.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3007,11 +3011,10 @@ When -1 is given as <em class="parameter"><code>idx</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.53.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.54.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3025,7 +3028,7 @@ gst_sdp_message_replace_time (<em class="parameter"><code><a class="link" href="
  with <em class="parameter"><code>t</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.54.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.55.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3052,11 +3055,10 @@ gst_sdp_message_replace_time (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.54.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.55.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3068,7 +3070,7 @@ gst_sdp_message_remove_time (<em class="parameter"><code><a class="link" href="g
  at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.55.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.56.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3090,11 +3092,10 @@ gst_sdp_message_remove_time (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.55.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.56.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3109,7 +3110,7 @@ gst_sdp_message_add_time (<em class="parameter"><code><a class="link" href="gst-
  to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.56.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.57.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3141,9 +3142,8 @@ gst_sdp_message_add_time (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.56.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.57.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3154,7 +3154,7 @@ gst_sdp_message_zones_len (<em class="parameter"><code>const <a class="link" hre
 <p>Get the number of time zone information entries in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.57.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.58.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3169,10 +3169,9 @@ gst_sdp_message_zones_len (<em class="parameter"><code>const <a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.57.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.58.6"></a><h4>Returns</h4>
 <p> the number of time zone information entries in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3185,7 +3184,7 @@ gst_sdp_message_get_zone (<em class="parameter"><code>const <a class="link" href
  from <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.58.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.59.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3207,9 +3206,8 @@ gst_sdp_message_get_zone (<em class="parameter"><code>const <a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.58.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.59.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPZone" title="GstSDPZone"><span class="type">GstSDPZone</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3226,7 +3224,7 @@ at index <em class="parameter"><code>idx</code></em>
 When -1 is given as <em class="parameter"><code>idx</code></em>
 , the zone is inserted at the end.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.59.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.60.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3250,11 +3248,10 @@ a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPZone" tit
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.59.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.60.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3268,7 +3265,7 @@ gst_sdp_message_replace_zone (<em class="parameter"><code><a class="link" href="
  with <em class="parameter"><code>zone</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.60.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.61.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3295,11 +3292,10 @@ gst_sdp_message_replace_zone (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.60.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.61.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3311,7 +3307,7 @@ gst_sdp_message_remove_zone (<em class="parameter"><code><a class="link" href="g
  at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.61.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.62.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3333,11 +3329,10 @@ gst_sdp_message_remove_zone (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.61.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.62.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3349,7 +3344,7 @@ gst_sdp_message_add_zone (<em class="parameter"><code><a class="link" href="gst-
 <p>Add time zone information to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.62.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.63.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3376,9 +3371,8 @@ gst_sdp_message_add_zone (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.62.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.63.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3389,7 +3383,7 @@ gst_sdp_message_get_key (<em class="parameter"><code>const <a class="link" href=
 <p>Get the encryption information from <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.63.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.64.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3404,9 +3398,8 @@ gst_sdp_message_get_key (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.63.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.64.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPKey" title="GstSDPKey"><span class="type">GstSDPKey</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3419,7 +3412,7 @@ gst_sdp_message_set_key (<em class="parameter"><code><a class="link" href="gst-p
 <p>Adds the encryption information to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.64.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.65.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3446,9 +3439,8 @@ gst_sdp_message_set_key (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.64.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.65.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3459,7 +3451,7 @@ gst_sdp_message_attributes_len (<em class="parameter"><code>const <a class="link
 <p>Get the number of attributes in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.65.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.66.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3474,10 +3466,9 @@ gst_sdp_message_attributes_len (<em class="parameter"><code>const <a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.65.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.66.6"></a><h4>Returns</h4>
 <p> the number of attributes in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3490,7 +3481,7 @@ gst_sdp_message_get_attribute (<em class="parameter"><code>const <a class="link"
  in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.66.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.67.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3512,10 +3503,9 @@ gst_sdp_message_get_attribute (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.66.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.67.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a> at position <em class="parameter"><code>idx</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3528,7 +3518,7 @@ gst_sdp_message_get_attribute_val (<em class="parameter"><code>const <a class="l
  in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.67.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.68.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3550,10 +3540,9 @@ gst_sdp_message_get_attribute_val (<em class="parameter"><code>const <a class="l
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.67.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.68.6"></a><h4>Returns</h4>
 <p> the attribute value of the first attribute with <em class="parameter"><code>key</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3568,7 +3557,7 @@ gst_sdp_message_get_attribute_val_n (<em class="parameter"><code>const <a class=
  in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.68.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.69.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3595,11 +3584,10 @@ gst_sdp_message_get_attribute_val_n (<em class="parameter"><code>const <a class=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.68.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.69.6"></a><h4>Returns</h4>
 <p> the attribute value of the <em class="parameter"><code>nth</code></em>
 attribute with <em class="parameter"><code>key</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3616,7 +3604,7 @@ at index <em class="parameter"><code>idx</code></em>
 When -1 is given as <em class="parameter"><code>idx</code></em>
 , the attribute is inserted at the end.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.69.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.70.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3643,11 +3631,10 @@ When -1 is given as <em class="parameter"><code>idx</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.69.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.70.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3661,7 +3648,7 @@ gst_sdp_message_replace_attribute (<em class="parameter"><code><a class="link" h
  with <em class="parameter"><code>attr</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.70.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.71.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3688,11 +3675,10 @@ gst_sdp_message_replace_attribute (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.70.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.71.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3704,7 +3690,7 @@ gst_sdp_message_remove_attribute (<em class="parameter"><code><a class="link" hr
  at index <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.71.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.72.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3726,11 +3712,10 @@ gst_sdp_message_remove_attribute (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.71.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.72.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3744,7 +3729,7 @@ gst_sdp_message_add_attribute (<em class="parameter"><code><a class="link" href=
  to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.72.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.73.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3771,10 +3756,9 @@ gst_sdp_message_add_attribute (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.72.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.73.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>GST_SDP_OK</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3785,7 +3769,7 @@ gst_sdp_message_medias_len (<em class="parameter"><code>const <a class="link" hr
 <p>Get the number of media descriptions in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.73.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.74.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3800,10 +3784,9 @@ gst_sdp_message_medias_len (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.73.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.74.6"></a><h4>Returns</h4>
 <p> the number of media descriptions in <em class="parameter"><code>msg</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3816,7 +3799,7 @@ gst_sdp_message_get_media (<em class="parameter"><code>const <a class="link" hre
  in <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.74.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.75.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3838,9 +3821,8 @@ gst_sdp_message_get_media (<em class="parameter"><code>const <a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.74.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.75.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3857,7 +3839,7 @@ the contents of <em class="parameter"><code>media</code></em>
  will have to be reinitialized with
 <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-init" title="gst_sdp_media_init ()"><code class="function">gst_sdp_media_init()</code></a> before it can be used again.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.75.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.76.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3879,9 +3861,8 @@ the contents of <em class="parameter"><code>media</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.75.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.76.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3892,7 +3873,7 @@ gst_sdp_message_dump (<em class="parameter"><code>const <a class="link" href="gs
 <p>Dump the parsed contents of <em class="parameter"><code>msg</code></em>
  to stdout.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.76.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.77.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3907,9 +3888,8 @@ gst_sdp_message_dump (<em class="parameter"><code>const <a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.76.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.77.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3920,7 +3900,7 @@ gst_sdp_media_new (<em class="parameter"><code><a class="link" href="gst-plugins
 <p>Allocate a new GstSDPMedia and store the result in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.77.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.78.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3935,10 +3915,48 @@ gst_sdp_media_new (<em class="parameter"><code><a class="link" href="gst-plugins
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.77.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.78.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-copy"></a><h3>gst_sdp_media_copy ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_copy (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                    <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> **copy</code></em>);</pre>
+<p>Allocate a new copy of <em class="parameter"><code>media</code></em>
+ and store the result in <em class="parameter"><code>copy</code></em>
+. The value in
+<em class="parameter"><code>copy</code></em>
+ should be release with gst_sdp_media_free function.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.79.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>copy</p></td>
+<td class="parameter_description"><p> pointer to new <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.79.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a></p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3952,7 +3970,7 @@ allocated on the stack. <a class="link" href="gst-plugins-base-libs-gstsdpmessag
 <p>When this function is invoked on newly allocated data (with malloc or on the
 stack), its contents should be set to 0 before calling this function.</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.78.6"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.80.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3967,9 +3985,8 @@ stack), its contents should be set to 0 before calling this function.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.78.7"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.80.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3983,66 +4000,6 @@ gst_sdp_media_uninit (<em class="parameter"><code><a class="link" href="gst-plug
 this function. This function should be used when <em class="parameter"><code>media</code></em>
  was allocated on the
 stack and initialized with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-init" title="gst_sdp_media_init ()"><code class="function">gst_sdp_media_init()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.79.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.79.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-free"></a><h3>gst_sdp_media_free ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
-<p>Free all resources allocated by <em class="parameter"><code>media</code></em>
-. <em class="parameter"><code>media</code></em>
- should not be used anymore after
-this function. This function should be used when <em class="parameter"><code>media</code></em>
- was dynamically
-allocated with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-new" title="gst_sdp_media_new ()"><code class="function">gst_sdp_media_new()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.80.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.80.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-as-text"></a><h3>gst_sdp_media_as_text ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_sdp_media_as_text (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
-<p>Convert the contents of <em class="parameter"><code>media</code></em>
- to a text string.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.81.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -4060,17 +4017,20 @@ gst_sdp_media_as_text (<em class="parameter"><code>const <a class="link" href="g
 </div>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.81.6"></a><h4>Returns</h4>
-<p> A dynamically allocated string representing the media.</p>
-<p></p>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-sdp-media-get-media"></a><h3>gst_sdp_media_get_media ()</h3>
-<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_sdp_media_get_media (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
-<p>Get the media description of <em class="parameter"><code>media</code></em>
-.</p>
+<a name="gst-sdp-media-free"></a><h3>gst_sdp_media_free ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
+<p>Free all resources allocated by <em class="parameter"><code>media</code></em>
+. <em class="parameter"><code>media</code></em>
+ should not be used anymore after
+this function. This function should be used when <em class="parameter"><code>media</code></em>
+ was dynamically
+allocated with <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#gst-sdp-media-new" title="gst_sdp_media_new ()"><code class="function">gst_sdp_media_new()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.82.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -4088,8 +4048,61 @@ gst_sdp_media_get_media (<em class="parameter"><code>const <a class="link" href=
 </div>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.82.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-as-text"></a><h3>gst_sdp_media_as_text ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gst_sdp_media_as_text (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
+<p>Convert the contents of <em class="parameter"><code>media</code></em>
+ to a text string.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.83.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.83.6"></a><h4>Returns</h4>
+<p> A dynamically allocated string representing the media.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-get-media"></a><h3>gst_sdp_media_get_media ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gst_sdp_media_get_media (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>);</pre>
+<p>Get the media description of <em class="parameter"><code>media</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.84.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.84.6"></a><h4>Returns</h4>
 <p> the media description.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4102,7 +4115,7 @@ gst_sdp_media_set_media (<em class="parameter"><code><a class="link" href="gst-p
  to <em class="parameter"><code>med</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.83.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.85.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4124,9 +4137,8 @@ gst_sdp_media_set_media (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.83.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.85.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4137,7 +4149,7 @@ gst_sdp_media_get_port (<em class="parameter"><code>const <a class="link" href="
 <p>Get the port number for <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.84.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.86.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4152,10 +4164,9 @@ gst_sdp_media_get_port (<em class="parameter"><code>const <a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.84.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.86.6"></a><h4>Returns</h4>
 <p> the port number of <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4166,7 +4177,7 @@ gst_sdp_media_get_num_ports (<em class="parameter"><code>const <a class="link" h
 <p>Get the number of ports for <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.85.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.87.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4181,10 +4192,9 @@ gst_sdp_media_get_num_ports (<em class="parameter"><code>const <a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.85.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.87.6"></a><h4>Returns</h4>
 <p> the number of ports for <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4197,7 +4207,7 @@ gst_sdp_media_set_port_info (<em class="parameter"><code><a class="link" href="g
 <p>Set the port information in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.86.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.88.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4224,9 +4234,8 @@ gst_sdp_media_set_port_info (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.86.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.88.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4237,7 +4246,7 @@ gst_sdp_media_get_proto (<em class="parameter"><code>const <a class="link" href=
 <p>Get the transport protocol of <em class="parameter"><code>media</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.87.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.89.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4252,10 +4261,9 @@ gst_sdp_media_get_proto (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.87.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.89.6"></a><h4>Returns</h4>
 <p> the transport protocol of <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4268,7 +4276,7 @@ gst_sdp_media_set_proto (<em class="parameter"><code><a class="link" href="gst-p
  to <em class="parameter"><code>proto</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.88.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.90.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4290,9 +4298,8 @@ gst_sdp_media_set_proto (<em class="parameter"><code><a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.88.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.90.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4303,7 +4310,7 @@ gst_sdp_media_formats_len (<em class="parameter"><code>const <a class="link" hre
 <p>Get the number of formats in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.89.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.91.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4318,10 +4325,9 @@ gst_sdp_media_formats_len (<em class="parameter"><code>const <a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.89.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.91.6"></a><h4>Returns</h4>
 <p> the number of formats in <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4332,92 +4338,6 @@ gst_sdp_media_get_format (<em class="parameter"><code>const <a class="link" href
                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
 <p>Get the format information at position <em class="parameter"><code>idx</code></em>
  in <em class="parameter"><code>media</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.90.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.90.6"></a><h4>Returns</h4>
-<p> the format at position <em class="parameter"><code>idx</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-insert-format"></a><h3>gst_sdp_media_insert_format ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_insert_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
-                             <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
-<p>Insert the format information to <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
-. When <em class="parameter"><code>idx</code></em>
- is -1,
-the format is appended.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.91.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>format</p></td>
-<td class="parameter_description"><p>the format</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.91.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-replace-format"></a><h3>gst_sdp_media_replace_format ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_replace_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
-                              <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
-<p>Replace the format information in <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
- with <em class="parameter"><code>format</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.92.5"></a><h4>Parameters</h4>
@@ -4438,6 +4358,46 @@ gst_sdp_media_replace_format (<em class="parameter"><code><a class="link" href="
 <td class="parameter_description"><p>an index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.92.6"></a><h4>Returns</h4>
+<p> the format at position <em class="parameter"><code>idx</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-insert-format"></a><h3>gst_sdp_media_insert_format ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_insert_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
+                             <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
+<p>Insert the format information to <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+. When <em class="parameter"><code>idx</code></em>
+ is -1,
+the format is appended.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.93.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the format</p></td>
@@ -4447,11 +4407,54 @@ gst_sdp_media_replace_format (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.92.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.93.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-replace-format"></a><h3>gst_sdp_media_replace_format ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_replace_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                              <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
+<p>Replace the format information in <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+ with <em class="parameter"><code>format</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.94.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the format</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.94.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4463,7 +4466,7 @@ gst_sdp_media_remove_format (<em class="parameter"><code><a class="link" href="g
  at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.93.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.95.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4485,11 +4488,10 @@ gst_sdp_media_remove_format (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.93.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.95.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4500,7 +4502,7 @@ gst_sdp_media_add_format (<em class="parameter"><code><a class="link" href="gst-
 <p>Add the format information to <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.94.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.96.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4522,9 +4524,8 @@ gst_sdp_media_add_format (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.94.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.96.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4535,7 +4536,7 @@ gst_sdp_media_get_information (<em class="parameter"><code>const <a class="link"
 <p>Get the information of <em class="parameter"><code>media</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.95.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.97.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4550,10 +4551,9 @@ gst_sdp_media_get_information (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.95.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.97.6"></a><h4>Returns</h4>
 <p> the information of <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4566,7 +4566,7 @@ gst_sdp_media_set_information (<em class="parameter"><code><a class="link" href=
  to <em class="parameter"><code>information</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.96.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.98.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4588,9 +4588,8 @@ gst_sdp_media_set_information (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.96.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.98.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4601,7 +4600,7 @@ gst_sdp_media_connections_len (<em class="parameter"><code>const <a class="link"
 <p>Get the number of connection fields in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.97.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.99.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4616,10 +4615,9 @@ gst_sdp_media_connections_len (<em class="parameter"><code>const <a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.97.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.99.6"></a><h4>Returns</h4>
 <p> the number of connections in <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4630,92 +4628,6 @@ gst_sdp_media_get_connection (<em class="parameter"><code>const <a class="link" 
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
 <p>Get the connection at position <em class="parameter"><code>idx</code></em>
  in <em class="parameter"><code>media</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.98.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.98.6"></a><h4>Returns</h4>
-<p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> at position <em class="parameter"><code>idx</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-insert-connection"></a><h3>gst_sdp_media_insert_connection ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_insert_connection (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
-                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> *conn</code></em>);</pre>
-<p>Insert the connection information to <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
-. When <em class="parameter"><code>idx</code></em>
- is -1,
-the connection is appended.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.99.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>conn</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.99.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-replace-connection"></a><h3>gst_sdp_media_replace_connection ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_replace_connection (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
-                                  <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> *conn</code></em>);</pre>
-<p>Replace the connection information in <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
- with <em class="parameter"><code>conn</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.100.5"></a><h4>Parameters</h4>
@@ -4736,6 +4648,46 @@ gst_sdp_media_replace_connection (<em class="parameter"><code><a class="link" hr
 <td class="parameter_description"><p>an index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.100.6"></a><h4>Returns</h4>
+<p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> at position <em class="parameter"><code>idx</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-insert-connection"></a><h3>gst_sdp_media_insert_connection ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_insert_connection (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
+                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> *conn</code></em>);</pre>
+<p>Insert the connection information to <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+. When <em class="parameter"><code>idx</code></em>
+ is -1,
+the connection is appended.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.101.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
 <tr>
 <td class="parameter_name"><p>conn</p></td>
 <td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a></p></td>
@@ -4745,11 +4697,54 @@ gst_sdp_media_replace_connection (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.100.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.101.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-replace-connection"></a><h3>gst_sdp_media_replace_connection ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_replace_connection (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                                  <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a> *conn</code></em>);</pre>
+<p>Replace the connection information in <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+ with <em class="parameter"><code>conn</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.102.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPConnection" title="GstSDPConnection"><span class="type">GstSDPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.102.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4761,7 +4756,7 @@ gst_sdp_media_remove_connection (<em class="parameter"><code><a class="link" hre
  at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.101.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.103.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4783,11 +4778,10 @@ gst_sdp_media_remove_connection (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.101.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.103.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -4802,7 +4796,7 @@ gst_sdp_media_add_connection (<em class="parameter"><code><a class="link" href="
 <p>Add the given connection parameters to <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.102.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.104.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4845,9 +4839,8 @@ gst_sdp_media_add_connection (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.102.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.104.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4858,7 +4851,7 @@ gst_sdp_media_bandwidths_len (<em class="parameter"><code>const <a class="link" 
 <p>Get the number of bandwidth fields in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.103.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.105.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4873,10 +4866,9 @@ gst_sdp_media_bandwidths_len (<em class="parameter"><code>const <a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.103.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.105.6"></a><h4>Returns</h4>
 <p> the number of bandwidths in <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4887,92 +4879,6 @@ gst_sdp_media_get_bandwidth (<em class="parameter"><code>const <a class="link" h
                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
 <p>Get the bandwidth at position <em class="parameter"><code>idx</code></em>
  in <em class="parameter"><code>media</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.104.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.104.6"></a><h4>Returns</h4>
-<p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> at position <em class="parameter"><code>idx</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-insert-bandwidth"></a><h3>gst_sdp_media_insert_bandwidth ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_insert_bandwidth (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
-                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> *bw</code></em>);</pre>
-<p>Insert the bandwidth information to <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
-. When <em class="parameter"><code>idx</code></em>
- is -1,
-the bandwidth is appended.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.105.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>bw</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.105.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-replace-bandwidth"></a><h3>gst_sdp_media_replace_bandwidth ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_replace_bandwidth (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
-                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> *bw</code></em>);</pre>
-<p>Replace the bandwidth information in <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
- with <em class="parameter"><code>bw</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.106.5"></a><h4>Parameters</h4>
@@ -4993,6 +4899,46 @@ gst_sdp_media_replace_bandwidth (<em class="parameter"><code><a class="link" hre
 <td class="parameter_description"><p>an index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.106.6"></a><h4>Returns</h4>
+<p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> at position <em class="parameter"><code>idx</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-insert-bandwidth"></a><h3>gst_sdp_media_insert_bandwidth ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_insert_bandwidth (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> idx</code></em>,
+                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> *bw</code></em>);</pre>
+<p>Insert the bandwidth information to <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+. When <em class="parameter"><code>idx</code></em>
+ is -1,
+the bandwidth is appended.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.107.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
 <tr>
 <td class="parameter_name"><p>bw</p></td>
 <td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a></p></td>
@@ -5002,11 +4948,54 @@ gst_sdp_media_replace_bandwidth (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.106.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.107.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-replace-bandwidth"></a><h3>gst_sdp_media_replace_bandwidth ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_replace_bandwidth (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a> *bw</code></em>);</pre>
+<p>Replace the bandwidth information in <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+ with <em class="parameter"><code>bw</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.108.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bw</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPBandwidth" title="GstSDPBandwidth"><span class="type">GstSDPBandwidth</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.108.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -5018,7 +5007,7 @@ gst_sdp_media_remove_bandwidth (<em class="parameter"><code><a class="link" href
  at <em class="parameter"><code>idx</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.107.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.109.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5040,11 +5029,10 @@ gst_sdp_media_remove_bandwidth (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.107.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.109.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -5058,7 +5046,7 @@ gst_sdp_media_add_bandwidth (<em class="parameter"><code><a class="link" href="g
  to <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.108.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.110.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5085,9 +5073,8 @@ gst_sdp_media_add_bandwidth (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.108.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.110.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5098,7 +5085,7 @@ gst_sdp_media_get_key (<em class="parameter"><code>const <a class="link" href="g
 <p>Get the encryption information from <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.109.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.111.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5113,9 +5100,8 @@ gst_sdp_media_get_key (<em class="parameter"><code>const <a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.109.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.111.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPKey" title="GstSDPKey"><span class="type">GstSDPKey</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5128,7 +5114,7 @@ gst_sdp_media_set_key (<em class="parameter"><code><a class="link" href="gst-plu
 <p>Adds the encryption information to <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.110.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.112.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5155,9 +5141,8 @@ gst_sdp_media_set_key (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.110.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.112.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="type">GstSDPResult</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5168,7 +5153,7 @@ gst_sdp_media_attributes_len (<em class="parameter"><code>const <a class="link" 
 <p>Get the number of attribute fields in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.111.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.113.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5183,10 +5168,9 @@ gst_sdp_media_attributes_len (<em class="parameter"><code>const <a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.111.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.113.6"></a><h4>Returns</h4>
 <p> the number of attributes in <em class="parameter"><code>media</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5199,7 +5183,7 @@ gst_sdp_media_get_attribute (<em class="parameter"><code>const <a class="link" h
  in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.112.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.114.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5221,10 +5205,9 @@ gst_sdp_media_get_attribute (<em class="parameter"><code>const <a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.112.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.114.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a> at position <em class="parameter"><code>idx</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5237,7 +5220,7 @@ gst_sdp_media_get_attribute_val (<em class="parameter"><code>const <a class="lin
  in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.113.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.115.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5259,10 +5242,9 @@ gst_sdp_media_get_attribute_val (<em class="parameter"><code>const <a class="lin
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.113.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.115.6"></a><h4>Returns</h4>
 <p> the first attribute value for <em class="parameter"><code>key</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5277,7 +5259,7 @@ gst_sdp_media_get_attribute_val_n (<em class="parameter"><code>const <a class="l
  in <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.114.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.116.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5304,10 +5286,9 @@ gst_sdp_media_get_attribute_val_n (<em class="parameter"><code>const <a class="l
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.114.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.116.6"></a><h4>Returns</h4>
 <p> the <em class="parameter"><code>nth</code></em>
 attribute value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -5322,94 +5303,6 @@ gst_sdp_media_insert_attribute (<em class="parameter"><code><a class="link" href
 . When <em class="parameter"><code>idx</code></em>
  is -1,
 the attribute is appended.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.115.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>attr</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.115.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-replace-attribute"></a><h3>gst_sdp_media_replace_attribute ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_replace_attribute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
-                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a> *attr</code></em>);</pre>
-<p>Replace the attribute in <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
- with <em class="parameter"><code>attr</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.116.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>media</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>idx</p></td>
-<td class="parameter_description"><p>an index</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>attr</p></td>
-<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.11.3.7.116.6"></a><h4>Returns</h4>
-<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
-</div>
-<p class="since">Since 1.2</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-sdp-media-remove-attribute"></a><h3>gst_sdp_media_remove_attribute ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
-gst_sdp_media_remove_attribute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
-<p>Remove the attribute in <em class="parameter"><code>media</code></em>
- at <em class="parameter"><code>idx</code></em>
-.</p>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.117.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -5429,15 +5322,100 @@ gst_sdp_media_remove_attribute (<em class="parameter"><code><a class="link" href
 <td class="parameter_description"><p>an index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
+<tr>
+<td class="parameter_name"><p>attr</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="id-1.2.11.3.7.117.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-replace-attribute"></a><h3>gst_sdp_media_replace_attribute ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_replace_attribute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a> *attr</code></em>);</pre>
+<p>Replace the attribute in <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+ with <em class="parameter"><code>attr</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.118.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>attr</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPAttribute" title="GstSDPAttribute"><span class="type">GstSDPAttribute</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.118.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-sdp-media-remove-attribute"></a><h3>gst_sdp_media_remove_attribute ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPResult" title="enum GstSDPResult"><span class="returnvalue">GstSDPResult</span></a>
+gst_sdp_media_remove_attribute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a> *media</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
+<p>Remove the attribute in <em class="parameter"><code>media</code></em>
+ at <em class="parameter"><code>idx</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.119.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>media</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GstSDPMedia" title="GstSDPMedia"><span class="type">GstSDPMedia</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>idx</p></td>
+<td class="parameter_description"><p>an index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.11.3.7.119.6"></a><h4>Returns</h4>
+<p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
+</div>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -5451,7 +5429,7 @@ gst_sdp_media_add_attribute (<em class="parameter"><code><a class="link" href="g
  to <em class="parameter"><code>media</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.118.5"></a><h4>Parameters</h4>
+<a name="id-1.2.11.3.7.120.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -5478,9 +5456,8 @@ gst_sdp_media_add_attribute (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.11.3.7.118.6"></a><h4>Returns</h4>
+<a name="id-1.2.11.3.7.120.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstsdpmessage.html#GST-SDP-OK:CAPS"><span class="type">GST_SDP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -6039,7 +6016,6 @@ keys.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

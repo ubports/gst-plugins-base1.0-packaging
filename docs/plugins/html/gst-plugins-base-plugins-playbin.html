@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: playbin</title>
+<title>playbin: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-oggmux.html" title="oggmux">
 <link rel="next" href="gst-plugins-base-plugins-playsink.html" title="playsink">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -501,7 +501,7 @@ way. Here is how to extract the percentage information from the message:
   <span class="keyword">case</span> GST_MESSAGE_BUFFERING<span class="gtkdoc opt">: {</span>
     gint percent <span class="gtkdoc opt">=</span> <span class="number">0</span><span class="gtkdoc opt">;</span>
     <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-parse-buffering">gst_message_parse_buffering</a></span> <span class="gtkdoc opt">(</span>msg<span class="gtkdoc opt">, &amp;</span>percent<span class="gtkdoc opt">);</span>
-    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
+    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
     <span class="keyword">break</span><span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
   <span class="gtkdoc opt">...</span>
@@ -557,22 +557,22 @@ for such redirects can be found in many quicktime movie trailers.
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/somefile.avi</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/somefile.mp4</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
  This will play back the given AVI video file, given that the video and
 audio decoders required to decode the content are installed. Since no
-special audio sink or video sink is supplied (not possible via gst-launch),
-playbin will try to find a suitable audio and video sink automatically
-using the autoaudiosink and autovideosink elements.
+special audio sink or video sink is supplied (via playbin's audio-sink or
+video-sink properties) playbin will try to find a suitable audio and
+video sink automatically using the autoaudiosink and autovideosink elements.
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>cdda<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//4</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>cdda<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//4</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -584,7 +584,7 @@ the drive is detected automatically by the plugin).
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>dvd<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>dvd<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -629,6 +629,7 @@ the drive is detected automatically by the plugin).
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.other_details"></a><h2>Types and Values</h2>
@@ -726,7 +727,9 @@ the drive is detected automatically by the plugin).
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GST-PLAY-FLAG-SOFT-COLORBALANCE:CAPS"></a>GST_PLAY_FLAG_SOFT_COLORBALANCE</p></td>
-<td class="enum_member_description"> </td>
+<td class="enum_member_description">
+<p>Use a software filter for colour balance</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
@@ -1170,7 +1173,6 @@ equivalent to the <span class="type">“frame”</span> property.</p>
 The caps on the sample will describe the final layout of the buffer data.
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current buffer can be retrieved or when the
 conversion failed.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1215,7 +1217,6 @@ queries, etc.</p>
 <div class="refsect3">
 <a name="id-1.2.24.13.6.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1259,7 +1260,6 @@ This information can be used to select a stream.</p>
 <a name="id-1.2.24.13.7.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1304,7 +1304,6 @@ queries, etc.</p>
 <div class="refsect3">
 <a name="id-1.2.24.13.8.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1348,7 +1347,6 @@ This information can be used to select a stream.</p>
 <a name="id-1.2.24.13.9.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1393,7 +1391,6 @@ queries, etc.</p>
 <div class="refsect3">
 <a name="id-1.2.24.13.10.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1437,7 +1434,6 @@ This information can be used to select a stream.</p>
 <a name="id-1.2.24.13.11.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
 <p>Flags: Action</p>
 </div>
@@ -1641,7 +1637,6 @@ to notify your application's main thread.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

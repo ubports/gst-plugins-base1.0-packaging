@@ -53,6 +53,7 @@ typedef enum {
 /**
  * GstVideoFrame:
  * @info: the #GstVideoInfo
+ * @flags: #GstVideoFrameFlags for the frame
  * @buffer: the mapped buffer
  * @meta: pointer to metadata if any
  * @id: id of the mapped frame. the id can for example be used to
@@ -135,6 +136,7 @@ gboolean    gst_video_frame_copy_plane    (GstVideoFrame *dest, const GstVideoFr
  * @GST_VIDEO_BUFFER_FLAG_ONEFIELD:    If the #GstBuffer is interlaced, then only the
  *                                     first field (as defined by the %GST_VIDEO_BUFFER_TFF
  *                                     flag setting) is to be displayed.
+ * @GST_VIDEO_BUFFER_FLAG_LAST:        Offset to define more flags
  *
  * Additional video buffer flags.
  */
@@ -146,6 +148,24 @@ typedef enum {
 
   GST_VIDEO_BUFFER_FLAG_LAST        = (GST_BUFFER_FLAG_LAST << 8)
 } GstVideoBufferFlags;
+
+/**
+ * GstVideoFrameMapFlags:
+ * @GST_VIDEO_FRAME_MAP_FLAG_NO_REF:  Don't take another reference of the buffer and store it in
+ *                                    the GstVideoFrame. This makes sure that the buffer stays
+ *                                    writable while the frame is mapped, but requires that the
+ *                                    buffer reference stays valid until the frame is unmapped again.
+ * @GST_VIDEO_FRAME_MAP_FLAG_LAST:    Offset to define more flags
+ *
+ * Additional mapping flags for gst_video_frame_map().
+ *
+ * Since: 1.6
+ */
+typedef enum {
+  GST_VIDEO_FRAME_MAP_FLAG_NO_REF   = (GST_MAP_FLAG_LAST << 0),
+  GST_VIDEO_FRAME_MAP_FLAG_LAST     = (GST_MAP_FLAG_LAST << 8)
+  /* 8 more flags possible afterwards */
+} GstVideoFrameMapFlags;
 
 G_END_DECLS
 

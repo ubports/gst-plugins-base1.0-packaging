@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: GstVideoDecoder</title>
+<title>GstVideoDecoder: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideooverlay.html" title="gstvideooverlay">
 <link rel="next" href="gst-plugins-base-libs-GstVideoEncoder.html" title="GstVideoEncoder">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -313,6 +313,14 @@
 <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-merge-tags" title="gst_video_decoder_merge_tags ()">gst_video_decoder_merge_tags</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-proxy-getcaps" title="gst_video_decoder_proxy_getcaps ()">gst_video_decoder_proxy_getcaps</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -490,7 +498,7 @@ is logged. In either case, <em class="parameter"><code>ret</code></em>
  is set to the proper value to
 return to upstream/caller (indicating either GST_FLOW_ERROR or GST_FLOW_OK).</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -546,7 +554,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Gives the pointer to the sink <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -568,7 +576,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Gives the pointer to the source <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> object of the element.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -590,7 +598,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Obtain a lock to protect the decoder function from concurrent access.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -612,7 +620,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Release the lock that protects the decoder function from concurrent access.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -634,7 +642,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Gives the segment of the element.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -656,7 +664,7 @@ enclosed in parentheses)</p></td>
 </pre>
 <p>Gives the segment of the element.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -680,7 +688,7 @@ gst_video_decoder_add_to_frame (<em class="parameter"><code><a class="link" href
 <p>Removes next <em class="parameter"><code>n_bytes</code></em>
  of input data and adds it to currently parsed frame.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -714,7 +722,7 @@ current <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoC
 <p>You should use <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-allocate-output-frame" title="gst_video_decoder_allocate_output_frame ()"><code class="function">gst_video_decoder_allocate_output_frame()</code></a> instead of this
 function, if possible at all.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.10.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.10.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -729,7 +737,7 @@ function, if possible at all.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.10.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.10.7"></a><h4>Returns</h4>
 <p> allocated buffer, or NULL if no buffer could be
 allocated (e.g. when downstream is flushing or shutting down). </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -749,7 +757,7 @@ state and set src pad caps.</p>
 <p>The buffer allocated here is owned by the frame and you should only
 keep references to the frame, not the buffer.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.11.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.11.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -771,9 +779,8 @@ keep references to the frame, not the buffer.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.11.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.11.7"></a><h4>Returns</h4>
 <p> <code class="literal">GST_FLOW_OK</code> if an output buffer could be allocated</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -790,7 +797,7 @@ used by the base class and its <em class="parameter"><code>params</code></em>
 <p>Unref the <em class="parameter"><code>allocator</code></em>
  after use it.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.12.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -826,7 +833,7 @@ used. </p></td>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBufferPool.html"><span class="returnvalue">GstBufferPool</span></a> *
 gst_video_decoder_get_buffer_pool (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.13.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.13.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -841,7 +848,7 @@ gst_video_decoder_get_buffer_pool (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.13.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.13.5"></a><h4>Returns</h4>
 <p> the instance of the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBufferPool.html"><span class="type">GstBufferPool</span></a> used
 by the decoder; free it after use it. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -858,7 +865,7 @@ gst_video_decoder_drop_frame (<em class="parameter"><code><a class="link" href="
 case and posts a QoS message with the frame's details on the bus.
 In any case, the frame is considered finished and released.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -880,9 +887,8 @@ In any case, the frame is considered finished and released.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.14.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.14.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="type">GstFlowReturn</span></a>, usually GST_FLOW_OK.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -901,7 +907,7 @@ In any case, the frame is considered finished and released.</p>
 considered read-only. This function will also change the metadata
 of the buffer.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.15.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.15.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -923,9 +929,8 @@ of the buffer.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.15.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.15.7"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="type">GstFlowReturn</span></a> resulting from sending data downstream</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -939,7 +944,7 @@ gst_video_decoder_release_frame (<em class="parameter"><code><a class="link" hre
 without any processing other than removing it from list of pending frames,
 after which it is considered finished and released.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -960,7 +965,7 @@ after which it is considered finished and released.</p>
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.2.2</p>
+<p class="since">Since: 1.2.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -971,7 +976,7 @@ gst_video_decoder_negotiate (<em class="parameter"><code><a class="link" href="g
 Unmark GST_PAD_FLAG_NEED_RECONFIGURE in any case. But mark it again if
 negotiate fails.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -986,9 +991,8 @@ negotiate fails.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.17.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the negotiation succeeded, else <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -999,7 +1003,7 @@ gst_video_decoder_get_frame (<em class="parameter"><code><a class="link" href="g
                              <em class="parameter"><code><span class="type">int</span> frame_number</code></em>);</pre>
 <p>Get a pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a></p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.18.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1021,7 +1025,7 @@ gst_video_decoder_get_frame (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.18.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.18.6"></a><h4>Returns</h4>
 <p> pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> identified by <em class="parameter"><code>frame_number</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -1034,7 +1038,7 @@ gst_video_decoder_get_frame (<em class="parameter"><code><a class="link" href="g
 gst_video_decoder_get_frames (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <p>Get all pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a></p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.19.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.19.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1049,7 +1053,7 @@ gst_video_decoder_get_frames (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.19.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.19.6"></a><h4>Returns</h4>
 <p> pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GstVideoCodecFrame]</span></p>
 </div>
@@ -1066,7 +1070,7 @@ allow it to decode and arrive in time (as determined by QoS events).
 In particular, a negative result means decoding in time is no longer possible
 and should therefore occur as soon/skippy as possible.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.20.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1088,9 +1092,8 @@ and should therefore occur as soon/skippy as possible.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.20.6"></a><h4>Returns</h4>
 <p> max decoding time.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1099,7 +1102,7 @@ and should therefore occur as soon/skippy as possible.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 gst_video_decoder_get_max_errors (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *dec</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.21.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.21.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1114,9 +1117,8 @@ gst_video_decoder_get_max_errors (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.21.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.21.5"></a><h4>Returns</h4>
 <p> currently configured decoder tolerated error count.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1126,7 +1128,7 @@ gst_video_decoder_get_max_errors (<em class="parameter"><code><a class="link" hr
 gst_video_decoder_get_oldest_frame (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <p>Get the oldest pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a></p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1141,7 +1143,7 @@ gst_video_decoder_get_oldest_frame (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.22.6"></a><h4>Returns</h4>
 <p> oldest pending unfinished <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -1154,7 +1156,7 @@ gst_video_decoder_get_packetized (<em class="parameter"><code><a class="link" hr
 <p>Queries whether input data is considered packetized or not by the
 base class.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1169,9 +1171,8 @@ base class.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.23.6"></a><h4>Returns</h4>
 <p> TRUE if input data is considered packetized.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1183,7 +1184,7 @@ gst_video_decoder_get_pending_frame_size
 <p>Returns the number of bytes previously added to the current frame
 by calling <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-add-to-frame" title="gst_video_decoder_add_to_frame ()"><code class="function">gst_video_decoder_add_to_frame()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1198,11 +1199,10 @@ by calling <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.24.6"></a><h4>Returns</h4>
 <p> The number of bytes pending for the current frame</p>
-<p></p>
 </div>
-<p class="since">Since 1.4</p>
+<p class="since">Since: 1.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1210,7 +1210,7 @@ by calling <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 gst_video_decoder_get_qos_proportion (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.25.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.25.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1226,11 +1226,10 @@ current QoS proportion, or <a href="https://developer.gnome.org/glib/unstable/gl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.25.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.25.5"></a><h4>Returns</h4>
 <p> The current QoS proportion.</p>
-<p></p>
 </div>
-<p class="since">Since 1.0.3</p>
+<p class="since">Since: 1.0.3</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1241,7 +1240,7 @@ gst_video_decoder_have_frame (<em class="parameter"><code><a class="link" href="
 metadata and passes it along for further processing, i.e. <em class="parameter"><code>handle_frame</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1256,9 +1255,8 @@ metadata and passes it along for further processing, i.e. <em class="parameter">
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.26.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="type">GstFlowReturn</span></a></p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1273,7 +1271,7 @@ gst_video_decoder_get_latency (<em class="parameter"><code><a class="link" href=
  and <em class="parameter"><code>max_latency</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.27.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1313,7 +1311,7 @@ gst_video_decoder_set_latency (<em class="parameter"><code><a class="link" href=
 latency is. Will also post a LATENCY message on the bus so the pipeline
 can reconfigure its global latency.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1346,7 +1344,7 @@ can reconfigure its global latency.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 gst_video_decoder_get_estimate_rate (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *dec</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.29.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.29.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1361,9 +1359,8 @@ gst_video_decoder_get_estimate_rate (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.29.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.29.5"></a><h4>Returns</h4>
 <p> currently configured byte to time conversion setting</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1373,7 +1370,7 @@ gst_video_decoder_get_estimate_rate (<em class="parameter"><code><a class="link"
 gst_video_decoder_get_output_state (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>);</pre>
 <p>Get the <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a> currently describing the output stream.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1388,7 +1385,7 @@ gst_video_decoder_get_output_state (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.30.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a> describing format of video data. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -1401,7 +1398,7 @@ gst_video_decoder_set_estimate_rate (<em class="parameter"><code><a class="link"
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>);</pre>
 <p>Allows baseclass to perform byte to time estimated conversion.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.31.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.31.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1449,7 +1446,7 @@ pixel-aspect-ratio or framerate) it can do so on the returned <a class="link" hr
 <p>The new output state will only take effect (set on pads and buffers) starting
 from the next call to <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-finish-frame" title="gst_video_decoder_finish_frame ()"><code class="function">gst_video_decoder_finish_frame()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.32.8"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.32.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1486,7 +1483,7 @@ from the next call to <a class="link" href="gst-plugins-base-libs-GstVideoDecode
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.32.9"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.32.9"></a><h4>Returns</h4>
 <p> the newly configured output state. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -1503,7 +1500,7 @@ warned about, but more than tolerated will lead to fatal error.  You can set
 GST_VIDEO_DECODER_MAX_ERRORS.</p>
 <p>The '-1' option was added in 1.4</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.33.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.33.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1535,7 +1532,7 @@ gst_video_decoder_set_packetized (<em class="parameter"><code><a class="link" hr
 input is packetized, then the <em class="parameter"><code>parse</code></em>
  method will not be called.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.34.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.34.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1564,7 +1561,7 @@ input is packetized, then the <em class="parameter"><code>parse</code></em>
 gst_video_decoder_get_needs_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *dec</code></em>);</pre>
 <p>Queries decoder required format handling.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.35.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.35.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1579,11 +1576,10 @@ gst_video_decoder_get_needs_format (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.35.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.6.35.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if required format handling is enabled.</p>
-<p></p>
 </div>
-<p class="since">Since 1.4</p>
+<p class="since">Since: 1.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1598,7 +1594,7 @@ Otherwise, it might be handed data without having been configured and
 is then expected being able to do so either by default
 or based on the input data.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.36.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.36.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1619,7 +1615,7 @@ or based on the input data.</p>
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.4</p>
+<p class="since">Since: 1.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1634,7 +1630,7 @@ before pushing out data downstream.</p>
 not required to use this and can still do tag handling on its own.</p>
 <p>MT safe.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.6.37.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.16.6.37.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1660,6 +1656,52 @@ not required to use this and can still do tag handling on its own.</p>
 </tbody>
 </table></div>
 </div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-decoder-proxy-getcaps"></a><h3>gst_video_decoder_proxy_getcaps ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
+gst_video_decoder_proxy_getcaps (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
+                                 <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
+                                 <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *filter</code></em>);</pre>
+<p>Returns caps that express <em class="parameter"><code>caps</code></em>
+ (or sink template caps if <em class="parameter"><code>caps</code></em>
+ == NULL)
+restricted to resolution/format/... combinations supported by downstream
+elements.</p>
+<div class="refsect3">
+<a name="id-1.2.15.16.6.38.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>decoder</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>caps</p></td>
+<td class="parameter_description"><p> initial caps. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filter</p></td>
+<td class="parameter_description"><p> filter caps. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.16.6.38.6"></a><h4>Returns</h4>
+<p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> owned by caller. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.6</p>
 </div>
 </div>
 <div class="refsect1">
@@ -1746,6 +1788,11 @@ not required to use this and can still do tag handling on its own.</p>
 
   gboolean      (*src_query)      (GstVideoDecoder *decoder,
 				   GstQuery *query);
+
+  GstCaps*      (*getcaps)        (GstVideoDecoder *decoder,
+                                   GstCaps *filter);
+
+  GstFlowReturn (*drain)          (GstVideoDecoder *decoder);
 };
 </pre>
 <p>Subclasses can override any of the available virtual methods or not, as
@@ -1756,7 +1803,7 @@ and likely as well.  If non-packetized input is supported or expected,
 <em class="parameter"><code>parse</code></em>
  needs to be overridden as well.</p>
 <div class="refsect3">
-<a name="id-1.2.15.12.7.7.5"></a><h4>Members</h4>
+<a name="id-1.2.15.16.7.7.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1815,8 +1862,7 @@ Deprecated.</p></td>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstVideoDecoderClass.finish"></a>finish</code></em> ()</p></td>
 <td class="struct_member_description"><p>Optional.
 Called to request subclass to dispatch any pending remaining
-data (e.g. at EOS or segment end). Sub-classes should be prepared
-to handle new data afterward, or seamless segment processing will break.</p></td>
+data at EOS. Sub-classes can refuse to decode new data after.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -1895,6 +1941,24 @@ should chain up to the parent implementation to invoke the
 default handler. Since 1.4</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstVideoDecoderClass.getcaps"></a>getcaps</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Allows for a custom sink getcaps implementation.
+If not implemented, default returns
+gst_video_decoder_proxy_getcaps
+applied to sink template caps.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstVideoDecoderClass.drain"></a>drain</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional.
+Called to request subclass to decode any data it can at this
+point, but that more data may arrive after. (e.g. at segment end).
+Sub-classes should be prepared to handle new data afterward,
+or seamless segment processing will break. Since: 1.6</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1902,7 +1966,6 @@ default handler. Since 1.4</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

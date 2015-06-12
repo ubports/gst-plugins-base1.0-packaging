@@ -258,10 +258,17 @@ gst_codec_utils_aac_get_level (const guint8 * audio_config, guint len)
       num_cpe = 2;
       break;
     case 7:
+    case 12:
+    case 14:
       /* front left, right, center and LFE; outside front left and right;
        * rear left and right surround */
       num_sce = 1;
       num_cpe = 3;
+      num_lfe = 1;
+      break;
+    case 11:
+      num_sce = 2;
+      num_cpe = 2;
       num_lfe = 1;
       break;
     default:
@@ -320,6 +327,10 @@ gst_codec_utils_aac_get_level (const guint8 * audio_config, guint len)
       ret = 4;
     else if (num_channels <= 5 && rate <= 96000 && pcu <= 38 && rcu <= 15)
       ret = 5;
+    else if (num_channels <= 7 && rate <= 48000 && pcu <= 25 && rcu <= 19)
+      ret = 6;
+    else if (num_channels <= 7 && rate <= 96000 && pcu <= 50 && rcu <= 19)
+      ret = 7;
   } else {
     /* Return the level as per the 'Main Profile' */
     if (pcu < 40 && rcu < 20)
@@ -682,7 +693,6 @@ const gchar *
 gst_codec_utils_h265_get_profile (const guint8 * profile_tier_level, guint len)
 {
   const gchar *profile = NULL;
-  gint gpcf1 = 0, gpcf2 = 0, gpcf3 = 0;
   gint profile_idc;
 
   g_return_val_if_fail (profile_tier_level != NULL, NULL);
@@ -694,15 +704,11 @@ gst_codec_utils_h265_get_profile (const guint8 * profile_tier_level, guint len)
 
   profile_idc = (profile_tier_level[0] & 0x1f);
 
-  gpcf1 = (profile_tier_level[1] & 0x40) >> 6;
-  gpcf2 = (profile_tier_level[1] & 0x20) >> 5;
-  gpcf3 = (profile_tier_level[1] & 0x10) >> 4;
-
-  if (profile_idc == 1 || gpcf1)
+  if (profile_idc == 1)
     profile = "main";
-  else if (profile_idc == 2 || gpcf2)
+  else if (profile_idc == 2)
     profile = "main-10";
-  else if (profile_idc == 3 || gpcf3)
+  else if (profile_idc == 3)
     profile = "main-still-picture";
   else
     profile = NULL;

@@ -11,6 +11,7 @@ EXTRA_DIST = \
 	as-python.m4 \
 	as-version.m4 \
 	ax_create_stdint_h.m4 \
+	ax_pthread.m4 \
 	glib-gettext.m4 \
 	gst-arch.m4 \
 	gst-args.m4 \

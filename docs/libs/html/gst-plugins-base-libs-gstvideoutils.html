@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstvideoutils</title>
+<title>gstvideoutils: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-GstVideoPool.html" title="GstVideoPool">
 <link rel="next" href="gst-plugins-base-libs-gstnavigation.html" title="gstnavigation">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -215,7 +215,7 @@
 <p>The entire set of flags for the <em class="parameter"><code>frame</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -238,7 +238,7 @@
 <p>Checks whether the given <em class="parameter"><code>flag</code></em>
  is set</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.3.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -267,7 +267,7 @@
 </pre>
 <p>This macro sets the given bits</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -296,7 +296,7 @@
 </pre>
 <p>This macro usets the given bits.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -325,7 +325,7 @@
 </pre>
 <p>Tests if the buffer should only be decoded but not sent downstream.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -348,7 +348,7 @@
 <p>Tests if the frame must be encoded as a keyframe. Applies only to
 frames provided to encoders. Decoders can safely ignore this field.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -373,7 +373,7 @@ resulting encoded buffer for the given frame.</p>
 <p>Applies only to frames provided to encoders. Decoders can safely
 ignore this field.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.8.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.8.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -396,7 +396,7 @@ ignore this field.</p>
 <p>Tests if the frame is a synchronization point (like a keyframe).</p>
 <p>Decoder implementations can use this to detect keyframes.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.9.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.9.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -421,7 +421,7 @@ ignore this field.</p>
 are not meant to be displayed.</p>
 <p>Encoder implementation can safely ignore this field.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.10.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.10.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -458,7 +458,7 @@ are not meant to be displayed.</p>
 <p>Decoder implementing parsing features should set this when they
 detect such a synchronization point.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.13.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.13.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -498,7 +498,7 @@ detect such a synchronization point.</p>
 gst_video_codec_frame_ref (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> *frame</code></em>);</pre>
 <p>Increases the refcount of the given frame by one.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.17.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -513,10 +513,9 @@ gst_video_codec_frame_ref (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.17.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.19.6.17.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>buf</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -527,7 +526,7 @@ gst_video_codec_frame_unref (<em class="parameter"><code><a class="link" href="g
 <p>Decreases the refcount of the frame. If the refcount reaches 0, the frame
 will be freed.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.18.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -558,7 +557,7 @@ the frame is freed. Allows to attach private data by the subclass to frames.</p>
 before the <em class="parameter"><code>user_data</code></em>
  is replaced.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.19.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.19.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -593,7 +592,7 @@ gst_video_codec_frame_get_user_data (<em class="parameter"><code><a class="link"
 <p>Gets private data set on the frame by the subclass via
 <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#gst-video-codec-frame-set-user-data" title="gst_video_codec_frame_set_user_data ()"><code class="function">gst_video_codec_frame_set_user_data()</code></a> previously.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.20.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -608,7 +607,7 @@ gst_video_codec_frame_get_user_data (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.20.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.19.6.20.6"></a><h4>Returns</h4>
 <p> The previously set user_data. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -620,7 +619,7 @@ gst_video_codec_frame_get_user_data (<em class="parameter"><code><a class="link"
 gst_video_codec_state_ref (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecState" title="struct GstVideoCodecState"><span class="type">GstVideoCodecState</span></a> *state</code></em>);</pre>
 <p>Increases the refcount of the given state by one.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.21.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -635,10 +634,9 @@ gst_video_codec_state_ref (<em class="parameter"><code><a class="link" href="gst
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.21.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.19.6.21.6"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>buf</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -649,7 +647,7 @@ gst_video_codec_state_unref (<em class="parameter"><code><a class="link" href="g
 <p>Decreases the refcount of the state. If the refcount reaches 0, the state
 will be freed.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.6.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.19.6.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -689,7 +687,7 @@ will be freed.</p>
 <p>A <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a> represents a video frame both in raw and
 encoded form.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.7.2.5"></a><h4>Members</h4>
+<a name="id-1.2.15.19.7.2.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -738,7 +736,8 @@ to the library and get back the frame using <a class="link" href="gst-plugins-ba
 <tr>
 <td class="struct_member_name"><p><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *<em class="structfield"><code><a name="GstVideoCodecFrame.input-buffer"></a>input_buffer</code></em>;</p></td>
 <td class="struct_member_description"><p>the input <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> that created this frame. The buffer is owned
-by the frame and references to the frame instead of the buffer should</p></td>
+by the frame and references to the frame instead of the buffer should
+be kept.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -767,7 +766,7 @@ buffer should be kept.</p></td>
 <a name="GstVideoCodecFrameFlags"></a><h3>enum GstVideoCodecFrameFlags</h3>
 <p>Flags for <a class="link" href="gst-plugins-base-libs-gstvideoutils.html#GstVideoCodecFrame" title="struct GstVideoCodecFrame"><span class="type">GstVideoCodecFrame</span></a></p>
 <div class="refsect3">
-<a name="id-1.2.15.15.7.3.4"></a><h4>Members</h4>
+<a name="id-1.2.15.19.7.3.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -829,7 +828,7 @@ respective <em class="parameter"><code>set_format</code></em>
 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-set-output-state" title="gst_video_encoder_set_output_state ()"><code class="function">gst_video_encoder_set_output_state()</code></a></code></em>
  methods.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.7.4.7"></a><h4>Members</h4>
+<a name="id-1.2.15.19.7.4.7"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -860,7 +859,6 @@ respective <em class="parameter"><code>set_format</code></em>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

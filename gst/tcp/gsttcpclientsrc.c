@@ -30,7 +30,7 @@
  * # server:
  * nc -l -p 3000
  * # client:
- * gst-launch tcpclientsrc port=3000 ! fdsink fd=2
+ * gst-launch-1.0 tcpclientsrc port=3000 ! fdsink fd=2
  * ]| everything you type in the server is shown on the client
  * </refsect2>
  */
@@ -485,7 +485,8 @@ gst_tcp_client_src_unlock_stop (GstBaseSrc * bsrc)
   GstTCPClientSrc *src = GST_TCP_CLIENT_SRC (bsrc);
 
   GST_DEBUG_OBJECT (src, "unset flushing");
-  g_cancellable_reset (src->cancellable);
+  g_object_unref (src->cancellable);
+  src->cancellable = g_cancellable_new ();
 
   return TRUE;
 }

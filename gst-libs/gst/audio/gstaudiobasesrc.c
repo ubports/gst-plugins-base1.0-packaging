@@ -169,14 +169,17 @@ gst_audio_base_src_class_init (GstAudioBaseSrcClass * klass)
       g_param_spec_int64 ("buffer-time", "Buffer Time",
           "Size of audio buffer in microseconds. This is the maximum amount "
           "of data that is buffered in the device and the maximum latency that "
-          "the source reports", 1, G_MAXINT64, DEFAULT_BUFFER_TIME,
+          "the source reports. This value might be ignored by the element if "
+          "necessary; see \"actual-buffer-time\"",
+          1, G_MAXINT64, DEFAULT_BUFFER_TIME,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_LATENCY_TIME,
       g_param_spec_int64 ("latency-time", "Latency Time",
           "The minimum amount of data to read in each iteration in "
-          "microseconds. This is the minimum latency that the source reports",
-          1, G_MAXINT64, DEFAULT_LATENCY_TIME,
+          "microseconds. This is the minimum latency that the source reports. "
+          "This value might be ignored by the element if necessary; see "
+          "\"actual-latency-time\"", 1, G_MAXINT64, DEFAULT_LATENCY_TIME,
           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1124,17 +1127,28 @@ gst_audio_base_src_change_state (GstElement * element,
   GstAudioBaseSrc *src = GST_AUDIO_BASE_SRC (element);
 
   switch (transition) {
-    case GST_STATE_CHANGE_NULL_TO_READY:
+    case GST_STATE_CHANGE_NULL_TO_READY:{
+      GstAudioRingBuffer *rb;
+
       GST_DEBUG_OBJECT (src, "NULL->READY");
+      gst_audio_clock_reset (GST_AUDIO_CLOCK (src->clock), 0);
+      rb = gst_audio_base_src_create_ringbuffer (src);
+      if (rb == NULL)
+        goto create_failed;
+
       GST_OBJECT_LOCK (src);
-      if (src->ringbuffer == NULL) {
-        gst_audio_clock_reset (GST_AUDIO_CLOCK (src->clock), 0);
-        src->ringbuffer = gst_audio_base_src_create_ringbuffer (src);
-      }
+      src->ringbuffer = rb;
       GST_OBJECT_UNLOCK (src);
-      if (!gst_audio_ring_buffer_open_device (src->ringbuffer))
+
+      if (!gst_audio_ring_buffer_open_device (src->ringbuffer)) {
+        GST_OBJECT_LOCK (src);
+        gst_object_unparent (GST_OBJECT_CAST (src->ringbuffer));
+        src->ringbuffer = NULL;
+        GST_OBJECT_UNLOCK (src);
         goto open_failed;
+      }
       break;
+    }
     case GST_STATE_CHANGE_READY_TO_PAUSED:
       GST_DEBUG_OBJECT (src, "READY->PAUSED");
       src->next_sample = -1;
@@ -1197,6 +1211,12 @@ gst_audio_base_src_change_state (GstElement * element,
   return ret;
 
   /* ERRORS */
+create_failed:
+  {
+    /* subclass must post a meaningful error message */
+    GST_DEBUG_OBJECT (src, "create failed");
+    return GST_STATE_CHANGE_FAILURE;
+  }
 open_failed:
   {
     /* subclass must post a meaningful error message */

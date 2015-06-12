@@ -24,13 +24,13 @@
  * SECTION:element-alsasink
  * @see_also: alsasrc
  *
- * This element renders raw audio samples using the ALSA api.
+ * This element renders raw audio samples using the ALSA audio API.
  *
  * <refsect2>
  * <title>Example pipelines</title>
  * |[
- * gst-launch -v filesrc location=sine.ogg ! oggdemux ! vorbisdec ! audioconvert ! audioresample ! alsasink
- * ]| Play an Ogg/Vorbis file.
+ * gst-launch-1.0 -v uridecodebin uri=file:///path/to/audio.ogg ! audioconvert ! audioresample ! autoaudiosink
+ * ]| Play an Ogg/Vorbis file and output audio via ALSA.
  * </refsect2>
  */
 
@@ -986,7 +986,7 @@ gst_alsasink_close (GstAudioSink * asink)
 static gint
 xrun_recovery (GstAlsaSink * alsa, snd_pcm_t * handle, gint err)
 {
-  GST_DEBUG_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (-err));
+  GST_WARNING_OBJECT (alsa, "xrun recovery %d: %s", err, g_strerror (-err));
 
   if (err == -EPIPE) {          /* under-run */
     err = snd_pcm_prepare (handle);

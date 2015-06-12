@@ -125,6 +125,9 @@ void            gst_encoding_profile_set_description    (GstEncodingProfile *pro
 GstCaps *       gst_encoding_profile_get_format         (GstEncodingProfile *profile);
 void            gst_encoding_profile_set_format         (GstEncodingProfile *profile,
                                                          GstCaps *format);
+gboolean  gst_encoding_profile_get_allow_dynamic_output (GstEncodingProfile *profile);
+void      gst_encoding_profile_set_allow_dynamic_output (GstEncodingProfile *profile,
+                                                         gboolean allow_dynamic_output);
 const gchar *   gst_encoding_profile_get_preset         (GstEncodingProfile *profile);
 const gchar *   gst_encoding_profile_get_preset_name    (GstEncodingProfile *profile);
 void            gst_encoding_profile_set_preset         (GstEncodingProfile *profile,
@@ -149,6 +152,9 @@ GstEncodingProfile * gst_encoding_profile_find (const gchar *targetname,
                                                 const gchar *profilename,
                                                 const gchar *category);
 
+gboolean        gst_encoding_profile_is_enabled        (GstEncodingProfile *profile);
+void            gst_encoding_profile_set_enabled       (GstEncodingProfile *profile,
+                                                         gboolean enabled);
 /* GstEncodingContainerProfile API */
 gboolean        gst_encoding_container_profile_add_profile       (GstEncodingContainerProfile *container,
                                                                   GstEncodingProfile *profile);

@@ -28,9 +28,9 @@
  * <title>Example launch line</title>
  * |[
  * # server:
- * gst-launch tcpserversrc port=3000 ! fdsink fd=2
+ * gst-launch-1.0 tcpserversrc port=3000 ! fdsink fd=2
  * # client:
- * gst-launch fdsrc fd=1 ! tcpclientsink port=3000
+ * gst-launch-1.0 fdsrc fd=1 ! tcpclientsink port=3000
  * ]| 
  * </refsect2>
  */
@@ -559,7 +559,8 @@ gst_tcp_server_src_unlock_stop (GstBaseSrc * bsrc)
 {
   GstTCPServerSrc *src = GST_TCP_SERVER_SRC (bsrc);
 
-  g_cancellable_reset (src->cancellable);
+  g_object_unref (src->cancellable);
+  src->cancellable = g_cancellable_new ();
 
   return TRUE;
 }

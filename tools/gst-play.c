@@ -2,6 +2,7 @@
  *
  * Copyright (C) 2013-2014 Tim-Philipp Müller <tim centricular net>
  * Copyright (C) 2013 Collabora Ltd.
+ * Copyright (C) 2015 Centricular Ltd
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -28,11 +29,14 @@
 #include <gst/gst.h>
 #include <gst/gst-i18n-app.h>
 #include <gst/audio/audio.h>
+#include <gst/video/video.h>
 #include <gst/pbutils/pbutils.h>
 #include <gst/math-compat.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#include <glib/gprintf.h>
 
 #include "gst-play-kb.h"
 
@@ -40,6 +44,16 @@
 
 GST_DEBUG_CATEGORY (play_debug);
 #define GST_CAT_DEFAULT play_debug
+
+typedef enum
+{
+  GST_PLAY_TRICK_MODE_NONE = 0,
+  GST_PLAY_TRICK_MODE_DEFAULT,
+  GST_PLAY_TRICK_MODE_DEFAULT_NO_AUDIO,
+  GST_PLAY_TRICK_MODE_KEY_UNITS,
+  GST_PLAY_TRICK_MODE_KEY_UNITS_NO_AUDIO,
+  GST_PLAY_TRICK_MODE_LAST
+} GstPlayTrickMode;
 
 typedef struct
 {
@@ -63,7 +77,12 @@ typedef struct
 
   /* configuration */
   gboolean gapless;
+
+  GstPlayTrickMode trick_mode;
+  gdouble rate;
 } GstPlay;
+
+static gboolean quiet = FALSE;
 
 static gboolean play_bus_msg (GstBus * bus, GstMessage * msg, gpointer data);
 static gboolean play_next (GstPlay * play);
@@ -72,6 +91,39 @@ static gboolean play_timeout (gpointer user_data);
 static void play_about_to_finish (GstElement * playbin, gpointer user_data);
 static void play_reset (GstPlay * play);
 static void play_set_relative_volume (GstPlay * play, gdouble volume_step);
+static gboolean play_do_seek (GstPlay * play, gint64 pos, gdouble rate,
+    GstPlayTrickMode mode);
+
+/* *INDENT-OFF* */
+static void gst_play_printf (const gchar * format, ...) G_GNUC_PRINTF (1, 2);
+/* *INDENT-ON* */
+
+static void keyboard_cb (const gchar * key_input, gpointer user_data);
+static void relative_seek (GstPlay * play, gdouble percent);
+
+static void
+gst_play_printf (const gchar * format, ...)
+{
+  gchar *str = NULL;
+  va_list args;
+  int len;
+
+  if (quiet)
+    return;
+
+  va_start (args, format);
+
+  len = g_vasprintf (&str, format, args);
+
+  va_end (args);
+
+  if (len > 0 && str != NULL)
+    g_print ("%s", str);
+
+  g_free (str);
+}
+
+#define g_print gst_play_printf
 
 static GstPlay *
 play_new (gchar ** uris, const gchar * audio_sink, const gchar * video_sink,
@@ -134,6 +186,9 @@ play_new (gchar ** uris, const gchar * audio_sink, const gchar * video_sink,
   if (initial_volume != -1)
     play_set_relative_volume (play, initial_volume - 1.0);
 
+  play->rate = 1.0;
+  play->trick_mode = GST_PLAY_TRICK_MODE_NONE;
+
   return play;
 }
 
@@ -178,7 +233,8 @@ play_set_relative_volume (GstPlay * play, gdouble volume_step)
   gst_stream_volume_set_volume (GST_STREAM_VOLUME (play->playbin),
       GST_STREAM_VOLUME_FORMAT_CUBIC, volume);
 
-  g_print ("Volume: %.0f%%                  \n", volume * 100);
+  g_print (_("Volume: %.0f%%"), volume * 100);
+  g_print ("                  \n");
 }
 
 /* returns TRUE if something was installed and we should restart playback */
@@ -267,7 +323,7 @@ play_bus_msg (GstBus * bus, GstMessage * msg, gpointer user_data)
       g_print ("\n");
       /* and switch to next item in list */
       if (!play_next (play)) {
-        g_print ("Reached end of play list.\n");
+        g_print ("%s\n", _("Reached end of play list."));
         g_main_loop_quit (play->loop);
       }
       break;
@@ -313,8 +369,63 @@ play_bus_msg (GstBus * bus, GstMessage * msg, gpointer user_data)
       }
       /* try next item in list then */
       if (!play_next (play)) {
-        g_print ("Reached end of play list.\n");
+        g_print ("%s\n", _("Reached end of play list."));
         g_main_loop_quit (play->loop);
+      }
+      break;
+    }
+    case GST_MESSAGE_ELEMENT:
+    {
+      GstNavigationMessageType mtype = gst_navigation_message_get_type (msg);
+      if (mtype == GST_NAVIGATION_MESSAGE_EVENT) {
+        GstEvent *ev;
+
+        if (gst_navigation_message_parse_event (msg, &ev)) {
+          GstNavigationEventType e_type = gst_navigation_event_get_type (ev);
+          switch (e_type) {
+            case GST_NAVIGATION_EVENT_KEY_PRESS:
+            {
+              const gchar *key;
+
+              if (gst_navigation_event_parse_key_event (ev, &key)) {
+                GST_INFO ("Key press: %s", key);
+
+                if (strcmp (key, "Left") == 0)
+                  key = GST_PLAY_KB_ARROW_LEFT;
+                else if (strcmp (key, "Right") == 0)
+                  key = GST_PLAY_KB_ARROW_RIGHT;
+                else if (strcmp (key, "Up") == 0)
+                  key = GST_PLAY_KB_ARROW_UP;
+                else if (strcmp (key, "Down") == 0)
+                  key = GST_PLAY_KB_ARROW_DOWN;
+                else if (strcmp (key, "space") == 0)
+                  key = " ";
+                else if (strlen (key) > 1)
+                  break;
+
+                keyboard_cb (key, user_data);
+              }
+              break;
+            }
+            case GST_NAVIGATION_EVENT_MOUSE_BUTTON_PRESS:
+            {
+              gint button;
+              if (gst_navigation_event_parse_mouse_button_event (ev, &button,
+                      NULL, NULL)) {
+                if (button == 4) {
+                  /* wheel up */
+                  relative_seek (play, +0.08);
+                } else if (button == 5) {
+                  /* wheel down */
+                  relative_seek (play, -0.01);
+                }
+              }
+              break;
+            }
+            default:
+              break;
+          }
+        }
       }
       break;
     }
@@ -385,20 +496,18 @@ play_uri_get_display_name (GstPlay * play, const gchar * uri)
 static void
 play_uri (GstPlay * play, const gchar * next_uri)
 {
-  GstStateChangeReturn sret;
   gchar *loc;
 
   gst_element_set_state (play->playbin, GST_STATE_READY);
   play_reset (play);
 
   loc = play_uri_get_display_name (play, next_uri);
-  g_print ("Now playing %s\n", loc);
+  g_print (_("Now playing %s\n"), loc);
   g_free (loc);
 
   g_object_set (play->playbin, "uri", next_uri, NULL);
 
-  sret = gst_element_set_state (play->playbin, GST_STATE_PAUSED);
-  switch (sret) {
+  switch (gst_element_set_state (play->playbin, GST_STATE_PAUSED)) {
     case GST_STATE_CHANGE_FAILURE:
       /* ignore, we should get an error message posted on the bus */
       break;
@@ -412,8 +521,9 @@ play_uri (GstPlay * play, const gchar * next_uri)
     default:
       break;
   }
+
   if (play->desired_state != GST_STATE_PAUSED)
-    sret = gst_element_set_state (play->playbin, play->desired_state);
+    gst_element_set_state (play->playbin, play->desired_state);
 }
 
 /* returns FALSE if we have reached the end of the playlist */
@@ -455,7 +565,8 @@ play_about_to_finish (GstElement * playbin, gpointer user_data)
 
   next_uri = play->uris[next_idx];
   loc = play_uri_get_display_name (play, next_uri);
-  g_print ("About to finish, preparing next title: %s\n", loc);
+  g_print (_("About to finish, preparing next title: %s"), loc);
+  g_print ("\n");
   g_free (loc);
 
   g_object_set (play->playbin, "uri", next_uri, NULL);
@@ -577,15 +688,14 @@ relative_seek (GstPlay * play, gdouble percent)
   pos = pos + dur * percent;
   if (pos > dur) {
     if (!play_next (play)) {
-      g_print ("\nReached end of play list.\n");
+      g_print ("\n%s\n", _("Reached end of play list."));
       g_main_loop_quit (play->loop);
     }
   } else {
     if (pos < 0)
       pos = 0;
-    if (!gst_element_seek_simple (play->playbin, GST_FORMAT_TIME,
-            GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT, pos))
-      goto seek_failed;
+
+    play_do_seek (play, pos, play->rate, play->trick_mode);
   }
 
   return;
@@ -596,12 +706,193 @@ seek_failed:
   }
 }
 
+static gboolean
+play_set_rate_and_trick_mode (GstPlay * play, gdouble rate,
+    GstPlayTrickMode mode)
+{
+  gint64 pos = -1;
+
+  g_return_val_if_fail (rate != 0, FALSE);
+
+  if (!gst_element_query_position (play->playbin, GST_FORMAT_TIME, &pos))
+    return FALSE;
+
+  return play_do_seek (play, pos, rate, mode);
+}
+
+static gboolean
+play_do_seek (GstPlay * play, gint64 pos, gdouble rate, GstPlayTrickMode mode)
+{
+  GstSeekFlags seek_flags;
+  GstQuery *query;
+  GstEvent *seek;
+  gboolean seekable = FALSE;
+
+  query = gst_query_new_seeking (GST_FORMAT_TIME);
+  if (!gst_element_query (play->playbin, query)) {
+    gst_query_unref (query);
+    return FALSE;
+  }
+
+  gst_query_parse_seeking (query, NULL, &seekable, NULL, NULL);
+  gst_query_unref (query);
+
+  if (!seekable)
+    return FALSE;
+
+  seek_flags = GST_SEEK_FLAG_FLUSH;
+
+  switch (mode) {
+    case GST_PLAY_TRICK_MODE_DEFAULT:
+      seek_flags |= GST_SEEK_FLAG_TRICKMODE;
+      break;
+    case GST_PLAY_TRICK_MODE_DEFAULT_NO_AUDIO:
+      seek_flags |= GST_SEEK_FLAG_TRICKMODE | GST_SEEK_FLAG_TRICKMODE_NO_AUDIO;
+      break;
+    case GST_PLAY_TRICK_MODE_KEY_UNITS:
+      seek_flags |= GST_SEEK_FLAG_TRICKMODE_KEY_UNITS;
+      break;
+    case GST_PLAY_TRICK_MODE_KEY_UNITS_NO_AUDIO:
+      seek_flags |=
+          GST_SEEK_FLAG_TRICKMODE_KEY_UNITS | GST_SEEK_FLAG_TRICKMODE_NO_AUDIO;
+      break;
+    case GST_PLAY_TRICK_MODE_NONE:
+    default:
+      break;
+  }
+
+  if (rate > 0)
+    seek = gst_event_new_seek (rate, GST_FORMAT_TIME,
+        seek_flags | GST_SEEK_FLAG_KEY_UNIT,
+        /* start */ GST_SEEK_TYPE_SET, pos,
+        /* stop */ GST_SEEK_TYPE_NONE, 0);
+  else
+    seek = gst_event_new_seek (rate, GST_FORMAT_TIME,
+        seek_flags | GST_SEEK_FLAG_ACCURATE,
+        /* start */ GST_SEEK_TYPE_SET, 0,
+        /* stop */ GST_SEEK_TYPE_SET, pos);
+
+  if (!gst_element_send_event (play->playbin, seek))
+    return FALSE;
+
+  play->rate = rate;
+  play->trick_mode = mode;
+  return TRUE;
+}
+
+static void
+play_set_playback_rate (GstPlay * play, gdouble rate)
+{
+  if (play_set_rate_and_trick_mode (play, rate, play->trick_mode)) {
+    g_print (_("Playback rate: %.2f"), rate);
+    g_print ("                               \n");
+  } else {
+    g_print ("\n");
+    g_print (_("Could not change playback rate to %.2f"), rate);
+    g_print (".\n");
+  }
+}
+
+static void
+play_set_relative_playback_rate (GstPlay * play, gdouble rate_step,
+    gboolean reverse_direction)
+{
+  gdouble new_rate = play->rate + rate_step;
+
+  if (reverse_direction)
+    new_rate *= -1.0;
+
+  play_set_playback_rate (play, new_rate);
+}
+
+static const gchar *
+trick_mode_get_description (GstPlayTrickMode mode)
+{
+  switch (mode) {
+    case GST_PLAY_TRICK_MODE_NONE:
+      return "normal playback, trick modes disabled";
+    case GST_PLAY_TRICK_MODE_DEFAULT:
+      return "trick mode: default";
+    case GST_PLAY_TRICK_MODE_DEFAULT_NO_AUDIO:
+      return "trick mode: default, no audio";
+    case GST_PLAY_TRICK_MODE_KEY_UNITS:
+      return "trick mode: key frames only";
+    case GST_PLAY_TRICK_MODE_KEY_UNITS_NO_AUDIO:
+      return "trick mode: key frames only, no audio";
+    default:
+      break;
+  }
+  return "unknown trick mode";
+}
+
+static void
+play_switch_trick_mode (GstPlay * play)
+{
+  GstPlayTrickMode new_mode = ++play->trick_mode;
+  const gchar *mode_desc;
+
+  if (new_mode == GST_PLAY_TRICK_MODE_LAST)
+    new_mode = GST_PLAY_TRICK_MODE_NONE;
+
+  mode_desc = trick_mode_get_description (new_mode);
+
+  if (play_set_rate_and_trick_mode (play, play->rate, new_mode)) {
+    g_print ("Rate: %.2f (%s)                      \n", play->rate, mode_desc);
+  } else {
+    g_print ("\nCould not change trick mode to %s.\n", mode_desc);
+  }
+}
+
+static void
+print_keyboard_help (void)
+{
+  static struct
+  {
+    const gchar *key_desc;
+    const gchar *key_help;
+  } key_controls[] = {
+    {
+    N_("space"), N_("pause/unpause")}, {
+    N_("q or ESC"), N_("quit")}, {
+    ">", N_("play next")}, {
+    "<", N_("play previous")}, {
+    "\342\206\222", N_("seek forward")}, {
+    "\342\206\220", N_("seek backward")}, {
+    "\342\206\221", N_("volume up")}, {
+    "\342\206\223", N_("volume down")}, {
+    "+", N_("increase playback rate")}, {
+    "-", N_("decrease playback rate")}, {
+    "d", N_("change playback direction")}, {
+    "t", N_("enable/disable trick modes")}, {
+  "k", N_("show keyboard shortcuts")},};
+  guint i, chars_to_pad, desc_len, max_desc_len = 0;
+
+  g_print ("\n\n%s\n\n", _("Interactive mode - keyboard controls:"));
+
+  for (i = 0; i < G_N_ELEMENTS (key_controls); ++i) {
+    desc_len = g_utf8_strlen (key_controls[i].key_desc, -1);
+    max_desc_len = MAX (max_desc_len, desc_len);
+  }
+  ++max_desc_len;
+
+  for (i = 0; i < G_N_ELEMENTS (key_controls); ++i) {
+    chars_to_pad = max_desc_len - g_utf8_strlen (key_controls[i].key_desc, -1);
+    g_print ("\t%s", key_controls[i].key_desc);
+    g_print ("%-*s: ", chars_to_pad, "");
+    g_print ("%s\n", key_controls[i].key_help);
+  }
+  g_print ("\n");
+}
+
 static void
 keyboard_cb (const gchar * key_input, gpointer user_data)
 {
   GstPlay *play = (GstPlay *) user_data;
 
   switch (g_ascii_tolower (key_input[0])) {
+    case 'k':
+      print_keyboard_help ();
+      break;
     case ' ':
       toggle_paused (play);
       break;
@@ -611,12 +902,38 @@ keyboard_cb (const gchar * key_input, gpointer user_data)
       break;
     case '>':
       if (!play_next (play)) {
-        g_print ("\nReached end of play list.\n");
+        g_print ("\n%s\n", _("Reached end of play list."));
         g_main_loop_quit (play->loop);
       }
       break;
     case '<':
       play_prev (play);
+      break;
+    case '+':
+      if (play->rate > -0.2 && play->rate < 0.0)
+        play_set_relative_playback_rate (play, 0.0, TRUE);
+      else if (ABS (play->rate) < 2.0)
+        play_set_relative_playback_rate (play, 0.1, FALSE);
+      else if (ABS (play->rate) < 4.0)
+        play_set_relative_playback_rate (play, 0.5, FALSE);
+      else
+        play_set_relative_playback_rate (play, 1.0, FALSE);
+      break;
+    case '-':
+      if (play->rate > 0.0 && play->rate < 0.20)
+        play_set_relative_playback_rate (play, 0.0, TRUE);
+      else if (ABS (play->rate) <= 2.0)
+        play_set_relative_playback_rate (play, -0.1, FALSE);
+      else if (ABS (play->rate) <= 4.0)
+        play_set_relative_playback_rate (play, -0.5, FALSE);
+      else
+        play_set_relative_playback_rate (play, -1.0, FALSE);
+      break;
+    case 'd':
+      play_set_relative_playback_rate (play, 0.0, TRUE);
+      break;
+    case 't':
+      play_switch_trick_mode (play);
       break;
     case 27:                   /* ESC */
       if (key_input[1] == '\0') {
@@ -648,7 +965,7 @@ main (int argc, char **argv)
   GstPlay *play;
   GPtrArray *playlist;
   gboolean print_version = FALSE;
-  gboolean interactive = FALSE; /* FIXME: maybe enable by default? */
+  gboolean interactive = TRUE;
   gboolean gapless = FALSE;
   gboolean shuffle = FALSE;
   gdouble volume = -1;
@@ -671,12 +988,15 @@ main (int argc, char **argv)
         N_("Enable gapless playback"), NULL},
     {"shuffle", 0, 0, G_OPTION_ARG_NONE, &shuffle,
         N_("Shuffle playlist"), NULL},
-    {"interactive", 0, 0, G_OPTION_ARG_NONE, &interactive,
-        N_("Interactive control via keyboard"), NULL},
+    {"no-interactive", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE,
+          &interactive,
+        N_("Disable interactive control via the keyboard"), NULL},
     {"volume", 0, 0, G_OPTION_ARG_DOUBLE, &volume,
         N_("Volume"), NULL},
     {"playlist", 0, 0, G_OPTION_ARG_FILENAME, &playlist_file,
         N_("Playlist file containing input media files"), NULL},
+    {"quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet,
+        N_("Do not print any output (apart from errors)"), NULL},
     {G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &filenames, NULL},
     {NULL}
   };
@@ -782,6 +1102,7 @@ main (int argc, char **argv)
 
   if (interactive) {
     if (gst_play_kb_set_key_handler (keyboard_cb, play)) {
+      g_print (_("Press 'k' to see a list of keyboard shortcuts.\n"));
       atexit (restore_terminal);
     } else {
       g_print ("Interactive keyboard handling in terminal not available.\n");

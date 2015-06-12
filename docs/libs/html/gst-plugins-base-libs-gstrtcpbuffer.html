@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstrtcpbuffer</title>
+<title>gstrtcpbuffer: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtp.html" title="RTP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtpbuffer.html" title="gstrtpbuffer">
 <link rel="next" href="gst-plugins-base-libs-gstrtppayloads.html" title="gstrtppayloads">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -61,6 +61,22 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-new-copy-data" title="gst_rtcp_buffer_new_copy_data ()">gst_rtcp_buffer_new_copy_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-data-reduced" title="gst_rtcp_buffer_validate_data_reduced ()">gst_rtcp_buffer_validate_data_reduced</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-reduced" title="gst_rtcp_buffer_validate_reduced ()">gst_rtcp_buffer_validate_reduced</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -614,7 +630,6 @@ function transfers ownership of <em class="parameter"><code>data</code></em>
 <p> A newly allocated buffer with <em class="parameter"><code>data</code></em>
 and of size <em class="parameter"><code>len</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -656,23 +671,24 @@ is freed.</p>
 <p> A newly allocated buffer with a copy of <em class="parameter"><code>data</code></em>
 and of size <em class="parameter"><code>len</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-buffer-validate-data"></a><h3>gst_rtcp_buffer_validate_data ()</h3>
+<a name="gst-rtcp-buffer-validate-data-reduced"></a><h3>gst_rtcp_buffer_validate_data_reduced ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_buffer_validate_data (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
-                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
+gst_rtcp_buffer_validate_data_reduced (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Check if the <em class="parameter"><code>data</code></em>
  and <em class="parameter"><code>size</code></em>
- point to the data of a valid RTCP (compound)
-packet. 
+ point to the data of a valid RTCP packet.
 Use this function to validate a packet before using the other functions in
 this module.</p>
+<p>This function is updated to support reduced size rtcp packets according to
+RFC 5506 and will validate full compound RTCP packets as well as reduced
+size RTCP packets.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.6.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -695,19 +711,19 @@ to validate</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.6.7"></a><h4>Returns</h4>
 <p> TRUE if the data points to a valid RTCP packet.</p>
-<p></p>
 </div>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-buffer-validate"></a><h3>gst_rtcp_buffer_validate ()</h3>
+<a name="gst-rtcp-buffer-validate-reduced"></a><h3>gst_rtcp_buffer_validate_reduced ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_buffer_validate (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
+gst_rtcp_buffer_validate_reduced (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
 <p>Check if the data pointed to by <em class="parameter"><code>buffer</code></em>
  is a valid RTCP packet using
-<a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-data" title="gst_rtcp_buffer_validate_data ()"><code class="function">gst_rtcp_buffer_validate_data()</code></a>.</p>
+<a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-reduced" title="gst_rtcp_buffer_validate_reduced ()"><code class="function">gst_rtcp_buffer_validate_reduced()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -727,7 +743,76 @@ gst_rtcp_buffer_validate (<em class="parameter"><code><a href="http://gstreamer.
 <a name="id-1.2.9.7.7.7.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>buffer</code></em>
 is a valid RTCP packet.</p>
-<p></p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-buffer-validate-data"></a><h3>gst_rtcp_buffer_validate_data ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_rtcp_buffer_validate_data (<em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
+<p>Check if the <em class="parameter"><code>data</code></em>
+ and <em class="parameter"><code>size</code></em>
+ point to the data of a valid compound,
+non-reduced size RTCP packet.
+Use this function to validate a packet before using the other functions in
+this module.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p> the data to validate. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=len]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>len</p></td>
+<td class="parameter_description"><p>the length of <em class="parameter"><code>data</code></em>
+to validate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.8.6"></a><h4>Returns</h4>
+<p> TRUE if the data points to a valid RTCP packet.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-buffer-validate"></a><h3>gst_rtcp_buffer_validate ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_rtcp_buffer_validate (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>);</pre>
+<p>Check if the data pointed to by <em class="parameter"><code>buffer</code></em>
+ is a valid RTCP packet using
+<a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-validate-data" title="gst_rtcp_buffer_validate_data ()"><code class="function">gst_rtcp_buffer_validate_data()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>the buffer to validate</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.9.6"></a><h4>Returns</h4>
+<p> TRUE if <em class="parameter"><code>buffer</code></em>
+is a valid RTCP packet.</p>
 </div>
 </div>
 <hr>
@@ -739,7 +824,7 @@ gst_rtcp_buffer_new (<em class="parameter"><code><a href="https://developer.gnom
 maximum size of <em class="parameter"><code>mtu</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -754,9 +839,8 @@ maximum size of <em class="parameter"><code>mtu</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.10.6"></a><h4>Returns</h4>
 <p> A newly allocated buffer.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -772,7 +856,7 @@ gst_rtcp_buffer_map (<em class="parameter"><code><a href="http://gstreamer.freed
 buffer state is stored in <em class="parameter"><code>rtcp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -805,13 +889,13 @@ buffer state is stored in <em class="parameter"><code>rtcp</code></em>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_rtcp_buffer_unmap (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPBuffer" title="struct GstRTCPBuffer"><span class="type">GstRTCPBuffer</span></a> *rtcp</code></em>);</pre>
 <p>Finish <em class="parameter"><code>rtcp</code></em>
- after being constructured. This function is usually called
+ after being constructed. This function is usually called
 after <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-map" title="gst_rtcp_buffer_map ()"><code class="function">gst_rtcp_buffer_map()</code></a> and after adding the RTCP items to the new buffer.</p>
 <p>The function adjusts the size of <em class="parameter"><code>rtcp</code></em>
  with the total length of all the
 added packets.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.10.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -834,7 +918,7 @@ gst_rtcp_buffer_get_packet_count (<em class="parameter"><code><a class="link" hr
 <p>Get the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -849,10 +933,9 @@ gst_rtcp_buffer_get_packet_count (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.13.6"></a><h4>Returns</h4>
 <p> the number of RTCP packets in <em class="parameter"><code>rtcp</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -865,7 +948,7 @@ gst_rtcp_buffer_get_first_packet (<em class="parameter"><code><a class="link" hr
 <em class="parameter"><code>rtcp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.12.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -887,10 +970,9 @@ gst_rtcp_buffer_get_first_packet (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.12.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.14.6"></a><h4>Returns</h4>
 <p> TRUE if the packet existed in <em class="parameter"><code>rtcp</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -903,7 +985,7 @@ gst_rtcp_packet_move_to_next (<em class="parameter"><code><a class="link" href="
 Use <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buffer-get-first-packet" title="gst_rtcp_buffer_get_first_packet ()"><code class="function">gst_rtcp_buffer_get_first_packet()</code></a> to initialize <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -918,11 +1000,10 @@ Use <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-buff
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.13.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.15.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>packet</code></em>
 is pointing to a valid packet after calling this
 function.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -938,7 +1019,7 @@ gst_rtcp_buffer_add_packet (<em class="parameter"><code><a class="link" href="gs
  will point to the newly created 
 packet.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.14.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -965,10 +1046,9 @@ packet.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.14.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.16.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the packet could be created. This function returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
 if the max mtu is exceeded for the buffer.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -979,7 +1059,7 @@ gst_rtcp_packet_remove (<em class="parameter"><code><a class="link" href="gst-pl
 <p>Removes the packet pointed to by <em class="parameter"><code>packet</code></em>
  and moves pointer to the next one</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.15.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -994,11 +1074,10 @@ gst_rtcp_packet_remove (<em class="parameter"><code><a class="link" href="gst-pl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.15.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.17.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>packet</code></em>
 is pointing to a valid packet after calling this
 function.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1007,65 +1086,6 @@ function.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_rtcp_packet_get_padding (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
 <p>Get the packet padding of the packet pointed to by <em class="parameter"><code>packet</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.16.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>packet</p></td>
-<td class="parameter_description"><p>a valid <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.16.6"></a><h4>Returns</h4>
-<p> If the packet has the padding bit set.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtcp-packet-get-count"></a><h3>gst_rtcp_packet_get_count ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint8</span>
-gst_rtcp_packet_get_count (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Get the count field in <em class="parameter"><code>packet</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.17.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>packet</p></td>
-<td class="parameter_description"><p>a valid <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.17.6"></a><h4>Returns</h4>
-<p> The count field in <em class="parameter"><code>packet</code></em>
-or -1 if <em class="parameter"><code>packet</code></em>
-does not point to a
-valid packet.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtcp-packet-get-type"></a><h3>gst_rtcp_packet_get_type ()</h3>
-<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPType" title="enum GstRTCPType"><span class="returnvalue">GstRTCPType</span></a>
-gst_rtcp_packet_get_type (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Get the packet type of the packet pointed to by <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.18.5"></a><h4>Parameters</h4>
@@ -1084,20 +1104,16 @@ gst_rtcp_packet_get_type (<em class="parameter"><code><a class="link" href="gst-
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.18.6"></a><h4>Returns</h4>
-<p> The packet type or GST_RTCP_TYPE_INVALID when <em class="parameter"><code>packet</code></em>
-is not
-pointing to a valid packet.</p>
-<p></p>
+<p> If the packet has the padding bit set.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-packet-get-length"></a><h3>gst_rtcp_packet_get_length ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint16</span>
-gst_rtcp_packet_get_length (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Get the length field of <em class="parameter"><code>packet</code></em>
-. This is the length of the packet in 
-32-bit words minus one.</p>
+<a name="gst-rtcp-packet-get-count"></a><h3>gst_rtcp_packet_get_count ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint8</span>
+gst_rtcp_packet_get_count (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Get the count field in <em class="parameter"><code>packet</code></em>
+.</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.19.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1115,9 +1131,68 @@ gst_rtcp_packet_get_length (<em class="parameter"><code><a class="link" href="gs
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.19.6"></a><h4>Returns</h4>
+<p> The count field in <em class="parameter"><code>packet</code></em>
+or -1 if <em class="parameter"><code>packet</code></em>
+does not point to a
+valid packet.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-packet-get-type"></a><h3>gst_rtcp_packet_get_type ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPType" title="enum GstRTCPType"><span class="returnvalue">GstRTCPType</span></a>
+gst_rtcp_packet_get_type (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Get the packet type of the packet pointed to by <em class="parameter"><code>packet</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.20.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>packet</p></td>
+<td class="parameter_description"><p>a valid <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.20.6"></a><h4>Returns</h4>
+<p> The packet type or GST_RTCP_TYPE_INVALID when <em class="parameter"><code>packet</code></em>
+is not
+pointing to a valid packet.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-packet-get-length"></a><h3>gst_rtcp_packet_get_length ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint16</span>
+gst_rtcp_packet_get_length (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Get the length field of <em class="parameter"><code>packet</code></em>
+. This is the length of the packet in 
+32-bit words minus one.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.21.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>packet</p></td>
+<td class="parameter_description"><p>a valid <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.21.6"></a><h4>Returns</h4>
 <p> The length field of <em class="parameter"><code>packet</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1132,7 +1207,7 @@ gst_rtcp_packet_sr_get_sender_info (<em class="parameter"><code><a class="link" 
                                     <em class="parameter"><code><span class="type">guint32</span> *octet_count</code></em>);</pre>
 <p>Parse the SR sender info and store the values.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.20.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1187,7 +1262,7 @@ gst_rtcp_packet_sr_set_sender_info (<em class="parameter"><code><a class="link" 
 <p>Set the given values in the SR packet <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.21.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1237,7 +1312,7 @@ gst_rtcp_packet_rr_get_ssrc (<em class="parameter"><code><a class="link" href="g
 <p>Get the ssrc field of the RR <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1252,9 +1327,8 @@ gst_rtcp_packet_rr_get_ssrc (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.24.6"></a><h4>Returns</h4>
 <p> the ssrc.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1266,7 +1340,7 @@ gst_rtcp_packet_rr_set_ssrc (<em class="parameter"><code><a class="link" href="g
 <p>Set the ssrc field of the RR <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1296,7 +1370,7 @@ gst_rtcp_packet_get_rb_count (<em class="parameter"><code><a class="link" href="
 <p>Get the number of report blocks in <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.26.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1311,10 +1385,9 @@ gst_rtcp_packet_get_rb_count (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.26.6"></a><h4>Returns</h4>
 <p> The number of report blocks in <em class="parameter"><code>packet</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1335,7 +1408,7 @@ gst_rtcp_packet_get_rb (<em class="parameter"><code><a class="link" href="gst-pl
  and store the result in
 the values.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1408,7 +1481,7 @@ gst_rtcp_packet_add_rb (<em class="parameter"><code><a class="link" href="gst-pl
 <p>Add a new report block to <em class="parameter"><code>packet</code></em>
  with the given values.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.26.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1460,11 +1533,10 @@ gst_rtcp_packet_add_rb (<em class="parameter"><code><a class="link" href="gst-pl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.26.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.28.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the packet was created. This function can return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if
 the max MTU is exceeded or the number of report blocks is greater than
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GST-RTCP-MAX-RB-COUNT:CAPS" title="GST_RTCP_MAX_RB_COUNT"><span class="type">GST_RTCP_MAX_RB_COUNT</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1485,7 +1557,7 @@ gst_rtcp_packet_set_rb (<em class="parameter"><code><a class="link" href="gst-pl
  with the given values.</p>
 <p>Note: Not implemented.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.27.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.29.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1550,63 +1622,6 @@ gst_rtcp_packet_sdes_get_item_count (<em class="parameter"><code><a class="link"
 <p>Get the number of items in the SDES packet <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.28.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>packet</p></td>
-<td class="parameter_description"><p>a valid SDES <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.28.6"></a><h4>Returns</h4>
-<p> The number of items in <em class="parameter"><code>packet</code></em>
-.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtcp-packet-sdes-first-item"></a><h3>gst_rtcp_packet_sdes_first_item ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_packet_sdes_first_item (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Move to the first SDES item in <em class="parameter"><code>packet</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.29.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>packet</p></td>
-<td class="parameter_description"><p>a valid SDES <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.9.7.7.29.6"></a><h4>Returns</h4>
-<p> TRUE if there was a first item.</p>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="gst-rtcp-packet-sdes-next-item"></a><h3>gst_rtcp_packet_sdes_next_item ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_packet_sdes_next_item (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Move to the next SDES item in <em class="parameter"><code>packet</code></em>
-.</p>
-<div class="refsect3">
 <a name="id-1.2.9.7.7.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
@@ -1623,16 +1638,17 @@ gst_rtcp_packet_sdes_next_item (<em class="parameter"><code><a class="link" href
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.30.6"></a><h4>Returns</h4>
-<p> TRUE if there was a next item.</p>
-<p></p>
+<p> The number of items in <em class="parameter"><code>packet</code></em>
+.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-packet-sdes-get-ssrc"></a><h3>gst_rtcp_packet_sdes_get_ssrc ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint32</span>
-gst_rtcp_packet_sdes_get_ssrc (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Get the SSRC of the current SDES item.</p>
+<a name="gst-rtcp-packet-sdes-first-item"></a><h3>gst_rtcp_packet_sdes_first_item ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_rtcp_packet_sdes_first_item (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Move to the first SDES item in <em class="parameter"><code>packet</code></em>
+.</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.31.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1650,16 +1666,16 @@ gst_rtcp_packet_sdes_get_ssrc (<em class="parameter"><code><a class="link" href=
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.31.6"></a><h4>Returns</h4>
-<p> the SSRC of the current item.</p>
-<p></p>
+<p> TRUE if there was a first item.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-packet-sdes-first-entry"></a><h3>gst_rtcp_packet_sdes_first_entry ()</h3>
+<a name="gst-rtcp-packet-sdes-next-item"></a><h3>gst_rtcp_packet_sdes_next_item ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_packet_sdes_first_entry (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Move to the first SDES entry in the current item.</p>
+gst_rtcp_packet_sdes_next_item (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Move to the next SDES item in <em class="parameter"><code>packet</code></em>
+.</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.32.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1677,16 +1693,15 @@ gst_rtcp_packet_sdes_first_entry (<em class="parameter"><code><a class="link" hr
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.32.6"></a><h4>Returns</h4>
-<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was a first entry.</p>
-<p></p>
+<p> TRUE if there was a next item.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="gst-rtcp-packet-sdes-next-entry"></a><h3>gst_rtcp_packet_sdes_next_entry ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-gst_rtcp_packet_sdes_next_entry (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
-<p>Move to the next SDES entry in the current item.</p>
+<a name="gst-rtcp-packet-sdes-get-ssrc"></a><h3>gst_rtcp_packet_sdes_get_ssrc ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint32</span>
+gst_rtcp_packet_sdes_get_ssrc (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Get the SSRC of the current SDES item.</p>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.33.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -1704,8 +1719,59 @@ gst_rtcp_packet_sdes_next_entry (<em class="parameter"><code><a class="link" hre
 </div>
 <div class="refsect3">
 <a name="id-1.2.9.7.7.33.6"></a><h4>Returns</h4>
+<p> the SSRC of the current item.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-packet-sdes-first-entry"></a><h3>gst_rtcp_packet_sdes_first_entry ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_rtcp_packet_sdes_first_entry (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Move to the first SDES entry in the current item.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.34.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>packet</p></td>
+<td class="parameter_description"><p>a valid SDES <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.34.6"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was a first entry.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtcp-packet-sdes-next-entry"></a><h3>gst_rtcp_packet_sdes_next_entry ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_rtcp_packet_sdes_next_entry (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
+<p>Move to the next SDES entry in the current item.</p>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.35.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>packet</p></td>
+<td class="parameter_description"><p>a valid SDES <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.9.7.7.35.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was a next entry.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1728,7 +1794,7 @@ bytes.</p>
 that this UTF8 string is NOT null-terminated. Use
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-sdes-copy-entry" title="gst_rtcp_packet_sdes_copy_entry ()"><code class="function">gst_rtcp_packet_sdes_copy_entry()</code></a> to get a null-terminated copy of the entry.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.34.6"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.36.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1760,9 +1826,8 @@ that this UTF8 string is NOT null-terminated. Use
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.34.7"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.36.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was valid data.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1776,7 +1841,7 @@ gst_rtcp_packet_sdes_copy_entry (<em class="parameter"><code><a class="link" hre
 <p>This function is like <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#gst-rtcp-packet-sdes-get-entry" title="gst_rtcp_packet_sdes_get_entry ()"><code class="function">gst_rtcp_packet_sdes_get_entry()</code></a> but it returns a
 null-terminated copy of the data instead. use <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.35.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.37.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1808,9 +1873,8 @@ null-terminated copy of the data instead. use <a href="https://developer.gnome.o
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.35.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.37.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was valid data.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1823,7 +1887,7 @@ gst_rtcp_packet_sdes_add_item (<em class="parameter"><code><a class="link" href=
  to <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.36.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.38.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1845,10 +1909,9 @@ gst_rtcp_packet_sdes_add_item (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.36.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.38.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the item could be added, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if the maximum amount of
 items has been exceeded for the SDES packet or the MTU has been reached.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1862,7 +1925,7 @@ gst_rtcp_packet_sdes_add_entry (<em class="parameter"><code><a class="link" href
 <p>Add a new SDES entry to the current item in <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.37.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.39.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1894,10 +1957,9 @@ gst_rtcp_packet_sdes_add_entry (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.37.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.39.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the item could be added, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if the MTU has been
 reached.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1908,7 +1970,7 @@ gst_rtcp_packet_bye_get_ssrc_count (<em class="parameter"><code><a class="link" 
 <p>Get the number of SSRC fields in <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.38.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.40.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1923,10 +1985,9 @@ gst_rtcp_packet_bye_get_ssrc_count (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.38.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.40.6"></a><h4>Returns</h4>
 <p> The number of SSRC fields in <em class="parameter"><code>packet</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1939,7 +2000,7 @@ gst_rtcp_packet_bye_get_nth_ssrc (<em class="parameter"><code><a class="link" hr
  SSRC of the BYE <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.39.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.41.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1961,11 +2022,10 @@ gst_rtcp_packet_bye_get_nth_ssrc (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.39.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.41.6"></a><h4>Returns</h4>
 <p> The <em class="parameter"><code>nth</code></em>
 SSRC of <em class="parameter"><code>packet</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1978,7 +2038,7 @@ gst_rtcp_packet_bye_add_ssrc (<em class="parameter"><code><a class="link" href="
  to the BYE <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.40.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.42.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2000,11 +2060,10 @@ gst_rtcp_packet_bye_add_ssrc (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.40.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.42.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the ssrc was added. This function can return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if
 the max MTU is exceeded or the number of sources blocks is greater than
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GST-RTCP-MAX-BYE-SSRC-COUNT:CAPS" title="GST_RTCP_MAX_BYE_SSRC_COUNT"><span class="type">GST_RTCP_MAX_BYE_SSRC_COUNT</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2019,7 +2078,7 @@ gst_rtcp_packet_bye_add_ssrcs (<em class="parameter"><code><a class="link" href=
  to BYE <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.41.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.43.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2047,11 +2106,10 @@ gst_rtcp_packet_bye_add_ssrcs (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.41.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.43.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the all the SSRCs were added. This function can return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if
 the max MTU is exceeded or the number of sources blocks is greater than
 <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GST-RTCP-MAX-BYE-SSRC-COUNT:CAPS" title="GST_RTCP_MAX_BYE_SSRC_COUNT"><span class="type">GST_RTCP_MAX_BYE_SSRC_COUNT</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2061,7 +2119,7 @@ the max MTU is exceeded or the number of sources blocks is greater than
 gst_rtcp_packet_bye_get_reason_len (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPPacket" title="struct GstRTCPPacket"><span class="type">GstRTCPPacket</span></a> *packet</code></em>);</pre>
 <p>Get the length of the reason string.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.42.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.44.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2076,10 +2134,9 @@ gst_rtcp_packet_bye_get_reason_len (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.42.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.44.6"></a><h4>Returns</h4>
 <p> The length of the reason string or 0 when there is no reason string
 present.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2090,7 +2147,7 @@ gst_rtcp_packet_bye_get_reason (<em class="parameter"><code><a class="link" href
 <p>Get the reason in <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.43.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.45.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2105,11 +2162,10 @@ gst_rtcp_packet_bye_get_reason (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.43.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.45.6"></a><h4>Returns</h4>
 <p> The reason for the BYE <em class="parameter"><code>packet</code></em>
 or NULL if the packet did not contain
 a reason string. The string must be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2122,7 +2178,7 @@ gst_rtcp_packet_bye_set_reason (<em class="parameter"><code><a class="link" href
  in <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.44.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.46.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2144,9 +2200,8 @@ gst_rtcp_packet_bye_set_reason (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.44.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.46.6"></a><h4>Returns</h4>
 <p> TRUE if the string could be set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2157,7 +2212,7 @@ gst_rtcp_packet_fb_get_type (<em class="parameter"><code><a class="link" href="g
 <p>Get the feedback message type of the FB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.45.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.47.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2172,9 +2227,8 @@ gst_rtcp_packet_fb_get_type (<em class="parameter"><code><a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.45.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.47.6"></a><h4>Returns</h4>
 <p> The feedback message type.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2186,7 +2240,7 @@ gst_rtcp_packet_fb_set_type (<em class="parameter"><code><a class="link" href="g
 <p>Set the feedback message type of the FB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.46.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.48.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2216,7 +2270,7 @@ gst_rtcp_packet_fb_get_sender_ssrc (<em class="parameter"><code><a class="link" 
 <p>Get the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.47.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.49.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2231,9 +2285,8 @@ gst_rtcp_packet_fb_get_sender_ssrc (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.47.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.49.6"></a><h4>Returns</h4>
 <p> the sender SSRC.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2245,7 +2298,7 @@ gst_rtcp_packet_fb_set_sender_ssrc (<em class="parameter"><code><a class="link" 
 <p>Set the sender SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.48.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.50.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2275,7 +2328,7 @@ gst_rtcp_packet_fb_get_media_ssrc (<em class="parameter"><code><a class="link" h
 <p>Get the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.49.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.51.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2290,9 +2343,8 @@ gst_rtcp_packet_fb_get_media_ssrc (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.49.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.51.6"></a><h4>Returns</h4>
 <p> the media SSRC.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2304,7 +2356,7 @@ gst_rtcp_packet_fb_set_media_ssrc (<em class="parameter"><code><a class="link" h
 <p>Set the media SSRC field of the RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.50.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.52.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2335,7 +2387,7 @@ gst_rtcp_packet_fb_get_fci_length (<em class="parameter"><code><a class="link" h
 RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.51.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.53.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2350,9 +2402,8 @@ RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.51.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.53.6"></a><h4>Returns</h4>
 <p> The length of the FCI in 32-bit words.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2365,7 +2416,7 @@ gst_rtcp_packet_fb_set_fci_length (<em class="parameter"><code><a class="link" h
 RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.52.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.54.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2387,9 +2438,8 @@ RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.52.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.54.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there was enough space in the packet to add this much FCI</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2400,7 +2450,7 @@ gst_rtcp_packet_fb_get_fci (<em class="parameter"><code><a class="link" href="gs
 <p>Get the Feedback Control Information attached to a RTPFB or PSFB <em class="parameter"><code>packet</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.53.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.55.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2415,9 +2465,8 @@ gst_rtcp_packet_fb_get_fci (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.53.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.55.6"></a><h4>Returns</h4>
 <p> a pointer to the FCI</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2431,7 +2480,7 @@ the NTP time of an SR RTCP message and contains, in the upper 32 bits, the
 number of seconds since 1900 and, in the lower 32 bits, the fractional
 seconds. The resulting value will be the number of nanoseconds since 1970.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.54.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.56.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2446,10 +2495,9 @@ seconds. The resulting value will be the number of nanoseconds since 1970.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.54.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.56.6"></a><h4>Returns</h4>
 <p> the UNIX time for <em class="parameter"><code>ntptime</code></em>
 in nanoseconds.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2463,7 +2511,7 @@ pass a value with nanoseconds since 1970. The NTP time will, in the upper
 bits, the fractional seconds. The resulting value can be used as an ntptime
 for constructing SR RTCP packets.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.55.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.57.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2478,10 +2526,9 @@ for constructing SR RTCP packets.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.55.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.57.6"></a><h4>Returns</h4>
 <p> the NTP time for <em class="parameter"><code>unixtime</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2495,7 +2542,7 @@ gst_rtcp_sdes_name_to_type (<em class="parameter"><code>const <a href="https://d
  is typically a key in a
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstStructure.html"><span class="type">GstStructure</span></a> containing SDES items.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.56.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.58.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2510,11 +2557,10 @@ gst_rtcp_sdes_name_to_type (<em class="parameter"><code>const <a href="https://d
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.56.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.58.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GstRTCPSDESType" title="enum GstRTCPSDESType"><span class="type">GstRTCPSDESType</span></a> for <em class="parameter"><code>name</code></em>
 or <a class="link" href="gst-plugins-base-libs-gstrtcpbuffer.html#GST-RTCP-SDES-PRIV:CAPS"><span class="type">GST_RTCP_SDES_PRIV</span></a> when <em class="parameter"><code>name</code></em>
 is a private sdes item.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2526,7 +2572,7 @@ gst_rtcp_sdes_type_to_name (<em class="parameter"><code><a class="link" href="gs
  to the string equivalent. The string is typically used as a
 key in a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstStructure.html"><span class="type">GstStructure</span></a> containing SDES items.</p>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.57.5"></a><h4>Parameters</h4>
+<a name="id-1.2.9.7.7.59.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2541,10 +2587,9 @@ key in a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.9.7.7.57.6"></a><h4>Returns</h4>
+<a name="id-1.2.9.7.7.59.6"></a><h4>Returns</h4>
 <p> the string equivalent of <em class="parameter"><code>type</code></em>
 </p>
-<p></p>
 </div>
 </div>
 </div>
@@ -2822,9 +2867,12 @@ The size of the structure is made public to allow stack allocations.</p>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td class="enum_member_name"><p><a name="GST-RTCP-RTPFB-TYPE-RCTP-SR-REQ:CAPS"></a>GST_RTCP_RTPFB_TYPE_RCTP_SR_REQ</p></td>
-<td> </td>
-<td> </td>
+<td class="enum_member_name"><p><a name="GST-RTCP-RTPFB-TYPE-RTCP-SR-REQ:CAPS"></a>GST_RTCP_RTPFB_TYPE_RTCP_SR_REQ</p></td>
+<td class="enum_member_description">
+<p>Request an SR packet for early
+   synchronization</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GST-RTCP-PSFB-TYPE-PLI:CAPS"></a>GST_RTCP_PSFB_TYPE_PLI</p></td>
@@ -2908,7 +2956,6 @@ The size of the structure is made public to allow stack allocations.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

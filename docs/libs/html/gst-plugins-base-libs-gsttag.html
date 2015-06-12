@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gsttag</title>
+<title>gsttag: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="prev" href="gstreamer-tag.html" title="Tag Support Library">
 <link rel="next" href="gst-plugins-base-libs-gsttagvorbis.html" title="gsttagvorbis">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -61,6 +61,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gsttag.html#gst-tag-parse-extended-comment" title="gst_tag_parse_extended_comment ()">gst_tag_parse_extended_comment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gsttag.html#gst-tag-image-data-to-image-sample" title="gst_tag_image_data_to_image_sample ()">gst_tag_image_data_to_image_sample</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -207,6 +215,10 @@
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-ID3V2-HEADER-SIZE:CAPS" title="GST_TAG_ID3V2_HEADER_SIZE">GST_TAG_ID3V2_HEADER_SIZE</a></td>
 </tr>
 <tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-MUSICAL-KEY:CAPS" title="GST_TAG_MUSICAL_KEY">GST_TAG_MUSICAL_KEY</a></td>
+</tr>
+<tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gsttag.html#GstTagImageType" title="enum GstTagImageType">GstTagImageType</a></td>
 </tr>
@@ -285,7 +297,6 @@ or NULL</p></td>
 <div class="refsect3">
 <a name="id-1.2.13.3.7.3.6"></a><h4>Returns</h4>
 <p> a newly-allocated string in UTF-8 encoding, or NULL</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -348,7 +359,67 @@ code in the extended comment string.</p>
 <div class="refsect3">
 <a name="id-1.2.13.3.7.4.7"></a><h4>Returns</h4>
 <p> TRUE if the string could be parsed, otherwise FALSE</p>
-<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-tag-image-data-to-image-sample"></a><h3>gst_tag_image_data_to_image_sample ()</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a> *
+gst_tag_image_data_to_image_sample (<em class="parameter"><code>const <span class="type">guint8</span> *image_data</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> image_data_len</code></em>,
+                                    <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gsttag.html#GstTagImageType" title="enum GstTagImageType"><span class="type">GstTagImageType</span></a> image_type</code></em>);</pre>
+<p>Helper function for tag-reading plugins to create a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> suitable to
+add to a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> as an image tag (such as <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GST-TAG-IMAGE:CAPS"><span class="type">GST_TAG_IMAGE</span></a> or
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GST-TAG-PREVIEW-IMAGE:CAPS"><span class="type">GST_TAG_PREVIEW_IMAGE</span></a>) from the encoded image data and an (optional) image
+type.</p>
+<p>Background: cover art and other images in tags are usually stored as a
+blob of binary image data, often accompanied by a MIME type or some other
+content type string (e.g. 'png', 'jpeg', 'jpg'). Sometimes there is also an
+'image type' to indicate what kind of image this is (e.g. front cover,
+back cover, artist, etc.). The image data may also be an URI to the image
+rather than the image itself.</p>
+<p>In GStreamer, image tags are <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a>s containing the raw image
+data, with the sample caps describing the content type of the image
+(e.g. image/jpeg, image/png, text/uri-list). The sample info may contain
+an additional 'image-type' field of <span class="type">GST_TYPE_TAG_IMAGE_TYPE</span> to describe
+the type of image (front cover, back cover etc.). <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GST-TAG-PREVIEW-IMAGE:CAPS"><span class="type">GST_TAG_PREVIEW_IMAGE</span></a>
+tags should not carry an image type, their type is already indicated via
+the special tag name.</p>
+<p>This function will do various checks and typefind the encoded image
+data (we can't trust the declared mime type).</p>
+<div class="refsect3">
+<a name="id-1.2.13.3.7.5.8"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>image_data</p></td>
+<td class="parameter_description"><p>the (encoded) image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image_data_len</p></td>
+<td class="parameter_description"><p>the length of the encoded image data at <em class="parameter"><code>image_data</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image_type</p></td>
+<td class="parameter_description"><p>type of the image, or <a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-IMAGE-TYPE-UNDEFINED:CAPS"><span class="type">GST_TAG_IMAGE_TYPE_UNDEFINED</span></a>. Pass
+<a class="link" href="gst-plugins-base-libs-gsttag.html#GST-TAG-IMAGE-TYPE-NONE:CAPS"><span class="type">GST_TAG_IMAGE_TYPE_NONE</span></a> if no image type should be set at all (e.g.
+for preview images)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.13.3.7.5.9"></a><h4>Returns</h4>
+<p> a newly-allocated image sample for use in tag lists, or NULL</p>
 </div>
 </div>
 </div>
@@ -656,11 +727,25 @@ capture. (string)</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="GST-TAG-MUSICAL-KEY:CAPS"></a><h3>GST_TAG_MUSICAL_KEY</h3>
+<pre class="programlisting">#define GST_TAG_MUSICAL_KEY                   "musical-key"
+</pre>
+<p>Musical key in which the sound starts. It is represented as a string
+with a maximum length of three characters. The ground keys are
+represented with "A","B","C","D","E", "F" and "G" and halfkeys
+represented with "b" and "#". Minor is represented as "m" (e.g. "Dbm").
+Off key is represented with an "o" only.
+This notation might be extended in the future to support non-minor/major
+keys.</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstTagImageType"></a><h3>enum GstTagImageType</h3>
 <p>Type of image contained in an image tag (specified as "image-type" field in
 the info structure in the image's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a>)</p>
 <div class="refsect3">
-<a name="id-1.2.13.3.8.35.4"></a><h4>Members</h4>
+<a name="id-1.2.13.3.8.36.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -672,7 +757,7 @@ the info structure in the image's <a href="http://gstreamer.freedesktop.org/data
 <td class="enum_member_name"><p><a name="GST-TAG-IMAGE-TYPE-NONE:CAPS"></a>GST_TAG_IMAGE_TYPE_NONE</p></td>
 <td class="enum_member_description">
 <p>No image type. Can be used to
-     tell functions such as <code class="function">gst_tag_image_data_to_image_sample()</code> that no
+     tell functions such as <a class="link" href="gst-plugins-base-libs-gsttag.html#gst-tag-image-data-to-image-sample" title="gst_tag_image_data_to_image_sample ()"><code class="function">gst_tag_image_data_to_image_sample()</code></a> that no
      image type should be set.</p>
 </td>
 <td class="enum_member_annotations"> </td>
@@ -821,7 +906,6 @@ the info structure in the image's <a href="http://gstreamer.freedesktop.org/data
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

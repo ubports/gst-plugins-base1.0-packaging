@@ -25,11 +25,11 @@
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch audiotestsrc ! audioconvert ! alsasink
+ * gst-launch-1.0 audiotestsrc ! audioconvert ! autoaudiosink
  * ]| This pipeline produces a sine with default frequency, 440 Hz, and the
  * default volume, 0.8 (relative to a maximum 1.0).
  * |[
- * gst-launch audiotestsrc wave=2 freq=200 ! audioconvert ! tee name=t ! queue ! alsasink t. ! queue ! libvisual_lv_scope ! videoconvert ! xvimagesink
+ * gst-launch-1.0 audiotestsrc wave=2 freq=200 ! tee name=t ! queue ! audioconvert ! autoaudiosink t. ! queue ! audioconvert ! libvisual_lv_scope ! videoconvert ! autovideosink
  * ]| In this example a saw wave is generated. The wave is shown using a
  * scope visualizer from libvisual, allowing you to visually verify that
  * the saw wave is correct.
@@ -71,8 +71,7 @@ enum
   PROP_IS_LIVE,
   PROP_TIMESTAMP_OFFSET,
   PROP_CAN_ACTIVATE_PUSH,
-  PROP_CAN_ACTIVATE_PULL,
-  PROP_LAST
+  PROP_CAN_ACTIVATE_PULL
 };
 
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
@@ -339,6 +338,23 @@ gst_audio_test_src_query (GstBaseSrc * basesrc, GstQuery * query)
         gst_query_add_scheduling_mode (query, GST_PAD_MODE_PULL);
 
       res = TRUE;
+      break;
+    }
+    case GST_QUERY_LATENCY:
+    {
+      if (src->info.rate > 0) {
+        GstClockTime latency;
+
+        latency =
+            gst_util_uint64_scale (src->generate_samples_per_buffer, GST_SECOND,
+            src->info.rate);
+        gst_query_set_latency (query,
+            gst_base_src_is_live (GST_BASE_SRC_CAST (src)), latency,
+            GST_CLOCK_TIME_NONE);
+        GST_DEBUG_OBJECT (src, "Reporting latency of %" GST_TIME_FORMAT,
+            GST_TIME_ARGS (latency));
+        res = TRUE;
+      }
       break;
     }
     default:

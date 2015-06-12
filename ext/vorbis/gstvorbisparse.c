@@ -36,11 +36,11 @@
  * <refsect2>
  * <title>Example pipelines</title>
  * |[
- * gst-launch -v filesrc location=sine.ogg ! oggdemux ! vorbisparse ! fakesink
+ * gst-launch-1.0 -v filesrc location=sine.ogg ! oggdemux ! vorbisparse ! fakesink
  * ]| This pipeline shows that the streamheader is set in the caps, and that each
  * buffer has the timestamp, duration, offset, and offset_end set.
  * |[
- * gst-launch filesrc location=sine.ogg ! oggdemux ! vorbisparse \
+ * gst-launch-1.0 filesrc location=sine.ogg ! oggdemux ! vorbisparse \
  *            ! oggmux ! filesink location=sine-remuxed.ogg
  * ]| This pipeline shows remuxing. sine-remuxed.ogg might not be exactly the same
  * as sine.ogg, but they should produce exactly the same decoded data.
@@ -227,7 +227,7 @@ vorbis_parse_push_headers (GstVorbisParse * parse)
   /* get the headers into the caps, passing them to vorbis as we go */
   caps = gst_caps_new_simple ("audio/x-vorbis",
       "rate", G_TYPE_INT, parse->sample_rate,
-      "channels", G_TYPE_INT, parse->channels, NULL);;
+      "channels", G_TYPE_INT, parse->channels, NULL);
   vorbis_parse_set_header_on_caps (parse, caps);
   GST_DEBUG_OBJECT (parse, "here are the caps: %" GST_PTR_FORMAT, caps);
   gst_pad_set_caps (parse->srcpad, caps);

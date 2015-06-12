@@ -46,10 +46,6 @@
 GST_DEBUG_CATEGORY_STATIC (type_find_debug);
 #define GST_CAT_DEFAULT type_find_debug
 
-/* so our code stays ready for 0.11 */
-#define gst_type_find_peek(tf,off,len) \
-    ((const guint8 *)gst_type_find_peek((tf),(off),(len)))
-
 /* DataScanCtx: helper for typefind functions that scan through data
  * step-by-step, to avoid doing a peek at each and every offset */
 
@@ -509,8 +505,6 @@ xml_check_first_element_from_data (const guint8 * data, guint length,
 
   /* skip XMLDec in any case if we've got one */
   if (got_xmldec) {
-    if (pos + 5 >= length)
-      return FALSE;
     pos += 5;
     data += 5;
   }
@@ -1255,6 +1249,7 @@ mp3_type_frame_length_from_header (guint32 header, guint * put_layer,
   channels = (mode == 3) ? 1 : 2;
   samplerate = mp3types_freqs[version > 0 ? version - 1 : 0][samplerate];
   if (bitrate == 0) {
+    /* possible freeform mp3 */
     if (layer == 1) {
       length *= 4;
       length += possible_free_framelen;
@@ -1264,6 +1259,11 @@ mp3_type_frame_length_from_header (guint32 header, guint * put_layer,
       bitrate = length * samplerate /
           ((layer == 3 && version != 3) ? 72000 : 144000);
     }
+    /* freeform mp3 should have a higher-than-usually-allowed bitrate */
+    GST_LOG ("calculated bitrate: %u, max usually: %u", bitrate,
+        mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][14]);
+    if (bitrate < mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][14])
+      return 0;
   } else {
     /* calculating */
     bitrate = mp3types_bitrates[version == 3 ? 0 : 1][layer - 1][bitrate];
@@ -3114,6 +3114,12 @@ qt_type_find (GstTypeFind * tf, gpointer unused)
       break;
     }
 
+    if (STRNCMP (&data[4], "ftypccff", 8) == 0) {
+      tip = GST_TYPE_FIND_MAXIMUM;
+      variant = "ccff";
+      break;
+    }
+
     /* box/atom types that are in common with ISO base media file format */
     if (STRNCMP (&data[4], "moov", 4) == 0 ||
         STRNCMP (&data[4], "mdat", 4) == 0 ||
@@ -3549,63 +3555,84 @@ swf_type_find (GstTypeFind * tf, gpointer unused)
 
 /*** application/vnd.ms-sstr+xml ***/
 
+static void
+mss_manifest_load_utf16 (gunichar2 * utf16_ne, const guint8 * utf16_data,
+    gsize data_size, guint data_endianness)
+{
+  memcpy (utf16_ne, utf16_data, data_size);
+  if (data_endianness != G_BYTE_ORDER) {
+    guint i;
+
+    for (i = 0; i < data_size / 2; ++i)
+      utf16_ne[i] = GUINT16_SWAP_LE_BE (utf16_ne[i]);
+  }
+}
+
 static GstStaticCaps mss_manifest_caps =
 GST_STATIC_CAPS ("application/vnd.ms-sstr+xml");
 #define MSS_MANIFEST_CAPS (gst_static_caps_get(&mss_manifest_caps))
 static void
 mss_manifest_type_find (GstTypeFind * tf, gpointer unused)
 {
+  gunichar2 utf16_ne[512];
+  const guint8 *data;
+  guint data_endianness = 0;
+  glong n_read = 0, size = 0;
+  guint length;
+  gchar *utf8;
+
   if (xml_check_first_element (tf, "SmoothStreamingMedia", 20, TRUE)) {
     gst_type_find_suggest (tf, GST_TYPE_FIND_MAXIMUM, MSS_MANIFEST_CAPS);
-  } else {
-    const guint8 *data;
-    gboolean utf16_le, utf16_be;
-    const gchar *convert_from = NULL;
-    guint8 *converted_data;
-
-    /* try detecting the charset */
-    data = gst_type_find_peek (tf, 0, 2);
-
-    if (data == NULL)
-      return;
-
-    /* look for a possible BOM */
-    utf16_le = data[0] == 0xFF && data[1] == 0xFE;
-    utf16_be = data[0] == 0xFE && data[1] == 0xFF;
-    if (utf16_le) {
-      convert_from = "UTF-16LE";
-    } else if (utf16_be) {
-      convert_from = "UTF-16BE";
-    }
-
-    if (convert_from) {
-      gsize new_size = 0;
-      guint length = gst_type_find_get_length (tf);
-
-      /* try a default that should be enough */
-      if (length == 0)
-        length = 512;
-      data = gst_type_find_peek (tf, 0, length);
-
-      if (data) {
-        /* skip the BOM */
-        data += 2;
-        length -= 2;
-
-        converted_data =
-            (guint8 *) g_convert ((gchar *) data, length, "UTF-8", convert_from,
-            NULL, &new_size, NULL);
-        if (converted_data) {
-          if (xml_check_first_element_from_data (converted_data, new_size,
-                  "SmoothStreamingMedia", 20, TRUE))
-            gst_type_find_suggest (tf, GST_TYPE_FIND_MAXIMUM,
-                MSS_MANIFEST_CAPS);
-
-          g_free (converted_data);
-        }
-      }
-    }
+    return;
   }
+
+  length = gst_type_find_get_length (tf);
+
+  /* try detecting the charset */
+  data = gst_type_find_peek (tf, 0, 2);
+
+  if (data == NULL)
+    return;
+
+  /* look for a possible BOM */
+  if (data[0] == 0xFF && data[1] == 0xFE)
+    data_endianness = G_LITTLE_ENDIAN;
+  else if (data[0] == 0xFE && data[1] == 0xFF)
+    data_endianness = G_BIG_ENDIAN;
+  else
+    return;
+
+  /* try a default that should be enough */
+  if (length == 0)
+    length = 512;
+  else if (length < 64)
+    return;
+  else                          /* the first few bytes should be enough */
+    length = MIN (1024, length);
+
+  data = gst_type_find_peek (tf, 0, length);
+
+  if (data == NULL)
+    return;
+
+  /* skip the BOM */
+  data += 2;
+  length -= 2;
+
+  length = GST_ROUND_DOWN_2 (length);
+
+  /* convert to native endian UTF-16 */
+  mss_manifest_load_utf16 (utf16_ne, data, length, data_endianness);
+
+  /* and now convert to UTF-8 */
+  utf8 = g_utf16_to_utf8 (utf16_ne, length / 2, &n_read, &size, NULL);
+  if (utf8 != NULL && n_read > 0) {
+    if (xml_check_first_element_from_data ((const guint8 *) utf8, size,
+            "SmoothStreamingMedia", 20, TRUE))
+      gst_type_find_suggest (tf, GST_TYPE_FIND_MAXIMUM, MSS_MANIFEST_CAPS);
+  }
+
+  g_free (utf8);
 }
 
 /*** image/jpeg ***/
@@ -5384,12 +5411,12 @@ sw_data_destroy (GstTypeFindData * sw_data)
 {
   if (G_LIKELY (sw_data->caps != NULL))
     gst_caps_unref (sw_data->caps);
-  g_free (sw_data);
+  g_slice_free (GstTypeFindData, sw_data);
 }
 
 #define TYPE_FIND_REGISTER_START_WITH(plugin,name,rank,ext,_data,_size,_probability)\
 G_BEGIN_DECLS{                                                          \
-  GstTypeFindData *sw_data = g_new (GstTypeFindData, 1);                \
+  GstTypeFindData *sw_data = g_slice_new (GstTypeFindData);             \
   sw_data->data = (const guint8 *)_data;                                \
   sw_data->size = _size;                                                \
   sw_data->probability = _probability;                                  \
@@ -5397,8 +5424,7 @@ G_BEGIN_DECLS{                                                          \
   if (!gst_type_find_register (plugin, name, rank, start_with_type_find,\
                      ext, sw_data->caps, sw_data,                       \
                      (GDestroyNotify) (sw_data_destroy))) {             \
-    gst_caps_unref (sw_data->caps);                                     \
-    g_free (sw_data);                                                   \
+    sw_data_destroy (sw_data);                                          \
   }                                                                     \
 }G_END_DECLS
 
@@ -5419,7 +5445,7 @@ riff_type_find (GstTypeFind * tf, gpointer private)
 
 #define TYPE_FIND_REGISTER_RIFF(plugin,name,rank,ext,_data)             \
 G_BEGIN_DECLS{                                                          \
-  GstTypeFindData *sw_data = g_new (GstTypeFindData, 1);                \
+  GstTypeFindData *sw_data = g_slice_new (GstTypeFindData);             \
   sw_data->data = (gpointer)_data;                                      \
   sw_data->size = 4;                                                    \
   sw_data->probability = GST_TYPE_FIND_MAXIMUM;                         \
@@ -5427,8 +5453,7 @@ G_BEGIN_DECLS{                                                          \
   if (!gst_type_find_register (plugin, name, rank, riff_type_find,      \
                       ext, sw_data->caps, sw_data,                      \
                       (GDestroyNotify) (sw_data_destroy))) {            \
-    gst_caps_unref (sw_data->caps);                                     \
-    g_free (sw_data);                                                   \
+    sw_data_destroy (sw_data);                                          \
   }                                                                     \
 }G_END_DECLS
 

@@ -6,7 +6,7 @@ TEST_FILES_DIRECTORY = $(top_srcdir)/tests/files
 REGISTRY_ENVIRONMENT = \
 	GST_REGISTRY_1_0=$(CHECK_REGISTRY)
 
-TESTS_ENVIRONMENT = \
+AM_TESTS_ENVIRONMENT = \
 	CK_DEFAULT_TIMEOUT=120                                  \
 	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
 	$(REGISTRY_ENVIRONMENT)					\
@@ -20,11 +20,11 @@ TESTS_ENVIRONMENT = \
 CLEANFILES = core.* test-registry.*
 
 clean-local: clean-local-check
-	
+
 distclean-local: distclean-local-orc
 
 $(CHECK_REGISTRY):
-	$(TESTS_ENVIRONMENT)
+	$(AM_TESTS_ENVIRONMENT)
 
 # elements to ignore for the state tests
 STATE_IGNORE_ELEMENTS = cdio cdparanoiasrc libvisual_ alsasrc alsasink
@@ -140,7 +140,7 @@ check_adder =
 endif
 
 if HAVE_ORC
-check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videoscale orc/videotestsrc
+check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videotestsrc
 else
 check_orc =
 endif
@@ -164,7 +164,11 @@ check_audiorate =
 endif
 
 if USE_PLUGIN_TCP
+if USE_PLUGIN_APP
+check_tcp = elements/multifdsink elements/multisocketsink pipelines/tcp
+else
 check_tcp = elements/multifdsink elements/multisocketsink
+endif
 else
 check_tcp =
 endif
@@ -185,6 +189,7 @@ check_PROGRAMS = \
 	generic/clock-selection \
 	generic/states \
 	libs/libsabi \
+	libs/allocators \
 	libs/audio \
 	libs/audiocdsrc \
 	libs/audiodecoder \
@@ -209,6 +214,7 @@ check_PROGRAMS = \
 	pipelines/simple-launch-lines \
 	pipelines/basetime \
 	pipelines/capsfilter-renegotiation \
+	pipelines/streamsynchronizer \
 	$(check_adder) \
 	$(check_app) \
 	$(check_audioconvert) \
@@ -238,8 +244,6 @@ check_PROGRAMS = \
 
 # videoconvert takes too long, so disabled for now
 VALGRIND_TO_FIX = \
-	elements/videoconvert \
-	libs/video \
 	$(check_orc)
 
 # these tests don't even pass
@@ -255,10 +259,12 @@ noinst_HEADERS = \
 AM_CFLAGS = -I$(top_srcdir)/gst-libs -I$(top_builddir)/gst-libs \
 	$(GST_CFLAGS) $(GST_CHECK_CFLAGS) \
 	-DGST_TEST_FILES_PATH="\"$(TEST_FILES_DIRECTORY)\"" \
+	-DGST_CHECK_TEST_ENVIRONMENT_BEACON="\"GST_PLUGIN_LOADING_WHITELIST\"" \
 	-UG_DISABLE_ASSERT -UG_DISABLE_CAST_CHECKS
 AM_CXXFLAGS = -I$(top_srcdir)/gst-libs -I$(top_builddir)/gst-libs \
 	$(GST_CXXFLAGS) $(GST_CHECK_CFLAGS) \
 	-DGST_TEST_FILES_PATH="\"$(TEST_FILES_DIRECTORY)\"" \
+	-DGST_CHECK_TEST_ENVIRONMENT_BEACON="\"GST_PLUGIN_LOADING_WHITELIST\"" \
 	-UG_DISABLE_ASSERT -UG_DISABLE_CAST_CHECKS
 LDADD = $(GST_LIBS) $(GST_CHECK_LIBS)
 
@@ -281,6 +287,16 @@ libs_libsabi_LDADD = \
 	$(top_builddir)/gst-libs/gst/rtsp/libgstrtsp-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(GST_BASE_LIBS) \
+	$(LDADD)
+
+libs_allocators_CFLAGS = \
+	$(GST_PLUGINS_BASE_CFLAGS) \
+	$(GST_BASE_CFLAGS) \
+	$(AM_CFLAGS)
+
+libs_allocators_LDADD = \
+	$(top_builddir)/gst-libs/gst/allocators/libgstallocators-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
 
@@ -591,6 +607,14 @@ libs_videoencoder_LDADD = \
 elements_multisocketsink_CFLAGS = $(GIO_CFLAGS) $(AM_CFLAGS)
 elements_multisocketsink_LDADD = $(GIO_LIBS) $(LDADD)
 
+if USE_GIO_UNIX_2_0
+GIO_UNIX_2_0_DEFINED=-DHAVE_GIO_UNIX_2_0=1
+endif
+
+pipelines_tcp_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_NET_CFLAGS) $(GIO_CFLAGS) $(GIO_UNIX_2_0_CFLAGS) $(GIO_UNIX_2_0_DEFINED) $(AM_CFLAGS)
+pipelines_tcp_LDADD = $(GST_PLUGINS_BASE_LIBS) $(GST_NET_LIBS) $(GIO_LIBS) $(LDADD) \
+    $(GIO_UNIX_2_0_LIBS) $(top_builddir)/gst-libs/gst/app/libgstapp-@GST_API_VERSION@.la
+
 pipelines_gio_CFLAGS = $(GIO_CFLAGS) $(AM_CFLAGS)
 pipelines_gio_LDADD = $(GIO_LIBS) $(LDADD)
 
@@ -633,9 +657,6 @@ nodist_orc_audioconvert_SOURCES = orc/audioconvert.c
 orc_volume_CFLAGS = $(ORC_CFLAGS)
 orc_volume_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_volume_SOURCES = orc/volume.c
-orc_videoscale_CFLAGS = $(ORC_CFLAGS)
-orc_videoscale_LDADD = $(ORC_LIBS) -lorc-test-0.4
-nodist_orc_videoscale_SOURCES = orc/videoscale.c
 orc_videotestsrc_CFLAGS = $(ORC_CFLAGS)
 orc_videotestsrc_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_videotestsrc_SOURCES = orc/videotestsrc.c
@@ -657,10 +678,6 @@ orc/audioconvert.c: $(top_srcdir)/gst/audioconvert/gstaudioconvertorc.orc
 	$(ORCC) --test -o $@ $<
 
 orc/volume.c: $(top_srcdir)/gst/volume/gstvolumeorc.orc
-	$(MKDIR_P) orc/
-	$(ORCC) --test -o $@ $<
-
-orc/videoscale.c: $(top_srcdir)/gst/videoscale/gstvideoscaleorc.orc
 	$(MKDIR_P) orc/
 	$(ORCC) --test -o $@ $<
 
