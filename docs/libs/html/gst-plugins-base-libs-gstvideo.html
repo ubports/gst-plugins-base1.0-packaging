@@ -660,6 +660,18 @@
 </td>
 </tr>
 <tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS" title="GST_VIDEO_INFO_MULTIVIEW_FLAGS()">GST_VIDEO_INFO_MULTIVIEW_FLAGS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS" title="GST_VIDEO_INFO_MULTIVIEW_MODE()">GST_VIDEO_INFO_MULTIVIEW_MODE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="function_type">
 <span class="returnvalue">void</span>
 </td>
@@ -998,6 +1010,72 @@
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-converter-frame" title="gst_video_converter_frame ()">gst_video_converter_frame</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-mono-modes" title="gst_video_multiview_get_mono_modes ()">gst_video_multiview_get_mono_modes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-unpacked-modes" title="gst_video_multiview_get_unpacked_modes ()">gst_video_multiview_get_unpacked_modes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-height-modes" title="gst_video_multiview_get_doubled_height_modes ()">gst_video_multiview_get_doubled_height_modes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-size-modes" title="gst_video_multiview_get_doubled_size_modes ()">gst_video_multiview_get_doubled_size_modes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-width-modes" title="gst_video_multiview_get_doubled_width_modes ()">gst_video_multiview_get_doubled_width_modes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="returnvalue">GstVideoMultiviewMode</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-mode-from-caps-string" title="gst_video_multiview_mode_from_caps_string ()">gst_video_multiview_mode_from_caps_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-mode-to-caps-string" title="gst_video_multiview_mode_to_caps_string ()">gst_video_multiview_mode_to_caps_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-guess-half-aspect" title="gst_video_multiview_guess_half_aspect ()">gst_video_multiview_guess_half_aspect</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-video-info-change-mode" title="gst_video_multiview_video_info_change_mode ()">gst_video_multiview_video_info_change_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1092,6 +1170,18 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode" title="enum GstVideoInterlaceMode">GstVideoInterlaceMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode">GstVideoMultiviewMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking" title="enum GstVideoMultiviewFramePacking">GstVideoMultiviewFramePacking</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags" title="enum GstVideoMultiviewFlags">GstVideoMultiviewFlags</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">enum</td>
@@ -2929,13 +3019,25 @@ gst_video_colorimetry_to_string (<em class="parameter"><code><a class="link" hre
 </div>
 <hr>
 <div class="refsect2">
+<a name="GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS"></a><h3>GST_VIDEO_INFO_MULTIVIEW_FLAGS()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_MULTIVIEW_FLAGS(i)          ((i)-&gt;ABI.abi.multiview_flags)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS"></a><h3>GST_VIDEO_INFO_MULTIVIEW_MODE()</h3>
+<pre class="programlisting">#define GST_VIDEO_INFO_MULTIVIEW_MODE(i)          ((i)-&gt;ABI.abi.multiview_mode)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-video-info-init"></a><h3>gst_video_info_init ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_video_info_init (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);</pre>
 <p>Initialize <em class="parameter"><code>info</code></em>
  with default values.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.96.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.98.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2967,7 +3069,7 @@ gst_video_info_set_format (<em class="parameter"><code><a class="link" href="gst
 does not set the offsets correctly for interlaced vertically
 subsampled formats.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.97.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.99.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3009,7 +3111,7 @@ gst_video_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
  and update <em class="parameter"><code>info</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.98.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.100.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3031,7 +3133,7 @@ gst_video_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.98.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.100.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>caps</code></em>
 could be parsed</p>
 </div>
@@ -3044,7 +3146,7 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 <p>Convert the values of <em class="parameter"><code>info</code></em>
  into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.99.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.101.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3059,7 +3161,7 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.99.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.101.6"></a><h4>Returns</h4>
 <p> a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> containing the info of <em class="parameter"><code>info</code></em>
 .</p>
 </div>
@@ -3078,7 +3180,7 @@ GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw video, GST_FORMAT_DEFAULT corresponds to video frames.  This
 function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.100.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.102.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3117,7 +3219,7 @@ function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.100.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.102.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion was successful.</p>
 </div>
 </div>
@@ -3129,7 +3231,7 @@ gst_video_info_is_equal (<em class="parameter"><code>const <a class="link" href=
                          <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *other</code></em>);</pre>
 <p>Compares two <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> and returns whether they are equal or not</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.101.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.103.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3151,7 +3253,7 @@ gst_video_info_is_equal (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.101.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.103.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>info</code></em>
 and <em class="parameter"><code>other</code></em>
 are equal, else <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
@@ -3171,7 +3273,7 @@ stride alignment in <em class="parameter"><code>align</code></em>
 is required and <em class="parameter"><code>align</code></em>
  will be updated with the new padding values.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.102.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.104.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3217,7 +3319,7 @@ will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Mac
 <em class="parameter"><code>frame-&gt;data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.103.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.105.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3254,7 +3356,7 @@ will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Mac
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.103.8"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.105.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 </div>
@@ -3275,7 +3377,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 <em class="parameter"><code>frame-&gt;data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.104.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.106.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3307,7 +3409,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.104.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.106.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 </div>
@@ -3318,7 +3420,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 gst_video_frame_unmap (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *frame</code></em>);</pre>
 <p>Unmap the memory previously mapped with gst_video_frame_map.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.105.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.107.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3343,7 +3445,7 @@ gst_video_frame_copy (<em class="parameter"><code><a class="link" href="gst-plug
  to <em class="parameter"><code>dest</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.106.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.108.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3365,7 +3467,7 @@ gst_video_frame_copy (<em class="parameter"><code><a class="link" href="gst-plug
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.106.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.108.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
 </div>
 </div>
@@ -3381,7 +3483,7 @@ gst_video_frame_copy_plane (<em class="parameter"><code><a class="link" href="gs
  to <em class="parameter"><code>dest</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.107.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.109.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3408,7 +3510,7 @@ gst_video_frame_copy_plane (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.107.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.109.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
 </div>
 </div>
@@ -3574,7 +3676,7 @@ image of <em class="parameter"><code>x_tiles</code></em>
 <p>Use this method when <em class="parameter"><code>mode</code></em>
  is of type <code class="literal">GST_VIDEO_TILE_MODE_INDEXED</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.132.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.134.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3611,7 +3713,7 @@ image of <em class="parameter"><code>x_tiles</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.132.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.134.7"></a><h4>Returns</h4>
 <p> the index of the tile at <em class="parameter"><code>x</code></em>
 and <em class="parameter"><code>y</code></em>
 in the tiled image of
@@ -3627,7 +3729,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <pre class="programlisting">#define             GST_VIDEO_TILE_MAKE_MODE(num, type)</pre>
 <p>use this macro to create new tile modes.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.133.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.135.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3657,7 +3759,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <p>Get the tile mode type of <em class="parameter"><code>mode</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.134.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.136.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3680,7 +3782,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <p>Check if <em class="parameter"><code>mode</code></em>
  is an indexed tile type</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.135.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.137.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3701,7 +3803,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <pre class="programlisting">#define             GST_VIDEO_TILE_MAKE_STRIDE(x_tiles, y_tiles)</pre>
 <p>Encode the number of tile in X and Y into the stride.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.136.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.138.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3730,7 +3832,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 </pre>
 <p>Extract the number of tiles in X from the stride value.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.137.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.139.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3752,7 +3854,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 </pre>
 <p>Extract the number of tiles in Y from the stride value.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.138.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.140.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3780,7 +3882,7 @@ gst_video_blend (<em class="parameter"><code><a class="link" href="gst-plugins-b
  image into the <em class="parameter"><code>dest</code></em>
  image</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.139.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.141.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3836,7 +3938,7 @@ helper function which is used to scale subtitle overlays, and may be
 deprecated in the near future. Use <a class="link" href="gst-plugins-base-libs-GstVideoScaler.html#GstVideoScaler" title="GstVideoScaler"><span class="type">GstVideoScaler</span></a> to scale video buffers
 instead.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.140.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.142.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3896,8 +3998,9 @@ gst_video_converter_new (<em class="parameter"><code><a class="link" href="gst-p
 
 with <em class="parameter"><code>config</code></em>
 .</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.141.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.143.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3924,7 +4027,7 @@ with <em class="parameter"><code>config</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.141.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.143.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConverter" title="GstVideoConverter"><span class="type">GstVideoConverter</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if conversion is not possible.</p>
 </div>
 <p class="since">Since: 1.6</p>
@@ -3937,7 +4040,7 @@ gst_video_converter_free (<em class="parameter"><code><a class="link" href="gst-
 <p>Free <em class="parameter"><code>convert</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.142.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.144.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3961,7 +4064,7 @@ gst_video_converter_get_config (<em class="parameter"><code><a class="link" href
 <p>Get the current configuration of <em class="parameter"><code>convert</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.143.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.145.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3976,7 +4079,7 @@ gst_video_converter_get_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.143.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.145.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstStructure.html"><span class="type">GstStructure</span></a> that remains valid for as long as <em class="parameter"><code>convert</code></em>
 is valid
 or until <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-converter-set-config" title="gst_video_converter_set_config ()"><code class="function">gst_video_converter_set_config()</code></a> is called.</p>
@@ -3998,7 +4101,7 @@ then be retrieved and refined with <a class="link" href="gst-plugins-base-libs-g
 <p>Look at the <span class="type">GST_VIDEO_CONVERTER_OPT_</span>* fields to check valid configuration
 option and values.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.144.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.146.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4020,7 +4123,7 @@ option and values.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.144.8"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.146.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> when <em class="parameter"><code>config</code></em>
 could be set.</p>
 </div>
@@ -4038,7 +4141,7 @@ gst_video_converter_frame (<em class="parameter"><code><a class="link" href="gst
  using <em class="parameter"><code>convert</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.145.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.147.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4059,6 +4162,237 @@ gst_video_converter_frame (<em class="parameter"><code><a class="link" href="gst
 <tr>
 <td class="parameter_name"><p>src</p></td>
 <td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-get-mono-modes"></a><h3>gst_video_multiview_get_mono_modes ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+gst_video_multiview_get_mono_modes (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.148.4"></a><h4>Returns</h4>
+<p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of mono video modes</p>
+<p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of mono video
+modes (mono/left/right) for use in caps negotiations.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-get-unpacked-modes"></a><h3>gst_video_multiview_get_unpacked_modes ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+gst_video_multiview_get_unpacked_modes
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.149.4"></a><h4>Returns</h4>
+<p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of 'unpacked' stereo video modes</p>
+<p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of unpacked
+stereo video modes (separated/frame-by-frame/frame-by-frame-multiview)
+for use in caps negotiations.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-get-doubled-height-modes"></a><h3>gst_video_multiview_get_doubled_height_modes ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+gst_video_multiview_get_doubled_height_modes
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.150.4"></a><h4>Returns</h4>
+<p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
+<p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed stereo
+video modes with double the height of a single view for use in
+caps negotiations. Currently this is top-bottom and row-interleaved.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-get-doubled-size-modes"></a><h3>gst_video_multiview_get_doubled_size_modes ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+gst_video_multiview_get_doubled_size_modes
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.151.4"></a><h4>Returns</h4>
+<p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
+<p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed
+stereo video modes that have double the width/height of a single
+view for use in caps negotiation. Currently this is just
+'checkerboard' layout.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-get-doubled-width-modes"></a><h3>gst_video_multiview_get_doubled_width_modes ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
+gst_video_multiview_get_doubled_width_modes
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.152.4"></a><h4>Returns</h4>
+<p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
+<p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed stereo
+video modes with double the width of a single view for use in
+caps negotiations. Currently this is side-by-side, side-by-side-quincunx
+and column-interleaved.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-mode-from-caps-string"></a><h3>gst_video_multiview_mode_from_caps_string ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="returnvalue">GstVideoMultiviewMode</span></a>
+gst_video_multiview_mode_from_caps_string
+                               (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *caps_mview_mode</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.153.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>caps_mview_mode</p></td>
+<td class="parameter_description"><p>multiview-mode field string from caps</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.153.5"></a><h4>Returns</h4>
+<p> The <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> value</p>
+<p>Given a string from a caps multiview-mode field,
+output the corresponding <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a>
+or <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-NONE:CAPS"><span class="type">GST_VIDEO_MULTIVIEW_MODE_NONE</span></a></p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-mode-to-caps-string"></a><h3>gst_video_multiview_mode_to_caps_string ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gst_video_multiview_mode_to_caps_string
+                               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> mview_mode</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.154.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mview_mode</p></td>
+<td class="parameter_description"><p>A <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.154.5"></a><h4>Returns</h4>
+<p> The caps string representation of the mode, or NULL if invalid.</p>
+<p>Given a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> returns the multiview-mode caps string
+for insertion into a caps structure</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-guess-half-aspect"></a><h3>gst_video_multiview_guess_half_aspect ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gst_video_multiview_guess_half_aspect (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> mv_mode</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> par_n</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> par_d</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.155.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mv_mode</p></td>
+<td class="parameter_description"><p>A <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>Video frame width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>Video frame height in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>par_n</p></td>
+<td class="parameter_description"><p>Numerator of the video pixel-aspect-ratio</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>par_d</p></td>
+<td class="parameter_description"><p>Denominator of the video pixel-aspect-ratio</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.155.5"></a><h4>Returns</h4>
+<p> A boolean indicating whether the
+<span class="type">GST_VIDEO_MULTIVIEW_FLAG_HALF_ASPECT</span> flag should be set.</p>
+<p>Utility function that heuristically guess whether a
+frame-packed stereoscopic video contains half width/height
+encoded views, or full-frame views by looking at the
+overall display aspect ratio.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-multiview-video-info-change-mode"></a><h3>gst_video_multiview_video_info_change_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gst_video_multiview_video_info_change_mode
+                               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
+                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> out_mview_mode</code></em>,
+                                <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags" title="enum GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a> out_mview_flags</code></em>);</pre>
+<p>Utility function that transforms the width/height/PAR
+and multiview mode and flags of a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> into
+the requested mode.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.156.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>A <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> structure to operate on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out_mview_mode</p></td>
+<td class="parameter_description"><p>A <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>out_mview_flags</p></td>
+<td class="parameter_description"><p>A set of <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags" title="enum GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -5291,6 +5625,14 @@ non-linear RGB (R'G'B')</p></td>
 
   gsize                     offset[GST_VIDEO_MAX_PLANES];
   gint                      stride[GST_VIDEO_MAX_PLANES];
+
+  /* Union preserves padded struct size for backwards compat
+   * Consumer code should use the accessor macros for fields */
+  union {
+    struct {
+      GstVideoMultiviewMode     multiview_mode;
+      GstVideoMultiviewFlags    multiview_flags;
+    } abi;
 };
 </pre>
 <p>Information describing image properties. This information can be filled
@@ -5442,10 +5784,336 @@ mode of the stream.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="GstVideoMultiviewMode"></a><h3>enum GstVideoMultiviewMode</h3>
+<p>All possible stereoscopic 3D and multiview representations.
+In conjunction with <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags" title="enum GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a>, describes how
+multiview content is being transported in the stream.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.8.23.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-NONE:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_NONE</p></td>
+<td class="enum_member_description">
+<p>A special value indicating
+no multiview information. Used in GstVideoInfo and other places to
+indicate that no specific multiview handling has been requested or
+provided. This value is never carried on caps.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-MONO:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_MONO</p></td>
+<td class="enum_member_description">
+<p>All frames are monoscopic.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-LEFT:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_LEFT</p></td>
+<td class="enum_member_description">
+<p>All frames represent a left-eye view.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-RIGHT:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_RIGHT</p></td>
+<td class="enum_member_description">
+<p>All frames represent a right-eye view.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-SIDE-BY-SIDE:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_SIDE_BY_SIDE</p></td>
+<td class="enum_member_description">
+<p>Left and right eye views are
+provided in the left and right half of the frame respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-SIDE-BY-SIDE-QUINCUNX:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_SIDE_BY_SIDE_QUINCUNX</p></td>
+<td class="enum_member_description">
+<p>Left and right eye
+views are provided in the left and right half of the frame, but
+have been sampled using quincunx method, with half-pixel offset
+between the 2 views.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-COLUMN-INTERLEAVED:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_COLUMN_INTERLEAVED</p></td>
+<td class="enum_member_description">
+<p>Alternating vertical
+columns of pixels represent the left and right eye view respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-ROW-INTERLEAVED:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_ROW_INTERLEAVED</p></td>
+<td class="enum_member_description">
+<p>Alternating horizontal
+rows of pixels represent the left and right eye view respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-TOP-BOTTOM:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_TOP_BOTTOM</p></td>
+<td class="enum_member_description">
+<p>The top half of the frame
+contains the left eye, and the bottom half the right eye.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-CHECKERBOARD:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_CHECKERBOARD</p></td>
+<td class="enum_member_description">
+<p>Pixels are arranged with
+alternating pixels representing left and right eye views in a
+checkerboard fashion.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-FRAME-BY-FRAME:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_FRAME_BY_FRAME</p></td>
+<td class="enum_member_description">
+<p>Left and right eye views
+are provided in separate frames alternately.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-MULTIVIEW-FRAME-BY-FRAME:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_MULTIVIEW_FRAME_BY_FRAME</p></td>
+<td class="enum_member_description">
+<p>Multiple
+independent views are provided in separate frames in sequence.
+This method only applies to raw video buffers at the moment.
+Specific view identification is via the <span class="type">GstVideoMultiviewMeta</span>
+and <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a>(s) on raw video buffers.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-MODE-SEPARATED:CAPS"></a>GST_VIDEO_MULTIVIEW_MODE_SEPARATED</p></td>
+<td class="enum_member_description">
+<p>Multiple views are
+provided as separate <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMemory.html"><span class="type">GstMemory</span></a> framebuffers attached to each
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a>, described by the <span class="type">GstVideoMultiviewMeta</span>
+and <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a>(s)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoMultiviewFramePacking"></a><h3>enum GstVideoMultiviewFramePacking</h3>
+<p><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking" title="enum GstVideoMultiviewFramePacking"><span class="type">GstVideoMultiviewFramePacking</span></a> represents the subset of <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a>
+values that can be applied to any video frame without needing extra metadata.
+It can be used by elements that provide a property to override the
+multiview interpretation of a video stream when the video doesn't contain
+any markers.</p>
+<p>This enum is used (for example) on playbin, to re-interpret a played
+video stream as a stereoscopic video. The individual enum values are
+equivalent to and have the same value as the matching <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.8.24.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-NONE:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_NONE</p></td>
+<td class="enum_member_description">
+<p>A special value indicating
+no frame packing info.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-MONO:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_MONO</p></td>
+<td class="enum_member_description">
+<p>All frames are monoscopic.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-LEFT:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_LEFT</p></td>
+<td class="enum_member_description">
+<p>All frames represent a left-eye view.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-RIGHT:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_RIGHT</p></td>
+<td class="enum_member_description">
+<p>All frames represent a right-eye view.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-SIDE-BY-SIDE:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_SIDE_BY_SIDE</p></td>
+<td class="enum_member_description">
+<p>Left and right eye views are
+provided in the left and right half of the frame respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-SIDE-BY-SIDE-QUINCUNX:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_SIDE_BY_SIDE_QUINCUNX</p></td>
+<td class="enum_member_description">
+<p>Left and right eye
+views are provided in the left and right half of the frame, but
+have been sampled using quincunx method, with half-pixel offset
+between the 2 views.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-COLUMN-INTERLEAVED:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_COLUMN_INTERLEAVED</p></td>
+<td class="enum_member_description">
+<p>Alternating vertical
+columns of pixels represent the left and right eye view respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-ROW-INTERLEAVED:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_ROW_INTERLEAVED</p></td>
+<td class="enum_member_description">
+<p>Alternating horizontal
+rows of pixels represent the left and right eye view respectively.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-TOP-BOTTOM:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_TOP_BOTTOM</p></td>
+<td class="enum_member_description">
+<p>The top half of the frame
+contains the left eye, and the bottom half the right eye.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FRAME-PACKING-CHECKERBOARD:CAPS"></a>GST_VIDEO_MULTIVIEW_FRAME_PACKING_CHECKERBOARD</p></td>
+<td class="enum_member_description">
+<p>Pixels are arranged with
+alternating pixels representing left and right eye views in a
+checkerboard fashion.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstVideoMultiviewFlags"></a><h3>enum GstVideoMultiviewFlags</h3>
+<p>GstVideoMultiviewFlags are used to indicate extra properties of a
+stereo/multiview stream beyond the frame layout and buffer mapping
+that is conveyed in the <span class="type">GstMultiviewMode</span>.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.8.25.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-NONE:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_NONE</p></td>
+<td class="enum_member_description">
+<p>No flags</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-VIEW-FIRST:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_VIEW_FIRST</p></td>
+<td class="enum_member_description">
+<p>For stereo streams, the
+    normal arrangement of left and right views is reversed.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-LEFT-FLIPPED:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_LEFT_FLIPPED</p></td>
+<td class="enum_member_description">
+<p>The left view is vertically
+    mirrored.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-LEFT-FLOPPED:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_LEFT_FLOPPED</p></td>
+<td class="enum_member_description">
+<p>The left view is horizontally
+    mirrored.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-FLIPPED:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_FLIPPED</p></td>
+<td class="enum_member_description">
+<p>The right view is
+    vertically mirrored.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-FLOPPED:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_FLOPPED</p></td>
+<td class="enum_member_description">
+<p>The right view is
+    horizontally mirrored.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-HALF-ASPECT:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_HALF_ASPECT</p></td>
+<td class="enum_member_description">
+<p>For frame-packed
+    multiview modes, indicates that the individual
+    views have been encoded with half the true width or height
+    and should be scaled back up for display. This flag
+    is used for overriding input layout interpretation
+    by adjusting pixel-aspect-ratio.
+    For side-by-side, column interleaved or checkerboard packings, the
+    pixel width will be doubled. For row interleaved and top-bottom
+    encodings, pixel height will be doubled.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-MULTIVIEW-FLAGS-MIXED-MONO:CAPS"></a>GST_VIDEO_MULTIVIEW_FLAGS_MIXED_MONO</p></td>
+<td class="enum_member_description">
+<p>The video stream contains both
+    mono and multiview portions, signalled on each buffer by the
+    absence or presence of the <em class="parameter"><code>GST_VIDEO_BUFFER_FLAG_MULTIPLE_VIEW</code></em>
+
+    buffer flag.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GstVideoFlags"></a><h3>enum GstVideoFlags</h3>
 <p>Extra video flags</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.23.4"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.26.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -5497,7 +6165,7 @@ mode of the stream.</p>
 </pre>
 <p>A video frame obtained from <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-frame-map" title="gst_video_frame_map ()"><code class="function">gst_video_frame_map()</code></a></p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.24.5"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.27.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -5550,7 +6218,7 @@ indentify the frame in case of multiview video.</p></td>
 <a name="GstVideoFrameFlags"></a><h3>enum GstVideoFrameFlags</h3>
 <p>Extra video frame flags</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.25.4"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.28.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -5595,6 +6263,22 @@ indentify the frame in case of multiview video.</p></td>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-FRAME-FLAG-MULTIPLE-VIEW:CAPS"></a>GST_VIDEO_FRAME_FLAG_MULTIPLE_VIEW</p></td>
+<td class="enum_member_description">
+<p>The video contains one or
+    more non-mono views</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-FRAME-FLAG-FIRST-IN-BUNDLE:CAPS"></a>GST_VIDEO_FRAME_FLAG_FIRST_IN_BUNDLE</p></td>
+<td class="enum_member_description">
+<p>The video frame is the first
+    in a set of corresponding views provided as sequential frames.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -5602,9 +6286,10 @@ indentify the frame in case of multiview video.</p></td>
 <hr>
 <div class="refsect2">
 <a name="GstVideoBufferFlags"></a><h3>enum GstVideoBufferFlags</h3>
-<p>Additional video buffer flags.</p>
+<p>Additional video buffer flags. These flags can potentially be used on any
+buffers carrying video data - even encoded data.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.26.4"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.29.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -5649,6 +6334,27 @@ indentify the frame in case of multiview video.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-BUFFER-FLAG-MULTIPLE-VIEW:CAPS"></a>GST_VIDEO_BUFFER_FLAG_MULTIPLE_VIEW</p></td>
+<td class="enum_member_description">
+<p>The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> contains one or more specific views,
+                                    such as left or right eye view. This flags is set on
+                                    any buffer that contains non-mono content - even for
+                                    streams that contain only a single viewpoint. In mixed
+                                    mono / non-mono streams, the absense of the flag marks
+                                    mono buffers.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-BUFFER-FLAG-FIRST-IN-BUNDLE:CAPS"></a>GST_VIDEO_BUFFER_FLAG_FIRST_IN_BUNDLE</p></td>
+<td class="enum_member_description">
+<p>When conveying stereo/multiview content with
+                                    frame-by-frame methods, this flag marks the first buffer
+                                     in a bundle of frames that belong together.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
 <td class="enum_member_name"><p><a name="GST-VIDEO-BUFFER-FLAG-LAST:CAPS"></a>GST_VIDEO_BUFFER_FLAG_LAST</p></td>
 <td class="enum_member_description">
 <p>Offset to define more flags</p>
@@ -5664,7 +6370,7 @@ indentify the frame in case of multiview video.</p></td>
 <a name="GstVideoTileType"></a><h3>enum GstVideoTileType</h3>
 <p>Enum value describing the most common tiling types.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.27.4"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.30.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -5688,7 +6394,7 @@ indentify the frame in case of multiview video.</p></td>
 <a name="GstVideoTileMode"></a><h3>enum GstVideoTileMode</h3>
 <p>Enum value describing the available tiling modes.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.8.28.4"></a><h4>Members</h4>
+<a name="id-1.2.15.3.8.31.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">

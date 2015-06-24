@@ -31,7 +31,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-playsink.top_of_page"></a>playsink</span></h2>
-<p>playsink — Convenience sink for multiple streams</p>
+<p>playsink</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -144,12 +144,12 @@
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playsink.html#GstPlaySink-convert-sample" title="The “convert-sample” signal">convert-sample</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playsink.html#GstPlaySink-reconfigure" title="The “reconfigure” signal">reconfigure</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -337,8 +337,6 @@ GstPlaySink implements
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playsink.functions_details"></a><h2>Functions</h2>
@@ -349,8 +347,6 @@ GstPlaySink implements
 <div class="refsect2">
 <a name="GstPlaySink-struct"></a><h3>GstPlaySink</h3>
 <pre class="programlisting">typedef struct _GstPlaySink GstPlaySink;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -359,7 +355,7 @@ GstPlaySink implements
 <a name="GstPlaySink--audio-sink"></a><h3>The <code class="literal">“audio-sink”</code> property</h3>
 <pre class="programlisting">  “audio-sink”               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used audio sink element. NULL will use the default sink. playsink
-must be in <code class="literal">GST_STATE_NULL</code></p>
+must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -433,7 +429,7 @@ The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/
 <a name="GstPlaySink--text-sink"></a><h3>The <code class="literal">“text-sink”</code> property</h3>
 <pre class="programlisting">  “text-sink”                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used text sink element. NULL will use the default sink. playsink
-must be in <code class="literal">GST_STATE_NULL</code></p>
+must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -441,7 +437,7 @@ must be in <code class="literal">GST_STATE_NULL</code></p>
 <a name="GstPlaySink--video-sink"></a><h3>The <code class="literal">“video-sink”</code> property</h3>
 <pre class="programlisting">  “video-sink”               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the used video sink element. NULL will use the default sink. playsink
-must be in <code class="literal">GST_STATE_NULL</code></p>
+must be in <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -467,7 +463,7 @@ must be in <code class="literal">GST_STATE_NULL</code></p>
 <pre class="programlisting">  “audio-filter”             <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the audio filter element/bin to use. Will apply on a best-effort basis
 unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
-<code class="literal">GST_STATE_NULL</code></p>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -476,7 +472,7 @@ unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
 <pre class="programlisting">  “video-filter”             <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *</pre>
 <p>Set the video filter element/bin to use. Will apply on a best-effort basis
 unless GST_PLAY_FLAG_FORCE_FILTERS is set. playsink must be in
-<code class="literal">GST_STATE_NULL</code></p>
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-NULL:CAPS"><code class="literal">GST_STATE_NULL</code></a></p>
 <p>Flags: Read / Write</p>
 </div>
 </div>
@@ -528,7 +524,7 @@ The caps in the sample will describe the final layout of the buffer data.
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current sample can be retrieved or when the
 conversion failed.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -536,31 +532,7 @@ conversion failed.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="gst-plugins-base-plugins-playsink.html#GstPlaySink"><span class="type">GstPlaySink</span></a> *gstplaysink,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>     user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.25.13.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstplaysink</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 </div>
 </div>

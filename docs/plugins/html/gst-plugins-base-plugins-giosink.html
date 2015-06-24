@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-giosink.top_of_page"></a>giosink</span></h2>
-<p>giosink — Write to any GIO-supported location</p>
+<p>giosink</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -95,7 +95,7 @@ by an URI. This location can be specified using any protocol supported by
 the GIO library or it's VFS backends. Common protocols are 'file', 'ftp',
 or 'smb'.</p>
 <p>If the URI or <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> already exists giosink will post a message of
-type <code class="literal">GST_MESSAGE_ELEMENT</code> with name "file-exists" on the bus. The message
+type <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#GST-MESSAGE-ELEMENT:CAPS"><code class="literal">GST_MESSAGE_ELEMENT</code></a> with name "file-exists" on the bus. The message
 also contains the <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
 Applications can use the "file-exists" message to notify the user about
 the problem and to set a different target location or to remove the
@@ -204,8 +204,6 @@ it in the home directory of user foo.
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.functions_details"></a><h2>Functions</h2>

@@ -31,7 +31,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-playbin.top_of_page"></a>playbin</span></h2>
-<p>playbin — Autoplug and play media from an uri</p>
+<p>playbin</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -221,6 +221,16 @@
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-filter" title="The “video-filter” property">video-filter</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
+<tr>
+<td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-flags" title="The “video-multiview-flags” property">video-multiview-flags</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking"><span class="type">GstVideoMultiviewFramePacking</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-mode" title="The “video-multiview-mode” property">video-multiview-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -236,84 +246,84 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish" title="The “about-to-finish” signal">about-to-finish</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed" title="The “audio-changed” signal">audio-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-tags-changed" title="The “audio-tags-changed” signal">audio-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-convert-sample" title="The “convert-sample” signal">convert-sample</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-audio-pad" title="The “get-audio-pad” signal">get-audio-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-audio-tags" title="The “get-audio-tags” signal">get-audio-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-text-pad" title="The “get-text-pad” signal">get-text-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-text-tags" title="The “get-text-tags” signal">get-text-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-video-pad" title="The “get-video-pad” signal">get-video-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-video-tags" title="The “get-video-tags” signal">get-video-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-source-setup" title="The “source-setup” signal">source-setup</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-text-changed" title="The “text-changed” signal">text-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-text-tags-changed" title="The “text-tags-changed” signal">text-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-changed" title="The “video-changed” signal">video-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-tags-changed" title="The “video-tags-changed” signal">video-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -624,8 +634,6 @@ the drive is detected automatically by the plugin).
 <a name="id-1.2.24.9.13.2"></a><h3>Element Pads</h3>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.functions_details"></a><h2>Functions</h2>
@@ -1015,6 +1023,21 @@ is created and deleted as-needed.</p>
 <p>the video filter(s) to apply, if possible.</p>
 <p>Flags: Read / Write</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstPlayBin--video-multiview-flags"></a><h3>The <code class="literal">“video-multiview-flags”</code> property</h3>
+<pre class="programlisting">  “video-multiview-flags”    <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a></pre>
+<p>Override details of the multiview frame layout.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstPlayBin--video-multiview-mode"></a><h3>The <code class="literal">“video-multiview-mode”</code> property</h3>
+<pre class="programlisting">  “video-multiview-mode”     <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking"><span class="type">GstVideoMultiviewFramePacking</span></a></pre>
+<p>Re-interpret a video stream as one of several frame-packed stereoscopic modes.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_MULTIVIEW_FRAME_PACKING_NONE</p>
+</div>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.signal-details"></a><h2>Signal Details</h2>
@@ -1048,7 +1071,7 @@ set the uri and suburi to make sure that playback continues.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1084,7 +1107,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1125,7 +1148,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1174,7 +1197,7 @@ The caps on the sample will describe the final layout of the buffer data.
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current buffer can be retrieved or when the
 conversion failed.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1218,7 +1241,7 @@ queries, etc.</p>
 <a name="id-1.2.24.13.6.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1261,7 +1284,7 @@ This information can be used to select a stream.</p>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1305,7 +1328,7 @@ queries, etc.</p>
 <a name="id-1.2.24.13.8.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1348,7 +1371,7 @@ This information can be used to select a stream.</p>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1392,7 +1415,7 @@ queries, etc.</p>
 <a name="id-1.2.24.13.10.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1435,7 +1458,7 @@ This information can be used to select a stream.</p>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1478,7 +1501,7 @@ thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1514,7 +1537,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1555,7 +1578,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1591,7 +1614,7 @@ thread. You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1632,7 +1655,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 </div>
 </div>
