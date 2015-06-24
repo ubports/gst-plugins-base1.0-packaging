@@ -335,6 +335,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_INIT = @INTROSPECTION_INIT@
 INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
@@ -503,7 +504,7 @@ EXTRA_DIST = \
 	parallel-subdirs.mak \
 	gst-autogen.sh \
 	check-exports \
-	c-to-xml.py mangle-tmpl.py scangobj-merge.py \
+	c-to-xml.py mangle-db.py scangobj-merge.py \
 	gtk-doc-plugins.mak \
 	plugins.xsl gstdoc-scangobj \
 	gst.supp check.mak \

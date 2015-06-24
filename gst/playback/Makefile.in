@@ -167,7 +167,8 @@ am_libgstplayback_la_OBJECTS = libgstplayback_la-gstdecodebin2.lo \
 	libgstplayback_la-gstplaysinkvideoconvert.lo \
 	libgstplayback_la-gstplaysinkaudioconvert.lo \
 	libgstplayback_la-gstplaysinkconvertbin.lo \
-	libgstplayback_la-gststreamsynchronizer.lo
+	libgstplayback_la-gststreamsynchronizer.lo \
+	libgstplayback_la-gstplaybackutils.lo
 nodist_libgstplayback_la_OBJECTS =
 libgstplayback_la_OBJECTS = $(am_libgstplayback_la_OBJECTS) \
 	$(nodist_libgstplayback_la_OBJECTS)
@@ -375,6 +376,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_INIT = @INTROSPECTION_INIT@
 INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
@@ -547,7 +549,8 @@ libgstplayback_la_SOURCES = \
 	gstplaysinkvideoconvert.c \
 	gstplaysinkaudioconvert.c \
 	gstplaysinkconvertbin.c \
-	gststreamsynchronizer.c
+	gststreamsynchronizer.c \
+	gstplaybackutils.c
 
 nodist_libgstplayback_la_SOURCES = $(built_sources)
 libgstplayback_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS) $(csp_cflags)
@@ -568,7 +571,8 @@ noinst_HEADERS = \
 	gstplaysinkvideoconvert.h \
 	gstplaysinkaudioconvert.h \
 	gstplaysinkconvertbin.h \
-	gststreamsynchronizer.h
+	gststreamsynchronizer.h \
+	gstplaybackutils.h
 
 BUILT_SOURCES = $(built_headers) $(built_sources)
 CLEANFILES = $(BUILT_SOURCES)
@@ -655,6 +659,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstdecodebin2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplay-enum.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplayback.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplaybackutils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplaybin2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplaysink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstplayback_la-gstplaysinkaudioconvert.Plo@am__quote@
@@ -764,6 +769,13 @@ libgstplayback_la-gststreamsynchronizer.lo: gststreamsynchronizer.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gststreamsynchronizer.c' object='libgstplayback_la-gststreamsynchronizer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstplayback_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstplayback_la_CFLAGS) $(CFLAGS) -c -o libgstplayback_la-gststreamsynchronizer.lo `test -f 'gststreamsynchronizer.c' || echo '$(srcdir)/'`gststreamsynchronizer.c
+
+libgstplayback_la-gstplaybackutils.lo: gstplaybackutils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstplayback_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstplayback_la_CFLAGS) $(CFLAGS) -MT libgstplayback_la-gstplaybackutils.lo -MD -MP -MF $(DEPDIR)/libgstplayback_la-gstplaybackutils.Tpo -c -o libgstplayback_la-gstplaybackutils.lo `test -f 'gstplaybackutils.c' || echo '$(srcdir)/'`gstplaybackutils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstplayback_la-gstplaybackutils.Tpo $(DEPDIR)/libgstplayback_la-gstplaybackutils.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstplaybackutils.c' object='libgstplayback_la-gstplaybackutils.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstplayback_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstplayback_la_CFLAGS) $(CFLAGS) -c -o libgstplayback_la-gstplaybackutils.lo `test -f 'gstplaybackutils.c' || echo '$(srcdir)/'`gstplaybackutils.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

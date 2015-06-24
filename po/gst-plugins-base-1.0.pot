@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.5.1\n"
+"Project-Id-Version: gst-plugins-base 1.5.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-06-07 09:34+0200\n"
+"POT-Creation-Date: 2015-06-24 22:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Could not open audio device for playback."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:1078
+#: ext/alsa/gstalsasink.c:1081
 msgid "Error outputting to audio device. The device has been disconnected."
 msgstr ""
 
@@ -82,11 +82,11 @@ msgstr ""
 msgid "Could not read CD."
 msgstr ""
 
-#: ext/ogg/gstoggdemux.c:4822
+#: ext/ogg/gstoggdemux.c:4824
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3219
+#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3357
 #: gst/playback/gstplaysink.c:1496 gst/playback/gstplaysink.c:1513
 #: gst/playback/gstplaysink.c:1847 gst/playback/gstplaysink.c:1876
 #: gst/playback/gstplaysink.c:2456 gst/playback/gstplaysink.c:2505
@@ -95,7 +95,7 @@ msgstr ""
 #: gst/playback/gstplaysink.c:2750 gst/playback/gstplaysink.c:3143
 #: gst/playback/gstplaysink.c:3152 gst/playback/gstplaysink.c:3161
 #: gst/playback/gstplaysink.c:3170 gst/playback/gstplaysink.c:3546
-#: gst/playback/gstplaysink.c:4412 gst/playback/gstplaysinkconvertbin.c:97
+#: gst/playback/gstplaysink.c:4417 gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117
 #: gst/playback/gsturidecodebin.c:1490
 #, c-format
@@ -110,7 +110,7 @@ msgstr ""
 msgid "This appears to be a text file"
 msgstr ""
 
-#: gst/playback/gstplaybin2.c:5308
+#: gst/playback/gstplaybin2.c:5351
 msgid "Could not create \"uridecodebin\" element."
 msgstr ""
 
@@ -660,7 +660,7 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
-#: tools/gst-device-monitor.c:123 tools/gst-play.c:982
+#: tools/gst-device-monitor.c:123 tools/gst-play.c:1099
 msgid "Print version information and exit"
 msgstr ""
 
@@ -670,149 +670,165 @@ msgid ""
 "added/removed."
 msgstr ""
 
-#: tools/gst-play.c:236
+#: tools/gst-play.c:249
 #, c-format
 msgid "Volume: %.0f%%"
 msgstr ""
 
-#: tools/gst-play.c:275
+#: tools/gst-play.c:288
 msgid "Buffering..."
 msgstr ""
 
-#: tools/gst-play.c:296
+#: tools/gst-play.c:309
 msgid "Clock lost, selecting a new one\n"
 msgstr ""
 
-#: tools/gst-play.c:326 tools/gst-play.c:372 tools/gst-play.c:691
-#: tools/gst-play.c:905
+#: tools/gst-play.c:339 tools/gst-play.c:385 tools/gst-play.c:731
+#: tools/gst-play.c:1013
 msgid "Reached end of play list."
 msgstr ""
 
-#: tools/gst-play.c:505
+#: tools/gst-play.c:465
+msgid "Paused"
+msgstr ""
+
+#: tools/gst-play.c:523
 #, c-format
 msgid "Now playing %s\n"
 msgstr ""
 
-#: tools/gst-play.c:568
+#: tools/gst-play.c:586
 #, c-format
 msgid "About to finish, preparing next title: %s"
 msgstr ""
 
-#: tools/gst-play.c:787
+#: tools/gst-play.c:827
 #, c-format
 msgid "Playback rate: %.2f"
 msgstr ""
 
-#: tools/gst-play.c:791
+#: tools/gst-play.c:831
 #, c-format
 msgid "Could not change playback rate to %.2f"
 msgstr ""
 
-#: tools/gst-play.c:855
+#: tools/gst-play.c:955
 msgid "space"
 msgstr ""
 
-#: tools/gst-play.c:855
+#: tools/gst-play.c:955
 msgid "pause/unpause"
 msgstr ""
 
-#: tools/gst-play.c:856
+#: tools/gst-play.c:956
 msgid "q or ESC"
 msgstr ""
 
-#: tools/gst-play.c:856
+#: tools/gst-play.c:956
 msgid "quit"
 msgstr ""
 
-#: tools/gst-play.c:857
+#: tools/gst-play.c:957
 msgid "play next"
 msgstr ""
 
-#: tools/gst-play.c:858
+#: tools/gst-play.c:958
 msgid "play previous"
 msgstr ""
 
-#: tools/gst-play.c:859
+#: tools/gst-play.c:959
 msgid "seek forward"
 msgstr ""
 
-#: tools/gst-play.c:860
+#: tools/gst-play.c:960
 msgid "seek backward"
 msgstr ""
 
-#: tools/gst-play.c:861
+#: tools/gst-play.c:961
 msgid "volume up"
 msgstr ""
 
-#: tools/gst-play.c:862
+#: tools/gst-play.c:962
 msgid "volume down"
 msgstr ""
 
-#: tools/gst-play.c:863
+#: tools/gst-play.c:963
 msgid "increase playback rate"
 msgstr ""
 
-#: tools/gst-play.c:864
+#: tools/gst-play.c:964
 msgid "decrease playback rate"
 msgstr ""
 
-#: tools/gst-play.c:865
+#: tools/gst-play.c:965
 msgid "change playback direction"
 msgstr ""
 
-#: tools/gst-play.c:866
+#: tools/gst-play.c:966
 msgid "enable/disable trick modes"
 msgstr ""
 
-#: tools/gst-play.c:867
+#: tools/gst-play.c:967
+msgid "change audio track"
+msgstr ""
+
+#: tools/gst-play.c:968
+msgid "change video track"
+msgstr ""
+
+#: tools/gst-play.c:969
+msgid "change subtitle track"
+msgstr ""
+
+#: tools/gst-play.c:970
 msgid "show keyboard shortcuts"
 msgstr ""
 
-#: tools/gst-play.c:870
+#: tools/gst-play.c:973
 msgid "Interactive mode - keyboard controls:"
 msgstr ""
 
-#: tools/gst-play.c:984
+#: tools/gst-play.c:1101
 msgid "Video sink to use (default is autovideosink)"
 msgstr ""
 
-#: tools/gst-play.c:986
+#: tools/gst-play.c:1103
 msgid "Audio sink to use (default is autoaudiosink)"
 msgstr ""
 
-#: tools/gst-play.c:988
+#: tools/gst-play.c:1105
 msgid "Enable gapless playback"
 msgstr ""
 
-#: tools/gst-play.c:990
+#: tools/gst-play.c:1107
 msgid "Shuffle playlist"
 msgstr ""
 
-#: tools/gst-play.c:993
+#: tools/gst-play.c:1110
 msgid "Disable interactive control via the keyboard"
 msgstr ""
 
-#: tools/gst-play.c:995
+#: tools/gst-play.c:1112
 msgid "Volume"
 msgstr ""
 
-#: tools/gst-play.c:997
+#: tools/gst-play.c:1114
 msgid "Playlist file containing input media files"
 msgstr ""
 
-#: tools/gst-play.c:999
+#: tools/gst-play.c:1116
 msgid "Do not print any output (apart from errors)"
 msgstr ""
 
-#: tools/gst-play.c:1068
+#: tools/gst-play.c:1185
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
-#: tools/gst-play.c:1072
+#: tools/gst-play.c:1189
 msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
-#: tools/gst-play.c:1105
+#: tools/gst-play.c:1228
 msgid "Press 'k' to see a list of keyboard shortcuts.\n"
 msgstr ""

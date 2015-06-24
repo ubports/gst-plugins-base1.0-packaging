@@ -273,6 +273,8 @@
     <keyword type="property" name="The “volume” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--volume"/>
     <keyword type="property" name="The “audio-filter” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-filter"/>
     <keyword type="property" name="The “video-filter” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-filter"/>
+    <keyword type="property" name="The “video-multiview-flags” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-flags"/>
+    <keyword type="property" name="The “video-multiview-mode” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-mode"/>
     <keyword type="signal" name="The “about-to-finish” signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish"/>
     <keyword type="signal" name="The “audio-changed” signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed"/>
     <keyword type="signal" name="The “audio-tags-changed” signal" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-tags-changed"/>
