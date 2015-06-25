@@ -670,6 +670,10 @@
     <keyword type="function" name="gst_rtsp_connection_get_tls ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls" since="1.2"/>
     <keyword type="function" name="gst_rtsp_connection_set_tls_validation_flags ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-validation-flags" since="1.2.1"/>
     <keyword type="function" name="gst_rtsp_connection_get_tls_validation_flags ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-validation-flags" since="1.2.1"/>
+    <keyword type="function" name="gst_rtsp_connection_set_tls_database ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-database" since="1.4"/>
+    <keyword type="function" name="gst_rtsp_connection_get_tls_database ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-database" since="1.4"/>
+    <keyword type="function" name="gst_rtsp_connection_set_tls_interaction ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-interaction" since="1.6"/>
+    <keyword type="function" name="gst_rtsp_connection_get_tls_interaction ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-interaction" since="1.6"/>
     <keyword type="function" name="gst_rtsp_watch_new ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-new"/>
     <keyword type="function" name="gst_rtsp_watch_unref ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-unref"/>
     <keyword type="function" name="gst_rtsp_watch_attach ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-attach"/>
@@ -1337,6 +1341,8 @@
     <keyword type="macro" name="GST_VIDEO_INFO_COMP_POFFSET()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COMP-POFFSET:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_CHROMA_SITE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-CHROMA-SITE:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_COLORIMETRY()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-COLORIMETRY:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_INFO_MULTIVIEW_FLAGS()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_INFO_MULTIVIEW_MODE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS"/>
     <keyword type="function" name="gst_video_info_init ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-init"/>
     <keyword type="function" name="gst_video_info_set_format ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format"/>
     <keyword type="function" name="gst_video_info_from_caps ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps"/>
@@ -1387,6 +1393,15 @@
     <keyword type="function" name="gst_video_converter_get_config ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-get-config"/>
     <keyword type="function" name="gst_video_converter_set_config ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-set-config" since="1.6"/>
     <keyword type="function" name="gst_video_converter_frame ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-converter-frame" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_get_mono_modes ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-mono-modes" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_get_unpacked_modes ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-unpacked-modes" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_get_doubled_height_modes ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-height-modes" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_get_doubled_size_modes ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-size-modes" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_get_doubled_width_modes ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-get-doubled-width-modes" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_mode_from_caps_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-mode-from-caps-string" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_mode_to_caps_string ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-mode-to-caps-string" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_guess_half_aspect ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-guess-half-aspect" since="1.6"/>
+    <keyword type="function" name="gst_video_multiview_video_info_change_mode ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-multiview-video-info-change-mode" since="1.6"/>
     <keyword type="struct" name="struct GstVideoAlignment" link="gst-plugins-base-libs-gstvideo.html#GstVideoAlignment"/>
     <keyword type="macro" name="GST_META_TAG_VIDEO_STR" link="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-STR:CAPS" since="1.2"/>
     <keyword type="macro" name="GST_META_TAG_VIDEO_ORIENTATION_STR" link="gst-plugins-base-libs-gstvideo.html#GST-META-TAG-VIDEO-ORIENTATION-STR:CAPS" since="1.2"/>
@@ -1408,6 +1423,9 @@
     <keyword type="struct" name="GstVideoColorimetry" link="gst-plugins-base-libs-gstvideo.html#GstVideoColorimetry"/>
     <keyword type="struct" name="struct GstVideoInfo" link="gst-plugins-base-libs-gstvideo.html#GstVideoInfo"/>
     <keyword type="enum" name="enum GstVideoInterlaceMode" link="gst-plugins-base-libs-gstvideo.html#GstVideoInterlaceMode"/>
+    <keyword type="enum" name="enum GstVideoMultiviewMode" link="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode"/>
+    <keyword type="enum" name="enum GstVideoMultiviewFramePacking" link="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking"/>
+    <keyword type="enum" name="enum GstVideoMultiviewFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags"/>
     <keyword type="enum" name="enum GstVideoFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoFlags"/>
     <keyword type="struct" name="struct GstVideoFrame" link="gst-plugins-base-libs-gstvideo.html#GstVideoFrame"/>
     <keyword type="enum" name="enum GstVideoFrameFlags" link="gst-plugins-base-libs-gstvideo.html#GstVideoFrameFlags"/>
@@ -1757,6 +1775,7 @@
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_RESAMPLE" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-RESAMPLE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_SKEW" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-SKEW:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_NONE" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-NONE:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_CUSTOM" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-CUSTOM:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_RESAMPLE" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-RESAMPLE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_RETIMESTAMP" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-RETIMESTAMP:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_SKEW" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-SKEW:CAPS"/>
@@ -2300,6 +2319,37 @@
     <keyword type="constant" name="GST_VIDEO_INTERLACE_MODE_INTERLEAVED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INTERLACE-MODE-INTERLEAVED:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_INTERLACE_MODE_MIXED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INTERLACE-MODE-MIXED:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_INTERLACE_MODE_FIELDS" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INTERLACE-MODE-FIELDS:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_NONE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-NONE:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_MONO" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-MONO:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_LEFT" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-LEFT:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_RIGHT" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-RIGHT:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_SIDE_BY_SIDE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-SIDE-BY-SIDE:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_SIDE_BY_SIDE_QUINCUNX" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-SIDE-BY-SIDE-QUINCUNX:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_COLUMN_INTERLEAVED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-COLUMN-INTERLEAVED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_ROW_INTERLEAVED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-ROW-INTERLEAVED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_TOP_BOTTOM" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-TOP-BOTTOM:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_CHECKERBOARD" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-CHECKERBOARD:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_FRAME_BY_FRAME" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-FRAME-BY-FRAME:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_MULTIVIEW_FRAME_BY_FRAME" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-MULTIVIEW-FRAME-BY-FRAME:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_MODE_SEPARATED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-MODE-SEPARATED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_NONE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-NONE:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_MONO" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-MONO:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_LEFT" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-LEFT:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_RIGHT" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-RIGHT:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_SIDE_BY_SIDE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-SIDE-BY-SIDE:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_SIDE_BY_SIDE_QUINCUNX" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-SIDE-BY-SIDE-QUINCUNX:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_COLUMN_INTERLEAVED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-COLUMN-INTERLEAVED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_ROW_INTERLEAVED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-ROW-INTERLEAVED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_TOP_BOTTOM" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-TOP-BOTTOM:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FRAME_PACKING_CHECKERBOARD" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FRAME-PACKING-CHECKERBOARD:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_NONE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-NONE:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_VIEW_FIRST" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-VIEW-FIRST:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_LEFT_FLIPPED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-LEFT-FLIPPED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_LEFT_FLOPPED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-LEFT-FLOPPED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_FLIPPED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-FLIPPED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_FLOPPED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-RIGHT-FLOPPED:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_HALF_ASPECT" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-HALF-ASPECT:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_MULTIVIEW_FLAGS_MIXED_MONO" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW-FLAGS-MIXED-MONO:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_FLAG_NONE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FLAG-NONE:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_FLAG_VARIABLE_FPS" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FLAG-VARIABLE-FPS:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_FLAG_PREMULTIPLIED_ALPHA" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FLAG-PREMULTIPLIED-ALPHA:CAPS"/>
@@ -2308,10 +2358,14 @@
     <keyword type="constant" name="GST_VIDEO_FRAME_FLAG_TFF" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-FLAG-TFF:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_FRAME_FLAG_RFF" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-FLAG-RFF:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_FRAME_FLAG_ONEFIELD" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-FLAG-ONEFIELD:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_FRAME_FLAG_MULTIPLE_VIEW" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-FLAG-MULTIPLE-VIEW:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_FRAME_FLAG_FIRST_IN_BUNDLE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-FLAG-FIRST-IN-BUNDLE:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_INTERLACED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-INTERLACED:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_TFF" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-TFF:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_RFF" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-RFF:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_ONEFIELD" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-ONEFIELD:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_MULTIPLE_VIEW" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-MULTIPLE-VIEW:CAPS"/>
+    <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_FIRST_IN_BUNDLE" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-FIRST-IN-BUNDLE:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_BUFFER_FLAG_LAST" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-BUFFER-FLAG-LAST:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_TILE_TYPE_INDEXED" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-TYPE-INDEXED:CAPS"/>
     <keyword type="constant" name="GST_VIDEO_TILE_MODE_UNKNOWN" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-TILE-MODE-UNKNOWN:CAPS"/>

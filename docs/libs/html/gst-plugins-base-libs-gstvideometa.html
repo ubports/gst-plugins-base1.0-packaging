@@ -380,7 +380,8 @@ default offsets and strides for <em class="parameter"><code>format</code></em>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.5.7"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -452,7 +453,8 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
 <div class="refsect3">
 <a name="id-1.2.15.4.7.6.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -484,7 +486,8 @@ multiview buffers.</p>
 <a name="id-1.2.15.4.7.7.7"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> with lowest id (usually 0) or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there
 is no such metadata on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -525,7 +528,8 @@ multiview buffers.</p>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> with <em class="parameter"><code>id</code></em>
 or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is no such metadata
 on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -599,7 +603,8 @@ parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.11.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -661,7 +666,8 @@ parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.12.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -708,7 +714,8 @@ multiple regions of interests are marked on a frame.</p>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta" title="GstVideoRegionOfInterestMeta"><span class="type">GstVideoRegionOfInterestMeta</span></a> with <em class="parameter"><code>id</code></em>
 or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> when there is
 no such metadata on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -749,9 +756,24 @@ parameters.</p>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td class="parameter_name"><p>upload</p></td>
-<td class="parameter_description"><p>the function to upload the buffer to a specific texture ID</p></td>
+<td class="parameter_name"><p>texture_orientation</p></td>
+<td class="parameter_description"><p>the <span class="type">GstVideoGLTextureOrientation</span></p></td>
 <td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_textures</p></td>
+<td class="parameter_description"><p>the number of textures</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>texture_type</p></td>
+<td class="parameter_description"><p>array of <span class="type">GstVideoGLTextureType</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>upload</p></td>
+<td class="parameter_description"><p> the function to upload the buffer to a specific texture ID. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>user_data</p></td>
@@ -761,15 +783,15 @@ parameters.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>user_data_copy</p></td>
-<td class="parameter_description"><p>function to copy <em class="parameter"><code>user_data</code></em>
-</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p> function to copy <em class="parameter"><code>user_data</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>user_data_free</p></td>
-<td class="parameter_description"><p>function to free <em class="parameter"><code>user_data</code></em>
-</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p> function to free <em class="parameter"><code>user_data</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -777,7 +799,8 @@ parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.16.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta" title="struct GstVideoGLTextureUploadMeta"><span class="type">GstVideoGLTextureUploadMeta</span></a> on <em class="parameter"><code>buffer</code></em>
-.</p>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>

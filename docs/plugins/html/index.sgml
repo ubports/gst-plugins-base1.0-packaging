@@ -492,6 +492,8 @@
 <ANCHOR id="GstPlayBin--volume" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--volume">
 <ANCHOR id="GstPlayBin--audio-filter" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-filter">
 <ANCHOR id="GstPlayBin--video-filter" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--video-filter">
+<ANCHOR id="GstPlayBin--video-multiview-flags" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-flags">
+<ANCHOR id="GstPlayBin--video-multiview-mode" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-mode">
 <ANCHOR id="gst-plugins-base-plugins-playbin.signal-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#gst-plugins-base-plugins-playbin.signal-details">
 <ANCHOR id="GstPlayBin-about-to-finish" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish">
 <ANCHOR id="GstPlayBin-audio-changed" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed">

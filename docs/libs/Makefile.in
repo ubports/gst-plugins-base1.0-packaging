@@ -295,6 +295,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_INIT = @INTROSPECTION_INIT@
 INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
@@ -529,13 +530,16 @@ GTKDOC_LIBS = \
 	$(top_builddir)/gst-libs/gst/riff/libgstriff-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS)
 
-GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC)
-GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC)
 
 # If you need to override some of the declarations, place them in this file
 DOC_OVERRIDES = $(DOC_MODULE)-overrides.txt
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_CC = $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_RUN = 
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_RUN = $(LIBTOOL) --mode=execute
 
-# thomas: copied from glib-2
 # We set GPATH here; this gives us semantics for GNU make
 # which are more like other make's VPATH, when it comes to
 # whether a source that is a target of one rule is then
@@ -854,15 +858,22 @@ upload: $(FORMATS)
 @ENABLE_GTK_DOC_TRUE@		--ignore-headers="$(IGNORE_HFILES)"
 @ENABLE_GTK_DOC_TRUE@	@if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null; then	\
 @ENABLE_GTK_DOC_TRUE@	    echo "  DOC   Introspecting gobjects"; \
+@ENABLE_GTK_DOC_TRUE@	    scanobj_options=""; \
+@ENABLE_GTK_DOC_TRUE@	    gtkdoc-scangobj 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+@ENABLE_GTK_DOC_TRUE@	    if test "$$?" = "0"; then \
+@ENABLE_GTK_DOC_TRUE@	        if test "x$(V)" = "x1"; then \
+@ENABLE_GTK_DOC_TRUE@	            scanobj_options="--verbose"; \
+@ENABLE_GTK_DOC_TRUE@	        fi; \
+@ENABLE_GTK_DOC_TRUE@	    fi; \
 @ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_SYSTEM_PATH_1_0=`cd $(top_builddir) && pwd`		\
 @ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_PATH_1_0=						\
 @ENABLE_GTK_DOC_TRUE@	    GST_REGISTRY_1_0=doc-registry.xml				\
 @ENABLE_GTK_DOC_TRUE@	    $(GTKDOC_EXTRA_ENVIRONMENT)					\
-@ENABLE_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)"				\
+@ENABLE_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)"	\
 @ENABLE_GTK_DOC_TRUE@	    CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)"				\
 @ENABLE_GTK_DOC_TRUE@	    LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)"				\
 @ENABLE_GTK_DOC_TRUE@	    gtkdoc-scangobj --type-init-func="gst_init(NULL,NULL)"	\
-@ENABLE_GTK_DOC_TRUE@	        --module=$(DOC_MODULE) ;				\
+@ENABLE_GTK_DOC_TRUE@	        $$scanobj_options --module=$(DOC_MODULE) ;				\
 @ENABLE_GTK_DOC_TRUE@	else								\
 @ENABLE_GTK_DOC_TRUE@	    for i in $(SCANOBJ_FILES) ; do				\
 @ENABLE_GTK_DOC_TRUE@	       test -f $$i || touch $$i ;				\

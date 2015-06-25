@@ -293,6 +293,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_INIT = @INTROSPECTION_INIT@
 INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
@@ -564,11 +565,15 @@ extra_files =
 # contains GtkObjects/GObjects and you want to document signals and properties.
 GTKDOC_CFLAGS = $(GST_BASE_CFLAGS) -I$(top_builddir) -I$(top_builddir)/gst-libs
 GTKDOC_LIBS = $(GST_BASE_LIBS)
-GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC)
-GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC)
 
 # If you need to override some of the declarations, place them in this file
 DOC_OVERRIDES = $(DOC_MODULE)-overrides.txt
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_CC = $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_RUN = 
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_RUN = $(LIBTOOL) --mode=execute
 
 # We set GPATH here; this gives us semantics for GNU make
 # which are more like other make's VPATH, when it comes to
@@ -598,11 +603,9 @@ EXTRA_DIST = \
 # maintainers and result is commited to git
 DOC_STAMPS = \
 	scan-build.stamp		\
-	tmpl-build.stamp		\
 	sgml-build.stamp		\
 	html-build.stamp		\
 	scan.stamp			\
-	tmpl.stamp			\
 	sgml.stamp			\
 	html.stamp
 
@@ -938,7 +941,7 @@ update: scanobj-update
 @ENABLE_GTK_DOC_TRUE@	    scanobj_options="--verbose"; \
 @ENABLE_GTK_DOC_TRUE@	fi; \
 @ENABLE_GTK_DOC_TRUE@	$(INSPECT_ENVIRONMENT) 					\
-@ENABLE_GTK_DOC_TRUE@	CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)"				\
+@ENABLE_GTK_DOC_TRUE@	CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)"	\
 @ENABLE_GTK_DOC_TRUE@	CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS) $(WARNING_CFLAGS)"	\
 @ENABLE_GTK_DOC_TRUE@	LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)"				\
 @ENABLE_GTK_DOC_TRUE@	$(GST_DOC_SCANOBJ) $$scanobj_options --type-init-func="gst_init(NULL,NULL)"	\
@@ -977,29 +980,9 @@ update: scanobj-update
 @ENABLE_GTK_DOC_TRUE@	    --ignore-headers="$(IGNORE_HFILES)";			\
 @ENABLE_GTK_DOC_TRUE@	touch scan-build.stamp
 
-#### update templates; done on every build ####
-
-# in a non-srcdir build, we need to copy files from the previous step
-# and the files from previous runs of this step
-@ENABLE_GTK_DOC_TRUE@tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_OVERRIDES)
-@ENABLE_GTK_DOC_TRUE@	@echo '  DOC   Rebuilding template files'
-@ENABLE_GTK_DOC_TRUE@	@if test x"$(srcdir)" != x. ; then				\
-@ENABLE_GTK_DOC_TRUE@	    for f in $(SCANOBJ_FILES) $(SCAN_FILES);			\
-@ENABLE_GTK_DOC_TRUE@	    do								\
-@ENABLE_GTK_DOC_TRUE@	        if test -e $(srcdir)/$$f; then cp -u $(srcdir)/$$f . ; fi;	\
-@ENABLE_GTK_DOC_TRUE@	    done;							\
-@ENABLE_GTK_DOC_TRUE@	fi
-@ENABLE_GTK_DOC_TRUE@	@gtkdoc-mktmpl --module=$(DOC_MODULE)
-@ENABLE_GTK_DOC_TRUE@	@$(PYTHON) \
-@ENABLE_GTK_DOC_TRUE@		$(top_srcdir)/common/mangle-tmpl.py $(srcdir)/$(INSPECT_DIR) tmpl
-@ENABLE_GTK_DOC_TRUE@	@touch tmpl-build.stamp
-
-@ENABLE_GTK_DOC_TRUE@tmpl.stamp: tmpl-build.stamp
-@ENABLE_GTK_DOC_TRUE@	@true
-
 #### xml ####
 
-@ENABLE_GTK_DOC_TRUE@sgml-build.stamp: tmpl.stamp scan-build.stamp $(CFILE_GLOB) $(top_srcdir)/common/plugins.xsl $(expand_content_files)
+@ENABLE_GTK_DOC_TRUE@sgml-build.stamp: scan-build.stamp $(CFILE_GLOB) $(top_srcdir)/common/plugins.xsl $(expand_content_files)
 @ENABLE_GTK_DOC_TRUE@	@echo '  DOC   Building XML'
 @ENABLE_GTK_DOC_TRUE@	@-mkdir -p xml
 @ENABLE_GTK_DOC_TRUE@	@for a in $(srcdir)/$(INSPECT_DIR)/*.xml; do \
@@ -1015,6 +998,7 @@ update: scanobj-update
 @ENABLE_GTK_DOC_TRUE@		--output-format=xml \
 @ENABLE_GTK_DOC_TRUE@		--ignore-files="$(IGNORE_HFILES) $(IGNORE_CFILES)" \
 @ENABLE_GTK_DOC_TRUE@		$(MKDB_OPTIONS)
+@ENABLE_GTK_DOC_TRUE@	@$(PYTHON) $(top_srcdir)/common/mangle-db.py xml
 @ENABLE_GTK_DOC_TRUE@	@cp ../version.entities xml
 @ENABLE_GTK_DOC_TRUE@	@touch sgml-build.stamp
 
