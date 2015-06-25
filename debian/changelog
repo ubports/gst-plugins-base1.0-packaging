@@ -1,4 +1,4 @@
-gst-plugins-base1.0 (1.5.2-1ubuntu1) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.5.2-1ubuntu1) wily; urgency=medium
 
   * Merge from Debian unstable. Remaining changes:
     + 0001-riff-Add-input-buffer-size-to-GstCaps.patch: Take patch from
@@ -7,7 +7,7 @@ gst-plugins-base1.0 (1.5.2-1ubuntu1) UNRELEASED; urgency=medium
     + Update Vcs-* for Ubuntu
   * debian/watch: Update for current upstream URL scheme
 
- -- Iain Lane <iain.lane@canonical.com>  Thu, 25 Jun 2015 12:40:53 +0100
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 25 Jun 2015 12:49:30 +0100
 
 gst-plugins-base1.0 (1.5.2-1) experimental; urgency=medium
 
