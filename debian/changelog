@@ -1,8 +1,12 @@
-gst-plugins-base1.0 (1.5.2-2) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.5.90-1) experimental; urgency=medium
 
+  [ Iain Lane ]
   * debian/watch: Update for current upstream URL scheme
 
- -- Iain Lane <laney@debian.org>  Thu, 25 Jun 2015 12:40:53 +0100
+  [ Sebastian Dröge ]
+  * New upstream release candidate.
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 19 Aug 2015 13:05:44 +0300
 
 gst-plugins-base1.0 (1.5.2-1) experimental; urgency=medium
 
