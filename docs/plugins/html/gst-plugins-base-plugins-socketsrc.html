@@ -6,8 +6,8 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-subtitleoverlay.html" title="subtitleoverlay">
-<link rel="next" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
+<link rel="prev" href="gst-plugins-base-plugins-playsink.html" title="playsink">
+<link rel="next" href="gst-plugins-base-plugins-ssaparse.html" title="ssaparse">
 <meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -22,8 +22,8 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-subtitleoverlay.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-playsink.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-ssaparse.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-socketsrc"></a><div class="titlepage"></div>
@@ -42,12 +42,20 @@
 <col width="300px" class="properties_name">
 <col width="200px" class="properties_flags">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="property_type">
 <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket" title="The “socket” property">socket</a></td>
 <td class="property_flags">Read / Write</td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="property_type">
+<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *</td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--caps" title="The “caps” property">caps</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -108,7 +116,7 @@ objects rather than sockets via integer file-descriptors.</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.28.8.8.1"></a><h3>Element Information</h3>
+<a name="id-1.2.30.8.8.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -134,7 +142,7 @@ objects rather than sockets via integer file-descriptors.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.8.8.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.30.8.8.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -179,6 +187,13 @@ objects rather than sockets via integer file-descriptors.</p>
 <a name="GstSocketSrc--socket"></a><h3>The <code class="literal">“socket”</code> property</h3>
 <pre class="programlisting">  “socket”                   <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *</pre>
 <p>The socket to receive packets from.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstSocketSrc--caps"></a><h3>The <code class="literal">“caps”</code> property</h3>
+<pre class="programlisting">  “caps”                     <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *</pre>
+<p>The caps of the source pad.</p>
 <p>Flags: Read / Write</p>
 </div>
 </div>

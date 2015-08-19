@@ -29,6 +29,83 @@
 #include "video-info.h"
 #include "video-tile.h"
 
+#ifndef GST_DISABLE_GST_DEBUG
+#define GST_CAT_DEFAULT ensure_debug_category()
+static GstDebugCategory *
+ensure_debug_category (void)
+{
+  static gsize cat_gonce = 0;
+
+  if (g_once_init_enter (&cat_gonce)) {
+    gsize cat_done;
+
+    cat_done = (gsize) _gst_debug_category_new ("video-info", 0,
+        "video-info structure");
+
+    g_once_init_leave (&cat_gonce, cat_done);
+  }
+
+  return (GstDebugCategory *) cat_gonce;
+}
+#else
+#define ensure_debug_category() /* NOOP */
+#endif /* GST_DISABLE_GST_DEBUG */
+
+/**
+ * gst_video_info_copy:
+ * @info: a #GstVideoInfo
+ *
+ * Copy a GstVideoInfo structure.
+ *
+ * Returns: a new #GstVideoInfo. free with gst_video_info_free.
+ *
+ * Since: 1.6
+ */
+GstVideoInfo *
+gst_video_info_copy (const GstVideoInfo * info)
+{
+  return g_slice_dup (GstVideoInfo, info);
+}
+
+/**
+ * gst_video_info_free:
+ * @info: a #GstVideoInfo
+ *
+ * Free a GstVideoInfo structure previously allocated with gst_video_info_new()
+ * or gst_video_info_copy().
+ *
+ * Since: 1.6
+ */
+void
+gst_video_info_free (GstVideoInfo * info)
+{
+  g_slice_free (GstVideoInfo, info);
+}
+
+G_DEFINE_BOXED_TYPE (GstVideoInfo, gst_video_info,
+    (GBoxedCopyFunc) gst_video_info_copy, (GBoxedFreeFunc) gst_video_info_free);
+
+/**
+ * gst_video_info_new:
+ *
+ * Allocate a new #GstVideoInfo that is also initialized with
+ * gst_video_info_init().
+ *
+ * Returns: a new #GstVideoInfo. free with gst_video_info_free().
+ *
+ * Since: 1.6
+ */
+GstVideoInfo *
+gst_video_info_new (void)
+{
+  GstVideoInfo *info;
+
+  info = g_slice_new (GstVideoInfo);
+  gst_video_info_init (info);
+
+  return info;
+}
+
 static int fill_planes (GstVideoInfo * info);
 
 /**
@@ -611,8 +688,6 @@ fill_planes (GstVideoInfo * info)
         cr_h = GST_ROUND_UP_2 (cr_h);
       info->offset[2] = info->offset[1] + info->stride[1] * cr_h;
       info->size = info->offset[2] + info->stride[2] * cr_h;
-      GST_DEBUG ("%d %d %d", GST_VIDEO_INFO_IS_INTERLACED (info),
-          (int) info->offset[2], (int) info->size);
       break;
     case GST_VIDEO_FORMAT_Y41B:
       info->stride[0] = GST_ROUND_UP_4 (width);

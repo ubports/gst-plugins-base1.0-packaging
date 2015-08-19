@@ -1401,15 +1401,13 @@ gst_audio_decoder_set_tolerance (<em class="parameter"><code><a class="link" hre
 gst_audio_decoder_merge_tags (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#GstAudioDecoder"><span class="type">GstAudioDecoder</span></a> *dec</code></em>,
                               <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> *tags</code></em>,
                               <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> mode</code></em>);</pre>
-<p>Adds tags to so-called pending tags, which will be processed
-before pushing out data downstream.</p>
+<p>Sets the audio decoder tags and how they should be merged with any
+upstream stream tags. This will override any tags previously-set
+with <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-merge-tags" title="gst_audio_decoder_merge_tags ()"><code class="function">gst_audio_decoder_merge_tags()</code></a>.</p>
 <p>Note that this is provided for convenience, and the subclass is
-not required to use this and can still do tag handling on its own,
-although it should be aware that baseclass already takes care
-of the usual CODEC/AUDIO_CODEC tags.</p>
-<p>MT safe.</p>
+not required to use this and can still do tag handling on its own.</p>
 <div class="refsect3">
-<a name="id-1.2.6.7.10.31.7"></a><h4>Parameters</h4>
+<a name="id-1.2.6.7.10.31.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1424,12 +1422,12 @@ of the usual CODEC/AUDIO_CODEC tags.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>tags</p></td>
-<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> to merge</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> to merge, or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mode</p></td>
-<td class="parameter_description"><p>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> to use</p></td>
+<td class="parameter_description"><p>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> to use, usually <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GST-TAG-MERGE-REPLACE:CAPS"><span class="type">GST_TAG_MERGE_REPLACE</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1539,6 +1537,9 @@ elements.</p>
 
   GstCaps *     (*getcaps)            (GstAudioDecoder * dec,
                                        GstCaps * filter);
+
+  gboolean      (*transform_meta)     (GstAudioDecoder *enc, GstBuffer *outbuf,
+                                       GstMeta *meta, GstBuffer *inbuf);
 };
 </pre>
 <p>Subclasses can override any of the available virtual methods or not, as
@@ -1694,6 +1695,15 @@ Allows for a custom sink getcaps implementation.
 If not implemented,
 default returns gst_audio_decoder_proxy_getcaps
 applied to sink template caps.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstAudioDecoderClass.transform-meta"></a>transform_meta</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional. Transform the metadata on the input buffer to the
+output buffer. By default this method copies all meta without
+tags and meta with only the "audio" tag. subclasses can
+implement this method and return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the metadata is to be
+copied. Since 1.6</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 </tbody>

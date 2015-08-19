@@ -1344,6 +1344,9 @@
     <keyword type="macro" name="GST_VIDEO_INFO_MULTIVIEW_FLAGS()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_INFO_MULTIVIEW_MODE()" link="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS"/>
     <keyword type="function" name="gst_video_info_init ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-init"/>
+    <keyword type="function" name="gst_video_info_new ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-new" since="1.6"/>
+    <keyword type="function" name="gst_video_info_copy ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-copy" since="1.6"/>
+    <keyword type="function" name="gst_video_info_free ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-free" since="1.6"/>
     <keyword type="function" name="gst_video_info_set_format ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format"/>
     <keyword type="function" name="gst_video_info_from_caps ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps"/>
     <keyword type="function" name="gst_video_info_to_caps ()" link="gst-plugins-base-libs-gstvideo.html#gst-video-info-to-caps"/>

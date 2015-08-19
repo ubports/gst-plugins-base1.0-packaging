@@ -42,7 +42,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">GstTimeOverlayTimeLine</span></td>
+<td class="property_type"><a class="link" href="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlayTimeLine" title="enum GstTimeOverlayTimeLine"><span class="type">GstTimeOverlayTimeLine</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlay--time-mode" title="The “time-mode” property">time-mode</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -55,10 +55,16 @@
 <col width="150px" class="name">
 <col class="description">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="datatype_keyword">struct</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlay-struct" title="struct GstTimeOverlay">GstTimeOverlay</a></td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlayTimeLine" title="enum GstTimeOverlayTimeLine">GstTimeOverlayTimeLine</a></td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -76,7 +82,7 @@
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.38.7.2.1"></a><h3>Element Information</h3>
+<a name="id-1.2.44.7.2.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -102,7 +108,7 @@
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.38.7.2.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.44.7.2.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -172,12 +178,43 @@
 <a name="GstTimeOverlay-struct"></a><h3>struct GstTimeOverlay</h3>
 <pre class="programlisting">struct GstTimeOverlay;</pre>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstTimeOverlayTimeLine"></a><h3>enum GstTimeOverlayTimeLine</h3>
+<div class="refsect3">
+<a name="id-1.2.44.9.3.3"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GST-TIME-OVERLAY-TIME-LINE-BUFFER-TIME:CAPS"></a>GST_TIME_OVERLAY_TIME_LINE_BUFFER_TIME</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-TIME-OVERLAY-TIME-LINE-STREAM-TIME:CAPS"></a>GST_TIME_OVERLAY_TIME_LINE_STREAM_TIME</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-TIME-OVERLAY-TIME-LINE-RUNNING-TIME:CAPS"></a>GST_TIME_OVERLAY_TIME_LINE_RUNNING_TIME</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-timeoverlay.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstTimeOverlay--time-mode"></a><h3>The <code class="literal">“time-mode”</code> property</h3>
-<pre class="programlisting">  “time-mode”                <span class="type">GstTimeOverlayTimeLine</span></pre>
+<pre class="programlisting">  “time-mode”                <a class="link" href="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlayTimeLine" title="enum GstTimeOverlayTimeLine"><span class="type">GstTimeOverlayTimeLine</span></a></pre>
 <p>What time to show.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: buffer-time</p>

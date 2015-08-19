@@ -162,7 +162,13 @@ struct _GstVideoEncoderPrivate
   GstAllocator *allocator;
   GstAllocationParams params;
 
+  /* upstream stream tags (global tags are passed through as-is) */
+  GstTagList *upstream_tags;
+
+  /* subclass tags */
   GstTagList *tags;
+  GstTagMergeMode tags_merge_mode;
+
   gboolean tags_changed;
 
   GstClockTime min_pts;
@@ -244,6 +250,9 @@ static gboolean gst_video_encoder_sink_query_default (GstVideoEncoder * encoder,
 static gboolean gst_video_encoder_src_query_default (GstVideoEncoder * encoder,
     GstQuery * query);
 
+static gboolean gst_video_encoder_transform_meta_default (GstVideoEncoder *
+    encoder, GstVideoCodecFrame * frame, GstMeta * meta);
+
 /* we can't use G_DEFINE_ABSTRACT_TYPE because we need the klass in the _init
  * method to get to the padtemplates */
 GType
@@ -307,6 +316,7 @@ gst_video_encoder_class_init (GstVideoEncoderClass * klass)
   klass->negotiate = gst_video_encoder_negotiate_default;
   klass->sink_query = gst_video_encoder_sink_query_default;
   klass->src_query = gst_video_encoder_src_query_default;
+  klass->transform_meta = gst_video_encoder_transform_meta_default;
 }
 
 static GList *
@@ -361,9 +371,14 @@ gst_video_encoder_reset (GstVideoEncoder * encoder, gboolean hard)
       gst_video_codec_state_unref (priv->output_state);
     priv->output_state = NULL;
 
+    if (priv->upstream_tags) {
+      gst_tag_list_unref (priv->upstream_tags);
+      priv->upstream_tags = NULL;
+    }
     if (priv->tags)
       gst_tag_list_unref (priv->tags);
     priv->tags = NULL;
+    priv->tags_merge_mode = GST_TAG_MERGE_APPEND;
     priv->tags_changed = FALSE;
 
     g_list_foreach (priv->headers, (GFunc) gst_event_unref, NULL);
@@ -916,12 +931,43 @@ gst_video_encoder_push_event (GstVideoEncoder * encoder, GstEvent * event)
   return gst_pad_push_event (encoder->srcpad, event);
 }
 
+static GstEvent *
+gst_video_encoder_create_merged_tags_event (GstVideoEncoder * enc)
+{
+  GstTagList *merged_tags;
+
+  GST_LOG_OBJECT (enc, "upstream : %" GST_PTR_FORMAT, enc->priv->upstream_tags);
+  GST_LOG_OBJECT (enc, "encoder  : %" GST_PTR_FORMAT, enc->priv->tags);
+  GST_LOG_OBJECT (enc, "mode     : %d", enc->priv->tags_merge_mode);
+
+  merged_tags =
+      gst_tag_list_merge (enc->priv->upstream_tags, enc->priv->tags,
+      enc->priv->tags_merge_mode);
+
+  GST_DEBUG_OBJECT (enc, "merged   : %" GST_PTR_FORMAT, merged_tags);
+
+  if (merged_tags == NULL)
+    return NULL;
+
+  if (gst_tag_list_is_empty (merged_tags)) {
+    gst_tag_list_unref (merged_tags);
+    return NULL;
+  }
+
+  return gst_event_new_tag (merged_tags);
+}
+
 static inline void
 gst_video_encoder_check_and_push_tags (GstVideoEncoder * encoder)
 {
-  if (encoder->priv->tags && encoder->priv->tags_changed) {
-    gst_video_encoder_push_event (encoder,
-        gst_event_new_tag (gst_tag_list_ref (encoder->priv->tags)));
+  if (encoder->priv->tags_changed) {
+    GstEvent *tags_event;
+
+    tags_event = gst_video_encoder_create_merged_tags_event (encoder);
+
+    if (tags_event != NULL)
+      gst_video_encoder_push_event (encoder, tags_event);
+
     encoder->priv->tags_changed = FALSE;
   }
 }
@@ -1027,6 +1073,19 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
       }
       break;
     }
+    case GST_EVENT_STREAM_START:
+    {
+      GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+      /* Flush upstream tags after a STREAM_START */
+      GST_DEBUG_OBJECT (encoder, "STREAM_START, clearing upstream tags");
+      if (encoder->priv->upstream_tags) {
+        gst_tag_list_unref (encoder->priv->upstream_tags);
+        encoder->priv->upstream_tags = NULL;
+        encoder->priv->tags_changed = TRUE;
+      }
+      GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+      break;
+    }
     case GST_EVENT_TAG:
     {
       GstTagList *tags;
@@ -1034,26 +1093,33 @@ gst_video_encoder_sink_event_default (GstVideoEncoder * encoder,
       gst_event_parse_tag (event, &tags);
 
       if (gst_tag_list_get_scope (tags) == GST_TAG_SCOPE_STREAM) {
-        tags = gst_tag_list_copy (tags);
+        GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
+        if (encoder->priv->upstream_tags != tags) {
+          tags = gst_tag_list_copy (tags);
 
-        /* FIXME: make generic based on GST_TAG_FLAG_ENCODED */
-        gst_tag_list_remove_tag (tags, GST_TAG_CODEC);
-        gst_tag_list_remove_tag (tags, GST_TAG_AUDIO_CODEC);
-        gst_tag_list_remove_tag (tags, GST_TAG_VIDEO_CODEC);
-        gst_tag_list_remove_tag (tags, GST_TAG_SUBTITLE_CODEC);
-        gst_tag_list_remove_tag (tags, GST_TAG_CONTAINER_FORMAT);
-        gst_tag_list_remove_tag (tags, GST_TAG_BITRATE);
-        gst_tag_list_remove_tag (tags, GST_TAG_NOMINAL_BITRATE);
-        gst_tag_list_remove_tag (tags, GST_TAG_MAXIMUM_BITRATE);
-        gst_tag_list_remove_tag (tags, GST_TAG_MINIMUM_BITRATE);
-        gst_tag_list_remove_tag (tags, GST_TAG_ENCODER);
-        gst_tag_list_remove_tag (tags, GST_TAG_ENCODER_VERSION);
+          /* FIXME: make generic based on GST_TAG_FLAG_ENCODED */
+          gst_tag_list_remove_tag (tags, GST_TAG_CODEC);
+          gst_tag_list_remove_tag (tags, GST_TAG_AUDIO_CODEC);
+          gst_tag_list_remove_tag (tags, GST_TAG_VIDEO_CODEC);
+          gst_tag_list_remove_tag (tags, GST_TAG_SUBTITLE_CODEC);
+          gst_tag_list_remove_tag (tags, GST_TAG_CONTAINER_FORMAT);
+          gst_tag_list_remove_tag (tags, GST_TAG_BITRATE);
+          gst_tag_list_remove_tag (tags, GST_TAG_NOMINAL_BITRATE);
+          gst_tag_list_remove_tag (tags, GST_TAG_MAXIMUM_BITRATE);
+          gst_tag_list_remove_tag (tags, GST_TAG_MINIMUM_BITRATE);
+          gst_tag_list_remove_tag (tags, GST_TAG_ENCODER);
+          gst_tag_list_remove_tag (tags, GST_TAG_ENCODER_VERSION);
 
-        gst_video_encoder_merge_tags (encoder, tags, GST_TAG_MERGE_REPLACE);
-        gst_tag_list_unref (tags);
+          if (encoder->priv->upstream_tags)
+            gst_tag_list_unref (encoder->priv->upstream_tags);
+          encoder->priv->upstream_tags = tags;
+          GST_INFO_OBJECT (encoder, "upstream tags: %" GST_PTR_FORMAT, tags);
+        }
         gst_event_unref (event);
-        event = NULL;
-        ret = TRUE;
+        event = gst_video_encoder_create_merged_tags_event (encoder);
+        GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
+        if (!event)
+          ret = TRUE;
       }
       break;
     }
@@ -1800,6 +1866,62 @@ gst_video_encoder_release_frame (GstVideoEncoder * enc,
   gst_video_codec_frame_unref (frame);
 }
 
+static gboolean
+gst_video_encoder_transform_meta_default (GstVideoEncoder *
+    encoder, GstVideoCodecFrame * frame, GstMeta * meta)
+{
+  const GstMetaInfo *info = meta->info;
+  const gchar *const *tags;
+
+  tags = gst_meta_api_type_get_tags (info->api);
+
+  if (!tags || (g_strv_length ((gchar **) tags) == 1
+          && gst_meta_api_type_has_tag (info->api,
+              g_quark_from_string (GST_META_TAG_VIDEO_STR))))
+    return TRUE;
+
+  return FALSE;
+}
+
+typedef struct
+{
+  GstVideoEncoder *encoder;
+  GstVideoCodecFrame *frame;
+} CopyMetaData;
+
+static gboolean
+foreach_metadata (GstBuffer * inbuf, GstMeta ** meta, gpointer user_data)
+{
+  CopyMetaData *data = user_data;
+  GstVideoEncoder *encoder = data->encoder;
+  GstVideoEncoderClass *klass = GST_VIDEO_ENCODER_GET_CLASS (encoder);
+  GstVideoCodecFrame *frame = data->frame;
+  const GstMetaInfo *info = (*meta)->info;
+  gboolean do_copy = FALSE;
+
+  if (gst_meta_api_type_has_tag (info->api, _gst_meta_tag_memory)) {
+    /* never call the transform_meta with memory specific metadata */
+    GST_DEBUG_OBJECT (encoder, "not copying memory specific metadata %s",
+        g_type_name (info->api));
+    do_copy = FALSE;
+  } else if (klass->transform_meta) {
+    do_copy = klass->transform_meta (encoder, frame, *meta);
+    GST_DEBUG_OBJECT (encoder, "transformed metadata %s: copy: %d",
+        g_type_name (info->api), do_copy);
+  }
+
+  /* we only copy metadata when the subclass implemented a transform_meta
+   * function and when it returns %TRUE */
+  if (do_copy) {
+    GstMetaTransformCopy copy_data = { FALSE, 0, -1 };
+    GST_DEBUG_OBJECT (encoder, "copy metadata %s", g_type_name (info->api));
+    /* simply copy then */
+    info->transform_func (frame->output_buffer, *meta, inbuf,
+        _gst_meta_transform_copy, &copy_data);
+  }
+  return TRUE;
+}
+
 /**
  * gst_video_encoder_finish_frame:
  * @encoder: a #GstVideoEncoder
@@ -2046,6 +2168,19 @@ gst_video_encoder_finish_frame (GstVideoEncoder * encoder,
   if (encoder_class->pre_push)
     ret = encoder_class->pre_push (encoder, frame);
 
+  if (encoder_class->transform_meta) {
+    if (G_LIKELY (frame->input_buffer)) {
+      CopyMetaData data;
+
+      data.encoder = encoder;
+      data.frame = frame;
+      gst_buffer_foreach_meta (frame->input_buffer, foreach_metadata, &data);
+    } else {
+      GST_WARNING_OBJECT (encoder,
+          "Can't copy metadata because input frame disappeared");
+    }
+  }
+
   /* Get an additional ref to the buffer, which is going to be pushed
    * downstream, the original ref is owned by the frame */
   buffer = gst_buffer_ref (frame->output_buffer);
@@ -2271,11 +2406,13 @@ gst_video_encoder_get_frames (GstVideoEncoder * encoder)
 /**
  * gst_video_encoder_merge_tags:
  * @encoder: a #GstVideoEncoder
- * @tags: a #GstTagList to merge
- * @mode: the #GstTagMergeMode to use
+ * @tags: (allow-none): a #GstTagList to merge, or NULL to unset
+ *     previously-set tags
+ * @mode: the #GstTagMergeMode to use, usually #GST_TAG_MERGE_REPLACE
  *
- * Adds tags to so-called pending tags, which will be processed
- * before pushing out data downstream.
+ * Sets the video encoder tags and how they should be merged with any
+ * upstream stream tags. This will override any tags previously-set
+ * with gst_video_encoder_merge_tags().
  *
  * Note that this is provided for convenience, and the subclass is
  * not required to use this and can still do tag handling on its own.
@@ -2286,19 +2423,26 @@ void
 gst_video_encoder_merge_tags (GstVideoEncoder * encoder,
     const GstTagList * tags, GstTagMergeMode mode)
 {
-  GstTagList *otags;
-
   g_return_if_fail (GST_IS_VIDEO_ENCODER (encoder));
   g_return_if_fail (tags == NULL || GST_IS_TAG_LIST (tags));
+  g_return_if_fail (tags == NULL || mode != GST_TAG_MERGE_UNDEFINED);
 
   GST_VIDEO_ENCODER_STREAM_LOCK (encoder);
-  if (tags)
-    GST_DEBUG_OBJECT (encoder, "merging tags %" GST_PTR_FORMAT, tags);
-  otags = encoder->priv->tags;
-  encoder->priv->tags = gst_tag_list_merge (encoder->priv->tags, tags, mode);
-  if (otags)
-    gst_tag_list_unref (otags);
-  encoder->priv->tags_changed = TRUE;
+  if (encoder->priv->tags != tags) {
+    if (encoder->priv->tags) {
+      gst_tag_list_unref (encoder->priv->tags);
+      encoder->priv->tags = NULL;
+      encoder->priv->tags_merge_mode = GST_TAG_MERGE_APPEND;
+    }
+    if (tags) {
+      encoder->priv->tags = gst_tag_list_ref ((GstTagList *) tags);
+      encoder->priv->tags_merge_mode = mode;
+    }
+
+    GST_DEBUG_OBJECT (encoder, "setting encoder tags to %" GST_PTR_FORMAT,
+        tags);
+    encoder->priv->tags_changed = TRUE;
+  }
   GST_VIDEO_ENCODER_STREAM_UNLOCK (encoder);
 }
 
