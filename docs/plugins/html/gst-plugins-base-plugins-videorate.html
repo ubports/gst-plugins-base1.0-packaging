@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-uridecodebin.html" title="uridecodebin">
+<link rel="prev" href="gst-plugins-base-plugins-videoconvert.html" title="videoconvert">
 <link rel="next" href="gst-plugins-base-plugins-videoscale.html" title="videoscale">
 <meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -21,7 +21,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-uridecodebin.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-videoconvert.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="gst-plugins-base-plugins-videoscale.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -145,7 +145,7 @@ This can potentially cause performance degradation.
 Note that property notification will happen from the streaming thread, so
 applications should be prepared for this.</p>
 <div class="refsect2">
-<a name="id-1.2.40.7.10"></a><h3>Example pipelines</h3>
+<a name="id-1.2.47.7.10"></a><h3>Example pipelines</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -185,7 +185,7 @@ encoding to Ogg/Theora.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.40.7.11.1"></a><h3>Element Information</h3>
+<a name="id-1.2.47.7.11.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -211,7 +211,7 @@ encoding to Ogg/Theora.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.40.7.11.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.47.7.11.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -233,6 +233,10 @@ encoding to Ogg/Theora.
 <tr>
 <td><p><span class="term">details</span></p></td>
 <td>video/x-raw(ANY)</td>
+</tr>
+<tr>
+<td><p><span class="term"></span></p></td>
+<td> video/x-bayer(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
@@ -265,6 +269,10 @@ encoding to Ogg/Theora.
 <tr>
 <td><p><span class="term">details</span></p></td>
 <td>video/x-raw(ANY)</td>
+</tr>
+<tr>
+<td><p><span class="term"></span></p></td>
+<td> video/x-bayer(ANY)</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>

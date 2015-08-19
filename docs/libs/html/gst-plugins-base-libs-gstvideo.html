@@ -681,6 +681,30 @@
 </tr>
 <tr>
 <td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="returnvalue">GstVideoInfo</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-new" title="gst_video_info_new ()">gst_video_info_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="returnvalue">GstVideoInfo</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-copy" title="gst_video_info_copy ()">gst_video_info_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-free" title="gst_video_info_free ()">gst_video_info_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
@@ -3054,6 +3078,70 @@ gst_video_info_init (<em class="parameter"><code><a class="link" href="gst-plugi
 </div>
 <hr>
 <div class="refsect2">
+<a name="gst-video-info-new"></a><h3>gst_video_info_new ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="returnvalue">GstVideoInfo</span></a> *
+gst_video_info_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Allocate a new <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> that is also initialized with
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-init" title="gst_video_info_init ()"><code class="function">gst_video_info_init()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.99.5"></a><h4>Returns</h4>
+<p> a new <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>. free with <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-free" title="gst_video_info_free ()"><code class="function">gst_video_info_free()</code></a>.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-copy"></a><h3>gst_video_info_copy ()</h3>
+<pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="returnvalue">GstVideoInfo</span></a> *
+gst_video_info_copy (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);</pre>
+<p>Copy a GstVideoInfo structure.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.100.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.100.6"></a><h4>Returns</h4>
+<p> a new <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a>. free with gst_video_info_free.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-video-info-free"></a><h3>gst_video_info_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gst_video_info_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>);</pre>
+<p>Free a GstVideoInfo structure previously allocated with <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-new" title="gst_video_info_new ()"><code class="function">gst_video_info_new()</code></a>
+or <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-info-copy" title="gst_video_info_copy ()"><code class="function">gst_video_info_copy()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.15.3.7.101.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="gst-video-info-set-format"></a><h3>gst_video_info_set_format ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_video_info_set_format (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
@@ -3069,7 +3157,7 @@ gst_video_info_set_format (<em class="parameter"><code><a class="link" href="gst
 does not set the offsets correctly for interlaced vertically
 subsampled formats.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.99.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.102.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3111,7 +3199,7 @@ gst_video_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
  and update <em class="parameter"><code>info</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.100.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.103.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3133,7 +3221,7 @@ gst_video_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.100.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.103.6"></a><h4>Returns</h4>
 <p> TRUE if <em class="parameter"><code>caps</code></em>
 could be parsed</p>
 </div>
@@ -3146,7 +3234,7 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 <p>Convert the values of <em class="parameter"><code>info</code></em>
  into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.101.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.104.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3161,7 +3249,7 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.101.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.104.6"></a><h4>Returns</h4>
 <p> a new <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> containing the info of <em class="parameter"><code>info</code></em>
 .</p>
 </div>
@@ -3180,7 +3268,7 @@ GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw video, GST_FORMAT_DEFAULT corresponds to video frames.  This
 function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.102.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.105.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3219,7 +3307,7 @@ function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.102.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.105.6"></a><h4>Returns</h4>
 <p> TRUE if the conversion was successful.</p>
 </div>
 </div>
@@ -3231,7 +3319,7 @@ gst_video_info_is_equal (<em class="parameter"><code>const <a class="link" href=
                          <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *other</code></em>);</pre>
 <p>Compares two <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> and returns whether they are equal or not</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.103.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.106.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3253,7 +3341,7 @@ gst_video_info_is_equal (<em class="parameter"><code>const <a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.103.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.106.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>info</code></em>
 and <em class="parameter"><code>other</code></em>
 are equal, else <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
@@ -3273,7 +3361,7 @@ stride alignment in <em class="parameter"><code>align</code></em>
 is required and <em class="parameter"><code>align</code></em>
  will be updated with the new padding values.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.104.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.107.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3319,7 +3407,7 @@ will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Mac
 <em class="parameter"><code>frame-&gt;data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.105.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.108.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3356,7 +3444,7 @@ will return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Mac
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.105.8"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.108.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 </div>
@@ -3377,7 +3465,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 <em class="parameter"><code>frame-&gt;data</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.106.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.109.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3409,7 +3497,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.106.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.109.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 </div>
@@ -3420,7 +3508,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 gst_video_frame_unmap (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> *frame</code></em>);</pre>
 <p>Unmap the memory previously mapped with gst_video_frame_map.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.107.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.110.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3445,7 +3533,7 @@ gst_video_frame_copy (<em class="parameter"><code><a class="link" href="gst-plug
  to <em class="parameter"><code>dest</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.108.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.111.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3467,7 +3555,7 @@ gst_video_frame_copy (<em class="parameter"><code><a class="link" href="gst-plug
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.108.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.111.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
 </div>
 </div>
@@ -3483,7 +3571,7 @@ gst_video_frame_copy_plane (<em class="parameter"><code><a class="link" href="gs
  to <em class="parameter"><code>dest</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.109.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.112.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3510,7 +3598,7 @@ gst_video_frame_copy_plane (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.109.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.112.6"></a><h4>Returns</h4>
 <p> TRUE if the contents could be copied.</p>
 </div>
 </div>
@@ -3676,7 +3764,7 @@ image of <em class="parameter"><code>x_tiles</code></em>
 <p>Use this method when <em class="parameter"><code>mode</code></em>
  is of type <code class="literal">GST_VIDEO_TILE_MODE_INDEXED</code>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.134.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.137.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3713,7 +3801,7 @@ image of <em class="parameter"><code>x_tiles</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.134.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.137.7"></a><h4>Returns</h4>
 <p> the index of the tile at <em class="parameter"><code>x</code></em>
 and <em class="parameter"><code>y</code></em>
 in the tiled image of
@@ -3729,7 +3817,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <pre class="programlisting">#define             GST_VIDEO_TILE_MAKE_MODE(num, type)</pre>
 <p>use this macro to create new tile modes.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.135.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.138.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3759,7 +3847,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <p>Get the tile mode type of <em class="parameter"><code>mode</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.136.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.139.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3782,7 +3870,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <p>Check if <em class="parameter"><code>mode</code></em>
  is an indexed tile type</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.137.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.140.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3803,7 +3891,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 <pre class="programlisting">#define             GST_VIDEO_TILE_MAKE_STRIDE(x_tiles, y_tiles)</pre>
 <p>Encode the number of tile in X and Y into the stride.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.138.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.141.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3832,7 +3920,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 </pre>
 <p>Extract the number of tiles in X from the stride value.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.139.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.142.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3854,7 +3942,7 @@ by <em class="parameter"><code>y_tiles</code></em>
 </pre>
 <p>Extract the number of tiles in Y from the stride value.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.140.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.143.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3882,7 +3970,7 @@ gst_video_blend (<em class="parameter"><code><a class="link" href="gst-plugins-b
  image into the <em class="parameter"><code>dest</code></em>
  image</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.141.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.144.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3938,7 +4026,7 @@ helper function which is used to scale subtitle overlays, and may be
 deprecated in the near future. Use <a class="link" href="gst-plugins-base-libs-GstVideoScaler.html#GstVideoScaler" title="GstVideoScaler"><span class="type">GstVideoScaler</span></a> to scale video buffers
 instead.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.142.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.145.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4000,7 +4088,7 @@ with <em class="parameter"><code>config</code></em>
 .</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.143.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.146.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4027,7 +4115,7 @@ with <em class="parameter"><code>config</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.143.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.146.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoConverter" title="GstVideoConverter"><span class="type">GstVideoConverter</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if conversion is not possible.</p>
 </div>
 <p class="since">Since: 1.6</p>
@@ -4040,7 +4128,7 @@ gst_video_converter_free (<em class="parameter"><code><a class="link" href="gst-
 <p>Free <em class="parameter"><code>convert</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.144.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.147.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4064,7 +4152,7 @@ gst_video_converter_get_config (<em class="parameter"><code><a class="link" href
 <p>Get the current configuration of <em class="parameter"><code>convert</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.145.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.148.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4079,7 +4167,7 @@ gst_video_converter_get_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.145.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.148.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstStructure.html"><span class="type">GstStructure</span></a> that remains valid for as long as <em class="parameter"><code>convert</code></em>
 is valid
 or until <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-converter-set-config" title="gst_video_converter_set_config ()"><code class="function">gst_video_converter_set_config()</code></a> is called.</p>
@@ -4101,7 +4189,7 @@ then be retrieved and refined with <a class="link" href="gst-plugins-base-libs-g
 <p>Look at the <span class="type">GST_VIDEO_CONVERTER_OPT_</span>* fields to check valid configuration
 option and values.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.146.7"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.149.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4123,7 +4211,7 @@ option and values.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.146.8"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.149.8"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> when <em class="parameter"><code>config</code></em>
 could be set.</p>
 </div>
@@ -4141,7 +4229,7 @@ gst_video_converter_frame (<em class="parameter"><code><a class="link" href="gst
  using <em class="parameter"><code>convert</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.147.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.150.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4175,7 +4263,7 @@ gst_video_converter_frame (<em class="parameter"><code><a class="link" href="gst
 <pre class="programlisting">const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *
 gst_video_multiview_get_mono_modes (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.148.4"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.151.4"></a><h4>Returns</h4>
 <p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of mono video modes</p>
 <p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of mono video
 modes (mono/left/right) for use in caps negotiations.</p>
@@ -4189,7 +4277,7 @@ modes (mono/left/right) for use in caps negotiations.</p>
 gst_video_multiview_get_unpacked_modes
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.149.4"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.152.4"></a><h4>Returns</h4>
 <p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of 'unpacked' stereo video modes</p>
 <p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of unpacked
 stereo video modes (separated/frame-by-frame/frame-by-frame-multiview)
@@ -4204,7 +4292,7 @@ for use in caps negotiations.</p>
 gst_video_multiview_get_doubled_height_modes
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.150.4"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.153.4"></a><h4>Returns</h4>
 <p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
 <p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed stereo
 video modes with double the height of a single view for use in
@@ -4219,7 +4307,7 @@ caps negotiations. Currently this is top-bottom and row-interleaved.</p>
 gst_video_multiview_get_doubled_size_modes
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.151.4"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.154.4"></a><h4>Returns</h4>
 <p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
 <p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed
 stereo video modes that have double the width/height of a single
@@ -4235,7 +4323,7 @@ view for use in caps negotiation. Currently this is just
 gst_video_multiview_get_doubled_width_modes
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.152.4"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.155.4"></a><h4>Returns</h4>
 <p> A const <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> containing a list of stereo video modes</p>
 <p>Utility function that returns a <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> with a GstList of packed stereo
 video modes with double the width of a single view for use in
@@ -4251,7 +4339,7 @@ and column-interleaved.</p>
 gst_video_multiview_mode_from_caps_string
                                (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *caps_mview_mode</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.153.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.156.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4266,7 +4354,7 @@ gst_video_multiview_mode_from_caps_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.153.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.156.5"></a><h4>Returns</h4>
 <p> The <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> value</p>
 <p>Given a string from a caps multiview-mode field,
 output the corresponding <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a>
@@ -4281,7 +4369,7 @@ or <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-MULTIVIEW
 gst_video_multiview_mode_to_caps_string
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> mview_mode</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.154.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.157.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4296,7 +4384,7 @@ gst_video_multiview_mode_to_caps_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.154.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.157.5"></a><h4>Returns</h4>
 <p> The caps string representation of the mode, or NULL if invalid.</p>
 <p>Given a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewMode" title="enum GstVideoMultiviewMode"><span class="type">GstVideoMultiviewMode</span></a> returns the multiview-mode caps string
 for insertion into a caps structure</p>
@@ -4313,7 +4401,7 @@ gst_video_multiview_guess_half_aspect (<em class="parameter"><code><a class="lin
                                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> par_n</code></em>,
                                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> par_d</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.155.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.158.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -4350,7 +4438,7 @@ gst_video_multiview_guess_half_aspect (<em class="parameter"><code><a class="lin
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.155.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.158.5"></a><h4>Returns</h4>
 <p> A boolean indicating whether the
 <span class="type">GST_VIDEO_MULTIVIEW_FLAG_HALF_ASPECT</span> flag should be set.</p>
 <p>Utility function that heuristically guess whether a
@@ -4372,7 +4460,7 @@ gst_video_multiview_video_info_change_mode
 and multiview mode and flags of a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> into
 the requested mode.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.156.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.159.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -6237,7 +6325,7 @@ indentify the frame in case of multiview video.</p></td>
 <td class="enum_member_name"><p><a name="GST-VIDEO-FRAME-FLAG-INTERLACED:CAPS"></a>GST_VIDEO_FRAME_FLAG_INTERLACED</p></td>
 <td class="enum_member_description">
 <p>The video frame is interlaced. In mixed
-          interlace-mode, this flags specifies if the frame is interlace or
+          interlace-mode, this flag specifies if the frame is interlaced or
           progressive.</p>
 </td>
 <td class="enum_member_annotations"> </td>

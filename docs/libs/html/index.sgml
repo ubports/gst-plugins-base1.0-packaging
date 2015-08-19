@@ -2227,6 +2227,9 @@
 <ANCHOR id="GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-FLAGS:CAPS">
 <ANCHOR id="GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-INFO-MULTIVIEW-MODE:CAPS">
 <ANCHOR id="gst-video-info-init" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-init">
+<ANCHOR id="gst-video-info-new" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-new">
+<ANCHOR id="gst-video-info-copy" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-copy">
+<ANCHOR id="gst-video-info-free" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-free">
 <ANCHOR id="gst-video-info-set-format" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-set-format">
 <ANCHOR id="gst-video-info-from-caps" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-from-caps">
 <ANCHOR id="gst-video-info-to-caps" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstvideo.html#gst-video-info-to-caps">

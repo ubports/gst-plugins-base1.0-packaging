@@ -3,10 +3,10 @@
   <chapters>
     <sub name="gst-plugins-base Elements" link="ch01.html">
       <sub name="adder" link="gst-plugins-base-plugins-adder.html"/>
-      <sub name="appsrc" link="gst-plugins-base-plugins-appsrc.html"/>
-      <sub name="appsink" link="gst-plugins-base-plugins-appsink.html"/>
       <sub name="alsasink" link="gst-plugins-base-plugins-alsasink.html"/>
       <sub name="alsasrc" link="gst-plugins-base-plugins-alsasrc.html"/>
+      <sub name="appsink" link="gst-plugins-base-plugins-appsink.html"/>
+      <sub name="appsrc" link="gst-plugins-base-plugins-appsrc.html"/>
       <sub name="audioconvert" link="gst-plugins-base-plugins-audioconvert.html"/>
       <sub name="audiorate" link="gst-plugins-base-plugins-audiorate.html"/>
       <sub name="audioresample" link="gst-plugins-base-plugins-audioresample.html"/>
@@ -15,24 +15,30 @@
       <sub name="clockoverlay" link="gst-plugins-base-plugins-clockoverlay.html"/>
       <sub name="decodebin" link="gst-plugins-base-plugins-decodebin.html"/>
       <sub name="encodebin" link="gst-plugins-base-plugins-encodebin.html"/>
-      <sub name="videoconvert" link="gst-plugins-base-plugins-videoconvert.html"/>
       <sub name="giosink" link="gst-plugins-base-plugins-giosink.html"/>
       <sub name="giosrc" link="gst-plugins-base-plugins-giosrc.html"/>
       <sub name="giostreamsink" link="gst-plugins-base-plugins-giostreamsink.html"/>
       <sub name="giostreamsrc" link="gst-plugins-base-plugins-giostreamsrc.html"/>
       <sub name="multifdsink" link="gst-plugins-base-plugins-multifdsink.html"/>
       <sub name="multisocketsink" link="gst-plugins-base-plugins-multisocketsink.html"/>
+      <sub name="oggaviparse" link="gst-plugins-base-plugins-oggaviparse.html"/>
       <sub name="oggdemux" link="gst-plugins-base-plugins-oggdemux.html"/>
       <sub name="oggmux" link="gst-plugins-base-plugins-oggmux.html"/>
+      <sub name="oggparse" link="gst-plugins-base-plugins-oggparse.html"/>
+      <sub name="ogmaudioparse" link="gst-plugins-base-plugins-ogmaudioparse.html"/>
+      <sub name="ogmtextparse" link="gst-plugins-base-plugins-ogmtextparse.html"/>
+      <sub name="ogmvideoparse" link="gst-plugins-base-plugins-ogmvideoparse.html"/>
       <sub name="playbin" link="gst-plugins-base-plugins-playbin.html"/>
       <sub name="playsink" link="gst-plugins-base-plugins-playsink.html"/>
-      <sub name="streamsynchronizer" link="gst-plugins-base-plugins-streamsynchronizer.html"/>
-      <sub name="subtitleoverlay" link="gst-plugins-base-plugins-subtitleoverlay.html"/>
       <sub name="socketsrc" link="gst-plugins-base-plugins-socketsrc.html"/>
-      <sub name="tcpclientsrc" link="gst-plugins-base-plugins-tcpclientsrc.html"/>
+      <sub name="ssaparse" link="gst-plugins-base-plugins-ssaparse.html"/>
+      <sub name="streamsynchronizer" link="gst-plugins-base-plugins-streamsynchronizer.html"/>
+      <sub name="subparse" link="gst-plugins-base-plugins-subparse.html"/>
+      <sub name="subtitleoverlay" link="gst-plugins-base-plugins-subtitleoverlay.html"/>
       <sub name="tcpclientsink" link="gst-plugins-base-plugins-tcpclientsink.html"/>
-      <sub name="tcpserversrc" link="gst-plugins-base-plugins-tcpserversrc.html"/>
+      <sub name="tcpclientsrc" link="gst-plugins-base-plugins-tcpclientsrc.html"/>
       <sub name="tcpserversink" link="gst-plugins-base-plugins-tcpserversink.html"/>
+      <sub name="tcpserversrc" link="gst-plugins-base-plugins-tcpserversrc.html"/>
       <sub name="textoverlay" link="gst-plugins-base-plugins-textoverlay.html"/>
       <sub name="textrender" link="gst-plugins-base-plugins-textrender.html"/>
       <sub name="theoradec" link="gst-plugins-base-plugins-theoradec.html"/>
@@ -40,6 +46,7 @@
       <sub name="theoraparse" link="gst-plugins-base-plugins-theoraparse.html"/>
       <sub name="timeoverlay" link="gst-plugins-base-plugins-timeoverlay.html"/>
       <sub name="uridecodebin" link="gst-plugins-base-plugins-uridecodebin.html"/>
+      <sub name="videoconvert" link="gst-plugins-base-plugins-videoconvert.html"/>
       <sub name="videorate" link="gst-plugins-base-plugins-videorate.html"/>
       <sub name="videoscale" link="gst-plugins-base-plugins-videoscale.html"/>
       <sub name="videotestsrc" link="gst-plugins-base-plugins-videotestsrc.html"/>
@@ -61,8 +68,8 @@
       <sub name="audiotestsrc" link="gst-plugins-base-plugins-plugin-audiotestsrc.html"/>
       <sub name="cdparanoia" link="gst-plugins-base-plugins-plugin-cdparanoia.html"/>
       <sub name="encoding" link="gst-plugins-base-plugins-plugin-encoding.html"/>
-      <sub name="videoconvert" link="gst-plugins-base-plugins-plugin-videoconvert.html"/>
       <sub name="gio" link="gst-plugins-base-plugins-plugin-gio.html"/>
+      <sub name="ivorbisdec" link="gst-plugins-base-plugins-plugin-ivorbisdec.html"/>
       <sub name="libvisual" link="gst-plugins-base-plugins-plugin-libvisual.html"/>
       <sub name="ogg" link="gst-plugins-base-plugins-plugin-ogg.html"/>
       <sub name="pango" link="gst-plugins-base-plugins-plugin-pango.html"/>
@@ -71,6 +78,7 @@
       <sub name="tcp" link="gst-plugins-base-plugins-plugin-tcp.html"/>
       <sub name="theora" link="gst-plugins-base-plugins-plugin-theora.html"/>
       <sub name="typefindfunctions" link="gst-plugins-base-plugins-plugin-typefindfunctions.html"/>
+      <sub name="videoconvert" link="gst-plugins-base-plugins-plugin-videoconvert.html"/>
       <sub name="videorate" link="gst-plugins-base-plugins-plugin-videorate.html"/>
       <sub name="videoscale" link="gst-plugins-base-plugins-plugin-videoscale.html"/>
       <sub name="videotestsrc" link="gst-plugins-base-plugins-plugin-videotestsrc.html"/>
@@ -83,6 +91,25 @@
   <functions>
     <keyword type="struct" name="struct GstAdder" link="gst-plugins-base-plugins-adder.html#GstAdder-struct"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-adder.html#GstAdder--caps"/>
+    <keyword type="struct" name="struct GstAlsaSink" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink-struct"/>
+    <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--card-name"/>
+    <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device"/>
+    <keyword type="property" name="The “device-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device-name"/>
+    <keyword type="struct" name="struct GstAlsaSrc" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc-struct"/>
+    <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--card-name"/>
+    <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device"/>
+    <keyword type="property" name="The “device-name” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device-name"/>
+    <keyword type="struct" name="struct GstAppSink" link="gst-plugins-base-plugins-appsink.html#GstAppSink-struct"/>
+    <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--caps"/>
+    <keyword type="property" name="The “drop” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--drop"/>
+    <keyword type="property" name="The “emit-signals” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--emit-signals"/>
+    <keyword type="property" name="The “eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--eos"/>
+    <keyword type="property" name="The “max-buffers” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--max-buffers"/>
+    <keyword type="signal" name="The “eos” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-eos"/>
+    <keyword type="signal" name="The “new-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-preroll"/>
+    <keyword type="signal" name="The “new-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-sample"/>
+    <keyword type="signal" name="The “pull-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-preroll"/>
+    <keyword type="signal" name="The “pull-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-sample"/>
     <keyword type="struct" name="struct GstAppSrc" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-struct"/>
     <keyword type="property" name="The “block” property" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc--block"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc--caps"/>
@@ -102,25 +129,6 @@
     <keyword type="signal" name="The “push-buffer” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-buffer"/>
     <keyword type="signal" name="The “seek-data” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data"/>
     <keyword type="signal" name="The “push-sample” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample"/>
-    <keyword type="struct" name="struct GstAppSink" link="gst-plugins-base-plugins-appsink.html#GstAppSink-struct"/>
-    <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--caps"/>
-    <keyword type="property" name="The “drop” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--drop"/>
-    <keyword type="property" name="The “emit-signals” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--emit-signals"/>
-    <keyword type="property" name="The “eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--eos"/>
-    <keyword type="property" name="The “max-buffers” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--max-buffers"/>
-    <keyword type="signal" name="The “eos” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-eos"/>
-    <keyword type="signal" name="The “new-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-preroll"/>
-    <keyword type="signal" name="The “new-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-sample"/>
-    <keyword type="signal" name="The “pull-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-preroll"/>
-    <keyword type="signal" name="The “pull-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-pull-sample"/>
-    <keyword type="struct" name="struct GstAlsaSink" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink-struct"/>
-    <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--card-name"/>
-    <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device"/>
-    <keyword type="property" name="The “device-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device-name"/>
-    <keyword type="struct" name="struct GstAlsaSrc" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc-struct"/>
-    <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--card-name"/>
-    <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device"/>
-    <keyword type="property" name="The “device-name” property" link="gst-plugins-base-plugins-alsasrc.html#GstAlsaSrc--device-name"/>
     <keyword type="struct" name="struct GstAudioConvert" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert-struct"/>
     <keyword type="enum" name="enum GstAudioConvertDithering" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering"/>
     <keyword type="enum" name="enum GstAudioConvertNoiseShaping" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping"/>
@@ -188,16 +196,6 @@
     <keyword type="property" name="The “queue-time-max” property" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin--queue-time-max"/>
     <keyword type="signal" name="The “request-pad” signal" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-pad"/>
     <keyword type="signal" name="The “request-profile-pad” signal" link="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-profile-pad"/>
-    <keyword type="struct" name="struct GstVideoConvert" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert-struct"/>
-    <keyword type="property" name="The “dither” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither"/>
-    <keyword type="property" name="The “alpha-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-mode"/>
-    <keyword type="property" name="The “alpha-value” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-value"/>
-    <keyword type="property" name="The “chroma-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-mode"/>
-    <keyword type="property" name="The “chroma-resampler” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-resampler"/>
-    <keyword type="property" name="The “dither-quantization” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither-quantization"/>
-    <keyword type="property" name="The “gamma-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--gamma-mode"/>
-    <keyword type="property" name="The “matrix-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--matrix-mode"/>
-    <keyword type="property" name="The “primaries-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--primaries-mode"/>
     <keyword type="struct" name="struct GstGioSink" link="gst-plugins-base-plugins-giosink.html#GstGioSink-struct"/>
     <keyword type="property" name="The “file” property" link="gst-plugins-base-plugins-giosink.html#GstGioSink--file"/>
     <keyword type="property" name="The “location” property" link="gst-plugins-base-plugins-giosink.html#GstGioSink--location"/>
@@ -308,28 +306,33 @@
     <keyword type="property" name="The “video-filter” property" link="gst-plugins-base-plugins-playsink.html#GstPlaySink--video-filter"/>
     <keyword type="signal" name="The “convert-sample” signal" link="gst-plugins-base-plugins-playsink.html#GstPlaySink-convert-sample"/>
     <keyword type="signal" name="The “reconfigure” signal" link="gst-plugins-base-plugins-playsink.html#GstPlaySink-reconfigure"/>
+    <keyword type="struct" name="struct GstSocketSrc" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-struct"/>
+    <keyword type="property" name="The “socket” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket"/>
+    <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--caps"/>
+    <keyword type="signal" name="The “connection-closed-by-peer” signal" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-connection-closed-by-peer"/>
+    <keyword type="struct" name="struct GstSsaParse" link="gst-plugins-base-plugins-ssaparse.html#GstSsaParse-struct"/>
     <keyword type="struct" name="struct GstStreamSynchronizer" link="gst-plugins-base-plugins-streamsynchronizer.html#GstStreamSynchronizer-struct"/>
+    <keyword type="struct" name="struct GstSubParse" link="gst-plugins-base-plugins-subparse.html#GstSubParse-struct"/>
+    <keyword type="property" name="The “subtitle-encoding” property" link="gst-plugins-base-plugins-subparse.html#GstSubParse--subtitle-encoding"/>
+    <keyword type="property" name="The “video-fps” property" link="gst-plugins-base-plugins-subparse.html#GstSubParse--video-fps"/>
     <keyword type="struct" name="struct GstSubtitleOverlay" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay-struct"/>
     <keyword type="property" name="The “font-desc” property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--font-desc"/>
     <keyword type="property" name="The “silent” property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--silent"/>
     <keyword type="property" name="The “subtitle-encoding” property" link="gst-plugins-base-plugins-subtitleoverlay.html#GstSubtitleOverlay--subtitle-encoding"/>
-    <keyword type="struct" name="struct GstSocketSrc" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-struct"/>
-    <keyword type="property" name="The “socket” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket"/>
-    <keyword type="signal" name="The “connection-closed-by-peer” signal" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-connection-closed-by-peer"/>
-    <keyword type="struct" name="struct GstTCPClientSrc" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc-struct"/>
-    <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--host"/>
-    <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--port"/>
     <keyword type="struct" name="struct GstTCPClientSink" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink-struct"/>
     <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--host"/>
     <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpclientsink.html#GstTCPClientSink--port"/>
-    <keyword type="struct" name="struct GstTCPServerSrc" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc-struct"/>
-    <keyword type="property" name="The “current-port” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--current-port"/>
-    <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--host"/>
-    <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--port"/>
+    <keyword type="struct" name="struct GstTCPClientSrc" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc-struct"/>
+    <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--host"/>
+    <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpclientsrc.html#GstTCPClientSrc--port"/>
     <keyword type="struct" name="struct GstTCPServerSink" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink-struct"/>
     <keyword type="property" name="The “current-port” property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--current-port"/>
     <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--host"/>
     <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpserversink.html#GstTCPServerSink--port"/>
+    <keyword type="struct" name="struct GstTCPServerSrc" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc-struct"/>
+    <keyword type="property" name="The “current-port” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--current-port"/>
+    <keyword type="property" name="The “host” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--host"/>
+    <keyword type="property" name="The “port” property" link="gst-plugins-base-plugins-tcpserversrc.html#GstTCPServerSrc--port"/>
     <keyword type="struct" name="struct GstTextOverlay" link="gst-plugins-base-plugins-textoverlay.html#GstTextOverlay-struct"/>
     <keyword type="struct" name="struct GstTextRender" link="gst-plugins-base-plugins-textrender.html#GstTextRender-struct"/>
     <keyword type="property" name="The “font-desc” property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--font-desc"/>
@@ -340,6 +343,7 @@
     <keyword type="property" name="The “ypad” property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--ypad"/>
     <keyword type="struct" name="struct GstTheoraDec" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec-struct"/>
     <keyword type="struct" name="struct GstTheoraEnc" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc-struct"/>
+    <keyword type="enum" name="enum GstTheoraEncMultipassMode" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEncMultipassMode"/>
     <keyword type="property" name="The “bitrate” property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--bitrate"/>
     <keyword type="property" name="The “cap-overflow” property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--cap-overflow"/>
     <keyword type="property" name="The “cap-underflow” property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--cap-underflow"/>
@@ -355,6 +359,7 @@
     <keyword type="property" name="The “vp3-compatible” property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--vp3-compatible"/>
     <keyword type="struct" name="struct GstTheoraParse" link="gst-plugins-base-plugins-theoraparse.html#GstTheoraParse-struct"/>
     <keyword type="struct" name="struct GstTimeOverlay" link="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlay-struct"/>
+    <keyword type="enum" name="enum GstTimeOverlayTimeLine" link="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlayTimeLine"/>
     <keyword type="property" name="The “time-mode” property" link="gst-plugins-base-plugins-timeoverlay.html#GstTimeOverlay--time-mode"/>
     <keyword type="struct" name="struct GstURIDecodeBin" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-struct"/>
     <keyword type="enum" name="enum GstAutoplugSelectResult" link="gst-plugins-base-plugins-uridecodebin.html#GstAutoplugSelectResult"/>
@@ -377,6 +382,16 @@
     <keyword type="signal" name="The “drained” signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-drained"/>
     <keyword type="signal" name="The “source-setup” signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-source-setup"/>
     <keyword type="signal" name="The “unknown-type” signal" link="gst-plugins-base-plugins-uridecodebin.html#GstURIDecodeBin-unknown-type"/>
+    <keyword type="struct" name="struct GstVideoConvert" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert-struct"/>
+    <keyword type="property" name="The “dither” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither"/>
+    <keyword type="property" name="The “alpha-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-mode"/>
+    <keyword type="property" name="The “alpha-value” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--alpha-value"/>
+    <keyword type="property" name="The “chroma-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-mode"/>
+    <keyword type="property" name="The “chroma-resampler” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--chroma-resampler"/>
+    <keyword type="property" name="The “dither-quantization” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--dither-quantization"/>
+    <keyword type="property" name="The “gamma-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--gamma-mode"/>
+    <keyword type="property" name="The “matrix-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--matrix-mode"/>
+    <keyword type="property" name="The “primaries-mode” property" link="gst-plugins-base-plugins-videoconvert.html#GstVideoConvert--primaries-mode"/>
     <keyword type="struct" name="struct GstVideoRate" link="gst-plugins-base-plugins-videorate.html#GstVideoRate-struct"/>
     <keyword type="property" name="The “average-period” property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--average-period"/>
     <keyword type="property" name="The “drop” property" link="gst-plugins-base-plugins-videorate.html#GstVideoRate--drop"/>
@@ -526,6 +541,12 @@
     <keyword type="constant" name="GST_PLAY_FLAG_DEINTERLACE" link="gst-plugins-base-plugins-playbin.html#GST-PLAY-FLAG-DEINTERLACE:CAPS"/>
     <keyword type="constant" name="GST_PLAY_FLAG_SOFT_COLORBALANCE" link="gst-plugins-base-plugins-playbin.html#GST-PLAY-FLAG-SOFT-COLORBALANCE:CAPS"/>
     <keyword type="constant" name="GST_PLAY_FLAG_FORCE_FILTERS" link="gst-plugins-base-plugins-playbin.html#GST-PLAY-FLAG-FORCE-FILTERS:CAPS"/>
+    <keyword type="constant" name="MULTIPASS_MODE_SINGLE_PASS" link="gst-plugins-base-plugins-theoraenc.html#MULTIPASS-MODE-SINGLE-PASS:CAPS"/>
+    <keyword type="constant" name="MULTIPASS_MODE_FIRST_PASS" link="gst-plugins-base-plugins-theoraenc.html#MULTIPASS-MODE-FIRST-PASS:CAPS"/>
+    <keyword type="constant" name="MULTIPASS_MODE_SECOND_PASS" link="gst-plugins-base-plugins-theoraenc.html#MULTIPASS-MODE-SECOND-PASS:CAPS"/>
+    <keyword type="constant" name="GST_TIME_OVERLAY_TIME_LINE_BUFFER_TIME" link="gst-plugins-base-plugins-timeoverlay.html#GST-TIME-OVERLAY-TIME-LINE-BUFFER-TIME:CAPS"/>
+    <keyword type="constant" name="GST_TIME_OVERLAY_TIME_LINE_STREAM_TIME" link="gst-plugins-base-plugins-timeoverlay.html#GST-TIME-OVERLAY-TIME-LINE-STREAM-TIME:CAPS"/>
+    <keyword type="constant" name="GST_TIME_OVERLAY_TIME_LINE_RUNNING_TIME" link="gst-plugins-base-plugins-timeoverlay.html#GST-TIME-OVERLAY-TIME-LINE-RUNNING-TIME:CAPS"/>
     <keyword type="constant" name="GST_AUTOPLUG_SELECT_TRY" link="gst-plugins-base-plugins-uridecodebin.html#GST-AUTOPLUG-SELECT-TRY:CAPS"/>
     <keyword type="constant" name="GST_AUTOPLUG_SELECT_EXPOSE" link="gst-plugins-base-plugins-uridecodebin.html#GST-AUTOPLUG-SELECT-EXPOSE:CAPS"/>
     <keyword type="constant" name="GST_AUTOPLUG_SELECT_SKIP" link="gst-plugins-base-plugins-uridecodebin.html#GST-AUTOPLUG-SELECT-SKIP:CAPS"/>
