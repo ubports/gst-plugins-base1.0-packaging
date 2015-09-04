@@ -78,9 +78,9 @@
 
 #include "gstvideoscale.h"
 
-/* debug variable definition */
-GST_DEBUG_CATEGORY (video_scale_debug);
-GST_DEBUG_CATEGORY_STATIC (GST_CAT_PERFORMANCE);
+#define GST_CAT_DEFAULT video_scale_debug
+GST_DEBUG_CATEGORY_STATIC (video_scale_debug);
+GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
 
 #define DEFAULT_PROP_METHOD       GST_VIDEO_SCALE_BILINEAR
 #define DEFAULT_PROP_ADD_BORDERS  TRUE
@@ -1077,6 +1077,8 @@ gst_video_scale_transform_frame (GstVideoFilter * filter,
 {
   GstVideoScale *videoscale = GST_VIDEO_SCALE_CAST (filter);
   GstFlowReturn ret = GST_FLOW_OK;
+
+  GST_CAT_DEBUG_OBJECT (GST_CAT_PERFORMANCE, filter, "doing video scaling");
 
   gst_video_converter_frame (videoscale->convert, in_frame, out_frame);
 

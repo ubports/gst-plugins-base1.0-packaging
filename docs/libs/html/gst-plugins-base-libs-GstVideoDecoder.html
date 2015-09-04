@@ -363,7 +363,8 @@
 <a name="gst-plugins-base-libs-GstVideoDecoder.description"></a><h2>Description</h2>
 <p>This base class is for video decoders turning encoded data into raw video
 frames.</p>
-<p>The GstVideoDecoder base class and derived subclasses should cooperate as follows:</p>
+<p>The GstVideoDecoder base class and derived subclasses should cooperate as
+follows:</p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Configuration</b></p>
@@ -380,7 +381,8 @@ frames.</p>
     parameters require reconfiguration.
   </p></li>
 <li class="listitem"><p>
-    Incoming data buffers are processed as needed, described in Data Processing below.
+    Incoming data buffers are processed as needed, described in Data
+    Processing below.
   </p></li>
 <li class="listitem"><p>
     GstVideoDecoder calls <em class="parameter"><code>stop</code></em> at end of all processing.
@@ -396,15 +398,17 @@ frames.</p>
       corresponding to and referred to as 'frames'.
     </p></li>
 <li class="listitem"><p>
-      Each input frame is provided in turn to the subclass' <em class="parameter"><code>handle_frame</code></em> callback.
+      Each input frame is provided in turn to the subclass' <em class="parameter"><code>handle_frame</code></em>
+      callback.
       The ownership of the frame is given to the <em class="parameter"><code>handle_frame</code></em> callback.
     </p></li>
 <li class="listitem"><p>
       If codec processing results in decoded data, the subclass should call
       <em class="parameter"><code>gst_video_decoder_finish_frame</code></em> to have decoded data pushed.
-      downstream. Otherwise, the subclass must call <em class="parameter"><code>gst_video_decoder_drop_frame</code></em>, to
-      allow the base class to do timestamp and offset tracking, and possibly to
-      requeue the frame for a later attempt in the case of reverse playback.
+      downstream. Otherwise, the subclass must call
+      <em class="parameter"><code>gst_video_decoder_drop_frame</code></em>, to allow the base class to do timestamp
+      and offset tracking, and possibly to requeue the frame for a later
+      attempt in the case of reverse playback.
     </p></li>
 </ul>
 </div></li>
@@ -421,19 +425,20 @@ frames.</p>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>Seeking/Flushing</b></p>
 <ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p>
-  When the pipeline is seeked or otherwise flushed, the subclass is informed via a call
-  to its <em class="parameter"><code>reset</code></em> callback, with the hard parameter set to true. This indicates the
-  subclass should drop any internal data queues and timestamps and prepare for a fresh
-  set of buffers to arrive for parsing and decoding.
+  When the pipeline is seeked or otherwise flushed, the subclass is
+  informed via a call to its <em class="parameter"><code>reset</code></em> callback, with the hard parameter
+  set to true. This indicates the subclass should drop any internal data
+  queues and timestamps and prepare for a fresh set of buffers to arrive
+  for parsing and decoding.
     </p></li></ul>
 </div></li>
 <li class="listitem"><div class="itemizedlist">
 <p class="title"><b>End Of Stream</b></p>
 <ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p>
-  At end-of-stream, the subclass <em class="parameter"><code>parse</code></em> function may be called some final times with the 
-  at_eos parameter set to true, indicating that the element should not expect any more data
-  to be arriving, and it should parse and remaining frames and call
-  <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-have-frame" title="gst_video_decoder_have_frame ()"><code class="function">gst_video_decoder_have_frame()</code></a> if possible.
+  At end-of-stream, the subclass <em class="parameter"><code>parse</code></em> function may be called some final
+  times with the at_eos parameter set to true, indicating that the element
+  should not expect any more data to be arriving, and it should parse and
+  remaining frames and call <a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#gst-video-decoder-have-frame" title="gst_video_decoder_have_frame ()"><code class="function">gst_video_decoder_have_frame()</code></a> if possible.
     </p></li></ul>
 </div></li>
 </ul>
@@ -458,24 +463,28 @@ should rather be left to upstream demuxer, parser or alike.  This simple
 approach caters for seeking and duration reporting using estimated input
 bitrates. To enable it, a subclass should call
 <em class="parameter"><code>gst_video_decoder_set_estimate_rate</code></em>
- to enable handling of incoming byte-streams.</p>
+ to enable handling of incoming
+byte-streams.</p>
 <p>The base class provides some support for reverse playback, in particular
 in case incoming data is not packetized or upstream does not provide
-fragments on keyframe boundaries.  However, the subclass should then be prepared
-for the parsing and frame processing stage to occur separately (in normal
-forward processing, the latter immediately follows the former),
-The subclass also needs to ensure the parsing stage properly marks keyframes,
-unless it knows the upstream elements will do so properly for incoming data.</p>
+fragments on keyframe boundaries.  However, the subclass should then be
+prepared for the parsing and frame processing stage to occur separately
+(in normal forward processing, the latter immediately follows the former),
+The subclass also needs to ensure the parsing stage properly marks
+keyframes, unless it knows the upstream elements will do so properly for
+incoming data.</p>
 <p>The bare minimum that a functional subclass needs to implement is:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Provide pad templates</p></li>
 <li class="listitem"><p>
-     Inform the base class of output caps via <em class="parameter"><code>gst_video_decoder_set_output_state</code></em>
+     Inform the base class of output caps via
+     <em class="parameter"><code>gst_video_decoder_set_output_state</code></em>
   </p></li>
 <li class="listitem"><p>
      Parse input data, if it is not considered packetized from upstream
-     Data will be provided to <em class="parameter"><code>parse</code></em> which should invoke <em class="parameter"><code>gst_video_decoder_add_to_frame</code></em> and
-     <em class="parameter"><code>gst_video_decoder_have_frame</code></em> to separate the data belonging to each video frame.
+     Data will be provided to <em class="parameter"><code>parse</code></em> which should invoke
+     <em class="parameter"><code>gst_video_decoder_add_to_frame</code></em> and <em class="parameter"><code>gst_video_decoder_have_frame</code></em> to
+     separate the data belonging to each video frame.
   </p></li>
 <li class="listitem"><p>
      Accept data in <em class="parameter"><code>handle_frame</code></em> and provide decoded results to
@@ -1624,8 +1633,9 @@ or based on the input data.</p>
 gst_video_decoder_merge_tags (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstVideoDecoder.html#GstVideoDecoder" title="struct GstVideoDecoder"><span class="type">GstVideoDecoder</span></a> *decoder</code></em>,
                               <em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> *tags</code></em>,
                               <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> mode</code></em>);</pre>
-<p>Adds tags to so-called pending tags, which will be processed
-before pushing out data downstream.</p>
+<p>Sets the audio decoder tags and how they should be merged with any
+upstream stream tags. This will override any tags previously-set
+with <a class="link" href="gst-plugins-base-libs-gstaudiodecoder.html#gst-audio-decoder-merge-tags" title="gst_audio_decoder_merge_tags ()"><code class="function">gst_audio_decoder_merge_tags()</code></a>.</p>
 <p>Note that this is provided for convenience, and the subclass is
 not required to use this and can still do tag handling on its own.</p>
 <p>MT safe.</p>
@@ -1645,12 +1655,13 @@ not required to use this and can still do tag handling on its own.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>tags</p></td>
-<td class="parameter_description"><p>a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> to merge</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> to merge, or NULL to unset
+previously-set tags. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>mode</p></td>
-<td class="parameter_description"><p>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> to use</p></td>
+<td class="parameter_description"><p>the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GstTagMergeMode"><span class="type">GstTagMergeMode</span></a> to use, usually <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html#GST-TAG-MERGE-REPLACE:CAPS"><span class="type">GST_TAG_MERGE_REPLACE</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1793,6 +1804,10 @@ elements.</p>
                                    GstCaps *filter);
 
   GstFlowReturn (*drain)          (GstVideoDecoder *decoder);
+
+  gboolean      (*transform_meta) (GstVideoDecoder *decoder,
+                                   GstVideoCodecFrame *frame,
+                                   GstMeta * meta);
 };
 </pre>
 <p>Subclasses can override any of the available virtual methods or not, as
@@ -1957,6 +1972,15 @@ Called to request subclass to decode any data it can at this
 point, but that more data may arrive after. (e.g. at segment end).
 Sub-classes should be prepared to handle new data afterward,
 or seamless segment processing will break. Since: 1.6</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="GstVideoDecoderClass.transform-meta"></a>transform_meta</code></em> ()</p></td>
+<td class="struct_member_description"><p>Optional. Transform the metadata on the input buffer to the
+output buffer. By default this method is copies all meta without
+tags and meta with only the "video" tag. subclasses can
+implement this method and return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the metadata is to be
+copied. Since 1.6</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
