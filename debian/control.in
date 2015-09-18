@@ -57,8 +57,7 @@ Depends: ${misc:Depends},
          iso-codes
 Breaks: totem-gstreamer (<= 2.17.92-0ubuntu1)
 Recommends: @GST_PKGNAME@-plugins-base
-Suggests: libvisual-0.4-plugins,
-          gstreamer-codec-install | gnome-codec-install
+Suggests: libvisual-0.4-plugins
 Description: GStreamer libraries from the "base" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
