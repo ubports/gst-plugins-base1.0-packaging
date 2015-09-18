@@ -406,6 +406,7 @@
 <ANCHOR id="gst-plugins-base-libs-gstaudiobasesink.includes" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-plugins-base-libs-gstaudiobasesink.includes">
 <ANCHOR id="gst-plugins-base-libs-gstaudiobasesink.description" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-plugins-base-libs-gstaudiobasesink.description">
 <ANCHOR id="gst-plugins-base-libs-gstaudiobasesink.functions_details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-plugins-base-libs-gstaudiobasesink.functions_details">
+<ANCHOR id="GstAudioBaseSinkCustomSlavingCallback" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkCustomSlavingCallback">
 <ANCHOR id="GST-AUDIO-BASE-SINK-CLOCK:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-CLOCK:CAPS">
 <ANCHOR id="GST-AUDIO-BASE-SINK-PAD:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-PAD:CAPS">
 <ANCHOR id="gst-audio-base-sink-create-ringbuffer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-create-ringbuffer">
@@ -419,6 +420,8 @@
 <ANCHOR id="gst-audio-base-sink-get-alignment-threshold" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-alignment-threshold">
 <ANCHOR id="gst-audio-base-sink-set-discont-wait" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-discont-wait">
 <ANCHOR id="gst-audio-base-sink-get-discont-wait" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-discont-wait">
+<ANCHOR id="gst-audio-base-sink-set-custom-slaving-callback" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-custom-slaving-callback">
+<ANCHOR id="gst-audio-base-sink-report-device-failure" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-report-device-failure">
 <ANCHOR id="gst-plugins-base-libs-gstaudiobasesink.other_details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-plugins-base-libs-gstaudiobasesink.other_details">
 <ANCHOR id="GstAudioBaseSink-struct" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink-struct">
 <ANCHOR id="GstAudioBaseSinkClass" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkClass">
@@ -427,6 +430,13 @@
 <ANCHOR id="GST-AUDIO-BASE-SINK-SLAVE-SKEW:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-SKEW:CAPS">
 <ANCHOR id="GST-AUDIO-BASE-SINK-SLAVE-NONE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-NONE:CAPS">
 <ANCHOR id="GST-AUDIO-BASE-SINK-SLAVE-CUSTOM:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-CUSTOM:CAPS">
+<ANCHOR id="GstAudioBaseSinkDiscontReason" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkDiscontReason">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-NO-DISCONT:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-NO-DISCONT:CAPS">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-NEW-CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-NEW-CAPS">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-FLUSH:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-FLUSH:CAPS">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-SYNC-LATENCY:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-SYNC-LATENCY:CAPS">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-ALIGNMENT:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-ALIGNMENT:CAPS">
+<ANCHOR id="GST-AUDIO-BASE-SINK-DISCONT-REASON-DEVICE-FAILURE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-DEVICE-FAILURE:CAPS">
 <ANCHOR id="gst-plugins-base-libs-gstaudiobasesink.property-details" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#gst-plugins-base-libs-gstaudiobasesink.property-details">
 <ANCHOR id="GstAudioBaseSink--alignment-threshold" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink--alignment-threshold">
 <ANCHOR id="GstAudioBaseSink--buffer-time" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink--buffer-time">

@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.5.90\n"
+"Project-Id-Version: gst-plugins-base 1.5.91\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-08-19 12:37+0300\n"
+"POT-Creation-Date: 2015-09-18 19:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3356
+#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3359
 #: gst/playback/gstplaysink.c:1483 gst/playback/gstplaysink.c:1500
 #: gst/playback/gstplaysink.c:1834 gst/playback/gstplaysink.c:1863
 #: gst/playback/gstplaysink.c:2443 gst/playback/gstplaysink.c:2492
@@ -109,7 +109,7 @@ msgstr ""
 msgid "This appears to be a text file"
 msgstr ""
 
-#: gst/playback/gstplaybin2.c:5350
+#: gst/playback/gstplaybin2.c:5353
 msgid "Could not create \"uridecodebin\" element."
 msgstr ""
 

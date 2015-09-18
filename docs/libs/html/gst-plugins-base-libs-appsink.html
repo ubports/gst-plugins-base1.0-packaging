@@ -198,8 +198,8 @@ gst_app_sink_set_caps (<em class="parameter"><code><a href="http://gstreamer.fre
 a copy of the caps structure. After calling this method, the sink will only
 accept caps that match <em class="parameter"><code>caps</code></em>
 . If <em class="parameter"><code>caps</code></em>
- is non-fixed, you must check the caps
-on the buffers to get the actual used caps.</p>
+ is non-fixed, or incomplete,
+you must check the caps on the samples to get the actual used caps.</p>
 <div class="refsect3">
 <a name="id-1.2.5.5.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -611,13 +611,13 @@ reasons.</p>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstAppSinkCallbacks.eos"></a>eos</code></em> ()</p></td>
 <td class="struct_member_description"><p>Called when the end-of-stream has been reached. This callback
-is called from the steaming thread.</p></td>
+is called from the streaming thread.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstAppSinkCallbacks.new-preroll"></a>new_preroll</code></em> ()</p></td>
 <td class="struct_member_description"><p>Called when a new preroll sample is available.
-This callback is called from the steaming thread.
+This callback is called from the streaming thread.
 The new preroll sample can be retrieved with
 <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-preroll" title="gst_app_sink_pull_preroll ()"><code class="function">gst_app_sink_pull_preroll()</code></a> either from this callback
 or from any other thread.</p></td>
@@ -626,7 +626,7 @@ or from any other thread.</p></td>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstAppSinkCallbacks.new-sample"></a>new_sample</code></em> ()</p></td>
 <td class="struct_member_description"><p>Called when a new sample is available.
-This callback is called from the steaming thread.
+This callback is called from the streaming thread.
 The new sample can be retrieved with
 <a class="link" href="gst-plugins-base-libs-appsink.html#gst-app-sink-pull-sample" title="gst_app_sink_pull_sample ()"><code class="function">gst_app_sink_pull_sample()</code></a> either from this callback
 or from any other thread.</p></td>

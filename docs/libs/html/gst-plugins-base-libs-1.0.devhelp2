@@ -325,6 +325,7 @@
     <keyword type="struct" name="struct GstAudioSinkClass" link="gst-plugins-base-libs-gstaudiosink.html#GstAudioSinkClass"/>
     <keyword type="struct" name="struct GstAudioSrc" link="gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrc-struct"/>
     <keyword type="struct" name="struct GstAudioSrcClass" link="gst-plugins-base-libs-gstaudiosrc.html#GstAudioSrcClass"/>
+    <keyword type="function" name="GstAudioBaseSinkCustomSlavingCallback ()" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkCustomSlavingCallback" since="1.6"/>
     <keyword type="macro" name="GST_AUDIO_BASE_SINK_CLOCK()" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-CLOCK:CAPS"/>
     <keyword type="macro" name="GST_AUDIO_BASE_SINK_PAD()" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-PAD:CAPS"/>
     <keyword type="function" name="gst_audio_base_sink_create_ringbuffer ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-create-ringbuffer"/>
@@ -338,9 +339,12 @@
     <keyword type="function" name="gst_audio_base_sink_get_alignment_threshold ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-alignment-threshold"/>
     <keyword type="function" name="gst_audio_base_sink_set_discont_wait ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-discont-wait"/>
     <keyword type="function" name="gst_audio_base_sink_get_discont_wait ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-get-discont-wait"/>
+    <keyword type="function" name="gst_audio_base_sink_set_custom_slaving_callback ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-set-custom-slaving-callback" since="1.6"/>
+    <keyword type="function" name="gst_audio_base_sink_report_device_failure ()" link="gst-plugins-base-libs-gstaudiobasesink.html#gst-audio-base-sink-report-device-failure" since="1.6"/>
     <keyword type="struct" name="struct GstAudioBaseSink" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink-struct"/>
     <keyword type="struct" name="struct GstAudioBaseSinkClass" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkClass"/>
     <keyword type="enum" name="enum GstAudioBaseSinkSlaveMethod" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkSlaveMethod"/>
+    <keyword type="enum" name="enum GstAudioBaseSinkDiscontReason" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSinkDiscontReason" since="1.6"/>
     <keyword type="property" name="The “alignment-threshold” property" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink--alignment-threshold"/>
     <keyword type="property" name="The “buffer-time” property" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink--buffer-time"/>
     <keyword type="property" name="The “can-activate-pull” property" link="gst-plugins-base-libs-gstaudiobasesink.html#GstAudioBaseSink--can-activate-pull"/>
@@ -1779,6 +1783,12 @@
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_SKEW" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-SKEW:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_NONE" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-NONE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_CUSTOM" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-CUSTOM:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_NO_DISCONT" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-NO-DISCONT:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_NEW_CAPS" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-NEW-CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_FLUSH" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-FLUSH:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_SYNC_LATENCY" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-SYNC-LATENCY:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_ALIGNMENT" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-ALIGNMENT:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_BASE_SINK_DISCONT_REASON_DEVICE_FAILURE" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-DISCONT-REASON-DEVICE-FAILURE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_RESAMPLE" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-RESAMPLE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_RETIMESTAMP" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-RETIMESTAMP:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SRC_SLAVE_SKEW" link="gst-plugins-base-libs-gstaudiobasesrc.html#GST-AUDIO-BASE-SRC-SLAVE-SKEW:CAPS"/>
