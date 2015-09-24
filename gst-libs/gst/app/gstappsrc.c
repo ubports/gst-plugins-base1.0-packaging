@@ -527,7 +527,6 @@ gst_app_src_class_init (GstAppSrcClass * klass)
   basesrc_class->do_seek = gst_app_src_do_seek;
   basesrc_class->is_seekable = gst_app_src_is_seekable;
   basesrc_class->get_size = gst_app_src_do_get_size;
-  basesrc_class->get_size = gst_app_src_do_get_size;
   basesrc_class->query = gst_app_src_query;
 
   klass->push_buffer = gst_app_src_push_buffer_action;
@@ -562,17 +561,26 @@ gst_app_src_init (GstAppSrc * appsrc)
   gst_base_src_set_live (GST_BASE_SRC (appsrc), DEFAULT_PROP_IS_LIVE);
 }
 
+/* Must be called with priv->mutex */
 static void
-gst_app_src_flush_queued (GstAppSrc * src)
+gst_app_src_flush_queued (GstAppSrc * src, gboolean retain_last_caps)
 {
   GstMiniObject *obj;
   GstAppSrcPrivate *priv = src->priv;
+  GstCaps *requeue_caps = NULL;
 
   while (!g_queue_is_empty (priv->queue)) {
     obj = g_queue_pop_head (priv->queue);
     if (obj) {
+      if (GST_IS_CAPS (obj) && retain_last_caps) {
+        gst_caps_replace (&requeue_caps, GST_CAPS_CAST (obj));
+      }
       gst_mini_object_unref (obj);
     }
+  }
+
+  if (requeue_caps) {
+    g_queue_push_tail (priv->queue, requeue_caps);
   }
 
   priv->queued_bytes = 0;
@@ -600,7 +608,10 @@ gst_app_src_dispose (GObject * obj)
   priv->notify = NULL;
 
   GST_OBJECT_UNLOCK (appsrc);
-  gst_app_src_flush_queued (appsrc);
+
+  g_mutex_lock (&priv->mutex);
+  gst_app_src_flush_queued (appsrc, FALSE);
+  g_mutex_unlock (&priv->mutex);
 
   G_OBJECT_CLASS (parent_class)->dispose (obj);
 }
@@ -760,10 +771,13 @@ static gboolean
 gst_app_src_send_event (GstElement * element, GstEvent * event)
 {
   GstAppSrc *appsrc = GST_APP_SRC_CAST (element);
+  GstAppSrcPrivate *priv = appsrc->priv;
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_FLUSH_STOP:
-      gst_app_src_flush_queued (appsrc);
+      g_mutex_lock (&priv->mutex);
+      gst_app_src_flush_queued (appsrc, TRUE);
+      g_mutex_unlock (&priv->mutex);
       break;
     default:
       break;
@@ -834,7 +848,7 @@ gst_app_src_stop (GstBaseSrc * bsrc)
   priv->is_eos = FALSE;
   priv->flushing = TRUE;
   priv->started = FALSE;
-  gst_app_src_flush_queued (appsrc);
+  gst_app_src_flush_queued (appsrc, TRUE);
   g_cond_broadcast (&priv->cond);
   g_mutex_unlock (&priv->mutex);
 
@@ -954,7 +968,9 @@ gst_app_src_do_seek (GstBaseSrc * src, GstSegment * segment)
 
   if (res) {
     GST_DEBUG_OBJECT (appsrc, "flushing queue");
-    gst_app_src_flush_queued (appsrc);
+    g_mutex_lock (&priv->mutex);
+    gst_app_src_flush_queued (appsrc, TRUE);
+    g_mutex_unlock (&priv->mutex);
     priv->is_eos = FALSE;
   } else {
     GST_WARNING_OBJECT (appsrc, "seek failed");

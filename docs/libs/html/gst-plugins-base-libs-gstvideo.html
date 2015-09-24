@@ -1859,11 +1859,17 @@ and downstream force key unit events.</p>
  pixels from the given planes and strides containing data of
 format <em class="parameter"><code>info</code></em>
 . The pixels will be unpacked into <em class="parameter"><code>dest</code></em>
- which each component
-interleaved. <em class="parameter"><code>dest</code></em>
+ with each component
+interleaved as per <em class="parameter"><code>info</code></em>
+'s unpack_format, which will usually be one of
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-ARGB:CAPS"><span class="type">GST_VIDEO_FORMAT_ARGB</span></a>, <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-AYUV:CAPS"><span class="type">GST_VIDEO_FORMAT_AYUV</span></a>, <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-ARGB64:CAPS"><span class="type">GST_VIDEO_FORMAT_ARGB64</span></a> or
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-AYUV64:CAPS"><span class="type">GST_VIDEO_FORMAT_AYUV64</span></a> depending on the format to unpack.
+<em class="parameter"><code>dest</code></em>
  should at least be big enough to hold <em class="parameter"><code>width</code></em>
- *
-n_components * size(unpack_format) bytes.</p>
+ * bytes_per_pixel bytes
+where bytes_per_pixel relates to the unpack format and will usually be
+either 4 or 8 depending on the unpack format. bytes_per_pixel will be
+the same as the pixel stride for plane 0 for the above formats.</p>
 <p>For subsampled formats, the components will be duplicated in the destination
 array. Reconstruction of the missing components can be performed in a
 separate step after unpacking.</p>
