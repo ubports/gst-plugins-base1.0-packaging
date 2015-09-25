@@ -1,27 +1,16 @@
 
-Release notes for GStreamer Base Plugins 1.4.5
-
-The GStreamer team is pleased to announce a bugfix release of the stable
-1.4 release series. The 1.4 release series is adding new features on top
-of the 1.2 series and is part of the API and ABI-stable 1.x release
-series of the GStreamer multimedia framework that contains new features.
-The 1.4.x bugfix releases only contain important bugfixes compared to 1.4.0.
+Release notes for GStreamer Base Plugins 1.5.91
 
 
-Binaries for Android, iOS, Mac OS X and Windows are provided by the
-GStreamer project for this release.
+The GStreamer team is pleased to announce the second release candidate for the
+stable 1.6 release series. The 1.6 release series is adding new features on top of
+the 1.0, 1.2 and 1.4 series and is part of the API and ABI-stable 1.x release
+series of the GStreamer multimedia framework. The final 1.6.0 release is planned
+in the next few days unless any major bugs are found.
 
 
-The 1.x series is a stable series targeted at end users. It is not API
-or ABI compatible with the 0.10.x series. It can, however, be installed
-in parallel with the 0.10.x series and will not affect an existing
-0.10.x installation.
-
-
-The stable 1.4.x release series is API and ABI compatible with 1.0.x and
-any other 1.x release series in the future. Compared to 1.0.x it contains
-some new features and more intrusive changes that were considered too
-risky as a bugfix.
+Binaries for Android, iOS, Mac OS X and Windows will be provided separately by
+the GStreamer project.
 
 
 
@@ -71,17 +60,23 @@ contains a set of codecs plugins based on libav (formerly gst-ffmpeg)
 
 Bugs fixed in this release
      
-      * 741420 : video pools: should update size in configuration after applying alignment
-      * 715050 : add typefinder for audio/x-audible
-      * 739544 : tcp: Add test and fix memory leak in tcp elements
-      * 739840 : typefind should recognize Apple Core Audio Format (CAF)
-      * 740556 : videodecoder: don't complain when DTS != PTS on keyframes
-      * 740675 : playsink: continues playback, reset mute property
-      * 740730 : rtspconnection: don't remove child source if parent source is already destroyed
-      * 740853 : audiodecoder: Push pending events before sending EOS.
-      * 740952 : alsa: NetBSD fixes
-      * 741045 : audiorate can can lose timestamp precision in some cases
-      * 741198 : playbin: leaks GstPads
+      * 734617 : videodecoder: Call the child class finish() function on stream changes
+      * 740387 : [REGRESSION] videoscale: The port to the new scaling API broke some file playback
+      * 744806 : audiodecoder: early call to drain() causes segment event to be sent before caps
+      * 753817 : subparse: SIGSEGV with abnormal file
+      * 753850 : gl: overlay composition negotation with the sink fails
+      * 754199 : audiobasesink: patch for missing/incorrect documentation about the custom slaving method
+      * 754235 : playsinkconvertbin: regression after removing accept-caps handler
+      * 754429 : basetextoverlay: crash in basetextoverlay for padding greater than video size
+      * 754597 : appsrc: fails to push the caps at the start of the data flow when configured in seekable/random-access mode
+      * 754630 : libs: " ll " printf modifier isn't available on MinGW
+      * 754755 : playbin: Compiler warning with 64bit Windows target MinGW, cast to pointer from integer of different size
+      * 754808 : video: missing alpha flag for some formats
+      * 754973 : xvimagesink: fix error leak when context creation fails
+      * 755098 : uridecodebin: Smooth Streaming's media type does not match
+      * 755143 : audiosink, multisocketsink: Fix error leak during failures
+      * 755198 : basetextoverlay: trivial fix in debug message
+      * 755201 : playback-test: Dont free null array on exit
 
 ==== Download ====
 
@@ -118,21 +113,20 @@ subscribe to the gstreamer-devel list.
         
 Contributors to this release
     
-      * Andrei Sarakeev
-      * Chad
-      * Edward Hervey
-      * Göran Jönsson
-      * Jan Schmidt
-      * Jonathan Matthew
-      * Matej Knopp
-      * Mathieu Duponchelle
-      * Peter G. Baum
+      * Carlos Rafael Giani
+      * Christophe Fergeau
+      * Eunhae Choi
+      * George Kiagiadakis
+      * Havard Graff
+      * Kouhei Sutou
+      * Philippe Normand
+      * Prashant Gotarne
+      * Ravi Kiran K N
       * Sebastian Dröge
-      * Song Bing
       * Thiago Santos
-      * Thibault Saunier
-      * Thomas Klausner
       * Tim-Philipp Müller
-      * William Manley
+      * Vikram Fugro
+      * Vineeth T M
+      * Vineeth TM
       * Wim Taymans
  

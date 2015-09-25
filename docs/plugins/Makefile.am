@@ -80,6 +80,7 @@ EXTRA_HFILES = \
 	$(top_srcdir)/gst/audiorate/gstaudiorate.h \
 	$(top_srcdir)/gst/audioresample/gstaudioresample.h \
 	$(top_srcdir)/gst/tcp/gstmultisocketsink.h \
+	$(top_srcdir)/gst/tcp/gstsocketsrc.h \
 	$(top_srcdir)/gst/tcp/gsttcpclientsrc.h \
 	$(top_srcdir)/gst/tcp/gsttcpclientsink.h \
 	$(top_srcdir)/gst/tcp/gsttcpserversrc.h \
@@ -107,9 +108,6 @@ extra_files =
 # contains GtkObjects/GObjects and you want to document signals and properties.
 GTKDOC_CFLAGS = $(GST_BASE_CFLAGS) -I$(top_builddir) -I$(top_builddir)/gst-libs
 GTKDOC_LIBS = $(GST_BASE_LIBS)
-
-GTKDOC_CC=$(LIBTOOL) --tag=CC --mode=compile $(CC)
-GTKDOC_LD=$(LIBTOOL) --tag=CC --mode=link $(CC)
 
 # If you need to override some of the declarations, place them in this file
 DOC_OVERRIDES = $(DOC_MODULE)-overrides.txt

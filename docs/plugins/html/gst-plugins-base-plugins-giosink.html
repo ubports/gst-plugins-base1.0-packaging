@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: giosink</title>
+<title>giosink: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-videoconvert.html" title="videoconvert">
+<link rel="prev" href="gst-plugins-base-plugins-encodebin.html" title="encodebin">
 <link rel="next" href="gst-plugins-base-plugins-giosrc.html" title="giosrc">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,7 +22,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-videoconvert.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-encodebin.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="gst-plugins-base-plugins-giosrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-giosink.top_of_page"></a>giosink</span></h2>
-<p>giosink — Write to any GIO-supported location</p>
+<p>giosink</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -95,7 +95,7 @@ by an URI. This location can be specified using any protocol supported by
 the GIO library or it's VFS backends. Common protocols are 'file', 'ftp',
 or 'smb'.</p>
 <p>If the URI or <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> already exists giosink will post a message of
-type <code class="literal">GST_MESSAGE_ELEMENT</code> with name "file-exists" on the bus. The message
+type <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#GST-MESSAGE-ELEMENT:CAPS"><code class="literal">GST_MESSAGE_ELEMENT</code></a> with name "file-exists" on the bus. The message
 also contains the <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> and the corresponding URI.
 Applications can use the "file-exists" message to notify the user about
 the problem and to set a different target location or to remove the
@@ -110,13 +110,13 @@ on the bus if the target location is not mounted yet and needs to be
 mounted. This message can be used by application to mount the location
 and retry after the location was mounted successfully.</p>
 <div class="refsect2">
-<a name="id-1.2.16.8.5"></a><h3>Example pipelines</h3>
+<a name="id-1.2.15.8.5"></a><h3>Example pipelines</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>input<span class="gtkdoc opt">.</span>xyz <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/joe/out.xyz</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>input<span class="gtkdoc opt">.</span>xyz <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/joe/out.xyz</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -128,19 +128,19 @@ we could just as well have used the filesink element here.
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>foo<span class="gtkdoc opt">.</span>mp3 <span class="gtkdoc opt">!</span> mad <span class="gtkdoc opt">!</span> flacenc <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>smb<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//othercomputer/foo.flac</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v uridecodebin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/audio.file ! audioconvert ! flacenc ! giosink location=smb://othercomputer/foo.flac</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- The above pipeline will re-encode an mp3 file into FLAC format and store
+ The above pipeline will re-encode an audio file into FLAC format and store
 it on a remote host using the Samba protocol.
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v audiotestsrc num<span class="gtkdoc opt">-</span>buffers<span class="gtkdoc opt">=</span><span class="number">100</span> <span class="gtkdoc opt">!</span> vorbisenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/foo/bar.ogg</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v audiotestsrc num<span class="gtkdoc opt">-</span>buffers<span class="gtkdoc opt">=</span><span class="number">100</span> <span class="gtkdoc opt">!</span> vorbisenc <span class="gtkdoc opt">!</span> oggmux <span class="gtkdoc opt">!</span> giosink location<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///home/foo/bar.ogg</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -151,7 +151,7 @@ it in the home directory of user foo.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.16.8.6.1"></a><h3>Element Information</h3>
+<a name="id-1.2.15.8.6.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -177,7 +177,7 @@ it in the home directory of user foo.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.16.8.6.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.15.8.6.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -204,11 +204,10 @@ it in the home directory of user foo.
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-giosink.other_details"></a><h2>Types and Values</h2>
@@ -241,7 +240,6 @@ it in the home directory of user foo.
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

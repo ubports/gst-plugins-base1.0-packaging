@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: tcpclientsink</title>
+<title>tcpclientsink: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
-<link rel="next" href="gst-plugins-base-plugins-tcpserversrc.html" title="tcpserversrc">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="prev" href="gst-plugins-base-plugins-subtitleoverlay.html" title="subtitleoverlay">
+<link rel="next" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,15 +21,15 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-tcpserversrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-subtitleoverlay.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-tcpclientsink"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-tcpclientsink.top_of_page"></a>tcpclientsink</span></h2>
-<p>tcpclientsink — Send data as a client over the network via TCP</p>
+<p>tcpclientsink</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -82,7 +82,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpclientsink.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.29.7.2"></a><h3>Example launch line</h3>
+<a name="id-1.2.35.7.2"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -94,17 +94,18 @@
         <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc"># server:</span>
 nc <span class="gtkdoc opt">-</span>l <span class="gtkdoc opt">-</span>p <span class="number">3000</span>
 <span class="gtkdoc ppc"># client:</span>
-gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</span><span class="number">1</span> <span class="gtkdoc opt">!</span> tcpclientsink port<span class="gtkdoc opt">=</span><span class="number">3000</span></pre></td>
+gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> fdsink fd<span class="gtkdoc opt">=</span><span class="number">1</span> <span class="gtkdoc opt">!</span> tcpclientsink port<span class="gtkdoc opt">=</span><span class="number">3000</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- everything you type in the client is shown on the server
+ everything you type in the client is shown on the server (fd=1 means
+standard input which is the command line input file descriptor)
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.29.7.3.1"></a><h3>Element Information</h3>
+<a name="id-1.2.35.7.3.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -130,7 +131,7 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.29.7.3.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.35.7.3.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -157,19 +158,16 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpclientsink.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpclientsink.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstTCPClientSink-struct"></a><h3>struct GstTCPClientSink</h3>
 <pre class="programlisting">struct GstTCPClientSink;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -197,7 +195,6 @@ gst<span class="gtkdoc opt">-</span>launch fdsink fd<span class="gtkdoc opt">=</
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

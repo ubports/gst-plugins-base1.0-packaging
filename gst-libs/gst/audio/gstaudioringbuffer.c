@@ -218,12 +218,20 @@ gst_audio_ring_buffer_parse_caps (GstAudioRingBufferSpec * spec, GstCaps * caps)
             gst_structure_get_int (structure, "channels", &info.channels)))
       goto parse_error;
 
+    if (!(gst_audio_channel_positions_from_mask (info.channels, 0,
+                info.position)))
+      goto parse_error;
+
     spec->type = GST_AUDIO_RING_BUFFER_FORMAT_TYPE_A_LAW;
     info.bpf = info.channels;
   } else if (g_str_equal (mimetype, "audio/x-mulaw")) {
     /* extract the needed information from the cap */
     if (!(gst_structure_get_int (structure, "rate", &info.rate) &&
             gst_structure_get_int (structure, "channels", &info.channels)))
+      goto parse_error;
+
+    if (!(gst_audio_channel_positions_from_mask (info.channels, 0,
+                info.position)))
       goto parse_error;
 
     spec->type = GST_AUDIO_RING_BUFFER_FORMAT_TYPE_MU_LAW;
@@ -675,7 +683,7 @@ gst_audio_ring_buffer_release (GstAudioRingBuffer * buf)
   buf->acquired = FALSE;
 
   /* if this fails, something is wrong in this file */
-  g_assert (buf->open == TRUE);
+  g_assert (buf->open);
 
   rclass = GST_AUDIO_RING_BUFFER_GET_CLASS (buf);
   if (G_LIKELY (rclass->release))
@@ -910,7 +918,7 @@ gst_audio_ring_buffer_start (GstAudioRingBuffer * buf)
   if (G_UNLIKELY (!buf->acquired))
     goto not_acquired;
 
-  if (G_UNLIKELY (g_atomic_int_get (&buf->may_start) == FALSE))
+  if (G_UNLIKELY (!g_atomic_int_get (&buf->may_start)))
     goto may_not_start;
 
   /* if stopped, set to started */
@@ -1277,7 +1285,7 @@ wait_segment (GstAudioRingBuffer * buf)
   if (G_UNLIKELY (g_atomic_int_get (&buf->state) !=
           GST_AUDIO_RING_BUFFER_STATE_STARTED)) {
     /* see if we are allowed to start it */
-    if (G_UNLIKELY (g_atomic_int_get (&buf->may_start) == FALSE))
+    if (G_UNLIKELY (!g_atomic_int_get (&buf->may_start)))
       goto no_start;
 
     GST_DEBUG_OBJECT (buf, "start!");
@@ -1461,6 +1469,18 @@ default_commit (GstAudioRingBuffer * buf, guint64 * sample,
 
   g_return_val_if_fail (buf->memory != NULL, -1);
   g_return_val_if_fail (data != NULL, -1);
+
+  /* writing stuff now, ensure running clock */
+  if (G_UNLIKELY (g_atomic_int_get (&buf->state) !=
+          GST_AUDIO_RING_BUFFER_STATE_STARTED)) {
+    /* see if we are allowed to start it */
+    if (G_UNLIKELY (g_atomic_int_get (&buf->may_start) == FALSE)) {
+      GST_DEBUG_OBJECT (buf, "not allowed to start");
+    } else {
+      GST_DEBUG_OBJECT (buf, "start!");
+      gst_audio_ring_buffer_start (buf);
+    }
+  }
 
   need_reorder = buf->need_reorder;
 
@@ -1725,8 +1745,8 @@ gst_audio_ring_buffer_read (GstAudioRingBuffer * buf, guint64 sample,
        * reading) */
       diff = segdone - readseg;
 
-      GST_DEBUG
-          ("pointer at %d, sample %" G_GUINT64_FORMAT
+      GST_DEBUG_OBJECT
+          (buf, "pointer at %d, sample %" G_GUINT64_FORMAT
           ", read from %d-%d, to_read %d, diff %d, segtotal %d, segsize %d",
           segdone, sample, readseg, sampleoff, to_read, diff, segtotal,
           segsize);
@@ -1838,7 +1858,7 @@ gst_audio_ring_buffer_prepare_read (GstAudioRingBuffer * buf, gint * segment,
   *len = buf->spec.segsize;
   *readptr = data + *segment * *len;
 
-  GST_LOG ("prepare read from segment %d (real %d) @%p",
+  GST_LOG_OBJECT (buf, "prepare read from segment %d (real %d) @%p",
       *segment, segdone, *readptr);
 
   /* callback to fill the memory with data, for pull based
@@ -1908,7 +1928,7 @@ gst_audio_ring_buffer_clear (GstAudioRingBuffer * buf, gint segment)
   data = buf->memory;
   data += segment * buf->spec.segsize;
 
-  GST_LOG ("clear segment %d @%p", segment, data);
+  GST_LOG_OBJECT (buf, "clear segment %d @%p", segment, data);
 
   memcpy (data, buf->empty_seg, buf->spec.segsize);
 }

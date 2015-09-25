@@ -7,7 +7,9 @@ EXPORTS
 	gst_audio_base_sink_get_provide_clock
 	gst_audio_base_sink_get_slave_method
 	gst_audio_base_sink_get_type
+	gst_audio_base_sink_report_device_failure
 	gst_audio_base_sink_set_alignment_threshold
+	gst_audio_base_sink_set_custom_slaving_callback
 	gst_audio_base_sink_set_discont_wait
 	gst_audio_base_sink_set_drift_tolerance
 	gst_audio_base_sink_set_provide_clock
@@ -54,6 +56,7 @@ EXPORTS
 	gst_audio_decoder_get_type
 	gst_audio_decoder_merge_tags
 	gst_audio_decoder_negotiate
+	gst_audio_decoder_proxy_getcaps
 	gst_audio_decoder_set_drainable
 	gst_audio_decoder_set_estimate_rate
 	gst_audio_decoder_set_latency
@@ -64,6 +67,7 @@ EXPORTS
 	gst_audio_decoder_set_plc
 	gst_audio_decoder_set_plc_aware
 	gst_audio_decoder_set_tolerance
+	gst_audio_decoder_set_use_default_pad_acceptcaps
 	gst_audio_downmix_meta_api_get_type
 	gst_audio_downmix_meta_get_info
 	gst_audio_encoder_allocate_output_buffer

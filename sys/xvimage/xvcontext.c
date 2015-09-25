@@ -33,9 +33,9 @@
 /* for XkbKeycodeToKeysym */
 #include <X11/XKBlib.h>
 
-GST_DEBUG_CATEGORY_EXTERN (gst_debug_xvcontext);
+GST_DEBUG_CATEGORY_EXTERN (gst_debug_xv_context);
 GST_DEBUG_CATEGORY_EXTERN (GST_CAT_PERFORMANCE);
-#define GST_CAT_DEFAULT gst_debug_xvcontext
+#define GST_CAT_DEFAULT gst_debug_xv_context
 
 void
 gst_xvcontext_config_clear (GstXvContextConfig * config)
@@ -1080,10 +1080,18 @@ gst_xwindow_set_title (GstXWindow * window, const gchar * title)
   /* we have a window */
   if (window->internal && title) {
     XTextProperty xproperty;
+    XClassHint *hint = XAllocClassHint ();
 
     if ((XStringListToTextProperty (((char **) &title), 1, &xproperty)) != 0) {
       XSetWMName (context->disp, window->win, &xproperty);
       XFree (xproperty.value);
+
+      if (hint) {
+        hint->res_name = (char *) title;
+        hint->res_class = (char *) "GStreamer";
+        XSetClassHint (context->disp, window->win, hint);
+      }
+      XFree (hint);
     }
   }
 }

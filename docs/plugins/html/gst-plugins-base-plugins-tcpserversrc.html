@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: tcpserversrc</title>
+<title>tcpserversrc: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-tcpclientsink.html" title="tcpclientsink">
-<link rel="next" href="gst-plugins-base-plugins-tcpserversink.html" title="tcpserversink">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="prev" href="gst-plugins-base-plugins-tcpserversink.html" title="tcpserversink">
+<link rel="next" href="gst-plugins-base-plugins-textoverlay.html" title="textoverlay">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,15 +21,15 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-tcpclientsink.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-tcpserversink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-tcpserversink.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-textoverlay.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-tcpserversrc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-tcpserversrc.top_of_page"></a>tcpserversrc</span></h2>
-<p>tcpserversrc — Receive data as a server over the network via TCP</p>
+<p>tcpserversrc</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -88,7 +88,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpserversrc.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.30.7.2"></a><h3>Example launch line</h3>
+<a name="id-1.2.38.7.2"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -98,9 +98,9 @@
 3
 4</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="gtkdoc ppc"># server:</span>
-gst<span class="gtkdoc opt">-</span>launch tcpserversrc port<span class="gtkdoc opt">=</span><span class="number">3000</span> <span class="gtkdoc opt">!</span> fdsink fd<span class="gtkdoc opt">=</span><span class="number">2</span>
+gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> tcpserversrc port<span class="gtkdoc opt">=</span><span class="number">3000</span> <span class="gtkdoc opt">!</span> fdsink fd<span class="gtkdoc opt">=</span><span class="number">2</span>
 <span class="gtkdoc ppc"># client:</span>
-gst<span class="gtkdoc opt">-</span>launch fdsrc fd<span class="gtkdoc opt">=</span><span class="number">1</span> <span class="gtkdoc opt">!</span> tcpclientsink port<span class="gtkdoc opt">=</span><span class="number">3000</span></pre></td>
+gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> fdsrc fd<span class="gtkdoc opt">=</span><span class="number">1</span> <span class="gtkdoc opt">!</span> tcpclientsink port<span class="gtkdoc opt">=</span><span class="number">3000</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -110,7 +110,7 @@ gst<span class="gtkdoc opt">-</span>launch fdsrc fd<span class="gtkdoc opt">=</s
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.30.7.3.1"></a><h3>Element Information</h3>
+<a name="id-1.2.38.7.3.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -136,7 +136,7 @@ gst<span class="gtkdoc opt">-</span>launch fdsrc fd<span class="gtkdoc opt">=</s
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.30.7.3.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.38.7.3.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -163,19 +163,16 @@ gst<span class="gtkdoc opt">-</span>launch fdsrc fd<span class="gtkdoc opt">=</s
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpserversrc.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-tcpserversrc.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstTCPServerSrc-struct"></a><h3>struct GstTCPServerSrc</h3>
 <pre class="programlisting">struct GstTCPServerSrc;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -189,7 +186,7 @@ the port requested was 0 (=allocate a random available port).</p>
 <p>Flags: Read</p>
 <p>Allowed values: [0,65535]</p>
 <p>Default value: 0</p>
-<p class="since">Since 1.0.2</p>
+<p class="since">Since: 1.0.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -215,7 +212,6 @@ the port requested was 0 (=allocate a random available port).</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

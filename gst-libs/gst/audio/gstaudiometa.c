@@ -59,12 +59,20 @@ static gboolean
 gst_audio_downmix_meta_transform (GstBuffer * dest, GstMeta * meta,
     GstBuffer * buffer, GQuark type, gpointer data)
 {
-  GstAudioDownmixMeta *smeta;
+  GstAudioDownmixMeta *smeta, *dmeta;
 
   smeta = (GstAudioDownmixMeta *) meta;
-  gst_buffer_add_audio_downmix_meta (dest, smeta->from_position,
-      smeta->from_channels, smeta->to_position, smeta->to_channels,
-      (const gfloat **) smeta->matrix);
+
+  if (GST_META_TRANSFORM_IS_COPY (type)) {
+    dmeta = gst_buffer_add_audio_downmix_meta (dest, smeta->from_position,
+        smeta->from_channels, smeta->to_position, smeta->to_channels,
+        (const gfloat **) smeta->matrix);
+    if (!dmeta)
+      return FALSE;
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
+  }
 
   return TRUE;
 }
@@ -79,7 +87,7 @@ gst_audio_downmix_meta_transform (GstBuffer * dest, GstMeta * meta,
  * Find the #GstAudioDownmixMeta on @buffer for the given destination
  * channel positions.
  *
- * Returns: the #GstAudioDownmixMeta on @buffer.
+ * Returns: (transfer none): the #GstAudioDownmixMeta on @buffer.
  */
 GstAudioDownmixMeta *
 gst_buffer_get_audio_downmix_meta_for_channels (GstBuffer * buffer,
@@ -119,7 +127,7 @@ gst_buffer_get_audio_downmix_meta_for_channels (GstBuffer * buffer,
  * the input channels with the coefficients in @matrix[i] and taking the sum
  * of the results.
  *
- * Returns: the #GstAudioDownmixMeta on @buffer.
+ * Returns: (transfer none): the #GstAudioDownmixMeta on @buffer.
  */
 GstAudioDownmixMeta *
 gst_buffer_add_audio_downmix_meta (GstBuffer * buffer,

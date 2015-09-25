@@ -24,9 +24,6 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-/* FIXME 0.11: suppress warnings for deprecated API such as GStaticRecMutex
- * with newer GTK versions (>= 3.3.0) */
-#define GDK_DISABLE_DEPRECATION_WARNINGS
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -1817,6 +1814,7 @@ update_streams (GstPipeline * pipeline)
         str = gst_tag_list_to_string (tags);
         g_print ("video %d: %s\n", i, str);
         g_free (str);
+        gst_tag_list_unref (tags);
       }
       /* find good name for the label */
       name = g_strdup_printf ("video %d", i + 1);
@@ -1834,6 +1832,7 @@ update_streams (GstPipeline * pipeline)
         str = gst_tag_list_to_string (tags);
         g_print ("audio %d: %s\n", i, str);
         g_free (str);
+        gst_tag_list_unref (tags);
       }
       /* find good name for the label */
       name = g_strdup_printf ("audio %d", i + 1);
@@ -1861,6 +1860,7 @@ update_streams (GstPipeline * pipeline)
         if (value && G_VALUE_HOLDS_STRING (value)) {
           name = g_strdup_printf ("text %s", g_value_get_string (value));
         }
+        gst_tag_list_unref (tags);
       }
       /* find good name for the label if we didn't use a tag */
       if (name == NULL)
@@ -1947,6 +1947,7 @@ init_visualization_features (void)
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (vis_combo), name);
   }
   gtk_combo_box_set_active (GTK_COMBO_BOX (vis_combo), 0);
+  gst_plugin_feature_list_free (list);
 }
 
 static void
@@ -2352,7 +2353,7 @@ do_stream_buffering (gint percent)
     }
   } else {
     /* buffering busy */
-    if (buffering == FALSE && state == GST_STATE_PLAYING) {
+    if (!buffering && state == GST_STATE_PLAYING) {
       /* we were not buffering but PLAYING, PAUSE  the pipeline. */
       if (!is_live) {
         fprintf (stderr, "Buffering, setting pipeline to PAUSED ...\n");
@@ -2651,7 +2652,7 @@ int
 main (int argc, char **argv)
 {
   GtkWidget *window, *hbox, *vbox, *panel, *expander, *pb2vbox, *boxes,
-      *flagtable, *boxes2, *step;
+      *flaggrid, *boxes2, *step;
   GtkWidget *play_button, *pause_button, *stop_button, *shot_button;
   GtkWidget *accurate_checkbox, *key_checkbox, *loop_checkbox, *flush_checkbox;
   GtkWidget *scrub_checkbox, *play_scrub_checkbox;
@@ -2679,7 +2680,7 @@ main (int argc, char **argv)
     g_print ("Error initializing: %s\n", err->message);
     exit (1);
   }
-
+  g_option_context_free (ctx);
   GST_DEBUG_CATEGORY_INIT (seek_debug, "seek", 0, "seek example");
 
   if (argc != 3) {
@@ -2727,20 +2728,22 @@ main (int argc, char **argv)
   video_window = gtk_drawing_area_new ();
   g_signal_connect (video_window, "draw", G_CALLBACK (draw_cb), NULL);
   g_signal_connect (video_window, "realize", G_CALLBACK (realize_cb), NULL);
-  gtk_widget_set_double_buffered (video_window, FALSE);
 
   statusbar = gtk_statusbar_new ();
   status_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "seek");
   gtk_statusbar_push (GTK_STATUSBAR (statusbar), status_id, "Stopped");
-  hbox = gtk_hbox_new (FALSE, 0);
-  vbox = gtk_vbox_new (FALSE, 0);
-  flagtable = gtk_table_new (4, 2, FALSE);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  flaggrid = gtk_grid_new ();
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 3);
 
   /* media controls */
-  play_button = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PLAY);
-  pause_button = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PAUSE);
-  stop_button = gtk_button_new_from_stock (GTK_STOCK_MEDIA_STOP);
+  play_button = gtk_button_new_from_icon_name ("media-playback-start",
+      GTK_ICON_SIZE_BUTTON);
+  pause_button = gtk_button_new_from_icon_name ("media-playback-pause",
+      GTK_ICON_SIZE_BUTTON);
+  stop_button = gtk_button_new_from_icon_name ("media-playback-stop",
+      GTK_ICON_SIZE_BUTTON);
 
   /* seek flags */
   accurate_checkbox = gtk_check_button_new_with_label ("Accurate Seek");
@@ -2777,7 +2780,7 @@ main (int argc, char **argv)
     GtkWidget *hbox;
 
     step = gtk_expander_new ("step options");
-    hbox = gtk_hbox_new (FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
     format_combo = gtk_combo_box_text_new ();
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (format_combo),
@@ -2798,7 +2801,8 @@ main (int argc, char **argv)
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (step_rate_spinbutton), 1.0);
     gtk_box_pack_start (GTK_BOX (hbox), step_rate_spinbutton, FALSE, FALSE, 2);
 
-    step_button = gtk_button_new_from_stock (GTK_STOCK_MEDIA_FORWARD);
+    step_button = gtk_button_new_from_icon_name ("media-seek-forward",
+        GTK_ICON_SIZE_BUTTON);
     gtk_button_set_label (GTK_BUTTON (step_button), "Step");
     gtk_box_pack_start (GTK_BOX (hbox), step_button, FALSE, FALSE, 2);
 
@@ -2814,7 +2818,8 @@ main (int argc, char **argv)
 
     shuttle_adjustment =
         GTK_ADJUSTMENT (gtk_adjustment_new (0.0, -3.00, 4.0, 0.1, 1.0, 1.0));
-    shuttle_hscale = gtk_hscale_new (shuttle_adjustment);
+    shuttle_hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+        shuttle_adjustment);
     gtk_scale_set_digits (GTK_SCALE (shuttle_hscale), 2);
     gtk_scale_set_value_pos (GTK_SCALE (shuttle_hscale), GTK_POS_TOP);
     g_signal_connect (shuttle_hscale, "value_changed",
@@ -2830,7 +2835,7 @@ main (int argc, char **argv)
   /* seek bar */
   adjustment =
       GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.00, 100.0, 0.1, 1.0, 1.0));
-  hscale = gtk_hscale_new (adjustment);
+  hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, adjustment);
   gtk_scale_set_digits (GTK_SCALE (hscale), 2);
   gtk_scale_set_value_pos (GTK_SCALE (hscale), GTK_POS_RIGHT);
   gtk_range_set_show_fill_level (GTK_RANGE (hscale), TRUE);
@@ -2845,7 +2850,7 @@ main (int argc, char **argv)
 
   if (pipeline_type == 16) {
     /* the playbin panel controls for the video/audio/subtitle tracks */
-    panel = gtk_hbox_new (FALSE, 0);
+    panel = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     video_combo = gtk_combo_box_text_new ();
     audio_combo = gtk_combo_box_text_new ();
     text_combo = gtk_combo_box_text_new ();
@@ -2862,7 +2867,7 @@ main (int argc, char **argv)
     g_signal_connect (G_OBJECT (text_combo), "changed",
         G_CALLBACK (text_combo_cb), pipeline);
     /* playbin panel for flag checkboxes and volume/mute */
-    boxes = gtk_hbox_new (FALSE, 0);
+    boxes = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     vis_checkbox = gtk_check_button_new_with_label ("Vis");
     video_checkbox = gtk_check_button_new_with_label ("Video");
     audio_checkbox = gtk_check_button_new_with_label ("Audio");
@@ -2906,8 +2911,9 @@ main (int argc, char **argv)
     g_signal_connect (G_OBJECT (volume_spinbutton), "value_changed",
         G_CALLBACK (volume_spinbutton_changed_cb), pipeline);
     /* playbin panel for snapshot */
-    boxes2 = gtk_hbox_new (FALSE, 0);
-    shot_button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
+    boxes2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    shot_button = gtk_button_new_from_icon_name ("document-save",
+        GTK_ICON_SIZE_BUTTON);
     gtk_widget_set_tooltip_text (shot_button,
         "save a screenshot .png in the current directory");
     g_signal_connect (G_OBJECT (shot_button), "clicked", G_CALLBACK (shot_cb),
@@ -2936,22 +2942,20 @@ main (int argc, char **argv)
   gtk_box_pack_start (GTK_BOX (hbox), play_button, FALSE, FALSE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), pause_button, FALSE, FALSE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), stop_button, FALSE, FALSE, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), flagtable, FALSE, FALSE, 2);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), accurate_checkbox, 0, 1, 0,
-      1);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), flush_checkbox, 1, 2, 0, 1);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), loop_checkbox, 2, 3, 0, 1);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), key_checkbox, 0, 1, 1, 2);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), scrub_checkbox, 1, 2, 1, 2);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), play_scrub_checkbox, 2, 3,
-      1, 2);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), skip_checkbox, 3, 4, 0, 1);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), rate_label, 4, 5, 0, 1);
-  gtk_table_attach_defaults (GTK_TABLE (flagtable), rate_spinbutton, 4, 5, 1,
-      2);
+  gtk_box_pack_start (GTK_BOX (hbox), flaggrid, FALSE, FALSE, 2);
+  gtk_grid_attach (GTK_GRID (flaggrid), accurate_checkbox, 0, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), flush_checkbox, 1, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), loop_checkbox, 2, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), key_checkbox, 0, 1, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), scrub_checkbox, 1, 1, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), play_scrub_checkbox, 2, 1, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), skip_checkbox, 3, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), rate_label, 4, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (flaggrid), rate_spinbutton, 4, 1, 1, 1);
+
   if (panel && boxes && boxes2) {
     expander = gtk_expander_new ("playbin options");
-    pb2vbox = gtk_vbox_new (FALSE, 0);
+    pb2vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_pack_start (GTK_BOX (pb2vbox), panel, FALSE, FALSE, 2);
     gtk_box_pack_start (GTK_BOX (pb2vbox), boxes, FALSE, FALSE, 2);
     gtk_box_pack_start (GTK_BOX (pb2vbox), boxes2, FALSE, FALSE, 2);
@@ -3019,6 +3023,7 @@ main (int argc, char **argv)
   gst_element_set_state (pipeline, GST_STATE_NULL);
 
   g_print ("free pipeline\n");
+  g_array_free (vis_entries, TRUE);
   gst_object_unref (pipeline);
 
   g_list_foreach (paths, (GFunc) g_free, NULL);

@@ -4,13 +4,13 @@
 #
 # Laszlo Dvornik <dvornik@invitel.hu>, 2004.
 # Gabor Kelemen <kelemeng@gnome.hu>, 2006, 2007, 2008, 2009, 2012.
-# Balázs Úr <urbalazs@gmail.com>, 2014.
+# Balázs Úr <urbalazs@gmail.com>, 2014, 2015.
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.4.0\n"
+"Project-Id-Version: gst-plugins-base 1.5.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2014-12-18 12:05+0100\n"
-"PO-Revision-Date: 2014-07-26 00:28+0200\n"
+"POT-Creation-Date: 2015-09-18 19:09+0200\n"
+"PO-Revision-Date: 2015-06-30 13:34+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "Language: hu\n"
@@ -82,12 +82,6 @@ msgstr "Belső adatfolyam-hiba."
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr "A(z) „%s” elem hiányzik - ellenőrizze a Gstreamer telepítését."
-
-#, c-format
-msgid "A %s plugin is required to play this stream, but not installed."
-msgstr ""
-"Az adatfolyam lejátszásához egy %s bővítmény szükséges, de az nincs "
-"telepítve."
 
 msgid "Could not determine type of stream"
 msgstr "Nem határozható meg az adatfolyam típusa"
@@ -522,11 +516,94 @@ msgstr ""
 "Ne lépjen ki a kezdeti eszközlista megjelenítése után, de várjon az eszközök "
 "hozzáadására/eltávolítására."
 
+#, c-format
+msgid "Volume: %.0f%%"
+msgstr "Hangerő: %.0f%%"
+
 msgid "Buffering..."
 msgstr "Pufferelés…"
 
 msgid "Clock lost, selecting a new one\n"
 msgstr "Óra elveszítve, egy új kiválasztása\n"
+
+msgid "Reached end of play list."
+msgstr "A lejátszólista vége elérve."
+
+msgid "Paused"
+msgstr "Szüneteltetve"
+
+#, c-format
+msgid "Now playing %s\n"
+msgstr "Most játszott: %s\n"
+
+#, c-format
+msgid "About to finish, preparing next title: %s"
+msgstr "Hamarosan befejeződik, következő cím előkészítése: %s"
+
+#, c-format
+msgid "Playback rate: %.2f"
+msgstr "Lejátszási sebesség: %.2f"
+
+#, c-format
+msgid "Could not change playback rate to %.2f"
+msgstr "Nem lehet megváltoztatni a lejátszási sebességet erre: %.2f"
+
+msgid "space"
+msgstr "szóköz"
+
+msgid "pause/unpause"
+msgstr "szünet/folytatás"
+
+msgid "q or ESC"
+msgstr "q vagy ESC"
+
+msgid "quit"
+msgstr "kilépés"
+
+msgid "play next"
+msgstr "következő lejátszása"
+
+msgid "play previous"
+msgstr "előző lejátszása"
+
+msgid "seek forward"
+msgstr "tekerés előre"
+
+msgid "seek backward"
+msgstr "tekerés hátra"
+
+msgid "volume up"
+msgstr "hangerő fel"
+
+msgid "volume down"
+msgstr "hangerő le"
+
+msgid "increase playback rate"
+msgstr "lejátszási sebesség növelése"
+
+msgid "decrease playback rate"
+msgstr "lejátszási sebesség csökkentése"
+
+msgid "change playback direction"
+msgstr "lejátszási irány megváltoztatása"
+
+msgid "enable/disable trick modes"
+msgstr "trükk módok engedélyezése/letiltása"
+
+msgid "change audio track"
+msgstr "hangsáv megváltoztatása"
+
+msgid "change video track"
+msgstr "videosáv megváltoztatása"
+
+msgid "change subtitle track"
+msgstr "feliratsáv megváltoztatása"
+
+msgid "show keyboard shortcuts"
+msgstr "gyorsbillentyűk megjelenítése"
+
+msgid "Interactive mode - keyboard controls:"
+msgstr "Interaktív mód - billentyűzetvezérlők:"
 
 msgid "Video sink to use (default is autovideosink)"
 msgstr "Használandó videosüllyesztés (az alapértelmezett az autovideosink)"
@@ -540,8 +617,8 @@ msgstr "Szünetmentes lejátszás bekapcsolása"
 msgid "Shuffle playlist"
 msgstr "Lejátszólista keverése"
 
-msgid "Interactive control via keyboard"
-msgstr "Interaktív vezérlés billentyűzettel"
+msgid "Disable interactive control via the keyboard"
+msgstr "Interaktív vezérlés letiltása a billentyűzeten keresztül"
 
 msgid "Volume"
 msgstr "Hangerő"
@@ -549,12 +626,24 @@ msgstr "Hangerő"
 msgid "Playlist file containing input media files"
 msgstr "Bemeneti médiafájlokat tartalmazó lejátszólista fájl"
 
+msgid "Do not print any output (apart from errors)"
+msgstr "Ne írjon ki semmilyen kimenetet (a hibákon kívül)"
+
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr "Használat: %s FÁJL1|URI1 [FÁJL2|URI2] [FÁJL3|URI3] …"
 
 msgid "You must provide at least one filename or URI to play."
 msgstr "Meg kell adnia legalább egy fájlnevet vagy URI-t a lejátszáshoz."
+
+msgid "Press 'k' to see a list of keyboard shortcuts.\n"
+msgstr ""
+"Nyomja meg a „k” billentyűt a gyorsbillentyűk listájának megtekintéséhez.\n"
+
+#~ msgid "A %s plugin is required to play this stream, but not installed."
+#~ msgstr ""
+#~ "Az adatfolyam lejátszásához egy %s bővítmény szükséges, de az nincs "
+#~ "telepítve."
 
 #~ msgid "Uncompressed %s YUV %s"
 #~ msgstr "Tömörítetlen %s YUV %s"

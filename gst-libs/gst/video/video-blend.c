@@ -146,6 +146,22 @@ G_STMT_START { \
   ret = v0 + (v1 * (255 - alpha)) / 255; \
 } G_STMT_END
 
+/**
+ * gst_video_blend_scale_linear_RGBA:
+ * @src: the #GstVideoInfo describing the video data in @src_buffer
+ * @src_buffer: the source buffer containing video pixels to scale
+ * @dest_height: the height in pixels to scale the video data in @src_buffer to
+ * @dest_width: the width in pixels to scale the video data in @src_buffer to
+ * @dest: (out): pointer to a #GstVideoInfo structure that will be filled in
+ *     with the details for @dest_buffer
+ * @dest_buffer: (out): a pointer to a #GstBuffer variable, which will be
+ *     set to a newly-allocated buffer containing the scaled pixels.
+ *
+ * Scales a buffer containing RGBA (or AYUV) video. This is an internal
+ * helper function which is used to scale subtitle overlays, and may be
+ * deprecated in the near future. Use #GstVideoScaler to scale video buffers
+ * instead.
+ */
 /* returns newly-allocated buffer, which caller must unref */
 void
 gst_video_blend_scale_linear_RGBA (GstVideoInfo * src, GstBuffer * src_buffer,
@@ -232,7 +248,8 @@ gst_video_blend_scale_linear_RGBA (GstVideoInfo * src, GstBuffer * src_buffer,
   g_free (tmpbuf);
 }
 
-/* video_blend:
+/**
+ * gst_video_blend:
  * @dest: The #GstVideoFrame where to blend @src in
  * @src: the #GstVideoFrame that we want to blend into
  * @x: The x offset in pixel where the @src image should be blended
@@ -246,8 +263,8 @@ gboolean
 gst_video_blend (GstVideoFrame * dest,
     GstVideoFrame * src, gint x, gint y, gfloat global_alpha)
 {
-  guint i, j, global_alpha_val, src_width, src_height, dest_width, dest_height;
-  gint xoff;
+  gint i, j, global_alpha_val, src_width, src_height, dest_width, dest_height;
+  gint src_xoff = 0, src_yoff = 0;
   guint8 *tmpdestline = NULL, *tmpsrcline = NULL;
   gboolean src_premultiplied_alpha, dest_premultiplied_alpha;
   void (*matrix) (guint8 * tmpline, guint width);
@@ -275,6 +292,15 @@ gst_video_blend (GstVideoFrame * dest,
 
   ensure_debug_category ();
 
+  GST_LOG ("blend src %dx%d onto dest %dx%d @ %d,%d", src_width, src_height,
+      dest_width, dest_height, x, y);
+
+  /* In case overlay is completely outside the video, dont render */
+  if (x + src_width <= 0 || y + src_height <= 0
+      || x >= dest_width || y >= dest_height) {
+    goto nothing_to_do;
+  }
+
   dinfo = gst_video_format_get_info (GST_VIDEO_FRAME_FORMAT (dest));
   sinfo = gst_video_format_get_info (GST_VIDEO_FRAME_FORMAT (src));
 
@@ -293,7 +319,7 @@ gst_video_blend (GstVideoFrame * dest,
     goto unpack_format_not_supported;
 
   tmpdestline = g_malloc (sizeof (guint8) * (dest_width + 8) * 4);
-  tmpsrcline = g_malloc (sizeof (guint8) * (dest_width + 8) * 4);
+  tmpsrcline = g_malloc (sizeof (guint8) * (src_width + 8) * 4);
 
   matrix = matrix_identity;
   if (GST_VIDEO_INFO_IS_RGB (&src->info) != GST_VIDEO_INFO_IS_RGB (&dest->info)) {
@@ -309,21 +335,24 @@ gst_video_blend (GstVideoFrame * dest,
     }
   }
 
-  xoff = 0;
+  /* If we're here we know that the overlay image fully or
+   * partially overlaps with the video frame */
 
-  /* adjust src pointers for negative sizes */
+  /* adjust src image for negative offsets */
   if (x < 0) {
-    src_width -= -x;
+    src_xoff = -x;
+    src_width -= src_xoff;
     x = 0;
-    xoff = -x;
   }
 
   if (y < 0) {
-    src_height -= -y;
+    src_yoff = -y;
+    src_height -= src_yoff;
     y = 0;
   }
 
-  /* adjust width/height if the src is bigger than dest */
+  /* adjust width/height to render (i.e. clip source image) if the source
+   * image extends beyond the right or bottom border of the video surface */
   if (x + src_width > dest_width)
     src_width = dest_width - x;
 
@@ -331,16 +360,17 @@ gst_video_blend (GstVideoFrame * dest,
     src_height = dest_height - y;
 
   /* Mainloop doing the needed conversions, and blending */
-  for (i = y; i < y + src_height; i++) {
+  for (i = y; i < y + src_height; i++, src_yoff++) {
 
     dinfo->unpack_func (dinfo, 0, tmpdestline, dest->data, dest->info.stride,
         0, i, dest_width);
     sinfo->unpack_func (sinfo, 0, tmpsrcline, src->data, src->info.stride,
-        xoff, i - y, src_width - xoff);
+        src_xoff, src_yoff, src_width);
+
+    /* FIXME: use the x parameter of the unpack func once implemented */
+    tmpdestline += 4 * x;
 
     matrix (tmpsrcline, src_width);
-
-    tmpdestline += 4 * x;
 
     /* Here dest and src are both either in AYUV or ARGB
      * TODO: Make the orc version working properly*/
@@ -381,6 +411,7 @@ gst_video_blend (GstVideoFrame * dest,
 
 #undef BLENDLOOP
 
+    /* undo previous pointer adjustments to pass right pointer to g_free */
     tmpdestline -= 4 * x;
 
     /* FIXME
@@ -410,5 +441,11 @@ unpack_format_not_supported:
     GST_FIXME ("video format %s not supported yet for blending",
         gst_video_format_to_string (dinfo->unpack_format));
     return FALSE;
+  }
+nothing_to_do:
+  {
+    GST_LOG
+        ("Overlay completely outside the video surface, hence not rendering");
+    return TRUE;
   }
 }

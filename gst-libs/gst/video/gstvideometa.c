@@ -21,6 +21,27 @@
 
 #include <string.h>
 
+#ifndef GST_DISABLE_GST_DEBUG
+#define GST_CAT_DEFAULT ensure_debug_category()
+static GstDebugCategory *
+ensure_debug_category (void)
+{
+  static gsize cat_gonce = 0;
+
+  if (g_once_init_enter (&cat_gonce)) {
+    gsize cat_done;
+
+    cat_done = (gsize) _gst_debug_category_new ("videometa", 0, "videometa");
+
+    g_once_init_leave (&cat_gonce, cat_done);
+  }
+
+  return (GstDebugCategory *) cat_gonce;
+}
+#else
+#define ensure_debug_category() /* NOOP */
+#endif /* GST_DISABLE_GST_DEBUG */
+
 static gboolean
 gst_video_meta_transform (GstBuffer * dest, GstMeta * meta,
     GstBuffer * buffer, GQuark type, gpointer data)
@@ -59,6 +80,9 @@ gst_video_meta_transform (GstBuffer * dest, GstMeta * meta,
       dmeta->map = smeta->map;
       dmeta->unmap = smeta->unmap;
     }
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
   }
   return TRUE;
 }
@@ -97,6 +121,38 @@ gst_video_meta_get_info (void)
 }
 
 /**
+ * gst_buffer_get_video_meta:
+ * @buffer: a #GstBuffer
+ *
+ * Find the #GstVideoMeta on @buffer with the lowest @id.
+ *
+ * Buffers can contain multiple #GstVideoMeta metadata items when dealing with
+ * multiview buffers.
+ *
+ * Returns: (transfer none): the #GstVideoMeta with lowest id (usually 0) or %NULL when there
+ * is no such metadata on @buffer.
+ */
+GstVideoMeta *
+gst_buffer_get_video_meta (GstBuffer * buffer)
+{
+  gpointer state = NULL;
+  GstVideoMeta *out = NULL;
+  GstMeta *meta;
+  const GstMetaInfo *info = GST_VIDEO_META_INFO;
+
+  while ((meta = gst_buffer_iterate_meta (buffer, &state))) {
+    if (meta->info->api == info->api) {
+      GstVideoMeta *vmeta = (GstVideoMeta *) meta;
+      if (vmeta->id == 0)
+        return vmeta;           /* Early out for id 0 */
+      if (out == NULL || vmeta->id < out->id)
+        out = vmeta;
+    }
+  }
+  return out;
+}
+
+/**
  * gst_buffer_get_video_meta_id:
  * @buffer: a #GstBuffer
  * @id: a metadata id
@@ -106,7 +162,7 @@ gst_video_meta_get_info (void)
  * Buffers can contain multiple #GstVideoMeta metadata items when dealing with
  * multiview buffers.
  *
- * Returns: the #GstVideoMeta with @id or %NULL when there is no such metadata
+ * Returns: (transfer none): the #GstVideoMeta with @id or %NULL when there is no such metadata
  * on @buffer.
  */
 GstVideoMeta *
@@ -186,7 +242,7 @@ default_unmap (GstVideoMeta * meta, guint plane, GstMapInfo * info)
  * This function calculates the default offsets and strides and then calls
  * gst_buffer_add_video_meta_full() with them.
  *
- * Returns: the #GstVideoMeta on @buffer.
+ * Returns: (transfer none): the #GstVideoMeta on @buffer.
  */
 GstVideoMeta *
 gst_buffer_add_video_meta (GstBuffer * buffer,
@@ -217,7 +273,7 @@ gst_buffer_add_video_meta (GstBuffer * buffer,
  *
  * Attaches GstVideoMeta metadata to @buffer with the given parameters.
  *
- * Returns: the #GstVideoMeta on @buffer.
+ * Returns: (transfer none): the #GstVideoMeta on @buffer.
  */
 GstVideoMeta *
 gst_buffer_add_video_meta_full (GstBuffer * buffer,
@@ -315,6 +371,8 @@ gst_video_crop_meta_transform (GstBuffer * dest, GstMeta * meta,
   if (GST_META_TRANSFORM_IS_COPY (type)) {
     smeta = (GstVideoCropMeta *) meta;
     dmeta = gst_buffer_add_video_crop_meta (dest);
+    if (!dmeta)
+      return FALSE;
 
     GST_DEBUG ("copy crop metadata");
     dmeta->x = smeta->x;
@@ -327,6 +385,8 @@ gst_video_crop_meta_transform (GstBuffer * dest, GstMeta * meta,
 
     smeta = (GstVideoCropMeta *) meta;
     dmeta = gst_buffer_add_video_crop_meta (dest);
+    if (!dmeta)
+      return FALSE;
 
     ow = GST_VIDEO_INFO_WIDTH (trans->in_info);
     nw = GST_VIDEO_INFO_WIDTH (trans->out_info);
@@ -342,6 +402,9 @@ gst_video_crop_meta_transform (GstBuffer * dest, GstMeta * meta,
         dmeta->y);
     GST_DEBUG ("crop size   %dx%d -> %dx%d", smeta->width, smeta->height,
         dmeta->width, dmeta->height);
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
   }
   return TRUE;
 }
@@ -452,6 +515,9 @@ gst_video_gl_texture_upload_meta_transform (GstBuffer * dest, GstMeta * meta,
       if (dmeta->user_data_copy)
         dmeta->user_data = dmeta->user_data_copy (dmeta->user_data);
     }
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
   }
   return TRUE;
 }
@@ -477,15 +543,18 @@ gst_video_gl_texture_upload_meta_get_info (void)
 /**
  * gst_buffer_add_video_gl_texture_upload_meta:
  * @buffer: a #GstBuffer
- * @upload: the function to upload the buffer to a specific texture ID
+ * @texture_orientation: the #GstVideoGLTextureOrientation
+ * @n_textures: the number of textures
+ * @texture_type: array of #GstVideoGLTextureType
+ * @upload: (scope call): the function to upload the buffer to a specific texture ID
  * @user_data: user data for the implementor of @upload
- * @user_data_copy: function to copy @user_data
- * @user_data_free: function to free @user_data
+ * @user_data_copy: (scope call): function to copy @user_data
+ * @user_data_free: (scope call): function to free @user_data
  *
  * Attaches GstVideoGLTextureUploadMeta metadata to @buffer with the given
  * parameters.
  *
- * Returns: the #GstVideoGLTextureUploadMeta on @buffer.
+ * Returns: (transfer none): the #GstVideoGLTextureUploadMeta on @buffer.
  */
 GstVideoGLTextureUploadMeta *
 gst_buffer_add_video_gl_texture_upload_meta (GstBuffer * buffer,
@@ -571,6 +640,9 @@ gst_video_region_of_interest_meta_transform (GstBuffer * dest, GstMeta * meta,
     dmeta =
         gst_buffer_add_video_region_of_interest_meta_id (dest,
         smeta->roi_type, smeta->x, smeta->y, smeta->w, smeta->h);
+    if (!dmeta)
+      return FALSE;
+
     dmeta->id = smeta->id;
     dmeta->parent_id = smeta->parent_id;
   } else if (GST_VIDEO_META_TRANSFORM_IS_SCALE (type)) {
@@ -588,6 +660,9 @@ gst_video_region_of_interest_meta_transform (GstBuffer * dest, GstMeta * meta,
         gst_buffer_add_video_region_of_interest_meta_id (dest,
         smeta->roi_type, (smeta->x * nw) / ow, (smeta->y * nh) / oh,
         (smeta->w * nw) / ow, (smeta->h * nh) / oh);
+    if (!dmeta)
+      return FALSE;
+
     dmeta->id = smeta->id;
     dmeta->parent_id = smeta->parent_id;
 
@@ -595,6 +670,9 @@ gst_video_region_of_interest_meta_transform (GstBuffer * dest, GstMeta * meta,
         smeta->id, smeta->parent_id, smeta->x, smeta->y, dmeta->x, dmeta->y);
     GST_DEBUG ("region of interest size   %dx%d -> %dx%d", smeta->w, smeta->h,
         dmeta->w, dmeta->h);
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
   }
   return TRUE;
 }
@@ -645,7 +723,7 @@ gst_video_region_of_interest_meta_get_info (void)
  * Buffers can contain multiple #GstVideoRegionOfInterestMeta metadata items if
  * multiple regions of interests are marked on a frame.
  *
- * Returns: the #GstVideoeRegionOfInterestMeta with @id or %NULL when there is
+ * Returns: (transfer none): the #GstVideoRegionOfInterestMeta with @id or %NULL when there is
  * no such metadata on @buffer.
  */
 GstVideoRegionOfInterestMeta *
@@ -678,7 +756,7 @@ gst_buffer_get_video_region_of_interest_meta_id (GstBuffer * buffer, gint id)
  * Attaches #GstVideoRegionOfInterestMeta metadata to @buffer with the given
  * parameters.
  *
- * Returns: the #GstVideoRegionOfInterestMeta on @buffer.
+ * Returns: (transfer none): the #GstVideoRegionOfInterestMeta on @buffer.
  */
 GstVideoRegionOfInterestMeta *
 gst_buffer_add_video_region_of_interest_meta (GstBuffer * buffer,
@@ -700,7 +778,7 @@ gst_buffer_add_video_region_of_interest_meta (GstBuffer * buffer,
  * Attaches #GstVideoRegionOfInterestMeta metadata to @buffer with the given
  * parameters.
  *
- * Returns: the #GstVideoRegionOfInterestMeta on @buffer.
+ * Returns: (transfer none): the #GstVideoRegionOfInterestMeta on @buffer.
  */
 GstVideoRegionOfInterestMeta *
 gst_buffer_add_video_region_of_interest_meta_id (GstBuffer * buffer,

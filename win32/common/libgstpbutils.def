@@ -29,6 +29,7 @@ EXPORTS
 	gst_discoverer_discover_uri_async
 	gst_discoverer_get_type
 	gst_discoverer_info_copy
+	gst_discoverer_info_from_variant
 	gst_discoverer_info_get_audio_streams
 	gst_discoverer_info_get_container_streams
 	gst_discoverer_info_get_duration
@@ -45,8 +46,10 @@ EXPORTS
 	gst_discoverer_info_get_type
 	gst_discoverer_info_get_uri
 	gst_discoverer_info_get_video_streams
+	gst_discoverer_info_to_variant
 	gst_discoverer_new
 	gst_discoverer_result_get_type
+	gst_discoverer_serialize_flags_get_type
 	gst_discoverer_start
 	gst_discoverer_stop
 	gst_discoverer_stream_info_get_caps
@@ -84,6 +87,7 @@ EXPORTS
 	gst_encoding_list_available_categories
 	gst_encoding_profile_find
 	gst_encoding_profile_from_discoverer
+	gst_encoding_profile_get_allow_dynamic_output
 	gst_encoding_profile_get_description
 	gst_encoding_profile_get_file_extension
 	gst_encoding_profile_get_format
@@ -95,8 +99,11 @@ EXPORTS
 	gst_encoding_profile_get_restriction
 	gst_encoding_profile_get_type
 	gst_encoding_profile_get_type_nick
+	gst_encoding_profile_is_enabled
 	gst_encoding_profile_is_equal
+	gst_encoding_profile_set_allow_dynamic_output
 	gst_encoding_profile_set_description
+	gst_encoding_profile_set_enabled
 	gst_encoding_profile_set_format
 	gst_encoding_profile_set_name
 	gst_encoding_profile_set_presence
@@ -125,6 +132,9 @@ EXPORTS
 	gst_install_plugins_context_free
 	gst_install_plugins_context_get_type
 	gst_install_plugins_context_new
+	gst_install_plugins_context_set_confirm_search
+	gst_install_plugins_context_set_desktop_id
+	gst_install_plugins_context_set_startup_notification_id
 	gst_install_plugins_context_set_xid
 	gst_install_plugins_installation_in_progress
 	gst_install_plugins_return_get_name

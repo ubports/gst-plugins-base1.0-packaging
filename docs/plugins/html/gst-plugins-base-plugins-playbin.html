@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: playbin</title>
+<title>playbin: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-oggmux.html" title="oggmux">
+<link rel="prev" href="gst-plugins-base-plugins-ogmvideoparse.html" title="ogmvideoparse">
 <link rel="next" href="gst-plugins-base-plugins-playsink.html" title="playsink">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -23,7 +23,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-oggmux.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-ogmvideoparse.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="gst-plugins-base-plugins-playsink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -31,7 +31,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-playbin.top_of_page"></a>playbin</span></h2>
-<p>playbin — Autoplug and play media from an uri</p>
+<p>playbin</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -221,6 +221,16 @@
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-filter" title="The “video-filter” property">video-filter</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
+<tr>
+<td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-flags" title="The “video-multiview-flags” property">video-multiview-flags</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking"><span class="type">GstVideoMultiviewFramePacking</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-multiview-mode" title="The “video-multiview-mode” property">video-multiview-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -236,84 +246,84 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-about-to-finish" title="The “about-to-finish” signal">about-to-finish</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-changed" title="The “audio-changed” signal">audio-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-audio-tags-changed" title="The “audio-tags-changed” signal">audio-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="returnvalue">GstSample</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-convert-sample" title="The “convert-sample” signal">convert-sample</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-audio-pad" title="The “get-audio-pad” signal">get-audio-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-audio-tags" title="The “get-audio-tags” signal">get-audio-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-text-pad" title="The “get-text-pad” signal">get-text-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-text-tags" title="The “get-text-tags” signal">get-text-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-video-pad" title="The “get-video-pad” signal">get-video-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-get-video-tags" title="The “get-video-tags” signal">get-video-tags</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-source-setup" title="The “source-setup” signal">source-setup</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-text-changed" title="The “text-changed” signal">text-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-text-tags-changed" title="The “text-tags-changed” signal">text-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-changed" title="The “video-changed” signal">video-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin-video-tags-changed" title="The “video-tags-changed” signal">video-tags-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -388,7 +398,7 @@ volume control with mute option
 </li>
 </ul></div>
 <div class="refsect2">
-<a name="id-1.2.24.9.5"></a><h3>Usage</h3>
+<a name="id-1.2.28.9.5"></a><h3>Usage</h3>
 <p>
 A playbin element can be created just like any other element using
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElementFactory.html#gst-element-factory-make"><code class="function">gst_element_factory_make()</code></a>. The file/URI to play should be set via the <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--uri" title="The “uri” property"><span class="type">“uri”</span></a>
@@ -429,7 +439,7 @@ the duration or position will have been returned in units of nanoseconds.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.6"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
+<a name="id-1.2.28.9.6"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
 <p>
 By default, if no audio sink or video sink has been specified via the
 <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink" title="The “audio-sink” property"><span class="type">“audio-sink”</span></a> or <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-sink" title="The “video-sink” property"><span class="type">“video-sink”</span></a> property, playbin will use the autoaudiosink
@@ -464,7 +474,7 @@ It is also possible to 'suppress' audio and/or video output by using
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.7"></a><h3>Retrieving Tags and Other Meta Data</h3>
+<a name="id-1.2.28.9.7"></a><h3>Retrieving Tags and Other Meta Data</h3>
 <p>
 Most of the common meta data (artist, title, etc.) can be retrieved by
 watching for TAG messages on the pipeline's bus (see above).
@@ -476,7 +486,7 @@ from the negotiated caps on the sink pads of the sinks.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.8"></a><h3>Buffering</h3>
+<a name="id-1.2.28.9.8"></a><h3>Buffering</h3>
 Playbin handles buffering automatically for the most part, but applications
 need to handle parts of the buffering process as well. Whenever playbin is
 buffering, it will post BUFFERING messages on the bus with a percentage
@@ -501,7 +511,7 @@ way. Here is how to extract the percentage information from the message:
   <span class="keyword">case</span> GST_MESSAGE_BUFFERING<span class="gtkdoc opt">: {</span>
     gint percent <span class="gtkdoc opt">=</span> <span class="number">0</span><span class="gtkdoc opt">;</span>
     <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-parse-buffering">gst_message_parse_buffering</a></span> <span class="gtkdoc opt">(</span>msg<span class="gtkdoc opt">, &amp;</span>percent<span class="gtkdoc opt">);</span>
-    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
+    <span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Warnings-and-Assertions.html#g-print">g_print</a></span> <span class="gtkdoc opt">(</span><span class="string">&quot;Buffering (%u percent done)&quot;</span><span class="gtkdoc opt">,</span> percent<span class="gtkdoc opt">);</span>
     <span class="keyword">break</span><span class="gtkdoc opt">;</span>
   <span class="gtkdoc opt">}</span>
   <span class="gtkdoc opt">...</span>
@@ -518,7 +528,7 @@ of 100 percent is received (if PLAYING is the desired state, that is).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.9"></a><h3>Embedding the video window in your application</h3>
+<a name="id-1.2.28.9.9"></a><h3>Embedding the video window in your application</h3>
 By default, playbin (or rather the video sinks used) will create their own
 window. Applications will usually want to force output to a window of their
 own, however. This can be done using the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface, which most
@@ -526,7 +536,7 @@ video sinks implement. See the documentation there for more details.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.10"></a><h3>Specifying which CD/DVD device to use</h3>
+<a name="id-1.2.28.9.10"></a><h3>Specifying which CD/DVD device to use</h3>
 The device to use for CDs/DVDs needs to be set on the source element
 playbin creates before it is opened. The most generic way of doing this
 is to connect to playbin's "source-setup" (or "notify::source") signal,
@@ -540,7 +550,7 @@ dvd://[/path/to/device]
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.11"></a><h3>Handling redirects</h3>
+<a name="id-1.2.28.9.11"></a><h3>Handling redirects</h3>
 <p>
 Some elements may post 'redirect' messages on the bus to tell the
 application to open another location. These are element messages containing
@@ -551,28 +561,28 @@ for such redirects can be found in many quicktime movie trailers.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.12"></a><h3>Examples</h3>
+<a name="id-1.2.28.9.12"></a><h3>Examples</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/somefile.avi</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>file<span class="gtkdoc opt">:</span><span class="gtkdoc slc">///path/to/somefile.mp4</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
  This will play back the given AVI video file, given that the video and
 audio decoders required to decode the content are installed. Since no
-special audio sink or video sink is supplied (not possible via gst-launch),
-playbin will try to find a suitable audio and video sink automatically
-using the autoaudiosink and autovideosink elements.
+special audio sink or video sink is supplied (via playbin's audio-sink or
+video-sink properties) playbin will try to find a suitable audio and
+video sink automatically using the autoaudiosink and autovideosink elements.
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>cdda<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//4</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>cdda<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//4</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -584,7 +594,7 @@ the drive is detected automatically by the plugin).
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>dvd<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v playbin uri<span class="gtkdoc opt">=</span>dvd<span class="gtkdoc opt">:</span><span class="gtkdoc slc">//</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -595,7 +605,7 @@ the drive is detected automatically by the plugin).
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.24.9.13.1"></a><h3>Element Information</h3>
+<a name="id-1.2.28.9.13.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -621,14 +631,13 @@ the drive is detected automatically by the plugin).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.24.9.13.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.28.9.13.2"></a><h3>Element Pads</h3>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.other_details"></a><h2>Types and Values</h2>
@@ -642,7 +651,7 @@ the drive is detected automatically by the plugin).
 <a name="GstPlayFlags"></a><h3>enum GstPlayFlags</h3>
 <p>Extra flags to configure the behaviour of the sinks.</p>
 <div class="refsect3">
-<a name="id-1.2.24.11.3.4"></a><h4>Members</h4>
+<a name="id-1.2.28.11.3.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -726,7 +735,9 @@ the drive is detected automatically by the plugin).
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GST-PLAY-FLAG-SOFT-COLORBALANCE:CAPS"></a>GST_PLAY_FLAG_SOFT_COLORBALANCE</p></td>
-<td class="enum_member_description"> </td>
+<td class="enum_member_description">
+<p>Use a software filter for colour balance</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
@@ -1012,6 +1023,21 @@ is created and deleted as-needed.</p>
 <p>the video filter(s) to apply, if possible.</p>
 <p>Flags: Read / Write</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="GstPlayBin--video-multiview-flags"></a><h3>The <code class="literal">“video-multiview-flags”</code> property</h3>
+<pre class="programlisting">  “video-multiview-flags”    <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFlags"><span class="type">GstVideoMultiviewFlags</span></a></pre>
+<p>Override details of the multiview frame layout.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstPlayBin--video-multiview-mode"></a><h3>The <code class="literal">“video-multiview-mode”</code> property</h3>
+<pre class="programlisting">  “video-multiview-mode”     <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GstVideoMultiviewFramePacking"><span class="type">GstVideoMultiviewFramePacking</span></a></pre>
+<p>Re-interpret a video stream as one of several frame-packed stereoscopic modes.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GST_VIDEO_MULTIVIEW_FRAME_PACKING_NONE</p>
+</div>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-playbin.signal-details"></a><h2>Signal Details</h2>
@@ -1024,7 +1050,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 set the uri and suburi to make sure that playback continues.</p>
 <p>This signal is emitted from the context of a GStreamer streaming thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.2.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1045,7 +1071,7 @@ set the uri and suburi to make sure that playback continues.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1060,7 +1086,7 @@ a new audio stream.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1081,7 +1107,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1096,7 +1122,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.4.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.4.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1122,7 +1148,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1138,7 +1164,7 @@ If <em class="parameter"><code>caps</code></em>
  is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, no conversion will be performed and this function is
 equivalent to the <span class="type">“frame”</span> property.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1165,14 +1191,13 @@ equivalent to the <span class="type">“frame”</span> property.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.5.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> of the current video frame converted to <span class="type">caps</span>.
 The caps on the sample will describe the final layout of the buffer data.
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current buffer can be retrieved or when the
 conversion failed.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1186,7 +1211,7 @@ audio stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1213,11 +1238,10 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.6.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1229,7 +1253,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific audio stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1256,12 +1280,11 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.7.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1275,7 +1298,7 @@ text stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1302,11 +1325,10 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.8.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1318,7 +1340,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific text stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1345,12 +1367,11 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.9.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1364,7 +1385,7 @@ video stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1391,11 +1412,10 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.10.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1407,7 +1427,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific video stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1434,12 +1454,11 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.24.13.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.28.13.11.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1456,7 +1475,7 @@ the notify::source signal, but more convenient.</p>
 <p>This signal is usually emitted from the context of a GStreamer streaming
 thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.12.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1482,7 +1501,7 @@ thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1497,7 +1516,7 @@ a new text stream.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.13.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.13.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1518,7 +1537,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1533,7 +1552,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.14.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.14.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1559,7 +1578,7 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1574,7 +1593,7 @@ a new video stream.</p>
 thread. You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a> to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.15.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.15.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1595,7 +1614,7 @@ thread. You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1610,7 +1629,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.24.13.16.6"></a><h4>Parameters</h4>
+<a name="id-1.2.28.13.16.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1636,12 +1655,11 @@ to notify your application's main thread.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

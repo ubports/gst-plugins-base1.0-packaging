@@ -70,7 +70,7 @@ gir_sources=$(patsubst %,$(srcdir)/%, $(libgstpbutils_@GST_API_VERSION@_la_SOURC
 gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstpbutils_@GST_API_VERSION@_la_SOURCES))
 
 GstPbutils-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstpbutils-@GST_API_VERSION@.la
-	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
+	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstPbutils \
 		--nsversion=@GST_API_VERSION@ \
@@ -100,7 +100,7 @@ GstPbutils-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstpbutils-@GST_AP
 		--pkg gstreamer-video-@GST_API_VERSION@ \
 		--pkg gstreamer-audio-@GST_API_VERSION@ \
 		--pkg-export gstreamer-pbutils-@GST_API_VERSION@ \
-		--add-init-section="gst_init(NULL,NULL);" \
+		--add-init-section="$(INTROSPECTION_INIT)" \
 		--output $@ \
 		$(gir_headers) \
 		$(gir_sources)
@@ -128,19 +128,3 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer -:PROJECT libgstpbutils -:SHARED libgstpbutils-@GST_API_VERSION@ \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstpbutils_@GST_API_VERSION@_la_SOURCES) \
-	           $(nodist_libgstpbutils_@GST_API_VERSION@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) \
-	 -:LDFLAGS $(libgstpbutils_@GST_API_VERSION@_la_LDFLAGS) \
-	           $(libgstpbutils_@GST_API_VERSION@_la_LIBADD) \
-	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/pbutils \
-	 -:HEADERS $(libgstpbutils_@GST_API_VERSION@include_HEADERS) \
-	           $(nodist_libgstpbutils_@GST_API_VERSION@include_HEADERS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@

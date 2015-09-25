@@ -25,7 +25,6 @@
 #include <gst/gst.h>
 #include <gst/video/video.h>
 #include <gst/video/gstvideofilter.h>
-#include "videoconvert.h"
 
 G_BEGIN_DECLS
 
@@ -47,8 +46,16 @@ typedef struct _GstVideoConvertClass GstVideoConvertClass;
 struct _GstVideoConvert {
   GstVideoFilter element;
 
-  VideoConvert *convert;
-  gboolean dither;
+  GstVideoConverter *convert;
+  GstVideoDitherMethod dither;
+  guint dither_quantization;
+  GstVideoResamplerMethod chroma_resampler;
+  GstVideoAlphaMode alpha_mode;
+  GstVideoChromaMode chroma_mode;
+  GstVideoMatrixMode matrix_mode;
+  GstVideoGammaMode gamma_mode;
+  GstVideoPrimariesMode primaries_mode;
+  gdouble alpha_value;
 };
 
 struct _GstVideoConvertClass

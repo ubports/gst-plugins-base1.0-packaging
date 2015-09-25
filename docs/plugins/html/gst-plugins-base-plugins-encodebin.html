@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: encodebin</title>
+<title>encodebin: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-decodebin.html" title="decodebin">
-<link rel="next" href="gst-plugins-base-plugins-videoconvert.html" title="videoconvert">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="next" href="gst-plugins-base-plugins-giosink.html" title="giosink">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,14 +24,14 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="gst-plugins-base-plugins-decodebin.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-videoconvert.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-giosink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-encodebin"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-encodebin.top_of_page"></a>encodebin</span></h2>
-<p>encodebin — Convenience encoding/muxing element</p>
+<p>encodebin</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -96,13 +96,13 @@
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-pad" title="The “request-pad” signal">request-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type">
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="returnvalue">GstPad</span></a>*</td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-encodebin.html#GstEncodeBin-request-profile-pad" title="The “request-profile-pad” signal">request-profile-pad</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -334,19 +334,16 @@ user a way to install the missing element.
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-encodebin.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-encodebin.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstEncodeBin-struct"></a><h3>GstEncodeBin</h3>
 <pre class="programlisting">typedef struct _GstEncodeBin GstEncodeBin;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -378,7 +375,7 @@ user a way to install the missing element.
 <a name="GstEncodeBin--profile"></a><h3>The <code class="literal">“profile”</code> property</h3>
 <pre class="programlisting">  “profile”                  <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> *</pre>
 <p>The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> to use. This property must be set before going
-to <code class="literal">GST_STATE_PAUSED</code> or higher.</p>
+to <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#GST-STATE-PAUSED:CAPS"><code class="literal">GST_STATE_PAUSED</code></a> or higher.</p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -449,9 +446,8 @@ provided <em class="parameter"><code>caps</code></em>
 <a name="id-1.2.14.13.2.6"></a><h4>Returns</h4>
 <p> A compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> could be
 created or is available.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -495,14 +491,12 @@ user_function (<a class="link" href="gst-plugins-base-plugins-encodebin.html#Gst
 <a name="id-1.2.14.13.3.6"></a><h4>Returns</h4>
 <p> A compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no compatible <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> could be
 created or is available.</p>
-<p></p>
 </div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

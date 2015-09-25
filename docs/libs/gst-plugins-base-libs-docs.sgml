@@ -29,6 +29,7 @@
         <filename>-lgstallocators-&GST_API_VERSION;</filename> to the library flags.
       </para>
       <xi:include href="xml/gstdmabuf.xml" />
+      <xi:include href="xml/gstfdmemory.xml" />
     </chapter>
 
     <chapter id="gstreamer-app">
@@ -198,6 +199,10 @@
       <xi:include href="xml/gstvideometa.xml" />
       <xi:include href="xml/gstvideooverlaycomposition.xml" />
       <xi:include href="xml/gstvideofilter.xml" />
+      <xi:include href="xml/gstvideodither.xml" />
+      <xi:include href="xml/gstvideochroma.xml" />
+      <xi:include href="xml/gstvideoresampler.xml" />
+      <xi:include href="xml/gstvideoscaler.xml" />
       <xi:include href="xml/gstvideosink.xml" />
       <xi:include href="xml/gstcolorbalance.xml" />
       <xi:include href="xml/gstcolorbalancechannel.xml" />

@@ -86,6 +86,7 @@ struct _GstAppSinkPrivate
   GstBuffer *preroll;
   GstCaps *preroll_caps;
   GstCaps *last_caps;
+  GstSegment preroll_segment;
   GstSegment last_segment;
   gboolean flushing;
   gboolean unlock;
@@ -214,7 +215,7 @@ gst_app_sink_class_init (GstAppSinkClass * klass)
    * @appsink: the appsink element that emitted the signal
    *
    * Signal that the end-of-stream has been reached. This signal is emitted from
-   * the steaming thread.
+   * the streaming thread.
    */
   gst_app_sink_signals[SIGNAL_EOS] =
       g_signal_new ("eos", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
@@ -226,7 +227,7 @@ gst_app_sink_class_init (GstAppSinkClass * klass)
    *
    * Signal that a new preroll sample is available.
    *
-   * This signal is emitted from the steaming thread and only when the
+   * This signal is emitted from the streaming thread and only when the
    * "emit-signals" property is %TRUE.
    *
    * The new preroll sample can be retrieved with the "pull-preroll" action
@@ -247,7 +248,7 @@ gst_app_sink_class_init (GstAppSinkClass * klass)
    *
    * Signal that a new sample is available.
    *
-   * This signal is emitted from the steaming thread and only when the
+   * This signal is emitted from the streaming thread and only when the
    * "emit-signals" property is %TRUE.
    *
    * The new sample can be retrieved with the "pull-sample" action
@@ -519,6 +520,7 @@ gst_app_sink_start (GstBaseSink * psink)
   GST_DEBUG_OBJECT (appsink, "starting");
   priv->flushing = FALSE;
   priv->started = TRUE;
+  gst_segment_init (&priv->preroll_segment, GST_FORMAT_TIME);
   gst_segment_init (&priv->last_segment, GST_FORMAT_TIME);
   g_mutex_unlock (&priv->mutex);
 
@@ -536,8 +538,11 @@ gst_app_sink_stop (GstBaseSink * psink)
   priv->flushing = TRUE;
   priv->started = FALSE;
   gst_app_sink_flush_unlocked (appsink);
+  gst_buffer_replace (&priv->preroll, NULL);
   gst_caps_replace (&priv->preroll_caps, NULL);
   gst_caps_replace (&priv->last_caps, NULL);
+  gst_segment_init (&priv->preroll_segment, GST_FORMAT_UNDEFINED);
+  gst_segment_init (&priv->last_segment, GST_FORMAT_UNDEFINED);
   g_mutex_unlock (&priv->mutex);
 
   return TRUE;
@@ -552,7 +557,8 @@ gst_app_sink_setcaps (GstBaseSink * sink, GstCaps * caps)
   g_mutex_lock (&priv->mutex);
   GST_DEBUG_OBJECT (appsink, "receiving CAPS");
   g_queue_push_tail (priv->queue, gst_event_new_caps (caps));
-  gst_caps_replace (&priv->preroll_caps, caps);
+  if (!priv->preroll)
+    gst_caps_replace (&priv->preroll_caps, caps);
   g_mutex_unlock (&priv->mutex);
 
   return TRUE;
@@ -569,22 +575,40 @@ gst_app_sink_event (GstBaseSink * sink, GstEvent * event)
       g_mutex_lock (&priv->mutex);
       GST_DEBUG_OBJECT (appsink, "receiving SEGMENT");
       g_queue_push_tail (priv->queue, gst_event_ref (event));
+      if (!priv->preroll)
+        gst_event_copy_segment (event, &priv->preroll_segment);
       g_mutex_unlock (&priv->mutex);
       break;
-    case GST_EVENT_EOS:
+    case GST_EVENT_EOS:{
+      gboolean emit = TRUE;
+
       g_mutex_lock (&priv->mutex);
       GST_DEBUG_OBJECT (appsink, "receiving EOS");
       priv->is_eos = TRUE;
       g_cond_signal (&priv->cond);
       g_mutex_unlock (&priv->mutex);
 
-      /* emit EOS now */
-      if (priv->callbacks.eos)
-        priv->callbacks.eos (appsink, priv->user_data);
-      else
-        g_signal_emit (appsink, gst_app_sink_signals[SIGNAL_EOS], 0);
+      g_mutex_lock (&priv->mutex);
+      /* wait until all buffers are consumed or we're flushing.
+       * Otherwise we might signal EOS before all buffers are
+       * consumed, which is a bit confusing for the application
+       */
+      while (priv->num_buffers > 0 && !priv->flushing)
+        g_cond_wait (&priv->cond, &priv->mutex);
+      if (priv->flushing)
+        emit = FALSE;
+      g_mutex_unlock (&priv->mutex);
+
+      if (emit) {
+        /* emit EOS now */
+        if (priv->callbacks.eos)
+          priv->callbacks.eos (appsink, priv->user_data);
+        else
+          g_signal_emit (appsink, gst_app_sink_signals[SIGNAL_EOS], 0);
+      }
 
       break;
+    }
     case GST_EVENT_FLUSH_START:
       /* we don't have to do anything here, the base class will call unlock
        * which will make sure we exit the _render method */
@@ -820,8 +844,8 @@ gst_app_sink_query (GstBaseSink * bsink, GstQuery * query)
  *
  * Set the capabilities on the appsink element.  This function takes
  * a copy of the caps structure. After calling this method, the sink will only
- * accept caps that match @caps. If @caps is non-fixed, you must check the caps
- * on the buffers to get the actual used caps.
+ * accept caps that match @caps. If @caps is non-fixed, or incomplete,
+ * you must check the caps on the samples to get the actual used caps.
  */
 void
 gst_app_sink_set_caps (GstAppSink * appsink, const GstCaps * caps)
@@ -1124,7 +1148,7 @@ gst_app_sink_pull_preroll (GstAppSink * appsink)
     g_cond_wait (&priv->cond, &priv->mutex);
   }
   sample =
-      gst_sample_new (priv->preroll, priv->preroll_caps, &priv->last_segment,
+      gst_sample_new (priv->preroll, priv->preroll_caps, &priv->preroll_segment,
       NULL);
   GST_DEBUG_OBJECT (appsink, "we have the preroll sample %p", sample);
   g_mutex_unlock (&priv->mutex);

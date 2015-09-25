@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstcolorbalance</title>
+<title>gstcolorbalance: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideosink.html" title="gstvideosink">
 <link rel="next" href="gst-plugins-base-libs-gstcolorbalancechannel.html" title="gstcolorbalancechannel">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -94,7 +94,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance-value-changed" title="The “value-changed” signal">value-changed</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -135,7 +135,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstcolorbalance.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.15.8.9.2"></a><p>
+<a name="id-1.2.15.12.9.2"></a><p>
 This interface is implemented by elements which can perform some color
 balance operation on video frames they process. For example, modifying
 the brightness, contrast, hue or saturation.
@@ -153,7 +153,7 @@ Example elements are 'xvimagesink' and 'colorbalance'
 gst_color_balance_list_channels (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a> *balance</code></em>);</pre>
 <p>Retrieve a list of the available channels.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.10.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -168,7 +168,7 @@ gst_color_balance_list_channels (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.12.10.2.6"></a><h4>Returns</h4>
 <p> A
 GList containing pointers to <a class="link" href="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel"><span class="type">GstColorBalanceChannel</span></a>
 objects. The list is owned by the <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a>
@@ -188,7 +188,7 @@ and max_value.</p>
         <span class="type">GstColorBalanceChannel.max_value</span> members of the
         <a class="link" href="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel"><span class="type">GstColorBalanceChannel</span></a> object.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.10.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -210,9 +210,8 @@ and max_value.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.3.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.12.10.3.7"></a><h4>Returns</h4>
 <p> The current value of the channel.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -228,7 +227,7 @@ be between min_value and max_value.</p>
         <span class="type">GstColorBalanceChannel.max_value</span> members of the
         <a class="link" href="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel"><span class="type">GstColorBalanceChannel</span></a> object.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.4.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.10.4.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -267,7 +266,7 @@ interface. It fires the <a class="link" href="gst-plugins-base-libs-gstcolorbala
 instance, and the <a class="link" href="gst-plugins-base-libs-gstcolorbalancechannel.html#GstColorBalanceChannel-value-changed" title="The “value-changed” signal"><span class="type">“value-changed”</span></a> signal on the
 channel object.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.10.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -301,7 +300,7 @@ channel object.</p>
 gst_color_balance_get_balance_type (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalance"><span class="type">GstColorBalance</span></a> *balance</code></em>);</pre>
 <p>Get the <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceType" title="enum GstColorBalanceType"><span class="type">GstColorBalanceType</span></a> of this implementation.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.10.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -316,9 +315,8 @@ gst_color_balance_get_balance_type (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.8.10.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.12.10.6.6"></a><h4>Returns</h4>
 <p> A the <a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#GstColorBalanceType" title="enum GstColorBalanceType"><span class="type">GstColorBalanceType</span></a>.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -352,7 +350,7 @@ gst_color_balance_get_balance_type (<em class="parameter"><code><a class="link" 
 </pre>
 <p>Color-balance interface.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.11.3.5"></a><h4>Members</h4>
+<a name="id-1.2.15.12.11.3.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -382,8 +380,8 @@ gst_color_balance_get_balance_type (<em class="parameter"><code><a class="link" 
 </tr>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstColorBalanceInterface.get-balance-type"></a>get_balance_type</code></em> ()</p></td>
-<td> </td>
-<td> </td>
+<td class="struct_member_description"><p>implementation type</p></td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="GstColorBalanceInterface.value-changed"></a>value_changed</code></em> ()</p></td>
@@ -402,7 +400,7 @@ operations in software or in dedicated hardware. In general, dedicated
 hardware implementations (such as those provided by xvimagesink) are
 preferred.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.11.4.4"></a><h4>Members</h4>
+<a name="id-1.2.15.12.11.4.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -442,7 +440,7 @@ user_function (<a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                user_data)</pre>
 <p>Fired when the value of the indicated channel has changed.</p>
 <div class="refsect3">
-<a name="id-1.2.15.8.12.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.12.12.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -473,12 +471,11 @@ user_function (<a class="link" href="gst-plugins-base-libs-gstcolorbalance.html#
 </tbody>
 </table></div>
 </div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

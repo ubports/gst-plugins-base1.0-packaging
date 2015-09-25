@@ -28,8 +28,8 @@
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch -v videotestsrc pattern=snow ! ximagesink
- * ]| Shows random noise in an X window.
+ * gst-launch-1.0 -v videotestsrc pattern=snow ! video/x-raw,width=1280,height=720 ! autovideosink
+ * ]| Shows random noise in a video window.
  * </refsect2>
  */
 
@@ -74,8 +74,7 @@ enum
   PROP_YOFFSET,
   PROP_FOREGROUND_COLOR,
   PROP_BACKGROUND_COLOR,
-  PROP_HORIZONTAL_SPEED,
-  PROP_LAST
+  PROP_HORIZONTAL_SPEED
 };
 
 
@@ -151,6 +150,8 @@ gst_video_test_src_pattern_get_type (void)
     {GST_VIDEO_TEST_SRC_BAR, "Bar", "bar"},
     {GST_VIDEO_TEST_SRC_PINWHEEL, "Pinwheel", "pinwheel"},
     {GST_VIDEO_TEST_SRC_SPOKES, "Spokes", "spokes"},
+    {GST_VIDEO_TEST_SRC_GRADIENT, "Gradient", "gradient"},
+    {GST_VIDEO_TEST_SRC_COLORS, "Colors", "colors"},
     {0, NULL, NULL}
   };
 
@@ -183,8 +184,9 @@ gst_video_test_src_class_init (GstVideoTestSrcClass * klass)
           DEFAULT_PATTERN, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_TIMESTAMP_OFFSET,
       g_param_spec_int64 ("timestamp-offset", "Timestamp offset",
-          "An offset added to timestamps set on buffers (in ns)", G_MININT64,
-          G_MAXINT64, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+          "An offset added to timestamps set on buffers (in ns)", 0,
+          (G_MAXLONG == G_MAXINT64) ? G_MAXINT64 : (G_MAXLONG * GST_SECOND - 1),
+          0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class, PROP_IS_LIVE,
       g_param_spec_boolean ("is-live", "Is Live",
           "Whether to act as a live source", DEFAULT_IS_LIVE,
@@ -422,6 +424,12 @@ gst_video_test_src_set_pattern (GstVideoTestSrc * videotestsrc,
       break;
     case GST_VIDEO_TEST_SRC_SPOKES:
       videotestsrc->make_image = gst_video_test_src_spokes;
+      break;
+    case GST_VIDEO_TEST_SRC_GRADIENT:
+      videotestsrc->make_image = gst_video_test_src_gradient;
+      break;
+    case GST_VIDEO_TEST_SRC_COLORS:
+      videotestsrc->make_image = gst_video_test_src_colors;
       break;
     default:
       g_assert_not_reached ();
@@ -776,7 +784,7 @@ unsupported_caps:
 static gboolean
 gst_video_test_src_query (GstBaseSrc * bsrc, GstQuery * query)
 {
-  gboolean res;
+  gboolean res = FALSE;
   GstVideoTestSrc *src;
 
   src = GST_VIDEO_TEST_SRC (bsrc);
@@ -792,6 +800,23 @@ gst_video_test_src_query (GstBaseSrc * bsrc, GstQuery * query)
           gst_video_info_convert (&src->info, src_fmt, src_val, dest_fmt,
           &dest_val);
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
+      break;
+    }
+    case GST_QUERY_LATENCY:
+    {
+      if (src->info.fps_n > 0) {
+        GstClockTime latency;
+
+        latency =
+            gst_util_uint64_scale (GST_SECOND, src->info.fps_d,
+            src->info.fps_n);
+        gst_query_set_latency (query,
+            gst_base_src_is_live (GST_BASE_SRC_CAST (src)), latency,
+            GST_CLOCK_TIME_NONE);
+        GST_DEBUG_OBJECT (src, "Reporting latency of %" GST_TIME_FORMAT,
+            GST_TIME_ARGS (latency));
+        res = TRUE;
+      }
       break;
     }
     case GST_QUERY_DURATION:{
@@ -832,7 +857,7 @@ gst_video_test_src_get_times (GstBaseSrc * basesrc, GstBuffer * buffer,
 {
   /* for live sources, sync on the timestamp of the buffer */
   if (gst_base_src_is_live (basesrc)) {
-    GstClockTime timestamp = GST_BUFFER_DTS (buffer);
+    GstClockTime timestamp = GST_BUFFER_PTS (buffer);
 
     if (GST_CLOCK_TIME_IS_VALID (timestamp)) {
       /* get duration to calculate end time */
@@ -920,11 +945,11 @@ gst_video_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer)
   if (!gst_video_frame_map (&frame, &src->info, buffer, GST_MAP_WRITE))
     goto invalid_frame;
 
-  GST_BUFFER_DTS (buffer) =
+  GST_BUFFER_PTS (buffer) =
       src->accum_rtime + src->timestamp_offset + src->running_time;
-  GST_BUFFER_PTS (buffer) = GST_BUFFER_DTS (buffer);
+  GST_BUFFER_DTS (buffer) = GST_CLOCK_TIME_NONE;
 
-  gst_object_sync_values (GST_OBJECT (psrc), GST_BUFFER_DTS (buffer));
+  gst_object_sync_values (GST_OBJECT (psrc), GST_BUFFER_PTS (buffer));
 
   src->make_image (src, &frame);
 
