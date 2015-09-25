@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: theoraenc</title>
+<title>theoraenc: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-theoradec.html" title="theoradec">
 <link rel="next" href="gst-plugins-base-plugins-theoraparse.html" title="theoraparse">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,7 +30,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-theoraenc.top_of_page"></a>theoraenc</span></h2>
-<p>theoraenc — encode raw YUV video to a theora stream</p>
+<p>theoraenc</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -85,7 +85,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">GstTheoraEncMultipassMode</span></td>
+<td class="property_type"><a class="link" href="gst-plugins-base-plugins-theoraenc.html#GstTheoraEncMultipassMode" title="enum GstTheoraEncMultipassMode"><span class="type">GstTheoraEncMultipassMode</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--multipass-mode" title="The “multipass-mode” property">multipass-mode</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -119,10 +119,16 @@
 <col width="150px" class="name">
 <col class="description">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="datatype_keyword">struct</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc-struct" title="struct GstTheoraEnc">GstTheoraEnc</a></td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-plugins-theoraenc.html#GstTheoraEncMultipassMode" title="enum GstTheoraEncMultipassMode">GstTheoraEncMultipassMode</a></td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -146,7 +152,7 @@ GstTheoraEnc implements
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.35.8.2.1"></a><h3>Element Information</h3>
+<a name="id-1.2.42.8.2.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -172,7 +178,7 @@ GstTheoraEnc implements
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.35.8.2.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.42.8.2.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -223,19 +229,47 @@ GstTheoraEnc implements
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-theoraenc.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-theoraenc.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstTheoraEnc-struct"></a><h3>struct GstTheoraEnc</h3>
 <pre class="programlisting">struct GstTheoraEnc;</pre>
-<p>
-</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstTheoraEncMultipassMode"></a><h3>enum GstTheoraEncMultipassMode</h3>
+<div class="refsect3">
+<a name="id-1.2.42.10.3.3"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="MULTIPASS-MODE-SINGLE-PASS:CAPS"></a>MULTIPASS_MODE_SINGLE_PASS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MULTIPASS-MODE-FIRST-PASS:CAPS"></a>MULTIPASS_MODE_FIRST_PASS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MULTIPASS-MODE-SECOND-PASS:CAPS"></a>MULTIPASS_MODE_SECOND_PASS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="refsect1">
@@ -309,7 +343,7 @@ GstTheoraEnc implements
 <hr>
 <div class="refsect2">
 <a name="GstTheoraEnc--multipass-mode"></a><h3>The <code class="literal">“multipass-mode”</code> property</h3>
-<pre class="programlisting">  “multipass-mode”           <span class="type">GstTheoraEncMultipassMode</span></pre>
+<pre class="programlisting">  “multipass-mode”           <a class="link" href="gst-plugins-base-plugins-theoraenc.html#GstTheoraEncMultipassMode" title="enum GstTheoraEncMultipassMode"><span class="type">GstTheoraEncMultipassMode</span></a></pre>
 <p>Single pass or first/second pass.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: Single pass</p>
@@ -352,7 +386,6 @@ GstTheoraEnc implements
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

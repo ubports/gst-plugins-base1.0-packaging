@@ -65,10 +65,13 @@ typedef struct
   GstSegment segment;
 
   gboolean wait;                /* TRUE if waiting/blocking */
-  gboolean new_stream;
-  gboolean drop_discont;
   gboolean is_eos;              /* TRUE if EOS was received */
+  gboolean eos_sent;            /* when EOS was sent downstream */
+  gboolean flushing;            /* set after flush-start and before flush-stop */
   gboolean seen_data;
+  GstClockTime gap_duration;
+
+  GstStreamFlags flags;
 
   GCond stream_finish_cond;
 
@@ -203,6 +206,64 @@ out:
   return ret;
 }
 
+/* must be called with the STREAM_SYNCHRONIZER_LOCK */
+static gboolean
+gst_stream_synchronizer_wait (GstStreamSynchronizer * self, GstPad * pad)
+{
+  gboolean ret = FALSE;
+  GstStream *stream;
+
+  while (!self->eos && !self->flushing) {
+    stream = gst_pad_get_element_private (pad);
+    if (!stream) {
+      GST_WARNING_OBJECT (pad, "unknown stream");
+      return ret;
+    }
+    if (stream->flushing) {
+      GST_DEBUG_OBJECT (pad, "Flushing");
+      break;
+    }
+    if (!stream->wait) {
+      GST_DEBUG_OBJECT (pad, "Stream not waiting anymore");
+      break;
+    }
+
+    if (self->send_gap_event) {
+      GstEvent *event;
+
+      if (!GST_CLOCK_TIME_IS_VALID (stream->segment.position)) {
+        GST_WARNING_OBJECT (pad, "Have no position and can't send GAP event");
+        self->send_gap_event = FALSE;
+        continue;
+      }
+
+      event =
+          gst_event_new_gap (stream->segment.position, stream->gap_duration);
+      GST_DEBUG_OBJECT (pad,
+          "Send GAP event, position: %" GST_TIME_FORMAT " duration: %"
+          GST_TIME_FORMAT, GST_TIME_ARGS (stream->segment.position),
+          GST_TIME_ARGS (stream->gap_duration));
+
+      /* drop lock when sending GAP event, which may block in e.g. preroll */
+      GST_STREAM_SYNCHRONIZER_UNLOCK (self);
+      ret = gst_pad_push_event (pad, event);
+      GST_STREAM_SYNCHRONIZER_LOCK (self);
+      if (!ret) {
+        return ret;
+      }
+      self->send_gap_event = FALSE;
+
+      /* force a check on the loop conditions as we unlocked a
+       * few lines above and those variables could have changed */
+      continue;
+    }
+
+    g_cond_wait (&stream->stream_finish_cond, &self->lock);
+  }
+
+  return TRUE;
+}
+
 /* sinkpad functions */
 static gboolean
 gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
@@ -239,12 +300,15 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
         break;
       }
 
+      gst_event_parse_stream_flags (event, &stream->flags);
+
       if ((have_group_id && stream->group_id != group_id) || (!have_group_id
               && stream->stream_start_seqnum != seqnum)) {
         stream->is_eos = FALSE;
+        stream->eos_sent = FALSE;
+        stream->flushing = FALSE;
         stream->stream_start_seqnum = seqnum;
         stream->group_id = group_id;
-        stream->drop_discont = TRUE;
 
         if (!have_group_id) {
           /* Check if this belongs to a stream that is already there,
@@ -264,7 +328,6 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
                 "Stream %d belongs to running stream %d, no waiting",
                 stream->stream_number, ostream->stream_number);
             stream->wait = FALSE;
-            stream->new_stream = FALSE;
 
             GST_STREAM_SYNCHRONIZER_UNLOCK (self);
             break;
@@ -279,13 +342,13 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
         GST_DEBUG_OBJECT (pad, "Stream %d changed", stream->stream_number);
 
         stream->wait = TRUE;
-        stream->new_stream = TRUE;
 
         for (l = self->streams; l; l = l->next) {
           GstStream *ostream = l->data;
 
-          all_wait = all_wait && ostream->wait && (!have_group_id
-              || ostream->group_id == group_id);
+          all_wait = all_wait && ((ostream->flags & GST_STREAM_FLAG_SPARSE)
+              || (ostream->wait && (!have_group_id
+                      || ostream->group_id == group_id)));
           if (!all_wait)
             break;
         }
@@ -316,19 +379,26 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
               position_running_time =
                   gst_segment_to_running_time (&ostream->segment,
                   GST_FORMAT_TIME, ostream->segment.position);
-              position =
-                  MAX (position, MAX (stop_running_time,
-                      position_running_time));
+
+              position_running_time =
+                  MAX (position_running_time, stop_running_time);
+              position_running_time -=
+                  gst_segment_to_running_time (&ostream->segment,
+                  GST_FORMAT_TIME, ostream->segment.start);
+              position_running_time = MAX (0, position_running_time);
+
+              position = MAX (position, position_running_time);
             }
           }
-          position = MAX (0, position);
-          self->group_start_time = MAX (self->group_start_time, position);
+
+          self->group_start_time += position;
 
           GST_DEBUG_OBJECT (self, "New group start time: %" GST_TIME_FORMAT,
               GST_TIME_ARGS (self->group_start_time));
 
           for (l = self->streams; l; l = l->next) {
             GstStream *ostream = l->data;
+            ostream->wait = FALSE;
             g_cond_broadcast (&ostream->stream_finish_cond);
           }
         }
@@ -344,16 +414,8 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
       gst_event_copy_segment (event, &segment);
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
-      stream = gst_pad_get_element_private (pad);
-      if (stream) {
-        if (stream->wait) {
-          GST_DEBUG_OBJECT (pad, "Stream %d is waiting", stream->stream_number);
-          g_cond_wait (&stream->stream_finish_cond, &self->lock);
-          stream = gst_pad_get_element_private (pad);
-          if (stream)
-            stream->wait = FALSE;
-        }
-      }
+
+      gst_stream_synchronizer_wait (self, pad);
 
       if (self->shutdown) {
         GST_STREAM_SYNCHRONIZER_UNLOCK (self);
@@ -361,11 +423,13 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
         goto done;
       }
 
+      stream = gst_pad_get_element_private (pad);
       if (stream && segment.format == GST_FORMAT_TIME) {
-        if (stream->new_stream) {
-          stream->new_stream = FALSE;
-          segment.base = self->group_start_time;
-        }
+        GST_DEBUG_OBJECT (pad,
+            "New stream, updating base from %" GST_TIME_FORMAT " to %"
+            GST_TIME_FORMAT, GST_TIME_ARGS (segment.base),
+            GST_TIME_ARGS (segment.base + self->group_start_time));
+        segment.base += self->group_start_time;
 
         GST_DEBUG_OBJECT (pad, "Segment was: %" GST_SEGMENT_FORMAT,
             &stream->segment);
@@ -397,8 +461,10 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
       stream = gst_pad_get_element_private (pad);
+      self->eos = FALSE;
       if (stream) {
         GST_DEBUG_OBJECT (pad, "Flushing streams");
+        stream->flushing = TRUE;
         g_cond_broadcast (&stream->stream_finish_cond);
       }
       GST_STREAM_SYNCHRONIZER_UNLOCK (self);
@@ -406,6 +472,8 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
     }
     case GST_EVENT_FLUSH_STOP:{
       GstStream *stream;
+      GList *l;
+      GstClockTime new_group_start_time = 0;
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
       stream = gst_pad_get_element_private (pad);
@@ -415,13 +483,53 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
         gst_segment_init (&stream->segment, GST_FORMAT_UNDEFINED);
 
         stream->is_eos = FALSE;
+        stream->eos_sent = FALSE;
+        stream->flushing = FALSE;
         stream->wait = FALSE;
-        stream->new_stream = FALSE;
-        stream->drop_discont = FALSE;
-        stream->seen_data = FALSE;
         g_cond_broadcast (&stream->stream_finish_cond);
       }
+
+      for (l = self->streams; l; l = l->next) {
+        GstStream *ostream = l->data;
+        GstClockTime start_running_time;
+
+        if (ostream == stream)
+          continue;
+
+        if (ostream->segment.format == GST_FORMAT_TIME) {
+          start_running_time =
+              gst_segment_to_running_time (&ostream->segment,
+              GST_FORMAT_TIME, ostream->segment.start);
+
+          new_group_start_time = MAX (new_group_start_time, start_running_time);
+        }
+      }
+
+      GST_DEBUG_OBJECT (pad,
+          "Updating group start time from %" GST_TIME_FORMAT " to %"
+          GST_TIME_FORMAT, GST_TIME_ARGS (self->group_start_time),
+          GST_TIME_ARGS (new_group_start_time));
+      self->group_start_time = new_group_start_time;
       GST_STREAM_SYNCHRONIZER_UNLOCK (self);
+      break;
+    }
+      /* unblocking EOS wait when track switch. */
+    case GST_EVENT_CUSTOM_DOWNSTREAM_OOB:{
+      if (gst_event_has_name (event, "playsink-custom-video-flush")
+          || gst_event_has_name (event, "playsink-custom-audio-flush")
+          || gst_event_has_name (event, "playsink-custom-subtitle-flush")) {
+        GstStream *stream;
+
+        GST_STREAM_SYNCHRONIZER_LOCK (self);
+        stream = gst_pad_get_element_private (pad);
+        if (stream) {
+          stream->is_eos = FALSE;
+          stream->eos_sent = FALSE;
+          stream->wait = FALSE;
+          g_cond_broadcast (&stream->stream_finish_cond);
+        }
+        GST_STREAM_SYNCHRONIZER_UNLOCK (self);
+      }
       break;
     }
     case GST_EVENT_EOS:{
@@ -454,6 +562,8 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
       else
         timestamp = stream->segment.stop;
 
+      stream->segment.position = timestamp;
+
       for (l = self->streams; l; l = l->next) {
         GstStream *ostream = l->data;
 
@@ -464,6 +574,7 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
 
       if (all_eos) {
         GST_DEBUG_OBJECT (self, "All streams are EOS -- forwarding");
+        self->eos = TRUE;
         for (l = self->streams; l; l = l->next) {
           GstStream *ostream = l->data;
           /* local snapshot of current pads */
@@ -471,41 +582,54 @@ gst_stream_synchronizer_sink_event (GstPad * pad, GstObject * parent,
           pads = g_slist_prepend (pads, ostream->srcpad);
         }
       }
-      GST_STREAM_SYNCHRONIZER_UNLOCK (self);
-      /* drop lock when sending eos, which may block in e.g. preroll */
       if (pads) {
         GstPad *pad;
         GSList *epad;
+        GstStream *ostream;
 
         ret = TRUE;
         epad = pads;
         while (epad) {
           pad = epad->data;
-          GST_DEBUG_OBJECT (pad, "Pushing EOS");
-          ret = ret && gst_pad_push_event (pad, gst_event_new_eos ());
+          ostream = gst_pad_get_element_private (pad);
+          if (ostream) {
+            g_cond_broadcast (&ostream->stream_finish_cond);
+          }
+
           gst_object_unref (pad);
           epad = g_slist_next (epad);
         }
         g_slist_free (pads);
       } else {
-        /* if EOS, but no data has passed, then send something to replace EOS
-         * for preroll purposes */
-        if (!seen_data) {
-          GstEvent *gap_event;
-
-          gap_event = gst_event_new_gap (timestamp, GST_CLOCK_TIME_NONE);
-          ret = gst_pad_push_event (srcpad, gap_event);
-        } else {
-          GstEvent *gap_event;
-
-          /* FIXME: Also send a GAP event to let audio sinks start their
-           * clock in case they did not have enough data yet */
-          gap_event = gst_event_new_gap (timestamp, GST_CLOCK_TIME_NONE);
-          ret = gst_pad_push_event (srcpad, gap_event);
+        if (seen_data) {
+          self->send_gap_event = TRUE;
+          stream->gap_duration = GST_CLOCK_TIME_NONE;
+          stream->wait = TRUE;
+          ret = gst_stream_synchronizer_wait (self, srcpad);
         }
       }
+
+      /* send eos if haven't seen data. seen_data will be true if data buffer
+       * of the track have received in anytime. sink is ready if seen_data is
+       * true, so can send GAP event. Will send EOS if sink isn't ready. The
+       * scenario for the case is one track haven't any media data and then
+       * send EOS. Or no any valid media data in one track, so decoder can't
+       * get valid CAPS for the track. sink can't ready without received CAPS.*/
+      if (!seen_data || self->eos) {
+        GST_DEBUG_OBJECT (pad, "send EOS event");
+        /* drop lock when sending eos, which may block in e.g. preroll */
+        GST_STREAM_SYNCHRONIZER_UNLOCK (self);
+        ret = gst_pad_push_event (srcpad, gst_event_new_eos ());
+        GST_STREAM_SYNCHRONIZER_LOCK (self);
+        stream = gst_pad_get_element_private (pad);
+        if (stream) {
+          stream->eos_sent = TRUE;
+        }
+      }
+
       gst_object_unref (srcpad);
       gst_event_unref (event);
+      GST_STREAM_SYNCHRONIZER_UNLOCK (self);
       goto done;
     }
     default:
@@ -550,15 +674,6 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
 
   if (stream) {
     stream->seen_data = TRUE;
-    if (stream->drop_discont) {
-      if (GST_BUFFER_IS_DISCONT (buffer)) {
-        GST_DEBUG_OBJECT (pad, "removing DISCONT from buffer %p", buffer);
-        buffer = gst_buffer_make_writable (buffer);
-        GST_BUFFER_FLAG_UNSET (buffer, GST_BUFFER_FLAG_DISCONT);
-      }
-      stream->drop_discont = FALSE;
-    }
-
     if (stream->segment.format == GST_FORMAT_TIME
         && GST_CLOCK_TIME_IS_VALID (timestamp)) {
       GST_LOG_OBJECT (pad,
@@ -611,7 +726,8 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
       GstStream *ostream = l->data;
       gint64 position;
 
-      if (!ostream->is_eos || ostream->segment.format != GST_FORMAT_TIME)
+      if (!ostream->is_eos || ostream->eos_sent ||
+          ostream->segment.format != GST_FORMAT_TIME)
         continue;
 
       if (ostream->segment.position != -1)
@@ -633,8 +749,9 @@ gst_stream_synchronizer_sink_chain (GstPad * pad, GstObject * parent,
 
         ostream->segment.position = new_start;
 
-        gst_pad_push_event (ostream->srcpad,
-            gst_event_new_gap (position, new_start - position));
+        self->send_gap_event = TRUE;
+        ostream->gap_duration = new_start - position;
+        g_cond_broadcast (&ostream->stream_finish_cond);
       }
     }
     GST_STREAM_SYNCHRONIZER_UNLOCK (self);
@@ -663,6 +780,7 @@ gst_stream_synchronizer_request_new_pad (GstElement * element,
   stream->stream_start_seqnum = G_MAXUINT32;
   stream->segment_seqnum = G_MAXUINT32;
   stream->group_id = G_MAXUINT;
+  stream->seen_data = FALSE;
 
   tmp = g_strdup_printf ("sink_%u", self->current_stream_number);
   stream->sinkpad = gst_pad_new_from_static_template (&sinktemplate, tmp);
@@ -742,28 +860,6 @@ gst_stream_synchronizer_release_stream (GstStreamSynchronizer * self,
   gst_pad_set_active (stream->sinkpad, FALSE);
   gst_element_remove_pad (GST_ELEMENT_CAST (self), stream->sinkpad);
 
-  if (stream->segment.format == GST_FORMAT_TIME) {
-    gint64 stop_running_time;
-    gint64 position_running_time;
-
-    stop_running_time =
-        gst_segment_to_running_time (&stream->segment, GST_FORMAT_TIME,
-        stream->segment.stop);
-    position_running_time =
-        gst_segment_to_running_time (&stream->segment, GST_FORMAT_TIME,
-        stream->segment.position);
-    stop_running_time = MAX (stop_running_time, position_running_time);
-
-    if (stop_running_time > self->group_start_time) {
-      GST_DEBUG_OBJECT (stream->sinkpad,
-          "Updating global start running time from %" GST_TIME_FORMAT " to %"
-          GST_TIME_FORMAT, GST_TIME_ARGS (self->group_start_time),
-          GST_TIME_ARGS (stop_running_time));
-
-      self->group_start_time = stop_running_time;
-    }
-  }
-
   g_cond_clear (&stream->stream_finish_cond);
   g_slice_free (GstStream, stream);
 
@@ -807,6 +903,7 @@ gst_stream_synchronizer_change_state (GstElement * element,
     case GST_STATE_CHANGE_NULL_TO_READY:
       GST_DEBUG_OBJECT (self, "State change NULL->READY");
       self->shutdown = FALSE;
+      self->send_gap_event = FALSE;
       break;
     case GST_STATE_CHANGE_READY_TO_PAUSED:
       GST_DEBUG_OBJECT (self, "State change READY->PAUSED");
@@ -814,18 +911,21 @@ gst_stream_synchronizer_change_state (GstElement * element,
       self->have_group_id = TRUE;
       self->group_id = G_MAXUINT;
       self->shutdown = FALSE;
+      self->flushing = FALSE;
+      self->eos = FALSE;
       break;
     case GST_STATE_CHANGE_PAUSED_TO_READY:{
       GList *l;
 
-      GST_DEBUG_OBJECT (self, "State change READY->NULL");
+      GST_DEBUG_OBJECT (self, "State change PAUSED->READY");
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
+      self->flushing = TRUE;
+      self->shutdown = TRUE;
       for (l = self->streams; l; l = l->next) {
         GstStream *ostream = l->data;
         g_cond_broadcast (&ostream->stream_finish_cond);
       }
-      self->shutdown = TRUE;
       GST_STREAM_SYNCHRONIZER_UNLOCK (self);
     }
     default:
@@ -838,6 +938,26 @@ gst_stream_synchronizer_change_state (GstElement * element,
     return ret;
 
   switch (transition) {
+    case GST_STATE_CHANGE_PLAYING_TO_PAUSED:{
+      GList *l;
+
+      GST_DEBUG_OBJECT (self, "State change PLAYING->PAUSED");
+
+      GST_STREAM_SYNCHRONIZER_LOCK (self);
+      for (l = self->streams; l; l = l->next) {
+        GstStream *stream = l->data;
+        /* send GAP event to sink to finished pre-roll. The reason is function
+         * chain () will be blocked on pad_push (), so can't trigger the track
+         * which reach EOS to send GAP event. */
+        if (stream->is_eos && !stream->eos_sent) {
+          self->send_gap_event = TRUE;
+          stream->gap_duration = GST_CLOCK_TIME_NONE;
+          g_cond_broadcast (&stream->stream_finish_cond);
+        }
+      }
+      GST_STREAM_SYNCHRONIZER_UNLOCK (self);
+      break;
+    }
     case GST_STATE_CHANGE_PAUSED_TO_READY:{
       GList *l;
 
@@ -845,14 +965,16 @@ gst_stream_synchronizer_change_state (GstElement * element,
       self->group_start_time = 0;
 
       GST_STREAM_SYNCHRONIZER_LOCK (self);
+      self->send_gap_event = FALSE;
       for (l = self->streams; l; l = l->next) {
         GstStream *stream = l->data;
 
         gst_segment_init (&stream->segment, GST_FORMAT_UNDEFINED);
+        stream->gap_duration = GST_CLOCK_TIME_NONE;
         stream->wait = FALSE;
-        stream->new_stream = FALSE;
-        stream->drop_discont = FALSE;
         stream->is_eos = FALSE;
+        stream->eos_sent = FALSE;
+        stream->flushing = FALSE;
       }
       GST_STREAM_SYNCHRONIZER_UNLOCK (self);
       break;

@@ -59,6 +59,7 @@ G_BEGIN_DECLS
 
 #define GST_TYPE_AUDIO_BASE_SINK                (gst_audio_base_sink_get_type())
 #define GST_AUDIO_BASE_SINK(obj)                (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_AUDIO_BASE_SINK,GstAudioBaseSink))
+#define GST_AUDIO_BASE_SINK_CAST(obj)           ((GstAudioBaseSink*)obj)
 #define GST_AUDIO_BASE_SINK_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_AUDIO_BASE_SINK,GstAudioBaseSinkClass))
 #define GST_AUDIO_BASE_SINK_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), GST_TYPE_AUDIO_BASE_SINK, GstAudioBaseSinkClass))
 #define GST_IS_AUDIO_BASE_SINK(obj)             (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_AUDIO_BASE_SINK))
@@ -85,6 +86,7 @@ G_BEGIN_DECLS
  * @GST_AUDIO_BASE_SINK_SLAVE_SKEW: Adjust playout pointer when master clock
  * drifts too much.
  * @GST_AUDIO_BASE_SINK_SLAVE_NONE: No adjustment is done.
+ * @GST_AUDIO_BASE_SINK_SLAVE_CUSTOM: Use custom clock slaving algorithm (Since: 1.6)
  *
  * Different possible clock slaving algorithms used when the internal audio
  * clock is not selected as the pipeline master clock.
@@ -93,7 +95,8 @@ typedef enum
 {
   GST_AUDIO_BASE_SINK_SLAVE_RESAMPLE,
   GST_AUDIO_BASE_SINK_SLAVE_SKEW,
-  GST_AUDIO_BASE_SINK_SLAVE_NONE
+  GST_AUDIO_BASE_SINK_SLAVE_NONE,
+  GST_AUDIO_BASE_SINK_SLAVE_CUSTOM
 } GstAudioBaseSinkSlaveMethod;
 
 #define GST_TYPE_AUDIO_BASE_SINK_SLAVE_METHOD (gst_audio_base_sink_slave_method_get_type ())
@@ -101,6 +104,67 @@ typedef enum
 typedef struct _GstAudioBaseSink GstAudioBaseSink;
 typedef struct _GstAudioBaseSinkClass GstAudioBaseSinkClass;
 typedef struct _GstAudioBaseSinkPrivate GstAudioBaseSinkPrivate;
+
+/**
+ * GstAudioBaseSinkDiscontReason:
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_NO_DISCONT: No discontinuity occurred
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_NEW_CAPS: New caps are set, causing renegotiotion
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_FLUSH: Samples have been flushed
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_SYNC_LATENCY: Sink was synchronized to the estimated latency (occurs during initialization)
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_ALIGNMENT: Aligning buffers failed because the timestamps are too discontinuous
+ * @GST_AUDIO_BASE_SINK_DISCONT_REASON_DEVICE_FAILURE: Audio output device experienced and recovered from an error but introduced latency in the process (see also @gst_audio_base_sink_report_device_failure())
+ *
+ * Different possible reasons for discontinuities. This enum is useful for the custom
+ * slave method.
+ *
+ * Since: 1.6
+ */
+typedef enum
+{
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_NO_DISCONT,
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_NEW_CAPS,
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_FLUSH,
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_SYNC_LATENCY,
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_ALIGNMENT,
+  GST_AUDIO_BASE_SINK_DISCONT_REASON_DEVICE_FAILURE
+} GstAudioBaseSinkDiscontReason;
+
+/**
+ * GstAudioBaseSinkCustomSlavingCallback:
+ * @sink: a #GstAudioBaseSink
+ * @etime: external clock time
+ * @itime: internal clock time
+ * @requested_skew: skew amount requested by the callback
+ * @discont_reason: reason for discontinuity (if any)
+ * @user_data: user data
+ *
+ * This function is set with gst_audio_base_sink_set_custom_slaving_callback()
+ * and is called during playback. It receives the current time of external and
+ * internal clocks, which the callback can then use to apply any custom
+ * slaving/synchronization schemes.
+ *
+ * The external clock is the sink's element clock, the internal one is the
+ * internal audio clock. The internal audio clock's calibration is applied to
+ * the timestamps before they are passed to the callback. The difference between
+ * etime and itime is the skew; how much internal and external clock lie apart
+ * from each other. A skew of 0 means both clocks are perfectly in sync.
+ * itime > etime means the external clock is going slower, while itime < etime
+ * means it is going faster than the internal clock. etime and itime are always
+ * valid timestamps, except for when a discontinuity happens.
+ *
+ * requested_skew is an output value the callback can write to. It informs the
+ * sink of whether or not it should move the playout pointer, and if so, by how
+ * much. This pointer is only NULL if a discontinuity occurs; otherwise, it is
+ * safe to write to *requested_skew. The default skew is 0.
+ *
+ * The sink may experience discontinuities. If one happens, discont is TRUE,
+ * itime, etime are set to GST_CLOCK_TIME_NONE, and requested_skew is NULL.
+ * This makes it possible to reset custom clock slaving algorithms when a
+ * discontinuity happens.
+ *
+ * Since: 1.6
+ */
+typedef void (*GstAudioBaseSinkCustomSlavingCallback) (GstAudioBaseSink *sink, GstClockTime etime, GstClockTime itime, GstClockTimeDiff *requested_skew, GstAudioBaseSinkDiscontReason discont_reason, gpointer user_data);
 
 /**
  * GstAudioBaseSink:
@@ -185,6 +249,14 @@ void       gst_audio_base_sink_set_discont_wait        (GstAudioBaseSink * sink,
                                                         GstClockTime discont_wait);
 GstClockTime
            gst_audio_base_sink_get_discont_wait        (GstAudioBaseSink * sink);
+
+void
+gst_audio_base_sink_set_custom_slaving_callback        (GstAudioBaseSink * sink,
+                                                        GstAudioBaseSinkCustomSlavingCallback callback,
+                                                        gpointer user_data,
+                                                        GDestroyNotify notify);
+
+void gst_audio_base_sink_report_device_failure         (GstAudioBaseSink * sink);
 
 G_END_DECLS
 

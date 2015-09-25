@@ -149,7 +149,8 @@ format_supported (const GValue * format_val, snd_pcm_format_mask_t * mask,
 
   finfo = gst_audio_format_get_info (format);
 
-  if (GST_AUDIO_FORMAT_INFO_ENDIANNESS (finfo) != endianness)
+  if (GST_AUDIO_FORMAT_INFO_ENDIANNESS (finfo) != endianness
+      && GST_AUDIO_FORMAT_INFO_ENDIANNESS (finfo) != 0)
     return FALSE;
 
   pcm_format = gst_alsa_get_pcm_format (format);
@@ -713,38 +714,40 @@ const GstAudioChannelPosition alsa_position[][8] = {
 #define ITEM(x, y) \
   [SND_CHMAP_ ## x] = GST_AUDIO_CHANNEL_POSITION_ ## y + 1
 
-static GstAudioChannelPosition gst_pos[SND_CHMAP_LAST + 1] = {
-  ITEM(MONO, MONO),
-  ITEM(FL, FRONT_LEFT),
-  ITEM(FR, FRONT_RIGHT),
-  ITEM(FC, FRONT_CENTER),
-  ITEM(RL, REAR_LEFT),
-  ITEM(RR, REAR_RIGHT),
-  ITEM(RC, REAR_CENTER),
-  ITEM(LFE, LFE1),
-  ITEM(SL, SIDE_LEFT),
-  ITEM(SR, SIDE_RIGHT),
-  ITEM(FLC, FRONT_LEFT_OF_CENTER),
-  ITEM(FRC, FRONT_RIGHT_OF_CENTER),
-  ITEM(FLW, WIDE_LEFT),
-  ITEM(FRW, WIDE_RIGHT),
-  ITEM(TC, TOP_CENTER),
-  ITEM(TFL, TOP_FRONT_LEFT),
-  ITEM(TFR, TOP_FRONT_RIGHT),
-  ITEM(TFC, TOP_FRONT_CENTER),
-  ITEM(TRL, TOP_REAR_LEFT),
-  ITEM(TRR, TOP_REAR_RIGHT),
-  ITEM(TRC, TOP_REAR_CENTER),
-  ITEM(LLFE, LFE1),
-  ITEM(RLFE, LFE2),
-  ITEM(BC, BOTTOM_FRONT_CENTER),
-  ITEM(BLC, BOTTOM_FRONT_LEFT),
-  ITEM(BRC, BOTTOM_FRONT_LEFT),
+static const GstAudioChannelPosition gst_pos[SND_CHMAP_LAST + 1] = {
+  ITEM (MONO, MONO),
+  ITEM (FL, FRONT_LEFT),
+  ITEM (FR, FRONT_RIGHT),
+  ITEM (FC, FRONT_CENTER),
+  ITEM (RL, REAR_LEFT),
+  ITEM (RR, REAR_RIGHT),
+  ITEM (RC, REAR_CENTER),
+  ITEM (LFE, LFE1),
+  ITEM (SL, SIDE_LEFT),
+  ITEM (SR, SIDE_RIGHT),
+  ITEM (FLC, FRONT_LEFT_OF_CENTER),
+  ITEM (FRC, FRONT_RIGHT_OF_CENTER),
+  ITEM (FLW, WIDE_LEFT),
+  ITEM (FRW, WIDE_RIGHT),
+  ITEM (TC, TOP_CENTER),
+  ITEM (TFL, TOP_FRONT_LEFT),
+  ITEM (TFR, TOP_FRONT_RIGHT),
+  ITEM (TFC, TOP_FRONT_CENTER),
+  ITEM (TRL, TOP_REAR_LEFT),
+  ITEM (TRR, TOP_REAR_RIGHT),
+  ITEM (TRC, TOP_REAR_CENTER),
+  ITEM (LLFE, LFE1),
+  ITEM (RLFE, LFE2),
+  ITEM (BC, BOTTOM_FRONT_CENTER),
+  ITEM (BLC, BOTTOM_FRONT_LEFT),
+  ITEM (BRC, BOTTOM_FRONT_LEFT),
 };
+
 #undef ITEM
 
-gboolean alsa_chmap_to_channel_positions (const snd_pcm_chmap_t *chmap,
-					  GstAudioChannelPosition *pos)
+gboolean
+alsa_chmap_to_channel_positions (const snd_pcm_chmap_t * chmap,
+    GstAudioChannelPosition * pos)
 {
   int c;
 

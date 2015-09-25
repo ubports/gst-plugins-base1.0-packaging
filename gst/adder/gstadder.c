@@ -29,10 +29,14 @@
  * The adder currently mixes all data received on the sinkpads as soon as
  * possible without trying to synchronize the streams.
  *
+ * Check out the audiomixer element in gst-plugins-bad for a better-behaving
+ * audio mixing element: It will sync input streams correctly and also handle
+ * live inputs properly.
+ *
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch audiotestsrc freq=100 ! adder name=mix ! audioconvert ! alsasink audiotestsrc freq=500 ! mix.
+ * gst-launch-1.0 audiotestsrc freq=100 ! adder name=mix ! audioconvert ! autoaudiosink audiotestsrc freq=500 ! mix.
  * ]| This pipeline produces two sine waves mixed together.
  * </refsect2>
  */
@@ -485,91 +489,6 @@ gst_adder_query_duration (GstAdder * adder, GstQuery * query)
 }
 
 static gboolean
-gst_adder_query_latency (GstAdder * adder, GstQuery * query)
-{
-  GstClockTime min, max;
-  gboolean live;
-  gboolean res;
-  GstIterator *it;
-  gboolean done;
-  GValue item = { 0, };
-
-  res = TRUE;
-  done = FALSE;
-
-  live = FALSE;
-  min = 0;
-  max = GST_CLOCK_TIME_NONE;
-
-  /* Take maximum of all latency values */
-  it = gst_element_iterate_sink_pads (GST_ELEMENT_CAST (adder));
-  while (!done) {
-    GstIteratorResult ires;
-
-    ires = gst_iterator_next (it, &item);
-    switch (ires) {
-      case GST_ITERATOR_DONE:
-        done = TRUE;
-        break;
-      case GST_ITERATOR_OK:
-      {
-        GstPad *pad = g_value_get_object (&item);
-        GstQuery *peerquery;
-        GstClockTime min_cur, max_cur;
-        gboolean live_cur;
-
-        peerquery = gst_query_new_latency ();
-
-        /* Ask peer for latency */
-        res &= gst_pad_peer_query (pad, peerquery);
-
-        /* take max from all valid return values */
-        if (res) {
-          gst_query_parse_latency (peerquery, &live_cur, &min_cur, &max_cur);
-
-          if (min_cur > min)
-            min = min_cur;
-
-          if (max_cur != GST_CLOCK_TIME_NONE &&
-              ((max != GST_CLOCK_TIME_NONE && max_cur > max) ||
-                  (max == GST_CLOCK_TIME_NONE)))
-            max = max_cur;
-
-          live = live || live_cur;
-        }
-
-        gst_query_unref (peerquery);
-        g_value_reset (&item);
-        break;
-      }
-      case GST_ITERATOR_RESYNC:
-        live = FALSE;
-        min = 0;
-        max = GST_CLOCK_TIME_NONE;
-        res = TRUE;
-        gst_iterator_resync (it);
-        break;
-      default:
-        res = FALSE;
-        done = TRUE;
-        break;
-    }
-  }
-  g_value_unset (&item);
-  gst_iterator_free (it);
-
-  if (res) {
-    /* store the results */
-    GST_DEBUG_OBJECT (adder, "Calculated total latency: live %s, min %"
-        GST_TIME_FORMAT ", max %" GST_TIME_FORMAT,
-        (live ? "yes" : "no"), GST_TIME_ARGS (min), GST_TIME_ARGS (max));
-    gst_query_set_latency (query, live, min, max);
-  }
-
-  return res;
-}
-
-static gboolean
 gst_adder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   GstAdder *adder = GST_ADDER (parent);
@@ -599,9 +518,6 @@ gst_adder_src_query (GstPad * pad, GstObject * parent, GstQuery * query)
     }
     case GST_QUERY_DURATION:
       res = gst_adder_query_duration (adder, query);
-      break;
-    case GST_QUERY_LATENCY:
-      res = gst_adder_query_latency (adder, query);
       break;
     default:
       /* FIXME, needs a custom query handler because we have multiple
@@ -1182,7 +1098,7 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
   if (G_UNLIKELY (adder->info.finfo->format == GST_AUDIO_FORMAT_UNKNOWN))
     goto not_negotiated;
 
-  if (adder->flush_stop_pending == TRUE) {
+  if (adder->flush_stop_pending) {
     GST_INFO_OBJECT (adder->srcpad, "send pending flush stop event");
     if (!gst_pad_push_event (adder->srcpad, gst_event_new_flush_stop (TRUE))) {
       GST_WARNING_OBJECT (adder->srcpad, "Sending flush stop event failed");
@@ -1282,7 +1198,7 @@ gst_adder_collected (GstCollectPads * pads, gpointer user_data)
     inbuf = gst_collect_pads_take_buffer (pads, collect_data, outsize);
 
     if (!GST_COLLECT_PADS_STATE_IS_SET (collect_data,
-                    GST_COLLECT_PADS_STATE_EOS))
+            GST_COLLECT_PADS_STATE_EOS))
       is_eos = FALSE;
 
     /* NULL means EOS or an empty buffer so we still need to flush in

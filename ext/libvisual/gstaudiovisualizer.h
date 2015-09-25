@@ -1,21 +1,23 @@
 /* GStreamer
  * Copyright (C) <2011> Stefan Kost <ensonic@users.sf.net>
+ * Copyright (C) <2015> Luis de Bethencourt <luis@debethencourt.com>
  *
  * gstaudiovisualizer.c: base class for audio visualisation elements
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #ifndef __GST_AUDIO_VISUALIZER_H__
@@ -73,36 +75,13 @@ struct _GstAudioVisualizer
 {
   GstElement parent;
 
-  /* pads */
-  GstPad *srcpad, *sinkpad;
-
-  GstAdapter *adapter;
-  GstBuffer *inbuf;
-  GstBuffer *tempbuf;
-  GstVideoFrame tempframe;
-
-  GstAudioVisualizerShader shader_type;
-  GstAudioVisualizerShaderFunc shader;
-  guint32 shade_amount;
-
-  guint spf;                    /* samples per video frame */
   guint req_spf;                /* min samples per frame wanted by the subclass */
 
   /* video state */
   GstVideoInfo vinfo;
-  guint64 frame_duration;
 
   /* audio state */
   GstAudioInfo ainfo;
-
-  /* configuration mutex */
-  GMutex config_lock;
-
-  /* QoS stuff *//* with LOCK */
-  gdouble proportion;
-  GstClockTime earliest_time;
-
-  GstSegment segment;
 
   /* <private> */
   GstAudioVisualizerPrivate *priv;

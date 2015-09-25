@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: videotestsrc</title>
+<title>videotestsrc: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-videoscale.html" title="videoscale">
 <link rel="next" href="gst-plugins-base-plugins-volume.html" title="volume">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -29,7 +29,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-videotestsrc.top_of_page"></a>videotestsrc</span></h2>
-<p>videotestsrc — Creates a test video stream</p>
+<p>videotestsrc</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -171,23 +171,23 @@
 of formats. The video test data produced can be controlled with the "pattern"
 property.</p>
 <div class="refsect2">
-<a name="id-1.2.41.7.3"></a><h3>Example launch line</h3>
+<a name="id-1.2.49.7.3"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v videotestsrc pattern<span class="gtkdoc opt">=</span>snow <span class="gtkdoc opt">!</span> ximagesink</pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v videotestsrc pattern<span class="gtkdoc opt">=</span>snow <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>width<span class="gtkdoc opt">=</span><span class="number">1280</span><span class="gtkdoc opt">,</span>height<span class="gtkdoc opt">=</span><span class="number">720</span> <span class="gtkdoc opt">!</span> autovideosink</pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- Shows random noise in an X window.
+ Shows random noise in a video window.
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.41.7.4.1"></a><h3>Element Information</h3>
+<a name="id-1.2.49.7.4.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -213,7 +213,7 @@ property.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.41.7.4.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.49.7.4.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -234,7 +234,7 @@ property.</p>
 </tr>
 <tr>
 <td><p><span class="term">details</span></p></td>
-<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32 }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
+<td>video/x-raw, format=(string){ I420, YV12, YUY2, UYVY, AYUV, RGBx, BGRx, xRGB, xBGR, RGBA, BGRA, ARGB, ABGR, RGB, BGR, Y41B, Y42B, YVYU, Y444, v210, v216, NV12, NV21, NV16, NV61, NV24, GRAY8, GRAY16_BE, GRAY16_LE, v308, RGB16, BGR16, RGB15, BGR15, UYVP, A420, RGB8P, YUV9, YVU9, IYU1, ARGB64, AYUV64, r210, I420_10LE, I420_10BE, I422_10LE, I422_10BE, Y444_10LE, Y444_10BE, GBR, GBR_10LE, GBR_10BE, NV12_64Z32, A420_10LE, A420_10BE, A422_10LE, A422_10BE, A444_10LE, A444_10BE }, width=(int)[ 1, 2147483647 ], height=(int)[ 1, 2147483647 ], framerate=(fraction)[ 0/1, 2147483647/1 ]</td>
 </tr>
 <tr>
 <td><p><span class="term"></span></p></td>
@@ -244,11 +244,10 @@ property.</p>
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videotestsrc.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-videotestsrc.other_details"></a><h2>Types and Values</h2>
@@ -277,7 +276,7 @@ parameters produce a grey pattern.  Try 'videotestsrc
 pattern=zone-plate kx2=20 ky2=20 kt=1' to produce something
 interesting.</p>
 <div class="refsect3">
-<a name="id-1.2.41.9.3.6"></a><h4>Members</h4>
+<a name="id-1.2.49.9.3.6"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -406,7 +405,10 @@ interesting.</p>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="GST-VIDEO-TEST-SRC-SOLID:CAPS"></a>GST_VIDEO_TEST_SRC_SOLID</p></td>
-<td class="enum_member_description"> </td>
+<td class="enum_member_description">
+<p>A solid color, defined by the
+<a class="link" href="gst-plugins-base-plugins-videotestsrc.html#GstVideoTestSrc--foreground-color" title="The “foreground-color” property"><span class="type">“foreground-color”</span></a> property</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
@@ -441,6 +443,20 @@ interesting.</p>
 <td class="enum_member_name"><p><a name="GST-VIDEO-TEST-SRC-SPOKES:CAPS"></a>GST_VIDEO_TEST_SRC_SPOKES</p></td>
 <td class="enum_member_description">
 <p>Spokes</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-TEST-SRC-GRADIENT:CAPS"></a>GST_VIDEO_TEST_SRC_GRADIENT</p></td>
+<td class="enum_member_description">
+<p>Gradient</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-VIDEO-TEST-SRC-COLORS:CAPS"></a>GST_VIDEO_TEST_SRC_COLORS</p></td>
+<td class="enum_member_description">
+<p>All colors</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
@@ -578,6 +594,7 @@ patterns.  Default is white (0xffffffff).</p>
 <pre class="programlisting">  “timestamp-offset”         <span class="type">gint64</span></pre>
 <p>An offset added to timestamps set on buffers (in ns).</p>
 <p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>
 </div>
 <hr>
@@ -599,7 +616,6 @@ patterns.  Default is white (0xffffffff).</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

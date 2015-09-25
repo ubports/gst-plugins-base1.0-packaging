@@ -33,6 +33,7 @@
 #include <gst/check/gstcheck.h>
 #include <gst/check/gstconsistencychecker.h>
 #include <gst/base/gstbasesrc.h>
+#include <gst/audio/audio.h>
 
 static GMainLoop *main_loop;
 
@@ -85,7 +86,7 @@ GST_START_TEST (test_filter_caps)
   GstPad *pad;
 
   filter_caps = gst_caps_new_simple ("audio/x-raw",
-      "format", G_TYPE_STRING, "F32LE",
+      "format", G_TYPE_STRING, GST_AUDIO_NE (F32),
       "layout", G_TYPE_STRING, "interleaved",
       "rate", G_TYPE_INT, 44100, "channels", G_TYPE_INT, 1, NULL);
 
@@ -417,7 +418,7 @@ GST_START_TEST (test_play_twice)
   /* cleanup */
   g_main_loop_unref (main_loop);
   gst_consistency_checker_free (consist);
-  gst_event_ref (play_seek_event);
+  gst_event_unref (play_seek_event);
   gst_bus_remove_signal_watch (bus);
   gst_object_unref (bus);
   gst_object_unref (bin);
@@ -523,7 +524,7 @@ GST_START_TEST (test_play_twice_then_add_and_play_again)
 
   /* cleanup */
   g_main_loop_unref (main_loop);
-  gst_event_ref (play_seek_event);
+  gst_event_unref (play_seek_event);
   gst_consistency_checker_free (consist);
   gst_bus_remove_signal_watch (bus);
   gst_object_unref (bus);
@@ -690,6 +691,7 @@ GST_START_TEST (test_live_seeking)
     g_main_loop_unref (main_loop);
   if (play_seek_event)
     gst_event_unref (play_seek_event);
+  gst_bus_remove_signal_watch (bus);
   gst_object_unref (bus);
   gst_object_unref (bin);
 }

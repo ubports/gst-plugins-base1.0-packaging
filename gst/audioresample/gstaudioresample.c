@@ -36,9 +36,10 @@
  * <refsect2>
  * <title>Example launch line</title>
  * |[
- * gst-launch -v filesrc location=sine.ogg ! oggdemux ! vorbisdec ! audioconvert ! audioresample ! audio/x-raw, rate=8000 ! alsasink
- * ]| Decode an Ogg/Vorbis downsample to 8Khz and play sound through alsa.
+ * gst-launch-1.0 -v uridecodebin uri=file:///path/to/audio.ogg ! audioconvert ! audioresample ! audio/x-raw, rate=8000 ! autoaudiosink
+ * ]| Decode an audio file and downsample it to 8Khz and play sound.
  * To create the Ogg/Vorbis file refer to the documentation of vorbisenc.
+ * This assumes there is an audio sink that will accept/handle 8kHz audio.
  * </refsect2>
  */
 
@@ -132,6 +133,8 @@ static gboolean gst_audio_resample_set_caps (GstBaseTransform * base,
     GstCaps * incaps, GstCaps * outcaps);
 static GstFlowReturn gst_audio_resample_transform (GstBaseTransform * base,
     GstBuffer * inbuf, GstBuffer * outbuf);
+static gboolean gst_audio_resample_transform_meta (GstBaseTransform * trans,
+    GstBuffer * outbuf, GstMeta * meta, GstBuffer * inbuf);
 static gboolean gst_audio_resample_sink_event (GstBaseTransform * base,
     GstEvent * event);
 static gboolean gst_audio_resample_start (GstBaseTransform * base);
@@ -200,6 +203,8 @@ gst_audio_resample_class_init (GstAudioResampleClass * klass)
       GST_DEBUG_FUNCPTR (gst_audio_resample_transform);
   GST_BASE_TRANSFORM_CLASS (klass)->sink_event =
       GST_DEBUG_FUNCPTR (gst_audio_resample_sink_event);
+  GST_BASE_TRANSFORM_CLASS (klass)->transform_meta =
+      GST_DEBUG_FUNCPTR (gst_audio_resample_transform_meta);
 
   GST_BASE_TRANSFORM_CLASS (klass)->passthrough_on_same_caps = TRUE;
 }
@@ -1246,6 +1251,23 @@ gst_audio_resample_transform (GstBaseTransform * base, GstBuffer * inbuf,
 }
 
 static gboolean
+gst_audio_resample_transform_meta (GstBaseTransform * trans, GstBuffer * outbuf,
+    GstMeta * meta, GstBuffer * inbuf)
+{
+  const GstMetaInfo *info = meta->info;
+  const gchar *const *tags;
+
+  tags = gst_meta_api_type_get_tags (info->api);
+
+  if (!tags || (g_strv_length ((gchar **) tags) == 1
+          && gst_meta_api_type_has_tag (info->api,
+              g_quark_from_string (GST_META_TAG_AUDIO_STR))))
+    return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
 gst_audio_resample_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   GstAudioResample *resample = GST_AUDIO_RESAMPLE (parent);
@@ -1388,7 +1410,7 @@ speex_resampler_sinc_filter_mode_get_type (void)
   static GType speex_resampler_sinc_filter_mode_type = 0;
 
   if (!speex_resampler_sinc_filter_mode_type) {
-    static GEnumValue sinc_filter_modes[] = {
+    static const GEnumValue sinc_filter_modes[] = {
       {SPEEX_RESAMPLER_SINC_FILTER_INTERPOLATED, "Use interpolated sinc table",
           "interpolated"},
       {SPEEX_RESAMPLER_SINC_FILTER_FULL, "Use full sinc table", "full"},

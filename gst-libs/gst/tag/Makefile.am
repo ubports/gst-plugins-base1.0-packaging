@@ -30,7 +30,7 @@ gir_headers=$(patsubst %,$(srcdir)/%, $(libgsttaginclude_HEADERS))
 gir_sources=$(patsubst %,$(srcdir)/%, $(libgsttag_@GST_API_VERSION@_la_SOURCES))
 
 GstTag-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgsttag-@GST_API_VERSION@.la
-	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
+	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstTag \
 		--nsversion=@GST_API_VERSION@ \
@@ -48,7 +48,7 @@ GstTag-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgsttag-@GST_API_VERSIO
 		--pkg gstreamer-@GST_API_VERSION@ \
 		--pkg gstreamer-base-@GST_API_VERSION@ \
 		--pkg-export gstreamer-tag-@GST_API_VERSION@ \
-		--add-init-section="gst_init(NULL,NULL);" \
+		--add-init-section="$(INTROSPECTION_INIT)" \
 		--output $@ \
 		$(gir_headers) \
 		$(gir_sources)
@@ -105,17 +105,3 @@ update-licenses: mklicensestables
 licensetransdir = $(pkgdatadir)/@GST_API_VERSION@
 licensetrans_DATA = $(srcdir)/license-translations.dict
 #endif
-
-Android.mk: Makefile.am
-	androgenizer -:PROJECT libgsttag -:SHARED libgsttag-@GST_API_VERSION@ \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgsttag_@GST_API_VERSION@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgsttag_@GST_API_VERSION@_la_CFLAGS) \
-	 -:LDFLAGS $(libgsttag_@GST_API_VERSION@_la_LDFLAGS) \
-	           $(libgsttag_@GST_API_VERSION@_la_LIBADD) \
-	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/tag \
-	 -:HEADERS $(libgsttaginclude_HEADERS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@

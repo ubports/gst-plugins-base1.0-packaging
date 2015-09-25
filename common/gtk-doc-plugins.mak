@@ -16,6 +16,16 @@ help:
 update: scanobj-update
 	$(MAKE) check-outdated-docs
 
+if GTK_DOC_USE_LIBTOOL
+GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+GTKDOC_RUN = $(LIBTOOL) --mode=execute
+else
+GTKDOC_CC = $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+GTKDOC_LD = $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+GTKDOC_RUN =
+endif
+
 # We set GPATH here; this gives us semantics for GNU make
 # which are more like other make's VPATH, when it comes to
 # whether a source that is a target of one rule is then
@@ -44,11 +54,9 @@ EXTRA_DIST = 				\
 # maintainers and result is commited to git
 DOC_STAMPS =				\
 	scan-build.stamp		\
-	tmpl-build.stamp		\
 	sgml-build.stamp		\
 	html-build.stamp		\
 	scan.stamp			\
-	tmpl.stamp			\
 	sgml.stamp			\
 	html.stamp
 
@@ -122,7 +130,7 @@ scanobj-build.stamp: $(SCANOBJ_DEPS) $(basefiles)
 	    scanobj_options="--verbose"; \
 	fi; \
 	$(INSPECT_ENVIRONMENT) 					\
-	CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)"				\
+	CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)"	\
 	CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS) $(WARNING_CFLAGS)"	\
 	LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)"				\
 	$(GST_DOC_SCANOBJ) $$scanobj_options --type-init-func="gst_init(NULL,NULL)"	\
@@ -161,29 +169,9 @@ scan-build.stamp: $(HFILE_GLOB) $(EXTRA_HFILES) $(basefiles) scanobj-build.stamp
 	    --ignore-headers="$(IGNORE_HFILES)";			\
 	touch scan-build.stamp
 
-#### update templates; done on every build ####
-
-# in a non-srcdir build, we need to copy files from the previous step
-# and the files from previous runs of this step
-tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_OVERRIDES)
-	@echo '  DOC   Rebuilding template files'
-	@if test x"$(srcdir)" != x. ; then				\
-	    for f in $(SCANOBJ_FILES) $(SCAN_FILES);			\
-	    do								\
-	        if test -e $(srcdir)/$$f; then cp -u $(srcdir)/$$f . ; fi;	\
-	    done;							\
-	fi
-	@gtkdoc-mktmpl --module=$(DOC_MODULE)
-	@$(PYTHON) \
-		$(top_srcdir)/common/mangle-tmpl.py $(srcdir)/$(INSPECT_DIR) tmpl
-	@touch tmpl-build.stamp
-
-tmpl.stamp: tmpl-build.stamp
-	@true
-
 #### xml ####
 
-sgml-build.stamp: tmpl.stamp scan-build.stamp $(CFILE_GLOB) $(top_srcdir)/common/plugins.xsl $(expand_content_files)
+sgml-build.stamp: scan-build.stamp $(CFILE_GLOB) $(top_srcdir)/common/plugins.xsl $(expand_content_files)
 	@echo '  DOC   Building XML'
 	@-mkdir -p xml
 	@for a in $(srcdir)/$(INSPECT_DIR)/*.xml; do \
@@ -199,6 +187,7 @@ sgml-build.stamp: tmpl.stamp scan-build.stamp $(CFILE_GLOB) $(top_srcdir)/common
 		--output-format=xml \
 		--ignore-files="$(IGNORE_HFILES) $(IGNORE_CFILES)" \
 		$(MKDB_OPTIONS)
+	@$(PYTHON) $(top_srcdir)/common/mangle-db.py xml
 	@cp ../version.entities xml
 	@touch sgml-build.stamp
 

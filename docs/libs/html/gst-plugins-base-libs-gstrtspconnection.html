@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstrtspconnection</title>
+<title>gstrtspconnection: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="next" href="gst-plugins-base-libs-gstrtspdefs.html" title="gstrtspdefs">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -295,6 +295,38 @@
 </tr>
 <tr>
 <td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-database" title="gst_rtsp_connection_set_tls_database ()">gst_rtsp_connection_set_tls_database</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/gio/unstable/GTlsDatabase.html"><span class="returnvalue">GTlsDatabase</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-database" title="gst_rtsp_connection_get_tls_database ()">gst_rtsp_connection_get_tls_database</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-set-tls-interaction" title="gst_rtsp_connection_set_tls_interaction ()">gst_rtsp_connection_set_tls_interaction</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="returnvalue">GTlsInteraction</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-get-tls-interaction" title="gst_rtsp_connection_get_tls_interaction ()">gst_rtsp_connection_get_tls_interaction</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="returnvalue">GstRTSPWatch</span></a> *
 </td>
 <td class="function_name">
@@ -355,6 +387,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()">gst_rtsp_watch_set_send_backlog</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-flushing" title="gst_rtsp_watch_set_flushing ()">gst_rtsp_watch_set_flushing</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -442,7 +482,6 @@ The connection will not yet attempt to connect to <em class="parameter"><code>ur
 <a name="id-1.2.10.3.7.2.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when <em class="parameter"><code>conn</code></em>
 contains a valid connection.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -503,7 +542,6 @@ read from <em class="parameter"><code>socket</code></em>
 <a name="id-1.2.10.3.7.3.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when <em class="parameter"><code>conn</code></em>
 contains a valid connection.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -547,7 +585,6 @@ handling communication on new socket.</p>
 <a name="id-1.2.10.3.7.4.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when <em class="parameter"><code>conn</code></em>
 contains a valid connection.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -589,7 +626,6 @@ forever. If <em class="parameter"><code>timeout</code></em>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.5.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> when a connection could be made.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -618,7 +654,6 @@ state as when it was first created.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.6.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -646,7 +681,6 @@ gst_rtsp_connection_free (<em class="parameter"><code><a class="link" href="gst-
 <div class="refsect3">
 <a name="id-1.2.10.3.7.7.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -702,7 +736,6 @@ might block forever.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.8.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -758,7 +791,6 @@ might block forever.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.9.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -815,7 +847,6 @@ with <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CA
 <div class="refsect3">
 <a name="id-1.2.10.3.7.10.8"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -863,7 +894,6 @@ might block forever.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.11.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -911,7 +941,6 @@ might block forever.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.12.7"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -948,7 +977,6 @@ gst_rtsp_connection_next_timeout (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.10.3.7.13.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -976,7 +1004,6 @@ gst_rtsp_connection_reset_timeout (<em class="parameter"><code><a class="link" h
 <div class="refsect3">
 <a name="id-1.2.10.3.7.14.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1015,7 +1042,6 @@ is set to non-flushing mode again.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.15.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1067,7 +1093,6 @@ user and password respectively.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.16.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1167,7 +1192,6 @@ gst_rtsp_connection_set_qos_dscp (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.10.3.7.19.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1226,7 +1250,6 @@ gst_rtsp_connection_get_ip (<em class="parameter"><code>const <a class="link" hr
 <a name="id-1.2.10.3.7.21.6"></a><h4>Returns</h4>
 <p> The IP address as a string. this value remains valid until the
 connection is closed.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1255,7 +1278,6 @@ gst_rtsp_connection_get_url (<em class="parameter"><code>const <a class="link" h
 <a name="id-1.2.10.3.7.22.6"></a><h4>Returns</h4>
 <p> The URL. This value remains valid until the
 connection is freed.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1315,7 +1337,6 @@ gst_rtsp_connection_is_tunneled (<em class="parameter"><code>const <a class="lin
 <a name="id-1.2.10.3.7.24.6"></a><h4>Returns</h4>
 <p> if <em class="parameter"><code>conn</code></em>
 is using HTTP tunneling.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1343,7 +1364,6 @@ gst_rtsp_connection_get_tunnelid (<em class="parameter"><code>const <a class="li
 <a name="id-1.2.10.3.7.25.6"></a><h4>Returns</h4>
 <p> returns a non-empty string if <em class="parameter"><code>conn</code></em>
 is being tunneled over HTTP.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1390,7 +1410,6 @@ the second tunnel connection, link the two connections together so that
 <div class="refsect3">
 <a name="id-1.2.10.3.7.26.8"></a><h4>Returns</h4>
 <p> return GST_RTSP_OK on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1463,7 +1482,6 @@ gst_rtsp_connection_set_proxy (<em class="parameter"><code><a class="link" href=
 <div class="refsect3">
 <a name="id-1.2.10.3.7.28.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1471,6 +1489,28 @@ gst_rtsp_connection_set_proxy (<em class="parameter"><code><a class="link" href=
 <a name="gst-rtsp-connection-get-read-socket"></a><h3>gst_rtsp_connection_get_read_socket ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="returnvalue">GSocket</span></a> *
 gst_rtsp_connection_get_read_socket (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
+<p>Get the file descriptor for reading.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.29.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.29.6"></a><h4>Returns</h4>
+<p> the file descriptor used for reading or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on
+error. The file descriptor remains valid until the connection is closed. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1541,7 +1581,7 @@ calls. The server is then responsible for configuring the TLS connection.</p>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1579,9 +1619,8 @@ certificate when a TLS connection is established.</p>
 <p> TRUE if the validation flags are set correctly, or FALSE if
 <em class="parameter"><code>conn</code></em>
 is NULL or is not a TLS connection.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2.1</p>
+<p class="since">Since: 1.2.1</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1609,9 +1648,139 @@ when a TLS connection is established.</p>
 <div class="refsect3">
 <a name="id-1.2.10.3.7.33.6"></a><h4>Returns</h4>
 <p> the validationg flags.</p>
-<p></p>
 </div>
-<p class="since">Since 1.2.1</p>
+<p class="since">Since: 1.2.1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-set-tls-database"></a><h3>gst_rtsp_connection_set_tls_database ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gst_rtsp_connection_set_tls_database (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                      <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GTlsDatabase.html"><span class="type">GTlsDatabase</span></a> *database</code></em>);</pre>
+<p>Sets the anchor certificate authorities database. This certificate
+database will be used to verify the server's certificate in case it
+can't be verified with the default certificate database first.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.34.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>database</p></td>
+<td class="parameter_description"><p>a <a href="https://developer.gnome.org/gio/unstable/GTlsDatabase.html"><span class="type">GTlsDatabase</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-get-tls-database"></a><h3>gst_rtsp_connection_get_tls_database ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/gio/unstable/GTlsDatabase.html"><span class="returnvalue">GTlsDatabase</span></a> *
+gst_rtsp_connection_get_tls_database (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
+<p>Gets the anchor certificate authorities database that will be used
+after a server certificate can't be verified with the default
+certificate database.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.35.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.35.6"></a><h4>Returns</h4>
+<p> the anchor certificate authorities database, or NULL if no
+database has been previously set. Use <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> to release the
+certificate database. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-set-tls-interaction"></a><h3>gst_rtsp_connection_set_tls_interaction ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gst_rtsp_connection_set_tls_interaction
+                               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="type">GTlsInteraction</span></a> *interaction</code></em>);</pre>
+<p>Sets a <a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="type">GTlsInteraction</span></a> object to be used when the connection or certificate
+database need to interact with the user. This will be used to prompt the
+user for passwords where necessary.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.36.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>interaction</p></td>
+<td class="parameter_description"><p>a <a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="type">GTlsInteraction</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-connection-get-tls-interaction"></a><h3>gst_rtsp_connection_get_tls_interaction ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="returnvalue">GTlsInteraction</span></a> *
+gst_rtsp_connection_get_tls_interaction
+                               (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a> *conn</code></em>);</pre>
+<p>Gets a <a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="type">GTlsInteraction</span></a> object to be used when the connection or certificate
+database need to interact with the user. This will be used to prompt the
+user for passwords where necessary.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.37.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>conn</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPConnection" title="GstRTSPConnection"><span class="type">GstRTSPConnection</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.37.6"></a><h4>Returns</h4>
+<p> a reference on the <a href="https://developer.gnome.org/gio/unstable/GTlsInteraction.html"><span class="type">GTlsInteraction</span></a>. Use
+<a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> to release. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.6</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1630,8 +1799,9 @@ called with <em class="parameter"><code>user_data</code></em>
 maincontext with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-attach" title="gst_rtsp_watch_attach ()"><code class="function">gst_rtsp_watch_attach()</code></a>.</p>
 <p><em class="parameter"><code>conn</code></em>
  must exist for the entire lifetime of the watch.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.34.7"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.38.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1665,10 +1835,9 @@ is not referenced anymore</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.34.8"></a><h4>Returns</h4>
+<a name="id-1.2.10.3.7.38.9"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> that can be used for asynchronous RTSP
 communication. Free with <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-unref" title="gst_rtsp_watch_unref ()"><code class="function">gst_rtsp_watch_unref()</code></a> after usage.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1680,7 +1849,7 @@ gst_rtsp_watch_unref (<em class="parameter"><code><a class="link" href="gst-plug
  by one. If the resulting reference
 count is zero the watch and associated memory will be destroyed.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.35.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.39.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1703,7 +1872,7 @@ gst_rtsp_watch_attach (<em class="parameter"><code><a class="link" href="gst-plu
                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-The-Main-Event-Loop.html#GMainContext"><span class="type">GMainContext</span></a> *context</code></em>);</pre>
 <p>Adds a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> to a context so that it will be executed within that context.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.36.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.40.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1725,9 +1894,8 @@ gst_rtsp_watch_attach (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.36.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.3.7.40.6"></a><h4>Returns</h4>
 <p> the ID (greater than 0) for the watch within the GMainContext.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1739,7 +1907,7 @@ gst_rtsp_watch_reset (<em class="parameter"><code><a class="link" href="gst-plug
 , this is usually called after <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-do-tunnel" title="gst_rtsp_connection_do_tunnel ()"><code class="function">gst_rtsp_connection_do_tunnel()</code></a>
 when the file descriptors of the connection might have changed.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.37.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.41.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1775,7 +1943,7 @@ immediately, it will be queued for transmission in <em class="parameter"><code>w
  will be non-zero and used as the ID argument in the message_sent
 callback.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.38.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.42.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1802,9 +1970,8 @@ callback.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.38.6"></a><h4>Returns</h4>
+<a name="id-1.2.10.3.7.42.6"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1834,7 +2001,7 @@ callback.</p>
 <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()"><code class="function">gst_rtsp_watch_set_send_backlog()</code></a>, this function will return
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.39.7"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.43.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1867,11 +2034,10 @@ callback.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.39.8"></a><h4>Returns</h4>
+<a name="id-1.2.10.3.7.43.8"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success. <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><span class="type">GST_RTSP_ENOMEM</span></a> when the backlog limits
 are reached. <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a> when <em class="parameter"><code>watch</code></em>
 was flushing.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1885,7 +2051,7 @@ gst_rtsp_watch_get_send_backlog (<em class="parameter"><code><a class="link" hre
 .
 See <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-set-send-backlog" title="gst_rtsp_watch_set_send_backlog ()"><code class="function">gst_rtsp_watch_set_send_backlog()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.40.5"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.44.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1911,7 +2077,7 @@ See <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1928,7 +2094,7 @@ When the maximum amounts are exceeded, <a class="link" href="gst-plugins-base-li
  or <em class="parameter"><code>messages</code></em>
  means no limits.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.41.6"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.45.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1954,7 +2120,41 @@ When the maximum amounts are exceeded, <a class="link" href="gst-plugins-base-li
 </tbody>
 </table></div>
 </div>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gst-rtsp-watch-set-flushing"></a><h3>gst_rtsp_watch_set_flushing ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gst_rtsp_watch_set_flushing (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a> *watch</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> flushing</code></em>);</pre>
+<p>When <em class="parameter"><code>flushing</code></em>
+ is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, abort a call to <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-wait-backlog" title="gst_rtsp_watch_wait_backlog ()"><code class="function">gst_rtsp_watch_wait_backlog()</code></a>
+and make sure <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-watch-write-data" title="gst_rtsp_watch_write_data ()"><code class="function">gst_rtsp_watch_write_data()</code></a> returns immediately with
+<a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><span class="type">GST_RTSP_EINTR</span></a>. And empty the queue.</p>
+<div class="refsect3">
+<a name="id-1.2.10.3.7.46.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>watch</p></td>
+<td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstrtspconnection.html#GstRTSPWatch" title="GstRTSPWatch"><span class="type">GstRTSPWatch</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>flushing</p></td>
+<td class="parameter_description"><p>new flushing state</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.4</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1975,7 +2175,7 @@ after the timeout expired.</p>
 returns <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ENOMEM:CAPS"><code class="literal">GST_RTSP_ENOMEM</code></a>. The caller then calls this function to wait for
 free space in the backlog queue and try again.</p>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.42.7"></a><h4>Parameters</h4>
+<a name="id-1.2.10.3.7.47.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1997,16 +2197,15 @@ free space in the backlog queue and try again.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.3.7.42.8"></a><h4>Returns</h4>
+<a name="id-1.2.10.3.7.47.8"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><code class="literal">GST_RTSP_OK</code></a> when if there is room in queue.
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-ETIMEOUT:CAPS"><code class="literal">GST_RTSP_ETIMEOUT</code></a> when <em class="parameter"><code>timeout</code></em>
 was reached.
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINTR:CAPS"><code class="literal">GST_RTSP_EINTR</code></a> when <em class="parameter"><code>watch</code></em>
 is flushing
 <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-EINVAL:CAPS"><code class="literal">GST_RTSP_EINVAL</code></a> when called with invalid parameters.</p>
-<p></p>
 </div>
-<p class="since">Since 1.4</p>
+<p class="since">Since: 1.4</p>
 </div>
 </div>
 <div class="refsect1">
@@ -2119,7 +2318,6 @@ modified in the callback. Since 1.4.</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

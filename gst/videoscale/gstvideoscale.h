@@ -24,12 +24,7 @@
 #include <gst/video/video.h>
 #include <gst/video/gstvideofilter.h>
 
-#include "vs_image.h"
-
 G_BEGIN_DECLS
-
-GST_DEBUG_CATEGORY_EXTERN (video_scale_debug);
-#define GST_CAT_DEFAULT video_scale_debug
 
 #define GST_TYPE_VIDEO_SCALE \
   (gst_video_scale_get_type())
@@ -47,9 +42,15 @@ GST_DEBUG_CATEGORY_EXTERN (video_scale_debug);
 /**
  * GstVideoScaleMethod:
  * @GST_VIDEO_SCALE_NEAREST: use nearest neighbour scaling (fast and ugly)
- * @GST_VIDEO_SCALE_BILINEAR: use bilinear scaling (slower but prettier).
- * @GST_VIDEO_SCALE_4TAP: use a 4-tap filter for scaling (slow).
+ * @GST_VIDEO_SCALE_BILINEAR: use 2-tap bilinear scaling (slower but prettier).
+ * @GST_VIDEO_SCALE_4TAP: use a 4-tap sinc filter for scaling (slow).
  * @GST_VIDEO_SCALE_LANCZOS: use a multitap Lanczos filter for scaling (slow).
+ * @GST_VIDEO_SCALE_BILINEAR2: use a multitap bilinear filter
+ * @GST_VIDEO_SCALE_SINC: use a multitap sinc filter
+ * @GST_VIDEO_SCALE_HERMITE: use a multitap bicubic Hermite filter
+ * @GST_VIDEO_SCALE_SPLINE: use a multitap bicubic spline filter
+ * @GST_VIDEO_SCALE_CATROM: use a multitap bicubic Catmull-Rom filter
+ * @GST_VIDEO_SCALE_MITCHELL: use a multitap bicubic Mitchell filter
  *
  * The videoscale method to use.
  */
@@ -57,7 +58,14 @@ typedef enum {
   GST_VIDEO_SCALE_NEAREST,
   GST_VIDEO_SCALE_BILINEAR,
   GST_VIDEO_SCALE_4TAP,
-  GST_VIDEO_SCALE_LANCZOS
+  GST_VIDEO_SCALE_LANCZOS,
+
+  GST_VIDEO_SCALE_BILINEAR2,
+  GST_VIDEO_SCALE_SINC,
+  GST_VIDEO_SCALE_HERMITE,
+  GST_VIDEO_SCALE_SPLINE,
+  GST_VIDEO_SCALE_CATROM,
+  GST_VIDEO_SCALE_MITCHELL
 } GstVideoScaleMethod;
 
 typedef struct _GstVideoScale GstVideoScale;
@@ -79,12 +87,12 @@ struct _GstVideoScale {
   gboolean dither;
   int submethod;
   double envelope;
+  gboolean gamma_decode;
+
+  GstVideoConverter *convert;
 
   gint borders_h;
   gint borders_w;
-
-  /*< private >*/
-  guint8 *tmp_buf;
 };
 
 struct _GstVideoScaleClass {

@@ -89,6 +89,7 @@ struct _GstOggPad
 
   gint64 packetno;
   gint64 current_granule;
+  gint64 prev_granule;
   gint64 keyframe_granule;
 
   GstClockTime start_time;      /* the timestamp of the first sample */
@@ -147,6 +148,8 @@ struct _GstOggDemux
      useful for skewing when seeking */
   guint64 max_packet_size, max_page_size;
 
+  gboolean check_index_overflow;
+
   /* state */
   GMutex chain_lock;           /* we need the lock to protect the chains */
   GArray *chains;               /* list of chains we know */
@@ -190,7 +193,6 @@ struct _GstOggDemux
   gboolean seek_secant;
   gboolean seek_undershot;
   GstClockTime push_prev_seek_time;
-  guint32 push_seek_seqnum;
 
   gint push_bisection_steps[2];
   gint stats_bisection_steps[2];
@@ -200,6 +202,14 @@ struct _GstOggDemux
   /* ogg stuff */
   ogg_sync_state sync;
   long chunk_size;
+
+  /* Seek events set up by the streaming thread in push mode */
+  GstEvent *seek_event;
+  GThread *seek_event_thread;
+  GMutex seek_event_mutex;
+  GCond seek_event_cond;
+  gboolean seek_event_thread_stop;
+  guint32 seek_event_drop_till;
 };
 
 struct _GstOggDemuxClass

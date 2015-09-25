@@ -13,7 +13,8 @@ libgstplayback_la_SOURCES = \
 	gstplaysinkvideoconvert.c \
 	gstplaysinkaudioconvert.c \
 	gstplaysinkconvertbin.c \
-	gststreamsynchronizer.c
+	gststreamsynchronizer.c \
+	gstplaybackutils.c
 
 nodist_libgstplayback_la_SOURCES = $(built_sources)
 libgstplayback_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS) $(csp_cflags)
@@ -34,23 +35,9 @@ noinst_HEADERS = \
 	gstplaysinkvideoconvert.h \
 	gstplaysinkaudioconvert.h \
 	gstplaysinkconvertbin.h \
-	gststreamsynchronizer.h
+	gststreamsynchronizer.h \
+	gstplaybackutils.h
 
 BUILT_SOURCES = $(built_headers) $(built_sources)
 
 CLEANFILES = $(BUILT_SOURCES)
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer \
-	-:PROJECT libgstplayback -:SHARED libgstplayback \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstplayback_la_SOURCES) \
-	           $(nodist_libgstplayback_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstplayback_la_CFLAGS) $(csp_cflags) \
-	 -:LDFLAGS $(libgstplayback_la_LDFLAGS) \
-	           $(libgstplayback_la_LIBADD) \
-	           -ldl \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-		       LOCAL_MODULE_PATH:='$$(TARGET_OUT)/lib/gstreamer-0.10' \
-	> $@

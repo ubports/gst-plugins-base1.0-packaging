@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Library Reference Manual: gstvideooverlaycomposition</title>
+<title>gstvideooverlaycomposition: GStreamer Base Plugins 1.0 Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
 <link rel="next" href="gst-plugins-base-libs-gstvideofilter.html" title="gstvideofilter">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -490,7 +490,6 @@ gst_video_overlay_composition_n_rectangles
 <div class="refsect3">
 <a name="id-1.2.15.5.7.6.6"></a><h4>Returns</h4>
 <p> the number of rectangles</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -565,7 +564,6 @@ a composition).</p>
 <a name="id-1.2.15.5.7.8.6"></a><h4>Returns</h4>
 <p> the sequence number of <em class="parameter"><code>comp</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -715,6 +713,11 @@ of <em class="parameter"><code>comp</code></em>
 </tr>
 </tbody>
 </table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.15.5.7.13.6"></a><h4>Returns</h4>
+<p> a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionMeta" title="struct GstVideoOverlayCompositionMeta"><span class="type">GstVideoOverlayCompositionMeta</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1173,7 +1176,6 @@ rectangle on the video.</p>
 <div class="refsect3">
 <a name="id-1.2.15.5.7.25.6"></a><h4>Returns</h4>
 <p> TRUE if valid render dimensions were retrieved.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1214,7 +1216,6 @@ pixel-data.</p>
 <a name="id-1.2.15.5.7.26.7"></a><h4>Returns</h4>
 <p> the sequence number of <em class="parameter"><code>rectangle</code></em>
 </p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1335,7 +1336,6 @@ it is stored in, to avoid unnecessary conversion.</p>
 <div class="refsect3">
 <a name="id-1.2.15.5.7.29.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> associated with the rectangle.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1363,7 +1363,6 @@ gst_video_overlay_rectangle_get_global_alpha
 <div class="refsect3">
 <a name="id-1.2.15.5.7.30.6"></a><h4>Returns</h4>
 <p> the global-alpha value associated with the rectangle.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1376,7 +1375,7 @@ gst_video_overlay_rectangle_set_global_alpha
 <p>Sets the global alpha value associated with a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>. Per-
 pixel alpha values are multiplied with this value. Valid
 values: 0 &lt;= global_alpha &lt;= 1; 1 to deactivate.</p>
-<p> # <em class="parameter"><code>rectangle</code></em>
+<p><em class="parameter"><code>rectangle</code></em>
  must be writable, meaning its refcount must be 1. You can
 make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> writable using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
@@ -1389,11 +1388,18 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <col class="parameters_description">
 <col width="200px" class="parameters_annotations">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="parameter_name"><p>rectangle</p></td>
 <td class="parameter_description"><p>a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a></p></td>
 <td class="parameter_annotations"> </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="parameter_name"><p>global_alpha</p></td>
+<td class="parameter_description"><p>Global alpha value (0 to 1.0)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
 </table></div>
 </div>
 </div>
@@ -1412,7 +1418,7 @@ multiple overlay rectangles.</p>
 <pre class="programlisting">#define             GST_VIDEO_OVERLAY_COMPOSITION_BLEND_FORMATS</pre>
 <p>Video formats supported by <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-blend" title="gst_video_overlay_composition_blend ()"><code class="function">gst_video_overlay_composition_blend()</code></a>, for
 use in overlay elements' pad template caps.</p>
-<p class="since">Since 1.2</p>
+<p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1495,7 +1501,6 @@ overlay rectangle which can be added to a composition.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: appsrc</title>
+<title>appsrc: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-adder.html" title="adder">
-<link rel="next" href="gst-plugins-base-plugins-appsink.html" title="appsink">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="prev" href="gst-plugins-base-plugins-appsink.html" title="appsink">
+<link rel="next" href="gst-plugins-base-plugins-audioconvert.html" title="audioconvert">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -23,15 +23,15 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-adder.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-appsink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-appsink.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-audioconvert.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-appsrc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-appsrc.top_of_page"></a>appsrc</span></h2>
-<p>appsrc — Allow the application to feed buffers to a pipeline</p>
+<p>appsrc</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -120,27 +120,32 @@
 <tr>
 <td class="signal_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-end-of-stream" title="The “end-of-stream” signal">end-of-stream</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-enough-data" title="The “enough-data” signal">enough-data</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-need-data" title="The “need-data” signal">need-data</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
 </tr>
 <tr>
 <td class="signal_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-buffer" title="The “push-buffer” signal">push-buffer</a></td>
-<td class="signal_flags">Action</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 <tr>
 <td class="signal_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data" title="The “seek-data” signal">seek-data</a></td>
-<td class="signal_flags">Run Last</td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a></td>
+<td class="signal_name"><a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample" title="The “push-sample” signal">push-sample</a></td>
+<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -185,7 +190,7 @@ external API functions.</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.3.9.5.1.1"></a><h3>Element Information</h3>
+<a name="id-1.2.6.9.6.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -211,7 +216,7 @@ external API functions.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.3.9.5.1.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.6.9.6.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -238,19 +243,16 @@ external API functions.</p>
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-appsrc.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-appsrc.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstAppSrc-struct"></a><h3>struct GstAppSrc</h3>
 <pre class="programlisting">struct GstAppSrc;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -361,35 +363,7 @@ external API functions.</p>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.3.13.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstappsrc</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.3.13.2.6"></a><h4>Returns</h4>
-<p></p>
-</div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -397,31 +371,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstApp
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.3.13.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstappsrc</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -430,31 +380,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstApp
 user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>      arg1,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.3.13.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstappsrc</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run Last</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -463,35 +389,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstApp
 user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *arg1,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.3.13.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstappsrc</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.3.13.5.6"></a><h4>Returns</h4>
-<p></p>
-</div>
-<p>Flags: Action</p>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -500,40 +398,20 @@ user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstApp
 user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
                <span class="type">guint64</span>    arg1,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.3.13.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>gstappsrc</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
-<div class="refsect3">
-<a name="id-1.2.3.13.6.6"></a><h4>Returns</h4>
-<p></p>
-</div>
-<p>Flags: Run Last</p>
+<hr>
+<div class="refsect2">
+<a name="GstAppSrc-push-sample"></a><h3>The <code class="literal">“push-sample”</code> signal</h3>
+<pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
+user_function (<a class="link" href="gst-plugins-base-plugins-appsrc.html#GstAppSrc"><span class="type">GstAppSrc</span></a> *gstappsrc,
+               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> *arg1,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>   user_data)</pre>
+<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

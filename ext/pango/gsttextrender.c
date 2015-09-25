@@ -34,7 +34,7 @@
  * <refsect2>
  * <title>Example launch lines</title>
  * |[
- * gst-launch -v filesrc location=subtitles.srt ! subparse ! textrender ! xvimagesink
+ * gst-launch-1.0 -v filesrc location=subtitles.srt ! subparse ! textrender ! videoconvert ! autovideosink
  * ]|
  * </refsect2>
  */
@@ -197,7 +197,7 @@ gst_text_render_class_init (GstTextRenderClass * klass)
       "Filter/Editor/Video",
       "Renders a text string to an image bitmap",
       "David Schleef <ds@schleef.org>, "
-      "GStreamer maintainers <gstreamer-devel@lists.sourceforge.net>");
+      "GStreamer maintainers <gstreamer-devel@lists.freedesktop.org>");
 
   fontmap = pango_cairo_font_map_get_default ();
   klass->pango_context =

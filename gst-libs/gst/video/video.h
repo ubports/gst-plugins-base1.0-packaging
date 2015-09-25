@@ -26,9 +26,13 @@ typedef struct _GstVideoAlignment GstVideoAlignment;
 
 #include <gst/video/video-format.h>
 #include <gst/video/video-color.h>
+#include <gst/video/video-dither.h>
 #include <gst/video/video-info.h>
 #include <gst/video/video-frame.h>
 #include <gst/video/video-enumtypes.h>
+#include <gst/video/video-converter.h>
+#include <gst/video/video-scaler.h>
+#include <gst/video/video-multiview.h>
 
 G_BEGIN_DECLS
 
@@ -99,6 +103,9 @@ gboolean       gst_video_calculate_display_ratio (guint * dar_n,
                                                   guint   video_par_d,
                                                   guint   display_par_n,
                                                   guint   display_par_d);
+
+gboolean       gst_video_guess_framerate (GstClockTime duration,
+                                          gint * dest_n, gint * dest_d);
 
 /* convert/encode video sample from one format to another */
 

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GStreamer Base Plugins 1.0 Plugins Reference Manual: subtitleoverlay</title>
+<title>subtitleoverlay: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
-<link rel="prev" href="gst-plugins-base-plugins-streamsynchronizer.html" title="streamsynchronizer">
-<link rel="next" href="gst-plugins-base-plugins-tcpclientsrc.html" title="tcpclientsrc">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="prev" href="gst-plugins-base-plugins-subparse.html" title="subparse">
+<link rel="next" href="gst-plugins-base-plugins-tcpclientsink.html" title="tcpclientsink">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,15 +22,15 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-plugins-streamsynchronizer.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsrc.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-plugins-subparse.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-plugins-tcpclientsink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-plugins-subtitleoverlay"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="gst-plugins-base-plugins-subtitleoverlay.top_of_page"></a>subtitleoverlay</span></h2>
-<p>subtitleoverlay — Overlays a video stream with subtitles</p>
+<p>subtitleoverlay</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -99,23 +99,23 @@ autoplugging the required elements.</p>
 <p>It supports raw, timestamped text, different textual subtitle formats and
 DVD subpicture subtitles.</p>
 <div class="refsect2">
-<a name="id-1.2.27.8.4"></a><h3>Examples</h3>
+<a name="id-1.2.34.8.4"></a><h3>Examples</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> <span class="string">&quot;video/x-h264&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> <span class="string">&quot;subpicture/x-dvd&quot;</span> <span class="gtkdoc opt">!</span> queue2 <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">gst<span class="gtkdoc opt">-</span>launch<span class="gtkdoc opt">-</span><span class="number">1.0</span> <span class="gtkdoc opt">-</span>v filesrc location<span class="gtkdoc opt">=</span>test<span class="gtkdoc opt">.</span>mkv <span class="gtkdoc opt">!</span> matroskademux name<span class="gtkdoc opt">=</span>demux <span class="gtkdoc opt">!</span> video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>h264 <span class="gtkdoc opt">!</span> queue <span class="gtkdoc opt">!</span> decodebin <span class="gtkdoc opt">!</span> subtitleoverlay name<span class="gtkdoc opt">=</span>overlay <span class="gtkdoc opt">!</span> videoconvert <span class="gtkdoc opt">!</span> autovideosink  demux<span class="gtkdoc opt">. !</span> subpicture<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>dvd <span class="gtkdoc opt">!</span> queue <span class="gtkdoc opt">!</span> overlay<span class="gtkdoc opt">.</span></pre></td>
       </tr>
     </tbody>
   </table>
 </div>
- This will play back the given Matroska file with h264 video and subpicture subtitles.
+ This will play back the given Matroska file with h264 video and dvd subpicture style subtitles.
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.27.8.5.1"></a><h3>Element Information</h3>
+<a name="id-1.2.34.8.5.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -141,7 +141,7 @@ DVD subpicture subtitles.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.27.8.5.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.34.8.5.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -216,19 +216,16 @@ DVD subpicture subtitles.</p>
 </table></div>
 </div>
 </div>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-subtitleoverlay.functions_details"></a><h2>Functions</h2>
+<p></p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-subtitleoverlay.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="GstSubtitleOverlay-struct"></a><h3>struct GstSubtitleOverlay</h3>
 <pre class="programlisting">struct GstSubtitleOverlay;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -259,7 +256,6 @@ DVD subpicture subtitles.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

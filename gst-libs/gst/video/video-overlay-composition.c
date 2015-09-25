@@ -215,8 +215,14 @@ gst_video_overlay_composition_meta_transform (GstBuffer * dest, GstMeta * meta,
       dmeta =
           (GstVideoOverlayCompositionMeta *) gst_buffer_add_meta (dest,
           GST_VIDEO_OVERLAY_COMPOSITION_META_INFO, NULL);
+      if (!dmeta)
+        return FALSE;
+
       dmeta->overlay = gst_video_overlay_composition_ref (smeta->overlay);
     }
+  } else {
+    /* return FALSE, if transform type is not supported */
+    return FALSE;
   }
   return TRUE;
 }
@@ -262,6 +268,8 @@ gst_video_overlay_composition_meta_get_info (void)
  * Sets an overlay composition on a buffer. The buffer will obtain its own
  * reference to the composition, meaning this function does not take ownership
  * of @comp.
+ *
+ * Returns: (transfer none): a #GstVideoOverlayCompositionMeta
  */
 GstVideoOverlayCompositionMeta *
 gst_buffer_add_video_overlay_composition_meta (GstBuffer * buf,
@@ -1485,12 +1493,13 @@ gst_video_overlay_rectangle_get_global_alpha (GstVideoOverlayRectangle *
 /**
  * gst_video_overlay_rectangle_set_global_alpha:
  * @rectangle: a #GstVideoOverlayRectangle
+ * @global_alpha: Global alpha value (0 to 1.0)
  *
  * Sets the global alpha value associated with a #GstVideoOverlayRectangle. Per-
  * pixel alpha values are multiplied with this value. Valid
  * values: 0 <= global_alpha <= 1; 1 to deactivate.
  *
- # @rectangle must be writable, meaning its refcount must be 1. You can
+ * @rectangle must be writable, meaning its refcount must be 1. You can
  * make the rectangles inside a #GstVideoOverlayComposition writable using
  * gst_video_overlay_composition_make_writable() or
  * gst_video_overlay_composition_copy().

@@ -2,8 +2,9 @@
 ORC_SOURCE=video-orc
 include $(top_srcdir)/common/orc.mak
 
-glib_enum_headers = video.h video-format.h video-color.h video-info.h \
-			colorbalance.h navigation.h video-chroma.h video-tile.h
+glib_enum_headers = video.h video-format.h video-color.h video-info.h video-dither.h \
+			colorbalance.h navigation.h video-chroma.h video-tile.h video-converter.h \
+			video-resampler.h video-frame.h video-scaler.h
 glib_enum_define = GST_VIDEO
 glib_gen_prefix = gst_video
 glib_gen_basename = video
@@ -25,8 +26,11 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	video-format.c         	\
 	video-chroma.c         	\
 	video-color.c         	\
+	video-converter.c    	\
+	video-dither.c    	\
 	video-info.c         	\
 	video-frame.c         	\
+	video-scaler.c          \
 	video-tile.c         	\
 	gstvideosink.c   	\
 	gstvideofilter.c 	\
@@ -38,8 +42,11 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	gstvideodecoder.c       \
 	gstvideoencoder.c       \
 	gstvideoutils.c		\
+	gstvideoutilsprivate.c	\
+	video-resampler.c	\
 	video-blend.c		\
-	video-overlay-composition.c
+	video-overlay-composition.c \
+	video-multiview.c
 
 nodist_libgstvideo_@GST_API_VERSION@_la_SOURCES = $(BUILT_SOURCES)
 
@@ -53,8 +60,11 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	video-format.h         	\
 	video-chroma.h         	\
 	video-color.h         	\
+	video-converter.h      	\
+	video-dither.h      	\
 	video-info.h         	\
 	video-frame.h         	\
+	video-scaler.h          \
 	video-tile.h         	\
 	gstvideosink.h 		\
 	gstvideofilter.h	\
@@ -65,14 +75,17 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	gstvideodecoder.h       \
 	gstvideoencoder.h       \
 	gstvideoutils.h		\
+	video-resampler.h	\
 	video-blend.h		\
-	video-overlay-composition.h
+	video-overlay-composition.h \
+	video-multiview.h
 
 nodist_libgstvideo_@GST_API_VERSION@include_HEADERS = $(built_headers)
+noinst_HEADERS = gstvideoutilsprivate.h
 
 libgstvideo_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) \
 					$(ORC_CFLAGS)
-libgstvideo_@GST_API_VERSION@_la_LIBADD = $(GST_BASE_LIBS) $(GST_LIBS) $(ORC_LIBS)
+libgstvideo_@GST_API_VERSION@_la_LIBADD = $(GST_BASE_LIBS) $(GST_LIBS) $(ORC_LIBS) $(LIBM)
 libgstvideo_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 include $(top_srcdir)/common/gst-glib-gen.mak
@@ -86,7 +99,7 @@ gir_sources=$(patsubst %,$(srcdir)/%, $(libgstvideo_@GST_API_VERSION@_la_SOURCES
 gir_sources+=$(patsubst %,$(builddir)/%, $(built_sources))
 
 GstVideo-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstvideo-@GST_API_VERSION@.la
-	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
+	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstVideo \
 		--nsversion=@GST_API_VERSION@ \
@@ -104,7 +117,7 @@ GstVideo-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstvideo-@GST_API_VE
 		--pkg gstreamer-@GST_API_VERSION@ \
 		--pkg gstreamer-base-@GST_API_VERSION@ \
 		--pkg-export gstreamer-video-@GST_API_VERSION@ \
-		--add-init-section="gst_init(NULL,NULL);" \
+		--add-init-section="$(INTROSPECTION_INIT)" \
 		--output $@ \
 		$(gir_headers) \
 		$(gir_sources)
@@ -129,19 +142,3 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer -:PROJECT libgstvideo -:SHARED libgstvideo-@GST_API_VERSION@ \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstvideo_@GST_API_VERSION@_la_SOURCES) \
-	           $(nodist_libgstvideo_@GST_API_VERSION@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstvideo_@GST_API_VERSION@_la_CFLAGS) \
-	 -:LDFLAGS $(libgstvideo_@GST_API_VERSION@_la_LDFLAGS) \
-	           $(libgstvideo_@GST_API_VERSION@_la_LIBADD) \
-	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/tag \
-	 -:HEADERS $(libgstvideo_@GST_API_VERSION@include_HEADERS) \
-	           $(nodist_libgstvideo_@GST_API_VERSION@include_HEADERS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@

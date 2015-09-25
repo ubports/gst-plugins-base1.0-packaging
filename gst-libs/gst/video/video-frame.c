@@ -72,13 +72,19 @@ gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
   frame->info = *info;
 
   if (meta) {
+    /* All these values must be consistent */
+    g_return_val_if_fail (info->finfo->format == meta->format, FALSE);
+    g_return_val_if_fail (info->width <= meta->width, FALSE);
+    g_return_val_if_fail (info->height <= meta->height, FALSE);
+    g_return_val_if_fail (info->finfo->n_planes == meta->n_planes, FALSE);
+
     frame->info.finfo = gst_video_format_get_info (meta->format);
     frame->info.width = meta->width;
     frame->info.height = meta->height;
     frame->id = meta->id;
     frame->flags = meta->flags;
 
-    for (i = 0; i < info->finfo->n_planes; i++) {
+    for (i = 0; i < meta->n_planes; i++) {
       frame->info.offset[i] = meta->offset[i];
       if (!gst_video_meta_map (meta, i, &frame->map[i], &frame->data[i],
               &frame->info.stride[i], flags))
@@ -105,7 +111,10 @@ gst_video_frame_map_id (GstVideoFrame * frame, GstVideoInfo * info,
       frame->data[i] = frame->map[0].data + info->offset[i];
     }
   }
-  frame->buffer = gst_buffer_ref (buffer);
+  frame->buffer = buffer;
+  if ((flags & GST_VIDEO_FRAME_MAP_FLAG_NO_REF) == 0)
+    gst_buffer_ref (frame->buffer);
+
   frame->meta = meta;
 
   /* buffer flags enhance the frame flags */
@@ -189,11 +198,13 @@ gst_video_frame_unmap (GstVideoFrame * frame)
   GstBuffer *buffer;
   GstVideoMeta *meta;
   gint i;
+  GstMapFlags flags;
 
   g_return_if_fail (frame != NULL);
 
   buffer = frame->buffer;
   meta = frame->meta;
+  flags = frame->map[0].flags;
 
   if (meta) {
     for (i = 0; i < frame->info.finfo->n_planes; i++) {
@@ -202,7 +213,9 @@ gst_video_frame_unmap (GstVideoFrame * frame)
   } else {
     gst_buffer_unmap (buffer, &frame->map[0]);
   }
-  gst_buffer_unref (buffer);
+
+  if ((flags & GST_VIDEO_FRAME_MAP_FLAG_NO_REF) == 0)
+    gst_buffer_unref (frame->buffer);
 }
 
 /**

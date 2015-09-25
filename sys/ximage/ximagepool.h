@@ -43,7 +43,6 @@ typedef struct _GstXImageMemory GstXImageMemory;
 
 typedef struct _GstXImageBufferPool GstXImageBufferPool;
 typedef struct _GstXImageBufferPoolClass GstXImageBufferPoolClass;
-typedef struct _GstXImageBufferPoolPrivate GstXImageBufferPoolPrivate;
 
 #include "ximagesink.h"
 
@@ -88,7 +87,13 @@ struct _GstXImageBufferPool
   GstXImageSink *sink;
   GstAllocator *allocator;
 
-  GstXImageBufferPoolPrivate *priv;
+  GstCaps *caps;
+  GstVideoInfo info;
+  GstVideoAlignment align;
+  guint    padded_width;
+  guint    padded_height;
+  gboolean add_metavideo;
+  gboolean need_alignment;
 };
 
 struct _GstXImageBufferPoolClass
@@ -100,7 +105,7 @@ GType gst_ximage_buffer_pool_get_type (void);
 
 GstBufferPool * gst_ximage_buffer_pool_new     (GstXImageSink * ximagesink);
 
-gboolean gst_ximagesink_check_xshm_calls (GstXImageSink * ximagesink,
+gboolean gst_x_image_sink_check_xshm_calls (GstXImageSink * ximagesink,
         GstXContext * xcontext);
 
 G_END_DECLS

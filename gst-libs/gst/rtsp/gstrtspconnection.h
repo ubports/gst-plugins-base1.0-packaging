@@ -78,6 +78,8 @@ gboolean             gst_rtsp_connection_set_tls_validation_flags (GstRTSPConnec
 GTlsCertificateFlags gst_rtsp_connection_get_tls_validation_flags (GstRTSPConnection * conn);
 void                 gst_rtsp_connection_set_tls_database (GstRTSPConnection * conn, GTlsDatabase * database);
 GTlsDatabase *       gst_rtsp_connection_get_tls_database (GstRTSPConnection * conn);
+void                 gst_rtsp_connection_set_tls_interaction (GstRTSPConnection * conn, GTlsInteraction * interaction);
+GTlsInteraction *    gst_rtsp_connection_get_tls_interaction (GstRTSPConnection * conn);
 
 /* sending/receiving raw bytes */
 GstRTSPResult      gst_rtsp_connection_read           (GstRTSPConnection * conn, guint8 * data,
@@ -218,7 +220,7 @@ GstRTSPResult      gst_rtsp_watch_wait_backlog       (GstRTSPWatch * watch,
                                                       GTimeVal *timeout);
 
 void               gst_rtsp_watch_set_flushing       (GstRTSPWatch * watch,
-                                                      gboolean flush);
+                                                      gboolean flushing);
 G_END_DECLS
 
 #endif /* __GST_RTSP_CONNECTION_H__ */

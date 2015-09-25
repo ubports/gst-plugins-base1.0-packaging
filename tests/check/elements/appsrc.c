@@ -18,9 +18,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <gst/check/gstcheck.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/app/gstappsink.h>
+
+#ifdef HAVE_VALGRIND
+#include <valgrind/valgrind.h>
+#else
+#define RUNNING_ON_VALGRIND FALSE
+#endif
 
 #define SAMPLE_CAPS "application/x-gst-check-test"
 
@@ -115,7 +125,6 @@ static GstAppSinkCallbacks app_callbacks;
 
 typedef struct
 {
-  GMainLoop *loop;
   GstElement *source;
   GstElement *sink;
 } ProgramData;
@@ -137,63 +146,6 @@ on_new_sample_from_source (GstAppSink * elt, gpointer user_data)
   return GST_FLOW_OK;
 }
 
-/* called when we get a GstMessage from the source pipeline when we get EOS, we
- * notify the appsrc of it. */
-static gboolean
-on_source_message (GstBus * bus, GstMessage * message, ProgramData * data)
-{
-  GstElement *source;
-  gboolean ret = TRUE;
-
-  switch (GST_MESSAGE_TYPE (message)) {
-    case GST_MESSAGE_EOS:
-      source = gst_bin_get_by_name (GST_BIN (data->sink), "testsource");
-      fail_unless (gst_app_src_end_of_stream (GST_APP_SRC (source)) ==
-          GST_FLOW_OK);
-      break;
-    case GST_MESSAGE_ERROR:
-      g_main_loop_quit (data->loop);
-      ret = FALSE;
-      break;
-    default:
-      break;
-  }
-  return ret;
-}
-
-static gboolean
-on_sink_message (GstBus * bus, GstMessage * message, ProgramData * data)
-{
-  gboolean ret = TRUE;
-
-  switch (GST_MESSAGE_TYPE (message)) {
-    case GST_MESSAGE_EOS:
-      g_main_loop_quit (data->loop);
-      ret = FALSE;
-      break;
-    case GST_MESSAGE_ERROR:
-      ASSERT_SET_STATE (data->sink, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
-      ASSERT_SET_STATE (data->source, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
-      g_main_loop_quit (data->loop);
-      ret = FALSE;
-      break;
-    default:
-      break;
-  }
-  return ret;
-}
-
-static gboolean
-error_timeout (ProgramData * data)
-{
-  GstBus *bus;
-  bus = gst_element_get_bus (data->sink);
-  gst_bus_post (bus, gst_message_new_error (GST_OBJECT (data->sink), NULL,
-          "test error"));
-  gst_object_unref (bus);
-  return FALSE;
-}
-
 /*
  * appsink => appsrc pipelines executed 100 times: 
  * - appsink pipeline has sync=false
@@ -207,61 +159,260 @@ error_timeout (ProgramData * data)
 
 GST_START_TEST (test_appsrc_block_deadlock)
 {
-  int i = 0;
-  int num_iteration = 100;
-  while (i < num_iteration) {
-    ProgramData *data = NULL;
-    GstBus *bus = NULL;
-    GstElement *testsink = NULL;
+  GstElement *testsink;
+  ProgramData *data;
 
-    data = g_new0 (ProgramData, 1);
+  GST_INFO ("iteration %d", __i__);
 
-    data->loop = g_main_loop_new (NULL, FALSE);
+  data = g_new0 (ProgramData, 1);
 
-    data->source =
-        gst_parse_launch ("videotestsrc ! appsink sync=false name=testsink",
-        NULL);
+  data->source =
+      gst_parse_launch ("videotestsrc ! video/x-raw,width=16,height=16 ! "
+      "appsink sync=false name=testsink", NULL);
 
-    fail_unless (data->source != NULL);
+  fail_unless (data->source != NULL);
 
-    bus = gst_element_get_bus (data->source);
-    gst_bus_add_watch (bus, (GstBusFunc) on_source_message, data);
-    gst_object_unref (bus);
+  app_callbacks.new_sample = on_new_sample_from_source;
+  testsink = gst_bin_get_by_name (GST_BIN (data->source), "testsink");
+  gst_app_sink_set_callbacks (GST_APP_SINK_CAST (testsink), &app_callbacks,
+      data, NULL);
 
-    app_callbacks.new_sample = on_new_sample_from_source;
-    testsink = gst_bin_get_by_name (GST_BIN (data->source), "testsink");
-    gst_app_sink_set_callbacks (GST_APP_SINK_CAST (testsink), &app_callbacks,
-        data, NULL);
+  gst_object_unref (testsink);
 
-    gst_object_unref (testsink);
+  data->sink =
+      gst_parse_launch
+      ("appsrc name=testsource block=1 max-bytes=1000 is-live=true ! "
+      "fakesink sync=true", NULL);
 
-    data->sink =
-        gst_parse_launch
-        ("appsrc name=testsource block=1 max-bytes=1000 is-live=true ! fakesink sync=true",
-        NULL);
+  fail_unless (data->sink != NULL);
 
-    fail_unless (data->sink != NULL);
+  ASSERT_SET_STATE (data->sink, GST_STATE_PLAYING, GST_STATE_CHANGE_ASYNC);
+  ASSERT_SET_STATE (data->source, GST_STATE_PLAYING, GST_STATE_CHANGE_ASYNC);
 
-    bus = gst_element_get_bus (data->sink);
-    gst_bus_add_watch (bus, (GstBusFunc) on_sink_message, data);
-    gst_object_unref (bus);
+  /* wait for preroll */
+  gst_element_get_state (data->source, NULL, NULL, GST_CLOCK_TIME_NONE);
+  gst_element_get_state (data->sink, NULL, NULL, GST_CLOCK_TIME_NONE);
 
-    g_timeout_add (150, (GSourceFunc) error_timeout, data);
+  g_usleep (50 * (G_USEC_PER_SEC / 1000));
 
-    ASSERT_SET_STATE (data->sink, GST_STATE_PLAYING, GST_STATE_CHANGE_ASYNC);
-    ASSERT_SET_STATE (data->source, GST_STATE_PLAYING, GST_STATE_CHANGE_ASYNC);
+  ASSERT_SET_STATE (data->sink, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
+  ASSERT_SET_STATE (data->source, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
 
-    g_main_loop_run (data->loop);
+  gst_object_unref (data->source);
+  gst_object_unref (data->sink);
+  g_free (data);
+}
 
-    ASSERT_SET_STATE (data->sink, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
-    ASSERT_SET_STATE (data->source, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
+GST_END_TEST;
 
-    gst_object_unref (data->source);
-    gst_object_unref (data->sink);
-    g_main_loop_unref (data->loop);
-    g_free (data);
-    i++;
-    GST_INFO ("appsrc deadlock test iteration number %d/%d", i, num_iteration);
+typedef struct
+{
+  GstCaps *caps1;
+  GstCaps *caps2;
+  GstCaps *expected_caps;
+} Helper;
+
+static void
+caps_notify_cb (GObject * obj, GObject * child, GParamSpec * pspec, Helper * h)
+{
+  GstCaps *caps = NULL;
+
+  g_object_get (child, "caps", &caps, NULL);
+  if (caps) {
+    GST_LOG_OBJECT (child, "expected caps: %" GST_PTR_FORMAT, h->expected_caps);
+    GST_LOG_OBJECT (child, "caps set to  : %" GST_PTR_FORMAT, caps);
+    fail_unless (gst_caps_is_equal (caps, h->expected_caps));
+    gst_caps_unref (caps);
+  }
+}
+
+static void
+handoff_cb (GstElement * sink, GstBuffer * buf, GstPad * pad, Helper * h)
+{
+  /* have our buffer, now the caps should change */
+  h->expected_caps = h->caps2;
+  GST_INFO ("got buffer, expect caps %" GST_PTR_FORMAT " next", h->caps2);
+}
+
+/* Make sure that if set_caps() is called twice before the source is started,
+ * the caps are just replaced and not put into the internal queue */
+GST_START_TEST (test_appsrc_set_caps_twice)
+{
+  GstElement *pipe, *src, *sink;
+  GstMessage *msg;
+  GstCaps *caps;
+  Helper h;
+
+  h.caps1 = gst_caps_new_simple ("foo/bar", "bleh", G_TYPE_INT, 2, NULL);
+  h.caps2 = gst_caps_new_simple ("bar/foo", "xyz", G_TYPE_INT, 3, NULL);
+
+  pipe = gst_pipeline_new ("pipeline");
+  src = gst_element_factory_make ("appsrc", NULL);
+  sink = gst_element_factory_make ("fakesink", NULL);
+  gst_bin_add_many (GST_BIN (pipe), src, sink, NULL);
+  gst_element_link (src, sink);
+
+  g_signal_connect (pipe, "deep-notify::caps", G_CALLBACK (caps_notify_cb), &h);
+
+  g_object_set (sink, "signal-handoffs", TRUE, NULL);
+  g_signal_connect (sink, "handoff", G_CALLBACK (handoff_cb), &h);
+
+  /* case 1: set caps to caps1, then set again to caps2, all this before
+   * appsrc is started and before any buffers are in the queue yet. We don't
+   * want to see any trace of caps1 during negotiation in this case. */
+  gst_app_src_set_caps (GST_APP_SRC (src), h.caps1);
+  caps = gst_app_src_get_caps (GST_APP_SRC (src));
+  fail_unless (gst_caps_is_equal (caps, h.caps1));
+  gst_caps_unref (caps);
+
+  gst_app_src_set_caps (GST_APP_SRC (src), h.caps2);
+  caps = gst_app_src_get_caps (GST_APP_SRC (src));
+  fail_unless (gst_caps_is_equal (caps, h.caps2));
+  gst_caps_unref (caps);
+
+  gst_app_src_end_of_stream (GST_APP_SRC (src));
+
+  h.expected_caps = h.caps2;
+
+  gst_element_set_state (pipe, GST_STATE_PLAYING);
+
+  msg =
+      gst_bus_timed_pop_filtered (GST_ELEMENT_BUS (pipe), -1, GST_MESSAGE_EOS);
+  gst_message_unref (msg);
+
+  gst_element_set_state (pipe, GST_STATE_NULL);
+  gst_object_unref (pipe);
+
+  GST_INFO ("Case #2");
+
+  /* case 2: set caps to caps1, then push a buffer and set to caps2, again
+   * before appsrc is started. In this case appsrc should negotiate to caps1
+   * first, and then caps2 after pushing the first buffer. */
+
+  /* We're creating a new pipeline/appsrc here because appsrc's behaviour
+   * change slightly after setting it to NULL/READY and then re-using it */
+  pipe = gst_pipeline_new ("pipeline");
+  src = gst_element_factory_make ("appsrc", NULL);
+  sink = gst_element_factory_make ("fakesink", NULL);
+  gst_bin_add_many (GST_BIN (pipe), src, sink, NULL);
+  gst_element_link (src, sink);
+
+  g_signal_connect (pipe, "deep-notify::caps", G_CALLBACK (caps_notify_cb), &h);
+
+  g_object_set (sink, "signal-handoffs", TRUE, NULL);
+  g_signal_connect (sink, "handoff", G_CALLBACK (handoff_cb), &h);
+
+  gst_app_src_set_caps (GST_APP_SRC (src), h.caps1);
+  caps = gst_app_src_get_caps (GST_APP_SRC (src));
+  fail_unless (gst_caps_is_equal (caps, h.caps1));
+  gst_caps_unref (caps);
+
+  /* first caps1, then buffer, then later caps2 */
+  h.expected_caps = h.caps1;
+
+  gst_element_set_state (pipe, GST_STATE_PLAYING);
+
+  gst_app_src_push_buffer (GST_APP_SRC (src), gst_buffer_new ());
+
+  gst_app_src_set_caps (GST_APP_SRC (src), h.caps2);
+  caps = gst_app_src_get_caps (GST_APP_SRC (src));
+  fail_unless (gst_caps_is_equal (caps, h.caps2));
+  gst_caps_unref (caps);
+
+  gst_app_src_end_of_stream (GST_APP_SRC (src));
+
+  msg =
+      gst_bus_timed_pop_filtered (GST_ELEMENT_BUS (pipe), -1, GST_MESSAGE_EOS);
+  gst_message_unref (msg);
+
+  gst_element_set_state (pipe, GST_STATE_NULL);
+  gst_object_unref (pipe);
+
+  gst_caps_unref (h.caps2);
+  gst_caps_unref (h.caps1);
+}
+
+GST_END_TEST;
+
+static gboolean
+seek_cb (GstAppSrc * src, guint64 offset, gpointer data)
+{
+  /* Return fake true */
+  return TRUE;
+}
+
+static void
+caps_cb (GObject * obj, GObject * child, GParamSpec * pspec,
+    GstCaps ** received_caps)
+{
+  GstCaps *caps = NULL;
+
+  /* Collect the caps */
+  g_object_get (child, "caps", &caps, NULL);
+  if (caps) {
+    GST_LOG_OBJECT (child, "caps set to  : %" GST_PTR_FORMAT, caps);
+    gst_caps_replace (received_caps, caps);
+    gst_caps_unref (caps);
+  }
+}
+
+GST_START_TEST (test_appsrc_caps_in_push_modes)
+{
+  GstElement *pipe, *src, *sink;
+  GstMessage *msg;
+  GstCaps *caps, *caps1, *received_caps;
+  gint i;
+  GstMessageType msg_types;
+  GstAppSrcCallbacks cb = { 0 };
+  GstAppStreamType modes[] = { GST_APP_STREAM_TYPE_STREAM,
+    GST_APP_STREAM_TYPE_SEEKABLE,
+    GST_APP_STREAM_TYPE_RANDOM_ACCESS
+  };
+
+  for (i = 0; i < sizeof (modes) / sizeof (modes[0]); i++) {
+    GST_INFO ("checking mode %d", modes[i]);
+    caps1 = gst_caps_new_simple ("foo/bar", "bleh", G_TYPE_INT, 2, NULL);
+    received_caps = NULL;
+
+    pipe = gst_pipeline_new ("pipeline");
+    src = gst_element_factory_make ("appsrc", NULL);
+    sink = gst_element_factory_make ("fakesink", NULL);
+    gst_bin_add_many (GST_BIN (pipe), src, sink, NULL);
+    gst_element_link (src, sink);
+
+    g_object_set (G_OBJECT (src), "stream-type", modes[i], NULL);
+    if (modes[i] != GST_APP_STREAM_TYPE_STREAM) {
+      cb.seek_data = seek_cb;
+      gst_app_src_set_callbacks (GST_APP_SRC (src), &cb, NULL, NULL);
+    }
+    g_signal_connect (pipe, "deep-notify::caps", G_CALLBACK (caps_cb),
+        &received_caps);
+
+    gst_app_src_set_caps (GST_APP_SRC (src), caps1);
+    caps = gst_app_src_get_caps (GST_APP_SRC (src));
+    fail_unless (gst_caps_is_equal (caps, caps1));
+    gst_caps_unref (caps);
+
+    gst_element_set_state (pipe, GST_STATE_PLAYING);
+
+    if (modes[i] != GST_APP_STREAM_TYPE_RANDOM_ACCESS) {
+      gst_app_src_end_of_stream (GST_APP_SRC (src));
+      msg_types = GST_MESSAGE_EOS;
+    } else {
+      gst_app_src_push_buffer (GST_APP_SRC (src), gst_buffer_new ());
+      msg_types = GST_MESSAGE_ASYNC_DONE;
+    }
+
+    msg = gst_bus_timed_pop_filtered (GST_ELEMENT_BUS (pipe), -1, msg_types);
+    gst_message_unref (msg);
+    /* The collected caps should match with one that was pushed */
+    fail_unless (received_caps && gst_caps_is_equal (received_caps, caps1));
+
+    gst_element_set_state (pipe, GST_STATE_NULL);
+    gst_object_unref (pipe);
+    gst_caps_unref (caps1);
+    if (received_caps)
+      gst_caps_unref (received_caps);
   }
 }
 
@@ -274,9 +425,14 @@ appsrc_suite (void)
   TCase *tc_chain = tcase_create ("general");
 
   tcase_add_test (tc_chain, test_appsrc_non_null_caps);
-  tcase_add_test (tc_chain, test_appsrc_block_deadlock);
+  tcase_add_test (tc_chain, test_appsrc_set_caps_twice);
+  tcase_add_test (tc_chain, test_appsrc_caps_in_push_modes);
 
-  tcase_set_timeout (tc_chain, 20);
+  if (RUNNING_ON_VALGRIND)
+    tcase_add_loop_test (tc_chain, test_appsrc_block_deadlock, 0, 5);
+  else
+    tcase_add_loop_test (tc_chain, test_appsrc_block_deadlock, 0, 100);
+
   suite_add_tcase (s, tc_chain);
 
   return s;

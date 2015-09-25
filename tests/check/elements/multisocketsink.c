@@ -124,6 +124,39 @@ setup_handles (GSocket ** sinkhandle, GSocket ** srchandle)
   return TRUE;
 }
 
+static gboolean
+read_handle_n_bytes_exactly (GSocket * srchandle, void *buf, size_t count)
+{
+  gssize total_read, read;
+  gchar *data = buf;
+
+  GST_DEBUG ("reading exactly %" G_GSIZE_FORMAT " bytes", count);
+
+  /* loop to make sure the sink has had a chance to write out all data.
+   * Depending on system load it might be written in multiple write calls,
+   * so it's possible our first read() just returns parts of the data. */
+  total_read = 0;
+  do {
+    read =
+        g_socket_receive (srchandle, data + total_read, count - total_read,
+        NULL, NULL);
+
+    if (read == 0)              /* socket was closed */
+      return FALSE;
+
+    if (read < 0)
+      fail ("read error");
+
+    total_read += read;
+
+    GST_INFO ("read %" G_GSSIZE_FORMAT " bytes, total now %" G_GSSIZE_FORMAT,
+        read, total_read);
+  }
+  while (total_read < count);
+
+  return TRUE;
+}
+
 static ssize_t
 read_handle (GSocket * srchandle, void *buf, size_t count)
 {
@@ -161,7 +194,7 @@ GST_START_TEST (test_add_client)
   GstElement *sink;
   GstBuffer *buffer;
   GstCaps *caps;
-  gchar data[4];
+  gchar data[9];
   GSocket *sinksocket, *srcsocket;
 
   sink = setup_multisocketsink ();
@@ -180,12 +213,15 @@ GST_START_TEST (test_add_client)
   gst_check_setup_events (mysrcpad, sink, caps, GST_FORMAT_BYTES);
   ASSERT_CAPS_REFCOUNT (caps, "caps", 3);
   gst_buffer_fill (buffer, 0, "dead", 4);
+  gst_buffer_append_memory (buffer,
+      gst_memory_new_wrapped (GST_MEMORY_FLAG_READONLY, (gpointer) " good", 5,
+          0, 5, NULL, NULL));
   fail_unless (gst_pad_push (mysrcpad, buffer) == GST_FLOW_OK);
 
   GST_DEBUG ("reading");
-  fail_if (read_handle (srcsocket, data, 4) < 4);
-  fail_unless (strncmp (data, "dead", 4) == 0);
-  wait_bytes_served (sink, 4);
+  fail_if (read_handle (srcsocket, data, 9) < 9);
+  fail_unless (strncmp (data, "dead good", 9) == 0);
+  wait_bytes_served (sink, 9);
 
   GST_DEBUG ("cleaning up multisocketsink");
   ASSERT_SET_STATE (sink, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
@@ -196,6 +232,77 @@ GST_START_TEST (test_add_client)
 
   g_object_unref (srcsocket);
   g_object_unref (sinksocket);
+}
+
+GST_END_TEST;
+
+typedef struct
+{
+  GSocket *sinksocket, *srcsocket;
+  GstElement *sink;
+} TestSinkAndSocket;
+
+static void
+setup_sink_with_socket (TestSinkAndSocket * tsas)
+{
+  GstCaps *caps = NULL;
+
+  tsas->sink = setup_multisocketsink ();
+  fail_unless (setup_handles (&tsas->sinksocket, &tsas->srcsocket));
+
+  ASSERT_SET_STATE (tsas->sink, GST_STATE_PLAYING, GST_STATE_CHANGE_ASYNC);
+
+  /* add the client */
+  g_signal_emit_by_name (tsas->sink, "add", tsas->sinksocket);
+
+  caps = gst_caps_from_string ("application/x-gst-check");
+  gst_check_setup_events (mysrcpad, tsas->sink, caps, GST_FORMAT_BYTES);
+  gst_caps_unref (caps);
+}
+
+static void
+teardown_sink_with_socket (TestSinkAndSocket * tsas)
+{
+  if (tsas->sink != NULL) {
+    ASSERT_SET_STATE (tsas->sink, GST_STATE_NULL, GST_STATE_CHANGE_SUCCESS);
+    cleanup_multisocketsink (tsas->sink);
+    tsas->sink = 0;
+  }
+  if (tsas->sinksocket != NULL) {
+    g_object_unref (tsas->sinksocket);
+    tsas->sinksocket = 0;
+  }
+  if (tsas->srcsocket != NULL) {
+    g_object_unref (tsas->srcsocket);
+    tsas->srcsocket = 0;
+  }
+}
+
+GST_START_TEST (test_sending_buffers_with_9_gstmemories)
+{
+  TestSinkAndSocket tsas = { 0 };
+  GstBuffer *buffer;
+  int i;
+  const char *numbers[9] = { "one", "two", "three", "four", "five", "six",
+    "seven", "eight", "nine"
+  };
+  const char numbers_concat[] = "onetwothreefourfivesixseveneightnine";
+  gchar data[sizeof (numbers_concat)];
+  int len = sizeof (numbers_concat) - 1;
+
+  setup_sink_with_socket (&tsas);
+
+  buffer = gst_buffer_new ();
+  for (i = 0; i < G_N_ELEMENTS (numbers); i++)
+    gst_buffer_append_memory (buffer,
+        gst_memory_new_wrapped (GST_MEMORY_FLAG_READONLY, (gpointer) numbers[i],
+            strlen (numbers[i]), 0, strlen (numbers[i]), NULL, NULL));
+  fail_unless (gst_pad_push (mysrcpad, buffer) == GST_FLOW_OK);
+
+  fail_unless (read_handle_n_bytes_exactly (tsas.srcsocket, data, len));
+  fail_unless (strncmp (data, numbers_concat, len) == 0);
+
+  teardown_sink_with_socket (&tsas);
 }
 
 GST_END_TEST;
@@ -874,6 +981,7 @@ multisocketsink_suite (void)
   suite_add_tcase (s, tc_chain);
   tcase_add_test (tc_chain, test_no_clients);
   tcase_add_test (tc_chain, test_add_client);
+  tcase_add_test (tc_chain, test_sending_buffers_with_9_gstmemories);
   tcase_add_test (tc_chain, test_streamheader);
   tcase_add_test (tc_chain, test_change_streamheader);
   tcase_add_test (tc_chain, test_burst_client_bytes);

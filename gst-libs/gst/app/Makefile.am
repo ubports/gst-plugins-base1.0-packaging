@@ -38,7 +38,7 @@ gir_sources=$(patsubst %,$(srcdir)/%, $(libgstapp_@GST_API_VERSION@_la_SOURCES))
 gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstapp_@GST_API_VERSION@_la_SOURCES))
 
 GstApp-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstapp-@GST_API_VERSION@.la
-	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" \
+	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstApp \
 		--nsversion=@GST_API_VERSION@ \
@@ -56,7 +56,7 @@ GstApp-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstapp-@GST_API_VERSIO
 		--pkg gstreamer-@GST_API_VERSION@ \
 		--pkg gstreamer-base-@GST_API_VERSION@ \
 		--pkg-export gstreamer-app-@GST_API_VERSION@ \
-		--add-init-section="gst_init(NULL,NULL);" \
+		--add-init-section="$(INTROSPECTION_INIT)" \
 		--output $@ \
 		$(gir_headers) \
 		$(gir_sources)
@@ -81,18 +81,3 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
-
-Android.mk: Makefile.am $(BUILT_SOURCES)
-	androgenizer -:PROJECT libgstapp -:SHARED libgstapp-@GST_API_VERSION@ \
-	 -:TAGS eng debug \
-         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-	 -:SOURCES $(libgstapp_@GST_API_VERSION@_la_SOURCES) \
-	           $(nodist_libgstapp_@GST_API_VERSION@_la_SOURCES) \
-	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstapp_@GST_API_VERSION@_la_CFLAGS) \
-	 -:LDFLAGS $(libgstapp_@GST_API_VERSION@_la_LDFLAGS) \
-	           $(libgstapp_@GST_API_VERSION@_la_LIBADD) \
-	           -ldl \
-	 -:HEADER_TARGET gstreamer-@GST_API_VERSION@/gst/app \
-	 -:HEADERS $(libgstapp_@GST_API_VERSION@include_HEADERS) \
-	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
-	> $@

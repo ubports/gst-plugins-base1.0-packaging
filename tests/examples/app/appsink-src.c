@@ -1,3 +1,25 @@
+/* GStreamer
+ *
+ * appsink-src.c: example for using appsink and appsrc.
+ *
+ * Copyright (C) 2008 Wim Taymans <wim.taymans@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
 #include <gst/gst.h>
 
 #include <string.h>
@@ -24,6 +46,7 @@ on_new_sample_from_sink (GstElement * elt, ProgramData * data)
   GstSample *sample;
   GstBuffer *app_buffer, *buffer;
   GstElement *source;
+  GstFlowReturn ret;
 
   /* get the sample from appsink */
   sample = gst_app_sink_pull_sample (GST_APP_SINK (elt));
@@ -37,7 +60,10 @@ on_new_sample_from_sink (GstElement * elt, ProgramData * data)
 
   /* get source an push new buffer */
   source = gst_bin_get_by_name (GST_BIN (data->sink), "testsource");
-  return gst_app_src_push_buffer (GST_APP_SRC (source), app_buffer);
+  ret = gst_app_src_push_buffer (GST_APP_SRC (source), app_buffer);
+  gst_object_unref (source);
+
+  return ret;
 }
 
 /* called when we get a GstMessage from the source pipeline when we get EOS, we
@@ -52,6 +78,7 @@ on_source_message (GstBus * bus, GstMessage * message, ProgramData * data)
       g_print ("The source got dry\n");
       source = gst_bin_get_by_name (GST_BIN (data->sink), "testsource");
       gst_app_src_end_of_stream (GST_APP_SRC (source));
+      gst_object_unref (source);
       break;
     case GST_MESSAGE_ERROR:
       g_print ("Received error\n");
@@ -100,6 +127,11 @@ main (int argc, char *argv[])
     filename = g_strdup (argv[1]);
   else
     filename = g_strdup ("/usr/share/sounds/ekiga/ring.wav");
+
+  if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+    g_print ("File %s does not exist\n", filename);
+    return -1;
+  }
 
   data = g_new0 (ProgramData, 1);
 

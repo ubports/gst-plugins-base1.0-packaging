@@ -59,6 +59,9 @@ typedef enum
   GST_RTCP_TYPE_PSFB    = 206
 } GstRTCPType;
 
+/* FIXME 2.0: backwards compatibility define for enum typo */
+#define GST_RTCP_RTPFB_TYPE_RCTP_SR_REQ GST_RTCP_RTPFB_TYPE_RTCP_SR_REQ
+
 /**
  * GstRTCPFBType:
  * @GST_RTCP_FB_TYPE_INVALID: Invalid type
@@ -66,7 +69,7 @@ typedef enum
  * @GST_RTCP_RTPFB_TYPE_TMMBR: Temporary Maximum Media Stream Bit Rate Request
  * @GST_RTCP_RTPFB_TYPE_TMMBN: Temporary Maximum Media Stream Bit Rate
  *    Notification
- * @GST_RTCP_RTPFB_TYPE_RTCP_SR_SEQ: Request an SR packet for early
+ * @GST_RTCP_RTPFB_TYPE_RTCP_SR_REQ: Request an SR packet for early
  *    synchronization
  * @GST_RTCP_PSFB_TYPE_PLI: Picture Loss Indication
  * @GST_RTCP_PSFB_TYPE_SLI: Slice Loss Indication
@@ -89,7 +92,7 @@ typedef enum
   GST_RTCP_RTPFB_TYPE_TMMBR       = 3,
   GST_RTCP_RTPFB_TYPE_TMMBN       = 4,
   /* RTPFB types assigned in RFC 6051 */
-  GST_RTCP_RTPFB_TYPE_RCTP_SR_REQ = 5,
+  GST_RTCP_RTPFB_TYPE_RTCP_SR_REQ = 5,
   /* PSFB types */
   GST_RTCP_PSFB_TYPE_PLI          = 1,
   GST_RTCP_PSFB_TYPE_SLI          = 2,
@@ -165,6 +168,15 @@ typedef enum
  * Mask for version, padding bit and packet type pair
  */
 #define GST_RTCP_VALID_MASK (0xc000 | 0x2000 | 0xfe)
+
+/**
+ * GST_RTCP_REDUCED_SIZE_VALID_MASK:
+ *
+ * Mask for version, padding bit and packet type pair allowing reduced size
+ * packets, basically it accepts other types than RR and SR
+ */
+#define GST_RTCP_REDUCED_SIZE_VALID_MASK (0xc000 | 0x2000 | 0xf8)
+
 /**
  * GST_RTCP_VALID_VALUE:
  *
@@ -214,6 +226,10 @@ GstBuffer*      gst_rtcp_buffer_new_copy_data     (gpointer data, guint len);
 
 gboolean        gst_rtcp_buffer_validate_data     (guint8 *data, guint len);
 gboolean        gst_rtcp_buffer_validate          (GstBuffer *buffer);
+
+gboolean        gst_rtcp_buffer_validate_data_reduced   (guint8 *data, guint len);
+gboolean        gst_rtcp_buffer_validate_reduced        (GstBuffer *buffer);
+
 
 GstBuffer*      gst_rtcp_buffer_new               (guint mtu);
 
