@@ -1,3 +1,11 @@
+gst-plugins-base1.0 (1.6.0-2) UNRELEASED; urgency=medium
+
+  * debian/control.in:
+    + Remove Recommends on alsa-base, it's a useless dummy package
+      and not needed anyway (Closes: #785268).
+
+ -- Sebastian Dröge <slomo@debian.org>  Sat, 03 Oct 2015 19:03:14 +0100
+
 gst-plugins-base1.0 (1.6.0-1) unstable; urgency=medium
 
   * debian/control.in:
