@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.6.0\n"
+"Project-Id-Version: gst-plugins-base 1.6.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-09-25 22:48+0200\n"
+"POT-Creation-Date: 2015-10-30 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Could not open audio device for playback."
 msgstr ""
 
-#: ext/alsa/gstalsasink.c:1081
+#: ext/alsa/gstalsasink.c:1082
 msgid "Error outputting to audio device. The device has been disconnected."
 msgstr ""
 
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Could not open audio device for recording."
 msgstr ""
 
-#: ext/alsa/gstalsasrc.c:997
+#: ext/alsa/gstalsasrc.c:996
 msgid "Error recording from audio device. The device has been disconnected."
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Internal data stream error."
 msgstr ""
 
-#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3359
+#: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3362
 #: gst/playback/gstplaysink.c:1483 gst/playback/gstplaysink.c:1500
 #: gst/playback/gstplaysink.c:1834 gst/playback/gstplaysink.c:1863
 #: gst/playback/gstplaysink.c:2443 gst/playback/gstplaysink.c:2492
@@ -94,8 +94,8 @@ msgstr ""
 #: gst/playback/gstplaysink.c:2564 gst/playback/gstplaysink.c:2709
 #: gst/playback/gstplaysink.c:2737 gst/playback/gstplaysink.c:3115
 #: gst/playback/gstplaysink.c:3124 gst/playback/gstplaysink.c:3133
-#: gst/playback/gstplaysink.c:3142 gst/playback/gstplaysink.c:3517
-#: gst/playback/gstplaysink.c:4387 gst/playback/gstplaysinkconvertbin.c:97
+#: gst/playback/gstplaysink.c:3142 gst/playback/gstplaysink.c:3519
+#: gst/playback/gstplaysink.c:4391 gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117 gst/playback/gsturidecodebin.c:1490
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
@@ -109,7 +109,7 @@ msgstr ""
 msgid "This appears to be a text file"
 msgstr ""
 
-#: gst/playback/gstplaybin2.c:5353
+#: gst/playback/gstplaybin2.c:5377
 msgid "Could not create \"uridecodebin\" element."
 msgstr ""
 
