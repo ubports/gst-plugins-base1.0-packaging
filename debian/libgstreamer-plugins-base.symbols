@@ -528,6 +528,7 @@ libgstrtp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_rtp_buffer_get_timestamp@Base 1.0.0
  gst_rtp_buffer_get_version@Base 1.0.0
  gst_rtp_buffer_map@Base 1.0.0
+ gst_rtp_buffer_map_flags_get_type@Base 1.6.1
  gst_rtp_buffer_new_allocate@Base 1.0.0
  gst_rtp_buffer_new_allocate_len@Base 1.0.0
  gst_rtp_buffer_new_copy_data@Base 1.0.0
