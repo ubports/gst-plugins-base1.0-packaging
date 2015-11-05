@@ -100,7 +100,6 @@ Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          @GST_PLUGINS_BASE_LIB@ (>= @GST_VERSION@)
-Recommends: alsa-base (>= 0.9.0)
 Suggests: alsa-utils (>= 0.9.0)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
