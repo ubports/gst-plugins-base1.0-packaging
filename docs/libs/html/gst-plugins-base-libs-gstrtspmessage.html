@@ -749,7 +749,7 @@ value.</p>
 <a name="gst-rtsp-message-new-data"></a><h3>gst_rtsp_message_new_data ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_new_data (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> **msg</code></em>,
-                           <em class="parameter"><code><span class="type">guint8</span> channel</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> channel</code></em>);</pre>
 <p>Create a new data <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> with <em class="parameter"><code>channel</code></em>
  and store the
 result message in <em class="parameter"><code>msg</code></em>
@@ -786,7 +786,7 @@ result message in <em class="parameter"><code>msg</code></em>
 <a name="gst-rtsp-message-init-data"></a><h3>gst_rtsp_message_init_data ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_init_data (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> channel</code></em>);</pre>
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> channel</code></em>);</pre>
 <p>Initialize a new data <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> for <em class="parameter"><code>channel</code></em>
 .</p>
 <div class="refsect3">
@@ -821,7 +821,7 @@ gst_rtsp_message_init_data (<em class="parameter"><code><a class="link" href="gs
 <a name="gst-rtsp-message-parse-data"></a><h3>gst_rtsp_message_parse_data ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_parse_data (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                             <em class="parameter"><code><span class="type">guint8</span> *channel</code></em>);</pre>
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *channel</code></em>);</pre>
 <p>Parse the data message <em class="parameter"><code>msg</code></em>
  and store the channel in <em class="parameter"><code>channel</code></em>
 .</p>
@@ -1278,7 +1278,7 @@ for transmission.</p>
 <a name="gst-rtsp-message-set-body"></a><h3>gst_rtsp_message_set_body ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                           <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>,
+                           <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
 <p>Set the body of <em class="parameter"><code>msg</code></em>
  to a copy of <em class="parameter"><code>data</code></em>
@@ -1321,7 +1321,7 @@ gst_rtsp_message_set_body (<em class="parameter"><code><a class="link" href="gst
 <a name="gst-rtsp-message-take-body"></a><h3>gst_rtsp_message_take_body ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> size</code></em>);</pre>
 <p>Set the body of <em class="parameter"><code>msg</code></em>
  to <em class="parameter"><code>data</code></em>
@@ -1367,7 +1367,7 @@ gst_rtsp_message_take_body (<em class="parameter"><code><a class="link" href="gs
 <a name="gst-rtsp-message-get-body"></a><h3>gst_rtsp_message_get_body ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_get_body (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                           <em class="parameter"><code><span class="type">guint8</span> **data</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **data</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
 <p>Get the body of <em class="parameter"><code>msg</code></em>
 . <em class="parameter"><code>data</code></em>
@@ -1412,7 +1412,7 @@ unchanged.</p>
 <a name="gst-rtsp-message-steal-body"></a><h3>gst_rtsp_message_steal_body ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_message_steal_body (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspmessage.html#GstRTSPMessage" title="struct GstRTSPMessage"><span class="type">GstRTSPMessage</span></a> *msg</code></em>,
-                             <em class="parameter"><code><span class="type">guint8</span> **data</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **data</code></em>,
                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *size</code></em>);</pre>
 <p>Take the body of <em class="parameter"><code>msg</code></em>
  and store it in <em class="parameter"><code>data</code></em>

@@ -154,7 +154,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint64</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-samples-done" title="gst_audio_ring_buffer_samples_done ()">gst_audio_ring_buffer_samples_done</a> <span class="c_punctuation">()</span>
@@ -365,7 +365,7 @@ implementations.
 <a name="GstAudioRingBufferCallback"></a><h3>GstAudioRingBufferCallback ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*GstAudioRingBufferCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *rbuf</code></em>,
-                               <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>This function is set with <a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#gst-audio-ring-buffer-set-callback" title="gst_audio_ring_buffer_set_callback ()"><code class="function">gst_audio_ring_buffer_set_callback()</code></a> and is
@@ -741,7 +741,7 @@ not yet transfered to the ringbuffer.</p>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-ring-buffer-samples-done"></a><h3>gst_audio_ring_buffer_samples_done ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint64</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 gst_audio_ring_buffer_samples_done (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>);</pre>
 <p>Get the number of samples that were processed by the ringbuffer
 since it was last started. This does not include the number of samples not
@@ -772,7 +772,7 @@ yet processed (see <a class="link" href="gst-plugins-base-libs-gstaudioringbuffe
 <a name="gst-audio-ring-buffer-set-sample"></a><h3>gst_audio_ring_buffer_set_sample ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_audio_ring_buffer_set_sample (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
-                                  <em class="parameter"><code><span class="type">guint64</span> sample</code></em>);</pre>
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> sample</code></em>);</pre>
 <p>Make sure that the next sample written to the device is
 accounted for as being the <em class="parameter"><code>sample</code></em>
  sample written to the
@@ -808,8 +808,8 @@ sample position of the ringbuffer.</p>
 <a name="gst-audio-ring-buffer-commit"></a><h3>gst_audio_ring_buffer_commit ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 gst_audio_ring_buffer_commit (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
-                              <em class="parameter"><code><span class="type">guint64</span> *sample</code></em>,
-                              <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> *sample</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> in_samples</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> out_samples</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *accum</code></em>);</pre>
@@ -899,9 +899,9 @@ with a flush or stop.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_ring_buffer_convert (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_fmt</code></em>,
-                               <em class="parameter"><code><span class="type">gint64</span> src_val</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> src_val</code></em>,
                                <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_fmt</code></em>,
-                               <em class="parameter"><code><span class="type">gint64</span> *dest_val</code></em>);</pre>
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest_val</code></em>);</pre>
 <p>Convert <em class="parameter"><code>src_val</code></em>
  in <em class="parameter"><code>src_fmt</code></em>
  to the equivalent value in <em class="parameter"><code>dest_fmt</code></em>
@@ -956,7 +956,7 @@ will be put in <em class="parameter"><code>dest_val</code></em>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_ring_buffer_prepare_read (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *segment</code></em>,
-                                    <em class="parameter"><code><span class="type">guint8</span> **readptr</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> **readptr</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *len</code></em>);</pre>
 <p>Returns a pointer to memory where the data from segment <em class="parameter"><code>segment</code></em>
 
@@ -1004,8 +1004,8 @@ can be found. This function is mostly used by subclasses.</p>
 <a name="gst-audio-ring-buffer-read"></a><h3>gst_audio_ring_buffer_read ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 gst_audio_ring_buffer_read (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudioringbuffer.html#GstAudioRingBuffer"><span class="type">GstAudioRingBuffer</span></a> *buf</code></em>,
-                            <em class="parameter"><code><span class="type">guint64</span> sample</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> *data</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> sample</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>,
                             <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *timestamp</code></em>);</pre>
 <p>Read <em class="parameter"><code>len</code></em>
@@ -1451,12 +1451,12 @@ gst_audio_ring_buffer_set_timestamp (<em class="parameter"><code><a class="link"
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.memory"></a>memory</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.memory"></a>memory</code></em>;</p></td>
 <td class="struct_member_description"><p>data in the ringbuffer</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gsize</span> <em class="structfield"><code><a name="GstAudioRingBuffer-struct.size"></a>size</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> <em class="structfield"><code><a name="GstAudioRingBuffer-struct.size"></a>size</code></em>;</p></td>
 <td class="struct_member_description"><p>size of data in the ringbuffer</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -1476,7 +1476,7 @@ gst_audio_ring_buffer_set_timestamp (<em class="parameter"><code><a class="link"
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.empty-seg"></a>empty_seg</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstAudioRingBuffer-struct.empty-seg"></a>empty_seg</code></em>;</p></td>
 <td class="struct_member_description"><p>pointer to memory holding one segment of silence samples</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -1668,12 +1668,12 @@ consumed segments in the device.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint64</span> <em class="structfield"><code><a name="GstAudioRingBufferSpec.latency-time"></a>latency_time</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> <em class="structfield"><code><a name="GstAudioRingBufferSpec.latency-time"></a>latency_time</code></em>;</p></td>
 <td class="struct_member_description"><p>the latency in microseconds</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint64</span> <em class="structfield"><code><a name="GstAudioRingBufferSpec.buffer-time"></a>buffer_time</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> <em class="structfield"><code><a name="GstAudioRingBufferSpec.buffer-time"></a>buffer_time</code></em>;</p></td>
 <td class="struct_member_description"><p>the total buffer size in microseconds</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

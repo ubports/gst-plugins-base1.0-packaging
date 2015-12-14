@@ -118,12 +118,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gint64</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--max-ptime" title="The “max-ptime” property">max-ptime</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gint64</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--min-ptime" title="The “min-ptime” property">min-ptime</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -143,7 +143,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gint64</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#GstRTPBasePayload--ptime-multiple" title="The “ptime-multiple” property">ptime-multiple</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -442,7 +442,7 @@ gst_rtp_base_payload_set_options (<em class="parameter"><code><a class="link" hr
                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *media</code></em>,
                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dynamic</code></em>,
                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *encoding_name</code></em>,
-                                  <em class="parameter"><code><span class="type">guint32</span> clock_rate</code></em>);</pre>
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> clock_rate</code></em>);</pre>
 <p>Set the rtp options of the payloader. These options will be set in the caps
 of the payloader. Subclasses must call this method before calling
 <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#gst-rtp-base-payload-push" title="gst_rtp_base_payload_push ()"><code class="function">gst_rtp_base_payload_push()</code></a> or <a class="link" href="gst-plugins-base-libs-gstrtpbasepayload.html#gst-rtp-base-payload-set-outcaps" title="gst_rtp_base_payload_set_outcaps ()"><code class="function">gst_rtp_base_payload_set_outcaps()</code></a>.</p>
@@ -608,7 +608,7 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <a name="gst-plugins-base-libs-gstrtpbasepayload.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstRTPBasePayload--max-ptime"></a><h3>The <code class="literal">“max-ptime”</code> property</h3>
-<pre class="programlisting">  “max-ptime”                <span class="type">gint64</span></pre>
+<pre class="programlisting">  “max-ptime”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></pre>
 <p>Maximum duration of the packet data in ns (-1 = unlimited up to MTU).</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= -1</p>
@@ -617,7 +617,7 @@ gst_rtp_base_payload_set_outcaps (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="GstRTPBasePayload--min-ptime"></a><h3>The <code class="literal">“min-ptime”</code> property</h3>
-<pre class="programlisting">  “min-ptime”                <span class="type">gint64</span></pre>
+<pre class="programlisting">  “min-ptime”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></pre>
 <p>Minimum duration of the packet data in ns (can't go above MTU)</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 0</p>
@@ -666,7 +666,7 @@ timestamps for audio streams.</p>
 <hr>
 <div class="refsect2">
 <a name="GstRTPBasePayload--ptime-multiple"></a><h3>The <code class="literal">“ptime-multiple”</code> property</h3>
-<pre class="programlisting">  “ptime-multiple”           <span class="type">gint64</span></pre>
+<pre class="programlisting">  “ptime-multiple”           <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></pre>
 <p>Force buffers to be multiples of this duration in ns (0 disables)</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 0</p>

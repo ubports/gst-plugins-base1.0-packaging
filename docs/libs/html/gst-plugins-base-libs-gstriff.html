@@ -177,7 +177,7 @@ asf.</p>
 <div class="refsect2">
 <a name="gst-riff-create-audio-caps"></a><h3>gst_riff_create_audio_caps ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
-gst_riff_create_audio_caps (<em class="parameter"><code><span class="type">guint16</span> codec_id</code></em>,
+gst_riff_create_audio_caps (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> codec_id</code></em>,
                             <em class="parameter"><code><span class="type">gst_riff_strh</span> *strh</code></em>,
                             <em class="parameter"><code><span class="type">gst_riff_strf_auds</span> *strf</code></em>,
                             <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *strf_data</code></em>,
@@ -195,7 +195,7 @@ gst_riff_create_audio_template_caps (<em class="parameter"><code><span class="ty
 <div class="refsect2">
 <a name="gst-riff-create-iavs-caps"></a><h3>gst_riff_create_iavs_caps ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
-gst_riff_create_iavs_caps (<em class="parameter"><code><span class="type">guint32</span> codec_fcc</code></em>,
+gst_riff_create_iavs_caps (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> codec_fcc</code></em>,
                            <em class="parameter"><code><span class="type">gst_riff_strh</span> *strh</code></em>,
                            <em class="parameter"><code><span class="type">gst_riff_strf_iavs</span> *strf</code></em>,
                            <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *strf_data</code></em>,
@@ -212,7 +212,7 @@ gst_riff_create_iavs_template_caps (<em class="parameter"><code><span class="typ
 <div class="refsect2">
 <a name="gst-riff-create-video-caps"></a><h3>gst_riff_create_video_caps ()</h3>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="returnvalue">GstCaps</span></a> *
-gst_riff_create_video_caps (<em class="parameter"><code><span class="type">guint32</span> codec_fcc</code></em>,
+gst_riff_create_video_caps (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> codec_fcc</code></em>,
                             <em class="parameter"><code><span class="type">gst_riff_strh</span> *strh</code></em>,
                             <em class="parameter"><code><span class="type">gst_riff_strf_vids</span> *strf</code></em>,
                             <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *strf_data</code></em>,
@@ -285,7 +285,7 @@ gst_riff_init (<em class="parameter"><code><span class="type">void</span></code>
 gst_riff_parse_chunk (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *element</code></em>,
                       <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buf</code></em>,
                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *offset</code></em>,
-                      <em class="parameter"><code><span class="type">guint32</span> *fourcc</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *fourcc</code></em>,
                       <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> **chunk_data</code></em>);</pre>
 <p>Reads a single chunk.</p>
 <div class="refsect3">
@@ -338,7 +338,7 @@ chunk data, which may be NULL if chunksize == 0</p></td>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_riff_parse_file_header (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *element</code></em>,
                             <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buf</code></em>,
-                            <em class="parameter"><code><span class="type">guint32</span> *doctype</code></em>);</pre>
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *doctype</code></em>);</pre>
 <p>Reads the first few bytes from the provided buffer, checks
 if this stream is a RIFF stream, and determines document type.
 This function takes ownership of <em class="parameter"><code>buf</code></em>
@@ -624,8 +624,8 @@ should be skipped on error, but it is not fatal.</p>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html#GstFlowReturn"><span class="returnvalue">GstFlowReturn</span></a>
 gst_riff_read_chunk (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a> *element</code></em>,
                      <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a> *pad</code></em>,
-                     <em class="parameter"><code><span class="type">guint64</span> *offset</code></em>,
-                     <em class="parameter"><code><span class="type">guint32</span> *tag</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> *offset</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *tag</code></em>,
                      <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> **chunk_data</code></em>);</pre>
 <p>Reads a single chunk of data. 'JUNK' chunks are skipped
 automatically.</p>

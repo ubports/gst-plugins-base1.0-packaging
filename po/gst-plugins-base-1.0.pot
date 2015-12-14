@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.6.1\n"
+"Project-Id-Version: gst-plugins-base 1.6.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-10-30 14:26+0200\n"
+"POT-Creation-Date: 2015-12-14 19:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,11 +101,11 @@ msgstr ""
 msgid "Missing element '%s' - check your GStreamer installation."
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:1847
+#: gst/playback/gstdecodebin2.c:1872
 msgid "Could not determine type of stream"
 msgstr ""
 
-#: gst/playback/gstdecodebin2.c:2818
+#: gst/playback/gstdecodebin2.c:2843
 msgid "This appears to be a text file"
 msgstr ""
 
