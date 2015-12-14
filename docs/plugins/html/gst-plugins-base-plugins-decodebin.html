@@ -51,7 +51,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint64</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--connection-speed" title="The “connection-speed” property">connection-speed</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -81,7 +81,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint64</span></td>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin--max-size-time" title="The “max-size-time” property">max-size-time</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -299,7 +299,7 @@ use, as it creates a suitable source element as well.</p>
 <hr>
 <div class="refsect2">
 <a name="GstDecodeBin--connection-speed"></a><h3>The <code class="literal">“connection-speed”</code> property</h3>
-<pre class="programlisting">  “connection-speed”         <span class="type">guint64</span></pre>
+<pre class="programlisting">  “connection-speed”         <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a></pre>
 <p>Network connection speed in kbps (0 = unknown).</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &lt;= 18446744073709551</p>
@@ -350,7 +350,7 @@ use, as it creates a suitable source element as well.</p>
 <hr>
 <div class="refsect2">
 <a name="GstDecodeBin--max-size-time"></a><h3>The <code class="literal">“max-size-time”</code> property</h3>
-<pre class="programlisting">  “max-size-time”            <span class="type">guint64</span></pre>
+<pre class="programlisting">  “max-size-time”            <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a></pre>
 <p>Max amount of time in the queue (in ns, 0=automatic).</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
@@ -514,7 +514,7 @@ by default tried in the returned order or based on the index returned by
 user_function (<a class="link" href="gst-plugins-base-plugins-decodebin.html#GstDecodeBin"><span class="type">GstDecodeBin</span></a> *bin,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>       *child,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a>   *pad,
-               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstQuery.html"><span class="type">GstQuery</span></a>     *element,
+               <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstQuery.html"><span class="type">GstQuery</span></a>     *query,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
 <p>This signal is emitted whenever an autoplugged element that is
 not linked downstream yet and not exposed does a query. It can
@@ -542,11 +542,6 @@ for example.</p>
 <tr>
 <td class="parameter_name"><p>pad</p></td>
 <td class="parameter_description"><p>The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>element</p></td>
-<td class="parameter_description"><p>The <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html"><span class="type">GstElement</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

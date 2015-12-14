@@ -394,7 +394,7 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_planes</code></em>,
-                                <em class="parameter"><code><span class="type">gsize</span> offset[GST_VIDEO_MAX_PLANES]</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> offset[GST_VIDEO_MAX_PLANES]</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> stride[GST_VIDEO_MAX_PLANES]</code></em>);</pre>
 <p>Attaches GstVideoMeta metadata to <em class="parameter"><code>buffer</code></em>
  with the given parameters.</p>
@@ -920,7 +920,7 @@ gst_video_gl_texture_upload_meta_upload
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gsize</span> <em class="structfield"><code><a name="GstVideoMeta.offset"></a>offset</code></em>[GST_VIDEO_MAX_PLANES];</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> <em class="structfield"><code><a name="GstVideoMeta.offset"></a>offset</code></em>[GST_VIDEO_MAX_PLANES];</p></td>
 <td class="struct_member_description"><p>array of offsets for the planes. This field might not always be
 valid, it is used by the default implementation of <em class="parameter"><code>map</code></em>
 .</p></td>

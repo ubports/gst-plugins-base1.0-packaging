@@ -93,7 +93,7 @@ buffers and to create exif buffers from <a href="http://gstreamer.freedesktop.or
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="returnvalue">GstBuffer</span></a> *
 gst_tag_list_to_exif_buffer (<em class="parameter"><code>const <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="type">GstTagList</span></a> *taglist</code></em>,
                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> byte_order</code></em>,
-                             <em class="parameter"><code><span class="type">guint32</span> base_offset</code></em>);</pre>
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> base_offset</code></em>);</pre>
 <p>Formats the tags in taglist on exif format. The resulting buffer contains
 the tags IFD and is followed by the data pointed by the tag entries.</p>
 <div class="refsect3">
@@ -162,7 +162,7 @@ is put in the beginning of the buffer.</p>
 <pre class="programlisting"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstTagList.html"><span class="returnvalue">GstTagList</span></a> *
 gst_tag_list_from_exif_buffer (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> *buffer</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> byte_order</code></em>,
-                               <em class="parameter"><code><span class="type">guint32</span> base_offset</code></em>);</pre>
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> base_offset</code></em>);</pre>
 <p>Parses the IFD and IFD tags data contained in the buffer and puts it
 on a taglist. The base_offset is used to subtract from the offset in
 the tag entries and be able to get the offset relative to the buffer

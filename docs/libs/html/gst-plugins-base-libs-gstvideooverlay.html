@@ -630,7 +630,7 @@ used in the callback).
 <a name="gst-video-overlay-got-window-handle"></a><h3>gst_video_overlay_got_window_handle ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_video_overlay_got_window_handle (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> *overlay</code></em>,
-                                     <em class="parameter"><code><span class="type">guintptr</span> handle</code></em>);</pre>
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guintptr"><span class="type">guintptr</span></a> handle</code></em>);</pre>
 <p>This will post a "have-window-handle" element message on the bus.</p>
 <p>This function should only be used by video overlay plugin developers.</p>
 <div class="refsect3">
@@ -661,7 +661,7 @@ gst_video_overlay_got_window_handle (<em class="parameter"><code><a class="link"
 <a name="gst-video-overlay-set-window-handle"></a><h3>gst_video_overlay_set_window_handle ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_video_overlay_set_window_handle (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> *overlay</code></em>,
-                                     <em class="parameter"><code><span class="type">guintptr</span> handle</code></em>);</pre>
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guintptr"><span class="type">guintptr</span></a> handle</code></em>);</pre>
 <p>This will call the video overlay's set_window_handle method. You
 should use this method to tell to an overlay to display video output to a
 specific window (e.g. an XWindow on X11). Passing 0 as the  <em class="parameter"><code>handle</code></em>
