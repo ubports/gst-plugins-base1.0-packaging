@@ -1,3 +1,9 @@
+gst-plugins-base1.0 (1.6.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 14 Dec 2015 19:24:29 +0100
+
 gst-plugins-base1.0 (1.6.1-1) unstable; urgency=medium
 
   * debian/control.in:
