@@ -578,7 +578,7 @@ gst_mikey_message_new_from_bytes (<em class="parameter"><code><a href="https://d
 <a name="gst-mikey-message-new-from-data"></a><h3>gst_mikey_message_new_from_data ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="returnvalue">GstMIKEYMessage</span></a> *
 gst_mikey_message_new_from_data (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gconstpointer"><span class="type">gconstpointer</span></a> data</code></em>,
-                                 <em class="parameter"><code><span class="type">gsize</span> size</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>,
                                  <em class="parameter"><code><span class="type">GstMIKEYDecryptInfo</span> *info</code></em>,
                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Parse <em class="parameter"><code>size</code></em>
@@ -756,11 +756,11 @@ gst_mikey_message_unref (<em class="parameter"><code><a class="link" href="gst-p
 <a name="gst-mikey-message-set-info"></a><h3>gst_mikey_message_set_info ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_set_info (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> version</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> version</code></em>,
                             <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYType" title="enum GstMIKEYType"><span class="type">GstMIKEYType</span></a> type</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> V</code></em>,
                             <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPRFFunc" title="enum GstMIKEYPRFFunc"><span class="type">GstMIKEYPRFFunc</span></a> prf_func</code></em>,
-                            <em class="parameter"><code><span class="type">guint32</span> CSB_id</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> CSB_id</code></em>,
                             <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMapType" title="enum GstMIKEYMapType"><span class="type">GstMIKEYMapType</span></a> map_type</code></em>);</pre>
 <p>Set the information in <em class="parameter"><code>msg</code></em>
 .</p>
@@ -1012,9 +1012,9 @@ gst_mikey_message_replace_cs_srtp (<em class="parameter"><code><a class="link" h
 <a name="gst-mikey-message-add-cs-srtp"></a><h3>gst_mikey_message_add_cs_srtp ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_add_cs_srtp (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
-                               <em class="parameter"><code><span class="type">guint8</span> policy</code></em>,
-                               <em class="parameter"><code><span class="type">guint32</span> ssrc</code></em>,
-                               <em class="parameter"><code><span class="type">guint32</span> roc</code></em>);</pre>
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> policy</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> ssrc</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> roc</code></em>);</pre>
 <p>Add a Crypto policy for SRTP to <em class="parameter"><code>msg</code></em>
 .</p>
 <div class="refsect3">
@@ -1400,10 +1400,10 @@ gst_mikey_payload_copy (<em class="parameter"><code>const <a class="link" href="
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_key_data_set_interval
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> vf_len</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *vf_data</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> vt_len</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *vt_data</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> vf_len</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *vf_data</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> vt_len</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *vt_data</code></em>);</pre>
 <p>Set the key validity period in the <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-KEY-DATA:CAPS"><code class="literal">GST_MIKEY_PT_KEY_DATA</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
@@ -1457,8 +1457,8 @@ gst_mikey_payload_key_data_set_interval
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_key_data_set_key (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
                                     <em class="parameter"><code><span class="type">GstMIKEYKeyDataType</span> key_type</code></em>,
-                                    <em class="parameter"><code><span class="type">guint16</span> key_len</code></em>,
-                                    <em class="parameter"><code>const <span class="type">guint8</span> *key_data</code></em>);</pre>
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> key_len</code></em>,
+                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *key_data</code></em>);</pre>
 <p>Set <em class="parameter"><code>key_len</code></em>
  bytes of <em class="parameter"><code>key_data</code></em>
  of type <em class="parameter"><code>key_type</code></em>
@@ -1510,8 +1510,8 @@ gst_mikey_payload_key_data_set_key (<em class="parameter"><code><a class="link" 
 <a name="gst-mikey-payload-key-data-set-salt"></a><h3>gst_mikey_payload_key_data_set_salt ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_key_data_set_salt (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
-                                     <em class="parameter"><code><span class="type">guint16</span> salt_len</code></em>,
-                                     <em class="parameter"><code>const <span class="type">guint8</span> *salt_data</code></em>);</pre>
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> salt_len</code></em>,
+                                     <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *salt_data</code></em>);</pre>
 <p>Set the salt key data. If <em class="parameter"><code>salt_len</code></em>
  is 0 and <em class="parameter"><code>salt_data</code></em>
  is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the
@@ -1555,8 +1555,8 @@ salt data will be removed.</p>
 <a name="gst-mikey-payload-key-data-set-spi"></a><h3>gst_mikey_payload_key_data_set_spi ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_key_data_set_spi (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
-                                    <em class="parameter"><code><span class="type">guint8</span> spi_len</code></em>,
-                                    <em class="parameter"><code>const <span class="type">guint8</span> *spi_data</code></em>);</pre>
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> spi_len</code></em>,
+                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *spi_data</code></em>);</pre>
 <p>Set the SPI/MKI validity in the <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-KEY-DATA:CAPS"><code class="literal">GST_MIKEY_PT_KEY_DATA</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
@@ -1839,8 +1839,8 @@ gst_mikey_payload_kemac_remove_sub (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_pke_set (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
                            <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYCacheType" title="enum GstMIKEYCacheType"><span class="type">GstMIKEYCacheType</span></a> C</code></em>,
-                           <em class="parameter"><code><span class="type">guint16</span> data_len</code></em>,
-                           <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> data_len</code></em>,
+                           <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);</pre>
 <p>Set the PKE values in <em class="parameter"><code>payload</code></em>
 . <em class="parameter"><code>payload</code></em>
  must be of type
@@ -1890,8 +1890,8 @@ gst_mikey_payload_pke_set (<em class="parameter"><code><a class="link" href="gst
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_add_pke (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
                            <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYCacheType" title="enum GstMIKEYCacheType"><span class="type">GstMIKEYCacheType</span></a> C</code></em>,
-                           <em class="parameter"><code><span class="type">guint16</span> data_len</code></em>,
-                           <em class="parameter"><code>const <span class="type">guint8</span> *data</code></em>);</pre>
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> data_len</code></em>,
+                           <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);</pre>
 <p>Add a new PKE payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -1939,7 +1939,7 @@ gst_mikey_message_add_pke (<em class="parameter"><code><a class="link" href="gst
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_t_set (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYTSType" title="enum GstMIKEYTSType"><span class="type">GstMIKEYTSType</span></a> type</code></em>,
-                         <em class="parameter"><code>const <span class="type">guint8</span> *ts_value</code></em>);</pre>
+                         <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *ts_value</code></em>);</pre>
 <p>Set the timestamp in a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-T:CAPS"><code class="literal">GST_MIKEY_PT_T</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
@@ -1981,7 +1981,7 @@ gst_mikey_payload_t_set (<em class="parameter"><code><a class="link" href="gst-p
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_add_t (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
                          <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYTSType" title="enum GstMIKEYTSType"><span class="type">GstMIKEYTSType</span></a> type</code></em>,
-                         <em class="parameter"><code>const <span class="type">guint8</span> *ts_value</code></em>);</pre>
+                         <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *ts_value</code></em>);</pre>
 <p>Add a new T payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -2052,8 +2052,8 @@ in NTP-UTC format.</p>
 <a name="gst-mikey-payload-rand-set"></a><h3>gst_mikey_payload_rand_set ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_rand_set (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> len</code></em>,
-                            <em class="parameter"><code>const <span class="type">guint8</span> *rand</code></em>);</pre>
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> len</code></em>,
+                            <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *rand</code></em>);</pre>
 <p>Set the random values in a <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-RAND:CAPS"><code class="literal">GST_MIKEY_PT_RAND</code></a> <em class="parameter"><code>payload</code></em>
 .</p>
 <div class="refsect3">
@@ -2095,8 +2095,8 @@ gst_mikey_payload_rand_set (<em class="parameter"><code><a class="link" href="gs
 <a name="gst-mikey-message-add-rand"></a><h3>gst_mikey_message_add_rand ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_add_rand (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
-                            <em class="parameter"><code><span class="type">guint8</span> len</code></em>,
-                            <em class="parameter"><code>const <span class="type">guint8</span> *rand</code></em>);</pre>
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> len</code></em>,
+                            <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *rand</code></em>);</pre>
 <p>Add a new RAND payload to <em class="parameter"><code>msg</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -2138,7 +2138,7 @@ gst_mikey_message_add_rand (<em class="parameter"><code><a class="link" href="gs
 <a name="gst-mikey-message-add-rand-len"></a><h3>gst_mikey_message_add_rand_len ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_message_add_rand_len (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYMessage" title="struct GstMIKEYMessage"><span class="type">GstMIKEYMessage</span></a> *msg</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> len</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> len</code></em>);</pre>
 <p>Add a new RAND payload to <em class="parameter"><code>msg</code></em>
  with <em class="parameter"><code>len</code></em>
  random bytes.</p>
@@ -2287,9 +2287,9 @@ in <em class="parameter"><code>payload</code></em>
 <a name="gst-mikey-payload-sp-add-param"></a><h3>gst_mikey_payload_sp_add_param ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_mikey_payload_sp_add_param (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstmikey.html#GstMIKEYPayload" title="struct GstMIKEYPayload"><span class="type">GstMIKEYPayload</span></a> *payload</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> type</code></em>,
-                                <em class="parameter"><code><span class="type">guint8</span> len</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *val</code></em>);</pre>
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> type</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> len</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *val</code></em>);</pre>
 <p>Add a new parameter to the <a class="link" href="gst-plugins-base-libs-gstmikey.html#GST-MIKEY-PT-SP:CAPS"><code class="literal">GST_MIKEY_PT_SP</code></a> <em class="parameter"><code>payload</code></em>
  with <em class="parameter"><code>type</code></em>
 , <em class="parameter"><code>len</code></em>
@@ -2480,7 +2480,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstMIKEYMessage.version"></a>version</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstMIKEYMessage.version"></a>version</code></em>;</p></td>
 <td class="struct_member_description"><p>the version</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -2500,7 +2500,7 @@ gst_mikey_payload_sp_remove_param (<em class="parameter"><code><a class="link" h
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint32</span> <em class="structfield"><code><a name="GstMIKEYMessage.CSB-id"></a>CSB_id</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="GstMIKEYMessage.CSB-id"></a>CSB_id</code></em>;</p></td>
 <td class="struct_member_description"><p>Identifies the Crypto Session Bundle</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -2587,18 +2587,18 @@ protocol sessions.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstMIKEYMapSRTP.policy"></a>policy</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstMIKEYMapSRTP.policy"></a>policy</code></em>;</p></td>
 <td class="struct_member_description"><p>The security policy applied for the stream with <em class="parameter"><code>ssrc</code></em>
 </p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint32</span> <em class="structfield"><code><a name="GstMIKEYMapSRTP.ssrc"></a>ssrc</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="GstMIKEYMapSRTP.ssrc"></a>ssrc</code></em>;</p></td>
 <td class="struct_member_description"><p>the SSRC that must be used for the stream</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint32</span> <em class="structfield"><code><a name="GstMIKEYMapSRTP.roc"></a>roc</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="GstMIKEYMapSRTP.roc"></a>roc</code></em>;</p></td>
 <td class="struct_member_description"><p>current rollover counter</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -2948,13 +2948,13 @@ the certificate/public key used.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint16</span> <em class="structfield"><code><a name="GstMIKEYPayloadPKE.data-len"></a>data_len</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="GstMIKEYPayloadPKE.data-len"></a>data_len</code></em>;</p></td>
 <td class="struct_member_description"><p>length of <em class="parameter"><code>data</code></em>
 </p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstMIKEYPayloadPKE.data"></a>data</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstMIKEYPayloadPKE.data"></a>data</code></em>;</p></td>
 <td class="struct_member_description"><p>the encrypted envelope key</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -3031,7 +3031,7 @@ the certificate/public key used.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstMIKEYPayloadT.ts-value"></a>ts_value</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstMIKEYPayloadT.ts-value"></a>ts_value</code></em>;</p></td>
 <td class="struct_member_description"><p>the timestamp value</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -3065,13 +3065,13 @@ the certificate/public key used.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstMIKEYPayloadRAND.len"></a>len</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstMIKEYPayloadRAND.len"></a>len</code></em>;</p></td>
 <td class="struct_member_description"><p>the length of <em class="parameter"><code>rand</code></em>
 </p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstMIKEYPayloadRAND.rand"></a>rand</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstMIKEYPayloadRAND.rand"></a>rand</code></em>;</p></td>
 <td class="struct_member_description"><p>random values</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -3273,18 +3273,18 @@ specific security protocol</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstMIKEYPayloadSPParam.type"></a>type</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstMIKEYPayloadSPParam.type"></a>type</code></em>;</p></td>
 <td class="struct_member_description"><p>specifies the type of the parameter</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstMIKEYPayloadSPParam.len"></a>len</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstMIKEYPayloadSPParam.len"></a>len</code></em>;</p></td>
 <td class="struct_member_description"><p>specifies the length of <em class="parameter"><code>val</code></em>
 </p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> *<em class="structfield"><code><a name="GstMIKEYPayloadSPParam.val"></a>val</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GstMIKEYPayloadSPParam.val"></a>val</code></em>;</p></td>
 <td class="struct_member_description"><p>specifies the value of the parameter</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

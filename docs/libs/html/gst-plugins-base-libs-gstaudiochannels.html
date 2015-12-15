@@ -140,7 +140,7 @@
 gst_audio_channel_positions_to_mask (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *position</code></em>,
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> channels</code></em>,
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> force_order</code></em>,
-                                     <em class="parameter"><code><span class="type">guint64</span> *channel_mask</code></em>);</pre>
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> *channel_mask</code></em>);</pre>
 <p>Convert the <em class="parameter"><code>position</code></em>
  array of <em class="parameter"><code>channels</code></em>
  channels to a bitmask.</p>
@@ -189,7 +189,7 @@ in the order required by GStreamer.</p>
 <a name="gst-audio-channel-positions-from-mask"></a><h3>gst_audio_channel_positions_from_mask ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_channel_positions_from_mask (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> channels</code></em>,
-                                       <em class="parameter"><code><span class="type">guint64</span> channel_mask</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> channel_mask</code></em>,
                                        <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *position</code></em>);</pre>
 <p>Convert the <em class="parameter"><code>channels</code></em>
  present in <em class="parameter"><code>channel_mask</code></em>
@@ -388,7 +388,7 @@ positions and the same positions, only in a different order.
 <a name="gst-audio-reorder-channels"></a><h3>gst_audio_reorder_channels ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_reorder_channels (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>,
-                            <em class="parameter"><code><span class="type">gsize</span> size</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>,
                             <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> format</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> channels</code></em>,
                             <em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelPosition" title="enum GstAudioChannelPosition"><span class="type">GstAudioChannelPosition</span></a> *from</code></em>,

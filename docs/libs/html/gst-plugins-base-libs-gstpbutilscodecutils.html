@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint8</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-h264-get-level-idc" title="gst_codec_utils_h264_get_level_idc ()">gst_codec_utils_h264_get_level_idc</a> <span class="c_punctuation">()</span>
@@ -130,7 +130,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint8</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-h265-get-level-idc" title="gst_codec_utils_h265_get_level_idc ()">gst_codec_utils_h265_get_level_idc</a> <span class="c_punctuation">()</span>
@@ -246,7 +246,7 @@ valid AAC sample rate.</p>
 <div class="refsect2">
 <a name="gst-codec-utils-aac-get-profile"></a><h3>gst_codec_utils_aac_get_profile ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_aac_get_profile (<em class="parameter"><code>const <span class="type">guint8</span> *audio_config</code></em>,
+gst_codec_utils_aac_get_profile (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *audio_config</code></em>,
                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Returns the profile of the given AAC stream as a string. The profile is
 determined using the AudioObjectType field which is in the first 5 bits of
@@ -290,7 +290,7 @@ determined.</p>
 <div class="refsect2">
 <a name="gst-codec-utils-aac-get-level"></a><h3>gst_codec_utils_aac_get_level ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_aac_get_level (<em class="parameter"><code>const <span class="type">guint8</span> *audio_config</code></em>,
+gst_codec_utils_aac_get_level (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *audio_config</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Determines the level of a stream as defined in ISO/IEC 14496-3. For AAC LC
 streams, the constraints from the AAC audio profile are applied. For AAC
@@ -350,7 +350,7 @@ determined.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_codec_utils_aac_caps_set_level_and_profile
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *audio_config</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *audio_config</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Sets the level and profile on <em class="parameter"><code>caps</code></em>
  if it can be determined from
@@ -400,7 +400,7 @@ in bytes</p></td>
 <div class="refsect2">
 <a name="gst-codec-utils-h264-get-profile"></a><h3>gst_codec_utils_h264_get_profile ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_h264_get_profile (<em class="parameter"><code>const <span class="type">guint8</span> *sps</code></em>,
+gst_codec_utils_h264_get_profile (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *sps</code></em>,
                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the profile indication (profile_idc) in the stream's
 sequence parameter set into a string. The SPS is expected to have the
@@ -449,7 +449,7 @@ byte.</p>
 <div class="refsect2">
 <a name="gst-codec-utils-h264-get-level"></a><h3>gst_codec_utils_h264_get_level ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_h264_get_level (<em class="parameter"><code>const <span class="type">guint8</span> *sps</code></em>,
+gst_codec_utils_h264_get_level (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *sps</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the level indication (level_idc) in the stream's
 sequence parameter set into a string. The SPS is expected to have the
@@ -488,7 +488,7 @@ same format as for <a class="link" href="gst-plugins-base-libs-gstpbutilscodecut
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_codec_utils_h264_caps_set_level_and_profile
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *sps</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *sps</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Sets the level and profile in <em class="parameter"><code>caps</code></em>
  if it can be determined from <em class="parameter"><code>sps</code></em>
@@ -531,7 +531,7 @@ for more details on the parameters.</p>
 <hr>
 <div class="refsect2">
 <a name="gst-codec-utils-h264-get-level-idc"></a><h3>gst_codec_utils_h264_get_level_idc ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint8</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
 gst_codec_utils_h264_get_level_idc (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *level</code></em>);</pre>
 <p>Transform a level string from the caps into the level_idc</p>
 <div class="refsect3">
@@ -558,7 +558,7 @@ gst_codec_utils_h264_get_level_idc (<em class="parameter"><code>const <a href="h
 <div class="refsect2">
 <a name="gst-codec-utils-h265-get-profile"></a><h3>gst_codec_utils_h265_get_profile ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_h265_get_profile (<em class="parameter"><code>const <span class="type">guint8</span> *profile_tier_level</code></em>,
+gst_codec_utils_h265_get_profile (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *profile_tier_level</code></em>,
                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the profile indication (general_profile_idc) in the stream's
 profile_level_tier structure into a string. The profile_tier_level is
@@ -611,7 +611,7 @@ structure for the stream.</p></td>
 <div class="refsect2">
 <a name="gst-codec-utils-h265-get-tier"></a><h3>gst_codec_utils_h265_get_tier ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_h265_get_tier (<em class="parameter"><code>const <span class="type">guint8</span> *profile_tier_level</code></em>,
+gst_codec_utils_h265_get_tier (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *profile_tier_level</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the tier indication (general_tier_flag) in the stream's
 profile_tier_level structure into a string. The profile_tier_level
@@ -650,7 +650,7 @@ for the stream.</p></td>
 <div class="refsect2">
 <a name="gst-codec-utils-h265-get-level"></a><h3>gst_codec_utils_h265_get_level ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_h265_get_level (<em class="parameter"><code>const <span class="type">guint8</span> *profile_tier_level</code></em>,
+gst_codec_utils_h265_get_level (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *profile_tier_level</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the level indication (general_level_idc) in the stream's
 profile_tier_level structure into a string. The profiel_tier_level is
@@ -688,7 +688,7 @@ for the stream</p></td>
 <hr>
 <div class="refsect2">
 <a name="gst-codec-utils-h265-get-level-idc"></a><h3>gst_codec_utils_h265_get_level_idc ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint8</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
 gst_codec_utils_h265_get_level_idc (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *level</code></em>);</pre>
 <p>Transform a level string from the caps into the level_idc</p>
 <div class="refsect3">
@@ -718,7 +718,7 @@ gst_codec_utils_h265_get_level_idc (<em class="parameter"><code>const <a href="h
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_codec_utils_h265_caps_set_level_tier_and_profile
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *profile_tier_level</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *profile_tier_level</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Sets the level, tier and profile in <em class="parameter"><code>caps</code></em>
  if it can be determined from
@@ -765,7 +765,7 @@ for more details on the parameters.</p>
 <a name="gst-codec-utils-mpeg4video-get-profile"></a><h3>gst_codec_utils_mpeg4video_get_profile ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gst_codec_utils_mpeg4video_get_profile
-                               (<em class="parameter"><code>const <span class="type">guint8</span> *vis_obj_seq</code></em>,
+                               (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *vis_obj_seq</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the profile indication in the stream's visual object sequence into
 a string. <em class="parameter"><code>vis_obj_seq</code></em>
@@ -804,7 +804,7 @@ object sequence start code. Only the first byte
 <div class="refsect2">
 <a name="gst-codec-utils-mpeg4video-get-level"></a><h3>gst_codec_utils_mpeg4video_get_level ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-gst_codec_utils_mpeg4video_get_level (<em class="parameter"><code>const <span class="type">guint8</span> *vis_obj_seq</code></em>,
+gst_codec_utils_mpeg4video_get_level (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *vis_obj_seq</code></em>,
                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Converts the level indication in the stream's visual object sequence into
 a string. <em class="parameter"><code>vis_obj_seq</code></em>
@@ -845,7 +845,7 @@ object sequence start code. Only the first byte
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_codec_utils_mpeg4video_caps_set_level_and_profile
                                (<em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *caps</code></em>,
-                                <em class="parameter"><code>const <span class="type">guint8</span> *vis_obj_seq</code></em>,
+                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *vis_obj_seq</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> len</code></em>);</pre>
 <p>Sets the level and profile in <em class="parameter"><code>caps</code></em>
  if it can be determined from

@@ -480,9 +480,9 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
                <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a>                     *socket,
                <span class="type">GstMultiHandleSinkSyncMethod</span> sync,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a>                    format_min,
-               <span class="type">guint64</span>                      value_min,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>                      value_min,
                <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a>                    format_max,
-               <span class="type">guint64</span>                      value_max,
+               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>                      value_max,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                     user_data)</pre>
 <p>Hand the given open socket to multisocketsink to write to and
 specify the burst parameters for the new connection.</p>
@@ -590,7 +590,7 @@ for that.</p>
 <a name="GstMultiSocketSink-client-removed"></a><h3>The <code class="literal">“client-removed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink"><span class="type">GstMultiSocketSink</span></a>            *gstmultisocketsink,
-               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                           socket,
+               <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a>                       *socket,
                <span class="type">GstMultiHandleSinkClientStatus</span> status,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                       user_data)</pre>
 <p>The given socket is about to be removed from multisocketsink. This

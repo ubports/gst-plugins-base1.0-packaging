@@ -351,7 +351,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint32</span>
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-format-to-fourcc" title="gst_video_format_to_fourcc ()">gst_video_format_to_fourcc</a> <span class="c_punctuation">()</span>
@@ -2279,7 +2279,7 @@ not specify a known format.</p>
 <div class="refsect2">
 <a name="gst-video-format-from-fourcc"></a><h3>gst_video_format_from_fourcc ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="returnvalue">GstVideoFormat</span></a>
-gst_video_format_from_fourcc (<em class="parameter"><code><span class="type">guint32</span> fourcc</code></em>);</pre>
+gst_video_format_from_fourcc (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> fourcc</code></em>);</pre>
 <p>Converts a FOURCC value into the corresponding <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>.
 If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a>,
 <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FORMAT-UNKNOWN:CAPS"><span class="type">GST_VIDEO_FORMAT_UNKNOWN</span></a> is returned.</p>
@@ -2306,7 +2306,7 @@ If the FOURCC cannot be represented by <a class="link" href="gst-plugins-base-li
 <hr>
 <div class="refsect2">
 <a name="gst-video-format-to-fourcc"></a><h3>gst_video_format_to_fourcc ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint32</span>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 gst_video_format_to_fourcc (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> format</code></em>);</pre>
 <p>Converts a <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFormat" title="enum GstVideoFormat"><span class="type">GstVideoFormat</span></a> value into the corresponding FOURCC.  Only
 a few YUV formats have corresponding FOURCC values.  If <em class="parameter"><code>format</code></em>
@@ -3266,9 +3266,9 @@ gst_video_info_to_caps (<em class="parameter"><code><a class="link" href="gst-pl
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_video_info_convert (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoInfo" title="struct GstVideoInfo"><span class="type">GstVideoInfo</span></a> *info</code></em>,
                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_format</code></em>,
-                        <em class="parameter"><code><span class="type">gint64</span> src_value</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> src_value</code></em>,
                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_format</code></em>,
-                        <em class="parameter"><code><span class="type">gint64</span> *dest_value</code></em>);</pre>
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest_value</code></em>);</pre>
 <p>Converts among various <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> types.  This function handles
 GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw video, GST_FORMAT_DEFAULT corresponds to video frames.  This
@@ -5769,7 +5769,7 @@ to store the specific video info when mapping a video frame with
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gsize</span> <em class="structfield"><code><a name="GstVideoInfo.size"></a>size</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> <em class="structfield"><code><a name="GstVideoInfo.size"></a>size</code></em>;</p></td>
 <td class="struct_member_description"><p>the default size of one frame</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -5809,7 +5809,7 @@ to store the specific video info when mapping a video frame with
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">gsize</span> <em class="structfield"><code><a name="GstVideoInfo.offset"></a>offset</code></em>[GST_VIDEO_MAX_PLANES];</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> <em class="structfield"><code><a name="GstVideoInfo.offset"></a>offset</code></em>[GST_VIDEO_MAX_PLANES];</p></td>
 <td class="struct_member_description"><p>offsets of the planes</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>

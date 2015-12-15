@@ -664,9 +664,9 @@ info of <em class="parameter"><code>info</code></em>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_audio_info_convert (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> *info</code></em>,
                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> src_fmt</code></em>,
-                        <em class="parameter"><code><span class="type">gint64</span> src_val</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> src_val</code></em>,
                         <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> dest_fmt</code></em>,
-                        <em class="parameter"><code><span class="type">gint64</span> *dest_val</code></em>);</pre>
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *dest_val</code></em>);</pre>
 <p>Converts among various <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-GstFormat.html#GstFormat"><span class="type">GstFormat</span></a> types.  This function handles
 GST_FORMAT_BYTES, GST_FORMAT_TIME, and GST_FORMAT_DEFAULT.  For
 raw audio, GST_FORMAT_DEFAULT corresponds to audio frames.  This
@@ -948,7 +948,7 @@ exists with the given parameters.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_audio_format_fill_silence (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormatInfo" title="struct GstAudioFormatInfo"><span class="type">GstAudioFormatInfo</span></a> *info</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> dest</code></em>,
-                               <em class="parameter"><code><span class="type">gsize</span> length</code></em>);</pre>
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> length</code></em>);</pre>
 <p>Fill <em class="parameter"><code>length</code></em>
  bytes in <em class="parameter"><code>dest</code></em>
  with silence samples for <em class="parameter"><code>info</code></em>
@@ -1873,7 +1873,7 @@ is not clipped. </p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><span class="type">guint8</span> <em class="structfield"><code><a name="GstAudioFormatInfo.silence"></a>silence</code></em>[8];</p></td>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="GstAudioFormatInfo.silence"></a>silence</code></em>[8];</p></td>
 <td class="struct_member_description"><p><em class="parameter"><code>width</code></em>
 /8 bytes with 1 silent sample</p></td>
 <td class="struct_member_annotations"> </td>
