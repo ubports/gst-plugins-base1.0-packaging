@@ -140,7 +140,7 @@ check_adder =
 endif
 
 if HAVE_ORC
-check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videotestsrc
+check_orc = orc/video orc/audio orc/adder orc/volume orc/videotestsrc
 else
 check_orc =
 endif
@@ -194,6 +194,7 @@ check_PROGRAMS = \
 	libs/audiocdsrc \
 	libs/audiodecoder \
 	libs/audioencoder \
+	libs/baseaudiovisualizer \
 	libs/discoverer \
 	libs/fft \
 	libs/navigation \
@@ -341,6 +342,16 @@ libs_audiocdsrc_LDADD = \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
+
+libs_baseaudiovisualizer_SOURCES = libs/baseaudiovisualizer.c
+libs_baseaudiovisualizer_CFLAGS = \
+        $(GST_PLUGINS_BASE_CFLAGS) \
+        $(GST_BASE_CFLAGS) $(GST_CONTROLLER_CFLAGS) $(GST_CFLAGS) $(AM_CFLAGS)
+libs_baseaudiovisualizer_LDADD = \
+        $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+        $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+        $(GST_BASE_LIBS) $(GST_CONTROLLER_LIBS) \
+        $(GST_LIBS) $(LDADD)
 
 libs_discoverer_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
@@ -652,9 +663,6 @@ nodist_orc_audio_SOURCES = orc/audio.c
 orc_adder_CFLAGS = $(ORC_CFLAGS)
 orc_adder_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_adder_SOURCES = orc/adder.c
-orc_audioconvert_CFLAGS = $(ORC_CFLAGS)
-orc_audioconvert_LDADD = $(ORC_LIBS) -lorc-test-0.4
-nodist_orc_audioconvert_SOURCES = orc/audioconvert.c
 orc_volume_CFLAGS = $(ORC_CFLAGS)
 orc_volume_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_volume_SOURCES = orc/volume.c
@@ -671,10 +679,6 @@ orc/audio.c: $(top_srcdir)/gst-libs/gst/audio/gstaudiopack.orc
 	$(ORCC) --test -o $@ $<
 
 orc/adder.c: $(top_srcdir)/gst/adder/gstadderorc.orc
-	$(MKDIR_P) orc/
-	$(ORCC) --test -o $@ $<
-
-orc/audioconvert.c: $(top_srcdir)/gst/audioconvert/gstaudioconvertorc.orc
 	$(MKDIR_P) orc/
 	$(ORCC) --test -o $@ $<
 

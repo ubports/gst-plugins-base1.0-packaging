@@ -43,12 +43,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering" title="enum GstAudioConvertDithering"><span class="type">GstAudioConvertDithering</span></a></td>
+<td class="property_type"><span class="type">GstAudioDitherMethod</span></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--dithering" title="The “dithering” property">dithering</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping" title="enum GstAudioConvertNoiseShaping"><span class="type">GstAudioConvertNoiseShaping</span></a></td>
+<td class="property_type"><span class="type">GstAudioNoiseShapingMethod</span></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--noise-shaping" title="The “noise-shaping” property">noise-shaping</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -62,20 +62,10 @@
 <col width="150px" class="name">
 <col class="description">
 </colgroup>
-<tbody>
-<tr>
+<tbody><tr>
 <td class="datatype_keyword">struct</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert-struct" title="struct GstAudioConvert">GstAudioConvert</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword">enum</td>
-<td class="function_name"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering" title="enum GstAudioConvertDithering">GstAudioConvertDithering</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword">enum</td>
-<td class="function_name"><a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping" title="enum GstAudioConvertNoiseShaping">GstAudioConvertNoiseShaping</a></td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -95,7 +85,7 @@ It supports integer to float conversion, width/depth conversion,
 signedness and endianness conversion and channel transformations
 (ie. upmixing and downmixing), as well as dithering and noise-shaping.</p>
 <div class="refsect2">
-<a name="id-1.2.7.7.3"></a><h3>Example launch line</h3>
+<a name="id-1.2.8.7.3"></a><h3>Example launch line</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -126,7 +116,7 @@ it into an Ogg/Vorbis audio file.
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.7.7.4.1"></a><h3>Element Information</h3>
+<a name="id-1.2.8.7.4.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -152,7 +142,7 @@ it into an Ogg/Vorbis audio file.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.7.7.4.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.8.7.4.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -215,120 +205,23 @@ it into an Ogg/Vorbis audio file.
 <pre class="programlisting">struct GstAudioConvert;</pre>
 <p>The audioconvert object structure.</p>
 </div>
-<hr>
-<div class="refsect2">
-<a name="GstAudioConvertDithering"></a><h3>enum GstAudioConvertDithering</h3>
-<p>Set of available dithering methods when converting audio.</p>
-<div class="refsect3">
-<a name="id-1.2.7.9.3.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="300px" class="enum_members_name">
-<col class="enum_members_description">
-<col width="200px" class="enum_members_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="enum_member_name"><p><a name="DITHER-NONE:CAPS"></a>DITHER_NONE</p></td>
-<td class="enum_member_description">
-<p>No dithering</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="DITHER-RPDF:CAPS"></a>DITHER_RPDF</p></td>
-<td class="enum_member_description">
-<p>Rectangular dithering</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="DITHER-TPDF:CAPS"></a>DITHER_TPDF</p></td>
-<td class="enum_member_description">
-<p>Triangular dithering (default)</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="DITHER-TPDF-HF:CAPS"></a>DITHER_TPDF_HF</p></td>
-<td class="enum_member_description">
-<p>High frequency triangular dithering</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="GstAudioConvertNoiseShaping"></a><h3>enum GstAudioConvertNoiseShaping</h3>
-<p>Set of available noise shaping methods</p>
-<div class="refsect3">
-<a name="id-1.2.7.9.4.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="300px" class="enum_members_name">
-<col class="enum_members_description">
-<col width="200px" class="enum_members_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="enum_member_name"><p><a name="NOISE-SHAPING-NONE:CAPS"></a>NOISE_SHAPING_NONE</p></td>
-<td class="enum_member_description">
-<p>No noise shaping (default)</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="NOISE-SHAPING-ERROR-FEEDBACK:CAPS"></a>NOISE_SHAPING_ERROR_FEEDBACK</p></td>
-<td class="enum_member_description">
-<p>Error feedback</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="NOISE-SHAPING-SIMPLE:CAPS"></a>NOISE_SHAPING_SIMPLE</p></td>
-<td class="enum_member_description">
-<p>Simple 2-pole noise shaping</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="NOISE-SHAPING-MEDIUM:CAPS"></a>NOISE_SHAPING_MEDIUM</p></td>
-<td class="enum_member_description">
-<p>Medium 5-pole noise shaping</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-<tr>
-<td class="enum_member_name"><p><a name="NOISE-SHAPING-HIGH:CAPS"></a>NOISE_SHAPING_HIGH</p></td>
-<td class="enum_member_description">
-<p>High 8-pole noise shaping</p>
-</td>
-<td class="enum_member_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-audioconvert.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstAudioConvert--dithering"></a><h3>The <code class="literal">“dithering”</code> property</h3>
-<pre class="programlisting">  “dithering”                <a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering" title="enum GstAudioConvertDithering"><span class="type">GstAudioConvertDithering</span></a></pre>
+<pre class="programlisting">  “dithering”                <span class="type">GstAudioDitherMethod</span></pre>
 <p>Selects between different dithering methods.</p>
 <p>Flags: Read / Write</p>
-<p>Default value: Triangular dithering (default)</p>
+<p>Default value: GST_AUDIO_DITHER_TPDF</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstAudioConvert--noise-shaping"></a><h3>The <code class="literal">“noise-shaping”</code> property</h3>
-<pre class="programlisting">  “noise-shaping”            <a class="link" href="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping" title="enum GstAudioConvertNoiseShaping"><span class="type">GstAudioConvertNoiseShaping</span></a></pre>
+<pre class="programlisting">  “noise-shaping”            <span class="type">GstAudioNoiseShapingMethod</span></pre>
 <p>Selects between different noise shaping methods.</p>
 <p>Flags: Read / Write</p>
-<p>Default value: No noise shaping (default)</p>
+<p>Default value: GST_AUDIO_NOISE_SHAPING_NONE</p>
 </div>
 </div>
 </div>
