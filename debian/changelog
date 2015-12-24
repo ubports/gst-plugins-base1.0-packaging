@@ -1,3 +1,14 @@
+gst-plugins-base1.0 (1.7.1-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GLib >= 2.40 and GStreamer >= 1.7.1.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Dec 2015 13:52:30 +0100
+
 gst-plugins-base1.0 (1.6.2-1) unstable; urgency=medium
 
   * New upstream bugfix release.
