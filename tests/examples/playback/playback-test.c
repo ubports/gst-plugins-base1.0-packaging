@@ -163,8 +163,6 @@ typedef struct
   GList *paths, *current_path;
   GList *sub_paths, *current_sub_path;
 
-  gchar *audiosink_str, *videosink_str;
-
   /* Internal state */
   gint64 position, duration;
 
@@ -1466,6 +1464,7 @@ shot_cb (GtkButton * button, PlaybackApp * app)
     /* save the pixbuf */
     gdk_pixbuf_save (pixbuf, "snapshot.png", "png", &error, NULL);
     gst_buffer_unmap (buffer, &map);
+    g_clear_error (&error);
 
   done:
     gst_sample_unref (sample);
@@ -3369,9 +3368,6 @@ set_defaults (PlaybackApp * app)
 static void
 reset_app (PlaybackApp * app)
 {
-  g_free (app->audiosink_str);
-  g_free (app->videosink_str);
-
   g_list_free (app->formats);
 
   g_mutex_clear (&app->state_mutex);
@@ -3414,6 +3410,8 @@ main (int argc, char **argv)
 
   if (!g_option_context_parse (ctx, &argc, &argv, &err)) {
     g_print ("Error initializing: %s\n", err->message);
+    g_option_context_free (ctx);
+    g_clear_error (&err);
     exit (1);
   }
   g_option_context_free (ctx);

@@ -167,7 +167,8 @@ libgstalsa_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/audio/libgstaudio-$(GS
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libgstalsa_la_OBJECTS = libgstalsa_la-gstalsadeviceprobe.lo \
 	libgstalsa_la-gstalsaplugin.lo libgstalsa_la-gstalsasink.lo \
-	libgstalsa_la-gstalsasrc.lo libgstalsa_la-gstalsa.lo
+	libgstalsa_la-gstalsasrc.lo libgstalsa_la-gstalsamidisrc.lo \
+	libgstalsa_la-gstalsa.lo
 libgstalsa_la_OBJECTS = $(am_libgstalsa_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -540,6 +541,7 @@ libgstalsa_la_SOURCES = \
 	gstalsaplugin.c \
 	gstalsasink.c 	\
 	gstalsasrc.c \
+	gstalsamidisrc.c \
 	gstalsa.c
 
 libgstalsa_la_CFLAGS = \
@@ -559,7 +561,8 @@ noinst_HEADERS = \
 	gstalsa.h \
 	gstalsadeviceprobe.h \
 	gstalsasrc.h \
-	gstalsasink.h
+	gstalsasink.h \
+	gstalsamidisrc.h
 
 all: all-am
 
@@ -641,6 +644,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsa.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsadeviceprobe.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsamidisrc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsaplugin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsasink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstalsa_la-gstalsasrc.Plo@am__quote@
@@ -696,6 +700,13 @@ libgstalsa_la-gstalsasrc.lo: gstalsasrc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstalsasrc.c' object='libgstalsa_la-gstalsasrc.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstalsa_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstalsa_la_CFLAGS) $(CFLAGS) -c -o libgstalsa_la-gstalsasrc.lo `test -f 'gstalsasrc.c' || echo '$(srcdir)/'`gstalsasrc.c
+
+libgstalsa_la-gstalsamidisrc.lo: gstalsamidisrc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstalsa_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstalsa_la_CFLAGS) $(CFLAGS) -MT libgstalsa_la-gstalsamidisrc.lo -MD -MP -MF $(DEPDIR)/libgstalsa_la-gstalsamidisrc.Tpo -c -o libgstalsa_la-gstalsamidisrc.lo `test -f 'gstalsamidisrc.c' || echo '$(srcdir)/'`gstalsamidisrc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstalsa_la-gstalsamidisrc.Tpo $(DEPDIR)/libgstalsa_la-gstalsamidisrc.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstalsamidisrc.c' object='libgstalsa_la-gstalsamidisrc.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstalsa_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstalsa_la_CFLAGS) $(CFLAGS) -c -o libgstalsa_la-gstalsamidisrc.lo `test -f 'gstalsamidisrc.c' || echo '$(srcdir)/'`gstalsamidisrc.c
 
 libgstalsa_la-gstalsa.lo: gstalsa.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstalsa_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstalsa_la_CFLAGS) $(CFLAGS) -MT libgstalsa_la-gstalsa.lo -MD -MP -MF $(DEPDIR)/libgstalsa_la-gstalsa.Tpo -c -o libgstalsa_la-gstalsa.lo `test -f 'gstalsa.c' || echo '$(srcdir)/'`gstalsa.c

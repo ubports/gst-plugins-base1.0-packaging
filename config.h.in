@@ -56,6 +56,9 @@
 /* system wide data directory */
 #undef GST_DATADIR
 
+/* Define if extra runtime checks should be enabled */
+#undef GST_ENABLE_EXTRA_CHECKS
+
 /* Extra platform specific plugin suffix */
 #undef GST_EXTRA_MODULE_SUFFIX
 
@@ -181,9 +184,6 @@
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
-
-/* Define to enable glib GIO unix (used by gio-unix-2.0). */
-#undef HAVE_GIO_UNIX_2_0
 
 /* Define to 1 if you have the `gmtime_r' function. */
 #undef HAVE_GMTIME_R

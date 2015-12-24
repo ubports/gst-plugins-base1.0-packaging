@@ -94,10 +94,10 @@ check_PROGRAMS = generic/clock-selection$(EXEEXT) \
 	generic/states$(EXEEXT) libs/libsabi$(EXEEXT) \
 	libs/allocators$(EXEEXT) libs/audio$(EXEEXT) \
 	libs/audiocdsrc$(EXEEXT) libs/audiodecoder$(EXEEXT) \
-	libs/audioencoder$(EXEEXT) libs/discoverer$(EXEEXT) \
-	libs/fft$(EXEEXT) libs/navigation$(EXEEXT) \
-	libs/pbutils$(EXEEXT) libs/profile$(EXEEXT) \
-	libs/mikey$(EXEEXT) libs/rtp$(EXEEXT) \
+	libs/audioencoder$(EXEEXT) libs/baseaudiovisualizer$(EXEEXT) \
+	libs/discoverer$(EXEEXT) libs/fft$(EXEEXT) \
+	libs/navigation$(EXEEXT) libs/pbutils$(EXEEXT) \
+	libs/profile$(EXEEXT) libs/mikey$(EXEEXT) libs/rtp$(EXEEXT) \
 	libs/rtpbasedepayload$(EXEEXT) libs/rtpbasepayload$(EXEEXT) \
 	libs/rtsp$(EXEEXT) libs/rtspconnection$(EXEEXT) \
 	libs/sdp$(EXEEXT) libs/tag$(EXEEXT) libs/video$(EXEEXT) \
@@ -200,8 +200,8 @@ CONFIG_CLEAN_VPATH_FILES =
 @USE_VORBIS_TRUE@	elements/vorbistag$(EXEEXT)
 @HAVE_CXX_TRUE@am__EXEEXT_22 = libs/gstlibscpp$(EXEEXT)
 @HAVE_ORC_TRUE@am__EXEEXT_23 = orc/video$(EXEEXT) orc/audio$(EXEEXT) \
-@HAVE_ORC_TRUE@	orc/adder$(EXEEXT) orc/audioconvert$(EXEEXT) \
-@HAVE_ORC_TRUE@	orc/volume$(EXEEXT) orc/videotestsrc$(EXEEXT)
+@HAVE_ORC_TRUE@	orc/adder$(EXEEXT) orc/volume$(EXEEXT) \
+@HAVE_ORC_TRUE@	orc/videotestsrc$(EXEEXT)
 @USE_LIBVISUAL_TRUE@am__EXEEXT_24 = elements/libvisual$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 elements_adder_SOURCES = elements/adder.c
@@ -467,6 +467,18 @@ libs_audioencoder_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(libs_audioencoder_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+am_libs_baseaudiovisualizer_OBJECTS =  \
+	libs/libs_baseaudiovisualizer-baseaudiovisualizer.$(OBJEXT)
+libs_baseaudiovisualizer_OBJECTS =  \
+	$(am_libs_baseaudiovisualizer_OBJECTS)
+libs_baseaudiovisualizer_DEPENDENCIES = $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
+libs_baseaudiovisualizer_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libs_baseaudiovisualizer_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 libs_discoverer_SOURCES = libs/discoverer.c
 libs_discoverer_OBJECTS = libs/libs_discoverer-discoverer.$(OBJEXT)
 libs_discoverer_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
@@ -632,14 +644,6 @@ orc_audio_DEPENDENCIES = $(am__DEPENDENCIES_1)
 orc_audio_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(orc_audio_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-nodist_orc_audioconvert_OBJECTS =  \
-	orc/orc_audioconvert-audioconvert.$(OBJEXT)
-orc_audioconvert_OBJECTS = $(nodist_orc_audioconvert_OBJECTS)
-orc_audioconvert_DEPENDENCIES = $(am__DEPENDENCIES_1)
-orc_audioconvert_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(orc_audioconvert_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
 nodist_orc_video_OBJECTS = orc/orc_video-video.$(OBJEXT)
 orc_video_OBJECTS = $(nodist_orc_video_OBJECTS)
 orc_video_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -806,15 +810,15 @@ SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/vorbistag.c generic/clock-selection.c \
 	generic/states.c gst/typefindfunctions.c libs/allocators.c \
 	libs/audio.c libs/audiocdsrc.c libs/audiodecoder.c \
-	libs/audioencoder.c libs/discoverer.c libs/fft.c \
-	$(libs_gstlibscpp_SOURCES) libs/libsabi.c libs/mikey.c \
-	libs/navigation.c libs/pbutils.c libs/profile.c libs/rtp.c \
-	libs/rtpbasedepayload.c libs/rtpbasepayload.c libs/rtsp.c \
-	libs/rtspconnection.c libs/sdp.c libs/tag.c libs/video.c \
-	libs/videodecoder.c libs/videoencoder.c libs/xmpwriter.c \
+	libs/audioencoder.c $(libs_baseaudiovisualizer_SOURCES) \
+	libs/discoverer.c libs/fft.c $(libs_gstlibscpp_SOURCES) \
+	libs/libsabi.c libs/mikey.c libs/navigation.c libs/pbutils.c \
+	libs/profile.c libs/rtp.c libs/rtpbasedepayload.c \
+	libs/rtpbasepayload.c libs/rtsp.c libs/rtspconnection.c \
+	libs/sdp.c libs/tag.c libs/video.c libs/videodecoder.c \
+	libs/videoencoder.c libs/xmpwriter.c \
 	$(nodist_orc_adder_SOURCES) $(nodist_orc_audio_SOURCES) \
-	$(nodist_orc_audioconvert_SOURCES) $(nodist_orc_video_SOURCES) \
-	$(nodist_orc_videotestsrc_SOURCES) \
+	$(nodist_orc_video_SOURCES) $(nodist_orc_videotestsrc_SOURCES) \
 	$(nodist_orc_volume_SOURCES) pipelines/basetime.c \
 	pipelines/capsfilter-renegotiation.c pipelines/gio.c \
 	pipelines/oggmux.c pipelines/simple-launch-lines.c \
@@ -834,16 +838,17 @@ DIST_SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/vorbistag.c generic/clock-selection.c \
 	generic/states.c gst/typefindfunctions.c libs/allocators.c \
 	libs/audio.c libs/audiocdsrc.c libs/audiodecoder.c \
-	libs/audioencoder.c libs/discoverer.c libs/fft.c \
-	$(libs_gstlibscpp_SOURCES) libs/libsabi.c libs/mikey.c \
-	libs/navigation.c libs/pbutils.c libs/profile.c libs/rtp.c \
-	libs/rtpbasedepayload.c libs/rtpbasepayload.c libs/rtsp.c \
-	libs/rtspconnection.c libs/sdp.c libs/tag.c libs/video.c \
-	libs/videodecoder.c libs/videoencoder.c libs/xmpwriter.c \
-	pipelines/basetime.c pipelines/capsfilter-renegotiation.c \
-	pipelines/gio.c pipelines/oggmux.c \
-	pipelines/simple-launch-lines.c pipelines/streamsynchronizer.c \
-	pipelines/tcp.c pipelines/theoraenc.c pipelines/vorbisdec.c \
+	libs/audioencoder.c $(libs_baseaudiovisualizer_SOURCES) \
+	libs/discoverer.c libs/fft.c $(libs_gstlibscpp_SOURCES) \
+	libs/libsabi.c libs/mikey.c libs/navigation.c libs/pbutils.c \
+	libs/profile.c libs/rtp.c libs/rtpbasedepayload.c \
+	libs/rtpbasepayload.c libs/rtsp.c libs/rtspconnection.c \
+	libs/sdp.c libs/tag.c libs/video.c libs/videodecoder.c \
+	libs/videoencoder.c libs/xmpwriter.c pipelines/basetime.c \
+	pipelines/capsfilter-renegotiation.c pipelines/gio.c \
+	pipelines/oggmux.c pipelines/simple-launch-lines.c \
+	pipelines/streamsynchronizer.c pipelines/tcp.c \
+	pipelines/theoraenc.c pipelines/vorbisdec.c \
 	pipelines/vorbisenc.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -1435,7 +1440,7 @@ TESTS = $(check_PROGRAMS)
 @USE_PLUGIN_ADDER_FALSE@check_adder = 
 @USE_PLUGIN_ADDER_TRUE@check_adder = elements/adder
 @HAVE_ORC_FALSE@check_orc = 
-@HAVE_ORC_TRUE@check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videotestsrc
+@HAVE_ORC_TRUE@check_orc = orc/video orc/audio orc/adder orc/volume orc/videotestsrc
 @USE_PLUGIN_GIO_FALSE@check_gio = 
 @USE_PLUGIN_GIO_TRUE@check_gio = pipelines/gio
 @USE_PLUGIN_APP_FALSE@check_app = 
@@ -1549,6 +1554,17 @@ libs_audiocdsrc_LDADD = \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
+
+libs_baseaudiovisualizer_SOURCES = libs/baseaudiovisualizer.c
+libs_baseaudiovisualizer_CFLAGS = \
+        $(GST_PLUGINS_BASE_CFLAGS) \
+        $(GST_BASE_CFLAGS) $(GST_CONTROLLER_CFLAGS) $(GST_CFLAGS) $(AM_CFLAGS)
+
+libs_baseaudiovisualizer_LDADD = \
+        $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+        $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
+        $(GST_BASE_LIBS) $(GST_CONTROLLER_LIBS) \
+        $(GST_LIBS) $(LDADD)
 
 libs_discoverer_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
@@ -1855,9 +1871,6 @@ nodist_orc_audio_SOURCES = orc/audio.c
 orc_adder_CFLAGS = $(ORC_CFLAGS)
 orc_adder_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_adder_SOURCES = orc/adder.c
-orc_audioconvert_CFLAGS = $(ORC_CFLAGS)
-orc_audioconvert_LDADD = $(ORC_LIBS) -lorc-test-0.4
-nodist_orc_audioconvert_SOURCES = orc/audioconvert.c
 orc_volume_CFLAGS = $(ORC_CFLAGS)
 orc_volume_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_volume_SOURCES = orc/volume.c
@@ -2133,6 +2146,12 @@ libs/libs_audioencoder-audioencoder.$(OBJEXT): libs/$(am__dirstamp) \
 libs/audioencoder$(EXEEXT): $(libs_audioencoder_OBJECTS) $(libs_audioencoder_DEPENDENCIES) $(EXTRA_libs_audioencoder_DEPENDENCIES) libs/$(am__dirstamp)
 	@rm -f libs/audioencoder$(EXEEXT)
 	$(AM_V_CCLD)$(libs_audioencoder_LINK) $(libs_audioencoder_OBJECTS) $(libs_audioencoder_LDADD) $(LIBS)
+libs/libs_baseaudiovisualizer-baseaudiovisualizer.$(OBJEXT):  \
+	libs/$(am__dirstamp) libs/$(DEPDIR)/$(am__dirstamp)
+
+libs/baseaudiovisualizer$(EXEEXT): $(libs_baseaudiovisualizer_OBJECTS) $(libs_baseaudiovisualizer_DEPENDENCIES) $(EXTRA_libs_baseaudiovisualizer_DEPENDENCIES) libs/$(am__dirstamp)
+	@rm -f libs/baseaudiovisualizer$(EXEEXT)
+	$(AM_V_CCLD)$(libs_baseaudiovisualizer_LINK) $(libs_baseaudiovisualizer_OBJECTS) $(libs_baseaudiovisualizer_LDADD) $(LIBS)
 libs/libs_discoverer-discoverer.$(OBJEXT): libs/$(am__dirstamp) \
 	libs/$(DEPDIR)/$(am__dirstamp)
 
@@ -2265,12 +2284,6 @@ orc/orc_audio-audio.$(OBJEXT): orc/$(am__dirstamp) \
 orc/audio$(EXEEXT): $(orc_audio_OBJECTS) $(orc_audio_DEPENDENCIES) $(EXTRA_orc_audio_DEPENDENCIES) orc/$(am__dirstamp)
 	@rm -f orc/audio$(EXEEXT)
 	$(AM_V_CCLD)$(orc_audio_LINK) $(orc_audio_OBJECTS) $(orc_audio_LDADD) $(LIBS)
-orc/orc_audioconvert-audioconvert.$(OBJEXT): orc/$(am__dirstamp) \
-	orc/$(DEPDIR)/$(am__dirstamp)
-
-orc/audioconvert$(EXEEXT): $(orc_audioconvert_OBJECTS) $(orc_audioconvert_DEPENDENCIES) $(EXTRA_orc_audioconvert_DEPENDENCIES) orc/$(am__dirstamp)
-	@rm -f orc/audioconvert$(EXEEXT)
-	$(AM_V_CCLD)$(orc_audioconvert_LINK) $(orc_audioconvert_OBJECTS) $(orc_audioconvert_LDADD) $(LIBS)
 orc/orc_video-video.$(OBJEXT): orc/$(am__dirstamp) \
 	orc/$(DEPDIR)/$(am__dirstamp)
 
@@ -2401,6 +2414,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_audiocdsrc-audiocdsrc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_audiodecoder-audiodecoder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_audioencoder-audioencoder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_discoverer-discoverer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_fft-fft.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_libsabi-libsabi.Po@am__quote@
@@ -2421,7 +2435,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libs/$(DEPDIR)/libs_xmpwriter-xmpwriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_adder-adder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_audio-audio.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_audioconvert-audioconvert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_video-video.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_videotestsrc-videotestsrc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@orc/$(DEPDIR)/orc_volume-volume.Po@am__quote@
@@ -2810,6 +2823,20 @@ libs/libs_audioencoder-audioencoder.obj: libs/audioencoder.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_audioencoder_CFLAGS) $(CFLAGS) -c -o libs/libs_audioencoder-audioencoder.obj `if test -f 'libs/audioencoder.c'; then $(CYGPATH_W) 'libs/audioencoder.c'; else $(CYGPATH_W) '$(srcdir)/libs/audioencoder.c'; fi`
 
+libs/libs_baseaudiovisualizer-baseaudiovisualizer.o: libs/baseaudiovisualizer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_baseaudiovisualizer_CFLAGS) $(CFLAGS) -MT libs/libs_baseaudiovisualizer-baseaudiovisualizer.o -MD -MP -MF libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Tpo -c -o libs/libs_baseaudiovisualizer-baseaudiovisualizer.o `test -f 'libs/baseaudiovisualizer.c' || echo '$(srcdir)/'`libs/baseaudiovisualizer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Tpo libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libs/baseaudiovisualizer.c' object='libs/libs_baseaudiovisualizer-baseaudiovisualizer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_baseaudiovisualizer_CFLAGS) $(CFLAGS) -c -o libs/libs_baseaudiovisualizer-baseaudiovisualizer.o `test -f 'libs/baseaudiovisualizer.c' || echo '$(srcdir)/'`libs/baseaudiovisualizer.c
+
+libs/libs_baseaudiovisualizer-baseaudiovisualizer.obj: libs/baseaudiovisualizer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_baseaudiovisualizer_CFLAGS) $(CFLAGS) -MT libs/libs_baseaudiovisualizer-baseaudiovisualizer.obj -MD -MP -MF libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Tpo -c -o libs/libs_baseaudiovisualizer-baseaudiovisualizer.obj `if test -f 'libs/baseaudiovisualizer.c'; then $(CYGPATH_W) 'libs/baseaudiovisualizer.c'; else $(CYGPATH_W) '$(srcdir)/libs/baseaudiovisualizer.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Tpo libs/$(DEPDIR)/libs_baseaudiovisualizer-baseaudiovisualizer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libs/baseaudiovisualizer.c' object='libs/libs_baseaudiovisualizer-baseaudiovisualizer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_baseaudiovisualizer_CFLAGS) $(CFLAGS) -c -o libs/libs_baseaudiovisualizer-baseaudiovisualizer.obj `if test -f 'libs/baseaudiovisualizer.c'; then $(CYGPATH_W) 'libs/baseaudiovisualizer.c'; else $(CYGPATH_W) '$(srcdir)/libs/baseaudiovisualizer.c'; fi`
+
 libs/libs_discoverer-discoverer.o: libs/discoverer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libs_discoverer_CFLAGS) $(CFLAGS) -MT libs/libs_discoverer-discoverer.o -MD -MP -MF libs/$(DEPDIR)/libs_discoverer-discoverer.Tpo -c -o libs/libs_discoverer-discoverer.o `test -f 'libs/discoverer.c' || echo '$(srcdir)/'`libs/discoverer.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libs/$(DEPDIR)/libs_discoverer-discoverer.Tpo libs/$(DEPDIR)/libs_discoverer-discoverer.Po
@@ -3089,20 +3116,6 @@ orc/orc_audio-audio.obj: orc/audio.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='orc/audio.c' object='orc/orc_audio-audio.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_audio_CFLAGS) $(CFLAGS) -c -o orc/orc_audio-audio.obj `if test -f 'orc/audio.c'; then $(CYGPATH_W) 'orc/audio.c'; else $(CYGPATH_W) '$(srcdir)/orc/audio.c'; fi`
-
-orc/orc_audioconvert-audioconvert.o: orc/audioconvert.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_audioconvert_CFLAGS) $(CFLAGS) -MT orc/orc_audioconvert-audioconvert.o -MD -MP -MF orc/$(DEPDIR)/orc_audioconvert-audioconvert.Tpo -c -o orc/orc_audioconvert-audioconvert.o `test -f 'orc/audioconvert.c' || echo '$(srcdir)/'`orc/audioconvert.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) orc/$(DEPDIR)/orc_audioconvert-audioconvert.Tpo orc/$(DEPDIR)/orc_audioconvert-audioconvert.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='orc/audioconvert.c' object='orc/orc_audioconvert-audioconvert.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_audioconvert_CFLAGS) $(CFLAGS) -c -o orc/orc_audioconvert-audioconvert.o `test -f 'orc/audioconvert.c' || echo '$(srcdir)/'`orc/audioconvert.c
-
-orc/orc_audioconvert-audioconvert.obj: orc/audioconvert.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_audioconvert_CFLAGS) $(CFLAGS) -MT orc/orc_audioconvert-audioconvert.obj -MD -MP -MF orc/$(DEPDIR)/orc_audioconvert-audioconvert.Tpo -c -o orc/orc_audioconvert-audioconvert.obj `if test -f 'orc/audioconvert.c'; then $(CYGPATH_W) 'orc/audioconvert.c'; else $(CYGPATH_W) '$(srcdir)/orc/audioconvert.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) orc/$(DEPDIR)/orc_audioconvert-audioconvert.Tpo orc/$(DEPDIR)/orc_audioconvert-audioconvert.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='orc/audioconvert.c' object='orc/orc_audioconvert-audioconvert.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_audioconvert_CFLAGS) $(CFLAGS) -c -o orc/orc_audioconvert-audioconvert.obj `if test -f 'orc/audioconvert.c'; then $(CYGPATH_W) 'orc/audioconvert.c'; else $(CYGPATH_W) '$(srcdir)/orc/audioconvert.c'; fi`
 
 orc/orc_video-video.o: orc/video.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(orc_video_CFLAGS) $(CFLAGS) -MT orc/orc_video-video.o -MD -MP -MF orc/$(DEPDIR)/orc_video-video.Tpo -c -o orc/orc_video-video.o `test -f 'orc/video.c' || echo '$(srcdir)/'`orc/video.c
@@ -3529,6 +3542,13 @@ libs/audioencoder.log: libs/audioencoder$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+libs/baseaudiovisualizer.log: libs/baseaudiovisualizer$(EXEEXT)
+	@p='libs/baseaudiovisualizer$(EXEEXT)'; \
+	b='libs/baseaudiovisualizer'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 libs/discoverer.log: libs/discoverer$(EXEEXT)
 	@p='libs/discoverer$(EXEEXT)'; \
 	b='libs/discoverer'; \
@@ -3914,13 +3934,6 @@ orc/adder.log: orc/adder$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-orc/audioconvert.log: orc/audioconvert$(EXEEXT)
-	@p='orc/audioconvert$(EXEEXT)'; \
-	b='orc/audioconvert'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
 orc/volume.log: orc/volume$(EXEEXT)
 	@p='orc/volume$(EXEEXT)'; \
 	b='orc/volume'; \
@@ -4179,7 +4192,7 @@ LOOPS ?= 10
 	--show-possibly-lost=no                                 \
 	--leak-resolution=high --num-callers=20			\
 	./$* 2>&1 | tee $$valgrind_log ;			\
-	if grep "==" $$valgrind_log > /dev/null 2>&1; then	\
+	if grep "^==" $$valgrind_log > /dev/null 2>&1; then	\
 	    rm $$valgrind_log;					\
 	    exit 1;						\
 	fi ;							\
@@ -4381,10 +4394,6 @@ orc/audio.c: $(top_srcdir)/gst-libs/gst/audio/gstaudiopack.orc
 	$(ORCC) --test -o $@ $<
 
 orc/adder.c: $(top_srcdir)/gst/adder/gstadderorc.orc
-	$(MKDIR_P) orc/
-	$(ORCC) --test -o $@ $<
-
-orc/audioconvert.c: $(top_srcdir)/gst/audioconvert/gstaudioconvertorc.orc
 	$(MKDIR_P) orc/
 	$(ORCC) --test -o $@ $<
 

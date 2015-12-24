@@ -5,7 +5,7 @@ dnl please read gstreamer/docs/random/autotools before changing this file
 dnl initialize autoconf
 dnl releases only do -Wall, git and prerelease does -Werror too
 dnl use a three digit version number for releases, and four for git/prerelease
-AC_INIT([GStreamer Base Plug-ins],[1.6.2],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
+AC_INIT([GStreamer Base Plug-ins],[1.7.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-base])
 
 AG_GST_INIT
 
@@ -56,10 +56,10 @@ dnl      1.2.5 => 205
 dnl      1.10.9 (who knows) => 1009
 dnl
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 602, 0, 602)
+AS_LIBTOOL(GST, 701, 0, 701)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=1.6.2
+GST_REQ=1.7.1
 
 dnl *** autotools stuff ****
 
@@ -78,6 +78,7 @@ AG_GST_GETTEXT([gst-plugins-base-$GST_API_VERSION])
 dnl *** check for arguments to configure ***
 
 AG_GST_ARG_DISABLE_FATAL_WARNINGS
+AG_GST_ARG_ENABLE_EXTRA_CHECKS
 
 AG_GST_ARG_DEBUG
 AG_GST_ARG_PROFILING
@@ -247,7 +248,7 @@ AG_GST_CHECK_FUNCTION
 dnl *** checks for dependency libraries ***
 
 dnl GLib
-GLIB_REQ=2.32
+GLIB_REQ=2.40.0
 AG_GST_GLIB_CHECK([$GLIB_REQ])
 
 ORC_CHECK([0.4.23])
@@ -346,15 +347,16 @@ dnl Check for -Bsymbolic-functions linker flag used to avoid
 dnl intra-library PLT jumps, if available.
 AC_ARG_ENABLE(Bsymbolic,
               [AS_HELP_STRING([--disable-Bsymbolic],[avoid linking with -Bsymbolic])],,
-              [SAVED_LDFLAGS="${LDFLAGS}"
+              [SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                LDFLAGS=-Wl,-Bsymbolic-functions
-               AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[int main (void) { return 0; }]])],[
+               LIBS=
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
-                           enable_Bsymbolic=yes],[
+                           enable_Bsymbolic=yes,
                            AC_MSG_RESULT(no)
-                           enable_Bsymbolic=no])
-               LDFLAGS="${SAVED_LDFLAGS}"])
+                           enable_Bsymbolic=no)
+               LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
 
 
 dnl *** set variables based on configure arguments ***
@@ -703,12 +705,6 @@ AG_GST_CHECK_FEATURE(VORBIS, [Xiph Vorbis audio codec], vorbis, [
   AG_GST_PKG_CHECK_MODULES(VORBIS, vorbis >= 1.0 vorbisenc >= 1.0)
 ])
 
-dnl *** gio-unix-2.0 for tests/check/pipelines/tcp.c ***
-translit(dnm, m, l) AM_CONDITIONAL(USE_GIO_UNIX_2_0, true)
-AG_GST_CHECK_FEATURE(GIO_UNIX_2_0, [glib GIO unix], gio-unix-2.0, [
-  AG_GST_PKG_CHECK_MODULES(GIO_UNIX_2_0, gio-unix-2.0 >= 2.24)
-])
-
 if test "x$HAVE_VORBIS" = "xyes"; then
   ac_cflags_save="$CFLAGS"
   AC_COMPILE_IFELSE([
@@ -749,6 +745,12 @@ dnl make the HAVE_FT2 variable available to automake and Makefile.am
 AM_CONDITIONAL(HAVE_FT2, test "x$HAVE_FT2" = "xyes")
 AC_SUBST(FT2_CFLAGS)
 AC_SUBST(FT2_LIBS)
+
+dnl *** gio-unix-2.0 for tests/check/pipelines/tcp.c ***
+PKG_CHECK_MODULES(GIO_UNIX_2_0, gio-unix-2.0 >= 2.24,
+    HAVE_GIO_UNIX_2_0="yes",
+    HAVE_GIO_UNIX_2_0="no")
+AM_CONDITIONAL(USE_GIO_UNIX_2_0, test "x$HAVE_GIO_UNIX_2_0" = "xyes")
 
 dnl *** finalize CFLAGS, LDFLAGS, LIBS
 

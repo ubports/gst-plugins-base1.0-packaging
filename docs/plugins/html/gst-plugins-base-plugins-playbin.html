@@ -398,7 +398,7 @@ volume control with mute option
 </li>
 </ul></div>
 <div class="refsect2">
-<a name="id-1.2.28.9.5"></a><h3>Usage</h3>
+<a name="id-1.2.29.9.5"></a><h3>Usage</h3>
 <p>
 A playbin element can be created just like any other element using
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElementFactory.html#gst-element-factory-make"><code class="function">gst_element_factory_make()</code></a>. The file/URI to play should be set via the <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--uri" title="The “uri” property"><span class="type">“uri”</span></a>
@@ -439,7 +439,7 @@ the duration or position will have been returned in units of nanoseconds.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.6"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
+<a name="id-1.2.29.9.6"></a><h3>Advanced Usage: specifying the audio and video sink</h3>
 <p>
 By default, if no audio sink or video sink has been specified via the
 <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink" title="The “audio-sink” property"><span class="type">“audio-sink”</span></a> or <a class="link" href="gst-plugins-base-plugins-playbin.html#GstPlayBin--video-sink" title="The “video-sink” property"><span class="type">“video-sink”</span></a> property, playbin will use the autoaudiosink
@@ -474,7 +474,7 @@ It is also possible to 'suppress' audio and/or video output by using
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.7"></a><h3>Retrieving Tags and Other Meta Data</h3>
+<a name="id-1.2.29.9.7"></a><h3>Retrieving Tags and Other Meta Data</h3>
 <p>
 Most of the common meta data (artist, title, etc.) can be retrieved by
 watching for TAG messages on the pipeline's bus (see above).
@@ -486,7 +486,7 @@ from the negotiated caps on the sink pads of the sinks.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.8"></a><h3>Buffering</h3>
+<a name="id-1.2.29.9.8"></a><h3>Buffering</h3>
 Playbin handles buffering automatically for the most part, but applications
 need to handle parts of the buffering process as well. Whenever playbin is
 buffering, it will post BUFFERING messages on the bus with a percentage
@@ -528,7 +528,7 @@ of 100 percent is received (if PLAYING is the desired state, that is).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.9"></a><h3>Embedding the video window in your application</h3>
+<a name="id-1.2.29.9.9"></a><h3>Embedding the video window in your application</h3>
 By default, playbin (or rather the video sinks used) will create their own
 window. Applications will usually want to force output to a window of their
 own, however. This can be done using the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface, which most
@@ -536,7 +536,7 @@ video sinks implement. See the documentation there for more details.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.10"></a><h3>Specifying which CD/DVD device to use</h3>
+<a name="id-1.2.29.9.10"></a><h3>Specifying which CD/DVD device to use</h3>
 The device to use for CDs/DVDs needs to be set on the source element
 playbin creates before it is opened. The most generic way of doing this
 is to connect to playbin's "source-setup" (or "notify::source") signal,
@@ -550,7 +550,7 @@ dvd://[/path/to/device]
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.11"></a><h3>Handling redirects</h3>
+<a name="id-1.2.29.9.11"></a><h3>Handling redirects</h3>
 <p>
 Some elements may post 'redirect' messages on the bus to tell the
 application to open another location. These are element messages containing
@@ -561,7 +561,7 @@ for such redirects can be found in many quicktime movie trailers.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.12"></a><h3>Examples</h3>
+<a name="id-1.2.29.9.12"></a><h3>Examples</h3>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
     <tbody>
@@ -605,7 +605,7 @@ the drive is detected automatically by the plugin).
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.28.9.13.1"></a><h3>Element Information</h3>
+<a name="id-1.2.29.9.13.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -631,7 +631,7 @@ the drive is detected automatically by the plugin).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.28.9.13.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.29.9.13.2"></a><h3>Element Pads</h3>
 </div>
 </div>
 </div>
@@ -651,7 +651,7 @@ the drive is detected automatically by the plugin).
 <a name="GstPlayFlags"></a><h3>enum GstPlayFlags</h3>
 <p>Extra flags to configure the behaviour of the sinks.</p>
 <div class="refsect3">
-<a name="id-1.2.28.11.3.4"></a><h4>Members</h4>
+<a name="id-1.2.29.11.3.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1050,7 +1050,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 set the uri and suburi to make sure that playback continues.</p>
 <p>This signal is emitted from the context of a GStreamer streaming thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.2.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1086,7 +1086,7 @@ a new audio stream.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1122,7 +1122,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.4.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.4.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1164,7 +1164,7 @@ If <em class="parameter"><code>caps</code></em>
  is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, no conversion will be performed and this function is
 equivalent to the <span class="type">“frame”</span> property.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1191,7 +1191,7 @@ equivalent to the <span class="type">“frame”</span> property.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.5.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.5.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstSample.html"><span class="type">GstSample</span></a> of the current video frame converted to <span class="type">caps</span>.
 The caps on the sample will describe the final layout of the buffer data.
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned when no current buffer can be retrieved or when the
@@ -1211,7 +1211,7 @@ audio stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1238,7 +1238,7 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.6.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
@@ -1253,7 +1253,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific audio stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1280,7 +1280,7 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.7.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
@@ -1298,7 +1298,7 @@ text stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1325,7 +1325,7 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.8.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
@@ -1340,7 +1340,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific text stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1367,7 +1367,7 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.9.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
@@ -1385,7 +1385,7 @@ video stream.
 This pad can be used for notifications of caps changes, stream-specific
 queries, etc.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1412,7 +1412,7 @@ queries, etc.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.10.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstPad.html"><span class="type">GstPad</span></a>, or NULL when the stream number does not exist.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
@@ -1427,7 +1427,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-playbin.html#GstPl
 <p>Action signal to retrieve the tags of a specific video stream number.
 This information can be used to select a stream.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1454,7 +1454,7 @@ This information can be used to select a stream.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.28.13.11.6"></a><h4>Returns</h4>
+<a name="id-1.2.29.13.11.6"></a><h4>Returns</h4>
 <p> a GstTagList with tags or NULL when the stream number does not
 exist.</p>
 </div>
@@ -1475,7 +1475,7 @@ the notify::source signal, but more convenient.</p>
 <p>This signal is usually emitted from the context of a GStreamer streaming
 thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.12.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.12.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1516,7 +1516,7 @@ a new text stream.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.13.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.13.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1552,7 +1552,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.14.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.14.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1593,7 +1593,7 @@ a new video stream.</p>
 thread. You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and
 <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a> to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.15.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.15.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1629,7 +1629,7 @@ The application will most likely want to get the new tags.</p>
 You can use <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstMessage.html#gst-message-new-application"><code class="function">gst_message_new_application()</code></a> and <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-post-message"><code class="function">gst_element_post_message()</code></a>
 to notify your application's main thread.</p>
 <div class="refsect3">
-<a name="id-1.2.28.13.16.6"></a><h4>Parameters</h4>
+<a name="id-1.2.29.13.16.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">

@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
-<link rel="prev" href="gst-plugins-base-libs-gstvideometa.html" title="gstvideometa">
+<link rel="prev" href="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html" title="gstvideoaffinetransformationmeta">
 <link rel="next" href="gst-plugins-base-libs-gstvideofilter.html" title="gstvideofilter">
 <meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -19,7 +19,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="gst-plugins-base-libs-gstvideometa.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="gst-plugins-base-libs-gstvideofilter.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -316,7 +316,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideooverlaycomposition.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.15.5.6.2"></a><p>
+<a name="id-1.2.15.6.6.2"></a><p>
 Functions to create and handle overlay compositions on video buffers.
 </p>
 <p>
@@ -354,7 +354,7 @@ gst_video_overlay_composition_new (<em class="parameter"><code><a class="link" h
 <p>Creates a new video overlay composition object to hold one or more
 overlay rectangles.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -370,7 +370,7 @@ composition. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.2.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a>. Unref with
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-unref" title="gst_video_overlay_composition_unref ()"><code class="function">gst_video_overlay_composition_unref()</code></a> when no longer needed. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -387,7 +387,7 @@ of <em class="parameter"><code>comp</code></em>
 , use <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> to ensure
 a composition and its rectangles can be modified.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.3.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -402,7 +402,7 @@ a composition and its rectangles can be modified.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.3.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.3.7"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>comp</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -416,7 +416,7 @@ gst_video_overlay_composition_unref (<em class="parameter"><code><a class="link"
 <p>Decreases the refcount of the composition. If the refcount reaches 0, the
 composition will be freed.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.4.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -441,7 +441,7 @@ gst_video_overlay_composition_add_rectangle
 <p>Adds an overlay rectangle to an existing overlay composition object. This
 must be done right after creating the overlay composition.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.5.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -473,7 +473,7 @@ gst_video_overlay_composition_n_rectangles
 <p>Returns the number of <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>s contained in <em class="parameter"><code>comp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.6.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -488,7 +488,7 @@ gst_video_overlay_composition_n_rectangles
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.6.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.6.6"></a><h4>Returns</h4>
 <p> the number of rectangles</p>
 </div>
 </div>
@@ -503,7 +503,7 @@ gst_video_overlay_composition_get_rectangle
 -th <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> contained in <em class="parameter"><code>comp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.7.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -525,7 +525,7 @@ gst_video_overlay_composition_get_rectangle
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.7.6"></a><h4>Returns</h4>
 <p> the <em class="parameter"><code>n</code></em>
 -th rectangle, or NULL if <em class="parameter"><code>n</code></em>
 is out of
@@ -546,7 +546,7 @@ monotonically increasing and unique for overlay compositions and rectangles
 (meaning there will never be a rectangle with the same sequence number as
 a composition).</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.8.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -561,7 +561,7 @@ a composition).</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.8.6"></a><h4>Returns</h4>
 <p> the sequence number of <em class="parameter"><code>comp</code></em>
 </p>
 </div>
@@ -578,7 +578,7 @@ rectangles or change the render co-ordinates or render dimension). The
 actual overlay pixel data buffers contained in the rectangles are not
 copied.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.9.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -593,7 +593,7 @@ copied.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.9.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.9.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a> equivalent
 to <em class="parameter"><code>comp</code></em>
 . </p>
@@ -617,7 +617,7 @@ new writable copy of <em class="parameter"><code>comp</code></em>
 rectangles will also be copied, but the actual overlay pixel data buffers
 contained in the rectangles are not copied.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.10.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -632,7 +632,7 @@ contained in the rectangles are not copied.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.10.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.10.6"></a><h4>Returns</h4>
 <p> a writable <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayComposition" title="GstVideoOverlayComposition"><span class="type">GstVideoOverlayComposition</span></a>
 equivalent to <em class="parameter"><code>comp</code></em>
 . </p>
@@ -652,7 +652,7 @@ contained in <em class="parameter"><code>video_buf</code></em>
  must be writable and
 mapped appropriately.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.11.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -693,7 +693,7 @@ reference to the composition, meaning this function does not take ownership
 of <em class="parameter"><code>comp</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.13.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -715,7 +715,7 @@ of <em class="parameter"><code>comp</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.13.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.13.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayCompositionMeta" title="struct GstVideoOverlayCompositionMeta"><span class="type">GstVideoOverlayCompositionMeta</span></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -752,7 +752,7 @@ non-premultiplied. This is the format that is used by most hardware,
 and also many rendering libraries such as Cairo, for example.
 The pixel data buffer must have <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> set.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.16.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -796,7 +796,7 @@ overlay rectangle should be rendered to</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.16.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.16.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>. Unref with
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-unref" title="gst_video_overlay_rectangle_unref ()"><code class="function">gst_video_overlay_rectangle_unref()</code></a> when no longer needed. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -815,7 +815,7 @@ be modified (there is no <code class="function">gst_video_overlay_rectangle_make
 it is unlikely that someone will hold the single reference to the rectangle
 and not know that that's the case).</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.17.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.17.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -830,7 +830,7 @@ and not know that that's the case).</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.17.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.17.7"></a><h4>Returns</h4>
 <p> <em class="parameter"><code>comp</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -844,7 +844,7 @@ gst_video_overlay_rectangle_unref (<em class="parameter"><code><a class="link" h
 <p>Decreases the refcount of the rectangle. If the refcount reaches 0, the
 rectangle will be freed.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.18.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -867,7 +867,7 @@ gst_video_overlay_rectangle_get_pixels_raw
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.19.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.19.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -893,7 +893,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.19.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.19.5"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the pixel data with
 format as originally provided and specified in video meta with
 width and height of the render dimensions as per
@@ -911,7 +911,7 @@ gst_video_overlay_rectangle_get_pixels_argb
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.20.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.20.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -937,7 +937,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.20.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.20.5"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the ARGB pixel data with
 width and height of the render dimensions as per
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>. This function does
@@ -954,7 +954,7 @@ gst_video_overlay_rectangle_get_pixels_ayuv
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>,
                                 <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> flags</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.21.4"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.21.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -980,7 +980,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.21.5"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.21.5"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the AYUV pixel data with
 width and height of the render dimensions as per
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>. This function does
@@ -1001,7 +1001,7 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.22.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1027,7 +1027,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.22.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.22.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the pixel data with
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> set. This function does not return a reference, the caller
 should obtain a reference of her own with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html#gst-buffer-ref"><code class="function">gst_buffer_ref()</code></a> if needed. </p>
@@ -1046,7 +1046,7 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.23.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1072,7 +1072,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.23.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.23.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the ARGB pixel data with
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> set. This function does not return a reference, the caller
 should obtain a reference of her own with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html#gst-buffer-ref"><code class="function">gst_buffer_ref()</code></a> if needed. </p>
@@ -1091,7 +1091,7 @@ do the scaling itself when handling the overlaying. The rectangle will
 need to be scaled to the render dimensions, which can be retrieved using
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-rectangle-get-render-rectangle" title="gst_video_overlay_rectangle_get_render_rectangle ()"><code class="function">gst_video_overlay_rectangle_get_render_rectangle()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.24.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.24.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1117,7 +1117,7 @@ global_alpha is applied internally before returning the pixel-data.</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.24.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.24.6"></a><h4>Returns</h4>
 <p> a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html"><span class="type">GstBuffer</span></a> holding the AYUV pixel data with
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#GstVideoMeta" title="struct GstVideoMeta"><span class="type">GstVideoMeta</span></a> set. This function does not return a reference, the caller
 should obtain a reference of her own with <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBuffer.html#gst-buffer-ref"><code class="function">gst_buffer_ref()</code></a> if needed. </p>
@@ -1137,7 +1137,7 @@ gst_video_overlay_rectangle_get_render_rectangle
 <p>Retrieves the render position and render dimension of the overlay
 rectangle on the video.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.25.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.25.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1174,7 +1174,7 @@ rectangle on the video.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.25.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.25.6"></a><h4>Returns</h4>
 <p> TRUE if valid render dimensions were retrieved.</p>
 </div>
 </div>
@@ -1198,7 +1198,7 @@ wont be different for different global-alpha values. In this case a
 renderer could also use the GstBuffer pointers as a hint for changed
 pixel-data.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.26.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.26.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1213,7 +1213,7 @@ pixel-data.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.26.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.26.7"></a><h4>Returns</h4>
 <p> the sequence number of <em class="parameter"><code>rectangle</code></em>
 </p>
 </div>
@@ -1238,7 +1238,7 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-copy" title="gst_video_overlay_composition_copy ()"><code class="function">gst_video_overlay_composition_copy()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.27.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.27.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1286,7 +1286,7 @@ gst_video_overlay_rectangle_copy (<em class="parameter"><code><a class="link" hr
 actual overlay pixel data buffers contained in the rectangle are not
 copied.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.28.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.28.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1301,7 +1301,7 @@ copied.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.28.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.28.6"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> equivalent
 to <em class="parameter"><code>rectangle</code></em>
 . </p>
@@ -1319,7 +1319,7 @@ non premultiplied alpha, for example. By knowing whether the rectangle
 uses premultiplied or not, it can request the pixel data in the format
 it is stored in, to avoid unnecessary conversion.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.29.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.29.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1334,7 +1334,7 @@ it is stored in, to avoid unnecessary conversion.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.29.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.29.6"></a><h4>Returns</h4>
 <p> the <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayFormatFlags" title="enum GstVideoOverlayFormatFlags"><span class="type">GstVideoOverlayFormatFlags</span></a> associated with the rectangle.</p>
 </div>
 </div>
@@ -1346,7 +1346,7 @@ gst_video_overlay_rectangle_get_global_alpha
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a> *rectangle</code></em>);</pre>
 <p>Retrieves the global-alpha value associated with a <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#GstVideoOverlayRectangle" title="GstVideoOverlayRectangle"><span class="type">GstVideoOverlayRectangle</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.30.5"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.30.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1361,7 +1361,7 @@ gst_video_overlay_rectangle_get_global_alpha
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.30.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.6.7.30.6"></a><h4>Returns</h4>
 <p> the global-alpha value associated with the rectangle.</p>
 </div>
 </div>
@@ -1381,7 +1381,7 @@ make the rectangles inside a <a class="link" href="gst-plugins-base-libs-gstvide
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-make-writable" title="gst_video_overlay_composition_make_writable ()"><code class="function">gst_video_overlay_composition_make_writable()</code></a> or
 <a class="link" href="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-copy" title="gst_video_overlay_composition_copy ()"><code class="function">gst_video_overlay_composition_copy()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.7.31.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.6.7.31.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1431,7 +1431,7 @@ use in overlay elements' pad template caps.</p>
 </pre>
 <p>Extra buffer metadata describing image overlay data.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.8.4.5"></a><h4>Members</h4>
+<a name="id-1.2.15.6.8.4.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1458,7 +1458,7 @@ use in overlay elements' pad template caps.</p>
 <a name="GstVideoOverlayFormatFlags"></a><h3>enum GstVideoOverlayFormatFlags</h3>
 <p>Overlay format flags.</p>
 <div class="refsect3">
-<a name="id-1.2.15.5.8.5.4"></a><h4>Members</h4>
+<a name="id-1.2.15.6.8.5.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">

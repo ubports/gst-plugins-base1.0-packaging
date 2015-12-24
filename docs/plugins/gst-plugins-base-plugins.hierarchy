@@ -52,6 +52,7 @@ GObject
             GstGioSrc
             GstGioStreamSrc
           GstPushSrc
+            GstAlsaMidiSrc
             GstAudioBaseSrc
               GstAudioSrc
                 GstAlsaSrc
@@ -110,6 +111,7 @@ GObject
       GstPluginFeature
         GstDeviceProviderFactory
         GstElementFactory
+        GstTracerFactory
         GstTypeFindFactory
       GstRegistry
       GstTask

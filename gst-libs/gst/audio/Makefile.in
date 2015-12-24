@@ -206,7 +206,10 @@ am_libgstaudio_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstaudio_@GST_API_VERSION@_la-audio.lo \
 	libgstaudio_@GST_API_VERSION@_la-audio-format.lo \
 	libgstaudio_@GST_API_VERSION@_la-audio-channels.lo \
+	libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo \
+	libgstaudio_@GST_API_VERSION@_la-audio-converter.lo \
 	libgstaudio_@GST_API_VERSION@_la-audio-info.lo \
+	libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudioclock.lo \
 	libgstaudio_@GST_API_VERSION@_la-gstaudiocdsrc.lo \
@@ -617,7 +620,10 @@ glib_enum_headers = \
 	audio.h			\
 	audio-format.h			\
 	audio-channels.h			\
+	audio-channel-mix.h			\
+	audio-converter.h 	\
 	audio-info.h			\
+	audio-quantize.h			\
 	gstaudioringbuffer.h
 
 glib_enum_define = GST_AUDIO
@@ -633,7 +639,10 @@ libgstaudio_@GST_API_VERSION@_la_SOURCES = \
 	audio.c \
 	audio-format.c \
 	audio-channels.c \
+	audio-channel-mix.c \
+	audio-converter.c \
 	audio-info.c \
+	audio-quantize.c \
 	gstaudioringbuffer.c \
 	gstaudioclock.c \
 	gstaudiocdsrc.c \
@@ -655,7 +664,10 @@ libgstaudio_@GST_API_VERSION@include_HEADERS = \
 	audio.h \
 	audio-format.h \
 	audio-channels.h \
+	audio-channel-mix.h \
+	audio-converter.h \
 	audio-info.h \
+	audio-quantize.h \
 	gstaudioringbuffer.h \
 	gstaudioclock.h \
 	gstaudiofilter.h \
@@ -779,10 +791,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-channels.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-converter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-enumtypes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-format.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-info.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-quantize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudiobasesink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudiobasesrc.Plo@am__quote@
@@ -845,12 +860,33 @@ libgstaudio_@GST_API_VERSION@_la-audio-channels.lo: audio-channels.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-audio-channels.lo `test -f 'audio-channels.c' || echo '$(srcdir)/'`audio-channels.c
 
+libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo: audio-channel-mix.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo `test -f 'audio-channel-mix.c' || echo '$(srcdir)/'`audio-channel-mix.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='audio-channel-mix.c' object='libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-audio-channel-mix.lo `test -f 'audio-channel-mix.c' || echo '$(srcdir)/'`audio-channel-mix.c
+
+libgstaudio_@GST_API_VERSION@_la-audio-converter.lo: audio-converter.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-audio-converter.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-converter.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-audio-converter.lo `test -f 'audio-converter.c' || echo '$(srcdir)/'`audio-converter.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-converter.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-converter.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='audio-converter.c' object='libgstaudio_@GST_API_VERSION@_la-audio-converter.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-audio-converter.lo `test -f 'audio-converter.c' || echo '$(srcdir)/'`audio-converter.c
+
 libgstaudio_@GST_API_VERSION@_la-audio-info.lo: audio-info.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-audio-info.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-info.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-audio-info.lo `test -f 'audio-info.c' || echo '$(srcdir)/'`audio-info.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-info.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-info.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='audio-info.c' object='libgstaudio_@GST_API_VERSION@_la-audio-info.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-audio-info.lo `test -f 'audio-info.c' || echo '$(srcdir)/'`audio-info.c
+
+libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo: audio-quantize.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-quantize.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo `test -f 'audio-quantize.c' || echo '$(srcdir)/'`audio-quantize.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-quantize.Tpo $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-audio-quantize.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='audio-quantize.c' object='libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstaudio_@GST_API_VERSION@_la-audio-quantize.lo `test -f 'audio-quantize.c' || echo '$(srcdir)/'`audio-quantize.c
 
 libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.lo: gstaudioringbuffer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstaudio_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.lo -MD -MP -MF $(DEPDIR)/libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.Tpo -c -o libgstaudio_@GST_API_VERSION@_la-gstaudioringbuffer.lo `test -f 'gstaudioringbuffer.c' || echo '$(srcdir)/'`gstaudioringbuffer.c
@@ -1363,7 +1399,8 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstAudio \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
-@HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--identifier-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--symbol-prefix=gst \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_srcdir)/gst-libs \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_builddir)/gst-libs \
 @HAVE_INTROSPECTION_TRUE@		--c-include "gst/audio/audio.h" \

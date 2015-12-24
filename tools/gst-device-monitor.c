@@ -166,6 +166,8 @@ main (int argc, char **argv)
   g_option_context_add_group (ctx, gst_init_get_option_group ());
   if (!g_option_context_parse (ctx, &argc, &argv, &err)) {
     g_print ("Error initializing: %s\n", GST_STR_NULL (err->message));
+    g_option_context_free (ctx);
+    g_clear_error (&err);
     return 1;
   }
   g_option_context_free (ctx);
@@ -210,6 +212,7 @@ main (int argc, char **argv)
       g_strfreev (filters);
     }
   }
+  g_strfreev (args);
 
   g_print ("Probing devices...\n\n");
 
@@ -227,7 +230,7 @@ main (int argc, char **argv)
 
       device_added (device);
       gst_object_unref (device);
-      devices = g_list_remove_link (devices, devices);
+      devices = g_list_delete_link (devices, devices);
     }
   } else {
     g_print ("No devices found!\n");
