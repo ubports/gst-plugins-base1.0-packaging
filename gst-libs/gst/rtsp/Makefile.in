@@ -1139,7 +1139,8 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstRtsp \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
-@HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--identifier-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--symbol-prefix=gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		--c-include "gst/rtsp/rtsp.h" \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_builddir)/gst-libs \

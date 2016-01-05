@@ -3,6 +3,7 @@
   <chapters>
     <sub name="gst-plugins-base Elements" link="ch01.html">
       <sub name="adder" link="gst-plugins-base-plugins-adder.html"/>
+      <sub name="alsamidisrc" link="gst-plugins-base-plugins-alsamidisrc.html"/>
       <sub name="alsasink" link="gst-plugins-base-plugins-alsasink.html"/>
       <sub name="alsasrc" link="gst-plugins-base-plugins-alsasrc.html"/>
       <sub name="appsink" link="gst-plugins-base-plugins-appsink.html"/>
@@ -91,6 +92,8 @@
   <functions>
     <keyword type="struct" name="struct GstAdder" link="gst-plugins-base-plugins-adder.html#GstAdder-struct"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-adder.html#GstAdder--caps"/>
+    <keyword type="struct" name="struct GstAlsaMidiSrc" link="gst-plugins-base-plugins-alsamidisrc.html#GstAlsaMidiSrc-struct"/>
+    <keyword type="property" name="The “ports” property" link="gst-plugins-base-plugins-alsamidisrc.html#GstAlsaMidiSrc--ports"/>
     <keyword type="struct" name="struct GstAlsaSink" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink-struct"/>
     <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--card-name"/>
     <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device"/>
@@ -130,8 +133,6 @@
     <keyword type="signal" name="The “seek-data” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data"/>
     <keyword type="signal" name="The “push-sample” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample"/>
     <keyword type="struct" name="struct GstAudioConvert" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert-struct"/>
-    <keyword type="enum" name="enum GstAudioConvertDithering" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering"/>
-    <keyword type="enum" name="enum GstAudioConvertNoiseShaping" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping"/>
     <keyword type="property" name="The “dithering” property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--dithering"/>
     <keyword type="property" name="The “noise-shaping” property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--noise-shaping"/>
     <keyword type="struct" name="struct GstAudioRate" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate-struct"/>
@@ -223,6 +224,8 @@
     <keyword type="enum" name="enum GstRecoverPolicy" link="gst-plugins-base-plugins-multisocketsink.html#GstRecoverPolicy"/>
     <keyword type="enum" name="enum GstSyncMethod" link="gst-plugins-base-plugins-multisocketsink.html#GstSyncMethod"/>
     <keyword type="enum" name="enum GstClientStatus" link="gst-plugins-base-plugins-multisocketsink.html#GstClientStatus"/>
+    <keyword type="property" name="The “send-dispatched” property" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-dispatched"/>
+    <keyword type="property" name="The “send-messages” property" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-messages"/>
     <keyword type="signal" name="The “add” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-add"/>
     <keyword type="signal" name="The “add-full” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-add-full"/>
     <keyword type="signal" name="The “client-added” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-client-added"/>
@@ -309,6 +312,7 @@
     <keyword type="struct" name="struct GstSocketSrc" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-struct"/>
     <keyword type="property" name="The “socket” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--caps"/>
+    <keyword type="property" name="The “send-messages” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--send-messages"/>
     <keyword type="signal" name="The “connection-closed-by-peer” signal" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-connection-closed-by-peer"/>
     <keyword type="struct" name="struct GstSsaParse" link="gst-plugins-base-plugins-ssaparse.html#GstSsaParse-struct"/>
     <keyword type="struct" name="struct GstStreamSynchronizer" link="gst-plugins-base-plugins-streamsynchronizer.html#GstStreamSynchronizer-struct"/>
@@ -473,15 +477,6 @@
     <keyword type="property" name="The “synchronous” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--synchronous"/>
     <keyword type="property" name="The “window-height” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--window-height"/>
     <keyword type="property" name="The “window-width” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--window-width"/>
-    <keyword type="constant" name="DITHER_NONE" link="gst-plugins-base-plugins-audioconvert.html#DITHER-NONE:CAPS"/>
-    <keyword type="constant" name="DITHER_RPDF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-RPDF:CAPS"/>
-    <keyword type="constant" name="DITHER_TPDF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-TPDF:CAPS"/>
-    <keyword type="constant" name="DITHER_TPDF_HF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-TPDF-HF:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_NONE" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-NONE:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_ERROR_FEEDBACK" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-ERROR-FEEDBACK:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_SIMPLE" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-SIMPLE:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_MEDIUM" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-MEDIUM:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_HIGH" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-HIGH:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SINE" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SINE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SQUARE" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SQUARE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SAW" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SAW:CAPS"/>

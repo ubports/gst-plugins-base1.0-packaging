@@ -526,7 +526,148 @@ to) file using the <a class="link" href="gst-plugins-base-libs-encoding-profile.
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.14.10.13.3"></a><h3>Example: Creating a profile</h3>
+<a name="gst-validate-transcoding--encoding-profile"></a><h3>The encoding profile serialization format</h3>
+<p>This is the serialization format of a <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>.</p>
+<p>
+     Internally the transcoding application uses <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-encodebin.html#GstEncodeBin"><span class="type">GstEncodeBin</span></a>. <span class="command"><strong>gst-validate-transcoding-&amp;GST_API_VERSION;</strong></span> uses its own
+     serialization format to describe the <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/gst-plugins-base-plugins-encodebin.html#GstEncodeBin--profile"><span class="type">GstEncodeBin.profile</span></a>
+    property of the encodebin.
+   </p>
+<p>
+       The simplest serialized profile looks like:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">muxer_source_caps<span class="gtkdoc opt">:</span>videoencoder_source_caps<span class="gtkdoc opt">:</span>audioencoder_source_caps</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+        For example to encode a stream into a WebM container, with an OGG audio stream and a VP8 video stream,
+        the serialized <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> will look like:
+    </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>webm<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vp8<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vorbis</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+       You can also set the preset name of the encoding profile using the caps+preset_name syntax as in:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>webm<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vp8<span class="gtkdoc opt">+</span>youtube<span class="gtkdoc opt">-</span>preset<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vorbis</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+       Moreover, you can set the <a class="link" href="gst-plugins-base-libs-encoding-profile.html#gst-encoding-profile-set-presence" title="gst_encoding_profile_set_presence ()">presence</a> property of an
+       encoding profile using the <code class="code">|presence</code> syntax as in:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>webm<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vp8<span class="gtkdoc opt">|</span><span class="number">1</span><span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vorbis</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+     This field allows you to specify how many times maximum a <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a> can be used inside an encodebin.
+   </p>
+<p>
+     You can also use the <code class="code">restriction_caps-&gt;encoded_format_caps</code> syntax to specify the
+     restriction caps
+     to be set on a <a class="link" href="gst-plugins-base-libs-encoding-profile.html#GstEncodingProfile"><span class="type">GstEncodingProfile</span></a>. It corresponds to the
+     restriction <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> to apply before
+     the encoder that will be used in the profile. The fields present in restriction
+     caps are properties of the raw stream (that is, before encoding), such as height
+     and width for video and depth and sampling rate for audio. This property does not
+     make sense for muxers.
+   </p>
+<p>
+       To force a video stream to be encoded with a Full HD resolution (using WebM as the container format,
+       VP8 as the video codec and Vorbis as the audio codec), you should use:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>webm<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>raw<span class="gtkdoc opt">,</span>width<span class="gtkdoc opt">=</span><span class="number">1920</span><span class="gtkdoc opt">,</span>height<span class="gtkdoc opt">=</span><span class="number">1080</span><span class="gtkdoc opt">-&gt;</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vp8<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vorbis</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="refsect3">
+<a name="id-1.2.14.10.13.3.16"></a><h4>Some serialized encoding formats examples:</h4>
+<p>
+     MP3 audio and H264 in MP4:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>quicktime<span class="gtkdoc opt">,</span>variant<span class="gtkdoc opt">=</span>iso<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>h264<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>mpeg<span class="gtkdoc opt">,</span>mpegversion<span class="gtkdoc opt">=</span><span class="number">1</span><span class="gtkdoc opt">,</span>layer<span class="gtkdoc opt">=</span><span class="number">3</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+     Vorbis and theora in OGG:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">application<span class="gtkdoc opt">/</span>ogg<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>theora<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>vorbis</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+     AC3 and H264 in MPEG-TS:
+   </p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting">video<span class="gtkdoc opt">/</span>mpegts<span class="gtkdoc opt">:</span>video<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>h264<span class="gtkdoc opt">:</span>audio<span class="gtkdoc opt">/</span>x<span class="gtkdoc opt">-</span>ac3</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="id-1.2.14.10.13.4"></a><h3>Example: Creating a profile</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -595,7 +736,7 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.14.10.13.4"></a><h3>Example: Using an encoder preset with a profile</h3>
+<a name="id-1.2.14.10.13.5"></a><h3>Example: Using an encoder preset with a profile</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -684,7 +825,7 @@ GstEncodingProfile <span class="gtkdoc opt">*</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.14.10.13.5"></a><h3>Example: Listing categories, targets and profiles</h3>
+<a name="id-1.2.14.10.13.6"></a><h3>Example: Listing categories, targets and profiles</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -826,7 +967,8 @@ gst_encoding_profile_find (<em class="parameter"><code>const <a href="https://de
 </tr>
 <tr>
 <td class="parameter_name"><p>profilename</p></td>
-<td class="parameter_description"><p> The name of the profile. </p></td>
+<td class="parameter_description"><p> (allow-none): The name of the profile, if <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+provided, it will default to the encoding profile called <code class="literal">default</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
 </tr>
 <tr>

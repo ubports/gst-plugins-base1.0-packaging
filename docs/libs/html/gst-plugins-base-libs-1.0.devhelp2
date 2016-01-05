@@ -87,6 +87,7 @@
       <sub name="Video Library" link="gstreamer-video.html">
         <sub name="gstvideo" link="gst-plugins-base-libs-gstvideo.html"/>
         <sub name="gstvideometa" link="gst-plugins-base-libs-gstvideometa.html"/>
+        <sub name="gstvideoaffinetransformationmeta" link="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html"/>
         <sub name="gstvideooverlaycomposition" link="gst-plugins-base-libs-gstvideooverlaycomposition.html"/>
         <sub name="gstvideofilter" link="gst-plugins-base-libs-gstvideofilter.html"/>
         <sub name="GstVideoDither" link="gst-plugins-base-libs-GstVideoDither.html"/>
@@ -214,6 +215,7 @@
     <keyword type="enum" name="enum GstAudioPackFlags" link="gst-plugins-base-libs-gstaudio.html#GstAudioPackFlags"/>
     <keyword type="macro" name="GST_META_TAG_AUDIO_STR" link="gst-plugins-base-libs-gstaudio.html#GST-META-TAG-AUDIO-STR:CAPS" since="1.2"/>
     <keyword type="macro" name="GST_META_TAG_AUDIO_CHANNELS_STR" link="gst-plugins-base-libs-gstaudio.html#GST-META-TAG-AUDIO-CHANNELS-STR:CAPS" since="1.2"/>
+    <keyword type="macro" name="GST_META_TAG_AUDIO_RATE_STR" link="gst-plugins-base-libs-gstaudio.html#GST-META-TAG-AUDIO-RATE-STR:CAPS" since="1.8"/>
     <keyword type="macro" name="GST_AUDIO_RATE_RANGE" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-RATE-RANGE:CAPS"/>
     <keyword type="macro" name="GST_AUDIO_CHANNELS_RANGE" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-CHANNELS-RANGE:CAPS"/>
     <keyword type="macro" name="GST_AUDIO_FORMATS_ALL" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-FORMATS-ALL:CAPS"/>
@@ -223,7 +225,10 @@
     <keyword type="function" name="gst_buffer_add_audio_downmix_meta ()" link="gst-plugins-base-libs-gstaudiometa.html#gst-buffer-add-audio-downmix-meta"/>
     <keyword type="macro" name="gst_buffer_get_audio_downmix_meta()" link="gst-plugins-base-libs-gstaudiometa.html#gst-buffer-get-audio-downmix-meta"/>
     <keyword type="function" name="gst_buffer_get_audio_downmix_meta_for_channels ()" link="gst-plugins-base-libs-gstaudiometa.html#gst-buffer-get-audio-downmix-meta-for-channels"/>
+    <keyword type="function" name="gst_buffer_add_audio_clipping_meta ()" link="gst-plugins-base-libs-gstaudiometa.html#gst-buffer-add-audio-clipping-meta" since="1.8"/>
+    <keyword type="macro" name="gst_buffer_get_audio_clipping_meta()" link="gst-plugins-base-libs-gstaudiometa.html#gst-buffer-get-audio-clipping-meta"/>
     <keyword type="struct" name="struct GstAudioDownmixMeta" link="gst-plugins-base-libs-gstaudiometa.html#GstAudioDownmixMeta"/>
+    <keyword type="struct" name="struct GstAudioClippingMeta" link="gst-plugins-base-libs-gstaudiometa.html#GstAudioClippingMeta" since="1.8"/>
     <keyword type="function" name="gst_audio_cd_src_add_track ()" link="gst-plugins-base-libs-gstaudiocdsrc.html#gst-audio-cd-src-add-track"/>
     <keyword type="struct" name="struct GstAudioCdSrc" link="gst-plugins-base-libs-gstaudiocdsrc.html#GstAudioCdSrc-struct"/>
     <keyword type="struct" name="struct GstAudioCdSrcClass" link="gst-plugins-base-libs-gstaudiocdsrc.html#GstAudioCdSrcClass"/>
@@ -646,6 +651,7 @@
     <keyword type="function" name="gst_rtsp_connection_create_from_socket ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-create-from-socket"/>
     <keyword type="function" name="gst_rtsp_connection_accept ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-accept"/>
     <keyword type="function" name="gst_rtsp_connection_connect ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-connect"/>
+    <keyword type="function" name="gst_rtsp_connection_connect_with_response ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-connect-with-response"/>
     <keyword type="function" name="gst_rtsp_connection_close ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-close"/>
     <keyword type="function" name="gst_rtsp_connection_free ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-free"/>
     <keyword type="function" name="gst_rtsp_connection_read ()" link="gst-plugins-base-libs-gstrtspconnection.html#gst-rtsp-connection-read"/>
@@ -1090,6 +1096,11 @@
     <keyword type="function" name="gst_codec_utils_mpeg4video_get_profile ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-mpeg4video-get-profile"/>
     <keyword type="function" name="gst_codec_utils_mpeg4video_get_level ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-mpeg4video-get-level"/>
     <keyword type="function" name="gst_codec_utils_mpeg4video_caps_set_level_and_profile ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-mpeg4video-caps-set-level-and-profile"/>
+    <keyword type="function" name="gst_codec_utils_opus_create_caps ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-opus-create-caps" since="1.8"/>
+    <keyword type="function" name="gst_codec_utils_opus_create_caps_from_header ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-opus-create-caps-from-header" since="1.8"/>
+    <keyword type="function" name="gst_codec_utils_opus_parse_caps ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-opus-parse-caps" since="1.8"/>
+    <keyword type="function" name="gst_codec_utils_opus_create_header ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-opus-create-header" since="1.8"/>
+    <keyword type="function" name="gst_codec_utils_opus_parse_header ()" link="gst-plugins-base-libs-gstpbutilscodecutils.html#gst-codec-utils-opus-parse-header" since="1.8"/>
     <keyword type="function" name="gst_pb_utils_get_source_description ()" link="gst-plugins-base-libs-gstpbutilsdescriptions.html#gst-pb-utils-get-source-description"/>
     <keyword type="function" name="gst_pb_utils_get_sink_description ()" link="gst-plugins-base-libs-gstpbutilsdescriptions.html#gst-pb-utils-get-sink-description"/>
     <keyword type="function" name="gst_pb_utils_get_decoder_description ()" link="gst-plugins-base-libs-gstpbutilsdescriptions.html#gst-pb-utils-get-decoder-description"/>
@@ -1463,6 +1474,10 @@
     <keyword type="struct" name="GstVideoRegionOfInterestMeta" link="gst-plugins-base-libs-gstvideometa.html#GstVideoRegionOfInterestMeta"/>
     <keyword type="macro" name="GST_BUFFER_POOL_OPTION_VIDEO_GL_TEXTURE_UPLOAD_META" link="gst-plugins-base-libs-gstvideometa.html#GST-BUFFER-POOL-OPTION-VIDEO-GL-TEXTURE-UPLOAD-META:CAPS" since="1.2.2"/>
     <keyword type="struct" name="struct GstVideoGLTextureUploadMeta" link="gst-plugins-base-libs-gstvideometa.html#GstVideoGLTextureUploadMeta"/>
+    <keyword type="function" name="gst_buffer_add_video_affine_transformation_meta ()" link="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html#gst-buffer-add-video-affine-transformation-meta" since="1.8"/>
+    <keyword type="macro" name="gst_buffer_get_video_affine_transformation_meta()" link="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html#gst-buffer-get-video-affine-transformation-meta"/>
+    <keyword type="function" name="gst_video_affine_transformation_meta_apply_matrix ()" link="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html#gst-video-affine-transformation-meta-apply-matrix" since="1.8"/>
+    <keyword type="struct" name="struct GstVideoAffineTransformationMeta" link="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html#GstVideoAffineTransformationMeta"/>
     <keyword type="function" name="gst_video_overlay_composition_new ()" link="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-new"/>
     <keyword type="function" name="gst_video_overlay_composition_ref ()" link="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-ref"/>
     <keyword type="function" name="gst_video_overlay_composition_unref ()" link="gst-plugins-base-libs-gstvideooverlaycomposition.html#gst-video-overlay-composition-unref"/>
@@ -1777,6 +1792,7 @@
     <keyword type="constant" name="GST_AUDIO_LAYOUT_INTERLEAVED" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-LAYOUT-INTERLEAVED:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_LAYOUT_NON_INTERLEAVED" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-LAYOUT-NON-INTERLEAVED:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_PACK_FLAG_NONE" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-PACK-FLAG-NONE:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_PACK_FLAG_TRUNCATE_RANGE" link="gst-plugins-base-libs-gstaudio.html#GST-AUDIO-PACK-FLAG-TRUNCATE-RANGE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CD_SRC_MODE_NORMAL" link="gst-plugins-base-libs-gstaudiocdsrc.html#GST-AUDIO-CD-SRC-MODE-NORMAL:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CD_SRC_MODE_CONTINUOUS" link="gst-plugins-base-libs-gstaudiocdsrc.html#GST-AUDIO-CD-SRC-MODE-CONTINUOUS:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_BASE_SINK_SLAVE_RESAMPLE" link="gst-plugins-base-libs-gstaudiobasesink.html#GST-AUDIO-BASE-SINK-SLAVE-RESAMPLE:CAPS"/>

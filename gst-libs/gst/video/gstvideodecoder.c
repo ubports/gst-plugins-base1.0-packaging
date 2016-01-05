@@ -1630,8 +1630,8 @@ gst_video_decoder_src_event_default (GstVideoDecoder * decoder,
       GST_OBJECT_UNLOCK (decoder);
 
       GST_DEBUG_OBJECT (decoder,
-          "got QoS %" GST_TIME_FORMAT ", %" G_GINT64_FORMAT ", %g",
-          GST_TIME_ARGS (timestamp), diff, proportion);
+          "got QoS %" GST_TIME_FORMAT ", %" GST_STIME_FORMAT ", %g",
+          GST_TIME_ARGS (timestamp), GST_STIME_ARGS (diff), proportion);
 
       res = gst_pad_push_event (decoder->sinkpad, event);
       break;
@@ -2125,6 +2125,8 @@ gst_video_decoder_reset (GstVideoDecoder * decoder, gboolean full,
     priv->base_picture_number = 0;
 
     if (priv->pool) {
+      GST_DEBUG_OBJECT (decoder, "deactivate pool %" GST_PTR_FORMAT,
+          priv->pool);
       gst_buffer_pool_set_active (priv->pool, FALSE);
       gst_object_unref (priv->pool);
       priv->pool = NULL;
@@ -2697,9 +2699,10 @@ gst_video_decoder_prepare_finish_frame (GstVideoDecoder *
   if (GST_CLOCK_TIME_IS_VALID (frame->pts)) {
     if (frame->pts != priv->base_timestamp) {
       GST_DEBUG_OBJECT (decoder,
-          "sync timestamp %" GST_TIME_FORMAT " diff %" GST_TIME_FORMAT,
+          "sync timestamp %" GST_TIME_FORMAT " diff %" GST_STIME_FORMAT,
           GST_TIME_ARGS (frame->pts),
-          GST_TIME_ARGS (frame->pts - decoder->output_segment.start));
+          GST_STIME_ARGS (GST_CLOCK_DIFF (frame->pts,
+                  decoder->output_segment.start)));
       priv->base_timestamp = frame->pts;
       priv->base_picture_number = frame->decode_frame_number;
     }
@@ -3127,16 +3130,16 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
     stop = start + duration;
   } else if (GST_CLOCK_TIME_IS_VALID (start)
       && !GST_CLOCK_TIME_IS_VALID (duration)) {
-    /* 2 second frame duration is rather unlikely... but if we don't clip
-     * away buffers that far before the segment we can cause the pipeline to
-     * lockup. This can happen if audio is properly clipped, and thus the
-     * audio sink does not preroll yet but the video sink prerolls because
-     * we already outputted a buffer here... and then queues run full.
+    /* If we don't clip away buffers that far before the segment we
+     * can cause the pipeline to lockup. This can happen if audio is
+     * properly clipped, and thus the audio sink does not preroll yet
+     * but the video sink prerolls because we already outputted a
+     * buffer here... and then queues run full.
      *
      * In the worst case we will clip one buffer too many here now if no
      * framerate is given, no buffer duration is given and the actual
-     * framerate is less than 0.5fps */
-    stop = start + 2 * GST_SECOND;
+     * framerate is lower than 25fps */
+    stop = start + 40 * GST_MSECOND;
   }
 
   segment = &decoder->output_segment;
@@ -3622,6 +3625,9 @@ gst_video_decoder_decide_allocation_default (GstVideoDecoder * decoder,
   gst_buffer_pool_config_set_params (config, outcaps, size, min, max);
   gst_buffer_pool_config_set_allocator (config, allocator, &params);
 
+  GST_DEBUG_OBJECT (decoder,
+      "setting config %" GST_PTR_FORMAT " in pool %" GST_PTR_FORMAT, config,
+      pool);
   if (!gst_buffer_pool_set_config (pool, config)) {
     config = gst_buffer_pool_get_config (pool);
 
@@ -3689,6 +3695,8 @@ gst_video_decoder_negotiate_pool (GstVideoDecoder * decoder, GstCaps * caps)
 
   query = gst_query_new_allocation (caps, TRUE);
 
+  GST_DEBUG_OBJECT (decoder, "do query ALLOCATION");
+
   if (!gst_pad_peer_query (decoder->srcpad, query)) {
     GST_DEBUG_OBJECT (decoder, "didn't get downstream ALLOCATION hints");
   }
@@ -3732,11 +3740,14 @@ gst_video_decoder_negotiate_pool (GstVideoDecoder * decoder, GstCaps * caps)
      * same bufferpool and deactivating it will make it fail.
      * Happens when a downstream element changes from passthrough to
      * non-passthrough and gets this same bufferpool to use */
+    GST_DEBUG_OBJECT (decoder, "unref pool %" GST_PTR_FORMAT,
+        decoder->priv->pool);
     gst_object_unref (decoder->priv->pool);
   }
   decoder->priv->pool = pool;
 
   /* and activate */
+  GST_DEBUG_OBJECT (decoder, "activate pool %" GST_PTR_FORMAT, pool);
   gst_buffer_pool_set_active (pool, TRUE);
 
 done:
@@ -3808,10 +3819,16 @@ gst_video_decoder_negotiate_default (GstVideoDecoder * decoder)
   }
 
   prevcaps = gst_pad_get_current_caps (decoder->srcpad);
-  if (!prevcaps || !gst_caps_is_equal (prevcaps, state->caps))
+  if (!prevcaps || !gst_caps_is_equal (prevcaps, state->caps)) {
+    if (!prevcaps) {
+      GST_DEBUG_OBJECT (decoder, "decoder src pad has currently NULL caps");
+    }
     ret = gst_pad_set_caps (decoder->srcpad, state->caps);
-  else
+  } else {
     ret = TRUE;
+    GST_DEBUG_OBJECT (decoder,
+        "current src pad and output state caps are the same");
+  }
   if (prevcaps)
     gst_caps_unref (prevcaps);
 
@@ -4024,9 +4041,9 @@ gst_video_decoder_get_max_decode_time (GstVideoDecoder *
     deadline = G_MAXINT64;
 
   GST_LOG_OBJECT (decoder, "earliest %" GST_TIME_FORMAT
-      ", frame deadline %" GST_TIME_FORMAT ", deadline %" GST_TIME_FORMAT,
+      ", frame deadline %" GST_TIME_FORMAT ", deadline %" GST_STIME_FORMAT,
       GST_TIME_ARGS (earliest_time), GST_TIME_ARGS (frame->deadline),
-      GST_TIME_ARGS (deadline));
+      GST_STIME_ARGS (deadline));
 
   GST_OBJECT_UNLOCK (decoder);
 

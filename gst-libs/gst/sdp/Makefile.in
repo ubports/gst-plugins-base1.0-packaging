@@ -968,7 +968,8 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 @HAVE_INTROSPECTION_TRUE@		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstSdp \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
-@HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--identifier-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--symbol-prefix=gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		--c-include "gst/sdp/sdp.h" \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_srcdir)/gst-libs \
