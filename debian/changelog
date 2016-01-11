@@ -5,6 +5,8 @@ gst-plugins-base1.0 (1.7.1-1ubuntu1) UNRELEASED; urgency=medium
       Alfonso Sanchez-Beato on upstream bug #737599 to add a field in the
       GstCaps containing the suggested buffer size for this stream.
     + Update Vcs-* for Ubuntu
+  * debian/patches/0001-playbin-Use-the-caps-query-instead-of-accept-caps-to.patch:
+    Cherry-pick patch from upstream to fix totem.
 
  -- Iain Lane <iain.lane@canonical.com>  Tue, 05 Jan 2016 14:08:52 +0000
 

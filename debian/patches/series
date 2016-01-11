@@ -1,2 +1,3 @@
+0001-playbin-Use-the-caps-query-instead-of-accept-caps-to.patch
 0001-riff-Add-input-buffer-size-to-GstCaps.patch
 01_missing-libgstbase.patch

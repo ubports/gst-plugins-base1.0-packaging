@@ -1,0 +1,74 @@
+From 844aa3e6a954e76b68f0f0e6e5d829047b2d9f68 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian@centricular.com>
+Date: Thu, 7 Jan 2016 15:24:25 +0200
+Subject: [PATCH] playbin: Use the caps query instead of accept-caps to detect
+ if a sink accepts caps
+
+accept-caps is only for one element, caps query is recursive. Fixes playback
+with totem and other situations.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=760234
+---
+ gst/playback/gstplaybin2.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/gst/playback/gstplaybin2.c b/gst/playback/gstplaybin2.c
+index acdcf6c..2ef2468 100644
+--- a/gst/playback/gstplaybin2.c
++++ b/gst/playback/gstplaybin2.c
+@@ -4451,7 +4451,7 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
+ 
+       sinkcaps = gst_pad_query_caps (sinkpad, NULL);
+       if (!gst_caps_is_any (sinkcaps))
+-        ret = !gst_pad_query_accept_caps (sinkpad, caps);
++        ret = !gst_caps_can_intersect (sinkcaps, caps);
+       gst_caps_unref (sinkcaps);
+       gst_object_unref (sinkpad);
+     }
+@@ -4482,7 +4482,7 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
+ 
+       sinkcaps = gst_pad_query_caps (sinkpad, NULL);
+       if (!gst_caps_is_any (sinkcaps))
+-        ret = !gst_pad_query_accept_caps (sinkpad, caps);
++        ret = !gst_caps_can_intersect (sinkcaps, caps);
+       gst_caps_unref (sinkcaps);
+       gst_object_unref (sinkpad);
+     }
+@@ -4500,7 +4500,7 @@ autoplug_continue_cb (GstElement * element, GstPad * pad, GstCaps * caps,
+ 
+       sinkcaps = gst_pad_query_caps (sinkpad, NULL);
+       if (!gst_caps_is_any (sinkcaps))
+-        ret = !gst_pad_query_accept_caps (sinkpad, caps);
++        ret = !gst_caps_can_intersect (sinkcaps, caps);
+       gst_caps_unref (sinkcaps);
+       gst_object_unref (sinkpad);
+     }
+@@ -4522,18 +4522,20 @@ static gboolean
+ sink_accepts_caps (GstPlayBin * playbin, GstElement * sink, GstCaps * caps)
+ {
+   GstPad *sinkpad;
++  gboolean ret = TRUE;
+ 
+   if ((sinkpad = gst_element_get_static_pad (sink, "sink"))) {
++    GstCaps *sinkcaps;
++
++    sinkcaps = gst_pad_query_caps (sinkpad, NULL);
+     /* Got the sink pad, now let's see if the element actually does accept the
+      * caps that we have */
+-    if (!gst_pad_query_accept_caps (sinkpad, caps)) {
+-      gst_object_unref (sinkpad);
+-      return FALSE;
+-    }
++    ret = gst_caps_can_intersect (sinkcaps, caps);
++    gst_caps_unref (sinkcaps);
+     gst_object_unref (sinkpad);
+   }
+ 
+-  return TRUE;
++  return ret;
+ }
+ 
+ /* We are asked to select an element. See if the next element to check
+-- 
+2.7.0.rc3
+
