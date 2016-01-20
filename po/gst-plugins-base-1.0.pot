@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.6.2\n"
+"Project-Id-Version: gst-plugins-base 1.6.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2015-12-14 19:08+0100\n"
+"POT-Creation-Date: 2016-01-20 14:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,14 +88,14 @@ msgstr ""
 
 #: gst/encoding/gstencodebin.c:1571 gst/playback/gstplaybin2.c:3362
 #: gst/playback/gstplaysink.c:1483 gst/playback/gstplaysink.c:1500
-#: gst/playback/gstplaysink.c:1834 gst/playback/gstplaysink.c:1863
-#: gst/playback/gstplaysink.c:2443 gst/playback/gstplaysink.c:2492
-#: gst/playback/gstplaysink.c:2507 gst/playback/gstplaysink.c:2532
-#: gst/playback/gstplaysink.c:2564 gst/playback/gstplaysink.c:2709
-#: gst/playback/gstplaysink.c:2737 gst/playback/gstplaysink.c:3115
-#: gst/playback/gstplaysink.c:3124 gst/playback/gstplaysink.c:3133
-#: gst/playback/gstplaysink.c:3142 gst/playback/gstplaysink.c:3519
-#: gst/playback/gstplaysink.c:4391 gst/playback/gstplaysinkconvertbin.c:97
+#: gst/playback/gstplaysink.c:1837 gst/playback/gstplaysink.c:1869
+#: gst/playback/gstplaysink.c:2449 gst/playback/gstplaysink.c:2498
+#: gst/playback/gstplaysink.c:2513 gst/playback/gstplaysink.c:2538
+#: gst/playback/gstplaysink.c:2570 gst/playback/gstplaysink.c:2718
+#: gst/playback/gstplaysink.c:2749 gst/playback/gstplaysink.c:3127
+#: gst/playback/gstplaysink.c:3136 gst/playback/gstplaysink.c:3145
+#: gst/playback/gstplaysink.c:3154 gst/playback/gstplaysink.c:3557
+#: gst/playback/gstplaysink.c:4433 gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117 gst/playback/gsturidecodebin.c:1490
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
@@ -113,61 +113,61 @@ msgstr ""
 msgid "Could not create \"uridecodebin\" element."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1962
+#: gst/playback/gstplaysink.c:1968
 #, c-format
 msgid "Both autovideosink and %s elements are missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1966
+#: gst/playback/gstplaysink.c:1972
 msgid "The autovideosink element is missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1971
+#: gst/playback/gstplaysink.c:1977
 #, c-format
 msgid "Configured videosink %s is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1975
+#: gst/playback/gstplaysink.c:1981
 #, c-format
 msgid "Both autovideosink and %s elements are not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:1979
+#: gst/playback/gstplaysink.c:1985
 msgid "The autovideosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2480
+#: gst/playback/gstplaysink.c:2486
 msgid "Custom text sink element is not usable."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2852
+#: gst/playback/gstplaysink.c:2864
 msgid "No volume control found"
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2882
+#: gst/playback/gstplaysink.c:2894
 #, c-format
 msgid "Both autoaudiosink and %s elements are missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2886
+#: gst/playback/gstplaysink.c:2898
 msgid "The autoaudiosink element is missing."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2891
+#: gst/playback/gstplaysink.c:2903
 #, c-format
 msgid "Configured audiosink %s is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2895
+#: gst/playback/gstplaysink.c:2907
 #, c-format
 msgid "Both autoaudiosink and %s elements are not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:2899
+#: gst/playback/gstplaysink.c:2911
 msgid "The autoaudiosink element is not working."
 msgstr ""
 
-#: gst/playback/gstplaysink.c:3218 gst/playback/gstplaysink.c:3223
+#: gst/playback/gstplaysink.c:3230 gst/playback/gstplaysink.c:3235
 msgid "Can't play a text file without video or visualizations."
 msgstr ""
 
