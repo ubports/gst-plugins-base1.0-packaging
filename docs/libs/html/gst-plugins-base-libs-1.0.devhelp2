@@ -1640,7 +1640,7 @@
     <keyword type="function" name="gst_video_encoder_get_output_state ()" link="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-get-output-state"/>
     <keyword type="function" name="gst_video_encoder_proxy_getcaps ()" link="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-proxy-getcaps"/>
     <keyword type="function" name="gst_video_encoder_merge_tags ()" link="gst-plugins-base-libs-GstVideoEncoder.html#gst-video-encoder-merge-tags"/>
-    <keyword type="macro" name="GST_VIDEO_ENCODER_FLOW_DROPPED" link="gst-plugins-base-libs-GstVideoEncoder.html#GST-VIDEO-ENCODER-FLOW-DROPPED:CAPS"/>
+    <keyword type="macro" name="GST_VIDEO_ENCODER_FLOW_DROPPED" link="gst-plugins-base-libs-GstVideoEncoder.html#GST-VIDEO-ENCODER-FLOW-DROPPED:CAPS" deprecated=""/>
     <keyword type="macro" name="GST_VIDEO_ENCODER_FLOW_NEED_DATA" link="gst-plugins-base-libs-GstVideoEncoder.html#GST-VIDEO-ENCODER-FLOW-NEED-DATA:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_ENCODER_SINK_NAME" link="gst-plugins-base-libs-GstVideoEncoder.html#GST-VIDEO-ENCODER-SINK-NAME:CAPS"/>
     <keyword type="macro" name="GST_VIDEO_ENCODER_SRC_NAME" link="gst-plugins-base-libs-GstVideoEncoder.html#GST-VIDEO-ENCODER-SRC-NAME:CAPS"/>
