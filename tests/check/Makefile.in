@@ -140,16 +140,15 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
 	$(top_srcdir)/common/m4/orc.m4 $(top_srcdir)/common/m4/pkg.m4 \
-	$(top_srcdir)/m4/freetype2.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gst-alsa.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lrint.m4 \
-	$(top_srcdir)/m4/lrintf.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gst-alsa.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/lrint.m4 $(top_srcdir)/m4/lrintf.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(noinst_HEADERS) \
@@ -1130,9 +1129,6 @@ ERROR_CXXFLAGS = @ERROR_CXXFLAGS@
 EXEEXT = @EXEEXT@
 FFLAGS = @FFLAGS@
 FGREP = @FGREP@
-FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
-FT2_LIBS = @FT2_LIBS@
 GCOV = @GCOV@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
@@ -1238,6 +1234,7 @@ LOCALEDIR = @LOCALEDIR@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -1376,6 +1373,12 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AM_TESTS_ENVIRONMENT = CK_DEFAULT_TIMEOUT=20 \
+	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)" \
+	$(REGISTRY_ENVIRONMENT) GST_PLUGIN_SYSTEM_PATH_1_0= \
+	GST_PLUGIN_PATH_1_0=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(GST_PLUGINS_DIR) \
+	GST_PLUGIN_LOADING_WHITELIST="gstreamer:gst-plugins-base@$(top_builddir)" \
+	GST_TAG_LICENSE_TRANSLATIONS_DICT="$(top_srcdir)/gst-libs/gst/tag/license-translations.dict"
 
 # inspect every plugin feature
 GST_INSPECT = $(GST_TOOLS_DIR)/gst-inspect-$(GST_API_VERSION)
@@ -1383,15 +1386,6 @@ CHECK_REGISTRY = $(top_builddir)/tests/check/test-registry.reg
 TEST_FILES_DIRECTORY = $(top_srcdir)/tests/files
 REGISTRY_ENVIRONMENT = \
 	GST_REGISTRY_1_0=$(CHECK_REGISTRY)
-
-AM_TESTS_ENVIRONMENT = \
-	CK_DEFAULT_TIMEOUT=120                                  \
-	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
-	$(REGISTRY_ENVIRONMENT)					\
-	GST_PLUGIN_SYSTEM_PATH_1_0=				\
-	GST_PLUGIN_PATH_1_0=$(top_builddir)/gst:$(top_builddir)/sys:$(top_builddir)/ext:$(GST_PLUGINS_DIR) \
-	GST_PLUGIN_LOADING_WHITELIST="gstreamer:gst-plugins-base@$(top_builddir)" \
-	GST_TAG_LICENSE_TRANSLATIONS_DICT="$(top_srcdir)/gst-libs/gst/tag/license-translations.dict"
 
 
 # ths core dumps of some machines have PIDs appended
@@ -4152,31 +4146,26 @@ LOOPS ?= 10
 # if the test fails, run it again at at least debug level 2
 %.check: %
 	@$(AM_TESTS_ENVIRONMENT)					\
-	CK_DEFAULT_TIMEOUT=20					\
 	$* ||							\
 	$(AM_TESTS_ENVIRONMENT)					\
 	GST_DEBUG=$$GST_DEBUG,*:2				\
-	CK_DEFAULT_TIMEOUT=20					\
 	$*
 
 # just like 'check', but don't run it again if it fails (useful for debugging)
 %.check-norepeat: %
 	@$(AM_TESTS_ENVIRONMENT)					\
-	CK_DEFAULT_TIMEOUT=20					\
 	$*
 
 # run any given test in a loop
 %.torture: %
 	@for i in `seq 1 $(LOOPS)`; do				\
 	$(AM_TESTS_ENVIRONMENT)					\
-	CK_DEFAULT_TIMEOUT=20					\
 	$*; done
 
 # run any given test in an infinite loop
 %.forever: %
 	@while true; do						\
 	$(AM_TESTS_ENVIRONMENT)					\
-	CK_DEFAULT_TIMEOUT=20					\
 	$* || break; done
 
 # valgrind any given test by running make test.valgrind
