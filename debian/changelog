@@ -1,3 +1,17 @@
+gst-plugins-base1.0 (1.7.2-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.2.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
+    + debian/control.in:
+      - Add Breaks for gstreamer1.0-plugins-bad << 1.7.1 because
+        of GstAudioVisualizer moved from a plugin to a library here.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 19 Feb 2016 11:07:18 +0200
+
 gst-plugins-base1.0 (1.7.1-1) experimental; urgency=medium
 
   * New upstream unstable release:

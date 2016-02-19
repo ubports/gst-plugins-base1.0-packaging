@@ -55,7 +55,8 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          iso-codes
-Breaks: totem-gstreamer (<= 2.17.92-0ubuntu1)
+Breaks: totem-gstreamer (<= 2.17.92-0ubuntu1),
+        gstreamer1.0-plugins-bad (<< 1.7.1)
 Recommends: @GST_PKGNAME@-plugins-base
 Suggests: libvisual-0.4-plugins
 Description: GStreamer libraries from the "base" set
