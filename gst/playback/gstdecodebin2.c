@@ -843,9 +843,8 @@ gst_decode_bin_class_init (GstDecodeBinClass * klass)
   /**
    * GstDecodeBin::autoplug-query:
    * @bin: The decodebin.
-   * @child: The child element doing the query
    * @pad: The #GstPad.
-   * @element: The #GstElement.
+   * @child: The child element doing the query
    * @query: The #GstQuery.
    *
    * This signal is emitted whenever an autoplugged element that is
@@ -2067,6 +2066,12 @@ demuxer_source_pad_probe (GstPad * pad, GstPadProbeInfo * info,
   return GST_PAD_PROBE_OK;
 }
 
+typedef struct
+{
+  GstDecodeChain *chain;
+  GstPad *pad;
+} PadExposeData;
+
 /* connect_pad:
  *
  * Try to connect the given pad to an element created from one of the factories,
@@ -2124,6 +2129,7 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
     GParamSpec *pspec;
     gboolean subtitle;
     GList *to_connect = NULL;
+    GList *to_expose = NULL;
     gboolean is_parser_converter = FALSE;
 
     /* Set dpad target to pad again, it might've been unset
@@ -2448,34 +2454,31 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
     /* link this element further */
     to_connect = connect_element (dbin, delem, chain);
 
-    {
-      GList *l;
-      for (l = to_connect; l;) {
-        GstPad *opad = GST_PAD_CAST (l->data);
-        gboolean to_expose = FALSE;
-        GstCaps *ocaps;
+    while (to_connect) {
+      GstPad *opad = to_connect->data;
+      gboolean expose_pad = FALSE;
+      GstDecodeChain *new_chain;
+      GstCaps *ocaps;
 
-        ocaps = get_pad_caps (opad);
-        to_expose =
-            analyze_new_pad (dbin, delem->element, opad, ocaps, chain, &chain);
+      ocaps = get_pad_caps (opad);
+      expose_pad =
+          analyze_new_pad (dbin, delem->element, opad, ocaps, chain,
+          &new_chain);
 
-        if (ocaps)
-          gst_caps_unref (ocaps);
+      if (ocaps)
+        gst_caps_unref (ocaps);
 
-        if (!to_expose) {
-          GList *l2 = l;
-
-          gst_object_unref (opad);
-
-          l2 = g_list_next (l);
-          to_connect = g_list_delete_link (to_connect, l);
-          l = l2;
-        } else {
-          l = g_list_next (l);
-        }
+      if (expose_pad) {
+        PadExposeData *expose_data = g_new0 (PadExposeData, 1);
+        expose_data->chain = new_chain;
+        expose_data->pad = gst_object_ref (opad);
+        to_expose = g_list_prepend (to_expose, expose_data);
       }
-      /* any pads left in to_connect are to be exposed */
+
+      gst_object_unref (opad);
+      to_connect = g_list_delete_link (to_connect, to_connect);
     }
+    /* any pads left in to_expose are to be exposed */
 
     /* Bring the element to the state of the parent */
 
@@ -2496,9 +2499,12 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
       GST_WARNING_OBJECT (dbin, "Couldn't set %s to PAUSED",
           GST_ELEMENT_NAME (element));
 
-      g_list_foreach (to_connect, (GFunc) gst_object_unref, NULL);
-      g_list_free (to_connect);
-      to_connect = NULL;
+      while (to_expose) {
+        PadExposeData *expose_data = to_expose->data;
+        gst_object_unref (expose_data->pad);
+        g_free (expose_data);
+        to_expose = g_list_delete_link (to_expose, to_expose);
+      }
 
       remove_error_filter (dbin, element, &error_msg);
 
@@ -2586,22 +2592,20 @@ connect_pad (GstDecodeBin * dbin, GstElement * src, GstDecodePad * dpad,
       SUBTITLE_UNLOCK (dbin);
     }
 
-    {
-      GList *l;
-      for (l = to_connect; l; l = g_list_next (l)) {
-        GstPad *opad = GST_PAD_CAST (l->data);
-        GstCaps *ocaps;
+    while (to_expose) {
+      PadExposeData *expose_data = to_expose->data;
+      GstCaps *ocaps;
 
-        ocaps = get_pad_caps (opad);
-        expose_pad (dbin, delem->element, dpad, opad, ocaps, chain, TRUE);
+      ocaps = get_pad_caps (expose_data->pad);
+      expose_pad (dbin, delem->element, expose_data->chain->current_pad,
+          expose_data->pad, ocaps, expose_data->chain, TRUE);
 
-        if (ocaps)
-          gst_caps_unref (ocaps);
+      if (ocaps)
+        gst_caps_unref (ocaps);
 
-        gst_object_unref (opad);
-      }
-      g_list_free (to_connect);
-      to_connect = NULL;
+      gst_object_unref (expose_data->pad);
+      g_free (expose_data);
+      to_expose = g_list_delete_link (to_expose, to_expose);
     }
 
     res = TRUE;
@@ -4493,15 +4497,10 @@ gst_decode_chain_get_topology (GstDecodeChain * chain)
   }
 
   /* Caps that resulted in this chain */
-  caps = gst_pad_get_current_caps (chain->pad);
-  if (!caps) {
-    caps = get_pad_caps (chain->pad);
-    if (G_UNLIKELY (!gst_caps_is_fixed (caps))) {
-      GST_ERROR_OBJECT (chain->pad,
-          "Couldn't get fixed caps, got %" GST_PTR_FORMAT, caps);
-      gst_caps_unref (caps);
-      caps = NULL;
-    }
+  caps = get_pad_caps (chain->pad);
+  if (G_UNLIKELY (!caps)) {
+    GST_WARNING_OBJECT (chain->pad, "Couldn't get the caps of decode chain");
+    return u;
   }
   gst_structure_id_set (u, topology_caps, GST_TYPE_CAPS, caps, NULL);
   gst_structure_id_set (u, topology_element_srcpad, GST_TYPE_PAD, chain->pad,
@@ -4519,6 +4518,8 @@ gst_decode_bin_post_topology_message (GstDecodeBin * dbin)
 
   s = gst_decode_chain_get_topology (dbin->decode_chain);
 
+  if (G_UNLIKELY (s == NULL))
+    return;
   msg = gst_message_new_element (GST_OBJECT (dbin), s);
   gst_element_post_message (GST_ELEMENT (dbin), msg);
 }

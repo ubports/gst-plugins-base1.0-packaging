@@ -1050,7 +1050,7 @@ aac_type_find (GstTypeFind * tf, gpointer unused)
       len = ((c.data[3] & 0x03) << 11) |
           (c.data[4] << 3) | ((c.data[5] & 0xe0) >> 5);
 
-      if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len + 2)) {
+      if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len + 6)) {
         GST_DEBUG ("Wrong sync or next frame not within reach, len=%u", len);
         goto next;
       }
@@ -1110,7 +1110,7 @@ aac_type_find (GstTypeFind * tf, gpointer unused)
         len = ((c.data[offset + 3] & 0x03) << 11) |
             (c.data[offset + 4] << 3) | ((c.data[offset + 5] & 0xe0) >> 5);
 
-        if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len + 2)) {
+        if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, offset + len + 6)) {
           GST_DEBUG ("Wrong sync or next frame not within reach, len=%u", len);
           gst_type_find_suggest (tf, GST_TYPE_FIND_LIKELY, caps);
         } else {
@@ -1120,7 +1120,8 @@ aac_type_find (GstTypeFind * tf, gpointer unused)
           for (i = 3; i <= 6; i++) {
             len = ((c.data[offset + 3] & 0x03) << 11) |
                 (c.data[offset + 4] << 3) | ((c.data[offset + 5] & 0xe0) >> 5);
-            if (len == 0 || !data_scan_ctx_ensure_data (tf, &c, len + 2)) {
+            if (len == 0
+                || !data_scan_ctx_ensure_data (tf, &c, offset + len + 6)) {
               GST_DEBUG ("Wrong sync or next frame not within reach, len=%u",
                   len);
               break;
@@ -2586,12 +2587,13 @@ static void
 h263_video_type_find (GstTypeFind * tf, gpointer unused)
 {
   DataScanCtx c = { 0, NULL, 0 };
-  guint64 data = 0;
+  guint64 data = 0xffff;        /* prevents false positive for first 2 bytes */
   guint64 psc = 0;
-  guint8 tr = 0;
+  guint8 ptype = 0;
   guint format;
   guint good = 0;
   guint bad = 0;
+  guint pc_type, pb_mode;
 
   while (c.offset < H263_MAX_PROBE_LENGTH) {
     if (G_UNLIKELY (!data_scan_ctx_ensure_data (tf, &c, 4)))
@@ -2602,16 +2604,21 @@ h263_video_type_find (GstTypeFind * tf, gpointer unused)
     psc = data & G_GUINT64_CONSTANT (0xfffffc0000);
     if (psc == 0x800000) {
       /* Found PSC */
-      /* TR */
-      tr = (data & 0x3fc) >> 2;
+      /* PTYPE */
+      ptype = (data & 0x3fc) >> 2;
       /* Source Format */
-      format = tr & 0x07;
+      format = ptype & 0x07;
 
       /* Now that we have a Valid PSC, check if we also have a valid PTYPE and
          the Source Format, which should range between 1 and 5 */
-      if (((tr >> 6) == 0x2) && (format > 0 && format < 6))
-        good++;
-      else
+      if (((ptype >> 6) == 0x2) && (format > 0 && format < 6)) {
+        pc_type = data & 0x02;
+        pb_mode = c.data[1] & 0x20 >> 4;
+        if (!pc_type && pb_mode)
+          bad++;
+        else
+          good++;
+      } else
         bad++;
 
       /* FIXME: maybe bail out early if we get mostly bad syncs ? */

@@ -46,9 +46,22 @@ static gboolean
 print_structure_field (GQuark field_id, const GValue * value,
     gpointer user_data)
 {
-  if (G_VALUE_HOLDS_STRING (value))
-    g_print ("\n\t\t%s = %s", g_quark_to_string (field_id),
-        g_value_get_string (value));
+  gchar *val;
+
+  if (G_VALUE_HOLDS_UINT (value)) {
+    val = g_strdup_printf ("%u (0x%08x)", g_value_get_uint (value),
+        g_value_get_uint (value));
+  } else {
+    val = gst_value_serialize (value);
+  }
+
+  if (val != NULL)
+    g_print ("\n\t\t%s = %s", g_quark_to_string (field_id), val);
+  else
+    g_print ("\n\t\t%s - could not serialise field of type %s",
+        g_quark_to_string (field_id), G_VALUE_TYPE_NAME (value));
+
+  g_free (val);
 
   return TRUE;
 }
@@ -218,8 +231,10 @@ main (int argc, char **argv)
 
   timer = g_timer_new ();
 
-  if (!gst_device_monitor_start (app.monitor))
-    g_error ("Failed to start device monitor!");
+  if (!gst_device_monitor_start (app.monitor)) {
+    g_printerr ("Failed to start device monitor!\n");
+    return -1;
+  }
 
   GST_INFO ("Took %.2f seconds", g_timer_elapsed (timer, NULL));
 

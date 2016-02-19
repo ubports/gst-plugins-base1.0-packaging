@@ -65,6 +65,7 @@
 <ANCHOR id="GstAppSink--emit-signals" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink--emit-signals">
 <ANCHOR id="GstAppSink--eos" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink--eos">
 <ANCHOR id="GstAppSink--max-buffers" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink--max-buffers">
+<ANCHOR id="GstAppSink--wait-on-eos" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink--wait-on-eos">
 <ANCHOR id="gst-plugins-base-plugins-appsink.signal-details" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#gst-plugins-base-plugins-appsink.signal-details">
 <ANCHOR id="GstAppSink-eos" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink-eos">
 <ANCHOR id="GstAppSink-new-preroll" href="gst-plugins-base-plugins-1.0/gst-plugins-base-plugins-appsink.html#GstAppSink-new-preroll">
