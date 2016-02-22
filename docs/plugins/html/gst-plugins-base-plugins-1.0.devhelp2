@@ -108,6 +108,7 @@
     <keyword type="property" name="The “emit-signals” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--emit-signals"/>
     <keyword type="property" name="The “eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--eos"/>
     <keyword type="property" name="The “max-buffers” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--max-buffers"/>
+    <keyword type="property" name="The “wait-on-eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--wait-on-eos"/>
     <keyword type="signal" name="The “eos” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-eos"/>
     <keyword type="signal" name="The “new-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-preroll"/>
     <keyword type="signal" name="The “new-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-sample"/>
