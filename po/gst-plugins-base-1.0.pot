@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gst-plugins-base 1.7.2\n"
+"Project-Id-Version: gst-plugins-base 1.7.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2016-02-19 10:30+0200\n"
+"POT-Creation-Date: 2016-03-01 16:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,7 +95,7 @@ msgstr ""
 #: gst/playback/gstplaysink.c:2749 gst/playback/gstplaysink.c:3127
 #: gst/playback/gstplaysink.c:3136 gst/playback/gstplaysink.c:3145
 #: gst/playback/gstplaysink.c:3154 gst/playback/gstplaysink.c:3557
-#: gst/playback/gstplaysink.c:4433 gst/playback/gstplaysinkconvertbin.c:97
+#: gst/playback/gstplaysink.c:4431 gst/playback/gstplaysinkconvertbin.c:97
 #: gst/playback/gstplaysinkconvertbin.c:117 gst/playback/gsturidecodebin.c:1490
 #, c-format
 msgid "Missing element '%s' - check your GStreamer installation."
@@ -659,7 +659,7 @@ msgstr ""
 msgid "Initial key in which the sound starts"
 msgstr ""
 
-#: tools/gst-device-monitor.c:154 tools/gst-play.c:1143
+#: tools/gst-device-monitor.c:154 tools/gst-play.c:1145
 msgid "Print version information and exit"
 msgstr ""
 
@@ -683,7 +683,7 @@ msgid "Clock lost, selecting a new one\n"
 msgstr ""
 
 #: tools/gst-play.c:365 tools/gst-play.c:411 tools/gst-play.c:765
-#: tools/gst-play.c:1048
+#: tools/gst-play.c:1049
 msgid "Reached end of play list."
 msgstr ""
 
@@ -728,7 +728,15 @@ msgid "quit"
 msgstr ""
 
 #: tools/gst-play.c:991
+msgid "> or n"
+msgstr ""
+
+#: tools/gst-play.c:991
 msgid "play next"
+msgstr ""
+
+#: tools/gst-play.c:992
+msgid "< or b"
 msgstr ""
 
 #: tools/gst-play.c:992
@@ -791,55 +799,55 @@ msgstr ""
 msgid "Interactive mode - keyboard controls:"
 msgstr ""
 
-#: tools/gst-play.c:1138
+#: tools/gst-play.c:1140
 msgid "Output status information and property notifications"
 msgstr ""
 
-#: tools/gst-play.c:1140
+#: tools/gst-play.c:1142
 msgid "Control playback behaviour setting playbin 'flags' property"
 msgstr ""
 
-#: tools/gst-play.c:1145
+#: tools/gst-play.c:1147
 msgid "Video sink to use (default is autovideosink)"
 msgstr ""
 
-#: tools/gst-play.c:1147
+#: tools/gst-play.c:1149
 msgid "Audio sink to use (default is autoaudiosink)"
 msgstr ""
 
-#: tools/gst-play.c:1149
+#: tools/gst-play.c:1151
 msgid "Enable gapless playback"
 msgstr ""
 
-#: tools/gst-play.c:1151
+#: tools/gst-play.c:1153
 msgid "Shuffle playlist"
 msgstr ""
 
-#: tools/gst-play.c:1154
+#: tools/gst-play.c:1156
 msgid "Disable interactive control via the keyboard"
 msgstr ""
 
-#: tools/gst-play.c:1156
+#: tools/gst-play.c:1158
 msgid "Volume"
 msgstr ""
 
-#: tools/gst-play.c:1158
+#: tools/gst-play.c:1160
 msgid "Playlist file containing input media files"
 msgstr ""
 
-#: tools/gst-play.c:1160
+#: tools/gst-play.c:1162
 msgid "Do not print any output (apart from errors)"
 msgstr ""
 
-#: tools/gst-play.c:1231
+#: tools/gst-play.c:1233
 #, c-format
 msgid "Usage: %s FILE1|URI1 [FILE2|URI2] [FILE3|URI3] ..."
 msgstr ""
 
-#: tools/gst-play.c:1235
+#: tools/gst-play.c:1237
 msgid "You must provide at least one filename or URI to play."
 msgstr ""
 
-#: tools/gst-play.c:1275
+#: tools/gst-play.c:1277
 msgid "Press 'k' to see a list of keyboard shortcuts.\n"
 msgstr ""

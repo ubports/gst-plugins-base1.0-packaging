@@ -339,6 +339,8 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
+OPUS_CFLAGS = @OPUS_CFLAGS@
+OPUS_LIBS = @OPUS_LIBS@
 ORCC = @ORCC@
 ORCC_FLAGS = @ORCC_FLAGS@
 ORC_CFLAGS = @ORC_CFLAGS@
@@ -875,17 +877,18 @@ upload: $(FORMATS)
 @ENABLE_GTK_DOC_TRUE@	            scanobj_options="--verbose"; \
 @ENABLE_GTK_DOC_TRUE@	        fi; \
 @ENABLE_GTK_DOC_TRUE@	    fi; \
-@ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_SYSTEM_PATH_1_0=`cd $(top_builddir) && pwd`		\
-@ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_PATH_1_0=						\
+@ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_SYSTEM_PATH_1_0=`cd $(top_builddir) && pwd`	\
+@ENABLE_GTK_DOC_TRUE@	    GST_PLUGIN_PATH_1_0=					\
 @ENABLE_GTK_DOC_TRUE@	    GST_REGISTRY_1_0=doc-registry.xml				\
 @ENABLE_GTK_DOC_TRUE@	    $(GTKDOC_EXTRA_ENVIRONMENT)					\
 @ENABLE_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)"	\
 @ENABLE_GTK_DOC_TRUE@	    CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)"				\
 @ENABLE_GTK_DOC_TRUE@	    LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)"				\
 @ENABLE_GTK_DOC_TRUE@	    gtkdoc-scangobj --type-init-func="gst_init(NULL,NULL)"	\
-@ENABLE_GTK_DOC_TRUE@	        $$scanobj_options --module=$(DOC_MODULE) ;				\
+@ENABLE_GTK_DOC_TRUE@	        $$scanobj_options --module=$(DOC_MODULE) ;		\
 @ENABLE_GTK_DOC_TRUE@	else								\
 @ENABLE_GTK_DOC_TRUE@	    for i in $(SCANOBJ_FILES) ; do				\
+@ENABLE_GTK_DOC_TRUE@	       $(MKDIR_P) $(dirname $$i) ;				\
 @ENABLE_GTK_DOC_TRUE@	       test -f $$i || touch $$i ;				\
 @ENABLE_GTK_DOC_TRUE@	    done							\
 @ENABLE_GTK_DOC_TRUE@	fi
