@@ -29,6 +29,8 @@
       <sub name="ogmaudioparse" link="gst-plugins-base-plugins-ogmaudioparse.html"/>
       <sub name="ogmtextparse" link="gst-plugins-base-plugins-ogmtextparse.html"/>
       <sub name="ogmvideoparse" link="gst-plugins-base-plugins-ogmvideoparse.html"/>
+      <sub name="opusdec" link="gst-plugins-base-plugins-opusdec.html"/>
+      <sub name="opusenc" link="gst-plugins-base-plugins-opusenc.html"/>
       <sub name="playbin" link="gst-plugins-base-plugins-playbin.html"/>
       <sub name="playsink" link="gst-plugins-base-plugins-playsink.html"/>
       <sub name="socketsrc" link="gst-plugins-base-plugins-socketsrc.html"/>
@@ -73,6 +75,7 @@
       <sub name="ivorbisdec" link="gst-plugins-base-plugins-plugin-ivorbisdec.html"/>
       <sub name="libvisual" link="gst-plugins-base-plugins-plugin-libvisual.html"/>
       <sub name="ogg" link="gst-plugins-base-plugins-plugin-ogg.html"/>
+      <sub name="opus" link="gst-plugins-base-plugins-plugin-opus.html"/>
       <sub name="pango" link="gst-plugins-base-plugins-plugin-pango.html"/>
       <sub name="playback" link="gst-plugins-base-plugins-plugin-playback.html"/>
       <sub name="subparse" link="gst-plugins-base-plugins-plugin-subparse.html"/>
@@ -241,6 +244,23 @@
     <keyword type="property" name="The “max-page-delay” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-page-delay"/>
     <keyword type="property" name="The “max-tolerance” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-tolerance"/>
     <keyword type="property" name="The “skeleton” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--skeleton"/>
+    <keyword type="struct" name="struct GstOpusDec" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec-struct"/>
+    <keyword type="property" name="The “apply-gain” property" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec--apply-gain"/>
+    <keyword type="property" name="The “use-inband-fec” property" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec--use-inband-fec"/>
+    <keyword type="struct" name="struct GstOpusEnc" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc-struct"/>
+    <keyword type="property" name="The “audio” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--audio"/>
+    <keyword type="property" name="The “audio-type” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--audio-type"/>
+    <keyword type="property" name="The “bandwidth” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bandwidth"/>
+    <keyword type="property" name="The “bitrate” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bitrate"/>
+    <keyword type="property" name="The “bitrate-type” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bitrate-type"/>
+    <keyword type="property" name="The “cbr” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--cbr"/>
+    <keyword type="property" name="The “complexity” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--complexity"/>
+    <keyword type="property" name="The “constrained-vbr” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--constrained-vbr"/>
+    <keyword type="property" name="The “dtx” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--dtx"/>
+    <keyword type="property" name="The “frame-size” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--frame-size"/>
+    <keyword type="property" name="The “inband-fec” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--inband-fec"/>
+    <keyword type="property" name="The “max-payload-size” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--max-payload-size"/>
+    <keyword type="property" name="The “packet-loss-percentage” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--packet-loss-percentage"/>
     <keyword type="struct" name="struct GstPlayBin" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-struct"/>
     <keyword type="enum" name="enum GstPlayFlags" link="gst-plugins-base-plugins-playbin.html#GstPlayFlags"/>
     <keyword type="property" name="The “audio-sink” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink"/>

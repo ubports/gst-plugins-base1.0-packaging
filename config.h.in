@@ -227,6 +227,9 @@
 /* Define to enable Xiph Ogg library (used by ogg). */
 #undef HAVE_OGG
 
+/* Define to enable opus (used by opus). */
+#undef HAVE_OPUS
+
 /* Use Orc */
 #undef HAVE_ORC
 
