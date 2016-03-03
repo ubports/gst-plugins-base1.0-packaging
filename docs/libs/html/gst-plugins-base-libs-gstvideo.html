@@ -3551,13 +3551,74 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 <p>Use <em class="parameter"><code>info</code></em>
  and <em class="parameter"><code>buffer</code></em>
  to fill in the values of <em class="parameter"><code>frame</code></em>
-.</p>
+. <em class="parameter"><code>frame</code></em>
+ is usually
+allocated on the stack, and you will pass the address to the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a>
+structure allocated on the stack; <a class="link" href="gst-plugins-base-libs-gstvideo.html#gst-video-frame-map" title="gst_video_frame_map ()"><code class="function">gst_video_frame_map()</code></a> will then fill in
+the structures with the various video-specific information you need to access
+the pixels of the video buffer. You can then use accessor macros such as
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-COMP-DATA:CAPS" title="GST_VIDEO_FRAME_COMP_DATA()"><code class="function">GST_VIDEO_FRAME_COMP_DATA()</code></a>, <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-PLANE-DATA:CAPS" title="GST_VIDEO_FRAME_PLANE_DATA()"><code class="function">GST_VIDEO_FRAME_PLANE_DATA()</code></a>,
+<a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-COMP-STRIDE:CAPS" title="GST_VIDEO_FRAME_COMP_STRIDE()"><code class="function">GST_VIDEO_FRAME_COMP_STRIDE()</code></a>, <a class="link" href="gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-PLANE-STRIDE:CAPS" title="GST_VIDEO_FRAME_PLANE_STRIDE()"><code class="function">GST_VIDEO_FRAME_PLANE_STRIDE()</code></a> etc.
+to get to the pixels.</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre></td>
+        <td class="listing_code"><pre class="programlisting">GstVideoFrame vframe<span class="gtkdoc opt">;</span>
+<span class="gtkdoc opt">...</span>
+<span class="gtkdoc slc">// set RGB pixels to black one at a time</span>
+<span class="keyword">if</span> <span class="gtkdoc opt">(</span><span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#gst-video-frame-map">gst_video_frame_map</a></span> <span class="gtkdoc opt">(&amp;</span>vframe<span class="gtkdoc opt">,</span> video_info<span class="gtkdoc opt">,</span> video_buffer<span class="gtkdoc opt">)) {</span>
+  guint8 <span class="gtkdoc opt">*</span>pixels <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-PLANE-DATA:CAPS">GST_VIDEO_FRAME_PLANE_DATA</a></span> <span class="gtkdoc opt">(</span>vframe<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
+  guint stride <span class="gtkdoc opt">=</span> <span class="function"><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-libs/html/gst-plugins-base-libs-gstvideo.html#GST-VIDEO-FRAME-PLANE-STRIDE:CAPS">GST_VIDEO_FRAME_PLANE_STRIDE</a></span> <span class="gtkdoc opt">(</span>vframe<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
+  guint pixel_stride <span class="gtkdoc opt">=</span> <span class="function">GST_VIDEO_FRAME_PLANE_PSTRIDE</span> <span class="gtkdoc opt">(</span>vframe<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">);</span>
+
+  <span class="keyword">for</span> <span class="gtkdoc opt">(</span>h <span class="gtkdoc opt">=</span> <span class="number">0</span><span class="gtkdoc opt">;</span> h <span class="gtkdoc opt">&lt;</span> height<span class="gtkdoc opt">; ++</span>h<span class="gtkdoc opt">) {</span>
+    <span class="keyword">for</span> <span class="gtkdoc opt">(</span>w <span class="gtkdoc opt">=</span> <span class="number">0</span><span class="gtkdoc opt">;</span> w <span class="gtkdoc opt">&lt;</span> width<span class="gtkdoc opt">; ++</span>w<span class="gtkdoc opt">) {</span>
+      guint8 <span class="gtkdoc opt">*</span>pixel <span class="gtkdoc opt">=</span> pixels <span class="gtkdoc opt">+</span> h <span class="gtkdoc opt">*</span> stride <span class="gtkdoc opt">+</span> w <span class="gtkdoc opt">*</span> pixel_stride<span class="gtkdoc opt">;</span>
+
+      <span class="function">memset</span> <span class="gtkdoc opt">(</span>pixel<span class="gtkdoc opt">,</span> <span class="number">0</span><span class="gtkdoc opt">,</span> pixel_stride<span class="gtkdoc opt">);</span>
+    <span class="gtkdoc opt">}</span>
+  <span class="gtkdoc opt">}</span>
+<span class="gtkdoc opt">}</span>
+<span class="gtkdoc opt">...</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p></p>
 <p>All video planes of <em class="parameter"><code>buffer</code></em>
  will be mapped and the pointers will be set in
 <em class="parameter"><code>frame-&gt;data</code></em>
 .</p>
+<p>The purpose of this function is to make it easy for you to get to the video
+pixels in a generic way, without you having to worry too much about details
+such as whether the video data is allocated in one contiguous memory chunk
+or multiple memory chunks (e.g. one for each plane); or if custom strides
+and custom plane offsets are used or not (as signalled by GstVideoMeta on
+each buffer). This function will just fill the <a class="link" href="gst-plugins-base-libs-gstvideo.html#GstVideoFrame" title="struct GstVideoFrame"><span class="type">GstVideoFrame</span></a> structure
+with the right values and if you use the accessor macros everything will
+just work and you can access the data easily. It also maps the underlying
+memory chunks for you.</p>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.109.6"></a><h4>Parameters</h4>
+<a name="id-1.2.15.3.7.109.9"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -3589,7 +3650,7 @@ gst_video_frame_map (<em class="parameter"><code><a class="link" href="gst-plugi
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.3.7.109.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.3.7.109.10"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 </div>

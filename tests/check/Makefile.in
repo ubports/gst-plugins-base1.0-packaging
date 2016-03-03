@@ -113,8 +113,8 @@ check_PROGRAMS = generic/clock-selection$(EXEEXT) \
 	$(am__EXEEXT_14) $(am__EXEEXT_15) $(am__EXEEXT_16) \
 	$(am__EXEEXT_17) $(am__EXEEXT_18) $(am__EXEEXT_19) \
 	$(am__EXEEXT_20) $(am__EXEEXT_21) $(am__EXEEXT_22) \
-	$(am__EXEEXT_23)
-noinst_PROGRAMS = $(am__EXEEXT_24)
+	$(am__EXEEXT_23) $(am__EXEEXT_24)
+noinst_PROGRAMS = $(am__EXEEXT_25)
 subdir = tests/check
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
@@ -170,38 +170,39 @@ CONFIG_CLEAN_VPATH_FILES =
 @USE_THEORA_TRUE@@USE_VORBIS_TRUE@	elements/encodebin$(EXEEXT)
 @USE_PLUGIN_GIO_TRUE@am__EXEEXT_8 = pipelines/gio$(EXEEXT)
 @USE_OGG_TRUE@am__EXEEXT_9 = pipelines/oggmux$(EXEEXT)
-@USE_PANGO_TRUE@am__EXEEXT_10 = elements/textoverlay$(EXEEXT)
-@USE_PLUGIN_PLAYBACK_TRUE@am__EXEEXT_11 = elements/decodebin$(EXEEXT) \
+@USE_OPUS_TRUE@am__EXEEXT_10 = elements/opus$(EXEEXT)
+@USE_PANGO_TRUE@am__EXEEXT_11 = elements/textoverlay$(EXEEXT)
+@USE_PLUGIN_PLAYBACK_TRUE@am__EXEEXT_12 = elements/decodebin$(EXEEXT) \
 @USE_PLUGIN_PLAYBACK_TRUE@	elements/playbin$(EXEEXT) \
 @USE_PLUGIN_PLAYBACK_TRUE@	elements/playbin-complex$(EXEEXT) \
 @USE_PLUGIN_PLAYBACK_TRUE@	elements/streamsynchronizer$(EXEEXT)
-@USE_PLUGIN_SUBPARSE_TRUE@am__EXEEXT_12 = elements/subparse$(EXEEXT)
-@USE_PLUGIN_APP_FALSE@@USE_PLUGIN_TCP_TRUE@am__EXEEXT_13 = elements/multifdsink$(EXEEXT) \
+@USE_PLUGIN_SUBPARSE_TRUE@am__EXEEXT_13 = elements/subparse$(EXEEXT)
+@USE_PLUGIN_APP_FALSE@@USE_PLUGIN_TCP_TRUE@am__EXEEXT_14 = elements/multifdsink$(EXEEXT) \
 @USE_PLUGIN_APP_FALSE@@USE_PLUGIN_TCP_TRUE@	elements/multisocketsink$(EXEEXT)
-@USE_PLUGIN_APP_TRUE@@USE_PLUGIN_TCP_TRUE@am__EXEEXT_13 = elements/multifdsink$(EXEEXT) \
+@USE_PLUGIN_APP_TRUE@@USE_PLUGIN_TCP_TRUE@am__EXEEXT_14 = elements/multifdsink$(EXEEXT) \
 @USE_PLUGIN_APP_TRUE@@USE_PLUGIN_TCP_TRUE@	elements/multisocketsink$(EXEEXT) \
 @USE_PLUGIN_APP_TRUE@@USE_PLUGIN_TCP_TRUE@	pipelines/tcp$(EXEEXT)
-@USE_THEORA_TRUE@am__EXEEXT_14 = pipelines/theoraenc$(EXEEXT)
-@USE_PLUGIN_TYPEFIND_TRUE@am__EXEEXT_15 =  \
+@USE_THEORA_TRUE@am__EXEEXT_15 = pipelines/theoraenc$(EXEEXT)
+@USE_PLUGIN_TYPEFIND_TRUE@am__EXEEXT_16 =  \
 @USE_PLUGIN_TYPEFIND_TRUE@	gst/typefindfunctions$(EXEEXT)
-@USE_PLUGIN_VIDEOCONVERT_TRUE@am__EXEEXT_16 =  \
+@USE_PLUGIN_VIDEOCONVERT_TRUE@am__EXEEXT_17 =  \
 @USE_PLUGIN_VIDEOCONVERT_TRUE@	elements/videoconvert$(EXEEXT)
-@USE_PLUGIN_VIDEORATE_TRUE@am__EXEEXT_17 =  \
+@USE_PLUGIN_VIDEORATE_TRUE@am__EXEEXT_18 =  \
 @USE_PLUGIN_VIDEORATE_TRUE@	elements/videorate$(EXEEXT)
-@USE_PLUGIN_VIDEOSCALE_TRUE@am__EXEEXT_18 =  \
+@USE_PLUGIN_VIDEOSCALE_TRUE@am__EXEEXT_19 =  \
 @USE_PLUGIN_VIDEOSCALE_TRUE@	elements/videoscale$(EXEEXT)
-@USE_PLUGIN_VIDEOTESTSRC_TRUE@am__EXEEXT_19 =  \
+@USE_PLUGIN_VIDEOTESTSRC_TRUE@am__EXEEXT_20 =  \
 @USE_PLUGIN_VIDEOTESTSRC_TRUE@	elements/videotestsrc$(EXEEXT)
-@USE_PLUGIN_VOLUME_TRUE@am__EXEEXT_20 = elements/volume$(EXEEXT)
-@USE_VORBIS_TRUE@am__EXEEXT_21 = elements/vorbisdec$(EXEEXT) \
+@USE_PLUGIN_VOLUME_TRUE@am__EXEEXT_21 = elements/volume$(EXEEXT)
+@USE_VORBIS_TRUE@am__EXEEXT_22 = elements/vorbisdec$(EXEEXT) \
 @USE_VORBIS_TRUE@	pipelines/vorbisenc$(EXEEXT) \
 @USE_VORBIS_TRUE@	pipelines/vorbisdec$(EXEEXT) \
 @USE_VORBIS_TRUE@	elements/vorbistag$(EXEEXT)
-@HAVE_CXX_TRUE@am__EXEEXT_22 = libs/gstlibscpp$(EXEEXT)
-@HAVE_ORC_TRUE@am__EXEEXT_23 = orc/video$(EXEEXT) orc/audio$(EXEEXT) \
+@HAVE_CXX_TRUE@am__EXEEXT_23 = libs/gstlibscpp$(EXEEXT)
+@HAVE_ORC_TRUE@am__EXEEXT_24 = orc/video$(EXEEXT) orc/audio$(EXEEXT) \
 @HAVE_ORC_TRUE@	orc/adder$(EXEEXT) orc/volume$(EXEEXT) \
 @HAVE_ORC_TRUE@	orc/videotestsrc$(EXEEXT)
-@USE_LIBVISUAL_TRUE@am__EXEEXT_24 = elements/libvisual$(EXEEXT)
+@USE_LIBVISUAL_TRUE@am__EXEEXT_25 = elements/libvisual$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 elements_adder_SOURCES = elements/adder.c
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -308,6 +309,11 @@ elements_multisocketsink_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(elements_multisocketsink_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+elements_opus_SOURCES = elements/opus.c
+elements_opus_OBJECTS = elements/opus.$(OBJEXT)
+elements_opus_LDADD = $(LDADD)
+elements_opus_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 elements_playbin_SOURCES = elements/playbin.c
 elements_playbin_OBJECTS =  \
 	elements/elements_playbin-playbin.$(OBJEXT)
@@ -470,9 +476,7 @@ am_libs_baseaudiovisualizer_OBJECTS =  \
 	libs/libs_baseaudiovisualizer-baseaudiovisualizer.$(OBJEXT)
 libs_baseaudiovisualizer_OBJECTS =  \
 	$(am_libs_baseaudiovisualizer_OBJECTS)
-libs_baseaudiovisualizer_DEPENDENCIES = $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
-	$(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+libs_baseaudiovisualizer_DEPENDENCIES = $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
 libs_baseaudiovisualizer_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -801,7 +805,7 @@ SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/audioresample.c elements/audiotestsrc.c \
 	elements/decodebin.c elements/encodebin.c elements/libvisual.c \
 	elements/multifdsink.c elements/multisocketsink.c \
-	elements/playbin.c elements/playbin-complex.c \
+	elements/opus.c elements/playbin.c elements/playbin-complex.c \
 	elements/streamsynchronizer.c elements/subparse.c \
 	elements/textoverlay.c elements/videoconvert.c \
 	elements/videorate.c elements/videoscale.c \
@@ -829,7 +833,7 @@ DIST_SOURCES = elements/adder.c elements/appsink.c elements/appsrc.c \
 	elements/audioresample.c elements/audiotestsrc.c \
 	elements/decodebin.c elements/encodebin.c elements/libvisual.c \
 	elements/multifdsink.c elements/multisocketsink.c \
-	elements/playbin.c elements/playbin-complex.c \
+	elements/opus.c elements/playbin.c elements/playbin-complex.c \
 	elements/streamsynchronizer.c elements/subparse.c \
 	elements/textoverlay.c elements/videoconvert.c \
 	elements/videorate.c elements/videoscale.c \
@@ -1248,6 +1252,8 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
+OPUS_CFLAGS = @OPUS_CFLAGS@
+OPUS_LIBS = @OPUS_LIBS@
 ORCC = @ORCC@
 ORCC_FLAGS = @ORCC_FLAGS@
 ORC_CFLAGS = @ORC_CFLAGS@
@@ -1398,6 +1404,8 @@ TESTS = $(check_PROGRAMS)
 @USE_LIBVISUAL_TRUE@check_libvisual = elements/libvisual
 @USE_OGG_FALSE@check_ogg = 
 @USE_OGG_TRUE@check_ogg = pipelines/oggmux
+@USE_OPUS_FALSE@check_opus = 
+@USE_OPUS_TRUE@check_opus = elements/opus
 @USE_PANGO_FALSE@check_pango = 
 @USE_PANGO_TRUE@check_pango = elements/textoverlay
 @USE_VORBIS_FALSE@check_vorbis = 
@@ -1552,12 +1560,10 @@ libs_audiocdsrc_LDADD = \
 libs_baseaudiovisualizer_SOURCES = libs/baseaudiovisualizer.c
 libs_baseaudiovisualizer_CFLAGS = \
         $(GST_PLUGINS_BASE_CFLAGS) \
-        $(GST_BASE_CFLAGS) $(GST_CONTROLLER_CFLAGS) $(GST_CFLAGS) $(AM_CFLAGS)
+        $(GST_CFLAGS) $(AM_CFLAGS)
 
 libs_baseaudiovisualizer_LDADD = \
-        $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
-        $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
-        $(GST_BASE_LIBS) $(GST_CONTROLLER_LIBS) \
+        $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
         $(GST_LIBS) $(LDADD)
 
 libs_discoverer_CFLAGS = \
@@ -2002,6 +2008,12 @@ elements/elements_multisocketsink-multisocketsink.$(OBJEXT):  \
 elements/multisocketsink$(EXEEXT): $(elements_multisocketsink_OBJECTS) $(elements_multisocketsink_DEPENDENCIES) $(EXTRA_elements_multisocketsink_DEPENDENCIES) elements/$(am__dirstamp)
 	@rm -f elements/multisocketsink$(EXEEXT)
 	$(AM_V_CCLD)$(elements_multisocketsink_LINK) $(elements_multisocketsink_OBJECTS) $(elements_multisocketsink_LDADD) $(LIBS)
+elements/opus.$(OBJEXT): elements/$(am__dirstamp) \
+	elements/$(DEPDIR)/$(am__dirstamp)
+
+elements/opus$(EXEEXT): $(elements_opus_OBJECTS) $(elements_opus_DEPENDENCIES) $(EXTRA_elements_opus_DEPENDENCIES) elements/$(am__dirstamp)
+	@rm -f elements/opus$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(elements_opus_OBJECTS) $(elements_opus_LDADD) $(LIBS)
 elements/elements_playbin-playbin.$(OBJEXT): elements/$(am__dirstamp) \
 	elements/$(DEPDIR)/$(am__dirstamp)
 
@@ -2396,6 +2408,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/elements_vorbisdec-vorbisdec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/elements_vorbistag-vorbistag.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/multifdsink.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/opus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/streamsynchronizer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/videorate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@elements/$(DEPDIR)/videotestsrc.Po@am__quote@
@@ -3756,6 +3769,13 @@ pipelines/gio.log: pipelines/gio$(EXEEXT)
 pipelines/oggmux.log: pipelines/oggmux$(EXEEXT)
 	@p='pipelines/oggmux$(EXEEXT)'; \
 	b='pipelines/oggmux'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+elements/opus.log: elements/opus$(EXEEXT)
+	@p='elements/opus$(EXEEXT)'; \
+	b='elements/opus'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
