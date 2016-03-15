@@ -1876,7 +1876,8 @@
     <keyword type="constant" name="GST_AUDIO_CHANNEL_POSITION_SURROUND_LEFT" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-POSITION-SURROUND-LEFT:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CHANNEL_POSITION_SURROUND_RIGHT" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-POSITION-SURROUND-RIGHT:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_NONE" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NONE:CAPS"/>
-    <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_NON_INTERLEAVED" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_NON_INTERLEAVED_IN" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-IN:CAPS"/>
+    <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_NON_INTERLEAVED_OUT" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-OUT:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_UNPOSITIONED_IN" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-IN:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CHANNEL_MIXER_FLAGS_UNPOSITIONED_OUT" link="gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-OUT:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_CONVERTER_FLAG_NONE" link="gst-plugins-base-libs-GstAudioConverter.html#GST-AUDIO-CONVERTER-FLAG-NONE:CAPS"/>
