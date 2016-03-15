@@ -6,7 +6,7 @@ Uploaders: Loïc Minier <lool@debian.org>,
            Sebastien Bacher <seb128@debian.org>,
            Sebastian Dröge <slomo@debian.org>,
            Sjoerd Simons <sjoerd@debian.org>
-Build-Depends: libgstreamer1.0-dev (>= 1.7.90), libasound2-dev (>= 0.9.0) [linux-any] , libgudev-1.0-dev (>= 143) [linux-any], autotools-dev, automake (>= 1.14), autoconf (>= 2.69), libtool (>= 2.2.6), dh-autoreconf, autopoint (>= 0.17), cdbs (>= 0.4.93~), debhelper (>= 9), gnome-pkg-tools (>= 0.7), gtk-doc-tools (>= 1.12), pkg-config (>= 0.11.0), libxv-dev (>= 6.8.2.dfsg.1-3), libxt-dev (>= 6.8.2.dfsg.1-3), libvorbis-dev (>= 1.0.0-2), libcdparanoia-dev (>= 3.10.2) [!hurd-i386], liborc-0.4-dev (>= 1:0.4.17), libpango1.0-dev (>= 1.16.0), libtheora-dev (>= 1.1), libglib2.0-dev (>= 2.40), zlib1g-dev (>= 1:1.1.4), libvisual-0.4-dev (>= 0.4.0), dpkg-dev (>= 1.15.1), iso-codes, libgtk-3-dev (>= 3.10), libglib2.0-doc, gstreamer1.0-doc, libgirepository1.0-dev (>= 0.9.12-4~), gobject-introspection (>= 0.9.12-4~), gir1.2-glib-2.0, gir1.2-freedesktop, gir1.2-gstreamer-1.0, zlib1g-dev, libopus-dev (>= 0.9.4)
+Build-Depends: libgstreamer1.0-dev (>= 1.7.91), libasound2-dev (>= 0.9.0) [linux-any] , libgudev-1.0-dev (>= 143) [linux-any], autotools-dev, automake (>= 1.14), autoconf (>= 2.69), libtool (>= 2.2.6), dh-autoreconf, autopoint (>= 0.17), cdbs (>= 0.4.93~), debhelper (>= 9), gnome-pkg-tools (>= 0.7), gtk-doc-tools (>= 1.12), pkg-config (>= 0.11.0), libxv-dev (>= 6.8.2.dfsg.1-3), libxt-dev (>= 6.8.2.dfsg.1-3), libvorbis-dev (>= 1.0.0-2), libcdparanoia-dev (>= 3.10.2) [!hurd-i386], liborc-0.4-dev (>= 1:0.4.17), libpango1.0-dev (>= 1.16.0), libtheora-dev (>= 1.1), libglib2.0-dev (>= 2.40), zlib1g-dev (>= 1:1.1.4), libvisual-0.4-dev (>= 0.4.0), dpkg-dev (>= 1.15.1), iso-codes, libgtk-3-dev (>= 3.10), libglib2.0-doc, gstreamer1.0-doc, libgirepository1.0-dev (>= 0.9.12-4~), gobject-introspection (>= 0.9.12-4~), gir1.2-glib-2.0, gir1.2-freedesktop, gir1.2-gstreamer-1.0, zlib1g-dev, libopus-dev (>= 0.9.4)
 Standards-Version: 3.9.3
 Vcs-Git: git://anonscm.debian.org/pkg-gstreamer/gst-plugins-base1.0.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-gstreamer/gst-plugins-base1.0.git;a=summary
@@ -78,7 +78,7 @@ Depends: ${misc:Depends},
          libgstreamer-plugins-base1.0-0 (= ${binary:Version}),
          libc6-dev | libc-dev,
          pkg-config,
-         libgstreamer1.0-dev (>= 1.7.90),
+         libgstreamer1.0-dev (>= 1.7.91),
          libglib2.0-dev,
          libxml2-dev,
          gir1.2-gst-plugins-base-1.0 (= ${binary:Version})
@@ -99,7 +99,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.7.90)
+         libgstreamer-plugins-base1.0-0 (>= 1.7.91)
 Suggests: alsa-utils (>= 0.9.0)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
@@ -125,7 +125,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.7.90)
+         libgstreamer-plugins-base1.0-0 (>= 1.7.91)
 Breaks: gstreamer1.0-plugins-bad (<< 1.7.90)
 Replaces: gstreamer1.0-plugins-bad (<< 1.7.90)
 Suggests: gvfs
@@ -178,7 +178,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.7.90)
+         libgstreamer-plugins-base1.0-0 (>= 1.7.91)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
 XB-GStreamer-URI-Sources: ${gstreamer:URISources}
