@@ -539,7 +539,8 @@
 <ANCHOR id="GstAudioChannelMixer" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelMixer">
 <ANCHOR id="GstAudioChannelMixerFlags" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GstAudioChannelMixerFlags">
 <ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-NONE:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NONE:CAPS">
-<ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED:CAPS">
+<ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-IN:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-IN:CAPS">
+<ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-OUT:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-NON-INTERLEAVED-OUT:CAPS">
 <ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-IN:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-IN:CAPS">
 <ANCHOR id="GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-OUT:CAPS" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-gstaudiochannels.html#GST-AUDIO-CHANNEL-MIXER-FLAGS-UNPOSITIONED-OUT:CAPS">
 <ANCHOR id="gst-plugins-base-libs-GstAudioConverter" href="gst-plugins-base-libs-1.0/gst-plugins-base-libs-GstAudioConverter.html">
