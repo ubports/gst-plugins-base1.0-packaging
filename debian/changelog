@@ -1,4 +1,4 @@
-gst-plugins-base1.0 (1.7.91-1ubuntu1) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.7.91-1ubuntu1) xenial; urgency=medium
 
   * Merge from Debian unstable. Remaining changes:
     + 0001-riff-Add-input-buffer-size-to-GstCaps.patch: Take patch from
@@ -6,7 +6,7 @@ gst-plugins-base1.0 (1.7.91-1ubuntu1) UNRELEASED; urgency=medium
       GstCaps containing the suggested buffer size for this stream.
     + Update Vcs-* for Ubuntu
 
- -- Iain Lane <iain.lane@canonical.com>  Thu, 17 Mar 2016 16:22:53 +0000
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 17 Mar 2016 16:24:07 +0000
 
 gst-plugins-base1.0 (1.7.91-1) experimental; urgency=medium
 
