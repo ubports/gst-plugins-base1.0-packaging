@@ -3,6 +3,7 @@
   <chapters>
     <sub name="gst-plugins-base Elements" link="ch01.html">
       <sub name="adder" link="gst-plugins-base-plugins-adder.html"/>
+      <sub name="alsamidisrc" link="gst-plugins-base-plugins-alsamidisrc.html"/>
       <sub name="alsasink" link="gst-plugins-base-plugins-alsasink.html"/>
       <sub name="alsasrc" link="gst-plugins-base-plugins-alsasrc.html"/>
       <sub name="appsink" link="gst-plugins-base-plugins-appsink.html"/>
@@ -28,6 +29,8 @@
       <sub name="ogmaudioparse" link="gst-plugins-base-plugins-ogmaudioparse.html"/>
       <sub name="ogmtextparse" link="gst-plugins-base-plugins-ogmtextparse.html"/>
       <sub name="ogmvideoparse" link="gst-plugins-base-plugins-ogmvideoparse.html"/>
+      <sub name="opusdec" link="gst-plugins-base-plugins-opusdec.html"/>
+      <sub name="opusenc" link="gst-plugins-base-plugins-opusenc.html"/>
       <sub name="playbin" link="gst-plugins-base-plugins-playbin.html"/>
       <sub name="playsink" link="gst-plugins-base-plugins-playsink.html"/>
       <sub name="socketsrc" link="gst-plugins-base-plugins-socketsrc.html"/>
@@ -72,6 +75,7 @@
       <sub name="ivorbisdec" link="gst-plugins-base-plugins-plugin-ivorbisdec.html"/>
       <sub name="libvisual" link="gst-plugins-base-plugins-plugin-libvisual.html"/>
       <sub name="ogg" link="gst-plugins-base-plugins-plugin-ogg.html"/>
+      <sub name="opus" link="gst-plugins-base-plugins-plugin-opus.html"/>
       <sub name="pango" link="gst-plugins-base-plugins-plugin-pango.html"/>
       <sub name="playback" link="gst-plugins-base-plugins-plugin-playback.html"/>
       <sub name="subparse" link="gst-plugins-base-plugins-plugin-subparse.html"/>
@@ -91,6 +95,8 @@
   <functions>
     <keyword type="struct" name="struct GstAdder" link="gst-plugins-base-plugins-adder.html#GstAdder-struct"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-adder.html#GstAdder--caps"/>
+    <keyword type="struct" name="struct GstAlsaMidiSrc" link="gst-plugins-base-plugins-alsamidisrc.html#GstAlsaMidiSrc-struct"/>
+    <keyword type="property" name="The “ports” property" link="gst-plugins-base-plugins-alsamidisrc.html#GstAlsaMidiSrc--ports"/>
     <keyword type="struct" name="struct GstAlsaSink" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink-struct"/>
     <keyword type="property" name="The “card-name” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--card-name"/>
     <keyword type="property" name="The “device” property" link="gst-plugins-base-plugins-alsasink.html#GstAlsaSink--device"/>
@@ -105,6 +111,7 @@
     <keyword type="property" name="The “emit-signals” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--emit-signals"/>
     <keyword type="property" name="The “eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--eos"/>
     <keyword type="property" name="The “max-buffers” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--max-buffers"/>
+    <keyword type="property" name="The “wait-on-eos” property" link="gst-plugins-base-plugins-appsink.html#GstAppSink--wait-on-eos"/>
     <keyword type="signal" name="The “eos” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-eos"/>
     <keyword type="signal" name="The “new-preroll” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-preroll"/>
     <keyword type="signal" name="The “new-sample” signal" link="gst-plugins-base-plugins-appsink.html#GstAppSink-new-sample"/>
@@ -130,8 +137,6 @@
     <keyword type="signal" name="The “seek-data” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-seek-data"/>
     <keyword type="signal" name="The “push-sample” signal" link="gst-plugins-base-plugins-appsrc.html#GstAppSrc-push-sample"/>
     <keyword type="struct" name="struct GstAudioConvert" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert-struct"/>
-    <keyword type="enum" name="enum GstAudioConvertDithering" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertDithering"/>
-    <keyword type="enum" name="enum GstAudioConvertNoiseShaping" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvertNoiseShaping"/>
     <keyword type="property" name="The “dithering” property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--dithering"/>
     <keyword type="property" name="The “noise-shaping” property" link="gst-plugins-base-plugins-audioconvert.html#GstAudioConvert--noise-shaping"/>
     <keyword type="struct" name="struct GstAudioRate" link="gst-plugins-base-plugins-audiorate.html#GstAudioRate-struct"/>
@@ -223,6 +228,8 @@
     <keyword type="enum" name="enum GstRecoverPolicy" link="gst-plugins-base-plugins-multisocketsink.html#GstRecoverPolicy"/>
     <keyword type="enum" name="enum GstSyncMethod" link="gst-plugins-base-plugins-multisocketsink.html#GstSyncMethod"/>
     <keyword type="enum" name="enum GstClientStatus" link="gst-plugins-base-plugins-multisocketsink.html#GstClientStatus"/>
+    <keyword type="property" name="The “send-dispatched” property" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-dispatched"/>
+    <keyword type="property" name="The “send-messages” property" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-messages"/>
     <keyword type="signal" name="The “add” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-add"/>
     <keyword type="signal" name="The “add-full” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-add-full"/>
     <keyword type="signal" name="The “client-added” signal" link="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink-client-added"/>
@@ -237,6 +244,23 @@
     <keyword type="property" name="The “max-page-delay” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-page-delay"/>
     <keyword type="property" name="The “max-tolerance” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--max-tolerance"/>
     <keyword type="property" name="The “skeleton” property" link="gst-plugins-base-plugins-oggmux.html#GstOggMux--skeleton"/>
+    <keyword type="struct" name="struct GstOpusDec" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec-struct"/>
+    <keyword type="property" name="The “apply-gain” property" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec--apply-gain"/>
+    <keyword type="property" name="The “use-inband-fec” property" link="gst-plugins-base-plugins-opusdec.html#GstOpusDec--use-inband-fec"/>
+    <keyword type="struct" name="struct GstOpusEnc" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc-struct"/>
+    <keyword type="property" name="The “audio” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--audio"/>
+    <keyword type="property" name="The “audio-type” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--audio-type"/>
+    <keyword type="property" name="The “bandwidth” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bandwidth"/>
+    <keyword type="property" name="The “bitrate” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bitrate"/>
+    <keyword type="property" name="The “bitrate-type” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--bitrate-type"/>
+    <keyword type="property" name="The “cbr” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--cbr"/>
+    <keyword type="property" name="The “complexity” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--complexity"/>
+    <keyword type="property" name="The “constrained-vbr” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--constrained-vbr"/>
+    <keyword type="property" name="The “dtx” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--dtx"/>
+    <keyword type="property" name="The “frame-size” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--frame-size"/>
+    <keyword type="property" name="The “inband-fec” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--inband-fec"/>
+    <keyword type="property" name="The “max-payload-size” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--max-payload-size"/>
+    <keyword type="property" name="The “packet-loss-percentage” property" link="gst-plugins-base-plugins-opusenc.html#GstOpusEnc--packet-loss-percentage"/>
     <keyword type="struct" name="struct GstPlayBin" link="gst-plugins-base-plugins-playbin.html#GstPlayBin-struct"/>
     <keyword type="enum" name="enum GstPlayFlags" link="gst-plugins-base-plugins-playbin.html#GstPlayFlags"/>
     <keyword type="property" name="The “audio-sink” property" link="gst-plugins-base-plugins-playbin.html#GstPlayBin--audio-sink"/>
@@ -309,6 +333,7 @@
     <keyword type="struct" name="struct GstSocketSrc" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-struct"/>
     <keyword type="property" name="The “socket” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket"/>
     <keyword type="property" name="The “caps” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--caps"/>
+    <keyword type="property" name="The “send-messages” property" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--send-messages"/>
     <keyword type="signal" name="The “connection-closed-by-peer” signal" link="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-connection-closed-by-peer"/>
     <keyword type="struct" name="struct GstSsaParse" link="gst-plugins-base-plugins-ssaparse.html#GstSsaParse-struct"/>
     <keyword type="struct" name="struct GstStreamSynchronizer" link="gst-plugins-base-plugins-streamsynchronizer.html#GstStreamSynchronizer-struct"/>
@@ -473,15 +498,6 @@
     <keyword type="property" name="The “synchronous” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--synchronous"/>
     <keyword type="property" name="The “window-height” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--window-height"/>
     <keyword type="property" name="The “window-width” property" link="gst-plugins-base-plugins-xvimagesink.html#GstXvImageSink--window-width"/>
-    <keyword type="constant" name="DITHER_NONE" link="gst-plugins-base-plugins-audioconvert.html#DITHER-NONE:CAPS"/>
-    <keyword type="constant" name="DITHER_RPDF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-RPDF:CAPS"/>
-    <keyword type="constant" name="DITHER_TPDF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-TPDF:CAPS"/>
-    <keyword type="constant" name="DITHER_TPDF_HF" link="gst-plugins-base-plugins-audioconvert.html#DITHER-TPDF-HF:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_NONE" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-NONE:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_ERROR_FEEDBACK" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-ERROR-FEEDBACK:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_SIMPLE" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-SIMPLE:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_MEDIUM" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-MEDIUM:CAPS"/>
-    <keyword type="constant" name="NOISE_SHAPING_HIGH" link="gst-plugins-base-plugins-audioconvert.html#NOISE-SHAPING-HIGH:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SINE" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SINE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SQUARE" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SQUARE:CAPS"/>
     <keyword type="constant" name="GST_AUDIO_TEST_SRC_WAVE_SAW" link="gst-plugins-base-plugins-audiotestsrc.html#GST-AUDIO-TEST-SRC-WAVE-SAW:CAPS"/>

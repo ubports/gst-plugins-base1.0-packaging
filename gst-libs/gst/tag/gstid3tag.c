@@ -95,6 +95,7 @@ static const GstTagEntryMatch tag_matches[] = {
   {GST_TAG_ARTIST, "TPE1"},
   {GST_TAG_ALBUM_ARTIST, "TPE2"},
   {GST_TAG_COMPOSER, "TCOM"},
+  {GST_TAG_CONDUCTOR, "TPE3"},
   {GST_TAG_COPYRIGHT, "TCOP"},
   {GST_TAG_COPYRIGHT_URI, "WCOP"},
   {GST_TAG_ENCODED_BY, "TENC"},
@@ -113,6 +114,7 @@ static const GstTagEntryMatch tag_matches[] = {
   {GST_TAG_PUBLISHER, "TPUB"},
   {GST_TAG_INTERPRETED_BY, "TPE4"},
   {GST_TAG_MUSICAL_KEY, "TKEY"},
+  {GST_TAG_PRIVATE_DATA, "PRIV"},
   {NULL, NULL}
 };
 

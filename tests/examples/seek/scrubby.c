@@ -235,7 +235,7 @@ do_seek (GtkWidget * widget, gboolean flush, gboolean segment)
 
   diff = cur_time - prev_time;
 
-  GST_DEBUG ("diff: %" GST_TIME_FORMAT, GST_TIME_ARGS (diff));
+  GST_DEBUG ("diff: %" GST_STIME_FORMAT, GST_STIME_ARGS (diff));
 
   start = prev_range * duration / RANGE_PREC;
   /* play 50 milliseconds */
@@ -456,6 +456,8 @@ main (int argc, char **argv)
 
   if (!g_option_context_parse (ctx, &argc, &argv, &err)) {
     g_print ("Error initializing: %s\n", err->message);
+    g_option_context_free (ctx);
+    g_clear_error (&err);
     exit (1);
   }
 

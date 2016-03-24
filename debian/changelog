@@ -1,8 +1,51 @@
-gst-plugins-base1.0 (1.6.3-1) unstable; urgency=medium
+gst-plugins-base1.0 (1.7.91-1) experimental; urgency=medium
 
-  * New upstream bugfix release.
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.91.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update new symbols.
 
- -- Sebastian Dröge <slomo@debian.org>  Wed, 20 Jan 2016 14:36:57 +0200
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 15 Mar 2016 12:00:12 +0200
+
+gst-plugins-base1.0 (1.7.90-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.90.
+    + debian/build-deps.in,
+      debian/control.in,
+      debian/gstreamer-plugins-base.install:
+      - Add Opus plugin and add Breaks/Replaces for gst-plugins-bad.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 01 Mar 2016 17:03:06 +0200
+
+gst-plugins-base1.0 (1.7.2-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.2.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
+    + debian/control.in:
+      - Add Breaks for gstreamer1.0-plugins-bad << 1.7.1 because
+        of GstAudioVisualizer moved from a plugin to a library here.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 19 Feb 2016 11:07:18 +0200
+
+gst-plugins-base1.0 (1.7.1-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GLib >= 2.40 and GStreamer >= 1.7.1.
+    + debian/libgstreamer-plugins-base.symbols:
+      - Update for new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Dec 2015 13:52:30 +0100
 
 gst-plugins-base1.0 (1.6.2-1) unstable; urgency=medium
 

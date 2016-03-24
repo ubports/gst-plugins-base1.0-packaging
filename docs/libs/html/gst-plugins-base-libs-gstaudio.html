@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstaudio: GStreamer Base Plugins 1.0 Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gstreamer-audio.html" title="Audio Library">
@@ -33,7 +33,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudio.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -388,7 +388,7 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstaudio.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -429,6 +429,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-META-TAG-AUDIO-CHANNELS-STR:CAPS" title="GST_META_TAG_AUDIO_CHANNELS_STR">GST_META_TAG_AUDIO_CHANNELS_STR</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="gst-plugins-base-libs-gstaudio.html#GST-META-TAG-AUDIO-RATE-STR:CAPS" title="GST_META_TAG_AUDIO_RATE_STR">GST_META_TAG_AUDIO_RATE_STR</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -485,7 +489,7 @@ and will be packed into <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -537,7 +541,7 @@ interleaved. <em class="parameter"><code>dest</code></em>
 channels * size(unpack_format) bytes.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -577,7 +581,7 @@ gst_audio_info_init (<em class="parameter"><code><a class="link" href="gst-plugi
  with default values.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -602,7 +606,7 @@ gst_audio_info_from_caps (<em class="parameter"><code><a class="link" href="gst-
 .</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -637,7 +641,7 @@ gst_audio_info_to_caps (<em class="parameter"><code>const <a class="link" href="
  into a <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -673,7 +677,7 @@ raw audio, GST_FORMAT_DEFAULT corresponds to audio frames.  This
 function can be used to handle pad queries of the type GST_QUERY_CONVERT.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -724,7 +728,7 @@ gst_audio_format_get_info (<em class="parameter"><code><a class="link" href="gst
 </p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -751,7 +755,7 @@ gst_audio_info_copy (<em class="parameter"><code>const <a class="link" href="gst
 <p>Copy a GstAudioInfo structure.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.9.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -778,7 +782,7 @@ gst_audio_info_free (<em class="parameter"><code><a class="link" href="gst-plugi
 or <a class="link" href="gst-plugins-base-libs-gstaudio.html#gst-audio-info-copy" title="gst_audio_info_copy ()"><code class="function">gst_audio_info_copy()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.10.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -821,7 +825,7 @@ gst_audio_info_set_format (<em class="parameter"><code><a class="link" href="gst
  first, no values are preserved.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.12.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -866,7 +870,7 @@ gst_audio_info_is_equal (<em class="parameter"><code>const <a class="link" href=
 <p>Compares two <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioInfo" title="struct GstAudioInfo"><span class="type">GstAudioInfo</span></a> and returns whether they are equal or not</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.13.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -905,7 +909,7 @@ gst_audio_format_build_integer (<em class="parameter"><code><a href="https://dev
 <p>Construct a <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> with given parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.14.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -955,7 +959,7 @@ gst_audio_format_fill_silence (<em class="parameter"><code>const <a class="link"
 .</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.15.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -991,7 +995,7 @@ gst_audio_format_from_string (<em class="parameter"><code>const <a href="https:/
  string to its <a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.16.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1206,7 +1210,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 .</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.48.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1236,7 +1240,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 .</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.49.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1266,7 +1270,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
  into the format string for native endianness.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.50.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1289,7 +1293,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
  into the format string for other endianness.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.51.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1310,7 +1314,7 @@ gst_audio_format_to_string (<em class="parameter"><code><a class="link" href="gs
 <p>Generic caps string for audio, for use in pad templates.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.52.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1339,7 +1343,7 @@ gst_audio_buffer_clip (<em class="parameter"><code><a href="http://gstreamer.fre
  anymore.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.7.53.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1390,7 +1394,7 @@ is not clipped. </p>
 <p>Extra audio flags</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.2.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1422,7 +1426,7 @@ is not clipped. </p>
 <p>Enum value describing the most common audio formats.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.3.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1761,7 +1765,7 @@ is not clipped. </p>
 <p>The different audio flags that a format info can have.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.4.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1829,7 +1833,7 @@ is not clipped. </p>
 <p>Information for an audio format.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.5.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1915,7 +1919,7 @@ in from GstCaps with <a class="link" href="gst-plugins-base-libs-gstaudio.html#g
 <p>Use the provided macros to access the info in this structure.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.6.6"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1969,7 +1973,7 @@ sample * <em class="parameter"><code>channels</code></em>
 <p>Layout of the audio samples for the different channels.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.7.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -2000,19 +2004,32 @@ sample * <em class="parameter"><code>channels</code></em>
 <p>The different flags that can be used when packing and unpacking.</p>
 <div class="refsect3">
 <a name="id-1.2.6.3.8.8.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
 <col width="200px" class="enum_members_annotations">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="enum_member_name"><p><a name="GST-AUDIO-PACK-FLAG-NONE:CAPS"></a>GST_AUDIO_PACK_FLAG_NONE</p></td>
 <td class="enum_member_description">
 <p>No flag</p>
 </td>
 <td class="enum_member_annotations"> </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GST-AUDIO-PACK-FLAG-TRUNCATE-RANGE:CAPS"></a>GST_AUDIO_PACK_FLAG_TRUNCATE_RANGE</p></td>
+<td class="enum_member_description">
+<p>When the source has a smaller depth
+  than the target format, set the least significant bits of the target
+  to 0. This is likely sightly faster but less accurate. When this flag
+  is not specified, the most significant bits of the source are duplicated
+  in the least significant bits of the destination.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
 </table></div>
 </div>
 </div>
@@ -2031,6 +2048,14 @@ sample * <em class="parameter"><code>channels</code></em>
 </pre>
 <p>This metadata stays relevant as long as channels are unchanged.</p>
 <p class="since">Since: 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GST-META-TAG-AUDIO-RATE-STR:CAPS"></a><h3>GST_META_TAG_AUDIO_RATE_STR</h3>
+<pre class="programlisting">#define GST_META_TAG_AUDIO_RATE_STR "rate"
+</pre>
+<p>This metadata stays relevant as long as sample rate is unchanged.</p>
+<p class="since">Since: 1.8</p>
 </div>
 <hr>
 <div class="refsect2">

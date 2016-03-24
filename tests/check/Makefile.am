@@ -6,8 +6,7 @@ TEST_FILES_DIRECTORY = $(top_srcdir)/tests/files
 REGISTRY_ENVIRONMENT = \
 	GST_REGISTRY_1_0=$(CHECK_REGISTRY)
 
-AM_TESTS_ENVIRONMENT = \
-	CK_DEFAULT_TIMEOUT=120                                  \
+AM_TESTS_ENVIRONMENT += \
 	GST_STATE_IGNORE_ELEMENTS="$(STATE_IGNORE_ELEMENTS)"	\
 	$(REGISTRY_ENVIRONMENT)					\
 	GST_PLUGIN_SYSTEM_PATH_1_0=				\
@@ -41,6 +40,12 @@ if USE_OGG
 check_ogg = pipelines/oggmux
 else
 check_ogg =
+endif
+
+if USE_OPUS
+check_opus = elements/opus
+else
+check_opus =
 endif
 
 if USE_PANGO
@@ -140,7 +145,7 @@ check_adder =
 endif
 
 if HAVE_ORC
-check_orc = orc/video orc/audio orc/adder orc/audioconvert orc/volume orc/videotestsrc
+check_orc = orc/video orc/audio orc/adder orc/volume orc/videotestsrc
 else
 check_orc =
 endif
@@ -194,6 +199,7 @@ check_PROGRAMS = \
 	libs/audiocdsrc \
 	libs/audiodecoder \
 	libs/audioencoder \
+	libs/baseaudiovisualizer \
 	libs/discoverer \
 	libs/fft \
 	libs/navigation \
@@ -224,6 +230,7 @@ check_PROGRAMS = \
 	$(check_encodebin) \
 	$(check_gio) \
 	$(check_ogg) \
+	$(check_opus) \
 	$(check_pango) \
 	$(check_playback) \
 	$(check_subparse) \
@@ -341,6 +348,14 @@ libs_audiocdsrc_LDADD = \
 	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
 	$(GST_BASE_LIBS) \
 	$(LDADD)
+
+libs_baseaudiovisualizer_SOURCES = libs/baseaudiovisualizer.c
+libs_baseaudiovisualizer_CFLAGS = \
+        $(GST_PLUGINS_BASE_CFLAGS) \
+        $(GST_CFLAGS) $(AM_CFLAGS)
+libs_baseaudiovisualizer_LDADD = \
+        $(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-@GST_API_VERSION@.la \
+        $(GST_LIBS) $(LDADD)
 
 libs_discoverer_CFLAGS = \
 	$(GST_PLUGINS_BASE_CFLAGS) \
@@ -652,9 +667,6 @@ nodist_orc_audio_SOURCES = orc/audio.c
 orc_adder_CFLAGS = $(ORC_CFLAGS)
 orc_adder_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_adder_SOURCES = orc/adder.c
-orc_audioconvert_CFLAGS = $(ORC_CFLAGS)
-orc_audioconvert_LDADD = $(ORC_LIBS) -lorc-test-0.4
-nodist_orc_audioconvert_SOURCES = orc/audioconvert.c
 orc_volume_CFLAGS = $(ORC_CFLAGS)
 orc_volume_LDADD = $(ORC_LIBS) -lorc-test-0.4
 nodist_orc_volume_SOURCES = orc/volume.c
@@ -671,10 +683,6 @@ orc/audio.c: $(top_srcdir)/gst-libs/gst/audio/gstaudiopack.orc
 	$(ORCC) --test -o $@ $<
 
 orc/adder.c: $(top_srcdir)/gst/adder/gstadderorc.orc
-	$(MKDIR_P) orc/
-	$(ORCC) --test -o $@ $<
-
-orc/audioconvert.c: $(top_srcdir)/gst/audioconvert/gstaudioconvertorc.orc
 	$(MKDIR_P) orc/
 	$(ORCC) --test -o $@ $<
 

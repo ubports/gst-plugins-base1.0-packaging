@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideometa: GStreamer Base Plugins 1.0 Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideo.html" title="gstvideo">
-<link rel="next" href="gst-plugins-base-libs-gstvideooverlaycomposition.html" title="gstvideooverlaycomposition">
+<link rel="next" href="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html" title="gstvideoaffinetransformationmeta">
 <meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -20,7 +20,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="gstreamer-video.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="gst-plugins-base-libs-gstvideo.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gst-plugins-base-libs-gstvideooverlaycomposition.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="gst-plugins-base-libs-gstvideoaffinetransformationmeta.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="gst-plugins-base-libs-gstvideometa"></a><div class="titlepage"></div>
@@ -33,7 +33,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideometa.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -171,7 +171,7 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideometa.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -229,7 +229,7 @@ gst_video_meta_map (<em class="parameter"><code><a class="link" href="gst-plugin
 first byte of the plane and the stride of the plane.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -287,7 +287,7 @@ gst_video_meta_unmap (<em class="parameter"><code><a class="link" href="gst-plug
 <p>Unmap a previously mapped plane with <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-video-meta-map" title="gst_video_meta_map ()"><code class="function">gst_video_meta_map()</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -342,7 +342,7 @@ default offsets and strides for <em class="parameter"><code>format</code></em>
 <a class="link" href="gst-plugins-base-libs-gstvideometa.html#gst-buffer-add-video-meta-full" title="gst_buffer_add_video_meta_full ()"><code class="function">gst_buffer_add_video_meta_full()</code></a> with them.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.5.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -400,7 +400,7 @@ gst_buffer_add_video_meta_full (<em class="parameter"><code><a href="http://gstr
  with the given parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -469,7 +469,7 @@ gst_buffer_get_video_meta (<em class="parameter"><code><a href="http://gstreamer
 multiview buffers.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.7.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -503,7 +503,7 @@ gst_buffer_get_video_meta_id (<em class="parameter"><code><a href="http://gstrea
 multiview buffers.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.8.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -560,7 +560,7 @@ gst_buffer_add_video_region_of_interest_meta
 parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.11.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -623,7 +623,7 @@ gst_buffer_add_video_region_of_interest_meta_id
 parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.12.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -689,7 +689,7 @@ gst_buffer_get_video_region_of_interest_meta_id
 multiple regions of interests are marked on a frame.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.14.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -743,7 +743,7 @@ gst_buffer_add_video_gl_texture_upload_meta
 parameters.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.16.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -819,7 +819,7 @@ gst_video_gl_texture_upload_meta_upload
 <p>Uploads the buffer which owns the meta to a specific texture ID.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.7.18.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -872,7 +872,7 @@ gst_video_gl_texture_upload_meta_upload
 <p>Extra buffer metadata describing image properties</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.2.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -959,7 +959,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 "gst-video-scale".</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.3.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -995,7 +995,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 <p>Extra buffer metadata describing image cropping.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.4.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1050,7 +1050,7 @@ valid, it is used by the default implementation of <em class="parameter"><code>m
 <p>Extra buffer metadata describing an image region of interest</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.5.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1130,7 +1130,7 @@ have OpenGL set up and call this from a thread where it is valid
 to upload something to an OpenGL texture.</p>
 <div class="refsect3">
 <a name="id-1.2.15.4.8.7.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">

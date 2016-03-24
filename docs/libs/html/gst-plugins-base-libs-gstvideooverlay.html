@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gstvideooverlay: GStreamer Base Plugins 1.0 Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Library Reference Manual">
 <link rel="up" href="gstreamer-video.html" title="Video Library">
 <link rel="prev" href="gst-plugins-base-libs-gstvideoorientation.html" title="gstvideoorientation">
@@ -36,7 +36,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideooverlay.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -103,7 +103,7 @@
 </div>
 <a name="GstVideoOverlay"></a><div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideooverlay.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -134,7 +134,7 @@
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gstvideooverlay.description"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id-1.2.15.15.8.2"></a><p>
+<a name="id-1.2.15.16.8.2"></a><p>
 The <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface is used for 2 main purposes :
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -246,7 +246,7 @@ immediately. Here is an example on how to do that correctly:
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.15.15.8.3"></a><h3>Two basic usage scenarios</h3>
+<a name="id-1.2.15.16.8.3"></a><h3>Two basic usage scenarios</h3>
 <p>
 There are two basic usage scenarios: in the simplest case, the application
 uses <span class="type">playbin</span> or <span class="type">plasink</span> or knows exactly what particular element is used
@@ -293,7 +293,7 @@ used in the callback).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.15.15.8.4"></a><h3>GstVideoOverlay and Gtk+</h3>
+<a name="id-1.2.15.16.8.4"></a><h3>GstVideoOverlay and Gtk+</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -502,7 +502,7 @@ used in the callback).
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.15.15.8.5"></a><h3>GstVideoOverlay and Qt</h3>
+<a name="id-1.2.15.16.8.5"></a><h3>GstVideoOverlay and Qt</h3>
 <p>
 </p>
 <div class="informalexample">
@@ -634,8 +634,8 @@ gst_video_overlay_got_window_handle (<em class="parameter"><code><a class="link"
 <p>This will post a "have-window-handle" element message on the bus.</p>
 <p>This function should only be used by video overlay plugin developers.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.2.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.2.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -668,8 +668,8 @@ specific window (e.g. an XWindow on X11). Passing 0 as the  <em class="parameter
  will
 tell the overlay to stop using that window and create an internal one.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -702,8 +702,8 @@ to give applications an opportunity to call
 window.</p>
 <p>This function should only be used by video overlay plugin developers.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.4.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.4.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -725,8 +725,8 @@ gst_video_overlay_expose (<em class="parameter"><code><a class="link" href="gst-
 <p>Tell an overlay that it has been exposed. This will redraw the current frame
 in the drawable even if the pipeline is PAUSED.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -752,8 +752,8 @@ events are not propagated in the window hierarchy if a client is listening
 for them. This method allows you to disable events handling completely
 from the <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -796,8 +796,8 @@ the <em class="parameter"><code>width</code></em>
 <p>This method is needed for non fullscreen video overlay in UI toolkits that
 do not support subwindows.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.7.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.7.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -833,7 +833,7 @@ do not support subwindows.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.7.7"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.9.7.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if not supported by the sink.</p>
 </div>
 </div>
@@ -846,8 +846,8 @@ gst_is_video_overlay_prepare_window_handle_message
 <p>Convenience function to check if the given message is a
 "prepare-window-handle" message from a <a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.9.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -861,7 +861,7 @@ gst_is_video_overlay_prepare_window_handle_message
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.15.15.9.8.6"></a><h4>Returns</h4>
+<a name="id-1.2.15.16.9.8.6"></a><h4>Returns</h4>
 <p> whether <em class="parameter"><code>msg</code></em>
 is a "prepare-window-handle" message</p>
 </div>
@@ -894,8 +894,8 @@ is a "prepare-window-handle" message</p>
 </pre>
 <p><a class="link" href="gst-plugins-base-libs-gstvideooverlay.html#GstVideoOverlay"><span class="type">GstVideoOverlay</span></a> interface</p>
 <div class="refsect3">
-<a name="id-1.2.15.15.10.3.5"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.15.16.10.3.5"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">

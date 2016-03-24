@@ -728,10 +728,6 @@ gst_video_rate_sink_event (GstBaseTransform * trans, GstEvent * event)
           videorate->dup += count - 1;
           if (!videorate->silent)
             gst_video_rate_notify_duplicate (videorate);
-        } else if (count == 0) {
-          videorate->drop++;
-          if (!videorate->silent)
-            gst_video_rate_notify_drop (videorate);
         }
         /* clean up for the new one; _chain will resume from the new start */
         gst_video_rate_swap_prev (videorate, NULL, 0);
@@ -1015,7 +1011,7 @@ gst_video_rate_check_variable_rate (GstVideoRate * videorate,
 {
   GstStructure *st;
   gint fps_d, fps_n;
-  GstCaps *srcpadcaps, *tmpcaps;
+  GstCaps *srcpadcaps, *tmpcaps, *downstream_caps;
   GstPad *pad = NULL;
 
   srcpadcaps =
@@ -1030,13 +1026,16 @@ gst_video_rate_check_variable_rate (GstVideoRate * videorate,
   gst_caps_unref (srcpadcaps);
 
   pad = gst_pad_get_peer (GST_BASE_TRANSFORM_SRC_PAD (videorate));
-  if (pad && !gst_pad_query_accept_caps (pad, tmpcaps)) {
+  downstream_caps = gst_pad_query_caps (pad, NULL);
+  if (pad && !gst_caps_can_intersect (tmpcaps, downstream_caps)) {
     videorate->force_variable_rate = TRUE;
+    gst_caps_unref (downstream_caps);
     GST_DEBUG_OBJECT (videorate, "Downstream forces variable framerate"
         " respecting it");
 
     goto done;
   }
+  gst_caps_unref (downstream_caps);
 
   videorate->to_rate_numerator = fps_n;
   videorate->to_rate_denominator = fps_d;
@@ -1319,7 +1318,6 @@ gst_video_rate_set_property (GObject * object,
       latency_changed = new_value != videorate->drop_only;
       videorate->drop_only = g_value_get_boolean (value);
       goto reconfigure;
-      break;
     }
     case PROP_AVERAGE_PERIOD:
       videorate->average_period_set = g_value_get_uint64 (value);
@@ -1327,7 +1325,6 @@ gst_video_rate_set_property (GObject * object,
     case PROP_MAX_RATE:
       g_atomic_int_set (&videorate->max_rate, g_value_get_int (value));
       goto reconfigure;
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;

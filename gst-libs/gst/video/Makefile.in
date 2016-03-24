@@ -147,16 +147,15 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
 	$(top_srcdir)/common/m4/orc.m4 $(top_srcdir)/common/m4/pkg.m4 \
-	$(top_srcdir)/m4/freetype2.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gst-alsa.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lrint.m4 \
-	$(top_srcdir)/m4/lrintf.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gst-alsa.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/lrint.m4 $(top_srcdir)/m4/lrintf.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am \
@@ -220,6 +219,7 @@ am_libgstvideo_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstvideo_@GST_API_VERSION@_la-gstvideosink.lo \
 	libgstvideo_@GST_API_VERSION@_la-gstvideofilter.lo \
 	libgstvideo_@GST_API_VERSION@_la-convertframe.lo \
+	libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo \
 	libgstvideo_@GST_API_VERSION@_la-gstvideometa.lo \
 	libgstvideo_@GST_API_VERSION@_la-gstvideopool.lo \
 	libgstvideo_@GST_API_VERSION@_la-videoorientation.lo \
@@ -365,9 +365,6 @@ ERROR_CXXFLAGS = @ERROR_CXXFLAGS@
 EXEEXT = @EXEEXT@
 FFLAGS = @FFLAGS@
 FGREP = @FGREP@
-FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
-FT2_LIBS = @FT2_LIBS@
 GCOV = @GCOV@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
@@ -473,6 +470,7 @@ LOCALEDIR = @LOCALEDIR@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -486,6 +484,8 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
+OPUS_CFLAGS = @OPUS_CFLAGS@
+OPUS_LIBS = @OPUS_LIBS@
 ORCC = @ORCC@
 ORCC_FLAGS = @ORCC_FLAGS@
 ORC_CFLAGS = @ORC_CFLAGS@
@@ -653,6 +653,7 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	gstvideosink.c   	\
 	gstvideofilter.c 	\
 	convertframe.c   	\
+	gstvideoaffinetransformationmeta.c \
 	gstvideometa.c   	\
 	gstvideopool.c		\
 	videoorientation.c	\
@@ -686,6 +687,7 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	gstvideosink.h 		\
 	gstvideofilter.h	\
 	gstvideometa.h		\
+	gstvideoaffinetransformationmeta.h \
 	gstvideopool.h		\
 	videoorientation.h 	\
 	videooverlay.h          \
@@ -804,6 +806,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-colorbalance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-colorbalancechannel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-convertframe.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideodecoder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideoencoder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideofilter.Plo@am__quote@
@@ -975,6 +978,13 @@ libgstvideo_@GST_API_VERSION@_la-convertframe.lo: convertframe.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='convertframe.c' object='libgstvideo_@GST_API_VERSION@_la-convertframe.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideo_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstvideo_@GST_API_VERSION@_la-convertframe.lo `test -f 'convertframe.c' || echo '$(srcdir)/'`convertframe.c
+
+libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo: gstvideoaffinetransformationmeta.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideo_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo -MD -MP -MF $(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.Tpo -c -o libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo `test -f 'gstvideoaffinetransformationmeta.c' || echo '$(srcdir)/'`gstvideoaffinetransformationmeta.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.Tpo $(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstvideoaffinetransformationmeta.c' object='libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideo_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstvideo_@GST_API_VERSION@_la-gstvideoaffinetransformationmeta.lo `test -f 'gstvideoaffinetransformationmeta.c' || echo '$(srcdir)/'`gstvideoaffinetransformationmeta.c
 
 libgstvideo_@GST_API_VERSION@_la-gstvideometa.lo: gstvideometa.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstvideo_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstvideo_@GST_API_VERSION@_la-gstvideometa.lo -MD -MP -MF $(DEPDIR)/libgstvideo_@GST_API_VERSION@_la-gstvideometa.Tpo -c -o libgstvideo_@GST_API_VERSION@_la-gstvideometa.lo `test -f 'gstvideometa.c' || echo '$(srcdir)/'`gstvideometa.c
@@ -1472,7 +1482,8 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstVideo \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
-@HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--identifier-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--symbol-prefix=gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		--c-include "gst/video/video.h" \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_srcdir)/gst-libs \

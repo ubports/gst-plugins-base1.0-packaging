@@ -115,16 +115,15 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
 	$(top_srcdir)/common/m4/orc.m4 $(top_srcdir)/common/m4/pkg.m4 \
-	$(top_srcdir)/m4/freetype2.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gst-alsa.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lrint.m4 \
-	$(top_srcdir)/m4/lrintf.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gst-alsa.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/lrint.m4 $(top_srcdir)/m4/lrintf.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(noinst_HEADERS) \
@@ -165,10 +164,11 @@ LTLIBRARIES = $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libgstlibvisual_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/audio/libgstaudio-$(GST_API_VERSION).la \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-$(GST_API_VERSION).la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libgstlibvisual_la_OBJECTS = libgstlibvisual_la-plugin.lo \
-	libgstlibvisual_la-visual.lo \
-	libgstlibvisual_la-gstaudiovisualizer.lo
+	libgstlibvisual_la-visual.lo
 libgstlibvisual_la_OBJECTS = $(am_libgstlibvisual_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -289,9 +289,6 @@ ERROR_CXXFLAGS = @ERROR_CXXFLAGS@
 EXEEXT = @EXEEXT@
 FFLAGS = @FFLAGS@
 FGREP = @FGREP@
-FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
-FT2_LIBS = @FT2_LIBS@
 GCOV = @GCOV@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
@@ -397,6 +394,7 @@ LOCALEDIR = @LOCALEDIR@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -410,6 +408,8 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
+OPUS_CFLAGS = @OPUS_CFLAGS@
+OPUS_LIBS = @OPUS_LIBS@
 ORCC = @ORCC@
 ORCC_FLAGS = @ORCC_FLAGS@
 ORC_CFLAGS = @ORC_CFLAGS@
@@ -536,16 +536,17 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 plugin_LTLIBRARIES = libgstlibvisual.la
-libgstlibvisual_la_SOURCES = plugin.c visual.c gstaudiovisualizer.c
+libgstlibvisual_la_SOURCES = plugin.c visual.c
 libgstlibvisual_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS) $(LIBVISUAL_CFLAGS)
 libgstlibvisual_la_LIBADD = \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-$(GST_API_VERSION).la \
 	$(top_builddir)/gst-libs/gst/video/libgstvideo-$(GST_API_VERSION).la \
-	$(GST_BASE_LIBS) $(LIBVISUAL_LIBS)
+	$(top_builddir)/gst-libs/gst/pbutils/libgstpbutils-$(GST_API_VERSION).la \
+	$(GST_BASE_LIBS) $(GST_LIBS) $(LIBVISUAL_LIBS)
 
 libgstlibvisual_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstlibvisual_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
-noinst_HEADERS = visual.h gstaudiovisualizer.h
+noinst_HEADERS = visual.h
 all: all-am
 
 .SUFFIXES:
@@ -624,7 +625,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstlibvisual_la-gstaudiovisualizer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstlibvisual_la-plugin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstlibvisual_la-visual.Plo@am__quote@
 
@@ -665,13 +665,6 @@ libgstlibvisual_la-visual.lo: visual.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='visual.c' object='libgstlibvisual_la-visual.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstlibvisual_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstlibvisual_la_CFLAGS) $(CFLAGS) -c -o libgstlibvisual_la-visual.lo `test -f 'visual.c' || echo '$(srcdir)/'`visual.c
-
-libgstlibvisual_la-gstaudiovisualizer.lo: gstaudiovisualizer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstlibvisual_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstlibvisual_la_CFLAGS) $(CFLAGS) -MT libgstlibvisual_la-gstaudiovisualizer.lo -MD -MP -MF $(DEPDIR)/libgstlibvisual_la-gstaudiovisualizer.Tpo -c -o libgstlibvisual_la-gstaudiovisualizer.lo `test -f 'gstaudiovisualizer.c' || echo '$(srcdir)/'`gstaudiovisualizer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstlibvisual_la-gstaudiovisualizer.Tpo $(DEPDIR)/libgstlibvisual_la-gstaudiovisualizer.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstaudiovisualizer.c' object='libgstlibvisual_la-gstaudiovisualizer.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstlibvisual_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstlibvisual_la_CFLAGS) $(CFLAGS) -c -o libgstlibvisual_la-gstaudiovisualizer.lo `test -f 'gstaudiovisualizer.c' || echo '$(srcdir)/'`gstaudiovisualizer.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
