@@ -35,6 +35,7 @@ libgstvideo_@GST_API_VERSION@_la_SOURCES = \
 	gstvideosink.c   	\
 	gstvideofilter.c 	\
 	convertframe.c   	\
+	gstvideoaffinetransformationmeta.c \
 	gstvideometa.c   	\
 	gstvideopool.c		\
 	videoorientation.c	\
@@ -69,6 +70,7 @@ libgstvideo_@GST_API_VERSION@include_HEADERS = \
 	gstvideosink.h 		\
 	gstvideofilter.h	\
 	gstvideometa.h		\
+	gstvideoaffinetransformationmeta.h \
 	gstvideopool.h		\
 	videoorientation.h 	\
 	videooverlay.h          \
@@ -103,7 +105,8 @@ GstVideo-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstvideo-@GST_API_VE
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstVideo \
 		--nsversion=@GST_API_VERSION@ \
-		--strip-prefix=Gst \
+		--identifier-prefix=Gst \
+		--symbol-prefix=gst \
 		--warn-all \
 		--c-include "gst/video/video.h" \
 		-I$(top_srcdir)/gst-libs \

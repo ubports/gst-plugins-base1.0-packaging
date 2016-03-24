@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>multisocketsink: GStreamer Base Plugins 1.0 Plugins Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="GStreamer Base Plugins 1.0 Plugins Reference Manual">
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-multifdsink.html" title="multifdsink">
@@ -16,7 +16,8 @@
 <td width="100%" align="left" class="shortcuts">
 <a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-multisocketsink.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-multisocketsink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-multisocketsink.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-multisocketsink.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-multisocketsink.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -34,8 +35,30 @@
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsect1">
+<a name="gst-plugins-base-plugins-multisocketsink.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-dispatched" title="The “send-dispatched” property">send-dispatched</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-multisocketsink.html#GstMultiSocketSink--send-messages" title="The “send-messages” property">send-messages</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
 <a name="gst-plugins-base-plugins-multisocketsink.signals"></a><h2>Signals</h2>
-<div class="informaltable"><table border="0">
+<div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
 <col width="150px" class="signals_return">
 <col width="300px" class="signals_name">
@@ -88,7 +111,7 @@
 </div>
 <a name="GstMultiSocketSink"></a><div class="refsect1">
 <a name="gst-plugins-base-plugins-multisocketsink.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -192,7 +215,7 @@ drop late buffers.</p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.20.7.12.1"></a><h3>Element Information</h3>
+<a name="id-1.2.21.8.12.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -218,7 +241,7 @@ drop late buffers.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.20.7.12.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.21.8.12.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -263,8 +286,8 @@ drop late buffers.</p>
 <p>Possible values for the recovery procedure to use when a client consumes
 data too slow and has a backlag of more that soft-limit buffers.</p>
 <div class="refsect3">
-<a name="id-1.2.20.9.3.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.10.3.4"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -309,8 +332,8 @@ data too slow and has a backlag of more that soft-limit buffers.</p>
 <p>This enum defines the selection of the first buffer that is sent
 to a new client.</p>
 <div class="refsect3">
-<a name="id-1.2.20.9.4.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.10.4.4"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -372,8 +395,8 @@ to a new client.</p>
 <p>This specifies the reason why a client was removed from
 multisocketsink and is received in the "client-removed" signal.</p>
 <div class="refsect3">
-<a name="id-1.2.20.9.5.4"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.10.5.4"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -435,6 +458,36 @@ multisocketsink and is received in the "client-removed" signal.</p>
 </div>
 </div>
 <div class="refsect1">
+<a name="gst-plugins-base-plugins-multisocketsink.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GstMultiSocketSink--send-dispatched"></a><h3>The <code class="literal">“send-dispatched”</code> property</h3>
+<pre class="programlisting">  “send-dispatched”          <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Sends a GstNetworkMessageDispatched event upstream whenever a buffer
+is sent to a client.
+The event is a CUSTOM event name GstNetworkMessageDispatched and
+contains:</p>
+<p>  "object"  G_TYPE_OBJECT     : the object identifying the client
+  "buffer"  GST_TYPE_BUFFER   : the buffer sent to the client</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: 1.8.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstMultiSocketSink--send-messages"></a><h3>The <code class="literal">“send-messages”</code> property</h3>
+<pre class="programlisting">  “send-messages”            <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Sends a GstNetworkMessage event upstream whenever a buffer
+is received from a client.
+The event is a CUSTOM event name GstNetworkMessage and contains:</p>
+<p>  "object"  G_TYPE_OBJECT     : the object identifying the client
+  "buffer"  GST_TYPE_BUFFER   : the buffer with data received from the
+                                client</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: 1.8.0</p>
+</div>
+</div>
+<div class="refsect1">
 <a name="gst-plugins-base-plugins-multisocketsink.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2">
 <a name="GstMultiSocketSink-add"></a><h3>The <code class="literal">“add”</code> signal</h3>
@@ -444,8 +497,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
 <p>Hand the given open socket to multisocketsink to write to.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.2.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -487,8 +540,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
 <p>Hand the given open socket to multisocketsink to write to and
 specify the burst parameters for the new connection.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.3.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -557,8 +610,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
 be emitted from the streaming thread so application should be prepared
 for that.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -603,8 +656,8 @@ the get-stats signal from this callback. For the same reason it is
 not safe to <code class="function">close()</code> and reuse <em class="parameter"><code>socket</code></em>
  in this callback.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.5.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.5.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -654,8 +707,8 @@ with <em class="parameter"><code>socket</code></em>
 . It is however safe to <code class="function">close()</code> and reuse <em class="parameter"><code>fd</code></em>
  in the callback.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.6.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.6.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -692,8 +745,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
 <p>Get statistics about <em class="parameter"><code>socket</code></em>
 . This function returns a GstStructure.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -719,7 +772,7 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.20.10.7.6"></a><h4>Returns</h4>
+<a name="id-1.2.21.12.7.6"></a><h4>Returns</h4>
 <p> a GstStructure with the statistics. The structure contains
 values that represent: total number of bytes sent, time
 when the client was added, time when the client was
@@ -738,8 +791,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
 <p>Remove the given open socket from multisocketsink.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -776,8 +829,8 @@ user_function (<a class="link" href="gst-plugins-base-plugins-multisocketsink.ht
 <p>Remove the given open socket from multisocketsink after flushing all
 the pending data to the socket.</p>
 <div class="refsect3">
-<a name="id-1.2.20.10.9.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<a name="id-1.2.21.12.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">

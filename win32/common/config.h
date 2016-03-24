@@ -59,6 +59,9 @@
 /* system wide data directory */
 #define GST_DATADIR PREFIX "\\share"
 
+/* Define if extra runtime checks should be enabled */
+#undef GST_ENABLE_EXTRA_CHECKS
+
 /* Extra platform specific plugin suffix */
 #undef GST_EXTRA_MODULE_SUFFIX
 
@@ -87,7 +90,7 @@
 #define GST_PACKAGE_ORIGIN "Unknown package origin"
 
 /* GStreamer package release date/time for plugins as YYYY-MM-DD */
-#define GST_PACKAGE_RELEASE_DATETIME "2016-01-20"
+#define GST_PACKAGE_RELEASE_DATETIME "2016-03-15"
 
 /* Define if static plugins should be built */
 #undef GST_PLUGIN_BUILD_STATIC
@@ -185,9 +188,6 @@
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
-/* Define to enable glib GIO unix (used by gio-unix-2.0). */
-#undef HAVE_GIO_UNIX_2_0
-
 /* Define to 1 if you have the `gmtime_r' function. */
 #undef HAVE_GMTIME_R
 
@@ -229,6 +229,9 @@
 
 /* Define to enable Xiph Ogg library (used by ogg). */
 #undef HAVE_OGG
+
+/* Define to enable opus (used by opus). */
+#undef HAVE_OPUS
 
 /* Use Orc */
 #undef HAVE_ORC
@@ -323,8 +326,7 @@
 /* gettext locale dir */
 #define LOCALEDIR PREFIX "\\share\\locale"
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* Name of package */
@@ -337,7 +339,7 @@
 #define PACKAGE_NAME "GStreamer Base Plug-ins"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "GStreamer Base Plug-ins 1.6.3"
+#define PACKAGE_STRING "GStreamer Base Plug-ins 1.7.91"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "gst-plugins-base"
@@ -346,7 +348,7 @@
 #undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.6.3"
+#define PACKAGE_VERSION "1.7.91"
 
 /* directory where plugins are located */
 #ifdef _DEBUG
@@ -380,7 +382,7 @@
 #undef USE_TREMOLO
 
 /* Version number of package */
-#define VERSION "1.6.3"
+#define VERSION "1.7.91"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

@@ -1491,10 +1491,6 @@ gen_video_deinterlace_chain (GstPlaySink * playsink)
   GST_DEBUG_OBJECT (playsink, "creating deinterlace");
   chain->deinterlace = gst_element_factory_make ("deinterlace", "deinterlace");
   if (chain->deinterlace == NULL) {
-    chain->deinterlace =
-        gst_element_factory_make ("avdeinterlace", "deinterlace");
-  }
-  if (chain->deinterlace == NULL) {
     post_missing_element_message (playsink, "deinterlace");
     GST_ELEMENT_WARNING (playsink, CORE, MISSING_PLUGIN,
         (_("Missing element '%s' - check your GStreamer installation."),
@@ -3740,12 +3736,12 @@ gst_play_sink_do_reconfigure (GstPlaySink * playsink)
         g_value_unset (&item);
         g_assert (playsink->text_srcpad_stream_synchronizer);
         gst_iterator_free (it);
-
-        gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (playsink->text_pad),
-            playsink->text_sinkpad_stream_synchronizer);
-        gst_pad_link_full (playsink->text_srcpad_stream_synchronizer,
-            playsink->textchain->textsinkpad, GST_PAD_LINK_CHECK_NOTHING);
       }
+
+      gst_ghost_pad_set_target (GST_GHOST_PAD_CAST (playsink->text_pad),
+          playsink->text_sinkpad_stream_synchronizer);
+      gst_pad_link_full (playsink->text_srcpad_stream_synchronizer,
+          playsink->textchain->textsinkpad, GST_PAD_LINK_CHECK_NOTHING);
 
       if (need_vis || need_video) {
         if (need_vis) {
@@ -4155,7 +4151,7 @@ video_set_blocked (GstPlaySink * playsink, gboolean blocked)
         gst_pad_remove_probe (((GstPlayVisChain *) playsink->vischain)->
             blockpad, playsink->vis_pad_block_id);
       playsink->vis_pad_block_id = 0;
-      PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_VIDEO);
+
       playsink->video_block_id =
           gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
           sinkpad_blocked_cb, playsink, NULL);
@@ -4183,7 +4179,6 @@ audio_set_blocked (GstPlaySink * playsink, gboolean blocked)
             blockpad, playsink->vis_pad_block_id);
       playsink->vis_pad_block_id = 0;
 
-      PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_AUDIO);
       playsink->audio_block_id =
           gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
           sinkpad_blocked_cb, playsink, NULL);
@@ -4216,7 +4211,6 @@ text_set_blocked (GstPlaySink * playsink, gboolean blocked)
             blockpad, playsink->vis_pad_block_id);
       playsink->vis_pad_block_id = 0;
 
-      PENDING_FLAG_SET (playsink, GST_PLAY_SINK_TYPE_TEXT);
       playsink->text_block_id =
           gst_pad_add_probe (opad, GST_PAD_PROBE_TYPE_BLOCK_DOWNSTREAM,
           sinkpad_blocked_cb, playsink, NULL);

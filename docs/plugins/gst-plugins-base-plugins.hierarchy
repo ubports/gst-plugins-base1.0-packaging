@@ -15,11 +15,13 @@ GObject
       GstElement
         GstAdder
         GstAudioDecoder
+          GstOpusDec
           GstVorbisDec
         GstAudioEncoder
+          GstOpusEnc
           GstVorbisEnc
         GstAudioRate
-        GstAudioVisualizer-BaseExtLibvisual
+        GstAudioVisualizer
           GstVisual
             GstVisualbumpscope
             GstVisualcorona
@@ -52,6 +54,7 @@ GObject
             GstGioSrc
             GstGioStreamSrc
           GstPushSrc
+            GstAlsaMidiSrc
             GstAudioBaseSrc
               GstAudioSrc
                 GstAlsaSrc
@@ -110,6 +113,7 @@ GObject
       GstPluginFeature
         GstDeviceProviderFactory
         GstElementFactory
+        GstTracerFactory
         GstTypeFindFactory
       GstRegistry
       GstTask

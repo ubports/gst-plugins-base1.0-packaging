@@ -8,7 +8,8 @@ headers_pbutils = \
 	encoding-target.h	\
 	install-plugins.h \
 	missing-plugins.h \
-	gstdiscoverer.h
+	gstdiscoverer.h \
+	gstaudiovisualizer.h
 
 # variables used for enum/marshal generation
 glib_enum_headers = $(headers_pbutils)
@@ -29,7 +30,8 @@ libgstpbutils_@GST_API_VERSION@_la_SOURCES = \
 	install-plugins.c \
 	missing-plugins.c \
 	gstdiscoverer.c   \
-	gstdiscoverer-types.c
+	gstdiscoverer-types.c \
+	gstaudiovisualizer.c
 
 nodist_libgstpbutils_@GST_API_VERSION@_la_SOURCES = \
 	pbutils-enumtypes.c
@@ -46,8 +48,10 @@ noinst_HEADERS = \
 libgstpbutils_@GST_API_VERSION@_la_LIBADD = \
   $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
   $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+  $(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+  $(GST_BASE_LIBS) \
   $(GST_LIBS)
-libgstpbutils_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
+libgstpbutils_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
 libgstpbutils_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 
 BUILT_SOURCES = \
@@ -74,7 +78,8 @@ GstPbutils-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstpbutils-@GST_AP
 		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 		$(INTROSPECTION_SCANNER) -v --namespace GstPbutils \
 		--nsversion=@GST_API_VERSION@ \
-		--strip-prefix=Gst \
+		--identifier-prefix=Gst \
+		--symbol-prefix=gst \
 		--warn-all \
 		--c-include "gst/pbutils/pbutils.h" \
 		-I$(top_srcdir)/gst-libs \

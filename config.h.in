@@ -56,6 +56,9 @@
 /* system wide data directory */
 #undef GST_DATADIR
 
+/* Define if extra runtime checks should be enabled */
+#undef GST_ENABLE_EXTRA_CHECKS
+
 /* Extra platform specific plugin suffix */
 #undef GST_EXTRA_MODULE_SUFFIX
 
@@ -182,9 +185,6 @@
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
-/* Define to enable glib GIO unix (used by gio-unix-2.0). */
-#undef HAVE_GIO_UNIX_2_0
-
 /* Define to 1 if you have the `gmtime_r' function. */
 #undef HAVE_GMTIME_R
 
@@ -226,6 +226,9 @@
 
 /* Define to enable Xiph Ogg library (used by ogg). */
 #undef HAVE_OGG
+
+/* Define to enable opus (used by opus). */
+#undef HAVE_OPUS
 
 /* Use Orc */
 #undef HAVE_ORC
@@ -320,8 +323,7 @@
 /* gettext locale dir */
 #undef LOCALEDIR
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* Name of package */

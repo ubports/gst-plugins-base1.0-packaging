@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gst-plugins-base 0.10.28.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/\n"
-"POT-Creation-Date: 2016-01-20 14:12+0200\n"
+"POT-Creation-Date: 2016-03-15 11:40+0200\n"
 "PO-Revision-Date: 2010-04-28 14:27+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -594,7 +594,13 @@ msgstr ""
 msgid "quit"
 msgstr ""
 
+msgid "> or n"
+msgstr ""
+
 msgid "play next"
+msgstr ""
+
+msgid "< or b"
 msgstr ""
 
 msgid "play previous"
@@ -635,10 +641,19 @@ msgstr ""
 msgid "change subtitle track"
 msgstr "Sottotitoli formato Kate"
 
+msgid "seek to beginning"
+msgstr ""
+
 msgid "show keyboard shortcuts"
 msgstr ""
 
 msgid "Interactive mode - keyboard controls:"
+msgstr ""
+
+msgid "Output status information and property notifications"
+msgstr ""
+
+msgid "Control playback behaviour setting playbin 'flags' property"
 msgstr ""
 
 msgid "Video sink to use (default is autovideosink)"

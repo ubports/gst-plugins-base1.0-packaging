@@ -55,8 +55,7 @@ list_codecs (void)
     desc = gst_pb_utils_get_codec_description (caps);
     g_print ("  %s - %s\n", desc, tmpstr);
     g_free (tmpstr);
-    if (desc)
-      g_free (desc);
+    g_free (desc);
     gst_caps_remove_structure (caps, 0);
   }
   g_print ("\n");
@@ -73,8 +72,7 @@ list_codecs (void)
     desc = gst_pb_utils_get_codec_description (caps);
     g_print ("  %s - %s\n", desc, tmpstr);
     g_free (tmpstr);
-    if (desc)
-      g_free (desc);
+    g_free (desc);
     gst_caps_remove_structure (caps, 0);
   }
   g_print ("\n");
@@ -91,8 +89,7 @@ list_codecs (void)
     desc = gst_pb_utils_get_codec_description (caps);
     g_print ("  %s - %s\n", desc, tmpstr);
     g_free (tmpstr);
-    if (desc)
-      g_free (desc);
+    g_free (desc);
     gst_caps_remove_structure (caps, 0);
   }
   g_print ("\n");
@@ -399,6 +396,8 @@ main (int argc, char **argv)
 
   if (!g_option_context_parse (ctx, &argc, &argv, &err)) {
     g_print ("Error initializing: %s\n", err->message);
+    g_option_context_free (ctx);
+    g_clear_error (&err);
     exit (1);
   }
 

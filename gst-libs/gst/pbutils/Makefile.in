@@ -125,16 +125,15 @@ am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
 	$(top_srcdir)/common/m4/gtk-doc.m4 \
 	$(top_srcdir)/common/m4/introspection.m4 \
 	$(top_srcdir)/common/m4/orc.m4 $(top_srcdir)/common/m4/pkg.m4 \
-	$(top_srcdir)/m4/freetype2.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gst-alsa.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lrint.m4 \
-	$(top_srcdir)/m4/lrintf.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gst-alsa.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/lrint.m4 $(top_srcdir)/m4/lrintf.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am \
@@ -179,7 +178,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libgstpbutils_@GST_API_VERSION@_la_DEPENDENCIES = $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
 	$(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
-	$(am__DEPENDENCIES_1)
+	$(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libgstpbutils_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstpbutils_@GST_API_VERSION@_la-gstpluginsbaseversion.lo \
 	libgstpbutils_@GST_API_VERSION@_la-pbutils.lo \
@@ -190,7 +190,8 @@ am_libgstpbutils_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstpbutils_@GST_API_VERSION@_la-install-plugins.lo \
 	libgstpbutils_@GST_API_VERSION@_la-missing-plugins.lo \
 	libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer.lo \
-	libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.lo
+	libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.lo \
+	libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo
 nodist_libgstpbutils_@GST_API_VERSION@_la_OBJECTS =  \
 	libgstpbutils_@GST_API_VERSION@_la-pbutils-enumtypes.lo
 libgstpbutils_@GST_API_VERSION@_la_OBJECTS =  \
@@ -321,9 +322,6 @@ ERROR_CXXFLAGS = @ERROR_CXXFLAGS@
 EXEEXT = @EXEEXT@
 FFLAGS = @FFLAGS@
 FGREP = @FGREP@
-FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
-FT2_LIBS = @FT2_LIBS@
 GCOV = @GCOV@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
@@ -429,6 +427,7 @@ LOCALEDIR = @LOCALEDIR@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -442,6 +441,8 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
+OPUS_CFLAGS = @OPUS_CFLAGS@
+OPUS_LIBS = @OPUS_LIBS@
 ORCC = @ORCC@
 ORCC_FLAGS = @ORCC_FLAGS@
 ORC_CFLAGS = @ORC_CFLAGS@
@@ -576,7 +577,8 @@ headers_pbutils = \
 	encoding-target.h	\
 	install-plugins.h \
 	missing-plugins.h \
-	gstdiscoverer.h
+	gstdiscoverer.h \
+	gstaudiovisualizer.h
 
 
 # variables used for enum/marshal generation
@@ -597,7 +599,8 @@ libgstpbutils_@GST_API_VERSION@_la_SOURCES = \
 	install-plugins.c \
 	missing-plugins.c \
 	gstdiscoverer.c   \
-	gstdiscoverer-types.c
+	gstdiscoverer-types.c \
+	gstaudiovisualizer.c
 
 nodist_libgstpbutils_@GST_API_VERSION@_la_SOURCES = \
 	pbutils-enumtypes.c
@@ -616,9 +619,11 @@ noinst_HEADERS = \
 libgstpbutils_@GST_API_VERSION@_la_LIBADD = \
   $(top_builddir)/gst-libs/gst/video/libgstvideo-@GST_API_VERSION@.la \
   $(top_builddir)/gst-libs/gst/audio/libgstaudio-@GST_API_VERSION@.la \
+  $(top_builddir)/gst-libs/gst/tag/libgsttag-@GST_API_VERSION@.la \
+  $(GST_BASE_LIBS) \
   $(GST_LIBS)
 
-libgstpbutils_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS)
+libgstpbutils_@GST_API_VERSION@_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
 libgstpbutils_@GST_API_VERSION@_la_LDFLAGS = $(GST_LIB_LDFLAGS) $(GST_ALL_LDFLAGS) $(GST_LT_LDFLAGS)
 BUILT_SOURCES = \
 	pbutils-enumtypes.c \
@@ -731,6 +736,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-descriptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-encoding-profile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-encoding-target.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstpluginsbaseversion.Plo@am__quote@
@@ -832,6 +838,13 @@ libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.lo: gstdiscoverer-types.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstdiscoverer-types.c' object='libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstpbutils_@GST_API_VERSION@_la-gstdiscoverer-types.lo `test -f 'gstdiscoverer-types.c' || echo '$(srcdir)/'`gstdiscoverer-types.c
+
+libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo: gstaudiovisualizer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo -MD -MP -MF $(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.Tpo -c -o libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo `test -f 'gstaudiovisualizer.c' || echo '$(srcdir)/'`gstaudiovisualizer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.Tpo $(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstaudiovisualizer.c' object='libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -c -o libgstpbutils_@GST_API_VERSION@_la-gstaudiovisualizer.lo `test -f 'gstaudiovisualizer.c' || echo '$(srcdir)/'`gstaudiovisualizer.c
 
 libgstpbutils_@GST_API_VERSION@_la-pbutils-enumtypes.lo: pbutils-enumtypes.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstpbutils_@GST_API_VERSION@_la_CFLAGS) $(CFLAGS) -MT libgstpbutils_@GST_API_VERSION@_la-pbutils-enumtypes.lo -MD -MP -MF $(DEPDIR)/libgstpbutils_@GST_API_VERSION@_la-pbutils-enumtypes.Tpo -c -o libgstpbutils_@GST_API_VERSION@_la-pbutils-enumtypes.lo `test -f 'pbutils-enumtypes.c' || echo '$(srcdir)/'`pbutils-enumtypes.c
@@ -1199,7 +1212,8 @@ $(glib_gen_basename)-enumtypes.c: $(glib_enum_headers)
 @HAVE_INTROSPECTION_TRUE@		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
 @HAVE_INTROSPECTION_TRUE@		$(INTROSPECTION_SCANNER) -v --namespace GstPbutils \
 @HAVE_INTROSPECTION_TRUE@		--nsversion=@GST_API_VERSION@ \
-@HAVE_INTROSPECTION_TRUE@		--strip-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--identifier-prefix=Gst \
+@HAVE_INTROSPECTION_TRUE@		--symbol-prefix=gst \
 @HAVE_INTROSPECTION_TRUE@		--warn-all \
 @HAVE_INTROSPECTION_TRUE@		--c-include "gst/pbutils/pbutils.h" \
 @HAVE_INTROSPECTION_TRUE@		-I$(top_srcdir)/gst-libs \

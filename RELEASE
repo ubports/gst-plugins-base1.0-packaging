@@ -1,19 +1,14 @@
 
-Release notes for GStreamer Base Plugins 1.6.3
+Release notes for GStreamer Base Plugins 1.7.91
 
-The GStreamer team is proud to announce the third bugfix release in the stable
-1.6 release series of your favourite cross-platform multimedia framework!
-
-
-
-This release only contains bugfixes and it is safe to update from 1.6.x. For a
-full list of bugfixes see Bugzilla.
+The GStreamer team is pleased to announce the second release candidate of the stable
+1.8 release series. The 1.8 release series is adding new features on top of
+the 1.0, 1.2, 1.4 and 1.6 series and is part of the API and ABI-stable 1.x release
+series of the GStreamer multimedia framework.
 
 
-
-See http://gstreamer.freedesktop.org/releases/1.6/
-for the full release notes.
-
+Binaries for Android, iOS, Mac OS X and Windows will be provided separately
+during the stable 1.8 release series.
 
 
 This module contains a set of reference plugins, base classes for other
@@ -62,21 +57,24 @@ contains a set of codecs plugins based on libav (formerly gst-ffmpeg)
 
 Bugs fixed in this release
      
-      * 759110 : appsrc: Clear is_eos flag when receiving the flush event
-      * 759910 : typefind: AAC/ADTS typefinding reads over array bounds
-      * 760222 : videopool: store videoinfo after choosing the biggest buffer size
+      * 761251 : textoverlay: Expose text rendering dimensions to applications and remove absolute positioning limit
+      * 763059 : opusdec: plug caps leak
+      * 763094 : gst-play: remove peculiar setting of invalid -v property
+      * 763278 : tcpserversink: problems with TS muxed stream, not detecting/sending keyframes
+      * 763625 : decodebin: Crashes when shutting down during autoplugging
+      * 758282 : OGG streams buffer constantly even with plenty of bandwidth
 
 ==== Download ====
 
 You can find source releases of gst-plugins-base in the download
-directory: http://gstreamer.freedesktop.org/src/gst-plugins-base/
+directory: https://gstreamer.freedesktop.org/src/gst-plugins-base/
 
 The git repository and details how to clone it can be found at
 http://cgit.freedesktop.org/gstreamer/gst-plugins-base/
 
 ==== Homepage ====
 
-The project's website is http://gstreamer.freedesktop.org/
+The project's website is https://gstreamer.freedesktop.org/
 
 ==== Support and Bugs ====
 
@@ -101,11 +99,11 @@ subscribe to the gstreamer-devel list.
         
 Contributors to this release
     
-      * Aurélien Zanelli
-      * Edward Hervey
-      * Kazunori Kobayashi
-      * Mathieu Duponchelle
+      * Havard Graff
+      * Lubosz Sarnecki
+      * Nirbheek Chauhan
       * Sebastian Dröge
-      * Thibault Saunier
+      * Tim-Philipp Müller
+      * Vincent Penquerc'h
       * Wim Taymans
  

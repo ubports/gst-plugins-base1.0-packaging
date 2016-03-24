@@ -1121,10 +1121,10 @@
 <ARG>
 <NAME>GstAudioTestSrc::freq</NAME>
 <TYPE>gdouble</TYPE>
-<RANGE>[0,20000]</RANGE>
+<RANGE>[0,5.36871e+08]</RANGE>
 <FLAGS>rw</FLAGS>
 <NICK>Frequency</NICK>
-<BLURB>Frequency of test signal.</BLURB>
+<BLURB>Frequency of test signal. The sample rate needs to be at least 4 times higher.</BLURB>
 <DEFAULT>440</DEFAULT>
 </ARG>
 
@@ -1346,6 +1346,16 @@
 <NICK>Max Buffers</NICK>
 <BLURB>The maximum number of buffers to queue internally (0 = unlimited).</BLURB>
 <DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstAppSink::wait-on-eos</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Wait on EOS</NICK>
+<BLURB>Wait for all buffers to be processed after receiving an EOS.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
 </ARG>
 
 <ARG>
@@ -1650,22 +1660,22 @@
 
 <ARG>
 <NAME>GstAudioConvert::dithering</NAME>
-<TYPE>GstAudioConvertDithering</TYPE>
+<TYPE>GstAudioDitherMethod</TYPE>
 <RANGE></RANGE>
 <FLAGS>rw</FLAGS>
 <NICK>Dithering</NICK>
 <BLURB>Selects between different dithering methods.</BLURB>
-<DEFAULT>Triangular dithering (default)</DEFAULT>
+<DEFAULT>GST_AUDIO_DITHER_TPDF</DEFAULT>
 </ARG>
 
 <ARG>
 <NAME>GstAudioConvert::noise-shaping</NAME>
-<TYPE>GstAudioConvertNoiseShaping</TYPE>
+<TYPE>GstAudioNoiseShapingMethod</TYPE>
 <RANGE></RANGE>
 <FLAGS>rw</FLAGS>
 <NICK>Noise shaping</NICK>
 <BLURB>Selects between different noise shaping methods.</BLURB>
-<DEFAULT>No noise shaping (default)</DEFAULT>
+<DEFAULT>GST_AUDIO_NOISE_SHAPING_NONE</DEFAULT>
 </ARG>
 
 <ARG>
@@ -2539,6 +2549,16 @@
 </ARG>
 
 <ARG>
+<NAME>GstSocketSrc::send-messages</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Send Messages</NICK>
+<BLURB>If GstNetworkMessage events should be handled.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
 <NAME>GstTimeOverlay::time-mode</NAME>
 <TYPE>GstTimeOverlayTimeLine</TYPE>
 <RANGE></RANGE>
@@ -2546,5 +2566,185 @@
 <NICK>Time Mode</NICK>
 <BLURB>What time to show.</BLURB>
 <DEFAULT>buffer-time</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstAlsaMidiSrc::ports</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Ports</NICK>
+<BLURB>Comma separated list of sequencer ports (e.g. client:port,...).</BLURB>
+<DEFAULT>NULL</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstMultiSocketSink::send-dispatched</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Send Dispatched</NICK>
+<BLURB>If GstNetworkMessageDispatched events should be pushed.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstMultiSocketSink::send-messages</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Send Messages</NICK>
+<BLURB>If GstNetworkMessage events should be pushed.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::audio</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Audio or voice</NICK>
+<BLURB>Audio or voice (DEPRECATED: use audio-type).</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::audio-type</NAME>
+<TYPE>GstOpusEncAudioType</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>What type of audio to optimize for</NICK>
+<BLURB>What type of audio to optimize for.</BLURB>
+<DEFAULT>Generic audio</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::bandwidth</NAME>
+<TYPE>GstOpusEncBandwidth</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Band Width</NICK>
+<BLURB>Audio Band Width.</BLURB>
+<DEFAULT>Full band</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::bitrate</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[4000,650000]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Encoding Bit-rate</NICK>
+<BLURB>Specify an encoding bit-rate (in bps).</BLURB>
+<DEFAULT>64000</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::bitrate-type</NAME>
+<TYPE>GstOpusEncBitrateType</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Bitrate type</NICK>
+<BLURB>Bitrate type.</BLURB>
+<DEFAULT>CBR</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::cbr</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Constant bit rate</NICK>
+<BLURB>Constant bit rate (DEPRECATED: use bitrate-type).</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::complexity</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,10]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Complexity</NICK>
+<BLURB>Complexity.</BLURB>
+<DEFAULT>10</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::constrained-vbr</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Constrained VBR</NICK>
+<BLURB>Constrained VBR (DEPRECATED: use bitrate-type).</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::dtx</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>DTX</NICK>
+<BLURB>DTX.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::frame-size</NAME>
+<TYPE>GstOpusEncFrameSize</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Frame Size</NICK>
+<BLURB>The duration of an audio frame, in ms.</BLURB>
+<DEFAULT>20</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::inband-fec</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>In-band FEC</NICK>
+<BLURB>Enable forward error correction.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::max-payload-size</NAME>
+<TYPE>guint</TYPE>
+<RANGE>[2,4000]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Max payload size</NICK>
+<BLURB>Maximum payload size in bytes.</BLURB>
+<DEFAULT>4000</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusEnc::packet-loss-percentage</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,100]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Loss percentage</NICK>
+<BLURB>Packet loss percentage.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusDec::apply-gain</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Apply gain</NICK>
+<BLURB>Apply gain if any is specified in the header.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstOpusDec::use-inband-fec</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Use in-band FEC</NICK>
+<BLURB>Use forward error correction if available (needs PLC enabled).</BLURB>
+<DEFAULT>FALSE</DEFAULT>
 </ARG>
 
