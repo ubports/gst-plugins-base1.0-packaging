@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="gst-plugins-base Elements">
 <link rel="prev" href="gst-plugins-base-plugins-playsink.html" title="playsink">
 <link rel="next" href="gst-plugins-base-plugins-ssaparse.html" title="ssaparse">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,18 +45,18 @@
 <tbody>
 <tr>
 <td class="property_type">
-<a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *</td>
+<a href="/usr/share/gtk-doc/html/gioGSocket.html#GSocket-struct"><span class="type">GSocket</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--socket" title="The “socket” property">socket</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *</td>
+<a href="/usr/share/gtk-doc/html/gstreamer-1.0GstCaps.html#GstCaps-struct"><span class="type">GstCaps</span></a> *</td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--caps" title="The “caps” property">caps</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc--send-messages" title="The “send-messages” property">send-messages</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -74,7 +74,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc-connection-closed-by-peer" title="The “connection-closed-by-peer” signal">connection-closed-by-peer</a></td>
-<td class="signal_flags"><a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
+<td class="signal_flags"><a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -93,12 +93,12 @@
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-plugins-socketsrc.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
-        <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstObject.html">GstObject</a>
-            <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html">GstElement</a>
-                <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstBaseSrc.html">GstBaseSrc</a>
-                    <span class="lineart">╰──</span> <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer-libs/html/GstPushSrc.html">GstPushSrc</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstObject.html#GstObject-struct">GstObject</a>
+            <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstElement.html#GstElement-struct">GstElement</a>
+                <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gstreamer-libs-1.0GstBaseSrc.html#GstBaseSrc-struct">GstBaseSrc</a>
+                    <span class="lineart">╰──</span> <a href="/usr/share/gtk-doc/html/gstreamer-libs-1.0GstPushSrc.html#GstPushSrc-struct">GstPushSrc</a>
                         <span class="lineart">╰──</span> GstSocketSrc
 </pre>
 </div>
@@ -114,7 +114,7 @@ socket but none of the logic for creating the sockets/establishing the
 connection in the first place, allowing the user to accomplish this
 externally in whatever manner they wish making it applicable to other types
 of sockets besides TCP.</p>
-<p>As compared to <span class="type">fdsrc</span> socketsrc is socket specific and deals with <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a>
+<p>As compared to <span class="type">fdsrc</span> socketsrc is socket specific and deals with <a href="/usr/share/gtk-doc/html/gioGSocket.html#GSocket-struct"><span class="type">GSocket</span></a>
 objects rather than sockets via integer file-descriptors.</p>
 <p><em class="parameter"><code>see_also</code></em>
 : <span class="type">multisocketsink</span></p>
@@ -190,21 +190,21 @@ objects rather than sockets via integer file-descriptors.</p>
 <a name="gst-plugins-base-plugins-socketsrc.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstSocketSrc--socket"></a><h3>The <code class="literal">“socket”</code> property</h3>
-<pre class="programlisting">  “socket”                   <a href="https://developer.gnome.org/gio/unstable/GSocket.html"><span class="type">GSocket</span></a> *</pre>
+<pre class="programlisting">  “socket”                   <a href="/usr/share/gtk-doc/html/gioGSocket.html#GSocket-struct"><span class="type">GSocket</span></a> *</pre>
 <p>The socket to receive packets from.</p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstSocketSrc--caps"></a><h3>The <code class="literal">“caps”</code> property</h3>
-<pre class="programlisting">  “caps”                     <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> *</pre>
+<pre class="programlisting">  “caps”                     <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstCaps.html#GstCaps-struct"><span class="type">GstCaps</span></a> *</pre>
 <p>The caps of the source pad.</p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="GstSocketSrc--send-messages"></a><h3>The <code class="literal">“send-messages”</code> property</h3>
-<pre class="programlisting">  “send-messages”            <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<pre class="programlisting">  “send-messages”            <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Control if the source will handle GstNetworkMessage events.
 The event is a CUSTOM event named 'GstNetworkMessage' and contains:</p>
 <p>  "buffer", GST_TYPE_BUFFER    : the buffer with data to send</p>
@@ -221,12 +221,12 @@ for simple bidirectional communication.</p>
 <a name="GstSocketSrc-connection-closed-by-peer"></a><h3>The <code class="literal">“connection-closed-by-peer”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="gst-plugins-base-plugins-socketsrc.html#GstSocketSrc"><span class="type">GstSocketSrc</span></a> *gstsocketsrc,
-               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
-<p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
+               <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
+<p>Flags: <a href="/usr/share/gtk-doc/html/gobjectgobject-Signals.html#G-SIGNAL-RUN-FIRST:CAPS">Run First</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

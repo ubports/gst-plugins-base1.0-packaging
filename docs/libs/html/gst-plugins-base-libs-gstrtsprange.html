@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtspmessage.html" title="gstrtspmessage">
 <link rel="next" href="gst-plugins-base-libs-gstrtsptransport.html" title="gstrtsptransport">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#gst-rtsp-range-get-times" title="gst_rtsp_range_get_times ()">gst_rtsp_range_get_times</a> <span class="c_punctuation">()</span>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#gst-rtsp-range-to-string" title="gst_rtsp_range_to_string ()">gst_rtsp_range_to_string</a> <span class="c_punctuation">()</span>
@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#gst-rtsp-range-convert-units" title="gst_rtsp_range_convert_units ()">gst_rtsp_range_convert_units</a> <span class="c_punctuation">()</span>
@@ -127,12 +127,12 @@
 <div class="refsect2">
 <a name="gst-rtsp-range-parse"></a><h3>gst_rtsp_range_parse ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
-gst_rtsp_range_parse (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *rangestr</code></em>,
+gst_rtsp_range_parse (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *rangestr</code></em>,
                       <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPTimeRange" title="struct GstRTSPTimeRange"><span class="type">GstRTSPTimeRange</span></a> **range</code></em>);</pre>
 <p>Parse <em class="parameter"><code>rangestr</code></em>
  to a <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPTimeRange" title="struct GstRTSPTimeRange"><span class="type">GstRTSPTimeRange</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.2.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-range-parse.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -154,29 +154,29 @@ gst_rtsp_range_parse (<em class="parameter"><code>const <a href="https://develop
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.2.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-range-parse.returns"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a> on success.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-range-get-times"></a><h3>gst_rtsp_range_get_times ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_rtsp_range_get_times (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPTimeRange" title="struct GstRTSPTimeRange"><span class="type">GstRTSPTimeRange</span></a> *range</code></em>,
-                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *min</code></em>,
-                          <em class="parameter"><code><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *max</code></em>);</pre>
+                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *min</code></em>,
+                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> *max</code></em>);</pre>
 <p>Retrieve the minimum and maximum values from <em class="parameter"><code>range</code></em>
  converted to
-<a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> in <em class="parameter"><code>min</code></em>
+<a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a> in <em class="parameter"><code>min</code></em>
  and <em class="parameter"><code>max</code></em>
 .</p>
-<p>A value of <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GST-CLOCK-TIME-NONE:CAPS"><code class="literal">GST_CLOCK_TIME_NONE</code></a> will be used to signal <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-TIME-NOW:CAPS"><span class="type">GST_RTSP_TIME_NOW</span></a>
+<p>A value of <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GST-CLOCK-TIME-NONE:CAPS"><code class="literal">GST_CLOCK_TIME_NONE</code></a> will be used to signal <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-TIME-NOW:CAPS"><span class="type">GST_RTSP_TIME_NOW</span></a>
 and <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-TIME-END:CAPS"><span class="type">GST_RTSP_TIME_END</span></a> for <em class="parameter"><code>min</code></em>
  and <em class="parameter"><code>max</code></em>
  respectively.</p>
 <p>UTC times will be converted to nanoseconds since 1900.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.3.7"></a><h4>Parameters</h4>
+<a name="gst-rtsp-range-get-times.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -191,32 +191,32 @@ and <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-TIME-
 </tr>
 <tr>
 <td class="parameter_name"><p>min</p></td>
-<td class="parameter_description"><p>result minimum <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a></p></td>
+<td class="parameter_description"><p>result minimum <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>max</p></td>
-<td class="parameter_description"><p>result maximum <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a></p></td>
+<td class="parameter_description"><p>result maximum <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstClock.html#GstClockTime"><span class="type">GstClockTime</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.3.8"></a><h4>Returns</h4>
-<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
+<a name="gst-rtsp-range-get-times.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success.</p>
 </div>
 <p class="since">Since: 1.2</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-range-to-string"></a><h3>gst_rtsp_range_to_string ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gst_rtsp_range_to_string (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPTimeRange" title="struct GstRTSPTimeRange"><span class="type">GstRTSPTimeRange</span></a> *range</code></em>);</pre>
 <p>Convert <em class="parameter"><code>range</code></em>
  into a string representation.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.4.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-range-to-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -231,22 +231,22 @@ gst_rtsp_range_to_string (<em class="parameter"><code>const <a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.4.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-range-to-string.returns"></a><h4>Returns</h4>
 <p> The string representation of <em class="parameter"><code>range</code></em>
-. <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
+. <a href="/usr/share/gtk-doc/html/glibglib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-range-convert-units"></a><h3>gst_rtsp_range_convert_units ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_rtsp_range_convert_units (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPTimeRange" title="struct GstRTSPTimeRange"><span class="type">GstRTSPTimeRange</span></a> *range</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GstRTSPRangeUnit" title="enum GstRTSPRangeUnit"><span class="type">GstRTSPRangeUnit</span></a> unit</code></em>);</pre>
 <p>Converts the range in-place between different types of units.
 Ranges containing the special value <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-TIME-NOW:CAPS"><span class="type">GST_RTSP_TIME_NOW</span></a> can not be
 converted as these are only valid for <a class="link" href="gst-plugins-base-libs-gstrtsprange.html#GST-RTSP-RANGE-NPT:CAPS"><span class="type">GST_RTSP_RANGE_NPT</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.5.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-range-convert-units.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -268,8 +268,8 @@ converted as these are only valid for <a class="link" href="gst-plugins-base-lib
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.5.6"></a><h4>Returns</h4>
-<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the range could be converted</p>
+<a name="gst-rtsp-range-convert-units.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the range could be converted</p>
 </div>
 </div>
 <hr>
@@ -280,7 +280,7 @@ gst_rtsp_range_free (<em class="parameter"><code><a class="link" href="gst-plugi
 <p>Free the memory allocated by <em class="parameter"><code>range</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.7.6.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-range-free.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -302,7 +302,7 @@ gst_rtsp_range_free (<em class="parameter"><code><a class="link" href="gst-plugi
 <a name="GstRTSPRangeUnit"></a><h3>enum GstRTSPRangeUnit</h3>
 <p>Different possible time range units.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.8.2.4"></a><h4>Members</h4>
+<a name="GstRTSPRangeUnit.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -363,7 +363,7 @@ gst_rtsp_range_free (<em class="parameter"><code><a class="link" href="gst-plugi
 </pre>
 <p>A time range.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.8.3.5"></a><h4>Members</h4>
+<a name="GstRTSPTimeRange.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -410,7 +410,7 @@ gst_rtsp_range_free (<em class="parameter"><code><a class="link" href="gst-plugi
 </pre>
 <p>A time indication.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.8.4.5"></a><h4>Members</h4>
+<a name="GstRTSPTime.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -424,7 +424,7 @@ gst_rtsp_range_free (<em class="parameter"><code><a class="link" href="gst-plugi
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GstRTSPTime.seconds"></a>seconds</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GstRTSPTime.seconds"></a>seconds</code></em>;</p></td>
 <td class="struct_member_description"><p>seconds when <em class="parameter"><code>type</code></em>
 is GST_RTSP_TIME_SECONDS,
 GST_RTSP_TIME_UTC and GST_RTSP_TIME_FRAMES</p></td>
@@ -446,7 +446,7 @@ GST_RTSP_TIME_UTC and GST_RTSP_TIME_FRAMES</p></td>
 </pre>
 <p>Extra fields for a time indication.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.8.5.5"></a><h4>Members</h4>
+<a name="GstRTSPTime2.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -455,23 +455,23 @@ GST_RTSP_TIME_UTC and GST_RTSP_TIME_FRAMES</p></td>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GstRTSPTime2.frames"></a>frames</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> <em class="structfield"><code><a name="GstRTSPTime2.frames"></a>frames</code></em>;</p></td>
 <td class="struct_member_description"><p>frames and subframes when type in GstRTSPTime is
 GST_RTSP_TIME_FRAMES</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.year"></a>year</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.year"></a>year</code></em>;</p></td>
 <td class="struct_member_description"><p>year when type is GST_RTSP_TIME_UTC</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.month"></a>month</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.month"></a>month</code></em>;</p></td>
 <td class="struct_member_description"><p>month when type is GST_RTSP_TIME_UTC</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.day"></a>day</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="GstRTSPTime2.day"></a>day</code></em>;</p></td>
 <td class="struct_member_description"><p>day when type is GST_RTSP_TIME_UTC</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -485,7 +485,7 @@ GST_RTSP_TIME_FRAMES</p></td>
 <a name="GstRTSPTimeType"></a><h3>enum GstRTSPTimeType</h3>
 <p>Possible time types.</p>
 <div class="refsect3">
-<a name="id-1.2.10.7.8.6.4"></a><h4>Members</h4>
+<a name="GstRTSPTimeType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -535,6 +535,6 @@ GST_RTSP_TIME_FRAMES</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

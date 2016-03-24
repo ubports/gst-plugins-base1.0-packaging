@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-base-utils.html" title="Base Utils Library">
 <link rel="prev" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html" title="gstpbutilsmissingplugins">
 <link rel="next" href="gst-plugins-base-libs-gstdiscoverer.html" title="gstdiscoverer">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -64,7 +64,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-return-get-name" title="gst_install_plugins_return_get_name ()">gst_install_plugins_return_get_name</a> <span class="c_punctuation">()</span>
@@ -72,7 +72,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-installation-in-progress" title="gst_install_plugins_installation_in_progress ()">gst_install_plugins_installation_in_progress</a> <span class="c_punctuation">()</span>
@@ -80,7 +80,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-supported" title="gst_install_plugins_supported ()">gst_install_plugins_supported</a> <span class="c_punctuation">()</span>
@@ -212,7 +212,7 @@ between GStreamer and the plugin installer application.
 Detail strings can be obtained using the function
 <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-plugin-message-get-installer-detail" title="gst_missing_plugin_message_get_installer_detail ()"><code class="function">gst_missing_plugin_message_get_installer_detail()</code></a> on a missing-plugin
 message. Such a message will either have been found by the application on
-a pipeline's <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html"><span class="type">GstBus</span></a>, or the application will have created it itself using
+a pipeline's <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstBus.html#GstBus-struct"><span class="type">GstBus</span></a>, or the application will have created it itself using
 <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-element-message-new" title="gst_missing_element_message_new ()"><code class="function">gst_missing_element_message_new()</code></a>, <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-decoder-message-new" title="gst_missing_decoder_message_new ()"><code class="function">gst_missing_decoder_message_new()</code></a>,
 <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-encoder-message-new" title="gst_missing_encoder_message_new ()"><code class="function">gst_missing_encoder_message_new()</code></a>, <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-uri-sink-message-new" title="gst_missing_uri_sink_message_new ()"><code class="function">gst_missing_uri_sink_message_new()</code></a>, or
 <a class="link" href="gst-plugins-base-libs-gstpbutilsmissingplugins.html#gst-missing-uri-source-message-new" title="gst_missing_uri_source_message_new ()"><code class="function">gst_missing_uri_source_message_new()</code></a>.
@@ -243,7 +243,7 @@ If the necessary hooks for plugin installation are in place and an
 external installer application has in fact been called, the passed in
 function will be called with a result code as soon as the external installer
 has finished. If the result code indicates that new plugins have been
-installed, the application will want to call <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/gstreamer-Gst.html#gst-update-registry"><code class="function">gst_update_registry()</code></a> so the
+installed, the application will want to call <a href="/usr/share/gtk-doc/html/gstreamer-1.0gstreamer-Gst.html#gst-update-registry"><code class="function">gst_update_registry()</code></a> so the
 run-time plugin registry is updated and the new plugins are made available
 to the application.
 </p>
@@ -494,7 +494,7 @@ GStreamer plugin files can be introspected for this information. The
 <code class="literal">gst-inspect</code> utility has a special command line option
 that will output information similar to what is required. For example
 <span class="command"><strong>
-$ gst-inspect-0.10 --print-plugin-auto-install-info /path/to/libgstvorbis.so
+$ gst-inspect-1.0 --print-plugin-auto-install-info /path/to/libgstvorbis.so
 </strong></span>
 should output something along the lines of
 <code class="computeroutput">
@@ -510,7 +510,7 @@ complex with additional fields, e.g.
 <code class="literal">audio/mpeg,mpegversion=(int){2,4}</code>, so they will not
 always exactly match the caps wanted by the application. It is up to the
 installer to deal with this (either by doing proper caps intersection using
-the GStreamer <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstCaps.html"><span class="type">GstCaps</span></a> API, or by only taking into account the media type).
+the GStreamer <a href="/usr/share/gtk-doc/html/gstreamer-1.0GstCaps.html#GstCaps-struct"><span class="type">GstCaps</span></a> API, or by only taking into account the media type).
 </p>
 <p>
 Another potential source of problems are plugins such as ladspa or
@@ -526,12 +526,12 @@ to handle (but usually not relevant for playback applications).
 <a name="GstInstallPluginsResultFunc"></a><h3>GstInstallPluginsResultFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*GstInstallPluginsResultFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsReturn" title="enum GstInstallPluginsReturn"><span class="type">GstInstallPluginsReturn</span></a> result</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>The prototype of the callback function that will be called once the
 external plugin installer program has returned. You only need to provide
 a callback function if you are using the asynchronous interface.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.2.5"></a><h4>Parameters</h4>
+<a name="GstInstallPluginsResultFunc.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -557,10 +557,10 @@ a callback function if you are using the asynchronous interface.</p>
 <div class="refsect2">
 <a name="gst-install-plugins-async"></a><h3>gst_install_plugins_async ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsReturn" title="enum GstInstallPluginsReturn"><span class="returnvalue">GstInstallPluginsReturn</span></a>
-gst_install_plugins_async (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *details</code></em>,
+gst_install_plugins_async (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *details</code></em>,
                            <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>,
                            <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsResultFunc" title="GstInstallPluginsResultFunc ()"><span class="type">GstInstallPluginsResultFunc</span></a> func</code></em>,
-                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Requests plugin installation without blocking. Once the plugins have been
 installed or installation has failed, <em class="parameter"><code>func</code></em>
  will be called with the result
@@ -578,7 +578,7 @@ application via the provided API, such as <a class="link" href="gst-plugins-base
 one go (as might be required if there is a demuxer for a certain format
 installed but no suitable video decoder and no suitable audio decoder).</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.3.8"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-async.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -612,7 +612,7 @@ when called, or NULL. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.3.9"></a><h4>Returns</h4>
+<a name="gst-install-plugins-async.returns"></a><h4>Returns</h4>
 <p> result code whether an external installer could be started</p>
 </div>
 </div>
@@ -620,7 +620,7 @@ when called, or NULL. </p></td>
 <div class="refsect2">
 <a name="gst-install-plugins-sync"></a><h3>gst_install_plugins_sync ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsReturn" title="enum GstInstallPluginsReturn"><span class="returnvalue">GstInstallPluginsReturn</span></a>
-gst_install_plugins_sync (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *details</code></em>,
+gst_install_plugins_sync (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *details</code></em>,
                           <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>);</pre>
 <p>Requests plugin installation and block until the plugins have been
 installed or installation has failed.</p>
@@ -630,7 +630,7 @@ thread and marshal the result back asynchronously into the main thread
 using the other non-GLib main loop. You should almost always use
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-async" title="gst_install_plugins_async ()"><code class="function">gst_install_plugins_async()</code></a> instead of this function.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.4.6"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -653,21 +653,21 @@ of installer string details. </p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.4.7"></a><h4>Returns</h4>
+<a name="gst-install-plugins-sync.returns"></a><h4>Returns</h4>
 <p> the result of the installation.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-install-plugins-return-get-name"></a><h3>gst_install_plugins_return_get_name ()</h3>
-<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gst_install_plugins_return_get_name (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsReturn" title="enum GstInstallPluginsReturn"><span class="type">GstInstallPluginsReturn</span></a> ret</code></em>);</pre>
 <p>Convenience function to return the descriptive string associated
 with a status code.  This function returns English strings and
 should not be used for user messages. It is here only to assist
 in debugging.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.5.5"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-return-get-name.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -682,7 +682,7 @@ in debugging.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.5.6"></a><h4>Returns</h4>
+<a name="gst-install-plugins-return-get-name.returns"></a><h4>Returns</h4>
 <p> a descriptive string for the status code in <em class="parameter"><code>ret</code></em>
 </p>
 </div>
@@ -690,27 +690,27 @@ in debugging.</p>
 <hr>
 <div class="refsect2">
 <a name="gst-install-plugins-installation-in-progress"></a><h3>gst_install_plugins_installation_in_progress ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_install_plugins_installation_in_progress
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Checks whether plugin installation (initiated by this application only)
 is currently in progress.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.6.5"></a><h4>Returns</h4>
+<a name="gst-install-plugins-installation-in-progress.returns"></a><h4>Returns</h4>
 <p> TRUE if plugin installation is in progress, otherwise FALSE</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-install-plugins-supported"></a><h3>gst_install_plugins_supported ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_install_plugins_supported (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Checks whether plugin installation is likely to be supported by the
 current environment. This currently only checks whether the helper script
 that is to be provided by the distribution or operating system vendor
 exists.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.7.5"></a><h4>Returns</h4>
+<a name="gst-install-plugins-supported.returns"></a><h4>Returns</h4>
 <p> TRUE if plugin installation is likely to be supported.</p>
 </div>
 </div>
@@ -721,7 +721,7 @@ exists.</p>
 gst_install_plugins_context_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Creates a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.8.5"></a><h4>Returns</h4>
+<a name="gst-install-plugins-context-new.returns"></a><h4>Returns</h4>
 <p> a new <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>. Free with
 <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#gst-install-plugins-context-free" title="gst_install_plugins_context_free ()"><code class="function">gst_install_plugins_context_free()</code></a> when no longer needed</p>
 </div>
@@ -733,7 +733,7 @@ gst_install_plugins_context_new (<em class="parameter"><code><span class="type">
 gst_install_plugins_context_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>);</pre>
 <p>Frees a <a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.9.5"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-context-free.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -753,7 +753,7 @@ gst_install_plugins_context_free (<em class="parameter"><code><a class="link" hr
 <a name="gst-install-plugins-context-set-xid"></a><h3>gst_install_plugins_context_set_xid ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_install_plugins_context_set_xid (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>,
-                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> xid</code></em>);</pre>
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> xid</code></em>);</pre>
 <p>This function is for X11-based applications (such as most Gtk/Qt
 applications on linux/unix) only. You can use it to tell the external
 installer the XID of your main application window. That way the installer
@@ -775,7 +775,7 @@ window like this:</p>
 ...
 </pre>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.10.8"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-context-set-xid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -803,13 +803,13 @@ window like this:</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_install_plugins_context_set_confirm_search
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> confirm_search</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> confirm_search</code></em>);</pre>
 <p>This function is used to tell the external installer process whether it
 should ask for confirmation or not before searching for missing plugins.</p>
 <p>If set, this option will be passed to the installer via a
 --interaction=[show-confirm-search|hide-confirm-search] command line option.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.11.6"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-context-set-confirm-search.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -838,7 +838,7 @@ should ask for confirmation or not before searching for missing plugins.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_install_plugins_context_set_desktop_id
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *desktop_id</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *desktop_id</code></em>);</pre>
 <p>This function is used to pass the calling application's desktop file ID to
 the external installer process.</p>
 <p>A desktop file ID is the basename of the desktop file, including the
@@ -846,7 +846,7 @@ the external installer process.</p>
 <p>If set, the desktop file ID will be passed to the installer via a
 --desktop-id= command line option.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.12.7"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-context-set-desktop-id.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -875,7 +875,7 @@ the external installer process.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_install_plugins_context_set_startup_notification_id
                                (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstpbutilsinstallplugins.html#GstInstallPluginsContext" title="GstInstallPluginsContext"><span class="type">GstInstallPluginsContext</span></a> *ctx</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *startup_id</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *startup_id</code></em>);</pre>
 <p>Sets the startup notification ID for the launched process.</p>
 <p>This is typically used to to pass the current X11 event timestamp to the
 external installer process.</p>
@@ -891,7 +891,7 @@ like this:</p>
 ...
 </pre>
 <div class="refsect3">
-<a name="id-1.2.14.8.7.13.10"></a><h4>Parameters</h4>
+<a name="gst-install-plugins-context-set-startup-notification-id.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -925,7 +925,7 @@ like this:</p>
 <p>These codes indicate success or failure of starting an external installer
 program and to what extent the requested plugins could be installed.</p>
 <div class="refsect3">
-<a name="id-1.2.14.8.8.2.5"></a><h4>Members</h4>
+<a name="GstInstallPluginsReturn.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1037,6 +1037,6 @@ API to set details on it.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>
