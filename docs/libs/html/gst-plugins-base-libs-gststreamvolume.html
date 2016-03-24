@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-gstaudioiec61937.html" title="gstaudioiec61937">
 <link rel="next" href="gstreamer-ffft.html" title="FFT Library">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-get-volume" title="gst_stream_volume_get_volume ()">gst_stream_volume_get_volume</a> <span class="c_punctuation">()</span>
@@ -60,7 +60,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-get-mute" title="gst_stream_volume_get_mute ()">gst_stream_volume_get_mute</a> <span class="c_punctuation">()</span>
@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-convert-volume" title="gst_stream_volume_convert_volume ()">gst_stream_volume_convert_volume</a> <span class="c_punctuation">()</span>
@@ -95,12 +95,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume--mute" title="The “mute” property">mute</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></td>
 <td class="property_name"><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume--volume" title="The “volume” property">volume</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -136,7 +136,7 @@
 <a name="gst-plugins-base-libs-gststreamvolume.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 GstStreamVolume requires
- <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+ <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="gst-plugins-base-libs-gststreamvolume.includes"></a><h2>Includes</h2>
@@ -152,18 +152,18 @@ such elements are <span class="type">volume</span> and <span class="type">playbi
 </p>
 <p>
 Applications can use this interface to get or set the current stream volume. For this
-the "volume" <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property can be used or the helper functions <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-set-volume" title="gst_stream_volume_set_volume ()"><code class="function">gst_stream_volume_set_volume()</code></a>
+the "volume" <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property can be used or the helper functions <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-set-volume" title="gst_stream_volume_set_volume ()"><code class="function">gst_stream_volume_set_volume()</code></a>
 and <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-get-volume" title="gst_stream_volume_get_volume ()"><code class="function">gst_stream_volume_get_volume()</code></a>. This volume is always a linear factor, i.e. 0.0 is muted
 1.0 is 100%. For showing the volume in a GUI it might make sense to convert it to
 a different format by using <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-convert-volume" title="gst_stream_volume_convert_volume ()"><code class="function">gst_stream_volume_convert_volume()</code></a>. Volume sliders should usually
 use a cubic volume.
 
-Separate from the volume the stream can also be muted by the "mute" <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property or
+Separate from the volume the stream can also be muted by the "mute" <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property or
 <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-set-mute" title="gst_stream_volume_set_mute ()"><code class="function">gst_stream_volume_set_mute()</code></a> and <a class="link" href="gst-plugins-base-libs-gststreamvolume.html#gst-stream-volume-get-mute" title="gst_stream_volume_get_mute ()"><code class="function">gst_stream_volume_get_mute()</code></a>.
 </p>
 <p>
 Elements that provide some kind of stream volume should implement the "volume" and
-"mute" <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> properties and handle setting and getting of them properly.
+"mute" <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> properties and handle setting and getting of them properly.
 The volume property is defined to be a linear volume factor.
 </p>
 </div>
@@ -172,11 +172,11 @@ The volume property is defined to be a linear volume factor.
 <a name="gst-plugins-base-libs-gststreamvolume.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="gst-stream-volume-get-volume"></a><h3>gst_stream_volume_get_volume ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 gst_stream_volume_get_volume (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> format</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.2.4"></a><h4>Parameters</h4>
+<a name="gst-stream-volume-get-volume.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -198,7 +198,7 @@ gst_stream_volume_get_volume (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.2.5"></a><h4>Returns</h4>
+<a name="gst-stream-volume-get-volume.returns"></a><h4>Returns</h4>
 <p> The current stream volume as linear factor</p>
 </div>
 </div>
@@ -208,9 +208,9 @@ gst_stream_volume_get_volume (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_stream_volume_set_volume (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>,
                               <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> format</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
+                              <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.3.4"></a><h4>Parameters</h4>
+<a name="gst-stream-volume-set-volume.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -241,10 +241,10 @@ gst_stream_volume_set_volume (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="gst-stream-volume-get-mute"></a><h3>gst_stream_volume_get_mute ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.4.4"></a><h4>Parameters</h4>
+<a name="gst-stream-volume-get-mute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -259,8 +259,8 @@ gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gs
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.4.5"></a><h4>Returns</h4>
-<p> Returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the stream is muted</p>
+<a name="gst-stream-volume-get-mute.returns"></a><h4>Returns</h4>
+<p> Returns <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the stream is muted</p>
 </div>
 </div>
 <hr>
@@ -268,9 +268,9 @@ gst_stream_volume_get_mute (<em class="parameter"><code><a class="link" href="gs
 <a name="gst-stream-volume-set-mute"></a><h3>gst_stream_volume_set_mute ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_stream_volume_set_mute (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolume"><span class="type">GstStreamVolume</span></a> *volume</code></em>,
-                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> mute</code></em>);</pre>
+                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> mute</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.5.4"></a><h4>Parameters</h4>
+<a name="gst-stream-volume-set-mute.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -295,12 +295,12 @@ gst_stream_volume_set_mute (<em class="parameter"><code><a class="link" href="gs
 <hr>
 <div class="refsect2">
 <a name="gst-stream-volume-convert-volume"></a><h3>gst_stream_volume_convert_volume ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>
 gst_stream_volume_convert_volume (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> from</code></em>,
                                   <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gststreamvolume.html#GstStreamVolumeFormat" title="enum GstStreamVolumeFormat"><span class="type">GstStreamVolumeFormat</span></a> to</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> val</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.6.4"></a><h4>Parameters</h4>
+<a name="gst-stream-volume-convert-volume.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -328,7 +328,7 @@ format that should be converted</p></td>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.6.19.11.6.5"></a><h4>Returns</h4>
+<a name="gst-stream-volume-convert-volume.returns"></a><h4>Returns</h4>
 <p> the converted volume</p>
 </div>
 </div>
@@ -347,7 +347,7 @@ allows to convert between the different representations.</p>
 <p>Formulas to convert from a linear to a cubic or dB volume are
 cbrt(val) and 20 * log10 (val).</p>
 <div class="refsect3">
-<a name="id-1.2.6.19.12.3.5"></a><h4>Members</h4>
+<a name="GstStreamVolumeFormat.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -385,7 +385,7 @@ cbrt(val) and 20 * log10 (val).</p>
 <a name="gst-plugins-base-libs-gststreamvolume.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="GstStreamVolume--mute"></a><h3>The <code class="literal">“mute”</code> property</h3>
-<pre class="programlisting">  “mute”                     <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<pre class="programlisting">  “mute”                     <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Mute the audio channel without changing the volume.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
@@ -393,7 +393,7 @@ cbrt(val) and 20 * log10 (val).</p>
 <hr>
 <div class="refsect2">
 <a name="GstStreamVolume--volume"></a><h3>The <code class="literal">“volume”</code> property</h3>
-<pre class="programlisting">  “volume”                   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
+<pre class="programlisting">  “volume”                   <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></pre>
 <p>Linear volume factor, 1.0=100%.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: &gt;= 0</p>
@@ -402,6 +402,6 @@ cbrt(val) and 20 * log10 (val).</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-audio.html" title="Audio Library">
 <link rel="prev" href="gst-plugins-base-libs-GstAudioConverter.html" title="GstAudioConverter">
 <link rel="next" href="gst-plugins-base-libs-gstaudioringbuffer.html" title="gstaudioringbuffer">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -109,7 +109,7 @@
 gst_audio_quantize_free (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#GstAudioQuantize" title="GstAudioQuantize"><span class="type">GstAudioQuantize</span></a> *quant</code></em>);</pre>
 <p>Free a <a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#GstAudioQuantize" title="GstAudioQuantize"><span class="type">GstAudioQuantize</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.7.2.5"></a><h4>Parameters</h4>
+<a name="gst-audio-quantize-free.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -132,17 +132,17 @@ gst_audio_quantize_new (<em class="parameter"><code><a class="link" href="gst-pl
                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#GstAudioNoiseShapingMethod" title="enum GstAudioNoiseShapingMethod"><span class="type">GstAudioNoiseShapingMethod</span></a> ns</code></em>,
                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#GstAudioQuantizeFlags" title="enum GstAudioQuantizeFlags"><span class="type">GstAudioQuantizeFlags</span></a> flags</code></em>,
                         <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstaudio.html#GstAudioFormat" title="enum GstAudioFormat"><span class="type">GstAudioFormat</span></a> format</code></em>,
-                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> channels</code></em>,
-                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> quantizer</code></em>);</pre>
+                        <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> channels</code></em>,
+                        <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> quantizer</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-audio-quantize-samples"></a><h3>gst_audio_quantize_samples ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 gst_audio_quantize_samples (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#GstAudioQuantize" title="GstAudioQuantize"><span class="type">GstAudioQuantize</span></a> *quant</code></em>,
-                            <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> in[]</code></em>,
-                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> out[]</code></em>,
-                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> samples</code></em>);</pre>
+                            <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> in[]</code></em>,
+                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> out[]</code></em>,
+                            <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> samples</code></em>);</pre>
 <p>Perform quantization on <em class="parameter"><code>samples</code></em>
  in <em class="parameter"><code>in</code></em>
  and write the result to <em class="parameter"><code>out</code></em>
@@ -160,7 +160,7 @@ array with pointers to memory blocks, one for each channel.</p>
  may point to the same memory location, in which case samples will be
 modified in-place.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.7.4.8"></a><h4>Parameters</h4>
+<a name="gst-audio-quantize-samples.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -204,7 +204,7 @@ modified in-place.</p>
 <a name="GstAudioQuantizeFlags"></a><h3>enum GstAudioQuantizeFlags</h3>
 <p>Extra flags that can be passed to <a class="link" href="gst-plugins-base-libs-GstAudioQuantize.html#gst-audio-quantize-new" title="gst_audio_quantize_new ()"><code class="function">gst_audio_quantize_new()</code></a></p>
 <div class="refsect3">
-<a name="id-1.2.6.16.8.3.4"></a><h4>Members</h4>
+<a name="GstAudioQuantizeFlags.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -235,7 +235,7 @@ modified in-place.</p>
 <a name="GstAudioDitherMethod"></a><h3>enum GstAudioDitherMethod</h3>
 <p>Set of available dithering methods.</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.8.4.4"></a><h4>Members</h4>
+<a name="GstAudioDitherMethod.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -280,7 +280,7 @@ modified in-place.</p>
 <a name="GstAudioNoiseShapingMethod"></a><h3>enum GstAudioNoiseShapingMethod</h3>
 <p>Set of available noise shaping methods</p>
 <div class="refsect3">
-<a name="id-1.2.6.16.8.5.4"></a><h4>Members</h4>
+<a name="GstAudioNoiseShapingMethod.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -330,6 +330,6 @@ modified in-place.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>
