@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="GStreamer Base Plugins 1.0 Plugins Reference Manual" link="index.html" author="" name="gst-plugins-base-plugins-1.0" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="GStreamer Base Plugins 1.0 Plugins Reference Manual" link="index.html" author="" name="gst-plugins-base-plugins-1.0" version="2" language="c" online="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base/html/">
   <chapters>
     <sub name="gst-plugins-base Elements" link="ch01.html">
       <sub name="adder" link="gst-plugins-base-plugins-adder.html"/>

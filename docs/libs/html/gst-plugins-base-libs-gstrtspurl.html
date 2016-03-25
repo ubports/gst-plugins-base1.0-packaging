@@ -8,7 +8,7 @@
 <link rel="up" href="gstreamer-rtsp.html" title="RTSP Library">
 <link rel="prev" href="gst-plugins-base-libs-gstrtsptransport.html" title="gstrtsptransport">
 <link rel="next" href="gstreamer-sdp.html" title="SDP Library">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-get-request-uri" title="gst_rtsp_url_get_request_uri ()">gst_rtsp_url_get_request_uri</a> <span class="c_punctuation">()</span>
@@ -89,7 +89,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
 </td>
 <td class="function_name">
 <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-decode-path-components" title="gst_rtsp_url_decode_path_components ()">gst_rtsp_url_decode_path_components</a> <span class="c_punctuation">()</span>
@@ -131,13 +131,13 @@
 <div class="refsect2">
 <a name="gst-rtsp-url-parse"></a><h3>gst_rtsp_url_parse ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
-gst_rtsp_url_parse (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *urlstr</code></em>,
+gst_rtsp_url_parse (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *urlstr</code></em>,
                     <em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> **url</code></em>);</pre>
 <p>Parse the RTSP <em class="parameter"><code>urlstr</code></em>
  into a newly allocated <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a>. Free after usage
 with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-free" title="gst_rtsp_url_free ()"><code class="function">gst_rtsp_url_free()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.2.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-parse.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -159,7 +159,7 @@ with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-fr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.2.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-url-parse.returns"></a><h4>Returns</h4>
 <p> a <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="type">GstRTSPResult</span></a>.</p>
 </div>
 </div>
@@ -171,7 +171,7 @@ gst_rtsp_url_copy (<em class="parameter"><code>const <a class="link" href="gst-p
 <p>Make a copy of <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.3.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-copy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -186,7 +186,7 @@ gst_rtsp_url_copy (<em class="parameter"><code>const <a class="link" href="gst-p
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.3.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-url-copy.returns"></a><h4>Returns</h4>
 <p> a copy of <em class="parameter"><code>url</code></em>
 . Free with <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#gst-rtsp-url-free" title="gst_rtsp_url_free ()"><code class="function">gst_rtsp_url_free()</code></a> after usage.</p>
 </div>
@@ -199,7 +199,7 @@ gst_rtsp_url_free (<em class="parameter"><code><a class="link" href="gst-plugins
 <p>Free the memory used by <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.4.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-free.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -217,12 +217,12 @@ gst_rtsp_url_free (<em class="parameter"><code><a class="link" href="gst-plugins
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-url-get-request-uri"></a><h3>gst_rtsp_url_get_request_uri ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 gst_rtsp_url_get_request_uri (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> *url</code></em>);</pre>
 <p>Get a newly allocated string describing the request URI for <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.5.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-get-request-uri.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -237,8 +237,8 @@ gst_rtsp_url_get_request_uri (<em class="parameter"><code>const <a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.5.6"></a><h4>Returns</h4>
-<p> a string with the request URI. <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
+<a name="gst-rtsp-url-get-request-uri.returns"></a><h4>Returns</h4>
+<p> a string with the request URI. <a href="/usr/share/gtk-doc/html/glibglib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> after usage.</p>
 </div>
 </div>
 <hr>
@@ -246,12 +246,12 @@ gst_rtsp_url_get_request_uri (<em class="parameter"><code>const <a class="link" 
 <a name="gst-rtsp-url-set-port"></a><h3>gst_rtsp_url_set_port ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_url_set_port (<em class="parameter"><code><a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> *url</code></em>,
-                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> port</code></em>);</pre>
+                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> port</code></em>);</pre>
 <p>Set the port number in <em class="parameter"><code>url</code></em>
  to <em class="parameter"><code>port</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.6.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-set-port.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -273,7 +273,7 @@ gst_rtsp_url_set_port (<em class="parameter"><code><a class="link" href="gst-plu
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.6.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-url-set-port.returns"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 </div>
 </div>
@@ -282,11 +282,11 @@ gst_rtsp_url_set_port (<em class="parameter"><code><a class="link" href="gst-plu
 <a name="gst-rtsp-url-get-port"></a><h3>gst_rtsp_url_get_port ()</h3>
 <pre class="programlisting"><a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GstRTSPResult" title="enum GstRTSPResult"><span class="returnvalue">GstRTSPResult</span></a>
 gst_rtsp_url_get_port (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> *url</code></em>,
-                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> *port</code></em>);</pre>
+                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> *port</code></em>);</pre>
 <p>Get the port number of <em class="parameter"><code>url</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.7.5"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-get-port.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -308,14 +308,14 @@ gst_rtsp_url_get_port (<em class="parameter"><code>const <a class="link" href="g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.7.6"></a><h4>Returns</h4>
+<a name="gst-rtsp-url-get-port.returns"></a><h4>Returns</h4>
 <p> <a class="link" href="gst-plugins-base-libs-gstrtspdefs.html#GST-RTSP-OK:CAPS"><span class="type">GST_RTSP_OK</span></a>.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="gst-rtsp-url-decode-path-components"></a><h3>gst_rtsp_url_decode_path_components ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
 gst_rtsp_url_decode_path_components (<em class="parameter"><code>const <a class="link" href="gst-plugins-base-libs-gstrtspurl.html#GstRTSPUrl" title="struct GstRTSPUrl"><span class="type">GstRTSPUrl</span></a> *url</code></em>);</pre>
 <p>Splits the path of <em class="parameter"><code>url</code></em>
  on '/' boundaries, decoding the resulting components,</p>
@@ -328,7 +328,7 @@ unescaped to NUL, as that would prematurely terminate the string.</p>
 <p>Also note that since paths usually start with a slash, the first component
 will usually be the empty string.</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.8.7"></a><h4>Parameters</h4>
+<a name="gst-rtsp-url-decode-path-components.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -343,9 +343,9 @@ will usually be the empty string.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.10.9.7.8.8"></a><h4>Returns</h4>
-<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated array of URL components. Free with
-<a href="https://developer.gnome.org/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> when no longer needed. </p>
+<a name="gst-rtsp-url-decode-path-components.returns"></a><h4>Returns</h4>
+<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated array of URL components. Free with
+<a href="/usr/share/gtk-doc/html/glibglib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a> when no longer needed. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
@@ -374,7 +374,7 @@ will usually be the empty string.</p>
 </pre>
 <p>This structure contains the result of a parsed RTSP URL</p>
 <div class="refsect3">
-<a name="id-1.2.10.9.8.3.5"></a><h4>Members</h4>
+<a name="GstRTSPUrl.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -393,32 +393,32 @@ will usually be the empty string.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.user"></a>user</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.user"></a>user</code></em>;</p></td>
 <td class="struct_member_description"><p>the user</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.passwd"></a>passwd</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.passwd"></a>passwd</code></em>;</p></td>
 <td class="struct_member_description"><p>the password</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.host"></a>host</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.host"></a>host</code></em>;</p></td>
 <td class="struct_member_description"><p>the host</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="GstRTSPUrl.port"></a>port</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="GstRTSPUrl.port"></a>port</code></em>;</p></td>
 <td class="struct_member_description"><p>the port</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.abspath"></a>abspath</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.abspath"></a>abspath</code></em>;</p></td>
 <td class="struct_member_description"><p>the absolute path</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.query"></a>query</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="GstRTSPUrl.query"></a>query</code></em>;</p></td>
 <td class="struct_member_description"><p>additional query parameters</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -429,6 +429,6 @@ will usually be the empty string.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>
