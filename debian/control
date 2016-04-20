@@ -99,7 +99,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.8.0)
+         libgstreamer-plugins-base1.0-0 (>= 1.8.1)
 Suggests: alsa-utils (>= 0.9.0)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
@@ -125,7 +125,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.8.0)
+         libgstreamer-plugins-base1.0-0 (>= 1.8.1)
 Breaks: gstreamer1.0-plugins-bad (<< 1.7.90)
 Replaces: gstreamer1.0-plugins-bad (<< 1.7.90)
 Suggests: gvfs
@@ -178,7 +178,7 @@ Multi-Arch: same
 Section: libs
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         libgstreamer-plugins-base1.0-0 (>= 1.8.0)
+         libgstreamer-plugins-base1.0-0 (>= 1.8.1)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
 XB-GStreamer-URI-Sources: ${gstreamer:URISources}

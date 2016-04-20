@@ -751,6 +751,7 @@ libgstsdp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_mikey_message_replace_payload@Base 1.4.0
  gst_mikey_message_set_info@Base 1.4.0
  gst_mikey_message_to_bytes@Base 1.4.0
+ gst_mikey_message_to_caps@Base 1.8.1
  gst_mikey_payload_get_type@Base 1.4.0
  gst_mikey_payload_kemac_add_sub@Base 1.4.0
  gst_mikey_payload_kemac_get_n_sub@Base 1.4.0
@@ -809,6 +810,7 @@ libgstsdp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_sdp_media_insert_connection@Base 1.2.0
  gst_sdp_media_insert_format@Base 1.2.0
  gst_sdp_media_new@Base 1.0.0
+ gst_sdp_media_parse_keymgmt@Base 1.8.1
  gst_sdp_media_remove_attribute@Base 1.2.0
  gst_sdp_media_remove_bandwidth@Base 1.2.0
  gst_sdp_media_remove_connection@Base 1.2.0
@@ -867,6 +869,7 @@ libgstsdp-1.0.so.0 libgstreamer-plugins-base1.0-0 #MINVER#
  gst_sdp_message_medias_len@Base 1.0.0
  gst_sdp_message_new@Base 1.0.0
  gst_sdp_message_parse_buffer@Base 1.0.0
+ gst_sdp_message_parse_keymgmt@Base 1.8.1
  gst_sdp_message_parse_uri@Base 1.0.0
  gst_sdp_message_phones_len@Base 1.0.0
  gst_sdp_message_remove_attribute@Base 1.2.0
