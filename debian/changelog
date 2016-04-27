@@ -1,8 +1,8 @@
-gst-plugins-base1.0 (1.8.1-1ubuntu0.1) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.8.1-1ubuntu0.1) xenial; urgency=medium
 
   * No-change backport from Yakkety to 16.04.
 
- -- Iain Lane <iain.lane@canonical.com>  Wed, 27 Apr 2016 09:20:07 +0100
+ -- Iain Lane <iain.lane@canonical.com>  Wed, 27 Apr 2016 15:39:44 +0100
 
 gst-plugins-base1.0 (1.8.1-1ubuntu1) yakkety; urgency=medium
 
