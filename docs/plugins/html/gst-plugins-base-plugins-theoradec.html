@@ -16,7 +16,8 @@
 <td width="100%" align="left" class="shortcuts">
 <a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#gst-plugins-base-plugins-theoradec.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
-                  <a href="#gst-plugins-base-plugins-theoradec.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+                  <a href="#gst-plugins-base-plugins-theoradec.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#gst-plugins-base-plugins-theoradec.properties" class="shortcut">Properties</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -32,6 +33,38 @@
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-theoradec.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-bit-usage" title="The “visualize-bit-usage” property">visualize-bit-usage</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-macroblock-modes" title="The “visualize-macroblock-modes” property">visualize-macroblock-modes</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-motion-vectors" title="The “visualize-motion-vectors” property">visualize-motion-vectors</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-quantization-modes" title="The “visualize-quantization-modes” property">visualize-quantization-modes</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 <a name="GstTheoraDec"></a><div class="refsect1">
 <a name="gst-plugins-base-plugins-theoradec.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -60,7 +93,7 @@
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="refsect2">
-<a name="id-1.2.44.6.2.1"></a><h3>Element Information</h3>
+<a name="id-1.2.44.7.2.1"></a><h3>Element Information</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -86,7 +119,7 @@
 </div>
 <hr>
 <div class="refsect2">
-<a name="id-1.2.44.6.2.2"></a><h3>Element Pads</h3>
+<a name="id-1.2.44.7.2.2"></a><h3>Element Pads</h3>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -147,6 +180,44 @@
 <div class="refsect2">
 <a name="GstTheoraDec-struct"></a><h3>struct GstTheoraDec</h3>
 <pre class="programlisting">struct GstTheoraDec;</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="gst-plugins-base-plugins-theoradec.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GstTheoraDec--visualize-bit-usage"></a><h3>The <code class="literal">“visualize-bit-usage”</code> property</h3>
+<pre class="programlisting">  “visualize-bit-usage”      <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Sets the bitstream breakdown visualization mode. Values influence the width of the bit usage bars to show.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,255]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstTheoraDec--visualize-macroblock-modes"></a><h3>The <code class="literal">“visualize-macroblock-modes”</code> property</h3>
+<pre class="programlisting">  “visualize-macroblock-modes” <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Show macroblock mode selection overlaid on image. Value gives a mask for macroblock (MB) modes to show.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,65535]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstTheoraDec--visualize-motion-vectors"></a><h3>The <code class="literal">“visualize-motion-vectors”</code> property</h3>
+<pre class="programlisting">  “visualize-motion-vectors” <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Show motion vector selection overlaid on image. Value gives a mask for motion vector (MV) modes to show.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,65535]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GstTheoraDec--visualize-quantization-modes"></a><h3>The <code class="literal">“visualize-quantization-modes”</code> property</h3>
+<pre class="programlisting">  “visualize-quantization-modes” <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Show adaptive quantization mode selection overlaid on image. Value gives a mask for quantization (QI) modes to show.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,65535]</p>
+<p>Default value: 0</p>
 </div>
 </div>
 </div>
