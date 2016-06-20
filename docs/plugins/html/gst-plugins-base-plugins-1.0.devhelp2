@@ -367,6 +367,10 @@
     <keyword type="property" name="The “xpad” property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--xpad"/>
     <keyword type="property" name="The “ypad” property" link="gst-plugins-base-plugins-textrender.html#GstTextRender--ypad"/>
     <keyword type="struct" name="struct GstTheoraDec" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec-struct"/>
+    <keyword type="property" name="The “visualize-bit-usage” property" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-bit-usage"/>
+    <keyword type="property" name="The “visualize-macroblock-modes” property" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-macroblock-modes"/>
+    <keyword type="property" name="The “visualize-motion-vectors” property" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-motion-vectors"/>
+    <keyword type="property" name="The “visualize-quantization-modes” property" link="gst-plugins-base-plugins-theoradec.html#GstTheoraDec--visualize-quantization-modes"/>
     <keyword type="struct" name="struct GstTheoraEnc" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc-struct"/>
     <keyword type="enum" name="enum GstTheoraEncMultipassMode" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEncMultipassMode"/>
     <keyword type="property" name="The “bitrate” property" link="gst-plugins-base-plugins-theoraenc.html#GstTheoraEnc--bitrate"/>

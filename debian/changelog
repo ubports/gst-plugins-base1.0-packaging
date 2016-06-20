@@ -1,3 +1,21 @@
+gst-plugins-base1.0 (1.8.2-1ubuntu1) yakkety; urgency=medium
+
+  * Merge from Debian unstable (LP: #1594407). Remaining changes:
+    + 0001-riff-Add-input-buffer-size-to-GstCaps.patch: Take patch from
+      Alfonso Sanchez-Beato on upstream bug #737599 to add a field in the
+      GstCaps containing the suggested buffer size for this stream.
+    + Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Mon, 20 Jun 2016 15:24:43 +0100
+
+gst-plugins-base1.0 (1.8.2-1) unstable; urgency=medium
+
+  * debian/control.in:
+    + Remove duplicated field name.
+  * New upstream bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 13 May 2016 14:37:29 +0300
+
 gst-plugins-base1.0 (1.8.1-1ubuntu0.1) xenial; urgency=medium
 
   * No-change backport from Yakkety to 16.04.
