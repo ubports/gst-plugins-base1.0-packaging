@@ -602,117 +602,6 @@ gst_video_decoder_init (GstVideoDecoder * decoder, GstVideoDecoderClass * klass)
   gst_video_decoder_reset (decoder, TRUE, TRUE);
 }
 
-static gboolean
-gst_video_rawvideo_convert (GstVideoCodecState * state,
-    GstFormat src_format, gint64 src_value,
-    GstFormat * dest_format, gint64 * dest_value)
-{
-  gboolean res = FALSE;
-  guint vidsize;
-  guint fps_n, fps_d;
-
-  g_return_val_if_fail (dest_format != NULL, FALSE);
-  g_return_val_if_fail (dest_value != NULL, FALSE);
-
-  if (src_format == *dest_format || src_value == 0 || src_value == -1) {
-    *dest_value = src_value;
-    return TRUE;
-  }
-
-  vidsize = GST_VIDEO_INFO_SIZE (&state->info);
-  fps_n = GST_VIDEO_INFO_FPS_N (&state->info);
-  fps_d = GST_VIDEO_INFO_FPS_D (&state->info);
-
-  if (src_format == GST_FORMAT_BYTES &&
-      *dest_format == GST_FORMAT_DEFAULT && vidsize) {
-    /* convert bytes to frames */
-    *dest_value = gst_util_uint64_scale_int (src_value, 1, vidsize);
-    res = TRUE;
-  } else if (src_format == GST_FORMAT_DEFAULT &&
-      *dest_format == GST_FORMAT_BYTES && vidsize) {
-    /* convert bytes to frames */
-    *dest_value = src_value * vidsize;
-    res = TRUE;
-  } else if (src_format == GST_FORMAT_DEFAULT &&
-      *dest_format == GST_FORMAT_TIME && fps_n) {
-    /* convert frames to time */
-    *dest_value = gst_util_uint64_scale (src_value, GST_SECOND * fps_d, fps_n);
-    res = TRUE;
-  } else if (src_format == GST_FORMAT_TIME &&
-      *dest_format == GST_FORMAT_DEFAULT && fps_d) {
-    /* convert time to frames */
-    *dest_value = gst_util_uint64_scale (src_value, fps_n, GST_SECOND * fps_d);
-    res = TRUE;
-  } else if (src_format == GST_FORMAT_TIME &&
-      *dest_format == GST_FORMAT_BYTES && fps_d && vidsize) {
-    /* convert time to bytes */
-    *dest_value = gst_util_uint64_scale (src_value,
-        fps_n * (guint64) vidsize, GST_SECOND * fps_d);
-    res = TRUE;
-  } else if (src_format == GST_FORMAT_BYTES &&
-      *dest_format == GST_FORMAT_TIME && fps_n && vidsize) {
-    /* convert bytes to time */
-    *dest_value = gst_util_uint64_scale (src_value,
-        GST_SECOND * fps_d, fps_n * (guint64) vidsize);
-    res = TRUE;
-  }
-
-  return res;
-}
-
-static gboolean
-gst_video_encoded_video_convert (gint64 bytes, gint64 time,
-    GstFormat src_format, gint64 src_value, GstFormat * dest_format,
-    gint64 * dest_value)
-{
-  gboolean res = FALSE;
-
-  g_return_val_if_fail (dest_format != NULL, FALSE);
-  g_return_val_if_fail (dest_value != NULL, FALSE);
-
-  if (G_UNLIKELY (src_format == *dest_format || src_value == 0 ||
-          src_value == -1)) {
-    if (dest_value)
-      *dest_value = src_value;
-    return TRUE;
-  }
-
-  if (bytes <= 0 || time <= 0) {
-    GST_DEBUG ("not enough metadata yet to convert");
-    goto exit;
-  }
-
-  switch (src_format) {
-    case GST_FORMAT_BYTES:
-      switch (*dest_format) {
-        case GST_FORMAT_TIME:
-          *dest_value = gst_util_uint64_scale (src_value, time, bytes);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    case GST_FORMAT_TIME:
-      switch (*dest_format) {
-        case GST_FORMAT_BYTES:
-          *dest_value = gst_util_uint64_scale (src_value, bytes, time);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    default:
-      GST_DEBUG ("unhandled conversion from %d to %d", src_format,
-          *dest_format);
-      res = FALSE;
-  }
-
-exit:
-  return res;
-}
-
 static GstVideoCodecState *
 _new_input_state (GstCaps * caps)
 {
@@ -1152,16 +1041,29 @@ gst_video_decoder_negotiate_default_caps (GstVideoDecoder * decoder)
   for (i = 0; i < caps_size; i++) {
     structure = gst_caps_get_structure (caps, i);
     /* Random 1280x720@30 for fixation */
-    gst_structure_fixate_field_nearest_int (structure, "width", 1280);
-    gst_structure_fixate_field_nearest_int (structure, "height", 720);
-    gst_structure_fixate_field_nearest_fraction (structure, "framerate", 30, 1);
-    if (gst_structure_has_field (structure, "pixel-aspect-ratio")) {
+    if (gst_structure_has_field (structure, "width"))
+      gst_structure_fixate_field_nearest_int (structure, "width", 1280);
+    else
+      gst_structure_set (structure, "width", G_TYPE_INT, 1280, NULL);
+
+    if (gst_structure_has_field (structure, "height"))
+      gst_structure_fixate_field_nearest_int (structure, "height", 720);
+    else
+      gst_structure_set (structure, "height", G_TYPE_INT, 720, NULL);
+
+    if (gst_structure_has_field (structure, "framerate"))
+      gst_structure_fixate_field_nearest_fraction (structure, "framerate", 30,
+          1);
+    else
+      gst_structure_set (structure, "framerate", GST_TYPE_FRACTION, 30, 1,
+          NULL);
+
+    if (gst_structure_has_field (structure, "pixel-aspect-ratio"))
       gst_structure_fixate_field_nearest_fraction (structure,
           "pixel-aspect-ratio", 1, 1);
-    } else {
+    else
       gst_structure_set (structure, "pixel-aspect-ratio", GST_TYPE_FRACTION,
           1, 1, NULL);
-    }
   }
   caps = gst_caps_fixate (caps);
   structure = gst_caps_get_structure (caps, 0);
@@ -1496,8 +1398,14 @@ gst_video_decoder_sink_event (GstPad * pad, GstObject * parent,
 static inline gboolean
 gst_video_decoder_do_byte (GstVideoDecoder * dec)
 {
-  return dec->priv->do_estimate_rate && (dec->priv->bytes_out > 0)
+  gboolean ret;
+
+  GST_OBJECT_LOCK (dec);
+  ret = dec->priv->do_estimate_rate && (dec->priv->bytes_out > 0)
       && (dec->priv->time > GST_SECOND);
+  GST_OBJECT_UNLOCK (dec);
+
+  return ret;
 }
 
 static gboolean
@@ -1753,7 +1661,7 @@ gst_video_decoder_src_query_default (GstVideoDecoder * dec, GstQuery * query)
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
       GST_OBJECT_LOCK (dec);
       if (dec->priv->output_state != NULL)
-        res = gst_video_rawvideo_convert (dec->priv->output_state,
+        res = __gst_video_rawvideo_convert (dec->priv->output_state,
             src_fmt, src_val, &dest_fmt, &dest_val);
       else
         res = FALSE;
@@ -1877,11 +1785,11 @@ gst_video_decoder_sink_query_default (GstVideoDecoder * decoder,
       gint64 src_val, dest_val;
 
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
-      GST_VIDEO_DECODER_STREAM_LOCK (decoder);
+      GST_OBJECT_LOCK (decoder);
       res =
-          gst_video_encoded_video_convert (priv->bytes_out, priv->time, src_fmt,
-          src_val, &dest_fmt, &dest_val);
-      GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
+          __gst_video_encoded_video_convert (priv->bytes_out, priv->time,
+          src_fmt, src_val, &dest_fmt, &dest_val);
+      GST_OBJECT_UNLOCK (decoder);
       if (!res)
         goto error;
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
@@ -2160,8 +2068,10 @@ gst_video_decoder_reset (GstVideoDecoder * decoder, gboolean full,
   g_list_free_full (priv->timestamps, (GDestroyNotify) timestamp_free);
   priv->timestamps = NULL;
 
+  GST_OBJECT_LOCK (decoder);
   priv->bytes_out = 0;
   priv->time = 0;
+  GST_OBJECT_UNLOCK (decoder);
 
   GST_VIDEO_DECODER_STREAM_UNLOCK (decoder);
 }
@@ -3190,6 +3100,7 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
   }
 
   /* update rate estimate */
+  GST_OBJECT_LOCK (decoder);
   priv->bytes_out += gst_buffer_get_size (buf);
   if (GST_CLOCK_TIME_IS_VALID (duration)) {
     priv->time += duration;
@@ -3200,6 +3111,7 @@ gst_video_decoder_clip_and_push_buf (GstVideoDecoder * decoder, GstBuffer * buf)
     /* better none than nothing valid */
     priv->time = GST_CLOCK_TIME_NONE;
   }
+  GST_OBJECT_UNLOCK (decoder);
 
   GST_DEBUG_OBJECT (decoder, "pushing buffer %p of size %" G_GSIZE_FORMAT ", "
       "PTS %" GST_TIME_FORMAT ", dur %" GST_TIME_FORMAT, buf,
