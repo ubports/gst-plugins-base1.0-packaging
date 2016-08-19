@@ -44,9 +44,10 @@ GstXvContext *        gst_xvimage_allocator_peek_context (GstXvImageAllocator * 
 
 GstMemory *           gst_xvimage_allocator_alloc       (GstXvImageAllocator * allocator,
                                                          gint im_format,
+                                                         const GstVideoInfo * info,
                                                          gint padded_width,
                                                          gint padded_height,
-                                                         GstVideoRectangle *crop,
+                                                         const GstVideoRectangle *crop,
                                                          GError ** error);
 
 /* memory from the allocator */
