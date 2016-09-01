@@ -1,3 +1,13 @@
+gst-plugins-base1.0 (1.8.3-1ubuntu1) yakkety; urgency=medium
+
+  * Merge from Debian unstable. Remaining changes:
+    + 0001-riff-Add-input-buffer-size-to-GstCaps.patch: Take patch from
+      Alfonso Sanchez-Beato on upstream bug #737599 to add a field in the
+      GstCaps containing the suggested buffer size for this stream.
+    + Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 01 Sep 2016 12:23:29 +0100
+
 gst-plugins-base1.0 (1.8.3-1) unstable; urgency=medium
 
   * New upstream bugfix release.
