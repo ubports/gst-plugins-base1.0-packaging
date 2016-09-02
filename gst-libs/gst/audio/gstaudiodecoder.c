@@ -496,8 +496,10 @@ gst_audio_decoder_reset (GstAudioDecoder * dec, gboolean full)
 
   if (full) {
     dec->priv->active = FALSE;
+    GST_OBJECT_LOCK (dec);
     dec->priv->bytes_in = 0;
     dec->priv->samples_out = 0;
+    GST_OBJECT_UNLOCK (dec);
     dec->priv->agg = -1;
     dec->priv->error_count = 0;
     gst_audio_decoder_clear_queues (dec);
@@ -524,11 +526,13 @@ gst_audio_decoder_reset (GstAudioDecoder * dec, gboolean full)
     if (dec->priv->ctx.allocator)
       gst_object_unref (dec->priv->ctx.allocator);
 
+    GST_OBJECT_LOCK (dec);
     gst_caps_replace (&dec->priv->ctx.input_caps, NULL);
 
     memset (&dec->priv->ctx, 0, sizeof (dec->priv->ctx));
 
     gst_audio_info_init (&dec->priv->ctx.info);
+    GST_OBJECT_UNLOCK (dec);
     dec->priv->ctx.max_errors = GST_AUDIO_DECODER_MAX_ERRORS;
     dec->priv->ctx.had_output_data = FALSE;
     dec->priv->ctx.had_input_data = FALSE;
@@ -811,7 +815,9 @@ gst_audio_decoder_set_output_format (GstAudioDecoder * dec,
   }
 
   /* copy the GstAudioInfo */
+  GST_OBJECT_LOCK (dec);
   dec->priv->ctx.info = *info;
+  GST_OBJECT_UNLOCK (dec);
   dec->priv->ctx.output_format_changed = TRUE;
 
 done:
@@ -1382,8 +1388,10 @@ gst_audio_decoder_finish_frame (GstAudioDecoder * dec, GstBuffer * buf,
     }
   }
 
+  GST_OBJECT_LOCK (dec);
   priv->samples += samples;
   priv->samples_out += samples;
+  GST_OBJECT_UNLOCK (dec);
 
   /* we got data, so note things are looking up */
   if (G_UNLIKELY (dec->priv->error_count))
@@ -1444,7 +1452,9 @@ gst_audio_decoder_handle_frame (GstAudioDecoder * dec,
         GST_TIME_ARGS (GST_BUFFER_TIMESTAMP (buffer)));
     g_queue_push_tail (&dec->priv->frames, buffer);
     dec->priv->ctx.delay = dec->priv->frames.length;
+    GST_OBJECT_LOCK (dec);
     dec->priv->bytes_in += size;
+    GST_OBJECT_UNLOCK (dec);
   } else {
     GST_LOG_OBJECT (dec, "providing subclass with NULL frame");
   }
@@ -1942,8 +1952,14 @@ not_negotiated:
 static inline gboolean
 gst_audio_decoder_do_byte (GstAudioDecoder * dec)
 {
-  return dec->priv->ctx.do_estimate_rate && dec->priv->ctx.info.bpf &&
+  gboolean ret;
+
+  GST_OBJECT_LOCK (dec);
+  ret = dec->priv->ctx.do_estimate_rate && dec->priv->ctx.info.bpf &&
       dec->priv->ctx.info.rate <= dec->priv->samples_out;
+  GST_OBJECT_UNLOCK (dec);
+
+  return ret;
 }
 
 /* Must be called holding the GST_AUDIO_DECODER_STREAM_LOCK */
@@ -1957,6 +1973,7 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
   guint64 channel_mask = 0;
   gint caps_size;
   GstStructure *structure;
+  GstAudioInfo info;
 
   templcaps = gst_pad_get_pad_template_caps (dec->srcpad);
   caps = gst_pad_peer_query_caps (dec->srcpad, templcaps);
@@ -2003,10 +2020,18 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
 
   for (i = 0; i < caps_size; i++) {
     structure = gst_caps_get_structure (caps, i);
-    gst_structure_fixate_field_nearest_int (structure,
-        "channels", GST_AUDIO_DEF_CHANNELS);
-    gst_structure_fixate_field_nearest_int (structure,
-        "rate", GST_AUDIO_DEF_RATE);
+    if (gst_structure_has_field (structure, "channels"))
+      gst_structure_fixate_field_nearest_int (structure,
+          "channels", GST_AUDIO_DEF_CHANNELS);
+    else
+      gst_structure_set (structure, "channels", G_TYPE_INT,
+          GST_AUDIO_DEF_CHANNELS, NULL);
+    if (gst_structure_has_field (structure, "rate"))
+      gst_structure_fixate_field_nearest_int (structure,
+          "rate", GST_AUDIO_DEF_RATE);
+    else
+      gst_structure_set (structure, "rate", G_TYPE_INT, GST_AUDIO_DEF_RATE,
+          NULL);
   }
   caps = gst_caps_fixate (caps);
   structure = gst_caps_get_structure (caps, 0);
@@ -2024,8 +2049,12 @@ gst_audio_decoder_negotiate_default_caps (GstAudioDecoder * dec)
     }
   }
 
-  if (!caps || !gst_audio_info_from_caps (&dec->priv->ctx.info, caps))
+  if (!caps || !gst_audio_info_from_caps (&info, caps))
     goto caps_error;
+
+  GST_OBJECT_LOCK (dec);
+  dec->priv->ctx.info = info;
+  GST_OBJECT_UNLOCK (dec);
 
   GST_INFO_OBJECT (dec,
       "Chose default caps %" GST_PTR_FORMAT " for initial gap", caps);
@@ -2518,77 +2547,6 @@ gst_audio_decoder_propose_allocation_default (GstAudioDecoder * dec,
   return TRUE;
 }
 
-/*
- * gst_audio_encoded_audio_convert:
- * @fmt: audio format of the encoded audio
- * @bytes: number of encoded bytes
- * @samples: number of encoded samples
- * @src_format: source format
- * @src_value: source value
- * @dest_format: destination format
- * @dest_value: destination format
- *
- * Helper function to convert @src_value in @src_format to @dest_value in
- * @dest_format for encoded audio data.  Conversion is possible between
- * BYTE and TIME format by using estimated bitrate based on
- * @samples and @bytes (and @fmt).
- */
-/* FIXME: make gst_audio_encoded_audio_convert() public? */
-static gboolean
-gst_audio_encoded_audio_convert (GstAudioInfo * fmt,
-    gint64 bytes, gint64 samples, GstFormat src_format,
-    gint64 src_value, GstFormat * dest_format, gint64 * dest_value)
-{
-  gboolean res = FALSE;
-
-  g_return_val_if_fail (dest_format != NULL, FALSE);
-  g_return_val_if_fail (dest_value != NULL, FALSE);
-
-  if (G_UNLIKELY (src_format == *dest_format || src_value == 0 ||
-          src_value == -1)) {
-    if (dest_value)
-      *dest_value = src_value;
-    return TRUE;
-  }
-
-  if (samples == 0 || bytes == 0 || fmt->rate == 0) {
-    GST_DEBUG ("not enough metadata yet to convert");
-    goto exit;
-  }
-
-  bytes *= fmt->rate;
-
-  switch (src_format) {
-    case GST_FORMAT_BYTES:
-      switch (*dest_format) {
-        case GST_FORMAT_TIME:
-          *dest_value = gst_util_uint64_scale (src_value,
-              GST_SECOND * samples, bytes);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    case GST_FORMAT_TIME:
-      switch (*dest_format) {
-        case GST_FORMAT_BYTES:
-          *dest_value = gst_util_uint64_scale (src_value, bytes,
-              samples * GST_SECOND);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    default:
-      res = FALSE;
-  }
-
-exit:
-  return res;
-}
-
 /**
  * gst_audio_decoder_proxy_getcaps:
  * @decoder: a #GstAudioDecoder
@@ -2651,9 +2609,12 @@ gst_audio_decoder_sink_query_default (GstAudioDecoder * dec, GstQuery * query)
       gint64 src_val, dest_val;
 
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
-      if (!(res = gst_audio_encoded_audio_convert (&dec->priv->ctx.info,
-                  dec->priv->bytes_in, dec->priv->samples_out,
-                  src_fmt, src_val, &dest_fmt, &dest_val)))
+      GST_OBJECT_LOCK (dec);
+      res = __gst_audio_encoded_audio_convert (&dec->priv->ctx.info,
+          dec->priv->bytes_in, dec->priv->samples_out,
+          src_fmt, src_val, &dest_fmt, &dest_val);
+      GST_OBJECT_UNLOCK (dec);
+      if (!res)
         goto error;
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
       break;
@@ -2832,8 +2793,11 @@ gst_audio_decoder_src_query_default (GstAudioDecoder * dec, GstQuery * query)
       gint64 src_val, dest_val;
 
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
-      if (!(res = gst_audio_info_convert (&dec->priv->ctx.info,
-                  src_fmt, src_val, dest_fmt, &dest_val)))
+      GST_OBJECT_LOCK (dec);
+      res = gst_audio_info_convert (&dec->priv->ctx.info,
+          src_fmt, src_val, dest_fmt, &dest_val);
+      GST_OBJECT_UNLOCK (dec);
+      if (!res)
         break;
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
       break;

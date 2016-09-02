@@ -478,8 +478,10 @@ gst_audio_encoder_reset (GstAudioEncoder * enc, gboolean full)
 
   if (full) {
     enc->priv->active = FALSE;
+    GST_OBJECT_LOCK (enc);
     enc->priv->samples_in = 0;
     enc->priv->bytes_out = 0;
+    GST_OBJECT_UNLOCK (enc);
 
     g_list_foreach (enc->priv->ctx.headers, (GFunc) gst_buffer_unref, NULL);
     g_list_free (enc->priv->ctx.headers);
@@ -490,11 +492,13 @@ gst_audio_encoder_reset (GstAudioEncoder * enc, gboolean full)
       gst_object_unref (enc->priv->ctx.allocator);
     enc->priv->ctx.allocator = NULL;
 
+    GST_OBJECT_LOCK (enc);
     gst_caps_replace (&enc->priv->ctx.input_caps, NULL);
     gst_caps_replace (&enc->priv->ctx.caps, NULL);
 
     memset (&enc->priv->ctx, 0, sizeof (enc->priv->ctx));
     gst_audio_info_init (&enc->priv->ctx.info);
+    GST_OBJECT_UNLOCK (enc);
 
     if (enc->priv->upstream_tags) {
       gst_tag_list_unref (enc->priv->upstream_tags);
@@ -909,7 +913,9 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
           GST_BUFFER_OFFSET_END (tmpbuf) = priv->bytes_out + size;
         }
 
+        GST_OBJECT_LOCK (enc);
         priv->bytes_out += size;
+        GST_OBJECT_UNLOCK (enc);
 
         gst_pad_push (enc->srcpad, tmpbuf);
       }
@@ -971,7 +977,9 @@ gst_audio_encoder_finish_frame (GstAudioEncoder * enc, GstBuffer * buf,
       }
     }
 
+    GST_OBJECT_LOCK (enc);
     priv->bytes_out += size;
+    GST_OBJECT_UNLOCK (enc);
 
     if (G_UNLIKELY (priv->discont)) {
       GST_LOG_OBJECT (enc, "marking discont");
@@ -1116,7 +1124,9 @@ gst_audio_encoder_push_buffers (GstAudioEncoder * enc, gboolean force)
     /* mark this already as consumed,
      * which it should be when subclass gives us data in exchange for samples */
     priv->offset += need;
+    GST_OBJECT_LOCK (enc);
     priv->samples_in += need / ctx->info.bpf;
+    GST_OBJECT_UNLOCK (enc);
 
     /* subclass might not want to be bothered with leftover data,
      * so take care of that here if so, otherwise pass along */
@@ -1428,8 +1438,10 @@ gst_audio_encoder_sink_setcaps (GstAudioEncoder * enc, GstCaps * caps)
     res = klass->set_format (enc, &state);
 
   if (res) {
+    GST_OBJECT_LOCK (enc);
     ctx->info = state;
     gst_caps_replace (&enc->priv->ctx.input_caps, caps);
+    GST_OBJECT_UNLOCK (enc);
   } else {
     /* invalidate state to ensure no casual carrying on */
     GST_DEBUG_OBJECT (enc, "subclass did not accept format");
@@ -1715,8 +1727,11 @@ gst_audio_encoder_sink_query_default (GstAudioEncoder * enc, GstQuery * query)
       gint64 src_val, dest_val;
 
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
-      if (!(res = gst_audio_info_convert (&enc->priv->ctx.info,
-                  src_fmt, src_val, dest_fmt, &dest_val)))
+      GST_OBJECT_LOCK (enc);
+      res = gst_audio_info_convert (&enc->priv->ctx.info,
+          src_fmt, src_val, dest_fmt, &dest_val);
+      GST_OBJECT_UNLOCK (enc);
+      if (!res)
         goto error;
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
       res = TRUE;
@@ -1848,77 +1863,6 @@ gst_audio_encoder_propose_allocation_default (GstAudioEncoder * enc,
   return TRUE;
 }
 
-/*
- * gst_audio_encoded_audio_convert:
- * @fmt: audio format of the encoded audio
- * @bytes: number of encoded bytes
- * @samples: number of encoded samples
- * @src_format: source format
- * @src_value: source value
- * @dest_format: destination format
- * @dest_value: destination format
- *
- * Helper function to convert @src_value in @src_format to @dest_value in
- * @dest_format for encoded audio data.  Conversion is possible between
- * BYTE and TIME format by using estimated bitrate based on
- * @samples and @bytes (and @fmt).
- */
-/* FIXME: make gst_audio_encoded_audio_convert() public? */
-static gboolean
-gst_audio_encoded_audio_convert (GstAudioInfo * fmt,
-    gint64 bytes, gint64 samples, GstFormat src_format,
-    gint64 src_value, GstFormat * dest_format, gint64 * dest_value)
-{
-  gboolean res = FALSE;
-
-  g_return_val_if_fail (dest_format != NULL, FALSE);
-  g_return_val_if_fail (dest_value != NULL, FALSE);
-
-  if (G_UNLIKELY (src_format == *dest_format || src_value == 0 ||
-          src_value == -1)) {
-    if (dest_value)
-      *dest_value = src_value;
-    return TRUE;
-  }
-
-  if (samples == 0 || bytes == 0 || fmt->rate == 0) {
-    GST_DEBUG ("not enough metadata yet to convert");
-    goto exit;
-  }
-
-  bytes *= fmt->rate;
-
-  switch (src_format) {
-    case GST_FORMAT_BYTES:
-      switch (*dest_format) {
-        case GST_FORMAT_TIME:
-          *dest_value = gst_util_uint64_scale (src_value,
-              GST_SECOND * samples, bytes);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    case GST_FORMAT_TIME:
-      switch (*dest_format) {
-        case GST_FORMAT_BYTES:
-          *dest_value = gst_util_uint64_scale (src_value, bytes,
-              samples * GST_SECOND);
-          res = TRUE;
-          break;
-        default:
-          res = FALSE;
-      }
-      break;
-    default:
-      res = FALSE;
-  }
-
-exit:
-  return res;
-}
-
 /* FIXME ? are any of these queries (other than latency) an encoder's business
  * also, the conversion stuff might seem to make sense, but seems to not mind
  * segment stuff etc at all
@@ -1988,9 +1932,12 @@ gst_audio_encoder_src_query_default (GstAudioEncoder * enc, GstQuery * query)
       gint64 src_val, dest_val;
 
       gst_query_parse_convert (query, &src_fmt, &src_val, &dest_fmt, &dest_val);
-      if (!(res = gst_audio_encoded_audio_convert (&enc->priv->ctx.info,
-                  enc->priv->bytes_out, enc->priv->samples_in, src_fmt, src_val,
-                  &dest_fmt, &dest_val)))
+      GST_OBJECT_LOCK (enc);
+      res = __gst_audio_encoded_audio_convert (&enc->priv->ctx.info,
+          enc->priv->bytes_out, enc->priv->samples_in, src_fmt, src_val,
+          &dest_fmt, &dest_val);
+      GST_OBJECT_UNLOCK (enc);
+      if (!res)
         break;
       gst_query_set_convert (query, src_fmt, src_val, dest_fmt, dest_val);
       break;
