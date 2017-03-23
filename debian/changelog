@@ -1,3 +1,28 @@
+gst-plugins-base1.0 (1.8.3-1ubuntu0.2) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: DoS in windows_icon_typefind
+    - debian/patches/CVE-2016-9811.patch: add bounds check in
+      gst/typefind/gsttypefindfunctions.c.
+    - CVE-2016-9811
+  * SECURITY UPDATE: DoS in gst_riff_create_audio_caps
+    - debian/patches/CVE-2017-5837.patch: check for valid channels/rate in
+      gst-libs/gst/riff/riff-media.c.
+    - CVE-2017-5837
+  * SECURITY UPDATE: DoS in gst_riff_create_audio_caps
+    - debian/patches/CVE-2017-5839.patch: fix infinite recursion in
+      gst-libs/gst/riff/riff-media.c.
+    - CVE-2017-5839
+  * SECURITY UPDATE: DoS in html_context_handle_element
+    - debian/patches/CVE-2017-5842.patch: check for non-zero length in
+      gst/subparse/samiparse.c.
+    - CVE-2017-5842
+  * SECURITY UPDATE: DoS in gst_riff_create_audio_caps
+    - debian/patches/CVE-2017-5844.patch: fix divide by zero in
+      gst-libs/gst/riff/riff-media.c.
+    - CVE-2017-5844
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 23 Mar 2017 13:03:22 -0400
+
 gst-plugins-base1.0 (1.8.3-1ubuntu0.1) xenial; urgency=medium
 
   * No-change backport from yakkety to 16.04 (LP: #1619600)

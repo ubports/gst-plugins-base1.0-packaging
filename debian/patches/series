@@ -1,1 +1,6 @@
 0001-riff-Add-input-buffer-size-to-GstCaps.patch
+CVE-2016-9811.patch
+CVE-2017-5837.patch
+CVE-2017-5839.patch
+CVE-2017-5842.patch
+CVE-2017-5844.patch
