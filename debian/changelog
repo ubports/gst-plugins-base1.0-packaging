@@ -1,3 +1,12 @@
+gst-plugins-base1.0 (1.8.3-1ubuntu0.3) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: heap overflow in RTSP parser
+    - debian/patches/CVE-2019-9928.patch: limit length in
+      gst-libs/gst/rtsp/gstrtspconnection.c.
+    - CVE-2019-9928
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 26 Apr 2019 09:43:17 -0400
+
 gst-plugins-base1.0 (1.8.3-1ubuntu0.2) xenial-security; urgency=medium
 
   * SECURITY UPDATE: DoS in windows_icon_typefind
