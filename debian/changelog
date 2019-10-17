@@ -1,3 +1,8 @@
+gst-plugins-base1.0 (1.8.3-1ubuntu0.3ubports1) UNRELEASED; urgency=medium
+
+
+ -- Ratchanan Srirattanamet <ratchanan@ubports.com>  Fri, 18 Oct 2019 01:55:20 +0700
+
 gst-plugins-base1.0 (1.8.3-1ubuntu0.3) xenial-security; urgency=medium
 
   * SECURITY UPDATE: heap overflow in RTSP parser
