@@ -1,0 +1,69 @@
+From: Ratchanan Srirattanamet <ratchanan@ubports.com>
+Date: Tue, 22 Oct 2019 00:48:40 +0700
+Subject: videoconvert: don't create video-converter if we're passthrough
+
+This should help improve memory usage in passthough case and make sure
+we don't fail if we passthough the format video-converter doesn't
+handle.
+
+Forwarded: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/merge_requests/467
+Last-Update: 2019-10-22
+
+--- a/gst/videoconvert/gstvideoconvert.c
++++ b/gst/videoconvert/gstvideoconvert.c
+@@ -444,29 +444,32 @@
+   if (in_info->interlace_mode != out_info->interlace_mode)
+     goto format_mismatch;
+ 
+-
+-  space->convert = gst_video_converter_new (in_info, out_info,
+-      gst_structure_new ("GstVideoConvertConfig",
+-          GST_VIDEO_CONVERTER_OPT_DITHER_METHOD, GST_TYPE_VIDEO_DITHER_METHOD,
+-          space->dither,
+-          GST_VIDEO_CONVERTER_OPT_DITHER_QUANTIZATION, G_TYPE_UINT,
+-          space->dither_quantization,
+-          GST_VIDEO_CONVERTER_OPT_CHROMA_RESAMPLER_METHOD,
+-          GST_TYPE_VIDEO_RESAMPLER_METHOD, space->chroma_resampler,
+-          GST_VIDEO_CONVERTER_OPT_ALPHA_MODE,
+-          GST_TYPE_VIDEO_ALPHA_MODE, space->alpha_mode,
+-          GST_VIDEO_CONVERTER_OPT_ALPHA_VALUE,
+-          G_TYPE_DOUBLE, space->alpha_value,
+-          GST_VIDEO_CONVERTER_OPT_CHROMA_MODE,
+-          GST_TYPE_VIDEO_CHROMA_MODE, space->chroma_mode,
+-          GST_VIDEO_CONVERTER_OPT_MATRIX_MODE,
+-          GST_TYPE_VIDEO_MATRIX_MODE, space->matrix_mode,
+-          GST_VIDEO_CONVERTER_OPT_GAMMA_MODE,
+-          GST_TYPE_VIDEO_GAMMA_MODE, space->gamma_mode,
+-          GST_VIDEO_CONVERTER_OPT_PRIMARIES_MODE,
+-          GST_TYPE_VIDEO_PRIMARIES_MODE, space->primaries_mode, NULL));
+-  if (space->convert == NULL)
+-    goto no_convert;
++  if (!gst_base_transform_is_passthrough (GST_BASE_TRANSFORM (space))) {
++    space->convert = gst_video_converter_new (in_info, out_info,
++        gst_structure_new ("GstVideoConvertConfig",
++            GST_VIDEO_CONVERTER_OPT_DITHER_METHOD, GST_TYPE_VIDEO_DITHER_METHOD,
++            space->dither,
++            GST_VIDEO_CONVERTER_OPT_DITHER_QUANTIZATION, G_TYPE_UINT,
++            space->dither_quantization,
++            GST_VIDEO_CONVERTER_OPT_CHROMA_RESAMPLER_METHOD,
++            GST_TYPE_VIDEO_RESAMPLER_METHOD, space->chroma_resampler,
++            GST_VIDEO_CONVERTER_OPT_ALPHA_MODE,
++            GST_TYPE_VIDEO_ALPHA_MODE, space->alpha_mode,
++            GST_VIDEO_CONVERTER_OPT_ALPHA_VALUE,
++            G_TYPE_DOUBLE, space->alpha_value,
++            GST_VIDEO_CONVERTER_OPT_CHROMA_MODE,
++            GST_TYPE_VIDEO_CHROMA_MODE, space->chroma_mode,
++            GST_VIDEO_CONVERTER_OPT_MATRIX_MODE,
++            GST_TYPE_VIDEO_MATRIX_MODE, space->matrix_mode,
++            GST_VIDEO_CONVERTER_OPT_GAMMA_MODE,
++            GST_TYPE_VIDEO_GAMMA_MODE, space->gamma_mode,
++            GST_VIDEO_CONVERTER_OPT_PRIMARIES_MODE,
++            GST_TYPE_VIDEO_PRIMARIES_MODE, space->primaries_mode, NULL));
++    if (space->convert == NULL)
++      goto no_convert;
++  } else {
++    GST_DEBUG ("not creating video converter in passthrough mode.");
++  }
+ 
+   GST_DEBUG ("reconfigured %d %d", GST_VIDEO_INFO_FORMAT (in_info),
+       GST_VIDEO_INFO_FORMAT (out_info));

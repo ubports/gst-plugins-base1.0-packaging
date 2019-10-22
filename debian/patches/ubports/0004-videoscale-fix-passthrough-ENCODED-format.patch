@@ -1,0 +1,138 @@
+From: Ratchanan Srirattanamet <ratchanan@ubports.com>
+Date: Wed, 23 Oct 2019 01:03:10 +0700
+Subject: videoscale: fix passthrough ENCODED format
+
+Videoscale can passthrough non-sysmem ENCODED buffer just fine. However,
+its pad template prevents it from doing that. This commit opens up its
+pad template to allow ENCODED format with feature ANY.
+
+However, as ANY feature is a superset of sysmem feature, special care is
+given in _transform_caps function to make sure that if the caps uses
+sysmem, it won't have ENCODED in it.
+
+Test cases has been updated to check if videotestsrc can use the format
+before testing. As videotestsrc doesn't support ENCODED, failure to do
+so will make the test fails.
+
+Forwarded: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/merge_requests/467
+Last-Update: 2019-10-23
+
+--- a/gst/videoscale/gstvideoscale.c
++++ b/gst/videoscale/gstvideoscale.c
+@@ -119,9 +119,12 @@
+ 
+ #define GST_VIDEO_FORMATS GST_VIDEO_FORMATS_ALL
+ 
++/* Keep the first caps without ENCODED to be used in transform_caps */
++
+ static GstStaticCaps gst_video_scale_format_caps =
+     GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS) ";"
+-    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY", GST_VIDEO_FORMATS));
++    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY",
++        GST_VIDEO_FORMATS_ALL_WITH_ENCODED));
+ 
+ #define GST_TYPE_VIDEO_SCALE_METHOD (gst_video_scale_method_get_type())
+ static GType
+@@ -414,7 +417,7 @@
+     GstPadDirection direction, GstCaps * caps, GstCaps * filter)
+ {
+   GstCaps *ret;
+-  GstStructure *structure;
++  GstStructure *structure, *structure_no_encoded;
+   GstCapsFeatures *features;
+   gint i, n;
+ 
+@@ -422,6 +425,10 @@
+       "Transforming caps %" GST_PTR_FORMAT " in direction %s", caps,
+       (direction == GST_PAD_SINK) ? "sink" : "src");
+ 
++  /* Used to prevent ENCODED in system memory */
++  structure_no_encoded =
++      gst_caps_get_structure (gst_video_scale_get_capslist (), 0);
++
+   ret = gst_caps_new_empty ();
+   n = gst_caps_get_size (caps);
+   for (i = 0; i < n; i++) {
+@@ -433,13 +440,13 @@
+     if (i > 0 && gst_caps_is_subset_structure_full (ret, structure, features))
+       continue;
+ 
+-    /* make copy */
+-    structure = gst_structure_copy (structure);
+-
+     /* If the features are non-sysmem we can only do passthrough */
+     if (!gst_caps_features_is_any (features)
+         && gst_caps_features_is_equal (features,
+             GST_CAPS_FEATURES_MEMORY_SYSTEM_MEMORY)) {
++      /* make copy while preventing ENCODED in sysmem */
++      structure = gst_structure_intersect (structure, structure_no_encoded);
++
+       gst_structure_set (structure, "width", GST_TYPE_INT_RANGE, 1, G_MAXINT,
+           "height", GST_TYPE_INT_RANGE, 1, G_MAXINT, NULL);
+ 
+@@ -448,6 +455,9 @@
+         gst_structure_set (structure, "pixel-aspect-ratio",
+             GST_TYPE_FRACTION_RANGE, 1, G_MAXINT, G_MAXINT, 1, NULL);
+       }
++    } else {
++      /* simply make copy */
++      structure = gst_structure_copy (structure);
+     }
+     gst_caps_append_structure_full (ret, structure,
+         gst_caps_features_copy (features));
+--- a/tests/check/elements/videoscale.c
++++ b/tests/check/elements/videoscale.c
+@@ -199,14 +199,27 @@
+ }
+ 
+ static gboolean
+-videoconvert_supports_caps (const GstCaps * caps)
++videotestsrc_supports_caps (GstCaps * caps)
+ {
+-  GST_DEBUG ("have caps %" GST_PTR_FORMAT, caps);
+-  return TRUE;
++  GstElement *src;
++  GstPad *pad;
++  GstCaps *resultCaps;
++  gboolean supported;
++
++  src = gst_element_factory_make ("videotestsrc", "src");
++  pad = gst_element_get_static_pad (src, "src");
++
++  resultCaps = gst_pad_query_caps (pad, caps);
++  supported = !gst_caps_is_empty (resultCaps);
++
++  gst_caps_unref (resultCaps);
++  gst_object_unref (pad);
++  gst_object_unref (src);
++  return supported;
+ }
+ 
+ static void
+-run_test (const GstCaps * caps, gint src_width, gint src_height,
++run_test (GstCaps * caps, gint src_width, gint src_height,
+     gint dest_width, gint dest_height, gint method,
+     GCallback src_handoff, gpointer src_handoff_user_data,
+     GCallback sink_handoff, gpointer sink_handoff_user_data)
+@@ -219,8 +232,8 @@
+   GstCaps *copy;
+   guint n_buffers = 0;
+ 
+-  /* skip formats that videoconvert can't handle */
+-  if (!videoconvert_supports_caps (caps))
++  /* skip formats that videotestsrc can't handle */
++  if (!videotestsrc_supports_caps (caps))
+     return;
+ 
+   pipeline = gst_element_factory_make ("pipeline", "pipeline");
+@@ -338,8 +351,8 @@
+   while (*p) {
+     GstCaps *caps = *p;
+ 
+-    /* skip formats that videoconvert can't handle */
+-    if (!videoconvert_supports_caps (caps))
++    /* skip formats that videotestsrc can't handle */
++    if (!videotestsrc_supports_caps (caps))
+       goto next;
+ 
+     GST_DEBUG ("Running test for caps '%" GST_PTR_FORMAT "'"

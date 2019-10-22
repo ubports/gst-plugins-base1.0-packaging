@@ -1,0 +1,67 @@
+From: Ratchanan Srirattanamet <ratchanan@ubports.com>
+Date: Wed, 23 Oct 2019 00:47:11 +0700
+Subject: videoconvert: fix passthrough ENCODED format
+
+Videoconvert can passthrough non-sysmem ENCODED buffer just fine (After
+it stops creating video-converter in passthrough mode). However, its pad
+template prevents it from doing that. This commit opens up its pad
+template to allow ENCODED format with feature ANY.
+
+However, as ANY feature is a superset of sysmem feature, special care is
+given in _transform_caps function to make sure that if the caps uses
+sysmem, it won't have ENCODED in it.
+
+Forwarded: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/merge_requests/467
+Last-Update: 2019-10-23
+
+--- a/gst/videoconvert/gstvideoconvert.c
++++ b/gst/videoconvert/gstvideoconvert.c
+@@ -82,8 +82,10 @@
+   PROP_PRIMARIES_MODE
+ };
+ 
++/* Keep the first caps without ENCODED to be used in transform_caps */
++
+ #define CSP_VIDEO_CAPS GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS_ALL) ";" \
+-    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY", GST_VIDEO_FORMATS_ALL)
++    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY", GST_VIDEO_FORMATS_ALL_WITH_ENCODED)
+ 
+ static GstStaticPadTemplate gst_video_convert_src_template =
+ GST_STATIC_PAD_TEMPLATE ("src",
+@@ -117,7 +119,13 @@
+   GstStructure *st;
+   GstCapsFeatures *f;
+   gint i, n;
+-  GstCaps *res;
++  GstCaps *ourcaps, *res;
++  const GValue *format_list_no_encoded;
++
++  /* Borrow our caps for the format list without ENCODED */
++  ourcaps = gst_static_pad_template_get_caps (&gst_video_convert_src_template);
++  format_list_no_encoded =
++      gst_structure_get_value (gst_caps_get_structure (ourcaps, 0), "format");
+ 
+   res = gst_caps_new_empty ();
+ 
+@@ -135,13 +143,18 @@
+     /* Only remove format info for the cases when we can actually convert */
+     if (!gst_caps_features_is_any (f)
+         && gst_caps_features_is_equal (f,
+-            GST_CAPS_FEATURES_MEMORY_SYSTEM_MEMORY))
+-      gst_structure_remove_fields (st, "format", "colorimetry", "chroma-site",
+-          NULL);
++            GST_CAPS_FEATURES_MEMORY_SYSTEM_MEMORY)) {
++      gst_structure_remove_fields (st, "colorimetry", "chroma-site", NULL);
++
++      /* Instead of just remove the format info, set it to the list of all formats
++         without ENCODED. */
++      gst_structure_set_value (st, "format", format_list_no_encoded);
++    }
+ 
+     gst_caps_append_structure_full (res, st, gst_caps_features_copy (f));
+   }
+ 
++  gst_caps_unref (ourcaps);
+   return res;
+ }
+ 
