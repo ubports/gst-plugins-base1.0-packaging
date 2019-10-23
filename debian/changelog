@@ -1,7 +1,17 @@
-gst-plugins-base1.0 (1.8.3-1ubuntu0.3ubports1) UNRELEASED; urgency=medium
+gst-plugins-base1.0 (1.8.3-1ubuntu0.3ubports1) xenial; urgency=medium
 
+  * Import to UBports
+  * Add patches to fix camera viewfinder's ENCODED format passthrough
+    - debian/patches/ubports/0001-videoconvert-don-t-create-video-converter
+      -if-we-re-p.patch
+    - debian/patches/ubports/0002-video-format-introduce-GST_VIDEO_FORMATS
+      _ALL_WITH_EN.patch
+    - debian/patches/ubports/0003-videoconvert-fix-passthrough-ENCODED
+      -format.patch
+    - debian/patches/ubports/0004-videoscale-fix-passthrough-ENCODED-format
+      .patch
 
- -- Ratchanan Srirattanamet <ratchanan@ubports.com>  Fri, 18 Oct 2019 01:55:20 +0700
+ -- Ratchanan Srirattanamet <ratchanan@ubports.com>  Wed, 23 Oct 2019 15:58:56 +0700
 
 gst-plugins-base1.0 (1.8.3-1ubuntu0.3) xenial-security; urgency=medium
 
