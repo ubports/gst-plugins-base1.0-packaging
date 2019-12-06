@@ -9,3 +9,4 @@ ubports/0001-videoconvert-don-t-create-video-converter-if-we-re-p.patch
 ubports/0002-video-format-introduce-GST_VIDEO_FORMATS_ALL_WITH_EN.patch
 ubports/0003-videoconvert-fix-passthrough-ENCODED-format.patch
 ubports/0004-videoscale-fix-passthrough-ENCODED-format.patch
+ubports/0005-audiobasesrc-always-acquire-if-not-acquired-in-_setc.patch

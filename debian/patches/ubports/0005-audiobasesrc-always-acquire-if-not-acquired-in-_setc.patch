@@ -1,0 +1,42 @@
+From: Ratchanan Srirattanamet <ratchanan@ubports.com>
+Date: Thu, 5 Dec 2019 20:08:36 +0700
+Subject: audiobasesrc: always acquire if not acquired in _setcaps
+
+audiobasesrc's setcaps contains an optimization that makes it not re-
+acquire the ringbuffer if the caps have not changed. However, it doesn't
+check if it has successfully acquired it or not. It's possible to have
+the caps set but not having ringbuffer acquired if the previous attempt
+to acquire fails.
+
+This commit replaces the caps existence check with whether the
+ringbuffer is acquired or not. There's no need to check for caps
+existence because 1.) it's unlikely to be NULL if the ringbuffer is
+acquired, and 2.) _setcaps shouldn't be called with a NULL caps.
+
+This should also let the element retry on acquiring ringbuffer after an
+error by re-setting the element's state to READY and back to PLAYING.
+Whether this behavior is correct is up for debate.
+
+Forwarded: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/merge_requests/512
+Last-Update: 2019-12-06
+---
+ gst-libs/gst/audio/gstaudiobasesrc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/gst-libs/gst/audio/gstaudiobasesrc.c b/gst-libs/gst/audio/gstaudiobasesrc.c
+index 9bfee07df..b30a35764 100644
+--- a/gst-libs/gst/audio/gstaudiobasesrc.c
++++ b/gst-libs/gst/audio/gstaudiobasesrc.c
+@@ -513,7 +513,8 @@ gst_audio_base_src_setcaps (GstBaseSrc * bsrc, GstCaps * caps)
+ 
+   spec = &src->ringbuffer->spec;
+ 
+-  if (G_UNLIKELY (spec->caps && gst_caps_is_equal (spec->caps, caps))) {
++  if (G_UNLIKELY (gst_audio_ring_buffer_is_acquired (src->ringbuffer)
++          && gst_caps_is_equal (spec->caps, caps))) {
+     GST_DEBUG_OBJECT (src,
+         "Ringbuffer caps haven't changed, skipping reconfiguration");
+     return TRUE;
+-- 
+2.17.1
+
